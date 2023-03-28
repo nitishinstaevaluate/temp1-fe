@@ -1,0 +1,236 @@
+
+<div class="page-style1 light-mode default-sidebar error-page1">
+  <div class="login-img">
+    
+    <div class="page">
+      <div class="container">
+        <div class="row">
+          <div class="col mx-auto">
+            <div class="row justify-content-center mt-9">
+              <div class="col-md-7 col-lg-5">
+                <div class="login-option">
+                  <ul
+                    ngbNav
+                    #nav="ngbNav"
+                    [(activeId)]="active"
+                    class="nav-tabs border-bottom-0"
+                  >
+                    <li ngbNavItem="Firebase">
+                      <a ngbNavLink>
+                        <img src="./assets/images/svgs/firebase.svg" alt="" />
+                      </a>
+                      <ng-template ngbNavContent>
+                        <form [formGroup]="loginForm" (ngSubmit)="Submit()">
+                          <div class="text-center title-style mb-6">
+                            <h1 class="mb-2">Firebase Login</h1>
+                          </div>
+
+                          <div class="input-group mb-3">
+                            <a
+                              href="javascript:void(0)"
+                              class="input-group-text bg-white text-muted"
+                            >
+                              <i
+                                class="zmdi zmdi-email text-muted"
+                                aria-hidden="true"
+                              ></i>
+                            </a>
+                            <input
+                              type="text"
+                              class="border-start-0 form-control ms-0"
+                              placeholder="Username"
+                              autocomplete
+                              formControlName="username"
+                            />
+                          </div>
+                          <div class="input-group mb-4">
+                            <a
+                              href="javascript:void(0)"
+                              class="input-group-text bg-white text-muted"
+                            >
+                              <i
+                                class="zmdi zmdi-eye text-muted"
+                                aria-hidden="true"
+                              ></i>
+                            </a>
+                            <input
+                              type="password"
+                              class="border-start-0 form-control ms-0"
+                              placeholder="Password"
+                              autocomplete
+                              formControlName="password"
+                            />
+                          </div>
+                          <div class="text-end pt-1">
+                            <p class="mb-0">
+                              <a
+                                href="/custompages/forgotpassword"
+                                class="text-primary"
+                                >Forgot Password?</a
+                              >
+                            </p>
+                          </div>
+                          {{ error }}
+
+                          <div class="col-12 mt-3">
+                            <button
+                              type="submit"
+                              class="btn btn-lg btn-primary btn-block {{
+                                disabled
+                              }}"
+                            >
+                              Login
+                            </button>
+                          </div>
+                          <div class="text-center pt-3">
+                            <p class="text-dark mb-0">
+                              Not a member?<a
+                                routerLink="/auth/register"
+                                class="text-primary ms-1"
+                                >Sign UP</a
+                              >
+                            </p>
+                          </div>
+                          <div class="flex-c-m text-center mt-3">
+                            <p>Or</p>
+                            <div class="social-icons">
+                              <ul>
+                                <li>
+                                  <a class="btn btn-social btn-block"
+                                    ><i
+                                      class="fa fa-google-plus text-google-plus"
+                                    ></i>
+                                    Sign up with Google</a
+                                  >
+                                </li>
+                                <li>
+                                  <a class="btn btn-social btn-block mt-2"
+                                    ><i
+                                      class="fa fa-facebook text-facebook"
+                                    ></i>
+                                    Sign in with Facebook</a
+                                  >
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </form>
+                      </ng-template>
+                    </li>
+                    <li ngbNavItem="Angular">
+                      <a ngbNavLink>
+                        <img src="./favicon.ico" alt="" />
+                      </a>
+                      <ng-template ngbNavContent>
+                        <form [formGroup]="loginForm" (ngSubmit)="Submit()">
+                          <div class="text-center title-style mb-6">
+                            <h1 class="mb-2">Login</h1>
+                          </div>
+
+                          <div class="input-group mb-3">
+                            <a
+                              href="javascript:void(0)"
+                              class="input-group-text bg-white text-muted"
+                            >
+                              <i
+                                class="zmdi zmdi-email text-muted"
+                                aria-hidden="true"
+                              ></i>
+                            </a>
+                            <input
+                              type="text"
+                              class="border-start-0 form-control ms-0"
+                              placeholder="Username"
+                              autocomplete
+                              formControlName="username"
+                            />
+                          </div>
+                          <div class="input-group mb-4">
+                            <a
+                              href="javascript:void(0)"
+                              class="input-group-text bg-white text-muted"
+                            >
+                              <i
+                                class="zmdi zmdi-eye text-muted"
+                                aria-hidden="true"
+                              ></i>
+                            </a>
+                            <input
+                              type="password"
+                              class="border-start-0 form-control ms-0"
+                              placeholder="Password"
+                              autocomplete
+                              formControlName="password"
+                            />
+                          </div>
+                          <div class="text-end pt-1">
+                            <p class="mb-0">
+                              <a
+                                href="/custompages/forgotpassword"
+                                class="text-primary"
+                                >Forgot Password?</a
+                              >
+                            </p>
+                          </div>
+                          {{ error }}
+
+                          <div class="col-12 mt-3">
+                            <button
+                              type="submit"
+                              class="btn btn-lg btn-primary btn-block {{
+                                disabled
+                              }}"
+                            >
+                              Login
+                            </button>
+                          </div>
+                          <div class="text-center pt-3">
+                            <p class="text-dark mb-0">
+                              Not a member?<a
+                                routerLink="/auth/register"
+                                class="text-primary ms-1"
+                                >Sign UP</a
+                              >
+                            </p>
+                          </div>
+                          <div class="flex-c-m text-center mt-3">
+                            <p>Or</p>
+                            <div class="social-icons">
+                              <ul>
+                                <li>
+                                  <a class="btn btn-social btn-block"
+                                    ><i
+                                      class="fa fa-google-plus text-google-plus"
+                                    ></i>
+                                    Sign up with Google</a
+                                  >
+                                </li>
+                                <li>
+                                  <a class="btn btn-social btn-block mt-2"
+                                    ><i
+                                      class="fa fa-facebook text-facebook"
+                                    ></i>
+                                    Sign in with Facebook</a
+                                  >
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </form>
+                      </ng-template>
+                    </li>
+                  </ul>
+                </div>
+                <div class="card p-4">
+                  <div class="card-body">
+                    <div [ngbNavOutlet]="nav" class="ml-4"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
