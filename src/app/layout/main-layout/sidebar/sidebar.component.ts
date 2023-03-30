@@ -6,5 +6,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent {
-
+menues :any[] =[
+  {
+    title: "valution",
+    link : "/dashboard"
+  },
+  {
+    title: "activity",
+    link : "/dashboard/activity"
+  }
+];
 }
