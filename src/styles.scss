@@ -1,6 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
 
-
 // custom css file
 @import "./assets/css/style.css";
 // @import "./assets/css/skin-modes.css";
@@ -9,5 +8,25 @@
 @import "./assets/switcher/css/switcher.css";
 @import "./assets/switcher/demo.css";
 
+.mat-step-header.cdk-keyboard-focused,
+.mat-step-header.cdk-program-focused,
+.mat-step-header:hover:not([aria-disabled]),
+.mat-step-header:hover[aria-disabled="false"] {
+  background-color: rgb(245 245 245);
+}
 
+.mat-step-header .mat-step-label.mat-step-label-active {
+  color: black;
+}
 
+.mat-step-header .mat-step-icon-selected,
+.mat-step-header .mat-step-icon-state-done,
+.mat-step-header .mat-step-icon-state-edit {
+  background-color: #3f51b5;
+  color: #fff;
+}
+
+.mat-step-header .mat-step-icon {
+    background-color: rgba(0,0,0,.54);
+    color: #fff;
+}

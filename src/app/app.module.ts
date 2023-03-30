@@ -6,6 +6,9 @@ import { AppComponent } from './app.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SharedModule } from './shared/shared.module';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { MaterialModuleModule } from './shared/material-module.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 
 @NgModule({
@@ -15,6 +18,8 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
     AppRoutingModule,
     AngularFireAuthModule,
     SharedModule,
+    MaterialModuleModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent],
