@@ -8,6 +8,7 @@ import { SharedModule } from './shared/shared.module';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { MaterialModuleModule } from './shared/material-module.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -19,7 +20,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AngularFireAuthModule,
     SharedModule,
     MaterialModuleModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent],

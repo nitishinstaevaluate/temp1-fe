@@ -5,67 +5,113 @@
         <h4 class="mb-5">Validation Form</h4>
         <div class="row">
           <div class="col">
-            <mat-stepper class="example-stepper" [orientation]="(stepperOrientation | async)!">
+            <mat-stepper
+              class="example-stepper"
+              [orientation]="(stepperOrientation | async)!"
+            >
               <mat-step [stepControl]="firstFormGroup" label="Login">
                 <form #firstStep="ngForm" novalidate>
                   <section>
                     <div class="row">
                       <div class="col-6">
                         <div class="control-group form-group">
-                          <label class="form-control-label" for="vDate">Valution Date</label>
+                          <label class="form-control-label" for="vDate"
+                            >Valution Date</label
+                          >
                           <div class="input-group">
-                            <input class="form-control form-control-sm" placeholder="mm-dd-yyyy" name="dp" required
-                              id="vDate" name="valutionDate" ngbDatepicker #d="ngbDatepicker" />
-                            <i class="fa fa-calendar btn btn-md btn-default lh-base" (click)="d.toggle()"></i>
+                            <input
+                              class="form-control form-control-sm"
+                              placeholder="mm-dd-yyyy"
+                              name="dp"
+                              required
+                              id="vDate"
+                              name="valutionDate"
+                              ngbDatepicker
+                              #d="ngbDatepicker"
+                            />
+                            <i
+                              class="fa fa-calendar btn btn-md btn-default lh-base"
+                              (click)="d.toggle()"
+                            ></i>
                           </div>
                           <!--</button> -->
                         </div>
                       </div>
                       <div class="col-6">
                         <div class="control-group form-group">
-                          <label class="form-control-label" for="cName">Company Name</label>
-                          <input class="form-control form-control-sm input-md" ngModel #companyName="ngModel" required
-                            email id="cName" name="company" type="text" placeholder="Company Name" />
+                          <label class="form-control-label" for="cName"
+                            >Company Name</label
+                          >
+                          <input
+                            class="form-control form-control-sm input-md"
+                            ngModel
+                            #companyName="ngModel"
+                            required
+                            email
+                            id="cName"
+                            name="company"
+                            type="text"
+                            placeholder="Company Name"
+                          />
                         </div>
                       </div>
                       <div class="col-6">
                         <div class="control-group form-group">
-                          <label class="form-control-label" for="industry" ngModel #industry="ngModel" id="industry"
-                            name="industry">Industry</label>
+                          <label
+                            class="form-control-label"
+                            for="industry"
+                            ngModel
+                            #industry="ngModel"
+                            id="industry"
+                            name="industry"
+                            >Industry</label
+                          >
 
-                          <select class="form-control form-control-sm select2 w-100">
-                            <option selected="selected">Alabama</option>
-                            <option>Alaska</option>
-                            <option>California</option>
-                            <option>Delaware</option>
-                            <option>Tennessee</option>
-                            <option>Texas</option>
-                            <option>Washington</option>
+                          <select
+                            class="form-control form-control-sm select2 w-100"
+                          >
+                            <option selected="selected">Select industries</option>
+                            <option [value]="item._id"  *ngFor="let item of industries">{{item.industry}}</option>
                           </select>
                         </div>
                       </div>
                       <div class="col-6">
                         <div class="control-group form-group">
-                          <label class="form-control-label" for="pYears">Projection Years</label>
-                          <input class="form-control form-control-sm input-md" ngModel #projectionYear="ngModel"
-                            required email id="pYears" name="projectionYear" type="text"
-                            placeholder="Projection Years" />
+                          <label class="form-control-label" for="pYears"
+                            >Projection Years</label
+                          >
+                          <input
+                            class="form-control form-control-sm input-md"
+                            ngModel
+                            #projectionYear="ngModel"
+                            required
+                            email
+                            id="pYears"
+                            name="projectionYear"
+                            type="text"
+                            placeholder="Projection Years"
+                          />
                         </div>
                       </div>
                       <div class="col-6">
                         <div class="control-group form-group">
-                          <label class="form-control-label" for="vModule" ngModel #valutionModel="ngModel" id="vModule"
-                            name="model">Valution Model</label>
-                          <select class="form-control form-control-sm select2 w-100">
+                          <label
+                            class="form-control-label"
+                            for="vModule"
+                            ngModel
+                            #valutionModel="ngModel"
+                            id="vModule"
+                            name="model"
+                            >Valution Model</label
+                          >
+                          <select
+                            class="form-control form-control-sm select2 w-100"
+                          >
                             <option selected="selected" disabled>
                               Select Valution
                             </option>
-                            <option>Alaska</option>
-                            <option>California</option>
-                            <option>Delaware</option>
-                            <option>Tennessee</option>
-                            <option>Texas</option>
-                            <option>Washington</option>
+                            <option *ngFor="let item of valutionM">{{item.method}}</option>
+                           
                           </select>
                         </div>
                       </div>
@@ -83,78 +129,140 @@
                   <section>
                     <div class="row">
                       <div class="col-6">
-                        <div class="control-group form-group">
+                        <div>
+                          <input
+                          type="file" title="Input file"
+                          class="form-control form-control-sm form-file-input"
+                          name="form-file-input"
+                        />
+                        </div>
+                        <!-- <div class="control-group form-group">
                           <label class="form-control-label" for="name">User Name</label>
                           <input class="form-control form-control-sm" [ngModelOptions]="{ standalone: true }" ngModel #name="ngModel"
                             required id="name1" name="name" type="file" placeholder="User Name" />
-                        </div>
+                        </div> -->
+                       
+                        
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-6">
                         <div class="control-group form-group">
-                          <label class="form-control-label" for="noOfOutstandingShares">No. of outstanding
-                            shares</label>
-                          <input class="form-control form-control-sm input-md" [ngModelOptions]="{ standalone: true }"
-                            ngModel #outstandingShares="ngModel" required email id="noOfOutstandingShares"
-                            name="outstandingShares" type="text" placeholder="No.of outstanding shares" />
+                          <label
+                            class="form-control-label"
+                            for="noOfOutstandingShares"
+                            >No. of outstanding shares</label
+                          >
+                          <input
+                            class="form-control form-control-sm input-md"
+                            [ngModelOptions]="{ standalone: true }"
+                            ngModel
+                            #outstandingShares="ngModel"
+                            required
+                            email
+                            id="noOfOutstandingShares"
+                            name="outstandingShares"
+                            type="text"
+                            placeholder="No.of outstanding shares"
+                          />
                         </div>
                       </div>
 
                       <div class="col-6">
                         <div class="control-group form-group">
-                          <label class="form-control-label" for="tRate">Tax rate</label>
-                          <input class="form-control form-control-sm input-md" [ngModelOptions]="{ standalone: true }"
-                            ngModel #taxRate="ngModel" required email id="tRate" name="taxRate" type="text"
-                            placeholder="Tax rate" />
+                          <label class="form-control-label" for="tRate"
+                            >Tax rate</label
+                          >
+                          <select
+                            class="form-control form-control-sm select2 w-100"
+                          >
+                            <option selected="selected">Select tax rate</option>
+                            <option   *ngFor="let item of taxR">{{item.name}}</option>
+                          </select>
                         </div>
                       </div>
                       <div class="col-6">
                         <div class="control-group form-group">
-                          <label class="form-control-label" for="dRate">Discount rate</label>
-                          <input class="form-control form-control-sm input-md" [ngModelOptions]="{ standalone: true }"
-                            ngModel #discountRate="ngModel" required email id="dRate" name="discountRate" type="text"
-                            placeholder="Discount rate" />
+                          <label class="form-control-label" for="dRate"
+                            >Discount rate</label
+                          >
+                          <select
+                            class="form-control form-control-sm select2 w-100"
+                          >
+                            <option selected="selected">Select discount rate</option>
+                            <option   *ngFor="let item of discountR ">{{item.rate}}</option>
+                          </select>
                         </div>
                       </div>
                       <div class="col-6">
                         <div class="control-group form-group">
-                          <label class="form-control-label" for="tGrowthRate">Terminal growth rate</label>
-                          <input class="form-control form-control-sm input-md" [ngModelOptions]="{ standalone: true }"
-                            ngModel #tGrowthRate="ngModel" required email id="tGrowthRate" name="terminalGrowthRate"
-                            type="text" placeholder="Terminal growth rate" />
+                          <label class="form-control-label" for="tGrowthRate"
+                            >Terminal growth rate</label
+                          >
+                          <select
+                          class="form-control form-control-sm select2 w-100"
+                        >
+                          <option selected="selected">Select terminal growth rate</option>
+                          <option   *ngFor="let item of growthR ">{{item.rate}}</option>
+                        </select>
                         </div>
                       </div>
                       <div class="col-6">
                         <div class="control-group form-group">
-                          <label class="form-control-label" for="dPeriod">Discounting period</label>
-                          <input class="form-control form-control-sm input-md" [ngModelOptions]="{ standalone: true }"
-                            ngModel #dPeriod="ngModel" required email id="dPeriod" name="discountingPeriod" type="text"
-                            placeholder="Discounting period" />
+                          <label class="form-control-label" for="dPeriod"
+                            >Discounting period</label
+                          >
+                          <input
+                            class="form-control form-control-sm input-md"
+                            [ngModelOptions]="{ standalone: true }"
+                            ngModel
+                            #dPeriod="ngModel"
+                            required
+                            email
+                            id="dPeriod"
+                            name="discountingPeriod"
+                            type="text"
+                            placeholder="Discounting period"
+                          />
                         </div>
                       </div>
                       <div class="col-6">
                         <div class="control-group form-group">
-                          <label class="form-control-label" for="equityMethod">Cost of equity method</label>
-                          <input class="form-control form-control-sm input-md" [ngModelOptions]="{ standalone: true }"
-                            ngModel #eMethod="ngModel" required email id="equityMethod" name="coeMethod" type="text"
-                            placeholder="Cost of equity method" />
+                          <label class="form-control-label" for="equityMethod"
+                            >Cost of equity method</label
+                          >
+                          <select
+                          class="form-control form-control-sm select2 w-100"
+                        >
+                          <option selected="selected">Select Cost of equity method</option>
+                          <option   *ngFor="let item of equityM ">{{item.method}}</option>
+                        </select>
                         </div>
                       </div>
                       <div class="col-6">
                         <div class="control-group form-group">
-                          <label class="form-control-label" for="riskFreeRate">Risk free rate</label>
-                          <input class="form-control form-control-sm input-md" [ngModelOptions]="{ standalone: true }"
-                            ngModel #rfRate="ngModel" required email id="riskFreeRate" name="riskFreeRate" type="text"
-                            placeholder="Risk free rate" />
+                          <label class="form-control-label" for="riskFreeRate"
+                            >Risk free rate</label
+                          >
+                          <select
+                          class="form-control form-control-sm select2 w-100"
+                        >
+                          <option selected="selected">Select Risk free rate</option>
+                          <option   *ngFor="let item of riskF ">{{item.rate}}</option>
+                        </select>
                         </div>
                       </div>
                       <div class="col-6">
                         <div class="control-group form-group">
-                          <label class="form-control-label" for="marketReturn">Expected market return</label>
-                          <input class="form-control form-control-sm input-md" [ngModelOptions]="{ standalone: true }"
-                            ngModel #marketReturn="ngModel" required email id="marketReturn" name="expMarketReturn"
-                            type="text" placeholder="Expected market return" />
+                          <label class="form-control-label" for="marketReturn"
+                            >Expected market return</label
+                          >
+                          <select
+                          class="form-control form-control-sm select2 w-100"
+                        >
+                          <option selected="selected">Select Expected market return</option>
+                          <option   *ngFor="let item of marketE ">{{item.marketReturn}}</option>
+                        </select>
                         </div>
                       </div>
                     </div>
