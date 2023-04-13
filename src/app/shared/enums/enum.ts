@@ -6,5 +6,12 @@ export enum DROPDOWN {
     GROWTH = "growthrates",
     EQUITY = "coemethods",
     RISK ="riskfreerates",
-    EMARKET ="expmarketreturns"
+    EMARKET ="expmarketreturns",
+    BETA = "betas",
+    PREMIUM ="riskPremiums",
+    PREFERANCE_SHARE_CAPITAL ="copShareCapitals",
+    DEBT ="costOfDebts",
+    CAPTIAL_STRUCTURE ="capitalStructures",
+    P_P_SHARE_CAPTIAL ="popShareCapitals"
+    
 }

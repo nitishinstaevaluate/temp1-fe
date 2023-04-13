@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NavService } from 'src/app/shared/service/nav.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -6,14 +7,30 @@ import { Component } from '@angular/core';
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent {
+  
+
+
+
+  constructor(
+    private navServices: NavService,
+  ){
+
+  }
 menues :any[] =[
   {
-    title: "valution",
-    link : "/dashboard"
+    title: "Valution",
+    link : "/dashboard",
+    icon:'fa fa-usd mx-2',
   },
-  {
-    title: "activity",
-    link : "/dashboard/activity"
-  }
+  // {
+  //   title: "Activity",
+  //   link : "/dashboard/activity"
+  // }
 ];
+sidebarClose(){
+  if ((this.navServices.collapseSidebar = true)) {
+    document.querySelector('.app')?.classList.remove('sidenav-toggled');
+    this.navServices.collapseSidebar = false;
+  }
+}
 }

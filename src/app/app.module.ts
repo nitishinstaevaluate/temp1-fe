@@ -9,6 +9,8 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { MaterialModuleModule } from './shared/material-module.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
+import { NgSelectModule } from '@ng-select/ng-select';
+
 
 
 
@@ -17,7 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    AngularFireAuthModule,
+    AngularFireAuthModule,NgSelectModule,
     SharedModule,
     MaterialModuleModule,
     BrowserAnimationsModule,HttpClientModule

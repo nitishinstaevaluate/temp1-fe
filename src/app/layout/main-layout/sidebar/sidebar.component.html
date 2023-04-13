@@ -1,22 +1,22 @@
-<!-- main-sidebar -->
-<div class="app-sidebar__overlay" data-bs-toggle="sidebar"></div>
+
+<div class="app-sidebar__overlay" data-bs-toggle="sidebar" (click)="sidebarClose()"></div>
 <div class="sticky">
   <aside class="app-sidebar sidebar-scroll">
     <div class="main-sidebar-header active">
-      <a class="desktop-logo logo-light active" href="index.html"
+      <a class="desktop-logo logo-light active" 
         ><img
           src="assets\images\brand\infin logo.jpg"
           class="main-logo"
           alt="logo"
       /></a>
 
-      <!-- <a class="logo-icon mobile-logo icon-light active" href="index.html"
-        ><img src="../assets/images/brand/icon.png" alt="logo"
-      /></a> -->
+      <a class="logo-icon mobile-logo icon-light active"
+        ><img src="../../../../assets/images/brand/icccon.ico" alt="logo"
+      /></a>
     </div>
     <div class="main-sidemenu">
       <ul class="side-menu">
-        <li class="side-item side-item-category">Components</li>
+       
         <li class="slide">
           <a
             *ngFor="let item of menues"
@@ -24,11 +24,13 @@
             data-bs-toggle="slide"
             [routerLink]="item.link"
           >
-            <i class="side-menu__icon bx bx-grid-alt"></i>
+            <i class="side-menu__icon bx bx-grid-alt"><i [class]="item.icon"></i></i>
+          
             <span class="side-menu__label">{{ item.title }}</span>
           </a>
         </li>
       </ul>
     </div>
+    
   </aside>
 </div>
