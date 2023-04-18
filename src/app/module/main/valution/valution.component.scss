@@ -7,6 +7,9 @@
   .mat-step-text-label{
     display: none !important;
   }
+  .cdk-visually-hidden{
+    display: none !important;
+  }
   .dark-mode {
     .mat-horizontal-stepper-header::before,
     .mat-horizontal-stepper-header::after,
@@ -31,7 +34,10 @@
 
 .templateC{
   a{
-
     color:#0cd08e
   }
+}
+
+::ng-deep .mat-horizontal-stepper-header{
+  pointer-events: none !important;
 }

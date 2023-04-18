@@ -54,9 +54,8 @@
                       <div class="col-6">
                         <div class="control-group form-group">
                           <label class="form-control-label" for="pYears">Projection Years</label>
-                          <input class="form-control form-control-sm input-md" required email id="pYears"
-                            name="projectionYear" formControlName="projectionYear" type="text"
-                            placeholder="Select projection years" />
+                          <input class="form-control form-control-sm input-md" name="projectionYear"
+                            formControlName="projectionYear" type="text" placeholder="Select projection years" />
                         </div>
                       </div>
                       <div class="col-6">
@@ -67,11 +66,11 @@
                             ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
                             placement="right"></i>
                           <ng-select class="select2 w-100" placeholder="Select valution model" formControlName="model">
-                            <ng-option selected="selected" disabled>
+                            <ng-option  selected="selected" disabled>
                               Select Valution
                             </ng-option>
-                            <ng-option [value]="item.fieldLabel" *ngFor="let item of valutionM">{{
-                              item.fieldLabel
+                            <ng-option [value]="item.type" *ngFor="let item of valutionM">{{
+                              item.label
                               }}</ng-option>
                           </ng-select>
                         </div>
@@ -89,28 +88,28 @@
                               <input type="radio" class="custom-control-input" name="example-radios" value="option2" />
                               <span class="custom-control-label ">Finite Projection</span>
                             </label>
-      
+
                           </div>
                         </div>
                       </div>
                     </div>
                   </section>
-                 
+
                   <div>
-                    <button class="btn btn-primary mt-2" matStepperNext>
+                    <button class="btn btn-sm btn-primary mt-2" matStepperNext>
                       Next
                     </button>
                   </div>
                 </form>
               </mat-step>
-              <mat-step [stepControl]="secondFormGroup" label="step-one">
+              <mat-step [stepControl]="secondFormGroup">
                 <form [formGroup]="secondFormGroup">
                   <section>
                     <div class="row">
                       <div class="col-6">
                         <div>
                           <input type="file" title="Input file" class="form-control form-control-sm form-file-input"
-                            name="form-file-input" />
+                            name="form-file-input" (change)="onFileSelected($event)" />
                         </div>
                         <!-- <div class="control-group form-group">
                           <label class="form-control-label" for="name">User Name</label>
@@ -134,8 +133,7 @@
                             placement="right"></i>
 
                           <input class="form-control form-control-sm input-md" formControlName="outstandingShares"
-                            required email id="noOfOutstandingShares" name="outstandingShares" type="text"
-                            placeholder="No.of outstanding shares" />
+                            name="outstandingShares" type="text" placeholder="No.of outstanding shares" />
                         </div>
                       </div>
 
@@ -146,10 +144,9 @@
                             ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
                             placement="right"></i>
                           <ng-select class="select2 w-100" placeholder=" Select tax rate" formControlName="taxRateType">
-                            <ng-option [value]="item.label" *ngFor="let item of taxR">{{
+                            <ng-option [value]="item.type" *ngFor="let item of taxR">{{
                               item.label
                               }}</ng-option>
-                             
                           </ng-select>
                           {{EnteredTaXRate}}
                         </div>
@@ -190,10 +187,10 @@
                             placement="right"></i>
                           <ng-select class="select2 w-100" placeholder="Select cost of equity method"
                             formControlName="discountingPeriod">
-                            <ng-option value="Full Period">Full Period </ng-option>
-                            <ng-option value="Mid Period">Mid Period </ng-option>
+                            <ng-option value="Full_Period">Full Period </ng-option>
+                            <ng-option value="Mid_Period">Mid Period </ng-option>
                           </ng-select>
-                          
+
                         </div>
                       </div>
                       <div class="col-6">
@@ -204,8 +201,8 @@
                             placement="right"></i>
                           <ng-select class="select2 w-100" placeholder="Select cost of equity method"
                             formControlName="coeMethod">
-                            <ng-option [value]="item.fieldLabel" *ngFor="let item of equityM">{{
-                              item.fieldLabel
+                            <ng-option [value]="item.type" *ngFor="let item of equityM">{{
+                              item.label
                               }}</ng-option>
                           </ng-select>
                         </div>
@@ -218,8 +215,8 @@
                             placement="right"></i>
                           <ng-select dropdownPosition="top" class="select2 w-100" placeholder="Select Risk free rate"
                             formControlName="riskFreeRateType">
-                            
-                            <ng-option *ngFor="let item of riskF" [value]="item.label">{{
+
+                            <ng-option *ngFor="let item of riskF" [value]="item.type">{{
                               item.label
                               }}</ng-option>
                           </ng-select>
@@ -234,7 +231,7 @@
                             placement="right"></i>
                           <ng-select class="select2 w-100" placeholder="Select expected market return"
                             formControlName="expMarketReturnType">
-                            <ng-option [value]="item.label" *ngFor="let item of marketE">{{
+                            <ng-option [value]="item.type" *ngFor="let item of marketE">{{
                               item.label
                               }}</ng-option>
                           </ng-select>
@@ -242,17 +239,20 @@
                       </div>
                     </div>
                   </section>
-                  <div >
-                    <button class="btn btn-danger me-2 " matStepperPrevious>
-                      Back
-                    </button>
-                    <button class="btn btn-primary me-2 " matStepperNext>
-                      Next
-                    </button>
+                  <div>
+                    <div>
+                      <button class="btn btn-sm btn-danger me-2 " matStepperPrevious>
+                        Back
+                      </button>
+                      <button class="btn btn-sm btn-primary me-2 " matStepperNext>
+                        Next
+                      </button>
+                    </div>
+                   
                   </div>
                 </form>
               </mat-step>
-              <mat-step [stepControl]="thirdFormGroup" label="step-three">
+              <mat-step [stepControl]="thirdFormGroup">
                 <form [formGroup]="thirdFormGroup">
                   <section class="pt-5">
                     <div class="row">
@@ -263,7 +263,7 @@
                             ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
                             placement="right"></i>
                           <ng-select class="select2 w-100" placeholder="Select beta" formControlName="beta">
-                            <ng-option [value]="item.label" *ngFor="let item of betaS">{{
+                            <ng-option [value]="item.type" *ngFor="let item of betaS">{{
                               item.label
                               }}</ng-option>
                           </ng-select>
@@ -278,8 +278,8 @@
                             placement="right"></i>
                           <ng-select class="select2 w-100" placeholder="Select Company Specific Risk Premium "
                             formControlName="riskPremium">
-                            <ng-option [value]="item.riskPremium" *ngFor="let item of rPremium" >{{
-                              item.riskPremium 
+                            <ng-option [value]="item.riskPremium" *ngFor="let item of rPremium">{{
+                              item.riskPremium
                               }}</ng-option>
                           </ng-select>
                         </div>
@@ -292,7 +292,7 @@
                             placement="right"></i>
                           <ng-select class="select2 w-100" placeholder="Select cost of Preference Share Capital"
                             formControlName="copShareCapitalType">
-                            <ng-option [value]="item.label" *ngFor="let item of preShaCap">{{
+                            <ng-option [value]="item.type" *ngFor="let item of preShaCap">{{
                               item.label
                               }}</ng-option>
                           </ng-select>
@@ -306,7 +306,7 @@
                             placement="right"></i>
                           <ng-select class="select2 w-100" placeholder="Select cost of debt "
                             formControlName="costOfDebt">
-                            <ng-option *ngFor="let item of debt" [value]="item.label">{{
+                            <ng-option *ngFor="let item of debt" [value]="item.type">{{
                               item.label
                               }}</ng-option>
                           </ng-select>
@@ -321,7 +321,7 @@
                           <ng-select class="select2 w-100" placeholder="Select capital structure"
                             formControlName="capitalStructure">
                             <ng-option [value]="item.label" *ngFor="let item of cStructure">{{
-                              item.label
+                              item.type
                               }}</ng-option>
                           </ng-select>
                           <hr class="m-2">
@@ -336,51 +336,86 @@
                             ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
                             placement="right"></i>
                           <ng-select class="select2 w-100" placeholder="Select Proportion of Preference Share Capital ">
-                            <ng-option [value]="item.label" *ngFor="let item of pppShareCaptial">{{
+                            <ng-option [value]="item.type" *ngFor="let item of pppShareCaptial">{{
                               item.label
                               }}</ng-option>
                           </ng-select>
                         </div>
                       </div>
                     </div>
+                    <p class="text-danger">{{errorMsg}}</p>
                   </section>
-
-                  <button class="btn btn-danger me-2" matStepperPrevious>
-                    Back
-                  </button>
-                  <button class="btn btn-primary me-2" (click)="submitForm()" matStepperNext>
-                    Next
-                  </button>
+                      <div >
+                        <button class="btn btn-sm btn-danger me-2" matStepperPrevious>
+                          Back
+                        </button>
+                        <button [disabled]="!checkValidForm" class="btn btn-sm btn-primary me-2" (click)="submitForm(stepper)"
+                          >
+                          Next
+                        </button>
+                      </div>
+                 
                 </form>
               </mat-step>
               <mat-step [stepControl]="fourthFormGroup">
                 <form [formGroup]="fourthFormGroup">
                   <section>
                     <div class="table-responsive mg-t-20">
-                    <table class="table border">
-                      <tr>
-                        <td>Particular</td>
-                        <td>value</td>
-                      </tr>
-                   
-                    </table>
+                      <table class="table table-bordered text-nowrap mb-0 ">
+                        <tr class>
+                          <td *ngFor="let item of tableHeading">{{item}}</td>
+
+                        </tr>
+                        <tr *ngFor="let item of valutionDataReport">
+                          <td *ngFor="let tm of item">{{tm}}</td>
+                          <!-- <td>  {{item.particulars}}  </td>
+                          <td>  {{item.pat}}  </td>
+                          <td>  {{item.depAndAmortisation}}  </td>
+                          <td>  {{item.onCashItems}}  </td>
+                          <td>  {{item.nca}}  </td>
+                          <td>  {{item.defferedTaxAssets}}  </td>
+                          <td>  {{item.netCashFlow}}  </td>
+                          <td>  {{item.fixedAssets}}  </td>
+                          <td>  {{item.fcff}}  </td>
+                          <td>  {{item.discountingPeriod}}  </td>
+                          <td>  {{item.discountingFactor}}  </td>
+                          <td>  {{item.presentFCFF}}  </td>
+                          <td>  {{item.sumOfCashFlows}}  </td>
+                          <td>  {{item.debtOnDate}}  </td>
+                          <td>  {{item.cashEquivalents}}  </td>
+                          <td>  {{item.surplusAssets}}  </td>
+                          <td>  {{item.otherAdj}}  </td>
+                          <td>  {{item.equityValue}}  </td>
+                          <td>  {{item.noOfShares}}  </td>
+                          <td>  {{item.valuePerShare}}  </td> -->
+
+                        </tr>
+
+                      </table>
+
+                    </div>
+                    <div class=" d-flex align-items-end justify-content-between">
+<button class="btn btn-sm btn-danger me-2" matStepperPrevious>
+                        Back
+                      </button>
+                      <a class="btn btn-sm btn-info my-2"
+                        [href]="exportResult">Export Result</a>
                     </div>
                   </section>
-
-                  <button class="btn btn-danger me-2" matStepperPrevious>
-                    Back
-                  </button>
+                    <div>
+                      
+                    </div>
+                
                 </form>
               </mat-step>
             </mat-stepper>
           </div>
         </div>
-      </div>
+        
     </div>
 
 
 
-    
     <ng-template #textratemodal let-modal>
       <!--  SMALL MODAL -->
       <div class="modal-content">
@@ -391,15 +426,14 @@
         </div>
         <div class="modal-body">
           <div class="control-group form-group">
-            <label class="form-control-label" for="noOfOutstandingShares">Enter {{modalTitle}}</label>          
-            <input class="form-control form-control-sm input-md" [(ngModel)]="EnteredTaXRate"
-              required email id="noOfOutstandingShares" name="outstandingShares" type="text"
-              placeholder="Enter value" />
+            <label class="form-control-label" for="noOfOutstandingShares">Enter {{modalTitle}}</label>
+            <input class="form-control form-control-sm input-md" [(ngModel)]="EnteredTaXRate" required email
+              id="noOfOutstandingShares" name="outstandingShares" type="text" placeholder="Enter value" />
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class=" btn btn-danger" (click)="modal.close('Close click')">Close</button>
-          <button class="btn btn-primary" type="button">Save</button>
+        <div class="modal-footer p-2">
+          <button type="button" class=" btn btn-sm btn-danger" (click)="modal.close('Close click')">Close</button>
+          <button class="btn btn-sm btn-primary" type="button">Save</button>
         </div>
       </div>
     </ng-template>
@@ -416,14 +450,13 @@
           </button>
         </div>
         <div class="modal-body">
-          <input class="form-control form-control-sm input-md" #itbs
-           type="text"
-          placeholder="Enter Year" />
+          <input class="form-control form-control-sm input-md" #itbs type="text" placeholder="Enter Year" />
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Close</button>
-          <button class="btn btn-primary"  (click)="modal.close(itbs.value)" type="button">Save</button>
+        <div class="modal-footer p-2">
+          <button type="button" class="btn btn-sm btn-danger" (click)="modal.close('Close click')">Close</button>
+          <button class="btn btn-sm btn-primary" (click)="modal.close(itbs.value)" type="button">Save</button>
         </div>
       </div>
+     
     </ng-template>
-    
+ 

@@ -1,4 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+
 import {
   FormBuilder,
   FormControl,
@@ -10,6 +11,20 @@ import { forkJoin, map } from 'rxjs';
 import { ValutionService } from 'src/app/shared/service/valution.service';
 import { DROPDOWN } from 'src/app/shared/enums/enum';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { environment } from 'src/enviroments/enviroments';
+import { HEADING_OBJ } from 'src/app/shared/enums/constant';
+import { MatStepper } from '@angular/material/stepper';
+
+interface Alert {
+  type: string;
+  message: string;
+}
+const basicALERTS: Alert[] = [
+  {
+    type: 'danger',
+    message: 'Oh snap! Change a few things up and try submitting again.',
+  },
+];
 
 @Component({
   selector: 'app-valution',
@@ -20,6 +35,7 @@ export class ValutionComponent implements OnInit {
   @ViewChild('textratemodal') textratemodal?: TemplateRef<any>;
   @ViewChild('rFRatemodal') rFRatemodal?: TemplateRef<any>;
 
+  errorMsg:any = '';
   industries: any[] = [];
   valutionM: any[] = [];
   taxR: any[] = [];
@@ -37,6 +53,9 @@ export class ValutionComponent implements OnInit {
   EnteredTaXRate: any = '';
   modalTitle: any = '';
   riskRate: any = '';
+  reportId: any;
+  valutionDataReport: any[] = [];
+  tableHeading = Object.values(HEADING_OBJ);
 
   firstFormGroup!: FormGroup;
   secondFormGroup!: FormGroup;
@@ -44,13 +63,6 @@ export class ValutionComponent implements OnInit {
   fourthFormGroup!: FormGroup;
   stepperOrientation: any;
   item: any;
-
-  firstFormGroups = this._formBuilder.group({
-    firstCtrl: ['', Validators.required],
-  });
-  secondFormGroups = this._formBuilder.group({
-    secondCtrl: ['', Validators.required],
-  });
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -65,6 +77,7 @@ export class ValutionComponent implements OnInit {
   }
   ngOnInit(): void {
     this.inItData();
+    console.log(this.tableHeading);
   }
 
   generateForm() {
@@ -74,6 +87,7 @@ export class ValutionComponent implements OnInit {
       industry: ['', Validators.required],
       projectionYear: ['', Validators.required],
       model: ['', Validators.required],
+      userId: ['641d654fa83ed4a5f0293a52', Validators.required],
     });
 
     this.secondFormGroup = this._formBuilder.group({
@@ -85,6 +99,7 @@ export class ValutionComponent implements OnInit {
       coeMethod: ['', Validators.required],
       riskFreeRateType: ['', Validators.required],
       expMarketReturnType: ['', Validators.required],
+      excelSheetId: ['', Validators.required],
     });
 
     this.thirdFormGroup = this._formBuilder.group({
@@ -112,13 +127,39 @@ export class ValutionComponent implements OnInit {
     );
     this.secondFormGroup.controls['riskFreeRateType'].valueChanges.subscribe(
       (val) => {
-        if (val == 'Mention Any Year based Indian Treasury Bond') {
+        if (val == 'user_input_year') {
           this.openModel(this.rFRatemodal);
         } else {
           this.riskRate = null;
         }
       }
-    );
+    ); 
+
+    // let obj = {
+    //   valutionDate: 1682706600000,
+    //   company: 'nhhhg',
+    //   industry: 'Cement- North India',
+    //   projectionYear: '12',
+    //   model: 'FCFF',
+    //   userId: '641d654fa83ed4a5f0293a52',
+    //   outstandingShares: '12',
+    //   taxRateType: 'Normal_Tax_Rate',
+    //   discountRate: 'Cost of Equity',
+    //   terminalGrowthRate: 5,
+    //   discountingPeriod: 'Full_Period',
+    //   coeMethod: 'CAPM',
+    //   riskFreeRateType: '30_year',
+    //   expMarketReturnType: 'ACE',
+    //   excelSheetId: '1681734372560-FCFE Input Sheet with Formula (1).xlsx',
+    //   beta: 'RIB',
+    //   riskPremium: 0,
+    //   copShareCapitalType: 'user_input',
+    //   costOfDebt: 'Use_Interest_Rate',
+    //   capitalStructure: 'Capital Structure (Industry based)',
+    // };
+    // this.firstFormGroup.patchValue(obj);
+    // this.secondFormGroup.patchValue(obj);
+    // this.thirdFormGroup.patchValue(obj);
   }
   inItData() {
     this._valutionService.getValutionDropdown().subscribe((resp: any) => {
@@ -148,43 +189,54 @@ export class ValutionComponent implements OnInit {
       });
   }
 
-  submitForm() {
-    // let payload = {
-    //   ...this.firstFormGroup.value,
-    //   ...this.secondFormGroup.value,
-    //   ...this.thirdFormGroup.value,
-    // };
+  submitForm(stepper: MatStepper) {
     let payload = {
-      userId: '641d654fa83ed4a5f0293a52',
-      excelSheetId: '1680591417855-FCFE Input Sheet with Formula (1).xlsx',
-      valuationDate: '',
-      company: 'ABCD',
-      industry: 'ABC',
-      projectionYears: '6',
-      model: 'FCFF',
-      outstandingShares: 1000,
-      taxRateType: 'Normal_Tax_Rate',
-      taxRate: 8,
-      discountRate: 'WACC',
-      terminalGrowthRate: 4.5,
-      discountingPeriod: 'Full_Period',
-      coeMethod: 'CAPM',
-      riskFreeRateType: 'user_input_year',
-      riskFreeRateYear: 3.5,
-      riskFreeRate: 6,
-      expMarketReturnType: 'ACE',
-      expMarketReturn: 6,
-      historicalYears: '5',
-      betaType: '',
-      beta: 5,
-      riskPremium: 4,
-      copShareCapitalType: 'user_input',
-      copShareCapital: 1,
-      costOfDebtType: 'Finance_Cost',
-      costOfDebt: 10,
-      capitalStructure: 'Company_Based',
-      popShareCapitalType: 'CFBS',
+      ...this.firstFormGroup.value,
+      ...this.secondFormGroup.value,
+      ...this.thirdFormGroup.value,
     };
-    this._valutionService.submitForm(payload).subscribe((res) => {});
+    const myDate = payload['valutionDate'];
+    var newDate = new Date(myDate.year, myDate.month, myDate.day);
+    payload['valutionDate'] = newDate.getTime();
+    this._valutionService.submitForm(payload).subscribe((res: any) => {
+      this.reportId = res.reportId;
+      this.valutionDataReport = res.valuationData.map((e: any) => {
+        return Object.values(e);
+      });
+      stepper.next();
+      this.errorMsg = ''
+    }, (error:any) =>{
+      console.log(error);
+      this.errorMsg = error.error.message;
+    }
+    );
+  }
+
+  get exportResult() {
+    return environment.HOST + 'export/' + this.reportId;
+  }
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+
+    if (file) {
+      // this.fileName = file.name;
+
+      const formData = new FormData();
+
+      formData.append('file', file);
+
+      this._valutionService.fileUpload(formData).subscribe((res: any) => {
+        this.secondFormGroup.patchValue(res);
+      });
+    }
+  }
+
+  get checkValidForm() {
+    return (
+      this.firstFormGroup.valid &&
+      this.secondFormGroup.valid &&
+      this.thirdFormGroup.valid
+    );
   }
 }
