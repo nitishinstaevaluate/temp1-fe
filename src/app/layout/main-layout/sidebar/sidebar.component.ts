@@ -18,7 +18,7 @@ export class SidebarComponent {
   }
 menues :any[] =[
   {
-    title: "Valution",
+    title: "Valuation",
     link : "/dashboard",
     icon:'fa fa-usd mx-2',
   },

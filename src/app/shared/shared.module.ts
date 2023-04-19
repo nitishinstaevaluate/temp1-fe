@@ -7,6 +7,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { ToggleThemeDirective } from './directive/toggle-theme.directive';
 import { FullscreenDirective } from './directive/fullsScreen-toggle.directive';
 import { SidemenuToggleDirective } from './directive/sidemenuToggle';
+import { UserInputComponent } from './Modal/user-input.component';
 
 
 
@@ -14,8 +15,8 @@ import { SidemenuToggleDirective } from './directive/sidemenuToggle';
 const MODULES = [NgbModule, ReactiveFormsModule, FormsModule,MaterialModuleModule,NgSelectModule,];
 
 @NgModule({
-  declarations: [ToggleThemeDirective, FullscreenDirective, SidemenuToggleDirective,],
+  declarations: [ToggleThemeDirective, FullscreenDirective, SidemenuToggleDirective,UserInputComponent],
   imports: [CommonModule,...MODULES],
-  exports: [...MODULES],
+  exports: [UserInputComponent,...MODULES],
 })
 export class SharedModule {}

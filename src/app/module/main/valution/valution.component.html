@@ -19,9 +19,8 @@
                             ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
                             placement="right"></i>
                           <div class="input-group">
-                            <input class="form-control form-control-sm" placeholder="mm-dd-yyyy" name="dp" required
-                              id="vDate" name="valutionDatef" formControlName="valutionDate" ngbDatepicker
-                              #d="ngbDatepicker" />
+                            <input class="form-control " placeholder="mm-dd-yyyy" name="dp" required id="vDate"
+                              name="valutionDatef" formControlName="valutionDate" ngbDatepicker #d="ngbDatepicker" />
                             <i class="fa fa-calendar btn btn-md btn-default lh-base" (click)="d.toggle()"></i>
                           </div>
                           <!--</button> -->
@@ -33,7 +32,7 @@
                           <i class="fa fa-exclamation-circle mx-3"
                             ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
                             placement="right"></i>
-                          <input class="form-control form-control-sm input-md" required id="cName" name="company"
+                          <input class="form-control  input-md" required id="cName" name="company"
                             formControlName="company" type="text" placeholder="Selected company name" />
                         </div>
                       </div>
@@ -54,19 +53,20 @@
                       <div class="col-6">
                         <div class="control-group form-group">
                           <label class="form-control-label" for="pYears">Projection Years</label>
-                          <input class="form-control form-control-sm input-md" name="projectionYear"
-                            formControlName="projectionYear" type="text" placeholder="Select projection years" />
+                          <input class="form-control  input-md" name="projectionYear" formControlName="projectionYear"
+                            type="text" placeholder="Select projection years" />
                         </div>
                       </div>
                       <div class="col-6">
                         <div class="control-group form-group">
-                          <label class="form-control-label" for="vModule" id="vModule" name="model">Valution
+                          <label class="form-control-label" for="vModule" id="vModule" name="model">Valaution
                             Model</label>
                           <i class="fa fa-exclamation-circle mx-3"
                             ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
                             placement="right"></i>
-                          <ng-select class="select2 w-100" placeholder="Select valution model" formControlName="model">
-                            <ng-option  selected="selected" disabled>
+                          <ng-select class="select2 w-100" dropdownPosition="top" placeholder="Select valution model"
+                            formControlName="model">
+                            <ng-option selected="selected" disabled>
                               Select Valution
                             </ng-option>
                             <ng-option [value]="item.type" *ngFor="let item of valutionM">{{
@@ -75,8 +75,8 @@
                           </ng-select>
                         </div>
                       </div>
-                      <div class="col-6 pt-2">
-                        <div class="form-group form-elements mt-5">
+                      <div class="col-6">
+                        <div class="form-group form-elements mt-0">
 
                           <div class="custom-controls-stacked d-flex ">
                             <label class="custom-control custom-radio  ">
@@ -84,7 +84,7 @@
                                 checked />
                               <span class="custom-control-label">Growing Concern</span>
                             </label>
-                            <label class="custom-control custom-radio ">
+                            <label class="custom-control custom-radio mx-2 ">
                               <input type="radio" class="custom-control-input" name="example-radios" value="option2" />
                               <span class="custom-control-label ">Finite Projection</span>
                             </label>
@@ -96,7 +96,7 @@
                   </section>
 
                   <div>
-                    <button class="btn btn-sm btn-primary mt-2" matStepperNext>
+                    <button class="btn  btn-primary mt-2" matStepperNext>
                       Next
                     </button>
                   </div>
@@ -105,22 +105,22 @@
               <mat-step [stepControl]="secondFormGroup">
                 <form [formGroup]="secondFormGroup">
                   <section>
-                    <div class="row">
+                    <div class="row mb-3">
                       <div class="col-6">
                         <div>
-                          <input type="file" title="Input file" class="form-control form-control-sm form-file-input"
+                          <input type="file" title="Input file" class="form-control  form-file-input"
                             name="form-file-input" (change)="onFileSelected($event)" />
                         </div>
                         <!-- <div class="control-group form-group">
                           <label class="form-control-label" for="name">User Name</label>
-                          <input class="form-control form-control-sm" [ngModelOptions]="{ standalone: true }" ngModel #name="ngModel"
+                          <input class="form-control " [ngModelOptions]="{ standalone: true }" ngModel #name="ngModel"
                             required id="name1" name="name" type="file" placeholder="User Name" />
                         </div> -->
                       </div>
                       <div class="col-6 templateC d-flex align-items-center  ">
-                        <a href="http://[2405:201:a000:5926:a00:27ff:fe71:b5ba]:3000/download/template">Download
-                          Template</a>
-                        <i class="fa fa-file-excel-o mx-2"></i>
+                        <a class="btn h4 btn-secondary text-white" [href]="downloadTemplate" target="_blank">
+                          <i class="fa fa-download mx-2 "></i>XLS
+                        </a>
                       </div>
                     </div>
                     <div class="row">
@@ -132,7 +132,7 @@
                             ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
                             placement="right"></i>
 
-                          <input class="form-control form-control-sm input-md" formControlName="outstandingShares"
+                          <input class="form-control  input-md" formControlName="outstandingShares"
                             name="outstandingShares" type="text" placeholder="No.of outstanding shares" />
                         </div>
                       </div>
@@ -241,14 +241,14 @@
                   </section>
                   <div>
                     <div>
-                      <button class="btn btn-sm btn-danger me-2 " matStepperPrevious>
+                      <button class="btn  btn-danger me-2 " matStepperPrevious>
                         Back
                       </button>
-                      <button class="btn btn-sm btn-primary me-2 " matStepperNext>
+                      <button class="btn  btn-primary me-2 " matStepperNext>
                         Next
                       </button>
                     </div>
-                   
+
                   </div>
                 </form>
               </mat-step>
@@ -345,118 +345,47 @@
                     </div>
                     <p class="text-danger">{{errorMsg}}</p>
                   </section>
-                      <div >
-                        <button class="btn btn-sm btn-danger me-2" matStepperPrevious>
-                          Back
-                        </button>
-                        <button [disabled]="!checkValidForm" class="btn btn-sm btn-primary me-2" (click)="submitForm(stepper)"
-                          >
-                          Next
-                        </button>
-                      </div>
-                 
+                  <div>
+                    <button class="btn  btn-danger me-2" matStepperPrevious>
+                      Back
+                    </button>
+                    <button [disabled]="!checkValidForm" class="btn  btn-primary me-2" (click)="submitForm(stepper)">
+                      Next
+                    </button>
+                  </div>
+
                 </form>
               </mat-step>
               <mat-step [stepControl]="fourthFormGroup">
                 <form [formGroup]="fourthFormGroup">
                   <section>
-                    <div class="table-responsive mg-t-20">
-                      <table class="table table-bordered text-nowrap mb-0 ">
-                        <tr class>
-                          <td *ngFor="let item of tableHeading">{{item}}</td>
-
-                        </tr>
-                        <tr *ngFor="let item of valutionDataReport">
-                          <td *ngFor="let tm of item">{{tm}}</td>
-                          <!-- <td>  {{item.particulars}}  </td>
-                          <td>  {{item.pat}}  </td>
-                          <td>  {{item.depAndAmortisation}}  </td>
-                          <td>  {{item.onCashItems}}  </td>
-                          <td>  {{item.nca}}  </td>
-                          <td>  {{item.defferedTaxAssets}}  </td>
-                          <td>  {{item.netCashFlow}}  </td>
-                          <td>  {{item.fixedAssets}}  </td>
-                          <td>  {{item.fcff}}  </td>
-                          <td>  {{item.discountingPeriod}}  </td>
-                          <td>  {{item.discountingFactor}}  </td>
-                          <td>  {{item.presentFCFF}}  </td>
-                          <td>  {{item.sumOfCashFlows}}  </td>
-                          <td>  {{item.debtOnDate}}  </td>
-                          <td>  {{item.cashEquivalents}}  </td>
-                          <td>  {{item.surplusAssets}}  </td>
-                          <td>  {{item.otherAdj}}  </td>
-                          <td>  {{item.equityValue}}  </td>
-                          <td>  {{item.noOfShares}}  </td>
-                          <td>  {{item.valuePerShare}}  </td> -->
-
-                        </tr>
+                    <div>
+                      <span class="h3">Valuation</span>
+                      <p>
+                        Valuation of a frm based on Proft loss and balance sheet statements.
+                      </p>
+                      <span class="h3 m-0">Data</span>
+                    </div>
+                    <div class="myTable">
+                      <table class=" text-nowrap mb-0 ">
+                        <tr *ngFor="let item of valutionDataReport ;let inx = index">
+                          <th class="headcol">{{tableHeading[inx]}}</th>
+                          <td *ngFor="let item of valutionDataReport[inx]">{{item}} </td>
 
                       </table>
-
                     </div>
                     <div class=" d-flex align-items-end justify-content-between">
-<button class="btn btn-sm btn-danger me-2" matStepperPrevious>
+                      <button class="btn  btn-danger my-2" matStepperPrevious>
                         Back
                       </button>
-                      <a class="btn btn-sm btn-info my-2"
-                        [href]="exportResult">Export Result</a>
+                      <a class="btn  btn-info my-2" [href]="exportResult">Export Result</a>
                     </div>
                   </section>
-                    <div>
-                      
-                    </div>
-                
+                  <div>
+                  </div>
                 </form>
               </mat-step>
             </mat-stepper>
           </div>
         </div>
-        
-    </div>
-
-
-
-    <ng-template #textratemodal let-modal>
-      <!--  SMALL MODAL -->
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">{{modalTitle}}</h5>
-          <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="control-group form-group">
-            <label class="form-control-label" for="noOfOutstandingShares">Enter {{modalTitle}}</label>
-            <input class="form-control form-control-sm input-md" [(ngModel)]="EnteredTaXRate" required email
-              id="noOfOutstandingShares" name="outstandingShares" type="text" placeholder="Enter value" />
-          </div>
-        </div>
-        <div class="modal-footer p-2">
-          <button type="button" class=" btn btn-sm btn-danger" (click)="modal.close('Close click')">Close</button>
-          <button class="btn btn-sm btn-primary" type="button">Save</button>
-        </div>
       </div>
-    </ng-template>
-
-
-
-    <ng-template #rFRatemodal let-modal>
-      <!--  SMALL MODAL -->
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Mention Any Year based Indian Treasury Bond</h5>
-          <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-
-          </button>
-        </div>
-        <div class="modal-body">
-          <input class="form-control form-control-sm input-md" #itbs type="text" placeholder="Enter Year" />
-        </div>
-        <div class="modal-footer p-2">
-          <button type="button" class="btn btn-sm btn-danger" (click)="modal.close('Close click')">Close</button>
-          <button class="btn btn-sm btn-primary" (click)="modal.close(itbs.value)" type="button">Save</button>
-        </div>
-      </div>
-     
-    </ng-template>
- 
