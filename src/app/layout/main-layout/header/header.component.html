@@ -2,90 +2,58 @@
   <div class="container-fluid main-container">
     <div class="d-flex">
       <div class="dropdown side-nav">
-        <!-- <a
-          aria-label="Hide Sidebar"
-          class="app-sidebar__toggle"
-          data-bs-toggle="sidebar"
-          (click)="toggleSidebar()"
-        >
+        <a aria-label="Hide Sidebar" class="app-sidebar__toggle" data-bs-toggle="sidebar" (click)="toggleSidebar()">
           <a class="open-toggle" href="javascript:void(0)">
             <i class="bx bx-menu-alt-left header-icon"></i>
           </a>
           <a class="close-toggle" href="javascript:void(0)">
             <i class="bx bx-x header-icon"></i>
           </a>
-        </a> -->
+        </a>
       </div>
       <a class="header-brand" routerLink="/dashboard/sales">
-        <img
-          src="./assets/images/brand/logo.png"
-          class="header-brand-img desktop-lgo"
-          alt="Slica logo"
-        />
-        <img
-          src="./assets/images/brand/logo1.png"
-          class="header-brand-img dark-logo"
-          alt="Slica logo"
-        />
-        <img
-          src="./assets/images/brand/icon.png"
-          class="header-brand-img mobile-logo"
-          alt="Slica logo"
-        />
-        <img
-          src="./assets/images/brand/icon1.png"
-          class="header-brand-img darkmobile-logo"
-          alt="Slica logo"
-        />
+        <img src="./assets/images/brand/logo.png" class="header-brand-img desktop-lgo" alt="Slica logo" />
+        <img src="./assets/images/brand/logo1.png" class="header-brand-img dark-logo" alt="Slica logo" />
+        <img src="./assets/images/brand/icon.png" class="header-brand-img mobile-logo" alt="Slica logo" />
+        <img src="./assets/images/brand/icon1.png" class="header-brand-img darkmobile-logo" alt="Slica logo" />
       </a>
 
       <div class="d-flex order-lg-2 ms-lg-auto">
-        <button
-          class="navbar-toggler navresponsive-toggler d-lg-none ms-auto"
-          type="button"
-          (click)="collapse.toggle()"
-          [attr.aria-expanded]="!isCollapsed"
-        >
+        <button class="navbar-toggler navresponsive-toggler d-lg-none ms-auto" type="button" (click)="collapse.toggle()"
+          [attr.aria-expanded]="!isCollapsed">
           <span class="navbar-toggler-icon fe fe-more-vertical"></span>
         </button>
-        <div
-          class="navbar navbar-expand-lg navbar-nav-right responsive-navbar navbar-dark p-0"
-        >
-          <div
-            class="collapse navbar-collapse"
-            id="navbarSupportedContent-4"
-            #collapse="ngbCollapse"
-            [(ngbCollapse)]="isCollapsed"
-          >
+
+        <div ngbDropdown class="d-flex">
+          <a class="nav-link icon theme-layout nav-link-bg layout-setting" appToggleTheme>
+            <span class="dark-layout">
+           <i class="bx bx-sun header-icon"></i>
+            </span>
+            <span class="light-layout">
+             <i class="bx bx-moon header-icon"></i>
+            </span>
+          </a>
+        </div>
+        <div class="dropdown header-fullscreen">
+            <a class="nav-link icon full-screen-link" id="fullscreen-button" appFullscreen>
+                <i class="bx bx-fullscreen header-icon"></i>
+            </a>
+  
+        </div>
+        <div class="navbar navbar-expand-lg navbar-nav-right responsive-navbar navbar-dark p-0">
+          <div class="collapse navbar-collapse" id="navbarSupportedContent-4" #collapse="ngbCollapse"
+            [(ngbCollapse)]="isCollapsed">
             <div class="d-flex order-lg-2">
-             
               <div class="dropdown profile-dropdown">
-                <a
-                  
-                  href="javascript:void(0)"
-                  class="nav-link icon px-1"
-                 
-                >
-                  <img
-                    src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
-                    alt="img"
-                    class="avatar brround"
-                  />
+                <a href="javascript:void(0)" class="nav-link icon px-1">
+                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="img"
+                    class="avatar brround" />
                 </a>
-               
               </div>
 
-             
-
-              
-
               <div class="dropdown header-sidebar">
-                <a
-                  (click)="toggleSidebarNotification()"
-                  class="nav-link icon sidebar-right-mobile"
-                  data-bs-toggle="sidebar-right"
-                  data-bs-target=".sidebar-right"
-                >
+                <a (click)="toggleSidebarNotification()" class="nav-link icon sidebar-right-mobile"
+                  data-bs-toggle="sidebar-right" data-bs-target=".sidebar-right">
                   <i class="bx bx-menu-alt-right header-icon"></i>
                 </a>
               </div>
@@ -95,6 +63,11 @@
         <div class="demo-icon nav-link icon" (click)="toggleSwitcher()">
           <i class="fe fe-settings fa-spin text_primary"></i>
         </div>
+        <div class="dropdown header-sidebar">
+          <a (click)="toggleSidebarNotification()" class="nav-link icon sidebar-right-mobile" data-bs-toggle="sidebar-right" data-bs-target=".sidebar-right">
+              <i class="bx bx-menu-alt-right header-icon"></i>
+          </a>
+      </div>
       </div>
     </div>
   </div>

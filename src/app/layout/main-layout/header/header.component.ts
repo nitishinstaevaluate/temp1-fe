@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavService } from 'src/app/shared/service/nav.service';
 
 @Component({
   selector: 'mvp-header',
@@ -12,7 +13,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     // private layoutService: LayoutService,
-    // public navServices: NavService,
+    public navServices: NavService,
     // private modalService: NgbModal,
     // public SwitcherService : SwitcherService,
     // private router: Router,
@@ -66,10 +67,10 @@ export class HeaderComponent implements OnInit {
 
 
   toggleSidebar(){
-    // if ((this.navServices.collapseSidebar = true)) {
-    //   document.querySelector("body")?.classList.toggle("sidenav-toggled")
-    // }
-    // console.log("from header" + " " ,this.ShopService.retunData())
+    if ((this.navServices.collapseSidebar = true)) {
+      document.querySelector("body")?.classList.toggle("sidenav-toggled")
+    }
+  
   }
 
   open(content:any) {
@@ -154,5 +155,6 @@ export class HeaderComponent implements OnInit {
     this.SearchResultEmpty = false;
     return this.text, this.menuItems
   }
+  
 
 }

@@ -1,0 +1,86 @@
+::ng-deep {
+  .mat-step-header .mat-step-icon-selected,
+  .mat-step-header .mat-step-icon-state-done,
+  .mat-step-header .mat-step-icon-state-edit {
+    background-color: var(--primary-bg-color) !important;
+  }
+  .mat-step-text-label{
+    display: none !important;
+  }
+  .cdk-visually-hidden{
+    display: none !important;
+  }
+  .dark-mode {
+    .mat-horizontal-stepper-header::before,
+    .mat-horizontal-stepper-header::after,
+    .mat-stepper-horizontal-line {
+      border-top-color: var(--dark-border);
+    }
+  }
+  @media (max-width: 767.9px) {
+    .mat-horizontal-stepper-header-container {
+      display: block !important;
+    }
+  }
+}
+:host ::ng-deep {
+ 
+  .ngb-dp-weekday{
+    color:blue !important;
+  }
+
+}
+
+.form-control{
+  color: #333 !important;
+    background-color: #fff !important;
+    border-radius: 4px !important;
+    border: 1px solid #ccc !important;
+    min-height: 36px !important;
+    align-items: center !important;
+}
+
+
+.templateC{
+  a{
+    color:#0cd08e
+  }
+}
+
+::ng-deep .mat-horizontal-stepper-header{
+  pointer-events: none !important;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  border-top: 1px solid grey;
+}
+
+td,
+th {
+  margin: 0;
+  border: 1px solid grey;
+  white-space: nowrap;
+  border-top-width: 0px;
+  padding: 5px;
+}
+
+.headcol {
+  position: absolute;
+  width: 260px;
+  left: 32px;
+  top: auto;
+  border-top-width: 1px;
+  /*only relevant for first row*/
+  margin-top: -1px;
+  /*compensate for top border*/
+}
+
+
+.myTable{
+  overflow-x: scroll;
+  margin-left: 262px;
+  overflow-y: visible;
+  padding: 0;
+}

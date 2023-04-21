@@ -20993,6 +20993,10 @@ div.conv-form-wrapper div#messages div.message.from {
     z-index: 10;
     border-bottom: 1px solid #e3e3f7;
 }
+.sidenav-toggled .header.top-header{
+    padding-left: 70px !important;
+    transition: padding 600ms;
+}
 
 .app-header {
     position: fixed;
@@ -22323,6 +22327,10 @@ div.conv-form-wrapper div#messages div.message.from {
     box-shadow: 0 0 0 0 rgba(111, 134, 230, 0.13), 0 4px 16px 0 rgba(179, 187, 195, 0.36);
     transition: left 0.3s ease, width 0.3s ease;
 }
+.sidenav-toggled .app-sidebar{
+
+    width: 70px !important;
+}
 
 .app-sidebar::-webkit-scrollbar {
     width: 6px;
@@ -23128,7 +23136,11 @@ slide is-expanded side-menu__item {
 }
 
 .sidenav-toggled .app-content {
+    margin-left: 70px;
     transition: margin-left 0.3s ease;
+}
+.sidenav-toggled .main-sidebar-header {
+width: 70px;
 }
 
 .sub-slide-menu .active .sub-slide-item.active {
@@ -23940,6 +23952,15 @@ slide is-expanded side-menu__item {
     margin: 0 auto;
     justify-content: center;
     text-align: center;
+}
+.sidenav-toggled .main-logo{
+    display: none;
+}
+.logo-icon{
+    display: none;
+}
+.sidenav-toggled .logo-icon{
+    display: block !important;
 }
 
 .slide-menu .side-menu-label1 {
