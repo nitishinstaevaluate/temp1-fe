@@ -33,6 +33,7 @@
               "src/styles.scss"
             ],
             "scripts": [
+              "src/assets/js/vendors/jquery.min.js",
               "src/assets/js/custom.js"
             ]
           },
@@ -102,5 +103,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

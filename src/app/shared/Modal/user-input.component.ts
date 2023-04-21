@@ -45,12 +45,12 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class UserInputComponent {
   @Input() modalTitle: any = '';
-  userValue:any= ''
+  userValue: any = ''
   constructor(public modal: NgbActiveModal) {
-    
+
   }
 
-  close(){
+  close() {
     this.modal.close(this.userValue)
   }
 
