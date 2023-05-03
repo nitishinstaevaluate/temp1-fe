@@ -68,8 +68,6 @@ export class LoginComponent  implements OnInit {
     return true;
 
   }
-
-  //angular
   public loginForm! : FormGroup;
   public error:any = '';
 

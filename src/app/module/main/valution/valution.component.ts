@@ -15,11 +15,18 @@ import { environment } from 'src/enviroments/enviroments';
 import { HEADING_OBJ } from 'src/app/shared/enums/constant';
 import { MatStepper } from '@angular/material/stepper';
 import { UserInputComponent } from 'src/app/shared/Modal/user-input.component';
+import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-valution',
   templateUrl: './valution.component.html',
   styleUrls: ['./valution.component.scss'],
+  providers: [
+    {
+      provide: STEPPER_GLOBAL_OPTIONS,
+      useValue: {displayDefaultIndicatorType: false},
+    },
+  ],
 })
 export class ValutionComponent implements OnInit {
   errorMsg: any = '';
@@ -50,7 +57,7 @@ export class ValutionComponent implements OnInit {
   thirdFormGroup!: FormGroup;
   fourthFormGroup!: FormGroup;
   item: any;
-
+  isEditable = true;
   constructor(
     private _formBuilder: FormBuilder,
     private _valutionService: ValutionService,
@@ -91,6 +98,9 @@ export class ValutionComponent implements OnInit {
       copShareCapitalType: ['', Validators.required],
       costOfDebt: ['', Validators.required],
       capitalStructure: ['', Validators.required],
+    });
+    this.fourthFormGroup = this._formBuilder.group({
+      type: ['', Validators.required],
     });
 
     this.secondFormGroup.controls['taxRateType'].valueChanges.subscribe(

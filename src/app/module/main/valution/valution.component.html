@@ -6,15 +6,15 @@
         <div class="row">
           <div class="col">
 
-            <mat-stepper class="example-stepper" #stepper>
+            <mat-horizontal-stepper class="example-stepper" #stepper>
 
-              <mat-step [stepControl]="firstFormGroup">
+              <mat-step [stepControl]="firstFormGroup" [editable]="isEditable">
                 <form [formGroup]="firstFormGroup">
                   <section class="pt-5">
                     <div class="row">
                       <div class="col-6">
                         <div class="control-group form-group">
-                          <label class="form-control-label" for="vDate">Valution Date</label>
+                          <label class="form-control-label" for="vDate">Valuation date</label>
                           <i class="fa fa-exclamation-circle mx-3"
                             ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
                             placement="right"></i>
@@ -28,7 +28,7 @@
                       </div>
                       <div class="col-6">
                         <div class="control-group form-group">
-                          <label class="form-control-label" for="cName">Company Name</label>
+                          <label class="form-control-label" for="cName">Company name</label>
                           <i class="fa fa-exclamation-circle mx-3"
                             ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
                             placement="right"></i>
@@ -43,7 +43,7 @@
                           <i class="fa fa-exclamation-circle mx-3"
                             ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
                             placement="right"></i>
-                          <ng-select formControlName="industry" class="select2 w-100"
+                          <ng-select formControlName="industry" required class="select2 w-100"
                             placeholder="Select industry name">
                             <ng-option [value]="item.industry" *ngFor="let item of industries">{{ item.industry
                               }}</ng-option>
@@ -52,20 +52,20 @@
                       </div>
                       <div class="col-6">
                         <div class="control-group form-group">
-                          <label class="form-control-label" for="pYears">Projection Years</label>
+                          <label class="form-control-label" for="pYears">Projection years</label>
                           <input class="form-control  input-md" name="projectionYear" formControlName="projectionYear"
-                            type="text" placeholder="Select projection years" />
+                            type="text" placeholder="Select projection years" required />
                         </div>
                       </div>
                       <div class="col-6">
                         <div class="control-group form-group">
-                          <label class="form-control-label" for="vModule" id="vModule" name="model">Valaution
-                            Model</label>
+                          <label class="form-control-label" for="vModule" id="vModule" name="model">Valuation
+                            model</label>
                           <i class="fa fa-exclamation-circle mx-3"
                             ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
                             placement="right"></i>
-                          <ng-select class="select2 w-100" dropdownPosition="top" placeholder="Select valution model"
-                            formControlName="model">
+                          <ng-select class="select2 w-100" dropdownPosition="top" required
+                            placeholder="Select valution model" formControlName="model">
                             <ng-option selected="selected" disabled>
                               Select Valution
                             </ng-option>
@@ -82,11 +82,11 @@
                             <label class="custom-control custom-radio  ">
                               <input type="radio" class="custom-control-input" name="example-radios" value="option1"
                                 checked />
-                              <span class="custom-control-label">Growing Concern</span>
+                              <span class="custom-control-label">Growing concern</span>
                             </label>
                             <label class="custom-control custom-radio mx-2 ">
                               <input type="radio" class="custom-control-input" name="example-radios" value="option2" />
-                              <span class="custom-control-label ">Finite Projection</span>
+                              <span class="custom-control-label ">Finite projection</span>
                             </label>
 
                           </div>
@@ -102,7 +102,7 @@
                   </div>
                 </form>
               </mat-step>
-              <mat-step [stepControl]="secondFormGroup">
+              <mat-step [stepControl]="secondFormGroup" [editable]="isEditable">
                 <form [formGroup]="secondFormGroup">
                   <section>
                     <div class="row mb-3">
@@ -252,7 +252,7 @@
                   </div>
                 </form>
               </mat-step>
-              <mat-step [stepControl]="thirdFormGroup">
+              <mat-step [stepControl]="thirdFormGroup" [editable]="isEditable">
                 <form [formGroup]="thirdFormGroup">
                   <section class="pt-5">
                     <div class="row">
@@ -267,12 +267,11 @@
                               item.label
                               }}</ng-option>
                           </ng-select>
-                          <!--</button> -->
                         </div>
                       </div>
                       <div class="col-6">
                         <div class="control-group form-group">
-                          <label class="form-control-label" for="cName">Company Specific Risk Premium</label>
+                          <label class="form-control-label" for="cName">Company specific risk premium</label>
                           <i class="fa fa-exclamation-circle mx-3"
                             ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
                             placement="right"></i>
@@ -286,7 +285,7 @@
                       </div>
                       <div class="col-6">
                         <div class="control-group form-group">
-                          <label class="form-control-label" for="cName">Cost of Preference Share Capital</label>
+                          <label class="form-control-label" for="cName">Cost of preference share capital</label>
                           <i class="fa fa-exclamation-circle mx-3"
                             ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
                             placement="right"></i>
@@ -300,7 +299,7 @@
                       </div>
                       <div class="col-6">
                         <div class="control-group form-group">
-                          <label class="form-control-label" for="cName">Cost of Debt</label>
+                          <label class="form-control-label" for="cName">Cost of debt</label>
                           <i class="fa fa-exclamation-circle mx-3"
                             ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
                             placement="right"></i>
@@ -314,7 +313,7 @@
                       </div>
                       <div class="col-6">
                         <div class="control-group form-group">
-                          <label class="form-control-label" for="cName">Capital Structure</label>
+                          <label class="form-control-label" for="cName">Capital structure</label>
                           <i class="fa fa-exclamation-circle mx-3"
                             ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
                             placement="right"></i>
@@ -331,7 +330,7 @@
                       </div>
                       <div class="col-6">
                         <div class="control-group form-group">
-                          <label class="form-control-label" for="cName">Proportion of Preference Share Capital</label>
+                          <label class="form-control-label" for="cName">Proportion of preference share capital</label>
                           <i class="fa fa-exclamation-circle mx-3"
                             ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
                             placement="right"></i>
@@ -356,7 +355,7 @@
 
                 </form>
               </mat-step>
-              <mat-step [stepControl]="fourthFormGroup">
+              <mat-step [stepControl]="fourthFormGroup" [editable]="isEditable">
                 <form [formGroup]="fourthFormGroup">
                   <section>
                     <div>
@@ -381,11 +380,9 @@
                       <a class="btn  btn-info my-2" [href]="exportResult">Export Result</a>
                     </div>
                   </section>
-                  <div>
-                  </div>
                 </form>
               </mat-step>
-            </mat-stepper>
+            </mat-horizontal-stepper>
           </div>
         </div>
       </div>
