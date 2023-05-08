@@ -218,6 +218,9 @@ export class ValutionComponent implements OnInit {
     );
   }
 
+  get isDownloadAllow(){
+    return this.firstFormGroup.controls['projectionYear'].value ? true : false;
+  }
 
 
   get exportResult() {
@@ -225,7 +228,7 @@ export class ValutionComponent implements OnInit {
   }
 
   get downloadTemplate() {
-    return environment.HOST + 'download/template/6';
+    return environment.HOST + 'download/template/'+ (this.firstFormGroup.controls['projectionYear'].value || '1');
   }
 
   onFileSelected(event: any) {

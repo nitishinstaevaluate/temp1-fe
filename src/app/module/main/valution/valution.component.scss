@@ -84,3 +84,7 @@ th {
   overflow-y: visible;
   padding: 0;
 }
+
+.user-select-none{
+  pointer-events: none;
+}

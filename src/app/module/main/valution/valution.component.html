@@ -118,7 +118,7 @@
                         </div> -->
                       </div>
                       <div class="col-6 templateC d-flex align-items-center  ">
-                        <a class="btn h4 btn-secondary text-white" [href]="downloadTemplate" target="_blank">
+                        <a [ngClass]="{'user-select-none': isDownloadAllow == false}" class="btn h4 btn-secondary text-white" [href]="downloadTemplate" target="_blank">
                           <i class="fa fa-download mx-2 "></i>XLS
                         </a>
                       </div>
