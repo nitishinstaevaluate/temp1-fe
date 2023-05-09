@@ -6,8 +6,6 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { BreakpointObserver } from '@angular/cdk/layout';
-import { forkJoin, map } from 'rxjs';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
 import { DROPDOWN } from 'src/app/shared/enums/enum';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -15,7 +13,7 @@ import { environment } from 'src/enviroments/enviroments';
 import { HEADING_OBJ } from 'src/app/shared/enums/constant';
 import { MatStepper } from '@angular/material/stepper';
 import { UserInputComponent } from 'src/app/shared/Modal/user-input.component';
-import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-valuation',
@@ -24,7 +22,7 @@ import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
   providers: [
     {
       provide: STEPPER_GLOBAL_OPTIONS,
-      useValue: {displayDefaultIndicatorType: false},
+      useValue: { displayDefaultIndicatorType: false },
     },
   ],
 })
@@ -153,6 +151,16 @@ export class ValuationComponent implements OnInit {
         }
       }
     );
+
+    this.firstFormGroup.controls['model'].valueChanges.subscribe((val) => {
+      if (val == "FCFE")
+        this.secondFormGroup.controls['discountRate'].setValue('Cost of Equity')
+      if (val == "FCFF")
+        this.terminalGrowthField.setValidators(Validators.required)
+      else
+        this.terminalGrowthField.clearValidators()
+    })
+
     this.secondFormGroup.controls['expMarketReturnType'].valueChanges.subscribe(
       (val) => {
         if (val == 'ACE') {
@@ -167,6 +175,17 @@ export class ValuationComponent implements OnInit {
       }
     );
   }
+
+  get terminalGrowthField(){
+    return this.secondFormGroup.controls['terminalGrowthRate']
+  }
+
+
+
+  get isTerminalShow() {
+    return this.firstFormGroup.controls['model'].value == 'FCFF' ? false : true
+  }
+
 
   inItData() {
     this._valuationService.getValuationDropdown().subscribe((resp: any) => {
@@ -202,11 +221,11 @@ export class ValuationComponent implements OnInit {
         this.reportId = res.reportId;
         const objs = Object.keys(res.valuationData[0])
         for (let index = 0; index < objs.length; index++) {
-          const data = res.valuationData.map((e:any) => e[objs[index]])
-            this.valuationDataReport.push(data) 
-          
+          const data = res.valuationData.map((e: any) => e[objs[index]])
+          this.valuationDataReport.push(data)
+
         }
-  
+
 
         stepper.next();
         this.errorMsg = '';
@@ -218,7 +237,7 @@ export class ValuationComponent implements OnInit {
     );
   }
 
-  get isDownloadAllow(){
+  get isDownloadAllow() {
     return this.firstFormGroup.controls['projectionYear'].value ? true : false;
   }
 
@@ -228,7 +247,7 @@ export class ValuationComponent implements OnInit {
   }
 
   get downloadTemplate() {
-    return environment.HOST + 'download/template/'+ (this.firstFormGroup.controls['projectionYear'].value || '1');
+    return environment.HOST + 'download/template/' + (this.firstFormGroup.controls['projectionYear'].value || '1');
   }
 
   onFileSelected(event: any) {
