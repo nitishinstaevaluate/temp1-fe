@@ -10,10 +10,10 @@ const headers= new HttpHeaders()
 @Injectable({
   providedIn: 'root',
 })
-export class ValutionService {
+export class ValuationService {
   constructor(private http: HttpClient) {}
 
-  getValutionDropdown() {
+  getValuationDropdown() {
     return this.http.get(`${HOST}masters/all`);
   }
 

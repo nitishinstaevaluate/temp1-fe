@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Valution_MVP": {
+    "Valuation_MVP": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/valution-mvp",
+            "outputPath": "dist/valuation-mvp",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -68,10 +68,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "Valution_MVP:build:production"
+              "browserTarget": "Valuation_MVP:build:production"
             },
             "development": {
-              "browserTarget": "Valution_MVP:build:development"
+              "browserTarget": "Valuation_MVP:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -79,7 +79,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Valution_MVP:build"
+            "browserTarget": "Valuation_MVP:build"
           }
         },
         "test": {

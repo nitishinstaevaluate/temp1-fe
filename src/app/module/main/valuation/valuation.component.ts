@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { forkJoin, map } from 'rxjs';
-import { ValutionService } from 'src/app/shared/service/valution.service';
+import { ValuationService } from 'src/app/shared/service/valuation.service';
 import { DROPDOWN } from 'src/app/shared/enums/enum';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'src/enviroments/enviroments';
@@ -18,9 +18,9 @@ import { UserInputComponent } from 'src/app/shared/Modal/user-input.component';
 import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 
 @Component({
-  selector: 'app-valution',
-  templateUrl: './valution.component.html',
-  styleUrls: ['./valution.component.scss'],
+  selector: 'app-valuation',
+  templateUrl: './valuation.component.html',
+  styleUrls: ['./valuation.component.scss'],
   providers: [
     {
       provide: STEPPER_GLOBAL_OPTIONS,
@@ -28,10 +28,10 @@ import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
     },
   ],
 })
-export class ValutionComponent implements OnInit {
+export class ValuationComponent implements OnInit {
   errorMsg: any = '';
   industries: any[] = [];
-  valutionM: any[] = [];
+  valuationM: any[] = [];
   taxR: any[] = [];
   discountR: any[] = [];
   growthR: any[] = [];
@@ -48,7 +48,7 @@ export class ValutionComponent implements OnInit {
   modalTitle: any = '';
   riskRate: any = '';
   reportId: any;
-  valutionDataReport: any[] = [];
+  valuationDataReport: any[] = [];
   tableHeading = Object.values(HEADING_OBJ);
   anaConEst: any = '';
 
@@ -60,7 +60,7 @@ export class ValutionComponent implements OnInit {
   isEditable = true;
   constructor(
     private _formBuilder: FormBuilder,
-    private _valutionService: ValutionService,
+    private _valuationService: ValuationService,
     private modalService: NgbModal
   ) {
     this.generateForm();
@@ -72,7 +72,7 @@ export class ValutionComponent implements OnInit {
 
   generateForm() {
     this.firstFormGroup = this._formBuilder.group({
-      valutionDate: ['', Validators.required],
+      valuationDate: ['', Validators.required],
       company: ['', Validators.required],
       industry: ['', Validators.required],
       projectionYear: ['', Validators.required],
@@ -114,28 +114,28 @@ export class ValutionComponent implements OnInit {
         });
       }
     );
-    let obj = {
-      valutionDate: 1682706600000,
-      company: 'nhhhg',
-      industry: 'Cement- North India',
-      projectionYear: '12',
-      model: 'FCFF',
-      userId: '641d654fa83ed4a5f0293a52',
-      outstandingShares: '12',
-      taxRateType: 'Normal_Tax_Rate',
-      discountRate: 'Cost of Equity',
-      terminalGrowthRate: 5,
-      discountingPeriod: 'Full_Period',
-      coeMethod: 'CAPM',
-      riskFreeRateType: '30_year',
-      expMarketReturnType: 'ACE',
-      excelSheetId: '1681734372560-FCFE Input Sheet with Formula (1).xlsx',
-      beta: 'RIB',
-      riskPremium: 0,
-      copShareCapitalType: 'user_input',
-      costOfDebt: 'Use_Interest_Rate',
-      capitalStructure: 'Capital Structure (Industry based)',
-    };
+    // let obj = {
+    //   valutionDate: 1682706600000,
+    //   company: 'nhhhg',
+    //   industry: 'Cement- North India',
+    //   projectionYear: '12',
+    //   model: 'FCFF',
+    //   userId: '641d654fa83ed4a5f0293a52',
+    //   outstandingShares: '12',
+    //   taxRateType: 'Normal_Tax_Rate',
+    //   discountRate: 'Cost of Equity',
+    //   terminalGrowthRate: 5,
+    //   discountingPeriod: 'Full_Period',
+    //   coeMethod: 'CAPM',
+    //   riskFreeRateType: '30_year',
+    //   expMarketReturnType: 'ACE',
+    //   excelSheetId: '1681734372560-FCFE Input Sheet with Formula (1).xlsx',
+    //   beta: 'RIB',
+    //   riskPremium: 0,
+    //   copShareCapitalType: 'user_input',
+    //   costOfDebt: 'Use_Interest_Rate',
+    //   capitalStructure: 'Capital Structure (Industry based)',
+    // };
     // this.firstFormGroup.patchValue(obj);
     // this.secondFormGroup.patchValue(obj);
     // this.thirdFormGroup.patchValue(obj);
@@ -169,9 +169,9 @@ export class ValutionComponent implements OnInit {
   }
 
   inItData() {
-    this._valutionService.getValutionDropdown().subscribe((resp: any) => {
+    this._valuationService.getValuationDropdown().subscribe((resp: any) => {
       this.industries = resp[DROPDOWN.INDUSTRIES];
-      this.valutionM = resp[DROPDOWN.MODAL];
+      this.valuationM = resp[DROPDOWN.MODAL];
       this.taxR = resp[DROPDOWN.TAX];
       this.discountR = resp[DROPDOWN.DISCOUNT];
       this.growthR = resp[DROPDOWN.GROWTH];
@@ -193,17 +193,17 @@ export class ValutionComponent implements OnInit {
       ...this.secondFormGroup.value,
       ...this.thirdFormGroup.value,
     };
-    const myDate = payload['valutionDate'];
+    const myDate = payload['valuationDate'];
     var newDate = new Date(myDate.year, myDate.month, myDate.day);
-    payload['valutionDate'] = newDate.getTime();
-    this.valutionDataReport = []
-    this._valutionService.submitForm(payload).subscribe(
+    payload['valuationDate'] = newDate.getTime();
+    this.valuationDataReport = []
+    this._valuationService.submitForm(payload).subscribe(
       (res: any) => {
         this.reportId = res.reportId;
         const objs = Object.keys(res.valuationData[0])
         for (let index = 0; index < objs.length; index++) {
           const data = res.valuationData.map((e:any) => e[objs[index]])
-            this.valutionDataReport.push(data) 
+            this.valuationDataReport.push(data) 
           
         }
   
@@ -239,7 +239,7 @@ export class ValutionComponent implements OnInit {
 
       formData.append('file', file);
 
-      this._valutionService.fileUpload(formData).subscribe((res: any) => {
+      this._valuationService.fileUpload(formData).subscribe((res: any) => {
         this.secondFormGroup.patchValue(res);
       });
     }

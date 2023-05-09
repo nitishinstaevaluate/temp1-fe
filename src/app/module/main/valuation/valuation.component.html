@@ -20,7 +20,7 @@
                             placement="right"></i>
                           <div class="input-group">
                             <input class="form-control " placeholder="mm-dd-yyyy" name="dp" required id="vDate"
-                              name="valutionDatef" formControlName="valutionDate" ngbDatepicker #d="ngbDatepicker" />
+                              name="valuationDatef" formControlName="valuationDate" ngbDatepicker #d="ngbDatepicker" />
                             <i class="fa fa-calendar btn btn-md btn-default lh-base" (click)="d.toggle()"></i>
                           </div>
                           <!--</button> -->
@@ -65,11 +65,11 @@
                             ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
                             placement="right"></i>
                           <ng-select class="select2 w-100" dropdownPosition="top" required
-                            placeholder="Select valution model" formControlName="model">
+                            placeholder="Select valuation model" formControlName="model">
                             <ng-option selected="selected" disabled>
-                              Select Valution
+                              Select Valuation
                             </ng-option>
-                            <ng-option [value]="item.type" *ngFor="let item of valutionM">{{
+                            <ng-option [value]="item.type" *ngFor="let item of valuationM">{{
                               item.label
                               }}</ng-option>
                           </ng-select>
@@ -367,9 +367,9 @@
                     </div>
                     <div class="myTable">
                       <table class=" text-nowrap mb-0 ">
-                        <tr *ngFor="let item of valutionDataReport ;let inx = index">
+                        <tr *ngFor="let item of valuationDataReport ;let inx = index">
                           <th class="headcol">{{tableHeading[inx]}}</th>
-                          <td *ngFor="let item of valutionDataReport[inx]">{{item}} </td>
+                          <td *ngFor="let item of valuationDataReport[inx]">{{item}} </td>
 
                       </table>
                     </div>
