@@ -14,6 +14,7 @@ import { HEADING_OBJ } from 'src/app/shared/enums/constant';
 import { MatStepper } from '@angular/material/stepper';
 import { UserInputComponent } from 'src/app/shared/Modal/user-input.component';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { RelativeComponent } from 'src/app/shared/Modal/relative/relative.component';
 
 @Component({
   selector: 'app-valuation',
@@ -29,6 +30,7 @@ import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 export class ValuationComponent implements OnInit {
   errorMsg: any = '';
   industries: any[] = [];
+  companies: any[] = [];
   valuationM: any[] = [];
   taxR: any[] = [];
   discountR: any[] = [];
@@ -49,6 +51,18 @@ export class ValuationComponent implements OnInit {
   valuationDataReport: any[] = [];
   tableHeading = Object.values(HEADING_OBJ);
   anaConEst: any = '';
+  companyAverage: any = {
+    peRatio: 0,
+    pbRatio: 0,
+    ebitda:0,
+    sales:0,
+  };
+  companyMedian: any={
+    peRatio: 0,
+    pbRatio: 0,
+    ebitda:0,
+    sales:0,
+  }
 
   firstFormGroup!: FormGroup;
   secondFormGroup!: FormGroup;
@@ -56,6 +70,10 @@ export class ValuationComponent implements OnInit {
   fourthFormGroup!: FormGroup;
   item: any;
   isEditable = true;
+
+  files: File[] = [];
+  subIndustries: any[] = [];
+
   constructor(
     private _formBuilder: FormBuilder,
     private _valuationService: ValuationService,
@@ -73,9 +91,12 @@ export class ValuationComponent implements OnInit {
       valuationDate: ['', Validators.required],
       company: ['', Validators.required],
       industry: ['', Validators.required],
-      projectionYear: ['', Validators.required],
+      projectionYears: ['', Validators.required],
       model: ['', Validators.required],
       userId: ['641d654fa83ed4a5f0293a52', Validators.required],
+      subIndustry: ['', Validators.required],
+      discountRateType: ['WACC', Validators.required],
+    discountRateValue: [10, Validators.required],
     });
 
     this.secondFormGroup = this._formBuilder.group({
@@ -88,6 +109,10 @@ export class ValuationComponent implements OnInit {
       riskFreeRateType: ['', Validators.required],
       expMarketReturnType: ['', Validators.required],
       excelSheetId: ['', Validators.required],
+      company1: [''],
+      company2: [''],
+      company3: [''],
+      type: ['automatic', Validators.required],
     });
 
     this.thirdFormGroup = this._formBuilder.group({
@@ -103,12 +128,71 @@ export class ValuationComponent implements OnInit {
 
     this.secondFormGroup.controls['taxRateType'].valueChanges.subscribe(
       (val) => {
-        this.modalTitle = val;
-        console.log(val);
-        const modalRef = this.modalService.open(UserInputComponent);
-        modalRef.componentInstance.modalTitle = val;
-        modalRef.result.then((val: any) => {
-          this.EnteredTaXRate = val;
+        if (val) {      
+          this.modalTitle = val;
+          console.log(val);
+          const modalRef = this.modalService.open(UserInputComponent);
+          modalRef.componentInstance.modalTitle = val;
+          modalRef.result.then((val: any) => {
+            this.EnteredTaXRate = val;
+          });
+        }
+      }
+    );
+
+    this.firstFormGroup.controls['industry'].valueChanges.subscribe((val) => {
+      // this.getIndustriesbyId(val);
+      if (!val) {
+        // this.companies = [];
+        this.subIndustries = [];
+        return;
+      }
+      const indst = this.industries.find((e) => e.industry == val);
+      this._valuationService.getIndustries(indst._id).subscribe((resp: any) => {
+        console.log(resp);
+        this.subIndustries = resp;
+      });
+    });
+
+    this.firstFormGroup.controls['subIndustry'].valueChanges.subscribe(
+      (val) => {
+        if (!val) {
+          this.companies = [];
+          return;
+        }
+        // this.getIndustriesbyId(val);
+        // if (!val) {
+        //   this.subIndustries = [];
+        //   return;
+        // }
+        // const id = this.companies.find((e) => e.subIndustry == val)._id;
+        this._valuationService.getCompanies(val).subscribe((resp: any) => {
+          console.log(resp);
+          this.companies = resp;
+          this.secondFormGroup.controls['company1'].patchValue(
+            this.companies[0]?._id
+          );
+          this.secondFormGroup.controls['company2'].patchValue(
+            this.companies[1]?._id
+          );
+          this.secondFormGroup.controls['company3'].patchValue(
+            this.companies[2]?._id
+          );
+
+          const allPeRatio = this.companies.map((c: any) => c.peRatio);
+          const allPbRatio = this.companies.map((c: any) => c.pbRatio);
+          const allebitda = this.companies.map((c: any) => c.ebitda);
+          const allsales = this.companies.map((c: any) => c.sales);
+
+          this.companyAverage['peRatio'] = this.findAverage(allPeRatio);
+          this.companyAverage['pbRatio'] = this.findAverage(allPbRatio);
+          this.companyAverage['ebitda'] = this.findAverage(allebitda);
+          this.companyAverage['sales'] = this.findAverage(allsales);
+          
+          this.companyMedian['peRatio'] = this.findMedian(allPeRatio);
+          this.companyMedian['peRatio'] = this.findMedian(allPeRatio);
+          this.companyMedian['peRatio'] = this.findMedian(allPeRatio);
+          this.companyMedian['peRatio'] = this.findMedian(allPeRatio);
         });
       }
     );
@@ -153,13 +237,27 @@ export class ValuationComponent implements OnInit {
     );
 
     this.firstFormGroup.controls['model'].valueChanges.subscribe((val) => {
-      if (val == "FCFE")
-        this.secondFormGroup.controls['discountRate'].setValue('Cost of Equity')
-      if (val == "FCFF")
-        this.terminalGrowthField.setValidators(Validators.required)
-      else
-        this.terminalGrowthField.clearValidators()
-    })
+      if (val == 'FCFE')
+        this.secondFormGroup.controls['discountRate'].setValue(
+          'Cost of Equity'
+        );
+      if (val == 'FCFF')
+        this.terminalGrowthField.setValidators(Validators.required);
+      else this.terminalGrowthField.clearValidators();
+
+      if (val == 'Relative_Valuation') {
+        this.clearValidatorForRelative();
+        // const modalRef = this.modalService.open(RelativeComponent);
+      } else {
+        this.addValidotorsForRelative();
+      }
+    });
+
+    this.secondFormGroup.controls['type'].valueChanges.subscribe((val) => {
+      if (val == 'automatic') {
+        const modalRef = this.modalService.open(RelativeComponent);
+      }
+    });
 
     this.secondFormGroup.controls['expMarketReturnType'].valueChanges.subscribe(
       (val) => {
@@ -175,17 +273,63 @@ export class ValuationComponent implements OnInit {
       }
     );
   }
+  addValidotorsForRelative() {
+    this.secondFormGroup.controls['outstandingShares'].enable();
+    this.secondFormGroup.controls['taxRateType'].enable();
+    this.secondFormGroup.controls['discountRate'].enable();
+    this.secondFormGroup.controls['terminalGrowthRate'].enable();
+    this.secondFormGroup.controls['discountingPeriod'].enable();
+    this.secondFormGroup.controls['coeMethod'].enable();
+    this.secondFormGroup.controls['riskFreeRateType'].enable();
+    this.secondFormGroup.controls['expMarketReturnType'].enable();
+    this.secondFormGroup.controls['riskFreeRateType'].enable();
+    this.secondFormGroup.controls['coeMethod'].enable();
 
-  get terminalGrowthField(){
-    return this.secondFormGroup.controls['terminalGrowthRate']
+    // this.thirdFormGroup.controls['beta'].setValidators( Validators.required);
+    // this.thirdFormGroup.controls['riskPremium'].setValidators( Validators.required);
+    // this.thirdFormGroup.controls['copShareCapitalType'].setValidators( Validators.required);
+    // this.thirdFormGroup.controls['costOfDebt'].setValidators( Validators.required);
+    // this.thirdFormGroup.controls['capitalStructure'].setValidators( Validators.required);
   }
 
+  clearValidatorForRelative() {
+    this.secondFormGroup.controls['outstandingShares'].disable();
+    this.secondFormGroup.controls['discountRate'].disable();
+    this.secondFormGroup.controls['terminalGrowthRate'].disable();
+    this.secondFormGroup.controls['discountingPeriod'].disable();
+    this.secondFormGroup.controls['coeMethod'].disable();
+    this.secondFormGroup.controls['expMarketReturnType'].disable();
+    // this.secondFormGroup.controls['riskFreeRateType'].disable();
+    this.secondFormGroup.controls['taxRateType'].patchValue('');
+    this.secondFormGroup.controls['riskFreeRateType'].patchValue('');
+    this.secondFormGroup.controls['taxRateType'].disable();
+    this.secondFormGroup.controls['riskFreeRateType'].disable();
 
+  // this.thirdFormGroup.controls['beta'].clearValidators( );
+  // this.thirdFormGroup.controls['riskPremium'].clearValidators();
+  // this.thirdFormGroup.controls['copShareCapitalType'].clearValidators();
+  // this.thirdFormGroup.controls['costOfDebt'].clearValidators();
+  // this.thirdFormGroup.controls['capitalStructure'].clearValidators();
+    // this.secondFormGroup.controls['company1'].setValidators(Validators.required)
+    // this.secondFormGroup.controls['company2'].setValidators(Validators.required)
+    // this.secondFormGroup.controls['company3'].setValidators(Validators.required)
+  }
+
+  get terminalGrowthField() {
+    return this.secondFormGroup.controls['terminalGrowthRate'];
+  }
 
   get isTerminalShow() {
-    return this.firstFormGroup.controls['model'].value == 'FCFF' ? false : true
+    return this.firstFormGroup.controls['model']?.value == 'FCFF'
+      ? false
+      : true;
   }
 
+  get isRelative() {
+    return this.firstFormGroup.controls['model']?.value == 'Relative_Valuation'
+      ? true
+      : false;
+  }
 
   inItData() {
     this._valuationService.getValuationDropdown().subscribe((resp: any) => {
@@ -212,46 +356,61 @@ export class ValuationComponent implements OnInit {
       ...this.secondFormGroup.value,
       ...this.thirdFormGroup.value,
     };
+    payload['companies'] = [
+      payload.company1,
+      payload.company2,
+      payload.company3,
+    ].map((e: any) => {
+      return this.companies.find((o: any) => o._id == e) || null;
+    });
+    payload.companies =  payload.companies.filter(Boolean)
     const myDate = payload['valuationDate'];
     var newDate = new Date(myDate.year, myDate.month, myDate.day);
     payload['valuationDate'] = newDate.getTime();
-    this.valuationDataReport = []
+    this.valuationDataReport = [];
     this._valuationService.submitForm(payload).subscribe(
       (res: any) => {
         this.reportId = res.reportId;
-        const objs = Object.keys(res.valuationData[0])
-        for (let index = 0; index < objs.length; index++) {
-          const data = res.valuationData.map((e: any) => e[objs[index]])
-          this.valuationDataReport.push(data)
-
+        if (this.isRelative ==false) {
+          const objs = Object.keys(res.valuationData[0]);
+          for (let index = 0; index < objs.length; index++) {
+            const data = res.valuationData.map((e: any) => e[objs[index]]);
+            this.valuationDataReport.push(data);
+          }
+        }else{
+         this.valuationDataReport = res.valuationData.valuation
         }
-
 
         stepper.next();
         this.errorMsg = '';
       },
       (err: any) => {
         console.log(err);
-        this.errorMsg = err.error.message;
-      },
+        this.errorMsg = err.error.message.message;
+      }
     );
   }
 
   get isDownloadAllow() {
-    return this.firstFormGroup.controls['projectionYear'].value ? true : false;
+    return this.firstFormGroup.controls['projectionYears'].value ? true : false;
   }
-
 
   get exportResult() {
     return environment.HOST + 'export/' + this.reportId;
   }
 
   get downloadTemplate() {
-    return environment.HOST + 'download/template/' + (this.firstFormGroup.controls['projectionYear'].value || '1');
+    return (
+      environment.HOST +
+      'download/template/' +
+      (this.firstFormGroup.controls['projectionYears'].value || '1')
+    );
   }
 
   onFileSelected(event: any) {
-    const file: File = event.target.files[0];
+    this.files = [];
+    this.files.push(...event.addedFiles);
+    const file: File = this.files[0];
 
     if (file) {
       const formData = new FormData();
@@ -268,7 +427,38 @@ export class ValuationComponent implements OnInit {
     return (
       this.firstFormGroup.valid &&
       this.secondFormGroup.valid &&
-      this.thirdFormGroup.valid
+      (this.isRelative ? true : this.thirdFormGroup.valid)
     );
+  }
+
+  onRemove(event: any) {
+    console.log(event);
+    this.files.splice(this.files.indexOf(event), 1);
+  }
+
+  getIndustriesbyId(id: any) {
+    this._valuationService.getIndustries(id).subscribe((resp: any) => {});
+  }
+  getbyCompaniesId(id: any) {
+    this._valuationService.getCompanies(id).subscribe((resp: any) => {});
+  }
+  findMedian(numbers: number[]) {
+    numbers.sort((a, b) => a - b);
+    const middleIndex = Math.floor(numbers.length / 2);
+    const isEvenLength = numbers.length % 2 === 0;
+    if (isEvenLength) {
+      return (numbers[middleIndex - 1] + numbers[middleIndex]) / 2;
+    } else {
+      return numbers[middleIndex];
+    }
+  }
+
+  findAverage(numbers: number[]) {
+    const sum = numbers.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+      0
+    );
+    const average = sum / numbers.length;
+    return average;
   }
 }

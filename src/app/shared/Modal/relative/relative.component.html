@@ -1,0 +1,32 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">rekatouk</h5>
+        <button type="button" class="btn  btn-danger" aria-label="Close" (click)="modal.dismiss(null)">
+            X
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row grid_slider">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <p>Company Size</p>
+                <ngx-slider [(value)]="companySize" [options]="options"></ngx-slider>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="row grid_slider">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <p>Revenue turnover</p>
+                <ngx-slider [(value)]="revenueTurnover" [options]="option"></ngx-slider>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer p-2">
+        <button type="button" class=" btn  btn-danger" (click)="modal.close(null)">
+            Close
+        </button>
+        <button class="btn  btn-primary" type="button" (click)="save()">
+            Save
+        </button>
+    </div>
+</div>`,
