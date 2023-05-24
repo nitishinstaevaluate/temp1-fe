@@ -1,6 +1,7 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 
 import {
+  FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
@@ -54,15 +55,15 @@ export class ValuationComponent implements OnInit {
   companyAverage: any = {
     peRatio: 0,
     pbRatio: 0,
-    ebitda:0,
-    sales:0,
+    ebitda: 0,
+    sales: 0,
   };
-  companyMedian: any={
+  companyMedian: any = {
     peRatio: 0,
     pbRatio: 0,
-    ebitda:0,
-    sales:0,
-  }
+    ebitda: 0,
+    sales: 0,
+  };
 
   firstFormGroup!: FormGroup;
   secondFormGroup!: FormGroup;
@@ -96,7 +97,7 @@ export class ValuationComponent implements OnInit {
       userId: ['641d654fa83ed4a5f0293a52', Validators.required],
       subIndustry: ['', Validators.required],
       discountRateType: ['WACC', Validators.required],
-    discountRateValue: [10, Validators.required],
+      discountRateValue: [10, Validators.required],
     });
 
     this.secondFormGroup = this._formBuilder.group({
@@ -112,8 +113,13 @@ export class ValuationComponent implements OnInit {
       company1: [''],
       company2: [''],
       company3: [''],
+      companies: this._formBuilder.array([]),
       type: ['automatic', Validators.required],
     });
+    this.addCompany();
+    this.addCompany();
+    this.addCompany();
+
 
     this.thirdFormGroup = this._formBuilder.group({
       beta: ['', Validators.required],
@@ -128,7 +134,7 @@ export class ValuationComponent implements OnInit {
 
     this.secondFormGroup.controls['taxRateType'].valueChanges.subscribe(
       (val) => {
-        if (val) {      
+        if (val) {
           this.modalTitle = val;
           console.log(val);
           const modalRef = this.modalService.open(UserInputComponent);
@@ -169,30 +175,30 @@ export class ValuationComponent implements OnInit {
         this._valuationService.getCompanies(val).subscribe((resp: any) => {
           console.log(resp);
           this.companies = resp;
-          this.secondFormGroup.controls['company1'].patchValue(
+          this.Companies.controls[0].patchValue(
             this.companies[0]?._id
           );
-          this.secondFormGroup.controls['company2'].patchValue(
+          this.Companies.controls[1].patchValue(
             this.companies[1]?._id
           );
-          this.secondFormGroup.controls['company3'].patchValue(
+          this.Companies.controls[2].patchValue(
             this.companies[2]?._id
           );
 
-          const allPeRatio = this.companies.map((c: any) => c.peRatio);
-          const allPbRatio = this.companies.map((c: any) => c.pbRatio);
-          const allebitda = this.companies.map((c: any) => c.ebitda);
-          const allsales = this.companies.map((c: any) => c.sales);
+          // const allPeRatio = this.companies.map((c: any) => c.peRatio);
+          // const allPbRatio = this.companies.map((c: any) => c.pbRatio);
+          // const allebitda = this.companies.map((c: any) => c.ebitda);
+          // const allsales = this.companies.map((c: any) => c.sales);
 
-          this.companyAverage['peRatio'] = this.findAverage(allPeRatio);
-          this.companyAverage['pbRatio'] = this.findAverage(allPbRatio);
-          this.companyAverage['ebitda'] = this.findAverage(allebitda);
-          this.companyAverage['sales'] = this.findAverage(allsales);
-          
-          this.companyMedian['peRatio'] = this.findMedian(allPeRatio);
-          this.companyMedian['peRatio'] = this.findMedian(allPeRatio);
-          this.companyMedian['peRatio'] = this.findMedian(allPeRatio);
-          this.companyMedian['peRatio'] = this.findMedian(allPeRatio);
+          // this.companyAverage['peRatio'] = this.findAverage(allPeRatio);
+          // this.companyAverage['pbRatio'] = this.findAverage(allPbRatio);
+          // this.companyAverage['ebitda'] = this.findAverage(allebitda);
+          // this.companyAverage['sales'] = this.findAverage(allsales);
+
+          // this.companyMedian['peRatio'] = this.findMedian(allPeRatio);
+          // this.companyMedian['peRatio'] = this.findMedian(allPeRatio);
+          // this.companyMedian['peRatio'] = this.findMedian(allPeRatio);
+          // this.companyMedian['peRatio'] = this.findMedian(allPeRatio);
         });
       }
     );
@@ -305,11 +311,11 @@ export class ValuationComponent implements OnInit {
     this.secondFormGroup.controls['taxRateType'].disable();
     this.secondFormGroup.controls['riskFreeRateType'].disable();
 
-  // this.thirdFormGroup.controls['beta'].clearValidators( );
-  // this.thirdFormGroup.controls['riskPremium'].clearValidators();
-  // this.thirdFormGroup.controls['copShareCapitalType'].clearValidators();
-  // this.thirdFormGroup.controls['costOfDebt'].clearValidators();
-  // this.thirdFormGroup.controls['capitalStructure'].clearValidators();
+    // this.thirdFormGroup.controls['beta'].clearValidators( );
+    // this.thirdFormGroup.controls['riskPremium'].clearValidators();
+    // this.thirdFormGroup.controls['copShareCapitalType'].clearValidators();
+    // this.thirdFormGroup.controls['costOfDebt'].clearValidators();
+    // this.thirdFormGroup.controls['capitalStructure'].clearValidators();
     // this.secondFormGroup.controls['company1'].setValidators(Validators.required)
     // this.secondFormGroup.controls['company2'].setValidators(Validators.required)
     // this.secondFormGroup.controls['company3'].setValidators(Validators.required)
@@ -356,14 +362,10 @@ export class ValuationComponent implements OnInit {
       ...this.secondFormGroup.value,
       ...this.thirdFormGroup.value,
     };
-    payload['companies'] = [
-      payload.company1,
-      payload.company2,
-      payload.company3,
-    ].map((e: any) => {
+    payload['companies'].map((e: any) => {
       return this.companies.find((o: any) => o._id == e) || null;
     });
-    payload.companies =  payload.companies.filter(Boolean)
+    payload.companies = payload.companies.filter(Boolean);
     const myDate = payload['valuationDate'];
     var newDate = new Date(myDate.year, myDate.month, myDate.day);
     payload['valuationDate'] = newDate.getTime();
@@ -371,14 +373,14 @@ export class ValuationComponent implements OnInit {
     this._valuationService.submitForm(payload).subscribe(
       (res: any) => {
         this.reportId = res.reportId;
-        if (this.isRelative ==false) {
+        if (this.isRelative == false) {
           const objs = Object.keys(res.valuationData[0]);
           for (let index = 0; index < objs.length; index++) {
             const data = res.valuationData.map((e: any) => e[objs[index]]);
             this.valuationDataReport.push(data);
           }
-        }else{
-         this.valuationDataReport = res.valuationData.valuation
+        } else {
+          this.valuationDataReport = res.valuationData.valuation;
         }
 
         stepper.next();
@@ -437,12 +439,13 @@ export class ValuationComponent implements OnInit {
   }
 
   getIndustriesbyId(id: any) {
-    this._valuationService.getIndustries(id).subscribe((resp: any) => {});
+    this._valuationService.getIndustries(id).subscribe((resp: any) => { });
   }
   getbyCompaniesId(id: any) {
-    this._valuationService.getCompanies(id).subscribe((resp: any) => {});
+    this._valuationService.getCompanies(id).subscribe((resp: any) => { });
   }
-  findMedian(numbers: number[]) {
+  findMedian(type: string) {
+    const numbers = this.companies.map((c: any) => c[type]);
     numbers.sort((a, b) => a - b);
     const middleIndex = Math.floor(numbers.length / 2);
     const isEvenLength = numbers.length % 2 === 0;
@@ -453,7 +456,8 @@ export class ValuationComponent implements OnInit {
     }
   }
 
-  findAverage(numbers: number[]) {
+  findAverage(type: string) {
+    const numbers = this.companies.map((c: any) => c[type]);
     const sum = numbers.reduce(
       (accumulator, currentValue) => accumulator + currentValue,
       0
@@ -461,4 +465,17 @@ export class ValuationComponent implements OnInit {
     const average = sum / numbers.length;
     return average;
   }
+  addCompany() {
+    this.Companies.push(new FormControl(null));
+  }
+
+  get Companies() {
+    return this.secondFormGroup.controls['companies'] as FormArray
+  }
+
+  removeCmp(i:any){
+ this.Companies.controls.splice(i,1)
+  }
+
+
 }

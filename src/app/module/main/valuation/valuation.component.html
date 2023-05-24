@@ -123,9 +123,7 @@
                             <ngx-dropzone (change)="onFileSelected($event)">
                               <ngx-dropzone-label>Drag and dropa file Here!</ngx-dropzone-label>
                               <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
-                                <ngx-dropzone-label>{{ f.name }} ({{
-                                  f.type
-                                  }})</ngx-dropzone-label>
+                                <ngx-dropzone-label>{{ f.name }} </ngx-dropzone-label>
                               </ngx-dropzone-preview>
                             </ngx-dropzone>
                             <!-- <input type="file" class="dropify" data-height="300" /> -->
@@ -161,47 +159,34 @@
                           </div>
                         </div>
                       </div>
-                      <ng-container *ngIf="isRelative == true">
-                        <div class="col-6" *ngIf="companies.length">
-                          <div class="control-group form-group">
-                            <label class="form-control-label" for="company" id="company" name="company">Company
-                              Details</label>
-                            <i class="fa fa-exclamation-circle mx-3"
-                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
-                              placement="right"></i>
-                            <ng-select formControlName="company1" class="select2 w-100" placeholder="Select company">
-                              <ng-option [value]="item._id" *ngFor="let item of companies">{{ item.company
-                                }}</ng-option>
-                            </ng-select>
-                          </div>
-                        </div>
-                        <div class="col-6"></div>
-                        <div class="col-6" *ngIf="companies.length">
-                          <div class="control-group form-group">
-                            <label class="form-control-label" for="company" id="company" name="company">Company
-                              Details</label>
-                            <i class="fa fa-exclamation-circle mx-3"
-                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
-                              placement="right"></i>
-                            <ng-select formControlName="company2" class="select2 w-100" placeholder="Select company">
-                              <ng-option [value]="item._id" *ngFor="let item of companies">{{ item.company
-                                }}</ng-option>
-                            </ng-select>
-                          </div>
-                        </div>
-                        <div class="col-6"></div>
-                        <div class="col-6" *ngIf="companies.length">
-                          <div class="control-group form-group">
-                            <label class="form-control-label" for="company" id="company" name="company">Company
-                              Details</label>
-                            <i class="fa fa-exclamation-circle mx-3"
-                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
-                              placement="right"></i>
-                            <ng-select formControlName="company3" class="select2 w-100" placeholder="Select company">
-                              <ng-option [value]="item._id" *ngFor="let item of companies">{{ item.company
-                                }}</ng-option>
-                            </ng-select>
-                          </div>
+                      <ng-container *ngIf="isRelative == true && companies.length">
+                        <ng-container formArrayName="companies">
+
+                          <ng-container *ngFor="let c of Companies.controls;let i = index">
+
+                            <div class="col-6">
+                              <div class="control-group form-group">
+                                <label class="form-control-label" for="company" id="company" name="company">Company
+                                  Details</label>
+                                <i class="fa fa-exclamation-circle mx-3"
+                                  ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                                  placement="right"></i>
+                                <ng-select [formControlName]="i" class="select2 w-100" placeholder="Select company">
+                                  <ng-option [value]="item._id" *ngFor="let item of companies">{{ item.company
+                                    }}</ng-option>
+                                </ng-select>
+                              </div>
+                            </div>
+                            <div class="col-6">
+
+                              <i *ngIf="i >2" class="fa fa-minus-circle text-danger rmvcmp " (click)="removeCmp(i)"></i>
+                            </div>
+                          </ng-container>
+                        </ng-container>
+                        <!--  -->
+                        <div class="col-6 d-flex justify-content-center h4">
+                          <i class="fa fa-plus-circle text-success" *ngIf="companies.length"
+                            (click)="addCompany()"></i>
                         </div>
                       </ng-container>
                     </div>
@@ -326,7 +311,7 @@
               <mat-step [stepControl]="thirdFormGroup" [editable]="isEditable">
                 <form [formGroup]="thirdFormGroup">
                   <section class="pt-5">
-                    <div class="row">
+                    <div class="row overflow-auto">
                       <ng-container *ngIf="isRelative == false">
                         <div class="col-6">
                           <div class="control-group form-group">
@@ -422,7 +407,7 @@
                           <tr *ngFor="let item of companies; let i = index">
                             <td>{{i + 1}}</td>
                             <td>{{item.company}}</td>
-                            <td>{{item.peRatio}}</td>
+                            <td><input type="text" [(ngModel)]="companies[i].peRatio" [ngModelOptions]="{standalone: true}"></td>
                             <td>{{item.pbRatio}}</td>
                             <td>{{item.ebitda}}</td>
                             <td>{{item.sales}}</td>
@@ -436,19 +421,19 @@
                           </tr>
                           <tr>
                             <td></td>
-                            <td >Average</td>
-                            <td>{{companyAverage.peRatio}}</td>
-                            <td>{{companyAverage.pbRatio}}</td>
-                            <td>{{companyAverage.ebitda}}</td>
-                            <td>{{companyAverage.sales}}</td>
+                            <td>Average</td>
+                            <td>{{findAverage('peRatio')}}</td>
+                            <td>{{findAverage('pbRatio')}}</td>
+                            <td>{{findAverage('ebitda')}}</td>
+                            <td>{{findAverage('sales')}}</td>
                           </tr>
                           <tr>
                             <td></td>
                             <td>Median </td>
-                            <td>{{companyMedian.peRatio}}</td>
-                            <td>{{companyMedian.pbRatio}}</td>
-                            <td>{{companyMedian.ebitda}}</td>
-                            <td>{{companyMedian.sales}}</td>
+                            <td>{{findMedian('peRatio')}}</td>
+                            <td>{{findMedian('pbRatio')}}</td>
+                            <td>{{findMedian('ebitda')}}</td>
+                            <td>{{findMedian('sales')}}</td>
                           </tr>
                         </table>
                       </ng-container>
@@ -468,7 +453,7 @@
               <mat-step [stepControl]="fourthFormGroup" [editable]="isEditable">
                 <form [formGroup]="fourthFormGroup">
                   <section>
-                    <div>
+                    <div  *ngIf="isRelative == false">
                       <span class="h3">Valuation</span>
                       <p>
                         Valuation of a frm based on Proft loss and balance sheet
@@ -476,7 +461,7 @@
                       </p>
                       <span class="h3 m-0">Data</span>
                     </div>
-                    <ng-container *ngIf="isRelative == false" >
+                    <ng-container *ngIf="isRelative == false">
                       <div class="myTable">
                         <table class="text-nowrap mb-0">
                           <tr *ngFor="
@@ -494,11 +479,229 @@
                     <ng-container *ngIf="isRelative == true">
                       <table>
                         <tr>
-                          <td>Sr.No</td>
-                          <td> Particulars </td>
-                          <td>As on 31.03.2018</td>
-                          <td>As on 31.03.2018</td>
+                          <th colspan="2" style="border-right: none; text-align: left;">Valuation of CMM InfraProjects
+                            Ltd</th>
+                          <th colspan="2" style="border-left: none; text-align: left;">
+                            Amount (in INR)
+                          </th>
                         </tr>
+                        <tr>
+                          <th>Sr.No</th>
+                          <th style="min-width:300px">Particulars</th>
+                          <th>As on 31.03.2018</th>
+                          <th>As on 31.03.2018</th>
+                        </tr>
+                        <tr>
+                          <th></th>
+                          <th></th>
+                          <th>Average</th>
+                          <th>Median</th>
+                        </tr>
+                        <ng-container *ngFor="let item of valuationDataReport">
+                          <ng-container *ngIf="item.particular=='pbRatio'">
+                            <tr>
+                              <td>1</td>
+                              <td>P/B Ratio</td>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Net Worth of Company</td>
+                              <td>{{item.netWorthAvg}}</td>
+                              <td>{{item.netWorthMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Book Value per Share</td>
+                              <td>{{item.bookValueAvg}}</td>
+                              <td>{{item.bookValueMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>P/B Ratio of Industry</td>
+                              <td>{{item.pbRatioAvg}}</td>
+                              <td>{{item.pbRatioMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Market Price </td>
+                              <td>{{item.pbMarketPriceAvg}}</td>
+                              <td>{{item.pbMarketPriceMed}}</td>
+                            </tr>
+                            <tr style="height:40px;">
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                          </ng-container>
+                          <ng-container *ngIf="item.particular=='peRatio'">
+                            <tr>
+                              <td>2</td>
+                              <td>P/E Ratio</td>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>EPS</td>
+                              <td>{{item.epsAvg}}</td>
+                              <td>{{item.epsMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>P/E Ratio of Industry </td>
+                              <td>{{item.peRatioAvg}}</td>
+                              <td>{{item.peRatioMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Market Price </td>
+                              <td>{{item.peMarketPriceAvg}}</td>
+                              <td>{{item.peMarketPriceMed}}</td>
+                            </tr>
+                            <tr style="height:40px;">
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                          </ng-container>
+                          <ng-container *ngIf="item.particular=='ebitda'">
+                            <tr style="height:40px;">
+                              <td>3</td>
+                              <td> EV/EBITDA</td>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>EBITDA</td>
+                              <td>{{item.ebitdaAvg}}</td>
+                              <td>{{item.ebitdaMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>EV/EBITDA</td>
+                              <td>{{item.evAvg}}</td>
+                              <td>{{item.evMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Enterprise Value</td>
+                              <td>{{item.enterpriseAvg}}</td>
+                              <td>{{item.enterpriseMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Less : Value of Debt</td>
+                              <td>{{item.debtAvg}}</td>
+                              <td>{{item.debtMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Value of Equity</td>
+                              <td>{{item.ebitdaEquityAvg}}</td>
+                              <td>{{item.ebitdaEquityMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Market Price</td>
+                              <td>{{item.ebitdaMarketPriceAvg}}</td>
+                              <td>{{item.ebitdaMarketPriceMed}}</td>
+                            </tr>
+                            <tr style="height:40px;">
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                          </ng-container>
+                          <ng-container *ngIf="item.particular=='sales'">
+                            <tr>
+                              <td>4</td>
+                              <td>Price to Sale</td>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Sales of company (INR) </td>
+                              <td>{{item.salesAvg}}</td>
+                              <td>{{item.salesMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>P/S Ratio</td>
+                              <td>{{item.salesRatioAvg}}</td>
+                              <td>{{item.salesRatioMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Value of Equity</td>
+                              <td>{{item.salesEquityAvg}}</td>
+                              <td>{{item.salesEquityMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Market Price</td>
+                              <td>{{item.salesMarketPriceAvg}}</td>
+                              <td>{{item.salesMarketPriceMed}}</td>
+                            </tr>
+                            <tr style="height:40px;">
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                          </ng-container>
+                          <ng-container *ngIf="item.particular=='result'">
+                            <tr>
+                              <td></td>
+                              <td>Average Price per Share</td>
+                              <td>{{item.avgPricePerShareAvg}}</td>
+                              <td>{{item.avgPricePerShareMed}}</td>
+                            </tr>
+                            <tr style="height:40px;">
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Average </td>
+                              <td>{{item.averageAvg}}</td>
+                              <td>{{item.averageMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Less: Illiquidity Discount/size/lack of control </td>
+                              <td>{{item.locAvg}}</td>
+                              <td>{{item.locMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Final Price </td>
+                              <td>{{item.finalPriceAvg}}</td>
+                              <td>{{item.finalPriceMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Tentative Issue Price (Average of above) </td>
+                              <td colspan="2">{{item.tentativeIssuePrice}}</td>
+
+                            </tr>
+                            <br>
+
+
+
+
+
+
+                          </ng-container>
+                        </ng-container>
                       </table>
                     </ng-container>
                     <div class="d-flex align-items-end justify-content-between">
