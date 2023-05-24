@@ -27,7 +27,7 @@ menues :MENU[] =[
   {
     title: "Activity",
     link : "/dashboard/activity",
-    icon:"fa fa-hoursglass-2",
+    icon:"fa fa-clock-o",
   }
 ];
 sidebarClose(){

@@ -190,15 +190,15 @@ export class ValuationComponent implements OnInit {
           // const allebitda = this.companies.map((c: any) => c.ebitda);
           // const allsales = this.companies.map((c: any) => c.sales);
 
-          // this.companyAverage['peRatio'] = this.findAverage(allPeRatio);
-          // this.companyAverage['pbRatio'] = this.findAverage(allPbRatio);
-          // this.companyAverage['ebitda'] = this.findAverage(allebitda);
-          // this.companyAverage['sales'] = this.findAverage(allsales);
+          this.findAverage('peRatio');
+          this.findAverage('pbRatio');
+          this.findAverage('ebitda');
+          this.findAverage('sales');
 
-          // this.companyMedian['peRatio'] = this.findMedian(allPeRatio);
-          // this.companyMedian['peRatio'] = this.findMedian(allPeRatio);
-          // this.companyMedian['peRatio'] = this.findMedian(allPeRatio);
-          // this.companyMedian['peRatio'] = this.findMedian(allPeRatio);
+          this.findMedian('peRatio');
+          this.findMedian('pbRatio');
+          this.findMedian('ebitda');
+          this.findMedian('sales');
         });
       }
     );
@@ -450,9 +450,9 @@ export class ValuationComponent implements OnInit {
     const middleIndex = Math.floor(numbers.length / 2);
     const isEvenLength = numbers.length % 2 === 0;
     if (isEvenLength) {
-      return (numbers[middleIndex - 1] + numbers[middleIndex]) / 2;
+      this.companyMedian[type] = (numbers[middleIndex - 1] + numbers[middleIndex]) / 2;
     } else {
-      return numbers[middleIndex];
+      this.companyMedian[type] = numbers[middleIndex];
     }
   }
 
@@ -463,7 +463,8 @@ export class ValuationComponent implements OnInit {
       0
     );
     const average = sum / numbers.length;
-    return average;
+    // return average;
+    this.companyAverage[type] = average;
   }
   addCompany() {
     this.Companies.push(new FormControl(null));
