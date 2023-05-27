@@ -1,1 +1,25 @@
-<p>activity works!</p>
+<div class="row">
+  <div class="col">
+    <div class="card mt-4">
+      <h4 class="card-header">Activity</h4>
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <table class="table m-4">
+              <tr>
+                <td *ngFor="let item of columnName">{{item}}</td>       
+              </tr>
+              <tr *ngFor="let item of activity">
+                <td>{{ item.createdAt | date :"medium" }} </td>
+                <td>{{ item.company }}</td>
+                <td>{{ item.model }}</td>
+                <td>{{item.valuation}}</td>
+                <td><a target="_blank" [href]="getReport(item._id)">Get Report</a></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

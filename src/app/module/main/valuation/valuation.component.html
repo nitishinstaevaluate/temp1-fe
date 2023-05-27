@@ -1,0 +1,730 @@
+<div class="row">
+  <div class="col">
+    <div class="card mt-4">
+      <h4 class="card-header">Validation Form</h4>
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <mat-horizontal-stepper class="example-stepper" #stepper>
+              <mat-step [stepControl]="firstFormGroup" [editable]="isEditable">
+                <form [formGroup]="firstFormGroup">
+                  <section class="pt-5">
+                    <div class="row">
+                      <div class="col-6">
+                        <div class="control-group form-group">
+                          <label class="form-control-label" for="vDate">Valuation date</label>
+                          <i class="fa fa-exclamation-circle mx-3"
+                            ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                            placement="right"></i>
+                          <div class="input-group">
+                            <input class="form-control" placeholder="mm-dd-yyyy" name="dp" id="vDate"
+                              name="valuationDatef" formControlName="valuationDate" ngbDatepicker #d="ngbDatepicker" />
+                            <i class="fa fa-calendar btn btn-md btn-default lh-base" (click)="d.toggle()"></i>
+                          </div>
+                          <!--</button> -->
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="control-group form-group">
+                          <label class="form-control-label" for="cName">Company name</label>
+                          <i class="fa fa-exclamation-circle mx-3"
+                            ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                            placement="right"></i>
+                          <input class="form-control input-md" id="cName" name="company" formControlName="company"
+                            type="text" placeholder="Selected company name" />
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="control-group form-group">
+                          <label class="form-control-label" for="industry" id="industry"
+                            name="industry">Industry</label>
+                          <i class="fa fa-exclamation-circle mx-3"
+                            ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                            placement="right"></i>
+                          <ng-select formControlName="industry" class="select2 w-100"
+                            placeholder="Select industry name">
+                            <ng-option [value]="item.industry" *ngFor="let item of industries">{{ item.industry
+                              }}</ng-option>
+                          </ng-select>
+                        </div>
+                      </div>
+                      <div class="col-6" *ngIf="subIndustries.length">
+                        <div class="control-group form-group">
+                          <label class="form-control-label" for="subIndustry" id="subIndustry" name="subIndustry">Sub
+                            Industry</label>
+                          <i class="fa fa-exclamation-circle mx-3"
+                            ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                            placement="right"></i>
+                          <ng-select formControlName="subIndustry" class="select2 w-100"
+                            placeholder="Select subIndustry name">
+                            <ng-option [value]="item._id" *ngFor="let item of subIndustries">{{ item.subIndustry
+                              }}</ng-option>
+                          </ng-select>
+                        </div>
+                      </div>
+
+                      <div class="col-6">
+                        <div class="control-group form-group">
+                          <label class="form-control-label" for="pYears">Projection years</label>
+                          <input class="form-control input-md" name="projectionYear" formControlName="projectionYears"
+                            type="text" placeholder="Select projection years" />
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="control-group form-group">
+                          <label class="form-control-label" for="vModule" id="vModule" name="model">Valuation
+                            model</label>
+                          <i class="fa fa-exclamation-circle mx-3"
+                            ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                            placement="right"></i>
+                          <ng-select class="select2 w-100" dropdownPosition="top" required
+                            placeholder="Select valuation model" formControlName="model">
+                            <ng-option selected="selected" disabled>
+                              Select Valuation
+                            </ng-option>
+                            <ng-option [value]="item.type" *ngFor="let item of valuationM">{{ item.label }}</ng-option>
+                          </ng-select>
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="form-group form-elements mt-0">
+                          <div class="custom-controls-stacked d-flex">
+                            <label class="custom-control custom-radio">
+                              <input type="radio" class="custom-control-input" name="example-radios" value="option1"
+                                checked />
+                              <span class="custom-control-label">Growing concern</span>
+                            </label>
+                            <label class="custom-control custom-radio mx-2">
+                              <input type="radio" class="custom-control-input" name="example-radios" value="option2" />
+                              <span class="custom-control-label">Finite projection</span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+
+                  <div>
+                    <button class="btn btn-primary mt-2" matStepperNext>
+                      Next
+                    </button>
+                  </div>
+                </form>
+              </mat-step>
+              <mat-step [stepControl]="secondFormGroup" [editable]="isEditable">
+                <form [formGroup]="secondFormGroup">
+                  <section>
+                    <div class="row mb-3">
+                      <div class="col-9">
+                        <div>
+                          <!-- <input type="file" title="Input file" class="form-control  form-file-input"
+                            name="form-file-input" (change)="onFileSelected($event)" /> -->
+                          <div class="card-body">
+                            <ngx-dropzone (change)="onFileSelected($event)">
+                              <ngx-dropzone-label>Drag and dropa file Here!</ngx-dropzone-label>
+                              <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
+                                <ngx-dropzone-label>{{ f.name }} </ngx-dropzone-label>
+                              </ngx-dropzone-preview>
+                            </ngx-dropzone>
+                            <!-- <input type="file" class="dropify" data-height="300" /> -->
+                          </div>
+                        </div>
+                        <!-- <div class="control-group form-group">
+                          <label class="form-control-label" for="name">User Name</label>
+                          <input class="form-control " [ngModelOptions]="{ standalone: true }" ngModel #name="ngModel"
+                            id="name1" name="name" type="file" placeholder="User Name" />
+                        </div> -->
+                      </div>
+                      <div class="col-1"></div>
+                      <div class="col-2 templateC d-flex align-items-center">
+                        <a [ngClass]="{
+                            'user-select-none': isDownloadAllow == false
+                          }" class="btn h4 btn-secondary text-white" [href]="downloadTemplate" target="_blank">
+                          <i class="fa fa-download mx-2"></i>XLS
+                        </a>
+                      </div>
+
+                      <ng-container *ngIf="isRelative == true && companies.length">
+                        <div class="col-12">
+                          <div class="form-group form-elements">
+                            <div class="custom-controls-stacked d-flex">
+                              <label class="custom-control custom-radio mx-5">
+                                <input [formControlName]="'type'" type="radio" class="custom-control-input" name="type"
+                                  value="manual" checked />
+                                <span class="custom-control-label">Manual</span>
+                              </label>
+                              <label class="custom-control custom-radio">
+                                <input formControlName="type" type="radio" class="custom-control-input" name="type"
+                                  value="automatic" />
+                                <span class="custom-control-label">Automatic</span>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                        <ng-container formArrayName="companies">
+
+                          <ng-container *ngFor="let c of Companies.controls;let i = index">
+
+                            <div class="col-6">
+                              <div class="control-group form-group">
+                                <label class="form-control-label" for="company" id="company" name="company">Company
+                                  Details</label>
+                                <i class="fa fa-exclamation-circle mx-3"
+                                  ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                                  placement="right"></i>
+                                <ng-select [formControlName]="i" class="select2 w-100" placeholder="Select company">
+                                  <ng-option [value]="item._id" *ngFor="let item of companies">{{ item.company
+                                    }}</ng-option>
+                                </ng-select>
+                              </div>
+                            </div>
+                            <div class="col-6">
+
+                              <i *ngIf="i >2" class="fa fa-minus-circle text-danger rmvcmp " (click)="removeCmp(i)"></i>
+                            </div>
+                          </ng-container>
+                        </ng-container>
+                        <!--  -->
+                        <div class="col-6 d-flex justify-content-center h4">
+                          <i class="fa fa-plus-circle text-success" *ngIf="companies.length" (click)="addCompany()"></i>
+                        </div>
+                      </ng-container>
+                    </div>
+                    <div class="row">
+                      <ng-container *ngIf="isRelative == false">
+                        <div class="col-6">
+                          <div class="control-group form-group">
+                            <label class="form-control-label" for="noOfOutstandingShares">No. of outstanding
+                              shares</label>
+                            <i class="fa fa-exclamation-circle mx-3"
+                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                              placement="right"></i>
+
+                            <input class="form-control input-md" formControlName="outstandingShares"
+                              name="outstandingShares" type="text" placeholder="No.of outstanding shares" />
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="control-group form-group">
+                            <label class="form-control-label" for="tRate">Tax rate</label>
+                            <i class="fa fa-exclamation-circle mx-3"
+                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                              placement="right"></i>
+                            <ng-select class="select2 w-100" placeholder=" Select tax rate"
+                              formControlName="taxRateType">
+                              <ng-option [value]="item.type" *ngFor="let item of taxR">{{ item.label }}</ng-option>
+                            </ng-select>
+                            {{ EnteredTaXRate }}
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="control-group form-group">
+                            <label class="form-control-label" for="dRate">Discount rate</label>
+                            <i class="fa fa-exclamation-circle mx-3"
+                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                              placement="right"></i>
+                            <ng-select class="select2 w-100" placeholder="Select discount rate"
+                              formControlName="discountRate">
+                              <ng-option [value]="item.type" *ngFor="let item of discountR">{{ item.label }}</ng-option>
+                            </ng-select>
+                          </div>
+                        </div>
+                        <div class="col-6" *ngIf="isTerminalShow">
+                          <div class="control-group form-group">
+                            <label class="form-control-label" for="tGrowthRate">Terminal growth rate</label>
+                            <i class="fa fa-exclamation-circle mx-3"
+                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                              placement="right"></i>
+                            <ng-select class="select2 w-100" placeholder="Select discount rate"
+                              formControlName="terminalGrowthRate">
+                              <ng-option [value]="item.rate" *ngFor="let item of growthR">{{ item.rate }}</ng-option>
+                            </ng-select>
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="control-group form-group">
+                            <label class="form-control-label" for="equityMethod">Discounting period</label>
+                            <i class="fa fa-exclamation-circle mx-3"
+                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                              placement="right"></i>
+                            <ng-select class="select2 w-100" placeholder="Select cost of equity method"
+                              formControlName="discountingPeriod">
+                              <ng-option value="Full_Period">Full Period
+                              </ng-option>
+                              <ng-option value="Mid_Period">Mid Period
+                              </ng-option>
+                            </ng-select>
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="control-group form-group">
+                            <label class="form-control-label" for="equityMethod">Cost of equity method</label>
+                            <i class="fa fa-exclamation-circle mx-3"
+                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                              placement="right"></i>
+                            <ng-select class="select2 w-100" placeholder="Select cost of equity method"
+                              formControlName="coeMethod">
+                              <ng-option [value]="item.type" *ngFor="let item of equityM">{{ item.label }}</ng-option>
+                            </ng-select>
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="control-group form-group">
+                            <label class="form-control-label" for="riskFreeRate">Risk free rate</label>
+                            <i class="fa fa-exclamation-circle mx-3"
+                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                              placement="right"></i>
+                            <ng-select dropdownPosition="top" class="select2 w-100" placeholder="Select Risk free rate"
+                              formControlName="riskFreeRateType">
+                              <ng-option *ngFor="let item of riskF" [value]="item.type">{{ item.label }}</ng-option>
+                            </ng-select>
+                            {{ riskRate }}
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="control-group form-group">
+                            <label class="form-control-label" for="marketReturn">Expected market return</label>
+                            <i class="fa fa-exclamation-circle mx-3"
+                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                              placement="right"></i>
+                            <ng-select class="select2 w-100" placeholder="Select expected market return"
+                              formControlName="expMarketReturnType">
+                              <ng-option [value]="item.type" *ngFor="let item of marketE">{{ item.label }}</ng-option>
+                            </ng-select>
+                          </div>
+                        </div>
+                      </ng-container>
+                    </div>
+                  </section>
+                  <div>
+                    <div>
+                      <button class="btn btn-danger me-2" matStepperPrevious>
+                        Back
+                      </button>
+                      <button class="btn btn-primary me-2" matStepperNext>
+                        Next
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </mat-step>
+              <mat-step [stepControl]="thirdFormGroup" [editable]="isEditable">
+                <form [formGroup]="thirdFormGroup">
+                  <section class="pt-5">
+                    <div class="row overflow-auto">
+                      <ng-container *ngIf="isRelative == false">
+                        <div class="col-6">
+                          <div class="control-group form-group">
+                            <label class="form-control-label" for="cName">Beta</label>
+                            <i class="fa fa-exclamation-circle mx-3"
+                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                              placement="right"></i>
+                            <ng-select class="select2 w-100" placeholder="Select beta" formControlName="beta">
+                              <ng-option [value]="item.type" *ngFor="let item of betaS">{{ item.label }}</ng-option>
+                            </ng-select>
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="control-group form-group">
+                            <label class="form-control-label" for="cName">Company specific risk premium</label>
+                            <i class="fa fa-exclamation-circle mx-3"
+                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                              placement="right"></i>
+                            <ng-select class="select2 w-100" placeholder="Select Company Specific Risk Premium "
+                              formControlName="riskPremium">
+                              <ng-option [value]="item.riskPremium" *ngFor="let item of rPremium">{{ item.riskPremium
+                                }}</ng-option>
+                            </ng-select>
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="control-group form-group">
+                            <label class="form-control-label" for="cName">Cost of preference share capital</label>
+                            <i class="fa fa-exclamation-circle mx-3"
+                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                              placement="right"></i>
+                            <ng-select class="select2 w-100" placeholder="Select cost of Preference Share Capital"
+                              formControlName="copShareCapitalType">
+                              <ng-option [value]="item.type" *ngFor="let item of preShaCap">{{ item.label }}</ng-option>
+                            </ng-select>
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="control-group form-group">
+                            <label class="form-control-label" for="cName">Cost of debt</label>
+                            <i class="fa fa-exclamation-circle mx-3"
+                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                              placement="right"></i>
+                            <ng-select class="select2 w-100" placeholder="Select cost of debt "
+                              formControlName="costOfDebt">
+                              <ng-option *ngFor="let item of debt" [value]="item.type">{{ item.label }}</ng-option>
+                            </ng-select>
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="control-group form-group">
+                            <label class="form-control-label" for="cName">Capital structure</label>
+                            <i class="fa fa-exclamation-circle mx-3"
+                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                              placement="right"></i>
+                            <ng-select class="select2 w-100" placeholder="Select capital structure"
+                              formControlName="capitalStructure">
+                              <ng-option [value]="item.label" *ngFor="let item of cStructure">{{ item.type
+                                }}</ng-option>
+                            </ng-select>
+                            <hr class="m-2" />
+                            <p>
+                              <b>Note :</b> If company based then show a text
+                              which will get calculated value, If industry based
+                              then value is derived from external service
+                            </p>
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="control-group form-group">
+                            <label class="form-control-label" for="cName">Proportion of preference share capital</label>
+                            <i class="fa fa-exclamation-circle mx-3"
+                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                              placement="right"></i>
+                            <ng-select class="select2 w-100"
+                              placeholder="Select Proportion of Preference Share Capital ">
+                              <ng-option [value]="item.type" *ngFor="let item of pppShareCaptial">{{ item.label
+                                }}</ng-option>
+                            </ng-select>
+                          </div>
+                        </div>
+                      </ng-container>
+                      <ng-container *ngIf="isRelative == true">
+                        <table style="width:100%" class="table m-4">
+                          <tr>
+                            <td>Sr.No</td>
+                            <td>Name</td>
+                            <td>P/E Ratio as on Valuation Date</td>
+                            <td>P/B Ratio as on Valuation Date</td>
+                            <td>EV/EBITDA as on Valuation Date</td>
+                            <td>Valuation Date Price/Sales Valuation Date</td>
+                          </tr>
+                          <tr *ngFor="let item of companies; let i = index">
+                            <td>{{i + 1}}</td>
+                            <td>{{item.company}}</td>
+                            <td><input type="number" [(ngModel)]="companies[i].peRatio" [value]="companies[i].peRatio"
+                                [ngModelOptions]="{standalone: true}"
+                                (ngModelChange)="findAverage('peRatio');findMedian('peRatio')"></td>
+                            <td><input type="number" [(ngModel)]="companies[i].pbRatio" [value]="companies[i].pbRatio"
+                                [ngModelOptions]="{standalone: true}"
+                                (ngModelChange)="findAverage('pbRatio');findMedian('pbRatio')"></td>
+                            <td><input type="number" [(ngModel)]="companies[i].ebitda" [value]="companies[i].ebitda"
+                                [ngModelOptions]="{standalone: true}"
+                                (ngModelChange)="findAverage('ebitda');findMedian('ebitda')"></td>
+                            <td><input type="number" [(ngModel)]="companies[i].sales" [value]="companies[i].sales"
+                                [ngModelOptions]="{standalone: true}"
+                                (ngModelChange)="findAverage('sales');findMedian('sales')"></td>
+                          </tr>
+                          <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                          </tr>
+                          <tr>
+                            <td></td>
+                            <td>Average</td>
+                            <td>{{companyAverage['peRatio'] | number: '1.2-2'}}</td>
+                            <td>{{companyAverage['pbRatio'] | number: '1.2-2'}}</td>
+                            <td>{{companyAverage['ebitda'] | number: '1.2-2'}}</td>
+                            <td>{{companyAverage['sales'] | number: '1.2-2'}}</td>
+                          </tr>
+                          <tr>
+                            <td></td>
+                            <td>Median </td>
+                            <td>{{companyMedian['peRatio'] | number: '1.2-2'}}</td>
+                            <td>{{companyMedian['pbRatio'] | number: '1.2-2'}}</td>
+                            <td>{{companyMedian['ebitda'] | number: '1.2-2'}}</td>
+                            <td>{{companyMedian['sales'] | number: '1.2-2'}}</td>
+                          </tr>
+                        </table>
+                      </ng-container>
+                    </div>
+                    <p class="text-danger">{{ errorMsg }}</p>
+                  </section>
+                  <div>
+                    <button class="btn btn-danger me-2" matStepperPrevious>
+                      Back
+                    </button>
+                    <button [disabled]="!checkValidForm" class="btn btn-primary me-2" (click)="submitForm(stepper)">
+                      Next
+                    </button>
+                  </div>
+                </form>
+              </mat-step>
+              <mat-step [stepControl]="fourthFormGroup" [editable]="isEditable">
+                <form [formGroup]="fourthFormGroup">
+                  <section>
+                    <div *ngIf="isRelative == false">
+                      <span class="h3">Valuation</span>
+                      <p>
+                        Valuation of a frm based on Proft loss and balance sheet
+                        statements.
+                      </p>
+                      <span class="h3 m-0">Data</span>
+                    </div>
+                    <ng-container *ngIf="isRelative == false">
+                      <div class="myTable">
+                        <table class="text-nowrap mb-0">
+                          <tr *ngFor="
+                              let item of valuationDataReport;
+                              let inx = index
+                            ">
+                            <th class="headcol">{{ tableHeading[inx] }}</th>
+                            <td *ngFor="let item of valuationDataReport[inx]">
+                              {{ item }}
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </ng-container>
+                    <ng-container *ngIf="isRelative == true">
+                      <table>
+                        <tr>
+                          <th colspan="2" style="border-right: none; text-align: left;">Valuation of CMM InfraProjects
+                            Ltd</th>
+                          <th colspan="2" style="border-left: none; text-align: left;">
+                            Amount (in INR)
+                          </th>
+                        </tr>
+                        <tr>
+                          <th>Sr.No</th>
+                          <th style="min-width:300px">Particulars</th>
+                          <th>As on 31.03.2018</th>
+                          <th>As on 31.03.2018</th>
+                        </tr>
+                        <tr>
+                          <th></th>
+                          <th></th>
+                          <th>Average</th>
+                          <th>Median</th>
+                        </tr>
+                        <ng-container *ngFor="let item of valuationDataReport">
+                          <ng-container *ngIf="item.particular=='pbRatio'">
+                            <tr>
+                              <td>1</td>
+                              <td>P/B Ratio</td>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Net Worth of Company</td>
+                              <td>{{item.netWorthAvg}}</td>
+                              <td>{{item.netWorthMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Book Value per Share</td>
+                              <td>{{item.bookValueAvg}}</td>
+                              <td>{{item.bookValueMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>P/B Ratio of Industry</td>
+                              <td>{{item.pbRatioAvg}}</td>
+                              <td>{{item.pbRatioMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Market Price </td>
+                              <td>{{item.pbMarketPriceAvg}}</td>
+                              <td>{{item.pbMarketPriceMed}}</td>
+                            </tr>
+                            <tr style="height:40px;">
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                          </ng-container>
+                          <ng-container *ngIf="item.particular=='peRatio'">
+                            <tr>
+                              <td>2</td>
+                              <td>P/E Ratio</td>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>EPS</td>
+                              <td>{{item.epsAvg}}</td>
+                              <td>{{item.epsMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>P/E Ratio of Industry </td>
+                              <td>{{item.peRatioAvg}}</td>
+                              <td>{{item.peRatioMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Market Price </td>
+                              <td>{{item.peMarketPriceAvg}}</td>
+                              <td>{{item.peMarketPriceMed}}</td>
+                            </tr>
+                            <tr style="height:40px;">
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                          </ng-container>
+                          <ng-container *ngIf="item.particular=='ebitda'">
+                            <tr style="height:40px;">
+                              <td>3</td>
+                              <td> EV/EBITDA</td>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>EBITDA</td>
+                              <td>{{item.ebitdaAvg}}</td>
+                              <td>{{item.ebitdaMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>EV/EBITDA</td>
+                              <td>{{item.evAvg}}</td>
+                              <td>{{item.evMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Enterprise Value</td>
+                              <td>{{item.enterpriseAvg}}</td>
+                              <td>{{item.enterpriseMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Less : Value of Debt</td>
+                              <td>{{item.debtAvg}}</td>
+                              <td>{{item.debtMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Value of Equity</td>
+                              <td>{{item.ebitdaEquityAvg}}</td>
+                              <td>{{item.ebitdaEquityMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Market Price</td>
+                              <td>{{item.ebitdaMarketPriceAvg}}</td>
+                              <td>{{item.ebitdaMarketPriceMed}}</td>
+                            </tr>
+                            <tr style="height:40px;">
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                          </ng-container>
+                          <ng-container *ngIf="item.particular=='sales'">
+                            <tr>
+                              <td>4</td>
+                              <td>Price to Sale</td>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Sales of company (INR) </td>
+                              <td>{{item.salesAvg}}</td>
+                              <td>{{item.salesMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>P/S Ratio</td>
+                              <td>{{item.salesRatioAvg}}</td>
+                              <td>{{item.salesRatioMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Value of Equity</td>
+                              <td>{{item.salesEquityAvg}}</td>
+                              <td>{{item.salesEquityMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Market Price</td>
+                              <td>{{item.salesMarketPriceAvg}}</td>
+                              <td>{{item.salesMarketPriceMed}}</td>
+                            </tr>
+                            <tr style="height:40px;">
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                          </ng-container>
+                          <ng-container *ngIf="item.particular=='result'">
+                            <tr>
+                              <td></td>
+                              <td>Average Price per Share</td>
+                              <td>{{item.avgPricePerShareAvg}}</td>
+                              <td>{{item.avgPricePerShareMed}}</td>
+                            </tr>
+                            <tr style="height:40px;">
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Average </td>
+                              <td>{{item.averageAvg}}</td>
+                              <td>{{item.averageMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Less: Illiquidity Discount/size/lack of control </td>
+                              <td>{{item.locAvg}}</td>
+                              <td>{{item.locMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Final Price </td>
+                              <td>{{item.finalPriceAvg}}</td>
+                              <td>{{item.finalPriceMed}}</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Tentative Issue Price (Average of above) </td>
+                              <td colspan="2">{{item.tentativeIssuePrice}}</td>
+
+                            </tr>
+                            <br>
+
+
+
+
+
+
+                          </ng-container>
+                        </ng-container>
+                      </table>
+                    </ng-container>
+                    <div class="d-flex align-items-end justify-content-between">
+                      <button class="btn btn-danger my-2" matStepperPrevious>
+                        Back
+                      </button>
+                      <a class="btn btn-info my-2" [href]="exportResult">Export Result</a>
+                    </div>
+                  </section>
+                </form>
+              </mat-step>
+            </mat-horizontal-stepper>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

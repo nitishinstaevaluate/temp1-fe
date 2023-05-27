@@ -10,6 +10,10 @@ import { MaterialModuleModule } from './shared/material-module.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { NgxDropzoneModule } from 'ngx-dropzone';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
+
+
 
 
 
@@ -22,7 +26,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     AngularFireAuthModule,NgSelectModule,
     SharedModule,
     MaterialModuleModule,
-    BrowserAnimationsModule,HttpClientModule
+    BrowserAnimationsModule,HttpClientModule,NgxDropzoneModule,NgxSliderModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

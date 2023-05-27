@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ActivityComponent } from './activity/activity.component';
-import { ValutionComponent } from './valution/valution.component';
+import { ValuationComponent } from './valuation/valuation.component';
 
 const routes: Routes = [
   {
     path : "",
-    component : ValutionComponent
+    component : ValuationComponent
   },
   {
     path : "activity",

@@ -37,7 +37,9 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
       >
         Close
       </button>
-      <button class="btn  btn-primary" type="button" (click)="close()">Save</button>
+      <button class="btn  btn-primary" type="button" (click)="close()">
+        Save
+      </button>
     </div>
   </div>`,
 
@@ -45,13 +47,10 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class UserInputComponent {
   @Input() modalTitle: any = '';
-  userValue: any = ''
-  constructor(public modal: NgbActiveModal) {
-
-  }
+  userValue: any = '';
+  constructor(public modal: NgbActiveModal) { }
 
   close() {
-    this.modal.close(this.userValue)
+    this.modal.close(this.userValue);
   }
-
 }
