@@ -131,3 +131,21 @@ table > thead > tr th{
 .table :first-child{
   border: 1px solid currentColor !important;
 }
+
+.head-wrapper {
+  width: 15%;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  text-align: center;
+}
+
+.name-wrapper {
+  width: 30%;
+  padding: 10px;
+  text-align: center;
+}
+
+.sl-wrapper {
+  width: 6%;
+  padding: 10px !important;
+}
