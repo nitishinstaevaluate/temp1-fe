@@ -123,7 +123,8 @@
                             <ngx-dropzone (change)="onFileSelected($event)">
                               <ngx-dropzone-label>Drag and dropa file Here!</ngx-dropzone-label>
                               <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
-                                <ngx-dropzone-label>{{ f.name }} </ngx-dropzone-label>
+                                <ngx-dropzone-label>{{ f.name }}
+                                </ngx-dropzone-label>
                               </ngx-dropzone-preview>
                             </ngx-dropzone>
                             <!-- <input type="file" class="dropify" data-height="300" /> -->
@@ -143,7 +144,22 @@
                           <i class="fa fa-download mx-2"></i>XLS
                         </a>
                       </div>
+                      <ng-container *ngIf="isRelative==true">
+                        <div class="col-6">
+                          <div class="control-group form-group">
+                            <label class="form-control-label" for="noOfOutstandingShares">No. of outstanding
+                              shares</label>
+                            <i class="fa fa-exclamation-circle mx-3"
+                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                              placement="right"></i>
 
+                            <input class="form-control input-md" formControlName="outstandingShares"
+                              name="outstandingShares" type="text" placeholder="No.of outstanding shares" />
+                          </div>
+                        </div>
+                        <div class="col-6"></div>
+                      </ng-container>
+                      
                       <ng-container *ngIf="isRelative == true && companies.length">
                         <div class="col-12">
                           <div class="form-group form-elements">
@@ -162,9 +178,7 @@
                           </div>
                         </div>
                         <ng-container formArrayName="companies">
-
-                          <ng-container *ngFor="let c of Companies.controls;let i = index">
-
+                          <ng-container *ngFor="let c of Companies.controls; let i = index;let last = last">
                             <div class="col-6">
                               <div class="control-group form-group">
                                 <label class="form-control-label" for="company" id="company" name="company">Company
@@ -179,14 +193,16 @@
                               </div>
                             </div>
                             <div class="col-6">
+                              <div class="d-flex">
 
-                              <i *ngIf="i >2" class="fa fa-minus-circle text-danger rmvcmp " (click)="removeCmp(i)"></i>
+                                <i *ngIf="i > 2" class="fa fa-minus-circle text-danger rmvcmp" (click)="removeCmp(i)"></i>
+                                <i   class="fa fa-plus-circle text-success rmvcmp mx-2 " *ngIf="companies.length && last" (click)="addCompany()"></i>
+                              </div>
                             </div>
                           </ng-container>
                         </ng-container>
                         <!--  -->
                         <div class="col-6 d-flex justify-content-center h4">
-                          <i class="fa fa-plus-circle text-success" *ngIf="companies.length" (click)="addCompany()"></i>
                         </div>
                       </ng-container>
                     </div>
@@ -291,6 +307,7 @@
                               formControlName="expMarketReturnType">
                               <ng-option [value]="item.type" *ngFor="let item of marketE">{{ item.label }}</ng-option>
                             </ng-select>
+                            {{anaConEst}}
                           </div>
                         </div>
                       </ng-container>
@@ -319,7 +336,7 @@
                             <i class="fa fa-exclamation-circle mx-3"
                               ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
                               placement="right"></i>
-                            <ng-select class="select2 w-100" placeholder="Select beta" formControlName="beta">
+                            <ng-select class="select2 w-100" placeholder="Select beta" formControlName="betaType">
                               <ng-option [value]="item.type" *ngFor="let item of betaS">{{ item.label }}</ng-option>
                             </ng-select>
                           </div>
@@ -356,7 +373,7 @@
                               ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
                               placement="right"></i>
                             <ng-select class="select2 w-100" placeholder="Select cost of debt "
-                              formControlName="costOfDebt">
+                              formControlName="costOfDebtType">
                               <ng-option *ngFor="let item of debt" [value]="item.type">{{ item.label }}</ng-option>
                             </ng-select>
                           </div>
@@ -368,9 +385,8 @@
                               ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
                               placement="right"></i>
                             <ng-select class="select2 w-100" placeholder="Select capital structure"
-                              formControlName="capitalStructure">
-                              <ng-option [value]="item.label" *ngFor="let item of cStructure">{{ item.type
-                                }}</ng-option>
+                              formControlName="capitalStructureType">
+                              <ng-option [value]="item.type" *ngFor="let item of cStructure">{{ item.type }}</ng-option>
                             </ng-select>
                             <hr class="m-2" />
                             <p>
@@ -386,7 +402,7 @@
                             <i class="fa fa-exclamation-circle mx-3"
                               ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
                               placement="right"></i>
-                            <ng-select class="select2 w-100"
+                            <ng-select class="select2 w-100" formControlName="popShareCapitalType"
                               placeholder="Select Proportion of Preference Share Capital ">
                               <ng-option [value]="item.type" *ngFor="let item of pppShareCaptial">{{ item.label
                                 }}</ng-option>
@@ -395,54 +411,84 @@
                         </div>
                       </ng-container>
                       <ng-container *ngIf="isRelative == true">
-                        <table style="width:100%" class="table m-4">
-                          <tr>
-                            <td>Sr.No</td>
-                            <td>Name</td>
-                            <td>P/E Ratio as on Valuation Date</td>
-                            <td>P/B Ratio as on Valuation Date</td>
-                            <td>EV/EBITDA as on Valuation Date</td>
-                            <td>Valuation Date Price/Sales Valuation Date</td>
-                          </tr>
-                          <tr *ngFor="let item of companies; let i = index">
-                            <td>{{i + 1}}</td>
-                            <td>{{item.company}}</td>
-                            <td><input type="number" [(ngModel)]="companies[i].peRatio" [value]="companies[i].peRatio"
-                                [ngModelOptions]="{standalone: true}"
-                                (ngModelChange)="findAverage('peRatio');findMedian('peRatio')"></td>
-                            <td><input type="number" [(ngModel)]="companies[i].pbRatio" [value]="companies[i].pbRatio"
-                                [ngModelOptions]="{standalone: true}"
-                                (ngModelChange)="findAverage('pbRatio');findMedian('pbRatio')"></td>
-                            <td><input type="number" [(ngModel)]="companies[i].ebitda" [value]="companies[i].ebitda"
-                                [ngModelOptions]="{standalone: true}"
-                                (ngModelChange)="findAverage('ebitda');findMedian('ebitda')"></td>
-                            <td><input type="number" [(ngModel)]="companies[i].sales" [value]="companies[i].sales"
-                                [ngModelOptions]="{standalone: true}"
-                                (ngModelChange)="findAverage('sales');findMedian('sales')"></td>
-                          </tr>
-                          <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                          </tr>
-                          <tr>
-                            <td></td>
-                            <td>Average</td>
-                            <td>{{companyAverage['peRatio'] | number: '1.2-2'}}</td>
-                            <td>{{companyAverage['pbRatio'] | number: '1.2-2'}}</td>
-                            <td>{{companyAverage['ebitda'] | number: '1.2-2'}}</td>
-                            <td>{{companyAverage['sales'] | number: '1.2-2'}}</td>
-                          </tr>
-                          <tr>
-                            <td></td>
-                            <td>Median </td>
-                            <td>{{companyMedian['peRatio'] | number: '1.2-2'}}</td>
-                            <td>{{companyMedian['pbRatio'] | number: '1.2-2'}}</td>
-                            <td>{{companyMedian['ebitda'] | number: '1.2-2'}}</td>
-                            <td>{{companyMedian['sales'] | number: '1.2-2'}}</td>
-                          </tr>
+
+
+                        <!-- <table class="table border card-table table-vcenter text-nowrap table-primary align-items-center">
+                          <thead class="bg-primary text-white"> -->
+                        
+                        <table style="table-layout: fixed;" class="table card-table table-vcenter text-nowrap table-primary align-items-center ">
+                          <thead class="text-white">
+                            <tr>
+                              <th style="width: 50px">Sr.No</th>
+                              <th>Name</th>
+                              <th style="width: 100px">P/E Ratio as on Valuation Date</th>
+                              <th style="width: 100px">P/B Ratio as on Valuation Date</th>
+                              <th style="width: 100px">EV/EBITDA as on Valuation Date</th>
+                              <th style="width: 100px">Valuation Date Price/Sales Valuation Date</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let item of companies; let i = index">
+                              <td>{{ i + 1 }}</td>
+                              <td>{{ item.company }}</td>
+                              <td style="width: 100px">
+                                <input type="number" [(ngModel)]="companies[i].peRatio" [value]="companies[i].peRatio"
+                                  [ngModelOptions]="{ standalone: true }" (ngModelChange)="
+                                    findAverage('peRatio'); findMedian('peRatio')
+                                  " />
+                              </td>
+                              <td style="width: 100px">
+                                <input type="number" [(ngModel)]="companies[i].pbRatio" [value]="companies[i].pbRatio"
+                                  [ngModelOptions]="{ standalone: true }" (ngModelChange)="
+                                    findAverage('pbRatio'); findMedian('pbRatio')
+                                  " />
+                              </td>
+                              <td  style="width: 100px">
+                                <input type="number" [(ngModel)]="companies[i].ebitda" [value]="companies[i].ebitda"
+                                  [ngModelOptions]="{ standalone: true }" (ngModelChange)="
+                                    findAverage('ebitda'); findMedian('ebitda')
+                                  " />
+                              </td>
+                              <td style="width: 100px">
+                                <input type="number" [(ngModel)]="companies[i].sales" [value]="companies[i].sales"
+                                  [ngModelOptions]="{ standalone: true }" (ngModelChange)="
+                                    findAverage('sales'); findMedian('sales')
+                                  " />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Average</td>
+                              <td>
+                                {{ companyAverage["peRatio"] | number : "1.2-2" }}
+                              </td>
+                              <td>
+                                {{ companyAverage["pbRatio"] | number : "1.2-2" }}
+                              </td>
+                              <td>
+                                {{ companyAverage["ebitda"] | number : "1.2-2" }}
+                              </td>
+                              <td>
+                                {{ companyAverage["sales"] | number : "1.2-2" }}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Median</td>
+                              <td>
+                                {{ companyMedian["peRatio"] | number : "1.2-2" }}
+                              </td>
+                              <td>
+                                {{ companyMedian["pbRatio"] | number : "1.2-2" }}
+                              </td>
+                              <td>
+                                {{ companyMedian["ebitda"] | number : "1.2-2" }}
+                              </td>
+                              <td>
+                                {{ companyMedian["sales"] | number : "1.2-2" }}
+                              </td>
+                            </tr>
+                          </tbody>
                         </table>
                       </ng-container>
                     </div>
@@ -471,7 +517,7 @@
                     </div>
                     <ng-container *ngIf="isRelative == false">
                       <div class="myTable">
-                        <table class="text-nowrap mb-0">
+                        <table id="valuationTable" class="text-nowrap mb-0">
                           <tr *ngFor="
                               let item of valuationDataReport;
                               let inx = index
@@ -485,17 +531,69 @@
                       </div>
                     </ng-container>
                     <ng-container *ngIf="isRelative == true">
-                      <table>
+                        <table class="table w-100 mt-1">
+                          <tr>
+                            <td>Sr.No</td>
+                            <td>Name</td>
+                            <td>P/E Ratio as on Valuation Date</td>
+                            <td>P/B Ratio as on Valuation Date</td>
+                            <td>EV/EBITDA as on Valuation Date</td>
+                            <td>Valuation Date Price/Sales Valuation Date</td>
+                          </tr>
+                          <tr *ngFor="let item of companies; let i = index">
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ item.company }}</td>
+                            <td>{{ item.peRatio }}</td>
+                            <td>{{ item.pbRatio }}</td>
+                            <td>{{ item.ebitda }}</td>
+                            <td>{{ item.sales }}</td>
+                          </tr>
+                          
+                          <tr>
+                            <td></td>
+                            <td>Average</td>
+                            <td>
+                              {{ companyAverage["peRatio"] | number : "1.2-2" }}
+                            </td>
+                            <td>
+                              {{ companyAverage["pbRatio"] | number : "1.2-2" }}
+                            </td>
+                            <td>
+                              {{ companyAverage["ebitda"] | number : "1.2-2" }}
+                            </td>
+                            <td>
+                              {{ companyAverage["sales"] | number : "1.2-2" }}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td></td>
+                            <td>Median</td>
+                            <td>
+                              {{ companyMedian["peRatio"] | number : "1.2-2" }}
+                            </td>
+                            <td>
+                              {{ companyMedian["pbRatio"] | number : "1.2-2" }}
+                            </td>
+                            <td>
+                              {{ companyMedian["ebitda"] | number : "1.2-2" }}
+                            </td>
+                            <td>
+                              {{ companyMedian["sales"] | number : "1.2-2" }}
+                            </td>
+                          </tr>
+                        </table>
+                        <table class="table w-100">
                         <tr>
-                          <th colspan="2" style="border-right: none; text-align: left;">Valuation of CMM InfraProjects
-                            Ltd</th>
-                          <th colspan="2" style="border-left: none; text-align: left;">
+                          <th colspan="2" style="border-right: none; text-align: left">
+                            Valuation of CMM InfraProjects Ltd
+                          </th>
+                          <th colspan="2" style="border-left: none; text-align: left">
                             Amount (in INR)
                           </th>
                         </tr>
                         <tr>
                           <th>Sr.No</th>
-                          <th style="min-width:300px">Particulars</th>
+                          <th style="min-width: 300px">Particulars</th>
                           <th>As on 31.03.2018</th>
                           <th>As on 31.03.2018</th>
                         </tr>
@@ -506,7 +604,7 @@
                           <th>Median</th>
                         </tr>
                         <ng-container *ngFor="let item of valuationDataReport">
-                          <ng-container *ngIf="item.particular=='pbRatio'">
+                          <ng-container *ngIf="item.particular == 'pbRatio'">
                             <tr>
                               <td>1</td>
                               <td>P/B Ratio</td>
@@ -516,35 +614,35 @@
                             <tr>
                               <td></td>
                               <td>Net Worth of Company</td>
-                              <td>{{item.netWorthAvg}}</td>
-                              <td>{{item.netWorthMed}}</td>
+                              <td>{{ item.netWorthAvg }}</td>
+                              <td>{{ item.netWorthMed }}</td>
                             </tr>
                             <tr>
                               <td></td>
                               <td>Book Value per Share</td>
-                              <td>{{item.bookValueAvg}}</td>
-                              <td>{{item.bookValueMed}}</td>
+                              <td>{{ item.bookValueAvg }}</td>
+                              <td>{{ item.bookValueMed }}</td>
                             </tr>
                             <tr>
                               <td></td>
                               <td>P/B Ratio of Industry</td>
-                              <td>{{item.pbRatioAvg}}</td>
-                              <td>{{item.pbRatioMed}}</td>
+                              <td>{{ item.pbRatioAvg }}</td>
+                              <td>{{ item.pbRatioMed }}</td>
                             </tr>
                             <tr>
                               <td></td>
-                              <td>Market Price </td>
-                              <td>{{item.pbMarketPriceAvg}}</td>
-                              <td>{{item.pbMarketPriceMed}}</td>
+                              <td>Market Price</td>
+                              <td>{{ item.pbMarketPriceAvg }}</td>
+                              <td>{{ item.pbMarketPriceMed }}</td>
                             </tr>
-                            <tr style="height:40px;">
+                            <tr style="height: 40px">
                               <td></td>
                               <td></td>
                               <td></td>
                               <td></td>
                             </tr>
                           </ng-container>
-                          <ng-container *ngIf="item.particular=='peRatio'">
+                          <ng-container *ngIf="item.particular == 'peRatio'">
                             <tr>
                               <td>2</td>
                               <td>P/E Ratio</td>
@@ -554,79 +652,79 @@
                             <tr>
                               <td></td>
                               <td>EPS</td>
-                              <td>{{item.epsAvg}}</td>
-                              <td>{{item.epsMed}}</td>
+                              <td>{{ item.epsAvg }}</td>
+                              <td>{{ item.epsMed }}</td>
                             </tr>
                             <tr>
                               <td></td>
-                              <td>P/E Ratio of Industry </td>
-                              <td>{{item.peRatioAvg}}</td>
-                              <td>{{item.peRatioMed}}</td>
+                              <td>P/E Ratio of Industry</td>
+                              <td>{{ item.peRatioAvg }}</td>
+                              <td>{{ item.peRatioMed }}</td>
                             </tr>
                             <tr>
                               <td></td>
-                              <td>Market Price </td>
-                              <td>{{item.peMarketPriceAvg}}</td>
-                              <td>{{item.peMarketPriceMed}}</td>
+                              <td>Market Price</td>
+                              <td>{{ item.peMarketPriceAvg }}</td>
+                              <td>{{ item.peMarketPriceMed }}</td>
                             </tr>
-                            <tr style="height:40px;">
+                            <tr style="height: 40px">
                               <td></td>
                               <td></td>
                               <td></td>
                               <td></td>
                             </tr>
                           </ng-container>
-                          <ng-container *ngIf="item.particular=='ebitda'">
-                            <tr style="height:40px;">
+                          <ng-container *ngIf="item.particular == 'ebitda'">
+                            <tr style="height: 40px">
                               <td>3</td>
-                              <td> EV/EBITDA</td>
+                              <td>EV/EBITDA</td>
                               <td></td>
                               <td></td>
                             </tr>
                             <tr>
                               <td></td>
                               <td>EBITDA</td>
-                              <td>{{item.ebitdaAvg}}</td>
-                              <td>{{item.ebitdaMed}}</td>
+                              <td>{{ item.ebitdaAvg }}</td>
+                              <td>{{ item.ebitdaMed }}</td>
                             </tr>
                             <tr>
                               <td></td>
                               <td>EV/EBITDA</td>
-                              <td>{{item.evAvg}}</td>
-                              <td>{{item.evMed}}</td>
+                              <td>{{ item.evAvg }}</td>
+                              <td>{{ item.evMed }}</td>
                             </tr>
                             <tr>
                               <td></td>
                               <td>Enterprise Value</td>
-                              <td>{{item.enterpriseAvg}}</td>
-                              <td>{{item.enterpriseMed}}</td>
+                              <td>{{ item.enterpriseAvg }}</td>
+                              <td>{{ item.enterpriseMed }}</td>
                             </tr>
                             <tr>
                               <td></td>
                               <td>Less : Value of Debt</td>
-                              <td>{{item.debtAvg}}</td>
-                              <td>{{item.debtMed}}</td>
+                              <td>{{ item.debtAvg }}</td>
+                              <td>{{ item.debtMed }}</td>
                             </tr>
                             <tr>
                               <td></td>
                               <td>Value of Equity</td>
-                              <td>{{item.ebitdaEquityAvg}}</td>
-                              <td>{{item.ebitdaEquityMed}}</td>
+                              <td>{{ item.ebitdaEquityAvg }}</td>
+                              <td>{{ item.ebitdaEquityMed }}</td>
                             </tr>
                             <tr>
                               <td></td>
                               <td>Market Price</td>
-                              <td>{{item.ebitdaMarketPriceAvg}}</td>
-                              <td>{{item.ebitdaMarketPriceMed}}</td>
+                              <td>{{ item.ebitdaMarketPriceAvg }}</td>
+                              <td>{{ item.ebitdaMarketPriceMed }}</td>
                             </tr>
-                            <tr style="height:40px;">
+                            <tr style="height: 40px">
                               <td></td>
                               <td></td>
                               <td></td>
                               <td></td>
                             </tr>
                           </ng-container>
-                          <ng-container *ngIf="item.particular=='sales'">
+                          <ng-container *ngIf="item.particular == 'sales'">
                             <tr>
                               <td>4</td>
                               <td>Price to Sale</td>
@@ -635,79 +733,76 @@
                             </tr>
                             <tr>
                               <td></td>
-                              <td>Sales of company (INR) </td>
-                              <td>{{item.salesAvg}}</td>
-                              <td>{{item.salesMed}}</td>
+                              <td>Sales of company (INR)</td>
+                              <td>{{ item.salesAvg }}</td>
+                              <td>{{ item.salesMed }}</td>
                             </tr>
                             <tr>
                               <td></td>
                               <td>P/S Ratio</td>
-                              <td>{{item.salesRatioAvg}}</td>
-                              <td>{{item.salesRatioMed}}</td>
+                              <td>{{ item.salesRatioAvg }}</td>
+                              <td>{{ item.salesRatioMed }}</td>
                             </tr>
                             <tr>
                               <td></td>
                               <td>Value of Equity</td>
-                              <td>{{item.salesEquityAvg}}</td>
-                              <td>{{item.salesEquityMed}}</td>
+                              <td>{{ item.salesEquityAvg }}</td>
+                              <td>{{ item.salesEquityMed }}</td>
                             </tr>
                             <tr>
                               <td></td>
                               <td>Market Price</td>
-                              <td>{{item.salesMarketPriceAvg}}</td>
-                              <td>{{item.salesMarketPriceMed}}</td>
+                              <td>{{ item.salesMarketPriceAvg }}</td>
+                              <td>{{ item.salesMarketPriceMed }}</td>
                             </tr>
-                            <tr style="height:40px;">
+                            <tr style="height: 40px">
                               <td></td>
                               <td></td>
                               <td></td>
                               <td></td>
                             </tr>
                           </ng-container>
-                          <ng-container *ngIf="item.particular=='result'">
+                          <ng-container *ngIf="item.particular == 'result'">
                             <tr>
                               <td></td>
                               <td>Average Price per Share</td>
-                              <td>{{item.avgPricePerShareAvg}}</td>
-                              <td>{{item.avgPricePerShareMed}}</td>
+                              <td>{{ item.avgPricePerShareAvg }}</td>
+                              <td>{{ item.avgPricePerShareMed }}</td>
                             </tr>
-                            <tr style="height:40px;">
+                            <tr style="height: 40px">
                               <td></td>
                               <td></td>
                               <td></td>
                               <td></td>
-                            </tr>
-                            <tr>
-                              <td></td>
-                              <td>Average </td>
-                              <td>{{item.averageAvg}}</td>
-                              <td>{{item.averageMed}}</td>
                             </tr>
                             <tr>
                               <td></td>
-                              <td>Less: Illiquidity Discount/size/lack of control </td>
-                              <td>{{item.locAvg}}</td>
-                              <td>{{item.locMed}}</td>
+                              <td>Average</td>
+                              <td>{{ item.averageAvg }}</td>
+                              <td>{{ item.averageMed }}</td>
                             </tr>
                             <tr>
                               <td></td>
-                              <td>Final Price </td>
-                              <td>{{item.finalPriceAvg}}</td>
-                              <td>{{item.finalPriceMed}}</td>
+                              <td>
+                                Less: Illiquidity Discount/size/lack of control
+                              </td>
+                              <td>{{ item.locAvg }}</td>
+                              <td>{{ item.locMed }}</td>
                             </tr>
                             <tr>
                               <td></td>
-                              <td>Tentative Issue Price (Average of above) </td>
-                              <td colspan="2">{{item.tentativeIssuePrice}}</td>
-
+                              <td>Final Price</td>
+                              <td>{{ item.finalPriceAvg }}</td>
+                              <td>{{ item.finalPriceMed }}</td>
                             </tr>
-                            <br>
-
-
-
-
-
-
+                            <tr>
+                              <td></td>
+                              <td>Tentative Issue Price (Average of above)</td>
+                              <td colspan="2">
+                                {{ item.tentativeIssuePrice }}
+                              </td>
+                            </tr>
+                            <br />
                           </ng-container>
                         </ng-container>
                       </table>
