@@ -159,7 +159,7 @@
                         </div>
                         <div class="col-6"></div>
                       </ng-container>
-                      
+
                       <ng-container *ngIf="isRelative == true && companies.length">
                         <div class="col-12">
                           <div class="form-group form-elements">
@@ -195,8 +195,10 @@
                             <div class="col-6">
                               <div class="d-flex">
 
-                                <i *ngIf="i > 2" class="fa fa-minus-circle text-danger rmvcmp" (click)="removeCmp(i)"></i>
-                                <i   class="fa fa-plus-circle text-success rmvcmp mx-2 " *ngIf="companies.length && last" (click)="addCompany()"></i>
+                                <i *ngIf="i > 2" class="fa fa-minus-circle text-danger rmvcmp"
+                                  (click)="removeCmp(i)"></i>
+                                <i class="fa fa-plus-circle text-success rmvcmp mx-2 " *ngIf="companies.length && last"
+                                  (click)="addCompany()"></i>
                               </div>
                             </div>
                           </ng-container>
@@ -325,7 +327,7 @@
                   </div>
                 </form>
               </mat-step>
-              <mat-step [stepControl]="thirdFormGroup" [editable]="isEditable">
+              <mat-step [stepControl]="isRelative ? relativeFormGroup : thirdFormGroup" [editable]="isEditable">
                 <form [formGroup]="thirdFormGroup">
                   <section class="pt-5">
                     <div class="row overflow-auto">
@@ -415,8 +417,9 @@
 
                         <!-- <table class="table border card-table table-vcenter text-nowrap table-primary align-items-center">
                           <thead class="bg-primary text-white"> -->
-                        
-                        <table style="table-layout: fixed;" class="table card-table table-vcenter text-nowrap table-primary align-items-center ">
+
+                        <table style="table-layout: fixed;"
+                          class="table card-table table-vcenter text-nowrap table-primary align-items-center ">
                           <thead class="text-white">
                             <tr>
                               <th class="sl-wrapper">Sr.No</th>
@@ -443,7 +446,7 @@
                                     findAverage('pbRatio'); findMedian('pbRatio')
                                   " />
                               </td>
-                              <td  style="width: 100px">
+                              <td style="width: 100px">
                                 <input type="number" [(ngModel)]="companies[i].ebitda" [value]="companies[i].ebitda"
                                   [ngModelOptions]="{ standalone: true }" (ngModelChange)="
                                     findAverage('ebitda'); findMedian('ebitda')
@@ -531,15 +534,19 @@
                       </div>
                     </ng-container>
                     <ng-container *ngIf="isRelative == true">
-                        <table class="table w-100 mt-1">
-                          <tr>
-                            <td>Sr.No</td>
-                            <td>Name</td>
-                            <td>P/E Ratio as on Valuation Date</td>
-                            <td>P/B Ratio as on Valuation Date</td>
-                            <td>EV/EBITDA as on Valuation Date</td>
-                            <td>Valuation Date Price/Sales Valuation Date</td>
+                      <table style="table-layout: fixed;"
+                        class="table card-table table-vcenter text-nowrap table-primary align-items-center mb-6">
+                        <thead>
+                          <tr class="text-white">
+                            <th class="sl-wrapper">Sr.No</th>
+                            <th class="name-wrapper">Name</th>
+                            <th class="head-wrapper">P/E Ratio as on Valuation Date</th>
+                            <th class="head-wrapper">P/B Ratio as on Valuation Date</th>
+                            <th class="head-wrapper">EV/EBITDA as on Valuation Date</th>
+                            <th class="head-wrapper">Valuation Date Price/Sales Valuation Date</th>
                           </tr>
+                        </thead>
+                        <tbody>
                           <tr *ngFor="let item of companies; let i = index">
                             <td>{{ i + 1 }}</td>
                             <td>{{ item.company }}</td>
@@ -548,7 +555,7 @@
                             <td>{{ item.ebitda }}</td>
                             <td>{{ item.sales }}</td>
                           </tr>
-                          
+
                           <tr>
                             <td></td>
                             <td>Average</td>
@@ -581,230 +588,237 @@
                               {{ companyMedian["sales"] | number : "1.2-2" }}
                             </td>
                           </tr>
-                        </table>
-                        <table class="table w-100">
-                        <tr>
-                          <th colspan="2" style="border-right: none; text-align: left">
-                            Valuation of CMM InfraProjects Ltd
-                          </th>
-                          <th colspan="2" style="border-left: none; text-align: left">
-                            Amount (in INR)
-                          </th>
-                        </tr>
-                        <tr>
-                          <th>Sr.No</th>
-                          <th style="min-width: 300px">Particulars</th>
-                          <th>As on 31.03.2018</th>
-                          <th>As on 31.03.2018</th>
-                        </tr>
-                        <tr>
-                          <th></th>
-                          <th></th>
-                          <th>Average</th>
-                          <th>Median</th>
-                        </tr>
-                        <ng-container *ngFor="let item of valuationDataReport">
-                          <ng-container *ngIf="item.particular == 'pbRatio'">
-                            <tr>
-                              <td>1</td>
-                              <td>P/B Ratio</td>
-                              <td></td>
-                              <td></td>
-                            </tr>
-                            <tr>
-                              <td></td>
-                              <td>Net Worth of Company</td>
-                              <td>{{ item.netWorthAvg }}</td>
-                              <td>{{ item.netWorthMed }}</td>
-                            </tr>
-                            <tr>
-                              <td></td>
-                              <td>Book Value per Share</td>
-                              <td>{{ item.bookValueAvg }}</td>
-                              <td>{{ item.bookValueMed }}</td>
-                            </tr>
-                            <tr>
-                              <td></td>
-                              <td>P/B Ratio of Industry</td>
-                              <td>{{ item.pbRatioAvg }}</td>
-                              <td>{{ item.pbRatioMed }}</td>
-                            </tr>
-                            <tr>
-                              <td></td>
-                              <td>Market Price</td>
-                              <td>{{ item.pbMarketPriceAvg }}</td>
-                              <td>{{ item.pbMarketPriceMed }}</td>
-                            </tr>
-                            <tr style="height: 40px">
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                            </tr>
+                        </tbody>
+
+                      </table>
+                      <table style="table-layout: fixed;" class="table card-table table-vcenter text-nowrap table-primary align-items-center">
+                        <thead>
+                          <tr class="text-white">
+                            <th colspan="2" style="border-right: none;">
+                              Valuation of CMM InfraProjects Ltd
+                            </th>
+                            <th colspan="2" style="border-left: none;">
+                              Amount (in INR)
+                            </th>
+                          </tr>
+                          <tr class="text-white">
+                            <th class="sl-wrapper">Sr.No</th>
+                            <th style="min-width: 300px">Particulars</th>
+                            <th>As on 31.03.2018</th>
+                            <th>As on 31.03.2018</th>
+                          </tr>
+                          <tr class="text-white">
+                            <th></th>
+                            <th></th>
+                            <th>Average</th>
+                            <th>Median</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <ng-container *ngFor="let item of valuationDataReport">
+                            <ng-container *ngIf="item.particular == 'pbRatio'">
+                              <tr>
+                                <td>1</td>
+                                <td>P/B Ratio</td>
+                                <td></td>
+                                <td></td>
+                              </tr>
+                              <tr>
+                                <td></td>
+                                <td>Net Worth of Company</td>
+                                <td>{{ item.netWorthAvg }}</td>
+                                <td>{{ item.netWorthMed }}</td>
+                              </tr>
+                              <tr>
+                                <td></td>
+                                <td>Book Value per Share</td>
+                                <td>{{ item.bookValueAvg }}</td>
+                                <td>{{ item.bookValueMed }}</td>
+                              </tr>
+                              <tr>
+                                <td></td>
+                                <td>P/B Ratio of Industry</td>
+                                <td>{{ item.pbRatioAvg }}</td>
+                                <td>{{ item.pbRatioMed }}</td>
+                              </tr>
+                              <tr>
+                                <td></td>
+                                <td>Market Price</td>
+                                <td>{{ item.pbMarketPriceAvg }}</td>
+                                <td>{{ item.pbMarketPriceMed }}</td>
+                              </tr>
+                              <tr style="height: 40px">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                              </tr>
+                            </ng-container>
+                            <ng-container *ngIf="item.particular == 'peRatio'">
+                              <tr>
+                                <td>2</td>
+                                <td>P/E Ratio</td>
+                                <td></td>
+                                <td></td>
+                              </tr>
+                              <tr>
+                                <td></td>
+                                <td>EPS</td>
+                                <td>{{ item.epsAvg }}</td>
+                                <td>{{ item.epsMed }}</td>
+                              </tr>
+                              <tr>
+                                <td></td>
+                                <td>P/E Ratio of Industry</td>
+                                <td>{{ item.peRatioAvg }}</td>
+                                <td>{{ item.peRatioMed }}</td>
+                              </tr>
+                              <tr>
+                                <td></td>
+                                <td>Market Price</td>
+                                <td>{{ item.peMarketPriceAvg }}</td>
+                                <td>{{ item.peMarketPriceMed }}</td>
+                              </tr>
+                              <tr style="height: 40px">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                              </tr>
+                            </ng-container>
+                            <ng-container *ngIf="item.particular == 'ebitda'">
+                              <tr style="height: 40px">
+                                <td>3</td>
+                                <td>EV/EBITDA</td>
+                                <td></td>
+                                <td></td>
+                              </tr>
+                              <tr>
+                                <td></td>
+                                <td>EBITDA</td>
+                                <td>{{ item.ebitdaAvg }}</td>
+                                <td>{{ item.ebitdaMed }}</td>
+                              </tr>
+                              <tr>
+                                <td></td>
+                                <td>EV/EBITDA</td>
+                                <td>{{ item.evAvg }}</td>
+                                <td>{{ item.evMed }}</td>
+                              </tr>
+                              <tr>
+                                <td></td>
+                                <td>Enterprise Value</td>
+                                <td>{{ item.enterpriseAvg }}</td>
+                                <td>{{ item.enterpriseMed }}</td>
+                              </tr>
+                              <tr>
+                                <td></td>
+                                <td>Less : Value of Debt</td>
+                                <td>{{ item.debtAvg }}</td>
+                                <td>{{ item.debtMed }}</td>
+                              </tr>
+                              <tr>
+                                <td></td>
+                                <td>Value of Equity</td>
+                                <td>{{ item.ebitdaEquityAvg }}</td>
+                                <td>{{ item.ebitdaEquityMed }}</td>
+                              </tr>
+                              <tr>
+                                <td></td>
+                                <td>Market Price</td>
+                                <td>{{ item.ebitdaMarketPriceAvg }}</td>
+                                <td>{{ item.ebitdaMarketPriceMed }}</td>
+                              </tr>
+                              <tr style="height: 40px">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                              </tr>
+                            </ng-container>
+                            <ng-container *ngIf="item.particular == 'sales'">
+                              <tr>
+                                <td>4</td>
+                                <td>Price to Sale</td>
+                                <td></td>
+                                <td></td>
+                              </tr>
+                              <tr>
+                                <td></td>
+                                <td>Sales of company (INR)</td>
+                                <td>{{ item.salesAvg }}</td>
+                                <td>{{ item.salesMed }}</td>
+                              </tr>
+                              <tr>
+                                <td></td>
+                                <td>P/S Ratio</td>
+                                <td>{{ item.salesRatioAvg }}</td>
+                                <td>{{ item.salesRatioMed }}</td>
+                              </tr>
+                              <tr>
+                                <td></td>
+                                <td>Value of Equity</td>
+                                <td>{{ item.salesEquityAvg }}</td>
+                                <td>{{ item.salesEquityMed }}</td>
+                              </tr>
+                              <tr>
+                                <td></td>
+                                <td>Market Price</td>
+                                <td>{{ item.salesMarketPriceAvg }}</td>
+                                <td>{{ item.salesMarketPriceMed }}</td>
+                              </tr>
+                              <tr style="height: 40px">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                              </tr>
+                            </ng-container>
+                            <ng-container *ngIf="item.particular == 'result'">
+                              <tr>
+                                <td></td>
+                                <td>Average Price per Share</td>
+                                <td>{{ item.avgPricePerShareAvg }}</td>
+                                <td>{{ item.avgPricePerShareMed }}</td>
+                              </tr>
+                              <tr style="height: 40px">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                              </tr>
+                              <tr>
+                                <td></td>
+                                <td>Average</td>
+                                <td>{{ item.averageAvg }}</td>
+                                <td>{{ item.averageMed }}</td>
+                              </tr>
+                              <tr>
+                                <td></td>
+                                <td>
+                                  Less: Illiquidity Discount/size/lack of control
+                                </td>
+                                <td>{{ item.locAvg }}</td>
+                                <td>{{ item.locMed }}</td>
+                              </tr>
+                              <tr>
+                                <td></td>
+                                <td>Final Price</td>
+                                <td>{{ item.finalPriceAvg }}</td>
+                                <td>{{ item.finalPriceMed }}</td>
+                              </tr>
+                              <tr>
+                                <td></td>
+                                <td>Tentative Issue Price (Average of above)</td>
+                                <td colspan="2">
+                                  {{ item.tentativeIssuePrice }}
+                                </td>
+                              </tr>
+                              <br />
+                            </ng-container>
                           </ng-container>
-                          <ng-container *ngIf="item.particular == 'peRatio'">
-                            <tr>
-                              <td>2</td>
-                              <td>P/E Ratio</td>
-                              <td></td>
-                              <td></td>
-                            </tr>
-                            <tr>
-                              <td></td>
-                              <td>EPS</td>
-                              <td>{{ item.epsAvg }}</td>
-                              <td>{{ item.epsMed }}</td>
-                            </tr>
-                            <tr>
-                              <td></td>
-                              <td>P/E Ratio of Industry</td>
-                              <td>{{ item.peRatioAvg }}</td>
-                              <td>{{ item.peRatioMed }}</td>
-                            </tr>
-                            <tr>
-                              <td></td>
-                              <td>Market Price</td>
-                              <td>{{ item.peMarketPriceAvg }}</td>
-                              <td>{{ item.peMarketPriceMed }}</td>
-                            </tr>
-                            <tr style="height: 40px">
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                            </tr>
-                          </ng-container>
-                          <ng-container *ngIf="item.particular == 'ebitda'">
-                            <tr style="height: 40px">
-                              <td>3</td>
-                              <td>EV/EBITDA</td>
-                              <td></td>
-                              <td></td>
-                            </tr>
-                            <tr>
-                              <td></td>
-                              <td>EBITDA</td>
-                              <td>{{ item.ebitdaAvg }}</td>
-                              <td>{{ item.ebitdaMed }}</td>
-                            </tr>
-                            <tr>
-                              <td></td>
-                              <td>EV/EBITDA</td>
-                              <td>{{ item.evAvg }}</td>
-                              <td>{{ item.evMed }}</td>
-                            </tr>
-                            <tr>
-                              <td></td>
-                              <td>Enterprise Value</td>
-                              <td>{{ item.enterpriseAvg }}</td>
-                              <td>{{ item.enterpriseMed }}</td>
-                            </tr>
-                            <tr>
-                              <td></td>
-                              <td>Less : Value of Debt</td>
-                              <td>{{ item.debtAvg }}</td>
-                              <td>{{ item.debtMed }}</td>
-                            </tr>
-                            <tr>
-                              <td></td>
-                              <td>Value of Equity</td>
-                              <td>{{ item.ebitdaEquityAvg }}</td>
-                              <td>{{ item.ebitdaEquityMed }}</td>
-                            </tr>
-                            <tr>
-                              <td></td>
-                              <td>Market Price</td>
-                              <td>{{ item.ebitdaMarketPriceAvg }}</td>
-                              <td>{{ item.ebitdaMarketPriceMed }}</td>
-                            </tr>
-                            <tr style="height: 40px">
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                            </tr>
-                          </ng-container>
-                          <ng-container *ngIf="item.particular == 'sales'">
-                            <tr>
-                              <td>4</td>
-                              <td>Price to Sale</td>
-                              <td></td>
-                              <td></td>
-                            </tr>
-                            <tr>
-                              <td></td>
-                              <td>Sales of company (INR)</td>
-                              <td>{{ item.salesAvg }}</td>
-                              <td>{{ item.salesMed }}</td>
-                            </tr>
-                            <tr>
-                              <td></td>
-                              <td>P/S Ratio</td>
-                              <td>{{ item.salesRatioAvg }}</td>
-                              <td>{{ item.salesRatioMed }}</td>
-                            </tr>
-                            <tr>
-                              <td></td>
-                              <td>Value of Equity</td>
-                              <td>{{ item.salesEquityAvg }}</td>
-                              <td>{{ item.salesEquityMed }}</td>
-                            </tr>
-                            <tr>
-                              <td></td>
-                              <td>Market Price</td>
-                              <td>{{ item.salesMarketPriceAvg }}</td>
-                              <td>{{ item.salesMarketPriceMed }}</td>
-                            </tr>
-                            <tr style="height: 40px">
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                            </tr>
-                          </ng-container>
-                          <ng-container *ngIf="item.particular == 'result'">
-                            <tr>
-                              <td></td>
-                              <td>Average Price per Share</td>
-                              <td>{{ item.avgPricePerShareAvg }}</td>
-                              <td>{{ item.avgPricePerShareMed }}</td>
-                            </tr>
-                            <tr style="height: 40px">
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                            </tr>
-                            <tr>
-                              <td></td>
-                              <td>Average</td>
-                              <td>{{ item.averageAvg }}</td>
-                              <td>{{ item.averageMed }}</td>
-                            </tr>
-                            <tr>
-                              <td></td>
-                              <td>
-                                Less: Illiquidity Discount/size/lack of control
-                              </td>
-                              <td>{{ item.locAvg }}</td>
-                              <td>{{ item.locMed }}</td>
-                            </tr>
-                            <tr>
-                              <td></td>
-                              <td>Final Price</td>
-                              <td>{{ item.finalPriceAvg }}</td>
-                              <td>{{ item.finalPriceMed }}</td>
-                            </tr>
-                            <tr>
-                              <td></td>
-                              <td>Tentative Issue Price (Average of above)</td>
-                              <td colspan="2">
-                                {{ item.tentativeIssuePrice }}
-                              </td>
-                            </tr>
-                            <br />
-                          </ng-container>
-                        </ng-container>
+                        </tbody>
+                        
                       </table>
                     </ng-container>
                     <div class="d-flex align-items-end justify-content-between">

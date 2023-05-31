@@ -74,6 +74,7 @@ export class ValuationComponent implements OnInit {
 
   files: File[] = [];
   subIndustries: any[] = [];
+  relativeFormGroup!: FormGroup;
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -137,6 +138,8 @@ export class ValuationComponent implements OnInit {
       capitalStructureType: ['', Validators.required],
       popShareCapitalType:["", Validators.required],
     });
+
+    this.relativeFormGroup = this._formBuilder.group({});
     this.fourthFormGroup = this._formBuilder.group({
       type: ['', Validators.required],
     });
