@@ -550,10 +550,10 @@
                           <tr *ngFor="let item of companies; let i = index">
                             <td>{{ i + 1 }}</td>
                             <td>{{ item.company }}</td>
-                            <td>{{ item.peRatio }}</td>
-                            <td>{{ item.pbRatio }}</td>
-                            <td>{{ item.ebitda }}</td>
-                            <td>{{ item.sales }}</td>
+                            <td>{{ item.peRatio | number : '1.2-2'  }}</td>
+                            <td>{{ item.pbRatio | number : '1.2-2'  }}</td>
+                            <td>{{ item.ebitda | number : '1.2-2'  }}</td>
+                            <td>{{ item.sales | number : '1.2-2'  }}</td>
                           </tr>
 
                           <tr>
@@ -626,26 +626,26 @@
                               <tr>
                                 <td></td>
                                 <td>Net Worth of Company</td>
-                                <td>{{ item.netWorthAvg }}</td>
-                                <td>{{ item.netWorthMed }}</td>
+                                <td>{{ item.netWorthAvg | number : '1.2-2' }}</td>
+                                <td>{{ item.netWorthMed | number : '1.2-2' }}</td>
                               </tr>
                               <tr>
                                 <td></td>
                                 <td>Book Value per Share</td>
-                                <td>{{ item.bookValueAvg }}</td>
-                                <td>{{ item.bookValueMed }}</td>
+                                <td>{{ item.bookValueAvg | number : '1.2-2' }}</td>
+                                <td>{{ item.bookValueMed | number : '1.2-2' }}</td>
                               </tr>
                               <tr>
                                 <td></td>
                                 <td>P/B Ratio of Industry</td>
-                                <td>{{ item.pbRatioAvg }}</td>
-                                <td>{{ item.pbRatioMed }}</td>
+                                <td>{{ item.pbRatioAvg | number : '1.2-2' }}</td>
+                                <td>{{ item.pbRatioMed | number : '1.2-2' }}</td>
                               </tr>
                               <tr>
                                 <td></td>
                                 <td>Market Price</td>
-                                <td>{{ item.pbMarketPriceAvg }}</td>
-                                <td>{{ item.pbMarketPriceMed }}</td>
+                                <td>{{ item.pbMarketPriceAvg | number : '1.2-2' }}</td>
+                                <td>{{ item.pbMarketPriceMed | number : '1.2-2' }}</td>
                               </tr>
                               <tr style="height: 40px">
                                 <td></td>
@@ -664,20 +664,20 @@
                               <tr>
                                 <td></td>
                                 <td>EPS</td>
-                                <td>{{ item.epsAvg }}</td>
-                                <td>{{ item.epsMed }}</td>
+                                <td>{{ item.epsAvg | number : '1.2-2' }}</td>
+                                <td>{{ item.epsMed | number : '1.2-2' }}</td>
                               </tr>
                               <tr>
                                 <td></td>
                                 <td>P/E Ratio of Industry</td>
-                                <td>{{ item.peRatioAvg }}</td>
-                                <td>{{ item.peRatioMed }}</td>
+                                <td>{{ item.peRatioAvg | number : '1.2-2' }}</td>
+                                <td>{{ item.peRatioMed | number : '1.2-2' }}</td>
                               </tr>
                               <tr>
                                 <td></td>
                                 <td>Market Price</td>
-                                <td>{{ item.peMarketPriceAvg }}</td>
-                                <td>{{ item.peMarketPriceMed }}</td>
+                                <td>{{ item.peMarketPriceAvg | number : '1.2-2' }}</td>
+                                <td>{{ item.peMarketPriceMed | number : '1.2-2' }}</td>
                               </tr>
                               <tr style="height: 40px">
                                 <td></td>
@@ -696,38 +696,38 @@
                               <tr>
                                 <td></td>
                                 <td>EBITDA</td>
-                                <td>{{ item.ebitdaAvg }}</td>
-                                <td>{{ item.ebitdaMed }}</td>
+                                <td>{{ item.ebitdaAvg | number : '1.2-2' }}</td>
+                                <td>{{ item.ebitdaMed | number : '1.2-2' }}</td>
                               </tr>
                               <tr>
                                 <td></td>
                                 <td>EV/EBITDA</td>
-                                <td>{{ item.evAvg }}</td>
-                                <td>{{ item.evMed }}</td>
+                                <td>{{ item.evAvg | number : '1.2-2' }}</td>
+                                <td>{{ item.evMed | number : '1.2-2' }}</td>
                               </tr>
                               <tr>
                                 <td></td>
                                 <td>Enterprise Value</td>
-                                <td>{{ item.enterpriseAvg }}</td>
-                                <td>{{ item.enterpriseMed }}</td>
+                                <td>{{ item.enterpriseAvg | number : '1.2-2' }}</td>
+                                <td>{{ item.enterpriseMed | number : '1.2-2' }}</td>
                               </tr>
                               <tr>
                                 <td></td>
                                 <td>Less : Value of Debt</td>
-                                <td>{{ item.debtAvg }}</td>
-                                <td>{{ item.debtMed }}</td>
+                                <td>{{ item.debtAvg | number : '1.2-2' }}</td>
+                                <td>{{ item.debtMed | number : '1.2-2' }}</td>
                               </tr>
                               <tr>
                                 <td></td>
                                 <td>Value of Equity</td>
-                                <td>{{ item.ebitdaEquityAvg }}</td>
-                                <td>{{ item.ebitdaEquityMed }}</td>
+                                <td>{{ item.ebitdaEquityAvg | number : '1.2-2' }}</td>
+                                <td>{{ item.ebitdaEquityMed | number : '1.2-2' }}</td>
                               </tr>
                               <tr>
                                 <td></td>
                                 <td>Market Price</td>
-                                <td>{{ item.ebitdaMarketPriceAvg }}</td>
-                                <td>{{ item.ebitdaMarketPriceMed }}</td>
+                                <td>{{ item.ebitdaMarketPriceAvg | number : '1.2-2' }}</td>
+                                <td>{{ item.ebitdaMarketPriceMed | number : '1.2-2' }}</td>
                               </tr>
                               <tr style="height: 40px">
                                 <td></td>
@@ -746,26 +746,26 @@
                               <tr>
                                 <td></td>
                                 <td>Sales of company (INR)</td>
-                                <td>{{ item.salesAvg }}</td>
-                                <td>{{ item.salesMed }}</td>
+                                <td>{{ item.salesAvg | number : '1.2-2' }}</td>
+                                <td>{{ item.salesMed | number : '1.2-2' }}</td>
                               </tr>
                               <tr>
                                 <td></td>
                                 <td>P/S Ratio</td>
-                                <td>{{ item.salesRatioAvg }}</td>
-                                <td>{{ item.salesRatioMed }}</td>
+                                <td>{{ item.salesRatioAvg | number : '1.2-2' }}</td>
+                                <td>{{ item.salesRatioMed | number : '1.2-2' }}</td>
                               </tr>
                               <tr>
                                 <td></td>
                                 <td>Value of Equity</td>
-                                <td>{{ item.salesEquityAvg }}</td>
-                                <td>{{ item.salesEquityMed }}</td>
+                                <td>{{ item.salesEquityAvg | number : '1.2-2' }}</td>
+                                <td>{{ item.salesEquityMed | number : '1.2-2' }}</td>
                               </tr>
                               <tr>
                                 <td></td>
                                 <td>Market Price</td>
-                                <td>{{ item.salesMarketPriceAvg }}</td>
-                                <td>{{ item.salesMarketPriceMed }}</td>
+                                <td>{{ item.salesMarketPriceAvg | number : '1.2-2' }}</td>
+                                <td>{{ item.salesMarketPriceMed | number : '1.2-2' }}</td>
                               </tr>
                               <tr style="height: 40px">
                                 <td></td>
@@ -778,8 +778,8 @@
                               <tr>
                                 <td></td>
                                 <td>Average Price per Share</td>
-                                <td>{{ item.avgPricePerShareAvg }}</td>
-                                <td>{{ item.avgPricePerShareMed }}</td>
+                                <td>{{ item.avgPricePerShareAvg | number : '1.2-2' }}</td>
+                                <td>{{ item.avgPricePerShareMed | number : '1.2-2' }}</td>
                               </tr>
                               <tr style="height: 40px">
                                 <td></td>
@@ -790,28 +790,28 @@
                               <tr>
                                 <td></td>
                                 <td>Average</td>
-                                <td>{{ item.averageAvg }}</td>
-                                <td>{{ item.averageMed }}</td>
+                                <td>{{ item.averageAvg | number : '1.2-2' }}</td>
+                                <td>{{ item.averageMed | number : '1.2-2' }}</td>
                               </tr>
                               <tr>
                                 <td></td>
                                 <td>
                                   Less: Illiquidity Discount/size/lack of control
                                 </td>
-                                <td>{{ item.locAvg }}</td>
-                                <td>{{ item.locMed }}</td>
+                                <td>{{ item.locAvg | number : '1.2-2' }}</td>
+                                <td>{{ item.locMed | number : '1.2-2' }}</td>
                               </tr>
                               <tr>
                                 <td></td>
                                 <td>Final Price</td>
-                                <td>{{ item.finalPriceAvg }}</td>
-                                <td>{{ item.finalPriceMed }}</td>
+                                <td>{{ item.finalPriceAvg | number : '1.2-2' }}</td>
+                                <td>{{ item.finalPriceMed | number : '1.2-2' }}</td>
                               </tr>
                               <tr>
                                 <td></td>
                                 <td>Tentative Issue Price (Average of above)</td>
                                 <td colspan="2">
-                                  {{ item.tentativeIssuePrice }}
+                                  {{ item.tentativeIssuePrice | number : '1.2-2' }}
                                 </td>
                               </tr>
                               <br />
