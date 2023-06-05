@@ -527,7 +527,7 @@
                             ">
                             <th class="headcol">{{ tableHeading[inx] }}</th>
                             <td *ngFor="let item of valuationDataReport[inx]">
-                              {{ item }}
+                              {{ item | number : "1.2-2"  }}
                             </td>
                           </tr>
                         </table>
