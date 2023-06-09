@@ -327,8 +327,8 @@
                           </div>
                         </div>
                         
-                        <!-- 
-                        Adding Discounting rate logic here
+                        
+                        <!-- Adding Discounting rate logic here -->
 
                     
                         
@@ -348,7 +348,7 @@
 
 
 
-                        -->
+                       
                         <div class="col-6">
                           <div class="control-group form-group">
                             <label class="form-control-label" for="cName">Beta</label>
@@ -360,82 +360,112 @@
                             </ng-select>
                           </div>
                         </div>
+
+                        <ng-container *ngIf="thirdFormGroup.value?.discountRate === 'WACC'">
+                          <div class="col-6">
+                            <div class="control-group form-group">
+                              <label class="form-control-label" for="cName">Company specific risk premium</label>
+                              <i class="fa fa-exclamation-circle mx-3"
+                                ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                                placement="right"></i>
+                              <ng-select class="select2 w-100" placeholder="Select Company Specific Risk Premium "
+                                formControlName="riskPremium">
+                                <ng-option [value]="item.riskPremium" *ngFor="let item of rPremium">{{ item.riskPremium
+                                  }}</ng-option>
+                              </ng-select>
+                            </div>
+                          </div>
+                          <div class="col-6">
+                            <div class="control-group form-group">
+                              <label class="form-control-label" for="cName">Cost of preference share capital</label>
+                              <i class="fa fa-exclamation-circle mx-3"
+                                ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                                placement="right"></i>
+                              <ng-select class="select2 w-100" placeholder="Select cost of Preference Share Capital"
+                                formControlName="copShareCapitalType">
+                                <ng-option [value]="item.type" *ngFor="let item of preShaCap">{{ item.label }}</ng-option>
+                              </ng-select>
+                            </div>
+                          </div>
+                          <div class="col-6">
+                            <div class="control-group form-group">
+                              <label class="form-control-label" for="cName">Cost of debt</label>
+                              <i class="fa fa-exclamation-circle mx-3"
+                                ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                                placement="right"></i>
+                              <ng-select class="select2 w-100" placeholder="Select cost of debt "
+                                formControlName="costOfDebtType">
+                                <ng-option *ngFor="let item of debt" [value]="item.type">{{ item.label }}</ng-option>
+                              </ng-select>
+                            </div>
+                          </div>
+                          <div class="col-6">
+                            <div class="control-group form-group">
+                              <label class="form-control-label" for="cName">Capital structure</label>
+                              <i class="fa fa-exclamation-circle mx-3"
+                                ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                                placement="right"></i>
+                              <ng-select class="select2 w-100" placeholder="Select capital structure"
+                                formControlName="capitalStructureType">
+                                <ng-option [value]="item.type" *ngFor="let item of cStructure">{{ item.type }}</ng-option>
+                              </ng-select>
+                              <hr class="m-2" />
+                              <p>
+                                <b>Note :</b> If company based then show a text
+                                which will get calculated value, If industry based
+                                then value is derived from external service
+                              </p>
+                            </div>
+                          </div>
+                          <div class="col-6">
+                            <div class="control-group form-group">
+                              <label class="form-control-label" for="cName">Proportion of preference share capital</label>
+                              <i class="fa fa-exclamation-circle mx-3"
+                                ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                                placement="right"></i>
+                              <ng-select class="select2 w-100" formControlName="popShareCapitalType"
+                                placeholder="Select Proportion of Preference Share Capital ">
+                                <ng-option [value]="item.type" *ngFor="let item of pppShareCaptial">{{ item.label
+                                  }}</ng-option>
+                              </ng-select>
+                            </div>
+                          </div>
+                          <ng-container *ngIf="thirdFormGroup.value?.popShareCapitalType === 'CFBS'">
+                            <div class="col-6">
+                              <div class="control-group form-group">
+                                <label class="form-control-label" for="proportionOfDebt">Proportion of Debt</label>
+                                <i class="fa fa-exclamation-circle mx-3"
+                                  ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                                  placement="right"></i>
+                                <input class="form-control input-md"
+                                  name="proportionOfDebt" type="text" placeholder="Proportion of Debt" />
+                              </div>
+                            </div>
+                            <div class="col-6">
+                              <div class="control-group form-group">
+                                <label class="form-control-label" for="proportionOfEquity">Proportion of Equity</label>
+                                <i class="fa fa-exclamation-circle mx-3"
+                                  ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                                  placement="right"></i>
+                                <input class="form-control input-md"
+                                  name="proportionOfEquity" type="text" placeholder="Proportion of Equity" />
+                              </div>
+                            </div>
+                            <div class="col-6">
+                              <div class="control-group form-group">
+                                <label class="form-control-label" for="proportionOfPSC">Proportion of Preference Share Capital</label>
+                                <i class="fa fa-exclamation-circle mx-3"
+                                  ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                                  placement="right"></i>
+                                <input class="form-control input-md"
+                                  name="proportionOfPSC" type="text" placeholder="Proportion of Preference Share Capital" />
+                              </div>
+                            </div>
+                          </ng-container>
+                        </ng-container>
                         
-                        <div class="col-6">
-                          <div class="control-group form-group">
-                            <label class="form-control-label" for="cName">Company specific risk premium</label>
-                            <i class="fa fa-exclamation-circle mx-3"
-                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
-                              placement="right"></i>
-                            <ng-select class="select2 w-100" placeholder="Select Company Specific Risk Premium "
-                              formControlName="riskPremium">
-                              <ng-option [value]="item.riskPremium" *ngFor="let item of rPremium">{{ item.riskPremium
-                                }}</ng-option>
-                            </ng-select>
-                          </div>
-                        </div>
-                        <div class="col-6">
-                          <div class="control-group form-group">
-                            <label class="form-control-label" for="cName">Cost of preference share capital</label>
-                            <i class="fa fa-exclamation-circle mx-3"
-                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
-                              placement="right"></i>
-                            <ng-select class="select2 w-100" placeholder="Select cost of Preference Share Capital"
-                              formControlName="copShareCapitalType">
-                              <ng-option [value]="item.type" *ngFor="let item of preShaCap">{{ item.label }}</ng-option>
-                            </ng-select>
-                          </div>
-                        </div>
-                        <div class="col-6">
-                          <div class="control-group form-group">
-                            <label class="form-control-label" for="cName">Cost of debt</label>
-                            <i class="fa fa-exclamation-circle mx-3"
-                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
-                              placement="right"></i>
-                            <ng-select class="select2 w-100" placeholder="Select cost of debt "
-                              formControlName="costOfDebtType">
-                              <ng-option *ngFor="let item of debt" [value]="item.type">{{ item.label }}</ng-option>
-                            </ng-select>
-                          </div>
-                        </div>
-                        <div class="col-6">
-                          <div class="control-group form-group">
-                            <label class="form-control-label" for="cName">Capital structure</label>
-                            <i class="fa fa-exclamation-circle mx-3"
-                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
-                              placement="right"></i>
-                            <ng-select class="select2 w-100" placeholder="Select capital structure"
-                              formControlName="capitalStructureType">
-                              <ng-option [value]="item.type" *ngFor="let item of cStructure">{{ item.type }}</ng-option>
-                            </ng-select>
-                            <hr class="m-2" />
-                            <p>
-                              <b>Note :</b> If company based then show a text
-                              which will get calculated value, If industry based
-                              then value is derived from external service
-                            </p>
-                          </div>
-                        </div>
-                        <div class="col-6">
-                          <div class="control-group form-group">
-                            <label class="form-control-label" for="cName">Proportion of preference share capital</label>
-                            <i class="fa fa-exclamation-circle mx-3"
-                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
-                              placement="right"></i>
-                            <ng-select class="select2 w-100" formControlName="popShareCapitalType"
-                              placeholder="Select Proportion of Preference Share Capital ">
-                              <ng-option [value]="item.type" *ngFor="let item of pppShareCaptial">{{ item.label
-                                }}</ng-option>
-                            </ng-select>
-                          </div>
-                        </div>
                       </ng-container>
                       <ng-container *ngIf="isRelative == true">
-
-
-                        <!-- <table class="table border card-table table-vcenter text-nowrap table-primary align-items-center">
-                          <thead class="bg-primary text-white"> -->
-
                         <table style="table-layout: fixed;"
                           class="table card-table table-vcenter text-nowrap table-primary align-items-center ">
                           <thead class="text-white">
@@ -545,7 +575,12 @@
                             ">
                             <th class="headcol">{{ tableHeading[inx] }}</th>
                             <td *ngFor="let item of valuationDataReport[inx]">
-                              {{ item | number : "1.2-2"  }}
+                              <ng-container *ngIf="returnType(item) === 'string'">
+                                {{ item }}
+                              </ng-container> 
+                              <ng-container *ngIf="returnType(item) !== 'string'">
+                                {{ item | number : "1.2-2"  }}
+                              </ng-container>
                             </td>
                           </tr>
                         </table>
@@ -622,8 +657,8 @@
                           <tr class="text-white">
                             <th class="sl-wrapper">Sr.No</th>
                             <th style="min-width: 300px">Particulars</th>
-                            <th>As on {{returnDate(this.firstFormGroup.value?.valuationDate) | date}}</th>
-                            <th>As on {{returnDate(this.firstFormGroup.value?.valuationDate) | date}}</th>
+                            <th>As on {{returnDate(firstFormGroup.value?.valuationDate) | date}}</th>
+                            <th>As on {{returnDate(firstFormGroup.value?.valuationDate) | date}}</th>
                           </tr>
                           <tr class="text-white">
                             <th></th>

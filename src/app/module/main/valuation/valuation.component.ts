@@ -75,6 +75,7 @@ export class ValuationComponent implements OnInit {
   files: File[] = [];
   subIndustries: any[] = [];
   relativeFormGroup!: FormGroup;
+  
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -86,6 +87,11 @@ export class ValuationComponent implements OnInit {
   ngOnInit(): void {
     this.inItData();
     console.log(this.tableHeading);
+  }
+
+  returnType(val: any) {
+    // number or string
+    return typeof(val);
   }
 
   generateForm() {
@@ -105,20 +111,7 @@ export class ValuationComponent implements OnInit {
       outstandingShares: ['', Validators.required],
       taxRateType: ['', Validators.required], 
       taxRate :[8],
-      discountRate: ['', Validators.required],
       terminalGrowthRate: [''],
-      discountingPeriod: ['', Validators.required],
-      coeMethod: ['', Validators.required],
-      riskFreeRateType: ['', Validators.required],
-      riskFreeRateYear: [''],
-      riskFreeRate: [2],
-     
-    
-
-
-      expMarketReturnType: ['', Validators.required],
-      expMarketReturn:[2],
-
       excelSheetId: ['', Validators.required],
       companies: this._formBuilder.array([]),
       type: ['manual', Validators.required],
@@ -128,15 +121,23 @@ export class ValuationComponent implements OnInit {
     this.addCompany();
 
     this.thirdFormGroup = this._formBuilder.group({
-      beta: [2, Validators.required],
-      betaType: ['', Validators.required],
+      discountRate: ['', Validators.required],
+      discountingPeriod: ['', Validators.required],
+      coeMethod: ['', Validators.required],
+      riskFreeRateType: ['', Validators.required],
+      riskFreeRateYear: [''],
+      riskFreeRate: [2],
+      expMarketReturnType: ['', Validators.required],
+      expMarketReturn:[2],
+      beta: [2],
+      betaType: [''],
       riskPremium: [2],
-      copShareCapitalType: ['', Validators.required],
+      copShareCapitalType: [''],
       copShareCapital:[1],
       costOfDebt: [2],
-      costOfDebtType: ['', Validators.required],
-      capitalStructureType: ['', Validators.required],
-      popShareCapitalType:["", Validators.required],
+      costOfDebtType: [''],
+      capitalStructureType: [''],
+      popShareCapitalType:[""],
     });
 
     this.relativeFormGroup = this._formBuilder.group({});
@@ -234,7 +235,7 @@ export class ValuationComponent implements OnInit {
     // this.firstFormGroup.patchValue(obj);
     // this.secondFormGroup.patchValue(obj);
     // this.thirdFormGroup.patchValue(obj);
-    this.secondFormGroup.controls['riskFreeRateType'].valueChanges.subscribe(
+    this.thirdFormGroup.controls['riskFreeRateType'].valueChanges.subscribe(
       (val) => {
         if (val == 'user_input_year') {
           const modalRef = this.modalService.open(UserInputComponent);
@@ -242,11 +243,11 @@ export class ValuationComponent implements OnInit {
             'Mentioned Any Year Based Indian Treasury Bond';
           modalRef.result.then((vals: any) => {
             this.riskRate = vals;
-            this.secondFormGroup.controls['riskFreeRateYear'].patchValue(vals)
+            this.thirdFormGroup.controls['riskFreeRateYear'].patchValue(vals)
           });
           
         } else {
-          this.secondFormGroup.controls['riskFreeRateYear'].patchValue(null)
+          this.thirdFormGroup.controls['riskFreeRateYear'].patchValue(null)
           this.riskRate = null;
         }
       }
@@ -255,7 +256,7 @@ export class ValuationComponent implements OnInit {
     this.firstFormGroup.controls['model'].valueChanges.subscribe((val) => {
       if(!val) return;
       if (val == 'FCFE')
-        this.secondFormGroup.controls['discountRate'].setValue(
+        this.thirdFormGroup.controls['discountRate'].setValue(
           'Cost of Equity'
         );
       if (val == 'FCFF')
@@ -276,7 +277,7 @@ export class ValuationComponent implements OnInit {
       }
     });
 
-    this.secondFormGroup.controls['expMarketReturnType'].valueChanges.subscribe(
+    this.thirdFormGroup.controls['expMarketReturnType'].valueChanges.subscribe(
       (val) => {
         if(!val) return
         if (val == 'ACE') {
@@ -296,16 +297,16 @@ export class ValuationComponent implements OnInit {
     this.secondFormGroup.controls['taxRateType'].enable();
     this.EnteredTaXRate = null;
 
-    this.secondFormGroup.controls['discountRate'].enable();
+    this.thirdFormGroup.controls['discountRate'].enable();
     this.secondFormGroup.controls['terminalGrowthRate'].enable();
-    this.secondFormGroup.controls['discountingPeriod'].enable();
-    this.secondFormGroup.controls['coeMethod'].enable();
-    this.secondFormGroup.controls['riskFreeRateType'].reset();
-    this.secondFormGroup.controls['riskFreeRateType'].enable();
-    this.secondFormGroup.controls['expMarketReturnType'].reset();
-    this.secondFormGroup.controls['expMarketReturnType'].enable();
+    this.thirdFormGroup.controls['discountingPeriod'].enable();
+    this.thirdFormGroup.controls['coeMethod'].enable();
+    this.thirdFormGroup.controls['riskFreeRateType'].reset();
+    this.thirdFormGroup.controls['riskFreeRateType'].enable();
+    this.thirdFormGroup.controls['expMarketReturnType'].reset();
+    this.thirdFormGroup.controls['expMarketReturnType'].enable();
     
-    this.secondFormGroup.controls['coeMethod'].enable();
+    this.thirdFormGroup.controls['coeMethod'].enable();
 
     // this.thirdFormGroup.controls['beta'].setValidators( Validators.required);
     // this.thirdFormGroup.controls['riskPremium'].setValidators( Validators.required);
@@ -315,20 +316,20 @@ export class ValuationComponent implements OnInit {
   }
 
   clearValidatorForRelative() {
-    this.secondFormGroup.controls['discountRate'].disable();
+    this.thirdFormGroup.controls['discountRate'].disable();
     this.secondFormGroup.controls['terminalGrowthRate'].disable();
-    this.secondFormGroup.controls['discountingPeriod'].disable();
-    this.secondFormGroup.controls['coeMethod'].disable();
-    this.secondFormGroup.controls['expMarketReturnType'].reset();
-    this.secondFormGroup.controls['expMarketReturnType'].disable();
+    this.thirdFormGroup.controls['discountingPeriod'].disable();
+    this.thirdFormGroup.controls['coeMethod'].disable();
+    this.thirdFormGroup.controls['expMarketReturnType'].reset();
+    this.thirdFormGroup.controls['expMarketReturnType'].disable();
     // this.secondFormGroup.controls['riskFreeRateType'].disable();
     this.secondFormGroup.controls['taxRateType'].reset()
     this.secondFormGroup.controls['taxRate'].reset();
     
     this.EnteredTaXRate = null;
-    this.secondFormGroup.controls['riskFreeRateType'].patchValue('');
+    this.thirdFormGroup.controls['riskFreeRateType'].patchValue('');
     this.secondFormGroup.controls['taxRateType'].disable();
-    this.secondFormGroup.controls['riskFreeRateType'].disable();
+    this.thirdFormGroup.controls['riskFreeRateType'].disable();
      
     // this.thirdFormGroup.controls['beta'].clearValidators( );
     // this.thirdFormGroup.controls['riskPremium'].clearValidators();
