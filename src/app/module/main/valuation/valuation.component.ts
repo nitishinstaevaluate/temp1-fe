@@ -396,6 +396,10 @@ export class ValuationComponent implements OnInit {
     return obj
   }
 
+  returnDate(myDate: any) {
+    return new Date(myDate.year, myDate.month, myDate.day);
+  }
+
   submitForm(stepper: MatStepper) {
     let payload = {
       ...this.firstFormGroup.value,
