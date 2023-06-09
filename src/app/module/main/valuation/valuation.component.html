@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col">
     <div class="card mt-4">
-      <h4 class="card-header">Validation Form</h4>
+      <h4 class="card-header">Let's get started with Valuation of a firm</h4>
       <div class="card-body">
         <div class="row">
           <div class="col">
@@ -92,7 +92,7 @@
                             <label class="custom-control custom-radio">
                               <input type="radio" class="custom-control-input" name="example-radios" value="option1"
                                 checked />
-                              <span class="custom-control-label">Growing concern</span>
+                              <span class="custom-control-label">Going concern</span>
                             </label>
                             <label class="custom-control custom-radio mx-2">
                               <input type="radio" class="custom-control-input" name="example-radios" value="option2" />
@@ -121,7 +121,7 @@
                             name="form-file-input" (change)="onFileSelected($event)" /> -->
                           <div class="card-body">
                             <ngx-dropzone (change)="onFileSelected($event)">
-                              <ngx-dropzone-label>Drag and dropa file Here!</ngx-dropzone-label>
+                              <ngx-dropzone-label>Drag and drop filled in P&L and BS in excel format. To get template click the download button</ngx-dropzone-label>
                               <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
                                 <ngx-dropzone-label>{{ f.name }}
                                 </ngx-dropzone-label>
@@ -141,7 +141,7 @@
                         <a [ngClass]="{
                             'user-select-none': isDownloadAllow == false
                           }" class="btn h4 btn-secondary text-white" [href]="downloadTemplate" target="_blank">
-                          <i class="fa fa-download mx-2"></i>XLS
+                          <i class="fa fa-download mx-3"></i>Get Template
                         </a>
                       </div>
                       <ng-container *ngIf="isRelative==true">
@@ -235,18 +235,7 @@
                             {{ EnteredTaXRate }}
                           </div>
                         </div>
-                        <div class="col-6">
-                          <div class="control-group form-group">
-                            <label class="form-control-label" for="dRate">Discount rate</label>
-                            <i class="fa fa-exclamation-circle mx-3"
-                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
-                              placement="right"></i>
-                            <ng-select class="select2 w-100" placeholder="Select discount rate"
-                              formControlName="discountRate">
-                              <ng-option [value]="item.type" *ngFor="let item of discountR">{{ item.label }}</ng-option>
-                            </ng-select>
-                          </div>
-                        </div>
+                        
                         <div class="col-6" *ngIf="isTerminalShow">
                           <div class="control-group form-group">
                             <label class="form-control-label" for="tGrowthRate">Terminal growth rate</label>
@@ -259,59 +248,8 @@
                             </ng-select>
                           </div>
                         </div>
-                        <div class="col-6">
-                          <div class="control-group form-group">
-                            <label class="form-control-label" for="equityMethod">Discounting period</label>
-                            <i class="fa fa-exclamation-circle mx-3"
-                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
-                              placement="right"></i>
-                            <ng-select class="select2 w-100" placeholder="Select cost of equity method"
-                              formControlName="discountingPeriod">
-                              <ng-option value="Full_Period">Full Period
-                              </ng-option>
-                              <ng-option value="Mid_Period">Mid Period
-                              </ng-option>
-                            </ng-select>
-                          </div>
-                        </div>
-                        <div class="col-6">
-                          <div class="control-group form-group">
-                            <label class="form-control-label" for="equityMethod">Cost of equity method</label>
-                            <i class="fa fa-exclamation-circle mx-3"
-                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
-                              placement="right"></i>
-                            <ng-select class="select2 w-100" placeholder="Select cost of equity method"
-                              formControlName="coeMethod">
-                              <ng-option [value]="item.type" *ngFor="let item of equityM">{{ item.label }}</ng-option>
-                            </ng-select>
-                          </div>
-                        </div>
-                        <div class="col-6">
-                          <div class="control-group form-group">
-                            <label class="form-control-label" for="riskFreeRate">Risk free rate</label>
-                            <i class="fa fa-exclamation-circle mx-3"
-                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
-                              placement="right"></i>
-                            <ng-select dropdownPosition="top" class="select2 w-100" placeholder="Select Risk free rate"
-                              formControlName="riskFreeRateType">
-                              <ng-option *ngFor="let item of riskF" [value]="item.type">{{ item.label }}</ng-option>
-                            </ng-select>
-                            {{ riskRate }}
-                          </div>
-                        </div>
-                        <div class="col-6">
-                          <div class="control-group form-group">
-                            <label class="form-control-label" for="marketReturn">Expected market return</label>
-                            <i class="fa fa-exclamation-circle mx-3"
-                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
-                              placement="right"></i>
-                            <ng-select class="select2 w-100" placeholder="Select expected market return"
-                              formControlName="expMarketReturnType">
-                              <ng-option [value]="item.type" *ngFor="let item of marketE">{{ item.label }}</ng-option>
-                            </ng-select>
-                            {{anaConEst}}
-                          </div>
-                        </div>
+
+                       
                       </ng-container>
                     </div>
                   </section>
@@ -332,6 +270,85 @@
                   <section class="pt-5">
                     <div class="row overflow-auto">
                       <ng-container *ngIf="isRelative == false">
+                        
+                        <div class="col-6">
+                          <div class="control-group form-group">
+                            <label class="form-control-label" for="dRate">Discount rate</label>
+                            <i class="fa fa-exclamation-circle mx-3"
+                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                              placement="right"></i>
+                            <ng-select class="select2 w-100" placeholder="Select discount rate"
+                              formControlName="discountRate">
+                              <ng-option [value]="item.type" *ngFor="let item of discountR">{{ item.label }}</ng-option>
+                            </ng-select>
+                          </div>
+                        </div>
+                        
+                        <div class="col-6">
+                          <div class="control-group form-group">
+                            <label class="form-control-label" for="equityMethod">Discounting period</label>
+                            <i class="fa fa-exclamation-circle mx-3"
+                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                              placement="right"></i>
+                            <ng-select class="select2 w-100" placeholder="Select cost of equity method"
+                              formControlName="discountingPeriod">
+                              <ng-option value="Full_Period">Full Period
+                              </ng-option>
+                              <ng-option value="Mid_Period">Mid Period
+                              </ng-option>
+                            </ng-select>
+                          </div>
+                        </div>
+                        
+                        <div class="col-6">
+                          <div class="control-group form-group">
+                            <label class="form-control-label" for="equityMethod">Cost of equity method</label>
+                            <i class="fa fa-exclamation-circle mx-3"
+                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                              placement="right"></i>
+                            <ng-select class="select2 w-100" placeholder="Select cost of equity method"
+                              formControlName="coeMethod">
+                              <ng-option [value]="item.type" *ngFor="let item of equityM">{{ item.label }}</ng-option>
+                            </ng-select>
+                          </div>
+                        </div>
+                        
+                        <div class="col-6">
+                          <div class="control-group form-group">
+                            <label class="form-control-label" for="riskFreeRate">Risk free rate</label>
+                            <i class="fa fa-exclamation-circle mx-3"
+                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                              placement="right"></i>
+                            <ng-select dropdownPosition="top" class="select2 w-100" placeholder="Select Risk free rate"
+                              formControlName="riskFreeRateType">
+                              <ng-option *ngFor="let item of riskF" [value]="item.type">{{ item.label }}</ng-option>
+                            </ng-select>
+                            {{ riskRate }}
+                          </div>
+                        </div>
+                        
+                        <!-- 
+                        Adding Discounting rate logic here
+
+                    
+                        
+                        <div class="col-6">
+                          <div class="control-group form-group">
+                            <label class="form-control-label" for="marketReturn">Expected market return</label>
+                            <i class="fa fa-exclamation-circle mx-3"
+                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                              placement="right"></i>
+                            <ng-select class="select2 w-100" placeholder="Select expected market return"
+                              formControlName="expMarketReturnType">
+                              <ng-option [value]="item.type" *ngFor="let item of marketE">{{ item.label }}</ng-option>
+                            </ng-select>
+                            {{anaConEst}}
+                          </div>
+                        </div>
+
+
+
+                        -->
                         <div class="col-6">
                           <div class="control-group form-group">
                             <label class="form-control-label" for="cName">Beta</label>
@@ -343,6 +360,7 @@
                             </ng-select>
                           </div>
                         </div>
+                        
                         <div class="col-6">
                           <div class="control-group form-group">
                             <label class="form-control-label" for="cName">Company specific risk premium</label>
