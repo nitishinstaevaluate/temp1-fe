@@ -356,6 +356,18 @@ export class ValuationComponent implements OnInit {
       : false;
   }
 
+  get isCOE() {
+    return this.firstFormGroup.controls['model']?.value == 'Relative_Valuation'
+      ? true
+      : false;
+  }
+
+  get isWACC() {
+    return this.firstFormGroup.controls['model']?.value == 'Relative_Valuation'
+      ? true
+      : false;
+  }
+
   inItData() {
     this._valuationService.getValuationDropdown().subscribe((resp: any) => {
       this.industries = resp[DROPDOWN.INDUSTRIES];
