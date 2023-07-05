@@ -1,4 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { forkJoin } from 'rxjs';
 
 import {
   FormArray,
@@ -8,6 +9,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
+import { DataReferencesService } from 'src/app/shared/service/data-references.service';
 import { DROPDOWN } from 'src/app/shared/enums/enum';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'src/enviroments/enviroments';
@@ -45,6 +47,9 @@ export class ValuationComponent implements OnInit {
   debt: any[] = [];
   cStructure: any[] = [];
   pppShareCaptial: any[] = [];
+  indianTreasuryY: any[] = [];
+  historicalReturns: any[] = [];
+  betaIndustries: any[] =[];
   EnteredTaXRate: any = '';
   modalTitle: any = '';
   riskRate: any = '';
@@ -74,19 +79,22 @@ export class ValuationComponent implements OnInit {
 
   files: File[] = [];
   subIndustries: any[] = [];
+  industriesRatio: any = '';
   relativeFormGroup!: FormGroup;
   
 
   constructor(
     private _formBuilder: FormBuilder,
     private _valuationService: ValuationService,
+    private _dataReferencesService: DataReferencesService,
     private modalService: NgbModal
   ) {
     this.generateForm();
   }
   ngOnInit(): void {
     this.inItData();
-    console.log(this.tableHeading);
+    
+    // console.log(this.tableHeading);
   }
 
   returnType(val: any) {
@@ -101,7 +109,7 @@ export class ValuationComponent implements OnInit {
       industry: ['', Validators.required],
       projectionYears: ['', Validators.required],
       model: ['', Validators.required],
-      userId: ['641d654fa83ed4a5f0293a52', Validators.required],
+      userId: ['641d654fa83ed4a5f0293a52', Validators.required],  // Change this to actual userid
       subIndustry: ['', Validators.required],
       discountRateType: ['WACC', Validators.required],
       discountRateValue: [10, Validators.required],
@@ -114,11 +122,12 @@ export class ValuationComponent implements OnInit {
       terminalGrowthRate: [''],
       excelSheetId: ['', Validators.required],
       companies: this._formBuilder.array([]),
-      type: ['manual', Validators.required],
+      type: ['industry', Validators.required],
     });
     this.addCompany();
     this.addCompany();
     this.addCompany();
+    
 
     this.thirdFormGroup = this._formBuilder.group({
       discountRate: ['', Validators.required],
@@ -165,13 +174,21 @@ export class ValuationComponent implements OnInit {
       if (!val) {
         // this.companies = [];
         this.subIndustries = [];
+        // this.industriesRatio = [];
         return;
       }
       const indst = this.industries.find((e) => e.industry == val);
       this._valuationService.getIndustries(indst._id).subscribe((resp: any) => {
-        console.log(resp);
+        // console.log(resp);   
         this.subIndustries = resp;
       });
+      // console.log(indst._id);
+      this._dataReferencesService.getIndustriesRatio(indst._id).subscribe((resp: any) => {
+        this.industriesRatio = resp[0];
+        // console.log(resp);
+        console.log(this.industriesRatio);
+      });
+
     });
 
     this.firstFormGroup.controls['subIndustry'].valueChanges.subscribe(
@@ -267,15 +284,35 @@ export class ValuationComponent implements OnInit {
         this.clearValidatorForRelative();
         // const modalRef = this.modalService.open(RelativeComponent);
       } else {
-        this.addValidotorsForRelative();
+        this.addValidatorsForRelative();
       }
     });
 
     this.secondFormGroup.controls['type'].valueChanges.subscribe((val) => {
       if (val == 'automatic') {
         const modalRef = this.modalService.open(RelativeComponent);
+      } else if (val == 'industry'){
+         // Do something here 
+      } else {
+        // Populate as required
       }
     });
+
+    this.thirdFormGroup.controls['capitalStructureType'].valueChanges.subscribe(
+      (val) => {
+        if(!val) return
+        if (val == 'Industry_Based') {
+          const modalRef = this.modalService.open(UserInputComponent);
+          // Calculating industry based capital structure based on as deRatio + 100
+          // modalRef.componentInstance.modalTitle = 'Analyst Consensus Estimates';
+          // modalRef.result.then((val: any) => {
+          //   this.anaConEst = val;
+          // });
+        } else {
+          this.anaConEst = null;
+        }
+      }
+    );
 
     this.thirdFormGroup.controls['expMarketReturnType'].valueChanges.subscribe(
       (val) => {
@@ -292,7 +329,7 @@ export class ValuationComponent implements OnInit {
       }
     );
   }
-  addValidotorsForRelative() {
+  addValidatorsForRelative() {
     this.secondFormGroup.controls['taxRateType'].reset();
     this.secondFormGroup.controls['taxRateType'].enable();
     this.EnteredTaXRate = null;
@@ -370,22 +407,37 @@ export class ValuationComponent implements OnInit {
   }
 
   inItData() {
-    this._valuationService.getValuationDropdown().subscribe((resp: any) => {
-      this.industries = resp[DROPDOWN.INDUSTRIES];
-      this.valuationM = resp[DROPDOWN.MODAL];
-      this.taxR = resp[DROPDOWN.TAX];
-      this.discountR = resp[DROPDOWN.DISCOUNT];
-      this.growthR = resp[DROPDOWN.GROWTH];
-      this.equityM = resp[DROPDOWN.EQUITY];
-      this.riskF = resp[DROPDOWN.RISK];
-      this.marketE = resp[DROPDOWN.EMARKET];
-      this.betaS = resp[DROPDOWN.BETA];
-      this.rPremium = resp[DROPDOWN.PREMIUM];
-      this.preShaCap = resp[DROPDOWN.PREFERANCE_SHARE_CAPITAL];
-      this.debt = resp[DROPDOWN.DEBT];
-      this.cStructure = resp[DROPDOWN.CAPTIAL_STRUCTURE];
-      this.pppShareCaptial = resp[DROPDOWN.P_P_SHARE_CAPTIAL];
+    
+    forkJoin([this._valuationService.getValuationDropdown(),this._dataReferencesService.getIndianTreasuryYields(),
+    this._dataReferencesService.getHistoricalReturns(),
+    this._dataReferencesService.getBetaIndustries(),
+    // this._dataReferencesService.getIndustriesRatio()
+  ])
+    // this._valuationService.getValuationDropdown()
+
+    // Individual dropdown implemented will be added in subsequest array element
+    .subscribe((resp: any) => {
+      this.industries = resp[0][DROPDOWN.INDUSTRIES];
+      this.valuationM = resp[0][DROPDOWN.MODAL];
+      this.taxR = resp[0][DROPDOWN.TAX];
+      this.discountR = resp[0][DROPDOWN.DISCOUNT];
+      this.growthR = resp[0][DROPDOWN.GROWTH];
+      this.equityM = resp[0][DROPDOWN.EQUITY];
+      this.riskF = resp[0][DROPDOWN.RISK];
+      this.marketE = resp[0][DROPDOWN.EMARKET];
+      this.betaS = resp[0][DROPDOWN.BETA];
+      this.rPremium = resp[0][DROPDOWN.PREMIUM];
+      this.preShaCap = resp[0][DROPDOWN.PREFERANCE_SHARE_CAPITAL];
+      this.debt = resp[0][DROPDOWN.DEBT];
+      this.cStructure = resp[0][DROPDOWN.CAPTIAL_STRUCTURE];
+      this.pppShareCaptial = resp[0][DROPDOWN.P_P_SHARE_CAPTIAL]; // Spell Error
+      this.indianTreasuryY = resp[DROPDOWN.INDIANTREASURYYIELDS]; // Set as array element 1
+      this.historicalReturns = resp[DROPDOWN.HISTORICALRETURNS]; // Set as array element 2
+      this.betaIndustries = resp[DROPDOWN.BETAINDUSTRIES]; // Set as array element 3
+      // this.industriesRatio = resp[DROPDOWN.INDUSTRIESRATIO]; //Set as array element 4
+
     });
+    
   }
 
   clean(obj:any) {
@@ -488,6 +540,12 @@ export class ValuationComponent implements OnInit {
   getbyCompaniesId(id: any) {
     this._valuationService.getCompanies(id).subscribe((resp: any) => {});
   }
+
+
+  getIndustriesRatiobyId(id: any) {
+    this._dataReferencesService.getIndustriesRatio(id).subscribe((resp: any) => {});
+  }
+
   findMedian(type: string) {
     const numbers = this.companies.map((c: any) => c[type]);
     numbers.sort((a, b) => a - b);

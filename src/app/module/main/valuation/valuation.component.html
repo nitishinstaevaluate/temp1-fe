@@ -160,24 +160,31 @@
                         <div class="col-6"></div>
                       </ng-container>
 
-                      <ng-container *ngIf="isRelative == true && companies.length">
+                      <ng-container *ngIf="isRelative == true">   
+                        <!-- && companies.length -->
                         <div class="col-12">
                           <div class="form-group form-elements">
+                            <label class="form-control-label" >Preference for Ratios</label>
                             <div class="custom-controls-stacked d-flex">
                               <label class="custom-control custom-radio mx-5">
                                 <input [formControlName]="'type'" type="radio" class="custom-control-input" name="type"
-                                  value="manual" checked />
-                                <span class="custom-control-label">Manual</span>
+                                  value="industry" checked />
+                                <span class="custom-control-label"> Industry Based</span>
                               </label>
-                              <label class="custom-control custom-radio">
+                              <label class="custom-control custom-radio mx-5">
+                                <input [formControlName]="'type'" type="radio" class="custom-control-input" name="type"
+                                  value="manual"  />
+                                <span class="custom-control-label">Company Based</span>
+                              </label>
+                              <!-- <label class="custom-control custom-radio">
                                 <input formControlName="type" type="radio" class="custom-control-input" name="type"
                                   value="automatic" />
-                                <span class="custom-control-label">Automatic</span>
-                              </label>
+                                <span class="custom-control-label">Specify Company </span>
+                              </label> -->
                             </div>
                           </div>
                         </div>
-                        <ng-container formArrayName="companies">
+                        <ng-container formArrayName="companies" *ngIf="this.secondFormGroup.controls['type'].value === 'manual'">
                           <ng-container *ngFor="let c of Companies.controls; let i = index;let last = last">
                             <div class="col-6">
                               <div class="control-group form-group">
@@ -230,9 +237,10 @@
                               placement="right"></i>
                             <ng-select class="select2 w-100" placeholder=" Select tax rate"
                               formControlName="taxRateType">
+                              <ng-option value=""> 25.17%</ng-option> 
                               <ng-option [value]="item.type" *ngFor="let item of taxR">{{ item.label }}</ng-option>
                             </ng-select>
-                            {{ EnteredTaXRate }}
+                            &nbsp;{{ EnteredTaXRate === '' ? " " : EnteredTaXRate + ' %'   }} 
                           </div>
                         </div>
                         
@@ -321,7 +329,8 @@
                               placement="right"></i>
                             <ng-select dropdownPosition="top" class="select2 w-100" placeholder="Select Risk free rate"
                               formControlName="riskFreeRateType">
-                              <ng-option *ngFor="let item of riskF" [value]="item.type">{{ item.label }}</ng-option>
+                              <!-- <ng-option *ngFor="let item of riskF" [value]="item.type">{{ item.label }}</ng-option> -->
+                              <ng-option *ngFor="let item of indianTreasuryY" [value]="item.latest">Yield on {{ item.maturityInYrs }} Years Indian Treasury Bond</ng-option>
                             </ng-select>
                             {{ riskRate }}
                           </div>
@@ -340,7 +349,10 @@
                               placement="right"></i>
                             <ng-select class="select2 w-100" placeholder="Select expected market return"
                               formControlName="expMarketReturnType">
-                              <ng-option [value]="item.type" *ngFor="let item of marketE">{{ item.label }}</ng-option>
+                              <!-- <ng-option [value]="item.type" *ngFor="let item of marketE">{{ item.label }}</ng-option> -->
+                              <ng-option value="ACE" >Analyst Consensus Estimates</ng-option>
+                              <ng-option><b>Returns based on historical data:</b></ng-option>
+                              <ng-option [value]="item.cagr" *ngFor="let item of historicalReturns">&nbsp; BSE500 since {{ item.year ===1999 ? 'Inception' : item.year }}</ng-option>
                             </ng-select>
                             {{anaConEst}}
                           </div>
@@ -356,7 +368,13 @@
                               ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
                               placement="right"></i>
                             <ng-select class="select2 w-100" placeholder="Select beta" formControlName="betaType">
-                              <ng-option [value]="item.type" *ngFor="let item of betaS">{{ item.label }}</ng-option>
+                              <!-- <ng-option [value]="item.type" *ngFor="let item of betaS">{{ item.label }}</ng-option> -->
+                              <!-- <ng-option value="ACE" ><b>Industry Beta:</b></ng-option>
+                              <ng-option [value]="item.beta" *ngFor="let item of betaIndustries">&nbsp; {{ item.industry}}</ng-option>
+                              <ng-option><b>Relevered - Comparable beta of peers based on size and returns</b></ng-option>
+                              <ng-option><b>Stock Beta</b></ng-option> -->
+                              <ng-option value="levered"><b>Levered</b></ng-option>
+                              <ng-option value="unlevered"><b>Unlevered</b></ng-option>
                             </ng-select>
                           </div>
                         </div>
@@ -393,10 +411,14 @@
                               <i class="fa fa-exclamation-circle mx-3"
                                 ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
                                 placement="right"></i>
-                              <ng-select class="select2 w-100" placeholder="Select cost of debt "
+                              <!-- <ng-select class="select2 w-100" placeholder="Select cost of debt "
                                 formControlName="costOfDebtType">
                                 <ng-option *ngFor="let item of debt" [value]="item.type">{{ item.label }}</ng-option>
-                              </ng-select>
+                              </ng-select> -->
+                              <!-- Changing to free text now but in future can use finance cost/Interest cost -->
+                              <input class="form-control input-md" formControlName="costOfDebtType"
+                              name="costOfDebtType" type="text" placeholder="Add finance/interest cost" />
+
                             </div>
                           </div>
                           <div class="col-6">
@@ -407,7 +429,7 @@
                                 placement="right"></i>
                               <ng-select class="select2 w-100" placeholder="Select capital structure"
                                 formControlName="capitalStructureType">
-                                <ng-option [value]="item.type" *ngFor="let item of cStructure">{{ item.type }}</ng-option>
+                                <ng-option [value]="item.type" *ngFor="let item of cStructure">{{ item.label }}</ng-option>
                               </ng-select>
                               <hr class="m-2" />
                               <p>
@@ -417,7 +439,7 @@
                               </p>
                             </div>
                           </div>
-                          <div class="col-6">
+                          <div class="col-6" *ngIf="thirdFormGroup.value?.capitalStructureType === 'Company_Based'">
                             <div class="control-group form-group">
                               <label class="form-control-label" for="cName">Proportion of preference share capital</label>
                               <i class="fa fa-exclamation-circle mx-3"
@@ -470,17 +492,17 @@
                           class="table card-table table-vcenter text-nowrap table-primary align-items-center ">
                           <thead class="text-white">
                             <tr>
-                              <th class="sl-wrapper">Sr.No</th>
-                              <th class="name-wrapper">Name</th>
-                              <th class="head-wrapper">P/E Ratio as on Valuation Date</th>
-                              <th class="head-wrapper">P/B Ratio as on Valuation Date</th>
-                              <th class="head-wrapper">EV/EBITDA as on Valuation Date</th>
-                              <th class="head-wrapper">Valuation Date Price/Sales Valuation Date</th>
+                              <!-- <th class="sl-wrapper">Sr.No</th> -->
+                              <th class="name-wrapper">Company Name</th>
+                              <th class="head-wrapper">P/E Ratio</th>
+                              <th class="head-wrapper">P/B Ratio</th>
+                              <th class="head-wrapper">EV/EBITDA</th>
+                              <th class="head-wrapper">Price/Sales</th>
                             </tr>
                           </thead>
-                          <tbody>
-                            <tr *ngFor="let item of companies; let i = index">
-                              <td>{{ i + 1 }}</td>
+                          <tbody *ngIf="this.secondFormGroup.controls['type'].value === 'manual'">
+                            <tr *ngFor="let item of companies; let i = index" >
+                              <!-- <td>{{ i + 1 }}</td> -->
                               <td>{{ item.company }}</td>
                               <td style="width: 100px">
                                 <input type="number" [(ngModel)]="companies[i].peRatio" [value]="companies[i].peRatio"
@@ -508,8 +530,8 @@
                               </td>
                             </tr>
                             <tr>
-                              <td></td>
-                              <td>Average</td>
+                              <!-- <td></td> -->
+                              <td><b>Average</b></td>
                               <td>
                                 {{ companyAverage["peRatio"] | number : "1.2-2" }}
                               </td>
@@ -524,8 +546,8 @@
                               </td>
                             </tr>
                             <tr>
-                              <td></td>
-                              <td>Median</td>
+                              <!-- <td></td> -->
+                              <td><b>Median</b></td>
                               <td>
                                 {{ companyMedian["peRatio"] | number : "1.2-2" }}
                               </td>
@@ -540,6 +562,76 @@
                               </td>
                             </tr>
                           </tbody>
+                          <!-- Show Industry ratios data -->
+                          <tbody *ngIf="this.secondFormGroup.controls['type'].value === 'industry'">
+                            <tr >
+                              <td>{{ industriesRatio.industry }}</td>
+                              <td>{{ industriesRatio.currentPE }}</td>
+                              <td>{{ industriesRatio.pbv }}</td>
+                              <td>{{ industriesRatio.evEBITDA_PV }}</td>
+                              <td>{{ industriesRatio.priceSales }}</td>
+                              <!-- <td style="width: 100px">
+                                <input type="number" [(ngModel)]="companies[i].peRatio" [value]="companies[i].peRatio"
+                                  [ngModelOptions]="{ standalone: true }" (ngModelChange)="
+                                    findAverage('peRatio'); findMedian('peRatio')
+                                  " />
+                              </td>
+                              <td style="width: 100px">
+                                <input type="number" [(ngModel)]="companies[i].pbRatio" [value]="companies[i].pbRatio"
+                                  [ngModelOptions]="{ standalone: true }" (ngModelChange)="
+                                    findAverage('pbRatio'); findMedian('pbRatio')
+                                  " />
+                              </td>
+                              <td style="width: 100px">
+                                <input type="number" [(ngModel)]="companies[i].ebitda" [value]="companies[i].ebitda"
+                                  [ngModelOptions]="{ standalone: true }" (ngModelChange)="
+                                    findAverage('ebitda'); findMedian('ebitda')
+                                  " />
+                              </td>
+                              <td style="width: 100px">
+                                <input type="number" [(ngModel)]="companies[i].sales" [value]="companies[i].sales"
+                                  [ngModelOptions]="{ standalone: true }" (ngModelChange)="
+                                    findAverage('sales'); findMedian('sales')
+                                  " />
+                              </td> -->
+                            </tr>
+
+
+                            <!-- <tr>
+                              <td><b>Average</b></td>
+                              <td>
+                                {{ companyAverage["peRatio"] | number : "1.2-2" }}
+                              </td>
+                              <td>
+                                {{ companyAverage["pbRatio"] | number : "1.2-2" }}
+                              </td>
+                              <td>
+                                {{ companyAverage["ebitda"] | number : "1.2-2" }}
+                              </td>
+                              <td>
+                                {{ companyAverage["sales"] | number : "1.2-2" }}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td><b>Median</b></td>
+                              <td>
+                                {{ companyMedian["peRatio"] | number : "1.2-2" }}
+                              </td>
+                              <td>
+                                {{ companyMedian["pbRatio"] | number : "1.2-2" }}
+                              </td>
+                              <td>
+                                {{ companyMedian["ebitda"] | number : "1.2-2" }}
+                              </td>
+                              <td>
+                                {{ companyMedian["sales"] | number : "1.2-2" }}
+                              </td>
+                            </tr> -->
+
+
+                          </tbody>
+
+
                         </table>
                       </ng-container>
                     </div>
@@ -561,7 +653,7 @@
                     <div *ngIf="isRelative == false">
                       <span class="h3">Valuation</span>
                       <p>
-                        Valuation of a frm based on Proft loss and balance sheet
+                        Valuation of a firm based on Proft loss and balance sheet
                         statements.
                       </p>
                       <span class="h3 m-0">Data</span>
@@ -591,7 +683,7 @@
                         class="table card-table table-vcenter text-nowrap table-primary align-items-center mb-6">
                         <thead>
                           <tr class="text-white">
-                            <th class="sl-wrapper">Sr.No</th>
+                            <!-- <th class="sl-wrapper">Sr.No</th> -->
                             <th class="name-wrapper">Name</th>
                             <th class="head-wrapper">P/E Ratio as on Valuation Date</th>
                             <th class="head-wrapper">P/B Ratio as on Valuation Date</th>
@@ -601,7 +693,7 @@
                         </thead>
                         <tbody>
                           <tr *ngFor="let item of companies; let i = index">
-                            <td>{{ i + 1 }}</td>
+                            <!-- <td>{{ i + 1 }}</td> -->
                             <td>{{ item.company }}</td>
                             <td>{{ item.peRatio | number : '1.2-2'  }}</td>
                             <td>{{ item.pbRatio | number : '1.2-2'  }}</td>
@@ -609,9 +701,11 @@
                             <td>{{ item.sales | number : '1.2-2'  }}</td>
                           </tr>
 
+                        
+
                           <tr>
-                            <td></td>
-                            <td>Average</td>
+                            <!-- <td></td> -->
+                            <td><b>Average</b></td>
                             <td>
                               {{ companyAverage["peRatio"] | number : "1.2-2" }}
                             </td>
@@ -626,8 +720,8 @@
                             </td>
                           </tr>
                           <tr>
-                            <td></td>
-                            <td>Median</td>
+                            <!-- <td></td> -->
+                            <td><b>Median</b></td>
                             <td>
                               {{ companyMedian["peRatio"] | number : "1.2-2" }}
                             </td>
@@ -648,7 +742,7 @@
                         <thead>
                           <tr class="text-white">
                             <th colspan="2" style="border-right: none;">
-                              Valuation of CMM InfraProjects Ltd
+                              Valuation of {{ firstFormGroup.controls['company'] }}
                             </th>
                             <th colspan="2" style="border-left: none;">
                               Amount (in INR)

@@ -28,7 +28,7 @@ export class ValuationService {
     return this.http.get(`${HOST}export/${id}`);
   }
   getActivity(): Observable<any> {
-    return this.http.get(`${HOST}valuations/640a4783337b1b37d6fd04c7`);
+    return this.http.get(`${HOST}valuations/640a4783337b1b37d6fd04c7`); // Update with dynamic user
   }
 
   getIndustries(id:any){
