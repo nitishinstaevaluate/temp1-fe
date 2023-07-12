@@ -14,7 +14,7 @@ export enum DROPDOWN {
     CAPTIAL_STRUCTURE ="capitalStructures",
     P_P_SHARE_CAPTIAL ="popShareCapitals",
     INDIANTREASURYYIELDS = 1, //Denotes array element 1
-    HISTORICALRETURNS = 2, //Denotes arracy element 2
+    HISTORICALRETURNS = 2, //Denotes array element 2
     BETAINDUSTRIES = 3, //Denotes array element 3
     INDUSTRIESRATIO = 4, // Denotes array element 4
     

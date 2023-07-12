@@ -9,7 +9,7 @@ export const HEADING_OBJ = {
     fixedAssets: 'Change in fixed assets',
     fcff: 'FCFF',
     discountingPeriod: 'Discounting Period (Mid Year)',
-    discountingFactor: 'Discounting Factor @WACCAT',
+    discountingFactor: 'Discounting Factor',             //  '@WACCAT' removed this
     presentFCFF: 'Present Value of FCFF',
     sumOfCashFlows: 'Sum of Cash Flows',
     debtOnDate: 'Less: Debt as on Date',

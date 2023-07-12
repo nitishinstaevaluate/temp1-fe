@@ -30,9 +30,9 @@ export class DataReferencesService {
     return this.http.get(`${HOST}betaindustries`);
   }
 
-  // getIndustriesRatio(): Observable<any> {
-  //   return this.http.get(`${HOST}industriesratio`);
-  // }
+  getBetaIndustriesById(id: any): Observable<any> {
+    return this.http.get(`${HOST}betaindustries/${id}`);
+  }
 
   getIndustriesRatio(id:any){
     return this.http.get(`${HOST}industriesratio/${id}`);
