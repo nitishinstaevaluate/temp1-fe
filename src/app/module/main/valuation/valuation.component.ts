@@ -55,8 +55,10 @@ export class ValuationComponent implements OnInit {
   riskRate: any = '';
   reportId: any;
   debtRatio: any = '';
+  debtProp: any = '';
   equityProp: any = '';
   totalCapital: any = '';
+  newValDate: any = '';
   valuationDataReport: any[] = [];
   tableHeading = Object.values(HEADING_OBJ);
   anaConEst: any = '';
@@ -117,12 +119,12 @@ export class ValuationComponent implements OnInit {
       userId: ['641d654fa83ed4a5f0293a52', Validators.required],  // Change this to actual userid
       subIndustry: [''],                                          // removed as required field
       discountRateType: ['WACC'],                                  // removed as required field
-      discountRateValue: [10],                                     // removed as required field
+      discountRateValue: [20],                                     // removed as required field
     });
 
     this.secondFormGroup = this._formBuilder.group({
       outstandingShares: ['', Validators.required],
-      taxRateType: ['', Validators.required], 
+      taxRateType: [''], 
       taxRate :['25.17%'],
       terminalGrowthRate: [''],
       excelSheetId: ['', Validators.required],
@@ -147,11 +149,12 @@ export class ValuationComponent implements OnInit {
       betaType: [''],
       riskPremium: ['2'],                                            // checkwhether required any more or not
       copShareCapitalType: [''],
-      copShareCapital:[1],
+      copShareCapital:[''],
       costOfDebt: [''],
       costOfDebtType: [''],
       capitalStructureType: [''],
       popShareCapitalType:[""],
+      otherAdj:[0]
     });
 
     this.relativeFormGroup = this._formBuilder.group({});
@@ -359,7 +362,8 @@ export class ValuationComponent implements OnInit {
         if (val == 'Industry_Based') {
           this.debtRatio = parseFloat(this.betaIndustriesId.deRatio)/100;
           this.totalCapital = 1 + this.debtRatio;
-          this.equityProp = 1/this.totalCapital;
+          this.debtProp = this.debtRatio/this.totalCapital;
+          this.equityProp = 1 - this.debtProp;
           console.log(this.debtRatio + " " + this.equityProp);
           // });
         } else {
@@ -537,12 +541,18 @@ export class ValuationComponent implements OnInit {
     if (payload['taxRate'] == null) {
       payload['taxRate'] = '25.17%';
     }
-    payload['capitalStructure'] = capitalStructure;
+    if (this.thirdFormGroup.controls['capitalStructureType'].value == 'Industry_based') {
+      payload['capitalStructure'] = capitalStructure;
+    }
     const myDate = payload['valuationDate'];
-    var newDate = new Date(myDate.year, myDate.month, myDate.day);
-    
+    // console.log(myDate);
+
+    var newDate = new Date(myDate.year, myDate.month - 1, myDate.day);
+    // console.log(newDate);
     payload['valuationDate'] = newDate.getTime();
+    // console.log(payload['valuationDate']);
     this.valuationDataReport = [];
+    this.newValDate = newDate;
     console.log(payload);
     this._valuationService.submitForm(this.clean(payload)).subscribe(
       (res: any) => {

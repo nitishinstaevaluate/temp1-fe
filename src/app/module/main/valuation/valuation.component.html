@@ -114,11 +114,41 @@
               <mat-step [stepControl]="secondFormGroup" [editable]="isEditable">
                 <form [formGroup]="secondFormGroup">
                   <section>
-                    <div class="row mb-3">
+
+                    <!-- <div class="row">
+                      <div class="col-md-4">
+                        <div class="card-body">
+                          <ngx-dropzone (change)="onFileSelected($event)">
+                            <ngx-dropzone-label>Drag and drop filled in P&L and BS in excel format. To get template click the download button</ngx-dropzone-label>
+                            <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
+                              <ngx-dropzone-label>{{ f.name }}
+                              </ngx-dropzone-label>
+                            </ngx-dropzone-preview>
+                          </ngx-dropzone>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="row">
+                          <div class="col-md-6">.col-md-6</div>
+                          <div class="col-md-6">.col-md-6</div>
+                        </div>
+                        <div class="pb-3">
+                          <input class="form-control input-md" formControlName="outstandingShares"
+                              name="outstandingShares" type="text" placeholder="No.of outstanding shares" />
+                        </div>
+                        <div class="pb-3">
+                          <input class="form-control input-md" formControlName="outstandingShares"
+                              name="outstandingShares" type="text" placeholder="No.of outstanding shares" />
+                        </div>
+                      </div>
+                    </div> -->
+
+                    
+
+                    <div class="row mb-2">
+                      
                       <div class="col-9">
                         <div>
-                          <!-- <input type="file" title="Input file" class="form-control  form-file-input"
-                            name="form-file-input" (change)="onFileSelected($event)" /> -->
                           <div class="card-body">
                             <ngx-dropzone (change)="onFileSelected($event)">
                               <ngx-dropzone-label>Drag and drop filled in P&L and BS in excel format. To get template click the download button</ngx-dropzone-label>
@@ -127,14 +157,8 @@
                                 </ngx-dropzone-label>
                               </ngx-dropzone-preview>
                             </ngx-dropzone>
-                            <!-- <input type="file" class="dropify" data-height="300" /> -->
                           </div>
                         </div>
-                        <!-- <div class="control-group form-group">
-                          <label class="form-control-label" for="name">User Name</label>
-                          <input class="form-control " [ngModelOptions]="{ standalone: true }" ngModel #name="ngModel"
-                            id="name1" name="name" type="file" placeholder="User Name" />
-                        </div> -->
                       </div>
                       <div class="col-1"></div>
                       <div class="col-2 templateC d-flex align-items-center">
@@ -144,6 +168,8 @@
                           <i class="fa fa-download mx-3"></i>Get Template
                         </a>
                       </div>
+                      <!-- Added for provisional valuation date -->
+                      
                       <ng-container *ngIf="isRelative==true">
                         <div class="col-6">
                           <div class="control-group form-group">
@@ -395,19 +421,21 @@
                           </div>
                           <div class="col-6">
                             <div class="control-group form-group">
-                              <label class="form-control-label" for="cName">Cost of preference share capital</label>
+                              <label class="form-control-label" for="cName">Cost of preference share capital (in %)</label>
                               <i class="fa fa-exclamation-circle mx-3"
                                 ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
                                 placement="right"></i>
-                              <ng-select class="select2 w-100" placeholder="Select cost of Preference Share Capital"
-                                formControlName="copShareCapitalType">
+                              <!-- <ng-select class="select2 w-100" placeholder="Select cost of Preference Share Capital"
+                                formControlName="copShareCapital">
                                 <ng-option [value]="item.type" *ngFor="let item of preShaCap">{{ item.label }}</ng-option>
-                              </ng-select>
+                              </ng-select> -->
+                              <input class="form-control input-md" formControlName="copShareCapital"
+                              name="copShareCapital" type="text" placeholder="Add cost of preference share capital" />
                             </div>
                           </div>
                           <div class="col-6">
                             <div class="control-group form-group">
-                              <label class="form-control-label" for="cName">Cost of debt</label>
+                              <label class="form-control-label" for="cName">Cost of debt (in %)</label>
                               <i class="fa fa-exclamation-circle mx-3"
                                 ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
                                 placement="right"></i>
@@ -439,7 +467,7 @@
                               </p>
                             </div>
                           </div>
-                          <div class="col-6" *ngIf="thirdFormGroup.value?.capitalStructureType === 'Company_Based'">
+                          <!-- <div class="col-6" *ngIf="thirdFormGroup.value?.capitalStructureType === 'Company_Based'">
                             <div class="control-group form-group">
                               <label class="form-control-label" for="cName">Proportion of preference share capital</label>
                               <i class="fa fa-exclamation-circle mx-3"
@@ -450,8 +478,8 @@
                                 <ng-option [value]="item.type" *ngFor="let item of pppShareCaptial">{{ item.label }}</ng-option>
                               </ng-select>
                             </div>
-                          </div>
-                          <ng-container *ngIf="thirdFormGroup.value?.popShareCapitalType === 'CFBS'">
+                          </div> -->
+                          <!-- <ng-container *ngIf="thirdFormGroup.value?.popShareCapitalType === 'CFBS'">
                             <div class="col-6">
                               <div class="control-group form-group">
                                 <label class="form-control-label" for="proportionOfDebt">Proportion of Debt</label>
@@ -482,8 +510,24 @@
                                   name="proportionOfPSC" type="text" placeholder="Proportion of Preference Share Capital" />
                               </div>
                             </div>
-                          </ng-container>
+                          </ng-container> -->
                         </ng-container>
+                        <div class="col-6">
+                          <div class="control-group form-group">
+                            <label class="form-control-label" for="cName">Other Adjustments</label>
+                            <i class="fa fa-exclamation-circle mx-3"
+                              ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                              placement="right"></i>
+                            <!-- <ng-select class="select2 w-100" placeholder="Select cost of debt "
+                              formControlName="costOfDebtType">
+                              <ng-option *ngFor="let item of debt" [value]="item.type">{{ item.label }}</ng-option>
+                            </ng-select> -->
+                            <!-- Changing to free text now but in future can use finance cost/Interest cost -->
+                            <input class="form-control input-md" formControlName="otherAdj"
+                            name="otherAdj" type="text" placeholder="Add Adjustments value" />
+
+                          </div>
+                        </div>
                         
                       </ng-container>
                       <ng-container *ngIf="isRelative == true">
@@ -703,8 +747,9 @@
                           <tr class="text-white">
                             <th class="sl-wrapper">Sr.No</th>
                             <th style="min-width: 300px">Particulars</th>
-                            <th>As on {{returnDate(firstFormGroup.value?.valuationDate) | date}}</th>
-                            <th>As on {{returnDate(firstFormGroup.value?.valuationDate) | date}}</th>
+                            <!-- <th>As on {{returnDate(firstFormGroup.value?.valuationDate) | date}}</th> -->
+                            <th>As on {{this.newValDate | date}}</th>
+                            <th>As on {{this.newValDate | date}}</th>
                           </tr>
                           <tr class="text-white">
                             <th></th>
