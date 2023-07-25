@@ -58,7 +58,8 @@ export class ValuationComponent implements OnInit {
   debtProp: any = '';
   equityProp: any = '';
   totalCapital: any = '';
-  newValDate: any = '';
+  // newValDate: any = '';
+  newDate: any = '';
   valuationDataReport: any[] = [];
   tableHeading = Object.values(HEADING_OBJ);
   anaConEst: any = '';
@@ -449,9 +450,9 @@ export class ValuationComponent implements OnInit {
   }
 
   get isTerminalShow() {
-    return this.firstFormGroup.controls['model']?.value == 'FCFF'
-      ? false
-      : true;
+    return this.firstFormGroup.controls['model']?.value != 'Relative_Valuation'
+      ? true
+      : false;
   }
 
   get isRelative() {
@@ -547,12 +548,12 @@ export class ValuationComponent implements OnInit {
     const myDate = payload['valuationDate'];
     // console.log(myDate);
 
-    var newDate = new Date(myDate.year, myDate.month - 1, myDate.day);
+    this.newDate = new Date(myDate.year, myDate.month - 1, myDate.day);
     // console.log(newDate);
-    payload['valuationDate'] = newDate.getTime();
+    payload['valuationDate'] = this.newDate.getTime();
     // console.log(payload['valuationDate']);
     this.valuationDataReport = [];
-    this.newValDate = newDate;
+    // this.newValDate = newDate;
     console.log(payload);
     this._valuationService.submitForm(this.clean(payload)).subscribe(
       (res: any) => {
