@@ -13,7 +13,7 @@ import { DataReferencesService } from 'src/app/shared/service/data-references.se
 import { DROPDOWN } from 'src/app/shared/enums/enum';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'src/enviroments/enviroments';
-import { HEADING_OBJ } from 'src/app/shared/enums/constant';
+import { FCFF_HEADING_OBJ,FCFE_HEADING_OBJ } from 'src/app/shared/enums/constant';
 import { MatStepper } from '@angular/material/stepper';
 import { UserInputComponent } from 'src/app/shared/Modal/user-input.component';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
@@ -61,7 +61,8 @@ export class ValuationComponent implements OnInit {
   // newValDate: any = '';
   newDate: any = '';
   valuationDataReport: any[] = [];
-  tableHeading = Object.values(HEADING_OBJ);
+  fcfeTableHeading = Object.values(FCFE_HEADING_OBJ);
+  fcffTableHeading = Object.values(FCFF_HEADING_OBJ);
   anaConEst: any = '';
   expMarketReturn: any = '';
   companyAverage: any = {
@@ -125,8 +126,8 @@ export class ValuationComponent implements OnInit {
 
     this.secondFormGroup = this._formBuilder.group({
       outstandingShares: ['', Validators.required],
-      taxRateType: [''], 
-      taxRate :['25.17%'],
+      taxRateType: ['Default'], 
+      taxRate :['25.17'],
       terminalGrowthRate: [''],
       excelSheetId: ['', Validators.required],
       companies: this._formBuilder.array([]),
@@ -399,7 +400,7 @@ export class ValuationComponent implements OnInit {
   addValidatorsForRelative() {
     this.secondFormGroup.controls['taxRateType'].reset();
     this.secondFormGroup.controls['taxRateType'].enable();
-    this.EnteredTaXRate = null;
+    this.EnteredTaXRate = '';
 
     this.thirdFormGroup.controls['discountRate'].enable();
     this.secondFormGroup.controls['terminalGrowthRate'].enable();

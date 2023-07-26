@@ -650,7 +650,8 @@
                               let item of valuationDataReport;
                               let inx = index
                             ">
-                            <th class="headcol">{{ tableHeading[inx] }}</th>
+                            <th class="headcol" *ngIf="this.firstFormGroup.controls['model']?.value === 'FCFE'">{{ fcfeTableHeading[inx] }}</th>
+                            <th class="headcol" *ngIf="this.firstFormGroup.controls['model']?.value === 'FCFF'">{{ fcffTableHeading[inx] }}</th>
                             <td *ngFor="let item of valuationDataReport[inx]">
                               <ng-container *ngIf="returnType(item) === 'string'">
                                 {{ item }}
