@@ -742,7 +742,7 @@
                               Valuation of {{ this.firstFormGroup.controls['company'].value }}
                             </th>
                             <th colspan="2" style="border-left: none;">
-                              Amount (in INR)
+                              Amount in INR (1,00,000)
                             </th>
                           </tr>
                           <tr class="text-white">
@@ -775,12 +775,12 @@
                                 <td>{{ item.netWorthAvg | number : '1.2-2' }}</td>
                                 <td>{{ item.netWorthMed | number : '1.2-2' }}</td>
                               </tr>
-                              <tr>
+                              <!-- <tr>
                                 <td></td>
                                 <td>Book Value per Share</td>
                                 <td>{{ item.bookValueAvg | number : '1.2-2' }}</td>
                                 <td>{{ item.bookValueMed | number : '1.2-2' }}</td>
-                              </tr>
+                              </tr> -->
                               <tr>
                                 <td></td>
                                 <td>P/B Ratio of Industry</td>
@@ -789,7 +789,7 @@
                               </tr>
                               <tr>
                                 <td></td>
-                                <td>Market Price</td>
+                                <td>Fair Value of Equity</td>
                                 <td>{{ item.pbMarketPriceAvg | number : '1.2-2' }}</td>
                                 <td>{{ item.pbMarketPriceMed | number : '1.2-2' }}</td>
                               </tr>
@@ -809,9 +809,9 @@
                               </tr>
                               <tr>
                                 <td></td>
-                                <td>EPS</td>
-                                <td>{{ item.epsAvg | number : '1.2-2' }}</td>
-                                <td>{{ item.epsMed | number : '1.2-2' }}</td>
+                                <td>Profit after Taxes</td>
+                                <td>{{ item.pat | number : '1.2-2' }}</td>
+                                <td>{{ item.pat | number : '1.2-2' }}</td>
                               </tr>
                               <tr>
                                 <td></td>
@@ -842,8 +842,8 @@
                               <tr>
                                 <td></td>
                                 <td>EBITDA</td>
-                                <td>{{ item.ebitdaAvg | number : '1.2-2' }}</td>
-                                <td>{{ item.ebitdaMed | number : '1.2-2' }}</td>
+                                <td>{{ item.ebitda | number : '1.2-2' }}</td>
+                                <td>{{ item.ebitda | number : '1.2-2' }}</td>
                               </tr>
                               <tr>
                                 <td></td>
@@ -869,12 +869,12 @@
                                 <td>{{ item.ebitdaEquityAvg | number : '1.2-2' }}</td>
                                 <td>{{ item.ebitdaEquityMed | number : '1.2-2' }}</td>
                               </tr>
-                              <tr>
+                              <!-- <tr>
                                 <td></td>
                                 <td>Market Price</td>
                                 <td>{{ item.ebitdaMarketPriceAvg | number : '1.2-2' }}</td>
                                 <td>{{ item.ebitdaMarketPriceMed | number : '1.2-2' }}</td>
-                              </tr>
+                              </tr> -->
                               <tr style="height: 40px">
                                 <td></td>
                                 <td></td>
@@ -885,7 +885,7 @@
                             <ng-container *ngIf="item.particular == 'sales'">
                               <tr>
                                 <td>4</td>
-                                <td>Price to Sale</td>
+                                <td>Price to Sales</td>
                                 <td></td>
                                 <td></td>
                               </tr>
@@ -907,12 +907,12 @@
                                 <td>{{ item.salesEquityAvg | number : '1.2-2' }}</td>
                                 <td>{{ item.salesEquityMed | number : '1.2-2' }}</td>
                               </tr>
-                              <tr>
+                              <!-- <tr>
                                 <td></td>
                                 <td>Market Price</td>
                                 <td>{{ item.salesMarketPriceAvg | number : '1.2-2' }}</td>
                                 <td>{{ item.salesMarketPriceMed | number : '1.2-2' }}</td>
-                              </tr>
+                              </tr> -->
                               <tr style="height: 40px">
                                 <td></td>
                                 <td></td>
@@ -921,9 +921,9 @@
                               </tr>
                             </ng-container>
                             <ng-container *ngIf="item.particular == 'result'">
-                              <tr>
+                              <!-- <tr>
                                 <td></td>
-                                <td>Average Price per Share</td>
+                                <td>Average value of Equity</td>
                                 <td>{{ item.avgPricePerShareAvg | number : '1.2-2' }}</td>
                                 <td>{{ item.avgPricePerShareMed | number : '1.2-2' }}</td>
                               </tr>
@@ -932,17 +932,17 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                              </tr>
+                              </tr> -->
                               <tr>
                                 <td></td>
-                                <td>Average</td>
-                                <td>{{ item.averageAvg | number : '1.2-2' }}</td>
-                                <td>{{ item.averageMed | number : '1.2-2' }}</td>
+                                <td>Average value of Equity</td>
+                                <td>{{ item.avgPricePerShareAvg | number : '1.2-2' }}</td>
+                                <td>{{ item.avgPricePerShareMed | number : '1.2-2' }}</td>
                               </tr>
                               <tr>
                                 <td></td>
                                 <td>
-                                  Less: Illiquidity Discount/size/lack of control
+                                  Less: Illiquidity
                                 </td>
                                 <td>{{ item.locAvg | number : '1.2-2' }}</td>
                                 <td>{{ item.locMed | number : '1.2-2' }}</td>
@@ -955,11 +955,23 @@
                               </tr>
                               <tr>
                                 <td></td>
+                                <td>No. of Shares</td>
+                                <td>{{ item.outstandingShares | number : '1.0' }}</td>
+                                <td>{{ item.outstandingShares | number : '1.0' }}</td>
+                              </tr>
+                              <tr>
+                                <td></td>
+                                <td>Fair Value per Share</td>
+                                <td>{{ item.fairValuePerShareAvg | number : '1.2-2' }}</td>
+                                <td>{{ item.fairValuePerShareMed | number : '1.2-2' }}</td>
+                              </tr>
+                              <!-- <tr>
+                                <td></td>
                                 <td>Tentative Issue Price (Average of above)</td>
                                 <td colspan="2">
                                   {{ item.tentativeIssuePrice | number : '1.2-2' }}
                                 </td>
-                              </tr>
+                              </tr> -->
                               <br />
                             </ng-container>
                           </ng-container>
