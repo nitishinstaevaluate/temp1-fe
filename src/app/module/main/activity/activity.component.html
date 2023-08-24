@@ -5,18 +5,27 @@
       <div class="card-body">
         <div class="row">
           <div class="col">
-            <table class="table m-4">
-              <tr>
-                <td *ngFor="let item of columnName">{{item}}</td>       
-              </tr>
-              <tr *ngFor="let item of activity">
-                <td>{{ item.createdAt | date :"medium" }} </td>
-                <td>{{ item.company }}</td>
-                <td>{{ item.model }}</td>
-                <td>{{item.valuation}}</td>
-                <td><a target="_blank" [href]="getReport(item._id)">Get Report</a></td>
-              </tr>
-            </table>
+              <table class="table m-4">
+                <tr>
+                  <td *ngFor="let item of columnName">{{item}}</td>       
+                </tr>
+                <tr *ngFor="let item of activity">
+                  <td>{{ item.createdAt | date :"medium" }} </td>
+                  <td>{{ item.company }}</td>
+                  <td>{{ item.model }}</td>
+                  <td>{{item.valuation}}</td>
+                  <td><a target="_blank" [href]="getReport(item._id)">Get Report</a></td>
+                </tr>
+              </table>
+              <!-- paginator section starts -->
+              <div class="pagination-container">
+                <span class="pagination-info">Page :- {{ currentPage  }} Out Of {{ totalPage }}</span>
+                <div class="pagination">
+                  <button class="pagination-button" (click)="onPageChange(currentPage - 1)" mat-raised-button [disabled]="currentPage === 1">Previous</button>
+                  <button class="pagination-button" mat-raised-button (click)="onPageChange(currentPage + 1)" [disabled]="activity.length < pageSize ">Next</button>
+                </div>
+              </div>
+              <!-- paginator section ends -->
           </div>
         </div>
       </div>

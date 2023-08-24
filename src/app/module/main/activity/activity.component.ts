@@ -9,6 +9,9 @@ import { environment } from 'src/enviroments/enviroments';
 })
 export class ActivityComponent {
   activity: any[] = [];
+  currentPage: number = 1;
+  totalPage:number = 0;
+  pageSize: number = 10;
   columnName: String[] = [
     'Date',
     'Company Name',
@@ -22,12 +25,23 @@ export class ActivityComponent {
   }
 
   inItData() {
-    this._valuationService.getActivity().subscribe((resp: any) => {
-      this.activity = resp;
-    });
+    this.fetchData()
   }
 
   getReport(id: any):string {
     return environment.HOST + 'export/' + id;
+  }
+
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.fetchData();
+  }
+
+  fetchData(): void {
+    this._valuationService.getPaginatedValuations('8989', this.currentPage, this.pageSize)
+      .subscribe((data:any) => {
+        this.activity = data.response;
+        this.totalPage = data.totalPage;
+      });
   }
 }
