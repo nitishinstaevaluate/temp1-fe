@@ -18,13 +18,12 @@
                 </tr>
               </table>
               <!-- paginator section starts -->
-              <div class="pagination-container">
-                <span class="pagination-info">Page :- {{ currentPage  }} Out Of {{ totalPage }}</span>
-                <div class="pagination">
-                  <button class="pagination-button" (click)="onPageChange(currentPage - 1)" mat-raised-button [disabled]="currentPage === 1">Previous</button>
-                  <button class="pagination-button" mat-raised-button (click)="onPageChange(currentPage + 1)" [disabled]="activity.length < pageSize ">Next</button>
-                </div>
-              </div>
+              <mat-paginator [length]="length"
+              [pageSize]="pageSize"
+              [pageSizeOptions]="pageSizeOptions"
+              (page)="onPageChange($event)"
+              aria-label="Select page">
+              </mat-paginator>
               <!-- paginator section ends -->
           </div>
         </div>

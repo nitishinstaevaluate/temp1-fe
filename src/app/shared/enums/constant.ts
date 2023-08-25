@@ -46,3 +46,5 @@ export const FCFE_HEADING_OBJ = {
     noOfShares: 'No. of Shares',
     valuePerShare: 'Value per Share',
   };
+  
+  export const PAGINATION_VAL = [10, 20, 50, 100];
