@@ -77,6 +77,8 @@
 	* Typography
 
 */
+
+@import "../../../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
 :root {
     --primary-bg-color: #0052cc;
     --primary-bg-hover: #0e62df;

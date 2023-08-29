@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ValuationService } from '../../../shared/service/valuation.service';
 import { environment } from 'src/enviroments/enviroments';
+import { PAGINATION_VAL } from 'src/app/shared/enums/constant';
 
 @Component({
   selector: 'app-activity',
@@ -9,6 +10,9 @@ import { environment } from 'src/enviroments/enviroments';
 })
 export class ActivityComponent {
   activity: any[] = [];
+  pageSize: number = 10;
+  length: number =0;
+  pageSizeOptions = PAGINATION_VAL;
   columnName: String[] = [
     'Date',
     'Company Name',
@@ -22,12 +26,23 @@ export class ActivityComponent {
   }
 
   inItData() {
-    this._valuationService.getActivity().subscribe((resp: any) => {
-      this.activity = resp;
-    });
+    this.fetchData()
   }
 
   getReport(id: any):string {
     return environment.HOST + 'export/' + id;
+  }
+
+  fetchData(page:number=1,pageSize:number=10): void {
+    this._valuationService.getPaginatedValuations('', page, pageSize)
+      .subscribe((data:any) => {
+        this.length = data.pagination.totalElements;
+        this.activity = data.response;
+    });
+  }
+
+  onPageChange(event: any): void {
+    const { pageIndex, pageSize } = event;
+    this.fetchData(pageIndex + 1, pageSize);
   }
 }
