@@ -1,0 +1,21 @@
+<div >
+    <div >
+        <h4 style="font-weight: 400;color:#a3a9a3;font-size: 17px;" class="card-header">Financial Data Segment</h4>
+        <div >
+            <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+                <mat-tab label="Profit & Loss">
+                    <app-profit-loss-data></app-profit-loss-data>
+                </mat-tab>
+                <mat-tab label="Balance Sheet">
+                    <app-balance-sheet-details></app-balance-sheet-details>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </div>  
+    <div style=" height: 200px; " class="outer-wrapper">
+        <h4 style="font-weight: 400;color:#a3a9a3;font-size: 17px;" class="card-header">Model Parameter Set In</h4>
+    </div>
+    <div><button (click)="saveAndNext()" mat-raised-button>
+        Save & Next
+    </button></div>
+</div>

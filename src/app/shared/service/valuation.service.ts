@@ -19,7 +19,7 @@ export class ValuationService {
   }
 
   submitForm(data: any): Observable<any> {
-    return this.http.post(`${HOST}valuationProcess`, data);
+    return this.http.post(`${HOST}valuationProcess/v1`, data);
   }
   fileUpload(file: any): Observable<any> {
     return this.http.post(`${HOST}upload`, file);
@@ -36,6 +36,10 @@ export class ValuationService {
   }
   getCompanies(id:any){
     return this.http.get(`${HOST}companies/${id}`);
+  }
+
+  getProfitLossSheet(filename:string,sheetName:string){
+    return this.http.get(`${HOST}upload/sheet/${filename}/${sheetName}`)
   }
  
   }

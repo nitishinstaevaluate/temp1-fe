@@ -1,7 +1,12 @@
 @charset "UTF-8";
 /*-------- Font-Family-------*/
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800&display=swap"); */
+
+/* Roboto font througout */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+@import "../../../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
 
 /* ###### bootstrap ####### */
 /*primary color variables*/
@@ -167,7 +172,8 @@ section {
 
 body {
     margin: 0;
-    font-family: "Mulish", sans-serif;
+    /* font-family: "Mulish", sans-serif; */
+    font-family: 'Roboto', sans-serif;
     font-size: 13px;
     font-weight: 400;
     line-height: 1.5;

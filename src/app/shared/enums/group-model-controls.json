@@ -1,0 +1,242 @@
+{
+    "modelValuation":{
+        "type":"modelValuation",
+        "header":"Valuation Details",
+        "options":{
+            "company":{
+                "name":"company",
+                "type":"text",
+                "placeholder":"Firm Name",
+                "toolTip":"Enter Company Name For Valuation",
+                "class":"col-md-6 field"
+            },
+            "valuationDate":{
+                "name":"valuationDate",
+                "type":"date",
+                "placeholder":"Valuation Date",
+                "toolTip":"Please select Valuation Date",
+                "class":"col-md-6 field"
+            },
+            "projectionYears":{
+                "name":"projectionYears",
+                "type":"text",
+                "placeholder":"Projection Years",
+                "toolTip":"Please enter projection years",
+                "class":"col-md-5 field",
+                "options":[
+                    {
+                        "name":"Going Concern"
+                    },
+                    {
+                        "name":"Finite Projection"
+                    }
+                ]
+            },
+            
+            "industry":{
+                "name":"industry",
+                "type":"dropdown",
+                "placeholder":"Industry",
+                "toolTip":"Select Industry For Valuation",
+                "class":"col-md-4 field"
+            },
+            "subIndustry": {
+                "name":"subIndustry",
+                "type":"dropdown",
+                "placeholder":"Sub-Industry",
+                "toolTip":"Select Sub-Industry For Valuation",
+                "class":"col-md-4 field"
+            },
+            "model":{
+                "name":"model",
+                "type":"radio",
+                "placeholder":"Select Model :-",
+                "toolTip":"Select model valuation",
+                "options":[
+                    {
+                        "name":"FCFE",
+                        "checked":false,
+                        "value":"FCFE"
+                    },
+                    {
+                        "name":"FCFF",
+                        "checked":false,
+                        "value":"FCFF"
+                    },
+                    {
+                        "name":"NAV",
+                        "checked":false,
+                        "value":"NAV"
+                    },
+                    {
+                        "name":"Relative Valuation",
+                        "checked":false,
+                        "value":"Relative_Valuation"
+                    },
+                    {
+                        "name":"Excess Earnings",
+                        "checked":false,
+                        "value":"Excess_Earnings"
+                    },
+                    {
+                        "name":"Comparable Industries",
+                        "checked":false,
+                        "value":"CTM"
+                    }
+                ]
+            }
+        }
+    },
+    "specifyFSDetails":{
+        "type":"specifyFSDetails",
+        "header":"Specify FS Details",
+        "options":{
+            "outstandingShares":{
+            "name":"outstandingShares",
+            "placeholder":"Number Of Outstanding Shares",
+            "type":"dropdown",
+            "toolTip":"Please select outstanding shares"
+            },
+            "taxRate":{
+                "name":"taxRate",
+                "placeholder":"Tax Rate",
+                "type":"dropdown",
+                "toolTip":"Please select Tax Rate"
+            },
+            "terminalRate":{
+                "name":"terminalRate",
+                "placeholder":"Terminal Rate",
+                "type":"dropdown",
+                "toolTip":"Please select terminal rate"
+            }
+          
+    }
+    },
+    "modelSpecificCalculationStart":{
+        "type":"modelSpecificCalculationStart",
+        "header":"Model Specific Calculations",
+        "options":{
+            "discountRate":{
+                "name":"discountRate",
+                "placeholder":"Discount Rate",
+                "type":"dropdown",
+                "toolTip":"Please select Discount Rate"
+            },
+            "discountPeriod":{
+                "name":"discountPeriod",
+                "placeholder":"Discount Period",
+                "type":"dropdown",
+                "toolTip":"Please select discount period",
+                "options":[
+                    {
+                        "name":"Full Period"
+                    },
+                    {
+                        "name":"Mid Period"
+                    }
+                ]
+            },
+            "betaType":{
+                "name":"betaType",
+                "placeholder":"Beta",
+                "type":"dropdown",
+                "toolTip":"Please select Beta",
+                "options":[
+                    {
+                        "name":"Levered",
+                        "value":"levered"
+                    },
+                    {
+                        "name":"Unlevered",
+                        "value":"unlevered"
+                    }
+                ]
+            },
+            "coeMethod":{
+                "name":"coeMethod",
+                "placeholder":"Cost Of Equity Method",
+                "type":"dropdown",
+                "toolTip":"Please select cost Of Equivalent Method"
+            },
+            "riskFreeRate":{
+                "name":"riskFreeRate",
+                "placeholder":"Risk Free Rate",
+                "type":"dropdown",
+                "toolTip":"Please select Risk Free Rate"
+            },
+            "expMarketReturnType":{
+                "name":"expMarketReturnType",
+                "placeholder":"Expected Market Return",
+                "type":"dropdown",
+                "toolTip":"Please select Expected Market Return"
+            },
+            "otherAdj":{
+                "name":"otherAdj",
+                "placeholder":"Other Adjustments",
+                "type":"text",
+                "toolTip":"Enter Other Adjustments"
+            }
+            
+        }
+    },
+    "waccCalculations":{
+        "type":"waccCalculations",
+        "header":"WACC Calculations",
+        "options":{
+            "riskPremium":{
+                "name":"riskPremium",
+                "placeholder":"Company Specific Risk Premium",
+                "type":"dropdown",
+                "toolTip":"Enter Company Specific Risk Premium"
+            },
+            "capitalStructureType":{
+                "name":"capitalStructureType",
+                "placeholder":"Capital Structure",
+                "type":"dropdown",
+                "toolTip":"Enter Capital Structure"
+            },
+           "copShareCapital": {
+                "name":"copShareCapital",
+                "placeholder":"Cost Of Preference Share Capital",
+                "type":"text",
+                "toolTip":"Please select Cost Of Preference Share Capital"
+            },
+            "costOfDebt":{
+                "name":"costOfDebt",
+                "placeholder":"Cost Of Debt",
+                "type":"text",
+                "toolTip":"Please select Cost Of Debt"
+            }
+        }
+    },
+    "relativeValuation":{
+        "type":"relativeValuation",
+        "header":"Relative Calculations",
+        "options":{
+            "preferenceRatioSelect": {
+            "name":"preferenceRatioSelect",
+            "placeholder":"Preference For Ratio :-",
+            "type":"radio",
+            "toolTip":"Please select Cost Of Debt",
+            "options":[
+                    {
+                        "name":"Industry Based"
+                    },
+                    {
+                        "name":"Company Based"
+                    }
+                ]
+            },
+            "companyBasedSelection":{
+                "name":"companyBasedSelection",
+                "placeholder":"Company Based",
+                "toolTip":"Select Company"
+            },
+            "industryBasedSelection":{
+                "name":"industryBasedSelection",
+                "placeholder":"Industry Based",
+                "toolTip":"Select Industry"
+            }
+        }
+    }
+}
