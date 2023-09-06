@@ -42,5 +42,10 @@ export class ValuationService {
     return this.http.get(`${HOST}upload/sheet/${filename}/${sheetName}`)
   }
  
+  getPaginatedValuations(ids: string, page: number, pageSize: number): Observable<any[]> {
+    const url = `${HOST}valuations/paginate/640a4783337b1b37d6fd04c7?page=${page}&pageSize=${pageSize}`;
+    return this.http.get<any[]>(url);
+  }
+
   }
 

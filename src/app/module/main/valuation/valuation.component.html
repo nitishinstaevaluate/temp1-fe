@@ -377,7 +377,7 @@
                               formControlName="expMarketReturnType">
                               <!-- <ng-option [value]="item.type" *ngFor="let item of marketE">{{ item.label }}</ng-option> -->
                               <ng-option value="ACE" >Analyst Consensus Estimates</ng-option>
-                              <ng-option><b>Returns based on historical data:</b></ng-option>
+                              <ng-option [disabled]="true"><b class="marketRet">Returns based on historical data:</b></ng-option>
                               <ng-option [value]=item.cagr *ngFor="let item of historicalReturns">&nbsp; BSE500 since {{ item.year ===1999 ? 'Inception' : item.year }}</ng-option>
                             </ng-select>
                             {{anaConEst}}
