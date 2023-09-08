@@ -1,0 +1,16 @@
+
+<div>
+    <span><mat-icon class="close-modal" (click)="modalData()">close</mat-icon></span>
+    <h1 class="head-modal">{{label}}</h1>
+    <div class="container">
+            <mat-form-field class="full-width-input" [floatLabel]="floatLabelType" >
+                <input [type]="'text'" #taxRate matInput  [placeholder]="'Enter Rate'">
+                <!-- <mat-error *ngIf="hasError(loginForm, 'company', 'required')">
+                    Please select company
+                  </mat-error> -->
+              </mat-form-field>
+    </div>
+    <div mat-dialog-actions style="float: right;">
+      <button mat-raised-button [disabled]="!taxRate.value" [ngClass]="!taxRate.value ? 'modal-button-disable' : 'modal-button-enable'" (click)="modalData(taxRate)"><mat-icon>keyboard_arrow_right</mat-icon>Save</button>
+    </div>
+</div>

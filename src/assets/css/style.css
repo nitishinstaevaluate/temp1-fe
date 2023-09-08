@@ -847,7 +847,8 @@ html {
     direction: ltr;
 }
 
-body {
+/* causes modal box to reduce height
+/* body { 
     direction: ltr;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -860,7 +861,24 @@ body {
     height: 100%;
     overflow-y: scroll;
     position: relative;
-}
+} */
+.mat-mdc-snack-bar-container {
+    --mat-mdc-snack-bar-button-color: #f23a2f;
+    
+    &.app-notification-error {
+        --mdc-snackbar-supporting-text-color: red;
+        --mdc-snackbar-container-color: #fff;
+    }
+    
+    &.app-notification-success {
+        --mdc-snackbar-supporting-text-color: #21b053;
+        --mdc-snackbar-container-color: #fff;
+    }
+    
+  }
+  ::ng-deep .mat-mdc-snack-bar-container  .app-notification-success .mdc-snackbar__surface .mat-mdc-snack-bar-label .mat-mdc-simple-snack-bar .mat-mdc-snack-bar-label {
+    color:blue !important;
+  }
 
 body *::-webkit-scrollbar {
     width: 6px;

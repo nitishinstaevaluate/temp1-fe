@@ -211,7 +211,7 @@
     },
     "relativeValuation":{
         "type":"relativeValuation",
-        "header":"Relative Calculations",
+        "header":"Relative Valualations",
         "options":{
             "preferenceRatioSelect": {
             "name":"preferenceRatioSelect",

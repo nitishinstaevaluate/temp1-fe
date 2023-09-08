@@ -1,4 +1,4 @@
-    <mat-table [dataSource]="data">
+    <mat-table *ngIf="transferStepperTwo?.excelSheetId" [dataSource]="data">
       <ng-container matColumnDef="{{ column }}" *ngFor="let column of displayedColumns">
         <mat-header-cell *matHeaderCellDef>{{ column }}</mat-header-cell>
         <mat-cell *matCellDef="let element">{{ element[column] }}</mat-cell>

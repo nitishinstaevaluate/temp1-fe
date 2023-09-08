@@ -9,10 +9,10 @@
               <app-group-model-controls [currentStepIndex]="currentStepIndex" (groupModelControls)="groupModelControls($event)" ></app-group-model-controls>
             </mat-step>
             <mat-step [stepControl]="secondFormGroup" errorMessage="Address is required.">
-              <app-group-model-review (saveAndNextEvent)="handleSaveAndNext()"></app-group-model-review>
+              <app-group-model-review (groupReviewControls)="groupReviewControls($event)" [currentStepIndex]="stepper.selectedIndex" (previousPage)="previous($event)" [transferStepperTwo]="transferSteppertwo"></app-group-model-review>
             </mat-step>
             <mat-step [stepControl]="thirdFormGroup" errorMessage="Address is required.">
-                <app-group-model-result></app-group-model-result>
+                <app-group-model-result [transferStepperthree]="transferStepperthree"  (previousPage)="previous($event)"></app-group-model-result>
             </mat-step>
           </mat-stepper>
         </div>

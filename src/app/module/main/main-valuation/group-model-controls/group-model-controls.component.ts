@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output,OnInit, ChangeDetectorRef, Input,OnChanges } from '@angular/core';
+import { Component, EventEmitter, Output,OnInit, Input,OnChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { hasError } from 'src/app/shared/enums/errorMethods';
 import groupModelControl from '../../../../shared/enums/group-model-controls.json'
@@ -7,6 +7,10 @@ import { DataReferencesService } from 'src/app/shared/service/data-references.se
 import { forkJoin } from 'rxjs';
 import { DROPDOWN } from 'src/app/shared/enums/enum';
 import { GET_TEMPLATE, isSelected, toggleCheckbox } from 'src/app/shared/enums/functions';
+import { MODELS } from 'src/app/shared/enums/constant';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal-box/generic-modal-box.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -18,6 +22,7 @@ export class GroupModelControlsComponent implements OnInit {
   // decorators declaration
   @Output() saveAndNextEvent = new EventEmitter<void>();
   @Output() groupModelControls = new EventEmitter<any>();
+  @Output() previousPage = new EventEmitter<any>();
   @Input() currentStepIndex: any;
 
   // form declaration
@@ -29,6 +34,7 @@ export class GroupModelControlsComponent implements OnInit {
   waccCalculation:FormGroup;
   relativeValuation:FormGroup;
   hasError= hasError;
+  MODEL=MODELS;
 
 // array declaration
   inputs = [{}];
@@ -56,6 +62,7 @@ export class GroupModelControlsComponent implements OnInit {
   // property declaration
   industriesRatio: any = '';
   betaIndustriesId: any = '';
+  taxRateModelBox:any=false
   floatLabelType:any = 'never';
   isDragged=false;
   valuationM: any;
@@ -79,11 +86,13 @@ export class GroupModelControlsComponent implements OnInit {
   equityProp:any;
   newDate: any;
   discountRateSelection: any;
+  betaIndustries: any;
 
   constructor(private formBuilder: FormBuilder,
     private valuationService: ValuationService,
     private _dataReferencesService: DataReferencesService,
-    private cdr:ChangeDetectorRef) {
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar) {
     this.form=this.formBuilder.group({});
     this.inputs.forEach((_, i) => {
       this.form.addControl('select' + i, new FormControl(''));
@@ -104,6 +113,7 @@ export class GroupModelControlsComponent implements OnInit {
     this.specifyFSDetails=this.formBuilder.group({
       outstandingShares:['',[Validators.required]],
       taxRateType:['',[Validators.required]],
+      taxRate:['',[Validators.required]],
       terminalGrowthRate:['',[Validators.required]]
     })
     this.modelSpecificCalculation=this.formBuilder.group({
@@ -178,9 +188,8 @@ export class GroupModelControlsComponent implements OnInit {
         this.pppShareCaptial = resp[0][DROPDOWN.P_P_SHARE_CAPTIAL]; // Spell Error
         this.indianTreasuryY = resp[DROPDOWN.INDIANTREASURYYIELDS]; // Set as array element 1
         this.historicalReturns = resp[DROPDOWN.HISTORICALRETURNS]; // Set as array element 2
-        this.betaIndustriesId = resp[DROPDOWN.BETAINDUSTRIES]; // Set as array element 3
+        this.betaIndustries = resp[DROPDOWN.BETAINDUSTRIES]; // Set as array element 3
         // this.industriesRatio = resp[DROPDOWN.INDUSTRIESRATIO]; //Set as array element 4
-  
       });
   }
   formLoad(){
@@ -197,6 +206,9 @@ export class GroupModelControlsComponent implements OnInit {
       this._dataReferencesService.getIndustriesRatio(indst._id).subscribe((resp: any) => {
         this.industriesRatio = resp[0];
       });
+      this._dataReferencesService.getBetaIndustriesById(indst._id).subscribe((resp: any) => {
+        this.betaIndustriesId = resp;
+      });
   
     });
 
@@ -204,7 +216,7 @@ export class GroupModelControlsComponent implements OnInit {
       (val) => {
         if(!val) return
         if (val == 'Industry_Based') {
-          this.debtRatio = parseFloat(this.betaIndustriesId.deRatio)/100;
+          this.debtRatio = parseFloat(this.betaIndustriesId?.deRatio)/100;
           this.totalCapital = 1 + this.debtRatio;
           this.debtProp = this.debtRatio/this.totalCapital;
           this.equityProp = 1 - this.debtProp;
@@ -217,17 +229,15 @@ export class GroupModelControlsComponent implements OnInit {
 
     this.modelSpecificCalculation.controls['betaType'].valueChanges.subscribe((val) => {
       if(!val) return;
+      const beta = parseFloat(this.betaIndustriesId?.beta);
       if (val == 'levered'){
-        
-        const beta = parseFloat(this.betaIndustriesId.beta)
         this.modelSpecificCalculation.controls['beta'].setValue(
           beta
           );
         }
         else if (val == 'unlevered') {
-        const beta = parseFloat(this.betaIndustriesId.beta)
-        const deRatio = parseFloat(this.betaIndustriesId.deRatio)/100
-        const effectiveTaxRate = parseFloat(this.betaIndustriesId.effectiveTaxRate)/100;        
+        const deRatio = parseFloat(this.betaIndustriesId?.deRatio)/100
+        const effectiveTaxRate = parseFloat(this.betaIndustriesId?.effectiveTaxRate)/100;        
         const unleveredBeta = beta / (1 + (1-effectiveTaxRate) * deRatio);
         this.modelSpecificCalculation.controls['beta'].setValue(
           unleveredBeta
@@ -238,9 +248,7 @@ export class GroupModelControlsComponent implements OnInit {
       }
       
     });
-
     
-
     this.modelSpecificCalculation.controls['expMarketReturnType'].valueChanges.subscribe(
       (val) => {
         if(!val) return
@@ -251,16 +259,15 @@ export class GroupModelControlsComponent implements OnInit {
     );
 
   }
-  isRelativeValuation(){
-    return !!this.checkedItems.includes('Relative_Valuation');
-
+  
+  isRelativeValuation(value:string){
+    return !!this.checkedItems.includes(value);
   }
 
   isSelected(value: any): boolean {
     var value:any= isSelected(value,this.checkedItems);
     this.modelValuation.controls['model'].setValue(value);
-    return value
-   
+    return value;
   }
 
   toggleCheckbox(option:any) {
@@ -281,7 +288,7 @@ isSelectedpreferenceRatio(value:any){
       ...this.relativeValuation.value,
       ...this.waccCalculation.value
     }
-    if (this.isRelativeValuation()) {
+    if (this.isRelativeValuation(this.MODEL.RELATIVE_VALUATION)) {
       payload['industries'] = this.industriesRatio;
     }
     
@@ -298,7 +305,7 @@ isSelectedpreferenceRatio(value:any){
       payload['capitalStructure'] = capitalStructure;
     }
     const valuationDate = this.modelValuation.get('valuationDate')?.value;
-    // if (valuationDate) {
+    if (valuationDate) {
       const myDate = {
         year: valuationDate.getFullYear(),
         month: valuationDate.getMonth() + 1, // Note that months are zero-based
@@ -307,25 +314,8 @@ isSelectedpreferenceRatio(value:any){
 
     this.newDate = new Date(myDate.year, myDate.month - 1, myDate.day);
     payload['valuationDate'] = this.newDate.getTime();
-    console.log(payload)
-    this.valuationService.submitForm(payload).subscribe(
-      (res: any) => {
-        // this.reportId = res.reportId;
-        if (!this.isRelativeValuation ) {
-          const objs = Object.keys(res.valuationData[0]);
-          // for (let index = 0; index < objs.length; index++) {
-            //   const data = res.valuationData.map((e: any) => e[objs[index]]);
-            //   this.valuationDataReport.push(data);
-            // }
-          } else {
-          }
-        },
-        (err: any) => {
-          console.log(err);
-          // this.errorMsg = err.error.message.message;
-        }
-        );
-        this.groupModelControls.emit(payload)
+    }
+    this.groupModelControls.emit(payload)
   }
   
   get isDownload() {
@@ -378,9 +368,46 @@ isSelectedpreferenceRatio(value:any){
     if (this.checkedItems.length>0 && this.checkedItems.includes('FCFE')) {
       this.modelSpecificCalculation.controls['discountRate'].setValue('Cost_Of_Equity');
     } else if (this.checkedItems.length>0 && this.checkedItems.includes('FCFF')) {
-      this.modelSpecificCalculation.controls['discountRate'].setValue('WACC');
+      this.modelSpecificCalculation.controls['discountRate'].setValue('Cost_Of_Equity'); //temporary set value as cost of equity ,change later
     }
       return doc.type;
+  }
+  previous(){
+    this.previousPage.emit(true)
+  }
+  openDialog(bool?:boolean){ 
+    if(bool){
+      const data={
+        data: this.specifyFSDetails.controls['taxRateType'].value,
+        width:'30%',
+      }
+     const dialogRef = this.dialog.open(GenericModalBoxComponent,data);
+  
+     dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.taxRateModelBox=result;
+        this.specifyFSDetails.controls['taxRate'].patchValue(result)
+        this.snackBar.open('Tax Rate Saved Successfully','OK',{
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          duration: 3000,
+          panelClass: 'app-notification-success'
+        })
+      } else {
+        this.specifyFSDetails.controls['taxRateType'].reset();
+        this.taxRateModelBox=false
+        this.snackBar.open('Tax Rate Not Saved','OK',{
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          duration: 3000,
+          panelClass: 'app-notification-error'
+        })
+      }
+    });
+    }
+    else {
+      this.taxRateModelBox=this.specifyFSDetails.controls['taxRateType'].value;
+    }
   }
 
 }
