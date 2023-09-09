@@ -10,6 +10,7 @@ import { SidemenuToggleDirective } from './directive/sidemenuToggle';
 import { UserInputComponent } from './Modal/user-input.component';
 import { RelativeComponent } from './Modal/relative/relative.component';
 import { NgxSliderModule } from '@angular-slider/ngx-slider'
+import { GenericModalBoxComponent } from './modal box/generic-modal-box/generic-modal-box.component';
 
 
 
@@ -17,8 +18,9 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider'
 const MODULES = [NgbModule, ReactiveFormsModule, FormsModule,MaterialModuleModule,NgSelectModule];
 
 @NgModule({
-  declarations: [ToggleThemeDirective, FullscreenDirective, SidemenuToggleDirective,UserInputComponent,RelativeComponent],
+  declarations: [ToggleThemeDirective, FullscreenDirective, SidemenuToggleDirective,UserInputComponent,RelativeComponent,GenericModalBoxComponent],
   imports: [CommonModule,NgxSliderModule,...MODULES],
-  exports: [RelativeComponent,UserInputComponent,...MODULES],
+  exports: [RelativeComponent,UserInputComponent,...MODULES,GenericModalBoxComponent],
+  entryComponents:[GenericModalBoxComponent]
 })
 export class SharedModule {}

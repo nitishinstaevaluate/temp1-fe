@@ -48,3 +48,27 @@ export const FCFE_HEADING_OBJ = {
   };
   
   export const PAGINATION_VAL = [10, 20, 50, 100];
+
+  export const MODELS = {
+    FCFE:'FCFE',
+    FCFF:'FCFF',
+    NAV:'NAV',
+    RELATIVE_VALUATION:'Relative_Valuation',
+    EXCESS_EARNINGS:'Excess_Earnings',
+    COMPARABLE_INDUSTRIES:'CTM',
+  }
+
+  export const GLOBAL_VALUES = {
+    Normal_Tax_Rate:{
+      name:"Normal Tax Rate",
+      value:"Normal_Tax_Rate"
+    },
+    MAT_Rate:{
+      name:"Mat Tax Rate",
+      value:"MAT_Rate"
+    },
+    ANALYST_CONSENSUS_ESTIMATES:{
+      name:"Analyst Consensus Estimates",
+      value:"ACE"
+    }
+  }

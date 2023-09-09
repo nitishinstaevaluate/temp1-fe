@@ -26,6 +26,10 @@ export class DataReferencesService {
     return this.http.get(`${HOST}historicalreturns`);
   }
 
+  getBSE500(baseYears:string,asOnDate:string): Observable<any> {
+    return this.http.get(`${HOST}historicalreturns/bse500?baseYrs=${baseYears}&asOnDate=${asOnDate}`);
+  }
+
   getBetaIndustries(): Observable<any> {
     return this.http.get(`${HOST}betaindustries`);
   }

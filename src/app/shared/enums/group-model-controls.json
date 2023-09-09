@@ -168,7 +168,39 @@
                 "name":"expMarketReturnType",
                 "placeholder":"Expected Market Return",
                 "type":"dropdown",
-                "toolTip":"Please select Expected Market Return"
+                "toolTip":"Please select Expected Market Return",
+                "options":[
+                    {
+                        "name":"Analyst Consensus Estimates",
+                        "value":"ACE",
+                        "years":"null"
+                    },
+                    {
+                        "name":"BSE500 Since Inception",
+                        "value":"13.8811074637485",
+                        "years":"0"
+                    },
+                    {
+                        "name":"BSE500 Since 5 years",
+                        "value":"-",
+                        "years":"5"
+                    },
+                    {
+                        "name":"BSE500 Since 10 years",
+                        "value":"12.41",
+                        "years":"10"
+                    },
+                    {
+                        "name":"BSE500 Since 15 years",
+                        "value":"-",
+                        "years":"15"
+                    },
+                    {
+                        "name":"BSE500 Since 20 years",
+                        "value":"14.25306529",
+                        "years":"20"
+                    }
+                ]
             },
             "otherAdj":{
                 "name":"otherAdj",
@@ -211,7 +243,7 @@
     },
     "relativeValuation":{
         "type":"relativeValuation",
-        "header":"Relative Calculations",
+        "header":"Relative Valualations",
         "options":{
             "preferenceRatioSelect": {
             "name":"preferenceRatioSelect",

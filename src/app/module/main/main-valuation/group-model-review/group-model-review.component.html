@@ -1,21 +1,126 @@
-<div >
-    <div >
-        <h4 style="font-weight: 400;color:#a3a9a3;font-size: 17px;" class="card-header">Financial Data Segment</h4>
-        <div >
+<div *ngIf="currentStepIndex===1">
+    <div>
+        <h4 class="card-header">Financial Data Segment</h4>
+        <div>
             <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
                 <mat-tab label="Profit & Loss">
-                    <app-profit-loss-data></app-profit-loss-data>
+                    <app-profit-loss-data [transferStepperTwo]="transferStepperTwo" (profitLossData)="profitLossData($event)" [currentStepIndex]="currentStepIndex"></app-profit-loss-data>
                 </mat-tab>
                 <mat-tab label="Balance Sheet">
-                    <app-balance-sheet-details></app-balance-sheet-details>
+                    <app-balance-sheet-details [transferStepperTwo]="transferStepperTwo" (balanceSheetData)="balanceSheetData($event)"></app-balance-sheet-details>
                 </mat-tab>
             </mat-tab-group>
         </div>
+        <div *ngIf="!transferStepperTwo?.excelSheetId" style="margin-top: auto;margin-bottom: auto;">
+            <p style="padding: 2% !important;
+            color: #c91919;
+            font-size: 19px;">No Records Found</p>
+        </div>
     </div>  
-    <div style=" height: 200px; " class="outer-wrapper">
-        <h4 style="font-weight: 400;color:#a3a9a3;font-size: 17px;" class="card-header">Model Parameter Set In</h4>
+    <div class="outer-wrapper">
+        <h4 class="card-header">Model Parameter Set In</h4>
+       <div class="container-fluid" *ngIf="transferStepperTwo">
+        <div class="row">
+            <div class="col-md-4 outer-main-div" *ngIf="transferStepperTwo?.beta">
+                <mat-card class="main-block" >
+                    <div class="row">
+                        <div class="col-md-2 outer-div-mat-icon-bar">
+                            <mat-icon class="mat-icon-left-bar">list_alt</mat-icon>
+                        </div>
+                        <div class="col-md-10 inner-col-data">
+                            <mat-card-subtitle>
+                            <mat-icon class="mat-check-circle">check_circle</mat-icon>
+                            <span>Industrial Beta</span></mat-card-subtitle>
+                           <p class="betaType"><span style="color: gray;font-size: 25px;">--</span> Levered  <span style="color:#00caff;">{{betaValue}}%</span></p>
+                            <!-- <div class="row mat-head">
+                                
+                                <div class="col-md-2 inner-div-mat-spinner">
+                                    <mat-progress-spinner
+                                        class="example-margin"
+                                        [color]="'accent'"
+                                        [mode]="'determinate'"
+                                        [ngClass]="betaValue <= 40 ? 'percen-warn' : (betaValue > 40 && betaValue <= 70) ? 'percen-ok' : 'percen-pass'"
+                                        [value]="betaValue">
+                                    </mat-progress-spinner>
+                                    <div 
+                                    [ngClass]="betaValue <= 40 ? 'percen-warn percentage-class' : (betaValue > 40 && betaValue <= 70) ? 'percen-ok percentage-class' : 'percen-pass percentage-class'">
+                                        {{ betaValue }}%
+                                    </div>
+                                </div>
+                            </div> -->
+                            
+                            <mat-card-actions>
+                            <button mat-button> <mat-icon>first_page</mat-icon>Edit</button>
+                            </mat-card-actions>
+                            <!-- <mat-card-footer>
+                            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                            </mat-card-footer> -->
+                        </div>
+                    </div>
+                  </mat-card>
+            </div>
+            <div class="col-md-4 outer-main-div" *ngIf="transferStepperTwo?.costOfDebt">
+                <mat-card class="main-block">
+                    <div class="row">
+                        <div class="col-md-2 outer-div-mat-icon-bar">
+                            <mat-icon class="mat-icon-left-bar">developer_board</mat-icon>
+                        </div>
+                        <div class="col-md-10 inner-col-data">
+                            <mat-card-subtitle>
+                            <mat-icon class="mat-check-circle">check_circle</mat-icon>
+                            <span>Cost of Debt</span></mat-card-subtitle>
+                            <p class="debtType"><span style="color: gray;font-size: 25px;">--</span> {{debtValue}}%</p>
+                            
+                            <mat-card-actions>
+                            <button mat-button> <mat-icon>first_page</mat-icon>Edit</button>
+                            </mat-card-actions>
+                            <!-- <mat-card-footer>
+                            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                            </mat-card-footer> -->
+                        </div>
+                    </div>
+                  </mat-card>
+            </div>
+            <div class="col-md-4 outer-main-div" *ngIf="transferStepperTwo?.taxRate">
+                <mat-card class="main-block">
+                    <div class="row">
+                        <div class="col-md-2 outer-div-mat-icon-bar">
+                            <mat-icon class="mat-icon-left-bar">nfc</mat-icon>
+                        </div>
+                        <div class="col-md-10 inner-col-data">
+                            <mat-card-subtitle>
+                            <mat-icon class="mat-check-circle">check_circle</mat-icon>
+                            <span>Taxation Rate</span></mat-card-subtitle>
+                            <p class="taxType"><span style="color: gray;font-size: 25px;">--</span> {{taxRateValue}}% </p>
+                            <mat-card-actions>
+                                <button mat-button> <mat-icon>first_page</mat-icon>Edit</button>
+                            </mat-card-actions>
+                            <!-- <mat-card-footer>
+                            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                            </mat-card-footer> -->
+                        </div>
+                    </div>
+                  </mat-card>
+            </div>
+        </div>
+       </div>
     </div>
-    <div><button (click)="saveAndNext()" mat-raised-button>
-        Save & Next
-    </button></div>
+    
+    <div style="text-align: center;padding-bottom: 1%;">
+        <button (click)="previous()" mat-raised-button style="box-shadow: 1px 2px 15px #d1d1d1;color:#bb0d0d;font-weight: bold !important;margin-right: 1%;">
+            Back
+            <mat-icon style="font-weight: bold;color: #d42121;">arrow_left</mat-icon>
+        </button>
+        <button (click)="saveAndNext()" style="box-shadow: 1px 2px 15px #d1d1d1;color:#228822;margin-right: 1%"  mat-raised-button>
+       Save
+            <mat-icon style="font-weight: bold;color: green;">send</mat-icon>
+    </button>
+   
+</div>
+<div class="loader-overlay" *ngIf="isLoadingProfitLoss || isLoadingBalanceSheet ">
+    <div class="loader">
+      <div class="loader-spinner"></div>
+      <div class="loader-message">Please wait...</div>
+    </div>
+  </div>
 </div>

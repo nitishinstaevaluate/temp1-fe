@@ -12,6 +12,8 @@ export class MainValuationComponent {
   headerLabel='Valuation of Company';
   initiateForm:any=true;
   currentStepIndex:any=0;    
+  transferSteppertwo:any;    
+  transferStepperthree:any;    
   constructor(private _formBuilder : FormBuilder){
   }
   @ViewChild('stepper') stepper!: MatStepper;
@@ -39,6 +41,14 @@ export class MainValuationComponent {
     this.stepper.next();
   }
   groupModelControls(data:any){
+    this.transferSteppertwo = data;
+    this.stepper.next();
+  }
+  previous(event:any){
+    this.stepper.previous();
+  }
+  groupReviewControls(data:any){
+    this.transferStepperthree= {formOneData:this.transferSteppertwo,formTwoData:data};
     this.stepper.next();
   }
 }

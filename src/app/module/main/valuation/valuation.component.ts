@@ -328,7 +328,7 @@ export class ValuationComponent implements OnInit {
 
 
     this.thirdFormGroup.controls['betaType'].valueChanges.subscribe((val) => {
-      const beta = parseFloat(this.betaIndustriesId.beta)
+      const beta = parseFloat(this.betaIndustriesId.beta);
       if(!val) return;
       if (val == 'levered')
         this.thirdFormGroup.controls['beta'].setValue(
