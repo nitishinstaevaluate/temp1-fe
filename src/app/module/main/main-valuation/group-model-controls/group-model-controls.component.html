@@ -227,8 +227,7 @@
                     <!-- <mat-label class="label"></mat-label> -->
                     <mat-form-field class="full-width-input" [floatLabel]="floatLabelType" >
                         <mat-select formControlName="expMarketReturnType" [placeholder]="modelControl.modelSpecificCalculationStart.options.expMarketReturnType.placeholder">
-                            <mat-option value="ACE">Analyst Consensus Estimates</mat-option>
-                        <mat-option *ngFor="let doc of historicalReturns"  [value]="doc.cagr">BSE500 since {{ doc.year ===1999 ? 'Inception' : doc.year }}</mat-option>
+                        <mat-option *ngFor="let doc of modelControl.modelSpecificCalculationStart.options.expMarketReturnType.options"  [value]="doc.years">{{doc.name}}</mat-option>
                         </mat-select>
                         <!-- <mat-error *ngIf="hasError(loginForm, 'company', 'required')">
                             Please select company

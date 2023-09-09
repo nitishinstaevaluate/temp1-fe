@@ -251,10 +251,33 @@ export class GroupModelControlsComponent implements OnInit {
     
     this.modelSpecificCalculation.controls['expMarketReturnType'].valueChanges.subscribe(
       (val) => {
-        if(!val) return
-        this.modelSpecificCalculation.controls['expMarketReturn'].setValue(
-          val
-        );
+        if(val === "null"){
+          const data={
+            data: 'ACE',
+            width:'30%',
+          }
+          const dialogRef = this.dialog.open(GenericModalBoxComponent,data);
+          dialogRef.afterClosed().subscribe((result)=>{
+            if (result) {
+              this.modelSpecificCalculation.controls['expMarketReturn'].patchValue(result)
+              this.snackBar.open('Analyst Estimation Added','OK',{
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+                duration: 3000,
+                panelClass: 'app-notification-success'
+              })
+            } else {
+              this.modelSpecificCalculation.controls['expMarketReturnType'].reset();
+              this.snackBar.open('Tax Rate Not Saved','OK',{
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+                duration: 3000,
+                panelClass: 'app-notification-error'
+              })
+            }
+          })
+        }
+        
       }
     );
 
@@ -292,18 +315,21 @@ isSelectedpreferenceRatio(value:any){
       payload['industries'] = this.industriesRatio;
     }
     
-    let capitalStructure = {
-      capitalStructureType : 'Industry_Based',
-      debtProp : this.debtRatio,
-      equityProp : this.equityProp,
-      totalCapital : this.totalCapital
-    }
+    //  check if tax rate is null
     if (payload['taxRate'] == null) {
       payload['taxRate'] = '25.17%';
     }
     if (this.waccCalculation.controls['capitalStructureType'].value == 'Industry_based') {
+      let capitalStructure = {
+        capitalStructureType : 'Industry_Based',
+        debtProp : this.debtRatio,
+        equityProp : this.equityProp,
+        totalCapital : this.totalCapital
+      }
       payload['capitalStructure'] = capitalStructure;
     }
+
+    // check if valuation date is empty
     const valuationDate = this.modelValuation.get('valuationDate')?.value;
     if (valuationDate) {
       const myDate = {
@@ -312,9 +338,28 @@ isSelectedpreferenceRatio(value:any){
         day: valuationDate.getDate(),
       };
 
-    this.newDate = new Date(myDate.year, myDate.month - 1, myDate.day);
-    payload['valuationDate'] = this.newDate.getTime();
+      this.newDate = new Date(myDate.year, myDate.month - 1, myDate.day);
+      payload['valuationDate'] = this.newDate.getTime();
     }
+
+    // check if expected market return  is empty or not
+    if(!this.modelSpecificCalculation.controls['expMarketReturn'].value){
+      this._dataReferencesService.getBSE500(
+        this.modelSpecificCalculation.controls['expMarketReturnType'].value,
+        payload['valuationDate'])
+        .subscribe((response)=>{
+          if(response.status){
+            this.modelSpecificCalculation.controls['expMarketReturn'].setValue(response?.result);
+            payload['expMarketReturn']=response?.result;
+          }
+        },
+        (error)=>{
+          console.log(error)
+        })
+        
+    }
+    
+    // submit final payload
     this.groupModelControls.emit(payload)
   }
   

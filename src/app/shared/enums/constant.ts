@@ -58,7 +58,7 @@ export const FCFE_HEADING_OBJ = {
     COMPARABLE_INDUSTRIES:'CTM',
   }
 
-  export const TAX_RATE = {
+  export const GLOBAL_VALUES = {
     Normal_Tax_Rate:{
       name:"Normal Tax Rate",
       value:"Normal_Tax_Rate"
@@ -66,5 +66,9 @@ export const FCFE_HEADING_OBJ = {
     MAT_Rate:{
       name:"Mat Tax Rate",
       value:"MAT_Rate"
+    },
+    ANALYST_CONSENSUS_ESTIMATES:{
+      name:"Analyst Consensus Estimates",
+      value:"ACE"
     }
   }

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ValuationService } from 'src/app/shared/service/valuation.service';
 @Component({
   selector: 'app-group-model-review',
   templateUrl: './group-model-review.component.html',
@@ -20,7 +21,7 @@ export class GroupModelReviewComponent implements OnChanges {
   betaValue:any ;
   taxRateValue:any;
   debtValue:any
-  constructor(private snackbar:MatSnackBar){
+  constructor(private valuationService:ValuationService){
 
   }
   ngOnChanges(changes: SimpleChanges): void {
@@ -32,6 +33,10 @@ export class GroupModelReviewComponent implements OnChanges {
   }
   saveAndNext(): void {
     this.groupReviewControls.emit({PL:this.profitLoss,BL:this.balanceSheet})
+    console.log(this.transferStepperTwo,"input payload")
+    this.valuationService.submitForm(this.transferStepperTwo).subscribe((response)=>{
+      console.log(response,"output payload")
+    })
   }
   previous(){
     this.previousPage.emit(true)

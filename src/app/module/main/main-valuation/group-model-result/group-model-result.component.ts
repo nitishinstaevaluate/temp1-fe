@@ -8,16 +8,13 @@ import { ValuationService } from 'src/app/shared/service/valuation.service';
 })
 export class GroupModelResultComponent {
   @Output() previousPage = new EventEmitter<any>();
-  @Input() transferStepperthree:any;
+  @Input() transferStepperthree:any; //use this property as it contains data from form 1(stepper 1) and form 2 (stepper 2)
 
   constructor(private valuationService:ValuationService){
 
   }
   saveAndNext(){
     console.log(this.transferStepperthree,"data from all the forms")
-    this.valuationService.submitForm(this.transferStepperthree.formOneData).subscribe((response)=>{
-      console.log(response,"final response")
-    })
   }
   previous(){
       this.previousPage.emit(true)
