@@ -142,7 +142,7 @@
                         </mat-error> -->
                 </div>
 
-                <div class="col-md-4 field" *ngIf="isRelativeValuation(MODEL.RELATIVE_VALUATION)">
+                <div class="col-md-4 field">
                     <!-- <mat-label class="label"></mat-label> -->
                     <mat-form-field class="full-width-input" [floatLabel]="floatLabelType" >
                         <mat-select formControlName="terminalGrowthRate" [placeholder]="modelControl.specifyFSDetails.options.terminalRate.placeholder">
@@ -227,7 +227,7 @@
                     <!-- <mat-label class="label"></mat-label> -->
                     <mat-form-field class="full-width-input" [floatLabel]="floatLabelType" >
                         <mat-select formControlName="expMarketReturnType" [placeholder]="modelControl.modelSpecificCalculationStart.options.expMarketReturnType.placeholder">
-                        <mat-option *ngFor="let doc of modelControl.modelSpecificCalculationStart.options.expMarketReturnType.options"  [value]="doc.years">{{doc.name}}</mat-option>
+                        <mat-option *ngFor="let doc of modelControl.modelSpecificCalculationStart.options.expMarketReturnType.options"  [value]="doc">{{doc.name}}</mat-option>
                         </mat-select>
                         <!-- <mat-error *ngIf="hasError(loginForm, 'company', 'required')">
                             Please select company

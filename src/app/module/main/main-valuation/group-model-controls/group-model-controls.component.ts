@@ -149,6 +149,7 @@ export class GroupModelControlsComponent implements OnInit {
   }
   removeField(i: any) {
     this.Companies.controls.splice(i, 1);
+    this.relativeValuation.controls['companies'].value.splice(i,1)
   }
   addInput() {
     this.Companies.push(new FormControl(null));
@@ -172,6 +173,7 @@ export class GroupModelControlsComponent implements OnInit {
       this._dataReferencesService.getBetaIndustries()
     ])
       .subscribe((resp: any) => {
+        console.log(resp,"response master")
         this.industries = resp[0][DROPDOWN.INDUSTRIES];
         this.valuationM = resp[0][DROPDOWN.MODAL];
         this.taxRate = resp[0][DROPDOWN.TAX];
@@ -251,7 +253,7 @@ export class GroupModelControlsComponent implements OnInit {
     
     this.modelSpecificCalculation.controls['expMarketReturnType'].valueChanges.subscribe(
       (val) => {
-        if(val === "null"){
+        if(val.value === "Analyst_Consensus_Estimates"){
           const data={
             data: 'ACE',
             width:'30%',
@@ -312,7 +314,7 @@ isSelectedpreferenceRatio(value:any){
       ...this.waccCalculation.value
     }
     if (this.isRelativeValuation(this.MODEL.RELATIVE_VALUATION)) {
-      payload['industries'] = this.industriesRatio;
+      payload['industries'] = [this.industriesRatio];
     }
     
     //  check if tax rate is null
@@ -345,11 +347,12 @@ isSelectedpreferenceRatio(value:any){
     // check if expected market return  is empty or not
     if(!this.modelSpecificCalculation.controls['expMarketReturn'].value){
       this._dataReferencesService.getBSE500(
-        this.modelSpecificCalculation.controls['expMarketReturnType'].value,
+        this.modelSpecificCalculation.controls['expMarketReturnType'].value.years,
         payload['valuationDate'])
         .subscribe((response)=>{
           if(response.status){
             this.modelSpecificCalculation.controls['expMarketReturn'].setValue(response?.result);
+            payload['expMarketReturnType'] = this.modelSpecificCalculation.controls['expMarketReturnType']?.value?.value;
             payload['expMarketReturn']=response?.result;
           }
         },

@@ -72,3 +72,22 @@ export const FCFE_HEADING_OBJ = {
       value:"ACE"
     }
   }
+
+  export const RELATIVE_VALUATION_COMPANY_MAPPING : { [key: string]: string } = {
+      'Company Name': 'company',
+      'PE Ratio': 'peRatio',
+      'PB Ratio': 'pbRatio',
+      'EbitDA': 'ebitda',
+      'Sales': 'sales'
+  }
+
+  export const RELATIVE_VALUATION_INDUSTRY_MAPPING : { [key: string]: string } = {
+    'Industry Name': 'industry',
+    'PE Ratio': 'currentPE',
+    'PB Ratio': 'pbv',
+    'EbitDA': 'evEBITDA_PV',
+    'Sales': 'priceSales' 
+  }
+  export const RELATIVE_VALUATION_INDUSTRY_COLUMNS = ['Industry Name', 'PE Ratio', 'PB Ratio', 'EbitDA', 'Sales'];
+  
+  export const RELATIVE_VALUATION_COMPANY_COLUMNS = ['Company Name', 'PE Ratio', 'PB Ratio', 'EbitDA', 'Sales'];

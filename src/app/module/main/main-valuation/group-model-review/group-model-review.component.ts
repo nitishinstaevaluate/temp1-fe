@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
 @Component({
   selector: 'app-group-model-review',
@@ -21,6 +20,7 @@ export class GroupModelReviewComponent implements OnChanges {
   betaValue:any ;
   taxRateValue:any;
   debtValue:any
+  tableData:any
   constructor(private valuationService:ValuationService){
 
   }
@@ -29,6 +29,10 @@ export class GroupModelReviewComponent implements OnChanges {
       this.betaValue=this.transferStepperTwo?.beta ? parseFloat(this.transferStepperTwo?.beta).toFixed(2) : 0;
       this.debtValue=this.transferStepperTwo?.costOfDebt ? parseFloat(this.transferStepperTwo?.costOfDebt).toFixed(2): 0;
       this.taxRateValue= this.transferStepperTwo?.taxRate ? parseFloat(this.transferStepperTwo?.taxRate).toFixed(2) : 0;
+      const company = this.transferStepperTwo?.companies ? this.transferStepperTwo.companies : [];
+      const industry = this.transferStepperTwo?.industries ? this.transferStepperTwo.industries : [];
+      const toggleIndustryOrCompany = this.transferStepperTwo?.preferenceRatioSelect === 'Company Based' ? true : false;
+      this.tableData = {company,industry,status:toggleIndustryOrCompany};
     }
   }
   saveAndNext(): void {
