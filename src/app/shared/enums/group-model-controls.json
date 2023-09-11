@@ -172,33 +172,28 @@
                 "options":[
                     {
                         "name":"Analyst Consensus Estimates",
-                        "value":"ACE",
+                        "value":"Analyst_Consensus_Estimates",
                         "years":"null"
                     },
                     {
                         "name":"BSE500 Since Inception",
-                        "value":"13.8811074637485",
+                        "value":"BSE500_Since_Inception",
                         "years":"0"
                     },
                     {
                         "name":"BSE500 Since 5 years",
-                        "value":"-",
+                        "value":"BSE500_Since_5_years",
                         "years":"5"
                     },
                     {
                         "name":"BSE500 Since 10 years",
-                        "value":"12.41",
+                        "value":"BSE500_Since_10_years",
                         "years":"10"
                     },
                     {
                         "name":"BSE500 Since 15 years",
-                        "value":"-",
+                        "value":"BSE500_Since_15_years",
                         "years":"15"
-                    },
-                    {
-                        "name":"BSE500 Since 20 years",
-                        "value":"14.25306529",
-                        "years":"20"
                     }
                 ]
             },
@@ -243,7 +238,7 @@
     },
     "relativeValuation":{
         "type":"relativeValuation",
-        "header":"Relative Valualations",
+        "header":"Relative Valuations",
         "options":{
             "preferenceRatioSelect": {
             "name":"preferenceRatioSelect",

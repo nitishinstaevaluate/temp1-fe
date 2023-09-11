@@ -22,3 +22,11 @@ export function GET_TEMPLATE(value:string){
     (value || '1')
   )
 }
+
+export function IS_ARRAY_EMPTY_OR_NULL(data: any): boolean {
+  if (!data || data?.length === 0) {
+    return true;
+  }
+  if(data?.length>0) return data.every((element:any) => element === null);
+  return true;
+}

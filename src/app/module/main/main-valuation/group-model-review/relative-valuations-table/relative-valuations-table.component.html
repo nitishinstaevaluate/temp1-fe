@@ -1,0 +1,23 @@
+<div  *ngIf="!isArrayEmptyOrNull(companyData) && tableData.status">
+    <h5 class="company-head">Companies</h5>
+    <table mat-table [dataSource]="companyData" class="mat-elevation-z8 my-table">
+        <ng-container *ngFor="let column of companyColumn; let i = index" [matColumnDef]="column">
+          <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+          <td mat-cell *matCellDef="let element">{{ element[companyColumnMap[column]] }}</td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="companyColumn"></tr>
+        <tr mat-row *matRowDef="let row; columns: companyColumn;"></tr>
+    </table>
+</div>
+
+<div class="mt-4" *ngIf="!isArrayEmptyOrNull(industryData) && !tableData.status">
+    <h5 class="industry-head">Industries</h5>
+    <table mat-table [dataSource]="industryData" class="mat-elevation-z8 my-table">
+        <ng-container *ngFor="let column of industryColumn; let i = index" [matColumnDef]="column">
+          <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+          <td mat-cell *matCellDef="let element">{{ element[industryColumnMap[column]] }}</td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="industryColumn"></tr>
+        <tr mat-row *matRowDef="let row; columns: industryColumn;"></tr>
+    </table>
+</div>
