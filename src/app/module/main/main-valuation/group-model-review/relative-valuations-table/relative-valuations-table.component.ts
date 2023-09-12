@@ -25,7 +25,7 @@ export class RelativeValuationsTableComponent implements OnChanges {
     this.industryData = [];
     this.companyData = this.tableData?.company;
     this.industryData = this.tableData?.industry;
-    if(this.companyData){
+    if(this.companyData && this.companyData?.length>0 && !this.isArrayEmptyOrNull(this.companyData)){
     this.checkAverageExist(); // check if average object already exist or not in company array,if exist then splice and add new one,else create new
     this.checkMedianExist(); // check if median object already exist or not in company array,if exist then splice and add new one,else create new one
     }
