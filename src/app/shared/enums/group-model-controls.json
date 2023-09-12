@@ -6,7 +6,7 @@
             "company":{
                 "name":"company",
                 "type":"text",
-                "placeholder":"Firm Name",
+                "placeholder":"Name of Company",
                 "toolTip":"Enter Company Name For Valuation",
                 "class":"col-md-6 field"
             },
@@ -17,6 +17,13 @@
                 "toolTip":"Please select Valuation Date",
                 "class":"col-md-6 field"
             },
+            "location":{
+                "name":"location",
+                "type":"text",
+                "placeholder":"Location",
+                "toolTip":"Enter location",
+                "class":"col-md-6 field"
+            },
             "projectionYears":{
                 "name":"projectionYears",
                 "type":"text",
@@ -25,10 +32,12 @@
                 "class":"col-md-5 field",
                 "options":[
                     {
-                        "name":"Going Concern"
+                        "name":"Going Concern",
+                        "value":"Going_Concern"
                     },
                     {
-                        "name":"Finite Projection"
+                        "name":"Finite Projection",
+                        "value":"Finite_Projection"
                     }
                 ]
             },
@@ -69,7 +78,7 @@
                         "value":"NAV"
                     },
                     {
-                        "name":"Relative Valuation",
+                        "name":"Comparable Company Method",
                         "checked":false,
                         "value":"Relative_Valuation"
                     },
@@ -79,33 +88,100 @@
                         "value":"Excess_Earnings"
                     },
                     {
-                        "name":"Comparable Industries",
+                        "name":"Comparable Industry Method",
                         "checked":false,
                         "value":"CTM"
                     }
                 ]
-            }
+            },
+            "outstandingShares":{
+                "name":"outstandingShares",
+                "placeholder":"Number Of Outstanding Shares",
+                "type":"text",
+                "toolTip":"Please select outstanding shares"
+                },
+                "taxRate":{
+                    "name":"taxRate",
+                    "placeholder":"Tax Rate",
+                    "type":"dropdown",
+                    "toolTip":"Please select Tax Rate"
+                },
+                "terminalGrowthRate":{
+                    "name":"terminalGrowthRate",
+                    "placeholder":"Terminal Growth Rate",
+                    "type":"dropdown",
+                    "toolTip":"Please select terminal rate",
+                    "options":[
+                        {
+                            "value":"1"
+                        },
+                        {
+                            "value":"1.5"
+                        },
+                        {
+                            "value":"2"
+                        },
+                        {
+                            "value":"2.5"
+                        },
+                        {
+                            "value":"3"
+                        },
+                        {
+                            "value":"3.5"
+                        },
+                        {
+                            "value":"4"
+                        },
+                        {
+                            "value":"4.5"
+                        },
+                        {
+                            "value":"5"
+                        },
+                        {
+                            "value":"5.5"
+                        },
+                        {
+                            "value":"6"
+                        },
+                        {
+                            "value":"6.5"
+                        },
+                        {
+                            "value":"7"
+                        },
+                        {
+                            "value":"7.5"
+                        },
+                        {
+                            "value":"8"
+                        },
+                        {
+                            "value":"8.5"
+                        },
+                        {
+                            "value":"9"
+                        },
+                        {
+                            "value":"9.5"
+                        },
+                        {
+                            "value":"10"
+                        }
+                    ]
+                }
         }
     },
     "specifyFSDetails":{
         "type":"specifyFSDetails",
         "header":"Specify FS Details",
         "options":{
-            "outstandingShares":{
-            "name":"outstandingShares",
-            "placeholder":"Number Of Outstanding Shares",
-            "type":"dropdown",
-            "toolTip":"Please select outstanding shares"
-            },
-            "taxRate":{
-                "name":"taxRate",
-                "placeholder":"Tax Rate",
-                "type":"dropdown",
-                "toolTip":"Please select Tax Rate"
-            },
+            
+           
             "terminalRate":{
                 "name":"terminalRate",
-                "placeholder":"Terminal Rate",
+                "placeholder":"Terminal Growth Rate",
                 "type":"dropdown",
                 "toolTip":"Please select terminal rate"
             }

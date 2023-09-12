@@ -28,7 +28,6 @@ export class GroupModelControlsComponent implements OnInit {
   // form declaration
   modelControl:any = groupModelControl;
   modelValuation: FormGroup;
-  specifyFSDetails: FormGroup;
   form: FormGroup;
   modelSpecificCalculation:FormGroup;
   waccCalculation:FormGroup;
@@ -100,20 +99,19 @@ export class GroupModelControlsComponent implements OnInit {
 
     this.modelValuation=this.formBuilder.group({
       company:['',[Validators.required]],
+      location:[,[Validators.required]],
       valuationDate:['',[Validators.required]],
       projectionYears:['',[Validators.required]],
+      outstandingShares:['',[Validators.required]],
       projectionYearSelect:['',[Validators.required]],
       industry:['',[Validators.required]],
       subIndustry:['',[Validators.required]],
       model:[false,[Validators.required]],
       userId: ['641d654fa83ed4a5f0293a52', Validators.required],
       excelSheetId:['',[Validators.required]],
-      type: ['industry', Validators.required],
-    })
-    this.specifyFSDetails=this.formBuilder.group({
-      outstandingShares:['',[Validators.required]],
-      taxRateType:['',[Validators.required]],
       taxRate:['',[Validators.required]],
+      type: ['industry', Validators.required],
+      taxRateType:['',[Validators.required]],
       terminalGrowthRate:['',[Validators.required]]
     })
     this.modelSpecificCalculation=this.formBuilder.group({
@@ -251,37 +249,70 @@ export class GroupModelControlsComponent implements OnInit {
       
     });
     
-    this.modelSpecificCalculation.controls['expMarketReturnType'].valueChanges.subscribe(
-      (val) => {
-        if(val.value === "Analyst_Consensus_Estimates"){
-          const data={
-            data: 'ACE',
-            width:'30%',
-          }
-          const dialogRef = this.dialog.open(GenericModalBoxComponent,data);
-          dialogRef.afterClosed().subscribe((result)=>{
-            if (result) {
-              this.modelSpecificCalculation.controls['expMarketReturn'].patchValue(result)
-              this.snackBar.open('Analyst Estimation Added','OK',{
-                horizontalPosition: 'center',
-                verticalPosition: 'top',
-                duration: 3000,
-                panelClass: 'app-notification-success'
-              })
-            } else {
-              this.modelSpecificCalculation.controls['expMarketReturnType'].reset();
-              this.snackBar.open('Tax Rate Not Saved','OK',{
-                horizontalPosition: 'center',
-                verticalPosition: 'top',
-                duration: 3000,
-                panelClass: 'app-notification-error'
-              })
-            }
-          })
-        }
+    // this.modelSpecificCalculation.controls['expMarketReturnType'].valueChanges.subscribe(
+    //   (val) => {
+    //     if(val.value === "Analyst_Consensus_Estimates"){
+    //       const data={
+    //         data: 'ACE',
+    //         width:'30%',
+    //       }
+    //       const dialogRef = this.dialog.open(GenericModalBoxComponent,data);
+    //       dialogRef.afterClosed().subscribe((result)=>{
+    //         if (result) {
+    //           this.modelSpecificCalculation.controls['expMarketReturn'].patchValue(result)
+    //           this.snackBar.open('Analyst Estimation Added','OK',{
+    //             horizontalPosition: 'center',
+    //             verticalPosition: 'top',
+    //             duration: 3000,
+    //             panelClass: 'app-notification-success'
+    //           })
+    //         } else {
+    //           this.modelSpecificCalculation.controls['expMarketReturnType'].reset();
+    //           this.snackBar.open('Tax Rate Not Saved','OK',{
+    //             horizontalPosition: 'center',
+    //             verticalPosition: 'top',
+    //             duration: 3000,
+    //             panelClass: 'app-notification-error'
+    //           })
+    //         }
+    //       })
+    //     }
         
+    //   }
+    // );
+
+    this.modelValuation.controls['projectionYearSelect'].valueChanges.subscribe((val) => {
+      if(!val) return;
+      console.log(val,"value")
+      if(val=== "Going_Concern"){
+        const data={
+          data: 'Going_Concern',
+          width:'30%',
+        }
+        const dialogRef = this.dialog.open(GenericModalBoxComponent,data);
+        dialogRef.afterClosed().subscribe((result)=>{
+          if (result) {
+            this.modelValuation.controls['projectionYears'].patchValue(result?.projectionYear)
+            this.modelValuation.controls['terminalGrowthRate'].patchValue(result?.terminalGrowthYear)
+            this.snackBar.open('Going Concern Added','OK',{
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              duration: 3000,
+              panelClass: 'app-notification-success'
+            })
+          } else {
+            this.modelValuation.controls['projectionYearSelect'].reset();
+            this.snackBar.open('Going Concern not added','OK',{
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              duration: 3000,
+              panelClass: 'app-notification-error'
+            })
+          }
+        })
       }
-    );
+      
+    });
 
   }
   
@@ -309,16 +340,16 @@ isSelectedpreferenceRatio(value:any){
     const payload = {
       ...this.modelValuation.value,
       ...this.modelSpecificCalculation.value,
-      ...this.specifyFSDetails.value,
       ...this.relativeValuation.value,
       ...this.waccCalculation.value
     }
+    console.log(this.modelValuation.controls['projectionYearSelect'].value,"projection year value")
     if (this.isRelativeValuation(this.MODEL.RELATIVE_VALUATION)) {
       payload['industries'] = [this.industriesRatio];
     }
     
     //  check if tax rate is null
-    if (payload['taxRate'] == null) {
+    if (payload['taxRate'] == null || payload['taxRate'] === '') {
       payload['taxRate'] = '25.17%';
     }
     if (this.waccCalculation.controls['capitalStructureType'].value == 'Industry_based') {
@@ -426,15 +457,15 @@ isSelectedpreferenceRatio(value:any){
   openDialog(bool?:boolean){ 
     if(bool){
       const data={
-        data: this.specifyFSDetails.controls['taxRateType'].value,
+        data: this.modelValuation.controls['taxRateType'].value,
         width:'30%',
       }
      const dialogRef = this.dialog.open(GenericModalBoxComponent,data);
   
      dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.taxRateModelBox=result;
-        this.specifyFSDetails.controls['taxRate'].patchValue(result)
+        this.taxRateModelBox=result?.taxRate;
+        this.modelValuation.controls['taxRate'].patchValue(result?.taxRate)
         this.snackBar.open('Tax Rate Saved Successfully','OK',{
           horizontalPosition: 'center',
           verticalPosition: 'top',
@@ -442,7 +473,7 @@ isSelectedpreferenceRatio(value:any){
           panelClass: 'app-notification-success'
         })
       } else {
-        this.specifyFSDetails.controls['taxRateType'].reset();
+        this.modelValuation.controls['taxRateType'].reset();
         this.taxRateModelBox=false
         this.snackBar.open('Tax Rate Not Saved','OK',{
           horizontalPosition: 'center',
@@ -454,7 +485,7 @@ isSelectedpreferenceRatio(value:any){
     });
     }
     else {
-      this.taxRateModelBox=this.specifyFSDetails.controls['taxRateType'].value;
+      this.taxRateModelBox=this.modelValuation.controls['taxRateType'].value;
     }
   }
 

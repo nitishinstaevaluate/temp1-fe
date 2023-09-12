@@ -70,6 +70,20 @@ export const FCFE_HEADING_OBJ = {
     ANALYST_CONSENSUS_ESTIMATES:{
       name:"Analyst Consensus Estimates",
       value:"ACE"
+    },
+    GOING_CONCERN:{
+     name:"Going Concern Approach",
+     value:"Going_Concern",
+     options:{
+      projectionYears:{
+        name:"Projection Years",
+        value:"Going_Concern"
+       },
+       terminalGrowthRate:{
+        name:"Terminal Growth Years",
+        value:"Going_Concern"
+       }
+     }
     }
   }
 
@@ -88,6 +102,36 @@ export const FCFE_HEADING_OBJ = {
     'EbitDA': 'evEBITDA_PV',
     'Sales': 'priceSales' 
   }
+
+  
+  export const VALUATION_RESULT_FCFE_MAPPING : { [key: string]: string } = {
+    'Particulars': 'particulars',
+    'PAT': 'pat',
+    'DEP And Amortisation': 'depAndAmortisation',
+    'On Cash Items': 'onCashItems',
+    'NCA': 'nca', 
+    'Change In Borrowings': 'changeInBorrowings', 
+    'Deffered Tax Assets': 'defferedTaxAssets', 
+    'Net Cash Flow': 'netCashFlow', 
+    'Fixed Assets': 'fixedAssets', 
+    'FCFF': 'fcff', 
+    'Discounting Period': 'discountingPeriod', 
+    'Discounting Factor': 'discountingFactor', 
+    'Present FCFF': 'presentFCFF', 
+    'Sum Of Cash Flows': 'sumOfCashFlows', 
+    'Cash Equivalents': 'cashEquivalents', 
+    'Surplus Assets': 'surplusAssets', 
+    'Other Adjustment': 'otherAdj', 
+    'Equity Value': 'equityValue', 
+    'No. of Shares': 'noOfShares', 
+    'Value per share': 'valuePerShare', 
+  }
+ 
   export const RELATIVE_VALUATION_INDUSTRY_COLUMNS = ['Industry Name', 'PE Ratio', 'PB Ratio', 'EbitDA', 'Sales'];
   
   export const RELATIVE_VALUATION_COMPANY_COLUMNS = ['Company Name', 'PE Ratio', 'PB Ratio', 'EbitDA', 'Sales'];
+
+  export const VALUATION_RESULT_FCFE_COLUMNS = ['Particulars', 'PAT', 'DEP And Amortisation', 'On Cash Items', 'NCA', 'Change In Borrowings', 
+  'Deffered Tax Assets', 'Net Cash Flow', 'Fixed Assets', 'FCFF', 'Discounting Period', 'Discounting Factor', 
+  'Present FCFF', 'Sum Of Cash Flows', 'Cash Equivalents', 'Surplus Assets', 'Other Adjustment', 'Equity Value', 
+  'No. of Shares', 'Value per share']
