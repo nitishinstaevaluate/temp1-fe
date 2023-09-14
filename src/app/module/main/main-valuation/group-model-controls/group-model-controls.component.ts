@@ -163,9 +163,9 @@ export class GroupModelControlsComponent implements OnInit {
 
   ngOnInit(){
     this.formLoad();
-   this.loadValues();
-      this.addInput();
-      this.addInputIndustry();
+    this.loadValues();
+    this.addInput();
+    this.addInputIndustry();
   }
   loadValues(){
     forkJoin([this.valuationService.getValuationDropdown(),this._dataReferencesService.getIndianTreasuryYields(),
@@ -173,7 +173,6 @@ export class GroupModelControlsComponent implements OnInit {
       this._dataReferencesService.getBetaIndustries()
     ])
       .subscribe((resp: any) => {
-        console.log(resp,"response master")
         this.industries = resp[0][DROPDOWN.INDUSTRIES];
         this.valuationM = resp[0][DROPDOWN.MODAL];
         this.taxRate = resp[0][DROPDOWN.TAX];
@@ -305,7 +304,9 @@ isSelectedpreferenceRatio(value:any){
 
   saveAndNext(): void {
     this.modelValuation.controls['model'].setValue(this.checkedItems);
-    
+    if(!this.isRelativeValuation(this.MODEL.RELATIVE_VALUATION)){
+      this.relativeValuation.controls['preferenceRatioSelect'].setValue('');
+    }
     const payload = {
       ...this.modelValuation.value,
       ...this.modelSpecificCalculation.value,

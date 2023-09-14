@@ -13,9 +13,11 @@ import { GroupModelResultComponent } from './main-valuation/group-model-result/g
 import { ProfitLossDataComponent } from './main-valuation/group-model-review/profit-loss-data/profit-loss-data.component';
 import { BalanceSheetDetailsComponent } from './main-valuation/group-model-review/balance-sheet-details/balance-sheet-details.component';
 import { RelativeValuationsTableComponent } from './main-valuation/group-model-review/relative-valuations-table/relative-valuations-table.component';
+import { ValuationResultTableComponent } from './main-valuation/group-model-result/valuation-result-table/valuation-result-table.component';
+import { ModelRelativeValuationResultTableComponent } from './main-valuation/group-model-result/valuation-result-table/model-relative-valuation-result-table/model-relative-valuation-result-table.component';
 
 @NgModule({
-  declarations: [ValuationComponent, ActivityComponent, MainValuationComponent, GroupModelControlsComponent, GroupModelReviewComponent, GroupModelResultComponent, ProfitLossDataComponent, BalanceSheetDetailsComponent, RelativeValuationsTableComponent],
+  declarations: [ValuationComponent, ActivityComponent, MainValuationComponent, GroupModelControlsComponent, GroupModelReviewComponent, GroupModelResultComponent, ProfitLossDataComponent, BalanceSheetDetailsComponent, RelativeValuationsTableComponent,ValuationResultTableComponent, ModelRelativeValuationResultTableComponent],
   imports: [CommonModule, MainRoutingModule, NgxDropzoneModule, SharedModule],
 })
 export class MainModule {}
