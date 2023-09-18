@@ -43,7 +43,8 @@ export class RelativeValuationDetailsComponent implements OnInit,OnChanges {
   ngOnInit(): void {
     this.loadFormControl();
     this.addInput();
-
+    this.addInput();
+    this.addInput();
   }
 
   get Companies() {

@@ -25,7 +25,7 @@ export class GroupModelResultComponent implements OnChanges {
       this.previousPage.emit(true)
     }
     checkModel(modelName: string) {
-      return this.transferStepperthree?.formTwoData?.appData?.valuationResult.some(
+      return this.transferStepperthree?.formThreeData?.appData?.valuationResult.some(
         (response: any) => {
           return response.model === modelName;
         }

@@ -1,0 +1,124 @@
+
+
+.full-width-input {
+    width: 100%; /* Set the width to 100% to occupy the full width of the container */
+  }
+  
+  .full-width-input mat-label,
+  .full-width-input input {
+    display: block; /* Display the label and input as block-level elements */
+    width: 100%; /* Make the label and input take up the full width of the container */
+  }
+  .field{
+    padding-left: 2.5%;
+    padding-top: 3.5%;
+    padding-right: 2.5%;
+  }
+  .label{
+    font-size: 17px;
+    color: #797a79;
+  }
+  .label2{
+    font-size: 17px;
+    padding-right:10%;
+    color: #797a79;
+
+  }
+  
+  .upload-btn-disabled {
+    font-weight: 700 !important;
+    color: #373838 !important;
+    border: solid 1px #dedede;
+    opacity: 0.6;
+    cursor: not-allowed;
+    width: 30%;
+    background-color: #acacac  !important;
+  }
+  .upload-btn-enabled {
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    border: solid 1px #dedede;
+    opacity: 0.6;
+    cursor: pointer;
+    width: 100%;
+    background-color: #1a0ef1  !important;
+  }
+
+  ::ng-deep .mat-form-field-appearance-fill .mdc-text-field--filled:not(.mdc-text-field--disabled){
+    background-color: white !important;
+  }
+
+   ::ng-deep .mat-mdc-select .mat-mdc-select-trigger .mat-mdc-select-value .mat-mdc-select-placeholder,
+   ::ng-deep .mat-form-field-appearance-fill .mdc-text-field--filled:not(.mdc-text-field--disabled) .mat-mdc-form-field-flex .mat-mdc-form-field-infix .mat-mdc-form-field-input-control,
+   ::ng-deep .mat-mdc-select .mat-mdc-select-trigger .mat-mdc-select-value .mat-mdc-select-value-text
+ {
+     font-size: 14px !important;
+}
+::ng-deep .full-width-input .mat-form-field-infix{
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+  }
+  mat-label{
+    margin-bottom: 0px !important;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  ::ng-deep mat-radio-group mat-radio-button .mdc-form-field>label{
+    font-size: 14px;
+    color: #797a79;
+    margin: 0px !important;
+    font-weight: 400;
+  }
+  .mat-radio{
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+  .card-header{
+    font-weight: 500;
+    color:#656765;
+    font-size: 17px;
+    border-top: 1px solid #e3e3f7;
+    font-size: 17px;
+  }
+  ::ng-deep mat-checkbox .mdc-form-field>label{
+    font-size: 14px;
+    color: #797a79;
+    margin: 0px !important;
+    font-weight: 400;
+  }
+.modelview{
+  text-align: end;
+  margin-top: auto;
+  margin-bottom: auto;
+  max-width: 11.667% !important;
+}
+.outer-wrapper{
+  padding-bottom:1.5% !important;
+}
+.revalmodel{
+  text-align: end;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+mat-checkbox{
+  padding-right: 1%;
+}
+.download{
+  color: #a5a5a5;
+  font-weight: 400;
+  font-family: cursive;
+  font-size: 12px;
+}
+.upload-doc{
+  box-shadow: 1px 2px 13px #ffffff;
+    border-radius: -3%;
+    border: 1px solid #f4e9e9; // another gradient 1px solid #f5f3f3
+    text-align: center;
+}
+.taxrate-hint{
+  padding: 0px;
+    color: #12a912;
+    font-weight: 500;
+    font-family: math;
+}

@@ -204,11 +204,10 @@ onSlideToggleChange(event:any){
 
 saveAndNext(): void {
   
-  const payload = {...this.fcfeForm.value,specficRiskPremium:this.specificRiskPremiumModalForm.value,status:'FCFE'}
+  const payload = {...this.fcfeForm.value,alpha:this.specificRiskPremiumModalForm.value,status:'FCFE'}
 
 
   // check if expected market return  is empty or not
-  if (!this.fcfeForm.controls['expMarketReturn'].value) {
     this.dataReferenceService
       .getBSE500(
         this.fcfeForm.controls['expMarketReturnType'].value.years,
@@ -219,16 +218,20 @@ saveAndNext(): void {
           if (response.status) {
             payload['expMarketReturn'] = response?.result;
             payload['expMarketReturnType']=this.fcfeForm.controls['expMarketReturnType']?.value?.value;
+            this.fcfeDetails.emit(payload)
+          }
+          else{
+          payload['expMarketReturnType']=this.fcfeForm.controls['expMarketReturnType']?.value?.value;
+          this.fcfeDetails.emit(payload)
           }
         },
         (error) => {
           console.error(error);
+          
         }
-      );
-  }
+        );
   
   // submit final payload
-  this.fcfeDetails.emit(payload)
 }
 
 previous(){

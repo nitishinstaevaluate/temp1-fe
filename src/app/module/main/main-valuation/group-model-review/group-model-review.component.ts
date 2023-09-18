@@ -37,7 +37,15 @@ export class GroupModelReviewComponent implements OnChanges {
     }
   }
   saveAndNext(): void {
-    this.valuationService.submitForm(this.transferStepperTwo).subscribe((response)=>{
+    const keysToRemove = ['status', 'industriesRatio', 'betaIndustry'];
+
+    const filteredData = Object.keys(this.transferStepperTwo).reduce((result:any, key) => {
+        if (!keysToRemove.includes(key)) {
+            result[key] = this.transferStepperTwo[key];
+        }
+        return result;
+    }, {});
+    this.valuationService.submitForm(filteredData).subscribe((response)=>{
       console.log(response,"output payload")
       if(response?.valuationResult){
         this.valuationData= response; 

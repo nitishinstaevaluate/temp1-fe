@@ -248,37 +248,37 @@ export class GroupModelControlsComponent implements OnInit {
       
     });
     
-    this.modelSpecificCalculation.controls['expMarketReturnType'].valueChanges.subscribe(
-      (val) => {
-        if(val.value === "Analyst_Consensus_Estimates"){
-          const data={
-            data: 'ACE',
-            width:'30%',
-          }
-          const dialogRef = this.dialog.open(GenericModalBoxComponent,data);
-          dialogRef.afterClosed().subscribe((result)=>{
-            if (result) {
-              this.modelSpecificCalculation.controls['expMarketReturn'].patchValue(result)
-              this.snackBar.open('Analyst Estimation Added','OK',{
-                horizontalPosition: 'center',
-                verticalPosition: 'top',
-                duration: 3000,
-                panelClass: 'app-notification-success'
-              })
-            } else {
-              this.modelSpecificCalculation.controls['expMarketReturnType'].reset();
-              this.snackBar.open('Tax Rate Not Saved','OK',{
-                horizontalPosition: 'center',
-                verticalPosition: 'top',
-                duration: 3000,
-                panelClass: 'app-notification-error'
-              })
-            }
-          })
-        }
+    // this.modelSpecificCalculation.controls['expMarketReturnType'].valueChanges.subscribe(
+    //   (val) => {
+    //     if(val.value === "Analyst_Consensus_Estimates"){
+    //       const data={
+    //         data: 'ACE',
+    //         width:'30%',
+    //       }
+    //       const dialogRef = this.dialog.open(GenericModalBoxComponent,data);
+    //       dialogRef.afterClosed().subscribe((result)=>{
+    //         if (result) {
+    //           this.modelSpecificCalculation.controls['expMarketReturn'].patchValue(result)
+    //           this.snackBar.open('Analyst Estimation Added','OK',{
+    //             horizontalPosition: 'center',
+    //             verticalPosition: 'top',
+    //             duration: 3000,
+    //             panelClass: 'app-notification-success'
+    //           })
+    //         } else {
+    //           this.modelSpecificCalculation.controls['expMarketReturnType'].reset();
+    //           this.snackBar.open('Tax Rate Not Saved','OK',{
+    //             horizontalPosition: 'center',
+    //             verticalPosition: 'top',
+    //             duration: 3000,
+    //             panelClass: 'app-notification-error'
+    //           })
+    //         }
+    //       })
+    //     }
         
-      }
-    );
+    //   }
+    // );
 
     this.modelValuation.controls['projectionYearSelect'].valueChanges.subscribe((val) => {
       if(!val) return;
@@ -336,30 +336,26 @@ isSelectedpreferenceRatio(value:any){
     if(!this.isRelativeValuation(this.MODEL.RELATIVE_VALUATION)){
       this.relativeValuation.controls['preferenceRatioSelect'].setValue('');
     }
-    const payload = {
-      ...this.modelValuation.value,
-      ...this.modelSpecificCalculation.value,
+    const payload = {...this.modelValuation.value,betaIndustry:this.betaIndustriesId,preferenceCompanies:this.preferenceCompanies,industriesRatio:[this.industriesRatio]}
 
-      ...this.relativeValuation.value,
-      ...this.waccCalculation.value
-    }
-    if (this.isRelativeValuation(this.MODEL.RELATIVE_VALUATION)) {
-      payload['industries'] = [this.industriesRatio];
-    }
+    // if (this.isRelativeValuation(this.MODEL.RELATIVE_VALUATION)) {
+    //   payload['industries'] = [this.industriesRatio];
+    // }
     
     //  check if tax rate is null
-    if (payload['taxRate'] == null) {
+    if (payload['taxRate'] == null || payload['taxRateType']=='25.17') {
       payload['taxRate'] = '25.17%';
+      payload['taxRateType'] = 'Default';
     }
-    if (this.waccCalculation.controls['capitalStructureType'].value == 'Industry_based') {
-      let capitalStructure = {
-        capitalStructureType : 'Industry_Based',
-        debtProp : this.debtRatio,
-        equityProp : this.equityProp,
-        totalCapital : this.totalCapital
-      }
-      payload['capitalStructure'] = capitalStructure;
-    }
+    // if (this.waccCalculation.controls['capitalStructureType'].value == 'Industry_based') {
+    //   let capitalStructure = {
+    //     capitalStructureType : 'Industry_Based',
+    //     debtProp : this.debtRatio,
+    //     equityProp : this.equityProp,
+    //     totalCapital : this.totalCapital
+    //   }
+    //   payload['capitalStructure'] = capitalStructure;
+    // }
 
     // check if valuation date is empty
     const valuationDate = this.modelValuation.get('valuationDate')?.value;
@@ -377,7 +373,7 @@ isSelectedpreferenceRatio(value:any){
   
     
     // submit final payload
-    this.groupModelControls.emit({...this.modelValuation.value,betaIndustry:this.betaIndustriesId,preferenceCompanies:this.preferenceCompanies,industriesRatio:[this.industriesRatio]})
+    this.groupModelControls.emit(payload)
   }
   
   get isDownload() {

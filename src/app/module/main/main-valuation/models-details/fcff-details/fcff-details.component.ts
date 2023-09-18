@@ -209,7 +209,7 @@ onSlideToggleChange(event:any){
 
 saveAndNext(): void {
   
-  const payload = {...this.fcffForm.value,specficRiskPremium:this.specificRiskPremiumModalForm.value,status:'FCFF'}
+  const payload = {...this.fcffForm.value,alpha:this.specificRiskPremiumModalForm.value,status:'FCFF'}
 
   if (this.fcffForm.controls['capitalStructureType'].value == 'Industry_based') {
     let capitalStructure = {
@@ -221,28 +221,31 @@ saveAndNext(): void {
     payload['capitalStructure'] = capitalStructure;
   }
   // check if expected market return  is empty or not
-  if (!this.fcffForm.controls['expMarketReturn'].value) {
-    this.dataReferenceService
-      .getBSE500(
-        this.fcffForm.controls['expMarketReturnType'].value.years,
-        this.formOneData?.valuationDate
-      )
-      .subscribe(
-        (response) => {
-          if (response.status) {
-            payload['expMarketReturn'] = response?.result;
-            payload['expMarketReturnType']=this.fcffForm.controls['expMarketReturnType']?.value?.value;
-          }
-        },
-        (error) => {
-          console.error(error);
-        }
-      );
-  }
+  this.dataReferenceService
+  .getBSE500(
+    this.fcffForm.controls['expMarketReturnType'].value.years,
+    this.formOneData?.valuationDate
+  )
+  .subscribe(
+    (response) => {
+      if (response.status) {
+        payload['expMarketReturn'] = response?.result;
+        payload['expMarketReturnType']=this.fcffForm.controls['expMarketReturnType']?.value?.value;
+        this.fcffDetails.emit(payload)
+      }
+      else{
+      payload['expMarketReturnType']=this.fcffForm.controls['expMarketReturnType']?.value?.value;
+      this.fcffDetails.emit(payload)
+      }
+    },
+    (error) => {
+      console.error(error);
+      
+    }
+    );
   
   
   // submit final payload
-  this.fcffDetails.emit(payload)
 }
 
 previous(){

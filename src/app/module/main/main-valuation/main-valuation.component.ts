@@ -43,12 +43,13 @@ export class MainValuationComponent{
   onStepChange(event: any,stepper:any) {
     this.currentStepIndex = this.stepper.selectedIndex;
     if(this.stepper.selectedIndex === 1){
-      this.formOneAndTwoData={
-      ...this.formOneData,
-      ...this.fcffData,
-      ...this.fcfeData,
-      ...this.relativeData
-    }
+      this.formOneAndTwoData = {
+        ...this.formOneData,
+        ...(this.formOneData?.model.includes('FCFF') ? this.fcffData : {}),
+        ...(this.formOneData?.model.includes('FCFE') ? this.fcfeData : {}),
+        ...(this.formOneData?.model.includes('Relative_Valuation') ? this.relativeData : {})
+      };
+      
     }
     if(event.selectedIndex +1 == 1) return this.headerLabel = 'Valuation of Company';
     if(event.selectedIndex +1 == 2) return this.headerLabel = 'Model Inputs';
@@ -70,7 +71,7 @@ export class MainValuationComponent{
     this.stepper.previous();
   }
   groupReviewControls(data:any){
-    this.transferStepperthree= {formOneData:this.transferSteppertwo,formTwoData:data};
+    this.transferStepperthree= {formOneAndTwoData:this.formOneAndTwoData,formThreeData:data};
     this.stepper.next();
   }
   fcfeDetails(data:any){
