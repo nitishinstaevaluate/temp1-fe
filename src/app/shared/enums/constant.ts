@@ -70,6 +70,41 @@ export const FCFE_HEADING_OBJ = {
     ANALYST_CONSENSUS_ESTIMATES:{
       name:"Analyst Consensus Estimates",
       value:"ACE"
+    },
+    GOING_CONCERN:{
+     name:"Going Concern Approach",
+     value:"Going_Concern",
+     options:{
+      projectionYears:{
+        name:"Projection Years",
+        value:"Going_Concern"
+       },
+       terminalGrowthRate:{
+        name:"Terminal Growth Years",
+        value:"Going_Concern"
+       }
+     }
+    },
+    SPECIFIC_RISK_PREMIUM:{
+      name:"Specific Risk Premium/Alpha",
+      value:"specificRiskPremiumForm",
+      options:{
+        qualitativeFactors:{
+          name:"Qualitative Factors"
+        },
+        companySizw:{
+          name:"Company Size"
+        },
+        marketPosition:{
+          name:"Market Positioning"
+        },
+        liquidityFactor:{
+          name:"Liquidity Factor"
+        },
+        competition:{
+          name:"Competition"
+        }
+      }
     }
   }
 

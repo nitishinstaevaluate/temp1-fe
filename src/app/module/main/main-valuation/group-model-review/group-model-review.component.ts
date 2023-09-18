@@ -26,6 +26,7 @@ export class GroupModelReviewComponent implements OnChanges {
   }
   ngOnChanges(changes: SimpleChanges): void {
     if(this.transferStepperTwo){
+      console.log(this.transferStepperTwo,"data from all 2 stepper")
       this.betaValue=this.transferStepperTwo?.beta ? parseFloat(this.transferStepperTwo?.beta).toFixed(2) : 0;
       this.debtValue=this.transferStepperTwo?.costOfDebt ? parseFloat(this.transferStepperTwo?.costOfDebt).toFixed(2): 0;
       this.taxRateValue= this.transferStepperTwo?.taxRate ? parseFloat(this.transferStepperTwo?.taxRate).toFixed(2) : 0;

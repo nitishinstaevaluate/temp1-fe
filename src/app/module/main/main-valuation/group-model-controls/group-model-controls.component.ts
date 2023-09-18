@@ -28,7 +28,6 @@ export class GroupModelControlsComponent implements OnInit {
   // form declaration
   modelControl:any = groupModelControl;
   modelValuation: FormGroup;
-  specifyFSDetails: FormGroup;
   form: FormGroup;
   modelSpecificCalculation:FormGroup;
   waccCalculation:FormGroup;
@@ -102,6 +101,7 @@ export class GroupModelControlsComponent implements OnInit {
       company:['',[Validators.required]],
       valuationDate:['',[Validators.required]],
       projectionYears:['',[Validators.required]],
+      location:['',[Validators.required]],
       projectionYearSelect:['',[Validators.required]],
       industry:['',[Validators.required]],
       subIndustry:['',[Validators.required]],
@@ -109,8 +109,6 @@ export class GroupModelControlsComponent implements OnInit {
       userId: ['641d654fa83ed4a5f0293a52', Validators.required],
       excelSheetId:['',[Validators.required]],
       type: ['industry', Validators.required],
-    })
-    this.specifyFSDetails=this.formBuilder.group({
       outstandingShares:['',[Validators.required]],
       taxRateType:['',[Validators.required]],
       taxRate:['',[Validators.required]],
@@ -283,6 +281,38 @@ export class GroupModelControlsComponent implements OnInit {
       }
     );
 
+    this.modelValuation.controls['projectionYearSelect'].valueChanges.subscribe((val) => {
+      if(!val) return;
+      console.log(val,"value")
+      if(val=== "Going_Concern"){
+        const data={
+          data: 'Going_Concern',
+          width:'30%',
+        }
+        const dialogRef = this.dialog.open(GenericModalBoxComponent,data);
+        dialogRef.afterClosed().subscribe((result)=>{
+          if (result) {
+            this.modelValuation.controls['projectionYears'].patchValue(result?.projectionYear)
+            this.modelValuation.controls['terminalGrowthRate'].patchValue(result?.terminalGrowthYear)
+            this.snackBar.open('Going Concern Added','OK',{
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              duration: 3000,
+              panelClass: 'app-notification-success'
+            })
+          } else {
+            this.modelValuation.controls['projectionYearSelect'].reset();
+            this.snackBar.open('Going Concern not added','OK',{
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              duration: 3000,
+              panelClass: 'app-notification-error'
+            })
+          }
+        })
+      }
+    })
+
   }
   
   isRelativeValuation(value:string){
@@ -309,7 +339,7 @@ isSelectedpreferenceRatio(value:any){
     const payload = {
       ...this.modelValuation.value,
       ...this.modelSpecificCalculation.value,
-      ...this.specifyFSDetails.value,
+
       ...this.relativeValuation.value,
       ...this.waccCalculation.value
     }
@@ -341,29 +371,12 @@ isSelectedpreferenceRatio(value:any){
       };
 
       this.newDate = new Date(myDate.year, myDate.month - 1, myDate.day);
-      payload['valuationDate'] = this.newDate.getTime();
+      this.modelValuation.controls['valuationDate'].setValue(this.newDate.getTime());
     }
-
-    // check if expected market return  is empty or not
-    if(!this.modelSpecificCalculation.controls['expMarketReturn'].value){
-      this._dataReferencesService.getBSE500(
-        this.modelSpecificCalculation.controls['expMarketReturnType'].value.years,
-        payload['valuationDate'])
-        .subscribe((response)=>{
-          if(response.status){
-            this.modelSpecificCalculation.controls['expMarketReturn'].setValue(response?.result);
-            payload['expMarketReturnType'] = this.modelSpecificCalculation.controls['expMarketReturnType']?.value?.value;
-            payload['expMarketReturn']=response?.result;
-          }
-        },
-        (error)=>{
-          console.log(error)
-        })
-        
-    }
+  
     
     // submit final payload
-    this.groupModelControls.emit(payload)
+    this.groupModelControls.emit({...this.modelValuation.value,betaIndustry:this.betaIndustriesId,preferenceCompanies:this.preferenceCompanies,industriesRatio:[this.industriesRatio]})
   }
   
   get isDownload() {
@@ -412,29 +425,22 @@ isSelectedpreferenceRatio(value:any){
     return this.Companies.controls.length === this.preferenceCompanies.length  ? false :true
   }
 
-  getDocList(doc: any) {
-    if (this.checkedItems.length>0 && this.checkedItems.includes('FCFE')) {
-      this.modelSpecificCalculation.controls['discountRate'].setValue('Cost_Of_Equity');
-    } else if (this.checkedItems.length>0 && this.checkedItems.includes('FCFF')) {
-      this.modelSpecificCalculation.controls['discountRate'].setValue('Cost_Of_Equity'); //temporary set value as cost of equity ,change later
-    }
-      return doc.type;
-  }
+ 
   previous(){
     this.previousPage.emit(true)
   }
   openDialog(bool?:boolean){ 
     if(bool){
       const data={
-        data: this.specifyFSDetails.controls['taxRateType'].value,
+        data: this.modelValuation.controls['taxRateType'].value,
         width:'30%',
       }
      const dialogRef = this.dialog.open(GenericModalBoxComponent,data);
   
      dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.taxRateModelBox=result;
-        this.specifyFSDetails.controls['taxRate'].patchValue(result)
+        this.taxRateModelBox=result?.taxRate;
+        this.modelValuation.controls['taxRate'].patchValue(result?.taxRate);
         this.snackBar.open('Tax Rate Saved Successfully','OK',{
           horizontalPosition: 'center',
           verticalPosition: 'top',
@@ -442,7 +448,7 @@ isSelectedpreferenceRatio(value:any){
           panelClass: 'app-notification-success'
         })
       } else {
-        this.specifyFSDetails.controls['taxRateType'].reset();
+        this.modelValuation.controls['taxRateType'].reset();
         this.taxRateModelBox=false
         this.snackBar.open('Tax Rate Not Saved','OK',{
           horizontalPosition: 'center',
@@ -454,7 +460,7 @@ isSelectedpreferenceRatio(value:any){
     });
     }
     else {
-      this.taxRateModelBox=this.specifyFSDetails.controls['taxRateType'].value;
+      this.taxRateModelBox=this.modelValuation.controls['taxRateType'].value;
     }
   }
 

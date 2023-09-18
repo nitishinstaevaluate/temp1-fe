@@ -6,7 +6,7 @@
             "company":{
                 "name":"company",
                 "type":"text",
-                "placeholder":"Firm Name",
+                "placeholder":"Name of Company",
                 "toolTip":"Enter Company Name For Valuation",
                 "class":"col-md-6 field"
             },
@@ -17,6 +17,13 @@
                 "toolTip":"Please select Valuation Date",
                 "class":"col-md-6 field"
             },
+            "location":{
+                "name":"location",
+                "type":"text",
+                "placeholder":"Location",
+                "toolTip":"Enter location",
+                "class":"col-md-6 field"
+            },
             "projectionYears":{
                 "name":"projectionYears",
                 "type":"text",
@@ -25,10 +32,12 @@
                 "class":"col-md-5 field",
                 "options":[
                     {
-                        "name":"Going Concern"
+                        "name":"Going Concern",
+                        "value":"Going_Concern"
                     },
                     {
-                        "name":"Finite Projection"
+                        "name":"Finite Projection",
+                        "value":"Finite_Projection"
                     }
                 ]
             },
@@ -84,37 +93,94 @@
                         "value":"CTM"
                     }
                 ]
-            }
-        }
-    },
-    "specifyFSDetails":{
-        "type":"specifyFSDetails",
-        "header":"Specify FS Details",
-        "options":{
-            "outstandingShares":{
-            "name":"outstandingShares",
-            "placeholder":"Number Of Outstanding Shares",
-            "type":"dropdown",
-            "toolTip":"Please select outstanding shares"
             },
+            "outstandingShares":{
+                "name":"outstandingShares",
+                "placeholder":"Number Of Outstanding Shares",
+                "type":"text",
+                "toolTip":"Please select outstanding shares"
+                },
             "taxRate":{
                 "name":"taxRate",
                 "placeholder":"Tax Rate",
                 "type":"dropdown",
                 "toolTip":"Please select Tax Rate"
             },
-            "terminalRate":{
-                "name":"terminalRate",
-                "placeholder":"Terminal Rate",
+            "terminalGrowthRate":{
+                "name":"terminalGrowthRate",
+                "placeholder":"Terminal Growth Rate",
                 "type":"dropdown",
-                "toolTip":"Please select terminal rate"
+                "toolTip":"Please select terminal rate",
+                "options":[
+                    {
+                        "value":"1"
+                    },
+                    {
+                        "value":"1.5"
+                    },
+                    {
+                        "value":"2"
+                    },
+                    {
+                        "value":"2.5"
+                    },
+                    {
+                        "value":"3"
+                    },
+                    {
+                        "value":"3.5"
+                    },
+                    {
+                        "value":"4"
+                    },
+                    {
+                        "value":"4.5"
+                    },
+                    {
+                        "value":"5"
+                    },
+                    {
+                        "value":"5.5"
+                    },
+                    {
+                        "value":"6"
+                    },
+                    {
+                        "value":"6.5"
+                    },
+                    {
+                        "value":"7"
+                    },
+                    {
+                        "value":"7.5"
+                    },
+                    {
+                        "value":"8"
+                    },
+                    {
+                        "value":"8.5"
+                    },
+                    {
+                        "value":"9"
+                    },
+                    {
+                        "value":"9.5"
+                    },
+                    {
+                        "value":"10"
+                    }
+                ]
             }
-          
-    }
+        }
     },
-    "modelSpecificCalculationStart":{
-        "type":"modelSpecificCalculationStart",
-        "header":"Model Specific Calculations",
+    "specifyFSDetails":{
+        "type":"specifyFSDetails",
+        "header":"Specify FS Details",
+        "options":{}
+    },
+    "fcfe":{
+        "type":"FCFE",
+        "header":"Cost Of Equity Calculations",
         "options":{
             "discountRate":{
                 "name":"discountRate",
@@ -206,6 +272,105 @@
             
         }
     },
+    "fcff":{
+        "type":"FCFF",
+        "header":"(WACC) Calculations",
+        "options":{
+            "discountRate":{
+                "name":"discountRate",
+                "placeholder":"Discount Rate",
+                "type":"dropdown",
+                "toolTip":"Please select Discount Rate"
+            },
+            "discountPeriod":{
+                "name":"discountPeriod",
+                "placeholder":"Discount Period",
+                "type":"dropdown",
+                "toolTip":"Please select discount period",
+                "options":[
+                    {
+                        "name":"Full Period"
+                    },
+                    {
+                        "name":"Mid Period"
+                    }
+                ]
+            },
+            "betaType":{
+                "name":"betaType",
+                "placeholder":"Beta",
+                "type":"dropdown",
+                "toolTip":"Please select Beta",
+                "options":[
+                    {
+                        "name":"Levered",
+                        "value":"levered"
+                    },
+                    {
+                        "name":"Unlevered",
+                        "value":"unlevered"
+                    }
+                ]
+            },
+            "coeMethod":{
+                "name":"coeMethod",
+                "placeholder":"Cost Of Equity Method",
+                "type":"dropdown",
+                "toolTip":"Please select cost Of Equivalent Method"
+            },
+            "riskFreeRate":{
+                "name":"riskFreeRate",
+                "placeholder":"Risk Free Rate",
+                "type":"dropdown",
+                "toolTip":"Please select Risk Free Rate"
+            },
+            "expMarketReturnType":{
+                "name":"expMarketReturnType",
+                "placeholder":"Expected Market Return",
+                "type":"dropdown",
+                "toolTip":"Please select Expected Market Return",
+                "options":[
+                    {
+                        "name":"Analyst Consensus Estimates",
+                        "value":"Analyst_Consensus_Estimates",
+                        "years":"null"
+                    },
+                    {
+                        "name":"BSE500 Since Inception",
+                        "value":"BSE500_Since_Inception",
+                        "years":"0"
+                    },
+                    {
+                        "name":"BSE500 Since 5 years",
+                        "value":"BSE500_Since_5_years",
+                        "years":"5"
+                    },
+                    {
+                        "name":"BSE500 Since 10 years",
+                        "value":"BSE500_Since_10_years",
+                        "years":"10"
+                    },
+                    {
+                        "name":"BSE500 Since 15 years",
+                        "value":"BSE500_Since_15_years",
+                        "years":"15"
+                    }
+                ]
+            },
+            "capitalStructureType":{
+                "name":"capitalStructureType",
+                "placeholder":"Capital Structure",
+                "type":"dropdown",
+                "toolTip":"Enter Capital Structure"
+            },
+            "costOfDebt":{
+                "name":"costOfDebt",
+                "placeholder":"Cost Of Debt",
+                "type":"text",
+                "toolTip":"Please select Cost Of Debt"
+            }
+        }
+    },
     "waccCalculations":{
         "type":"waccCalculations",
         "header":"WACC Calculations",
@@ -227,13 +392,8 @@
                 "placeholder":"Cost Of Preference Share Capital",
                 "type":"text",
                 "toolTip":"Please select Cost Of Preference Share Capital"
-            },
-            "costOfDebt":{
-                "name":"costOfDebt",
-                "placeholder":"Cost Of Debt",
-                "type":"text",
-                "toolTip":"Please select Cost Of Debt"
             }
+            
         }
     },
     "relativeValuation":{
