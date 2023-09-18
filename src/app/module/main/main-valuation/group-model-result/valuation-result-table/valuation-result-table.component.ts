@@ -26,7 +26,7 @@ ngOnInit(): void {}
 
 ngOnChanges(): void {
   this.formData = this.transferStepperthree;
-  this.transferStepperthree?.formTwoData?.appData?.valuationResult.map((response:any)=>{
+  this.transferStepperthree?.formThreeData?.appData?.valuationResult.map((response:any)=>{
     if(response.model === 'FCFE'){
       this.dataSourceFcfe = (this.transposeData(response.valuationData))?.slice(1);
       this.dataSourceFcfe = this.dataSourceFcfe.map((subArray:any, index:any) => {
@@ -47,9 +47,9 @@ ngOnChanges(): void {
       this.valuationDataReport = response?.valuationData?.valuation;
     }
   })
-  this.dataSourceFcff && this.transferStepperthree?.formOneData?.model.includes('FCFF') ? this.fcff = true : this.fcff = false;
-  this.dataSourceFcfe && this.transferStepperthree?.formOneData?.model.includes('FCFE') ? this.fcfe = true : this.fcfe = false;
-  this.valuationDataReport && this.transferStepperthree?.formOneData?.model.includes('Relative_Valuation') ? this.relativeVal = true : this.relativeVal = false;
+  this.dataSourceFcff && this.transferStepperthree?.formOneAndTwoData?.model.includes('FCFF') ? this.fcff = true : this.fcff = false;
+  this.dataSourceFcfe && this.transferStepperthree?.formOneAndTwoData?.model.includes('FCFE') ? this.fcfe = true : this.fcfe = false;
+  this.valuationDataReport && this.transferStepperthree?.formOneAndTwoData?.model.includes('Relative_Valuation') ? this.relativeVal = true : this.relativeVal = false;
 }
   
 transposeData(data: any[][]): any[][] {
@@ -57,7 +57,7 @@ transposeData(data: any[][]): any[][] {
 }
 
 checkIndustryOrCompany(){
-  return this.transferStepperthree.formOneData?.preferenceRatioSelect === 'Company Based' ? true :false;
+  return this.transferStepperthree.formOneAndTwoData?.preferenceRatioSelect === 'Company Based' ? true :false;
 }
 
 formatNumber(value: any): string {
