@@ -1,0 +1,55 @@
+<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+  <mat-tab label="FCFE" *ngIf = "fcfe">
+    <div>
+      <h5 class="company-head-fcfe">FCFE Result</h5>
+      <div class="table-container">
+        <!-- fcfe table starts -->
+      <table>
+        <thead>
+          <tr>
+            <th style="border: 1px solid #d1d1d1;font-size: 15px;text-align: center;" *ngFor="let columnName of columnName">{{ columnName }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of dataSourceFcfe">
+            <td style="text-align: center;font-size: 14px;text-transform: capitalize;" [ngClass]="checkVal(cellValue,'fcfe') ? 'make-bold' : 'make-light'" *ngFor="let cellValue of row">{{ formatNumber(cellValue) }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- fcfe table ends -->
+      </div>
+  </div>  
+  </mat-tab>
+   <mat-tab label="FCFF" *ngIf = "fcff">
+    <div>
+      <h5 class="company-head-fcff">FCFF Result</h5>
+      <div class="table-container">
+        <!-- table fcff  starts -->
+        <table>
+          <thead>
+            <tr>
+              <th style="border: 1px solid #d1d1d1;font-size: 15px;text-align: center;" *ngFor="let columnName of columnName">{{ columnName }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of dataSourceFcff">
+              <td style="text-align: center;font-size: 14px;text-transform: capitalize;" [ngClass]="checkVal(cellValue,'fcff') ? 'make-bold' : 'make-light'" *ngFor="let cellValue of row">{{ formatNumber(cellValue) }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- table fcff  ends -->
+      </div>
+    </div>  
+  </mat-tab>
+  <mat-tab label="Relative Valuations" *ngIf="relativeVal">
+    <div>
+        <h5 class="company-head-relativeval">Relative Valuations Result</h5>
+        <div class="table-container">
+        <app-relative-valuations-table [tableData]="tableData"></app-relative-valuations-table>
+          <div class="mt-4">
+            <app-model-relative-valuation-result-table [dataSource]="valuationDataReport" [formData]="formData"></app-model-relative-valuation-result-table>
+          </div>
+      </div>
+    </div>  
+  </mat-tab> 
+</mat-tab-group>

@@ -21,6 +21,7 @@ export class GroupModelReviewComponent implements OnChanges {
   taxRateValue:any;
   debtValue:any
   tableData:any
+  valuationData: any;
   constructor(private valuationService:ValuationService){
 
   }
@@ -36,11 +37,14 @@ export class GroupModelReviewComponent implements OnChanges {
     }
   }
   saveAndNext(): void {
-    this.groupReviewControls.emit({PL:this.profitLoss,BL:this.balanceSheet})
-    console.log(this.transferStepperTwo,"input payload")
     this.valuationService.submitForm(this.transferStepperTwo).subscribe((response)=>{
       console.log(response,"output payload")
+      if(response?.valuationResult){
+        this.valuationData= response; 
+        this.groupReviewControls.emit({PL:this.profitLoss,BL:this.balanceSheet,appData:this.valuationData})
+      }
     })
+    console.log(this.transferStepperTwo,"input payload")
   }
   previous(){
     this.previousPage.emit(true)

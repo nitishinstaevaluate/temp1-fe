@@ -1,4 +1,100 @@
-<div class="text-center">
+<!-- valuation results starts -->
+<div class="outer-wrapper">
+    <h4 class="card-header">Valuations Results</h4>
+   <div >
+    <app-valuation-result-table [transferStepperthree]="transferStepperthree"></app-valuation-result-table>
+   </div>
+</div>
+<!-- valuation results ends -->
+
+<!-- modal weightage starts -->
+<div class="outer-wrapper">
+    <h4 class="card-header" >Model Weightage</h4>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 text-left mt-4" style="border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('FCFE')">
+                <p style="font-weight: 500;font-size: 17px;margin-bottom: 0px;">FCFE</p>
+            </div>
+            <div class="col-md-6" style="text-align: right;border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('FCFE')">
+                <div class="row">
+                    <div class="col-md-11">
+                        <mat-slider
+                        class="example-margin mat-accent"
+                        [disabled]="'false'"
+                        [max]="'100'"
+                        [min]="'0'"
+                        [step]="'1'"
+                        [discrete]="'false'"
+                        [showTickMarks]="'false'"
+                        style="width: 50%;">
+                        <input matSliderThumb #fcfeSlider>
+                    </mat-slider>
+                    </div>
+                    <div class="col-md-1" style="margin-top: auto;margin-bottom: auto;">
+                        <span class="fcfe-slider" >{{fcfeSlider.value}}</span>
+                    </div>
+                </div>
+                
+            </div>
+            <hr class="weight-hr">
+    
+            <div class="col-md-6 text-left mt-4" style="border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('FCFF')">
+                <p style="font-weight: 500;font-size: 17px;margin-bottom: 0px;">FCFF</p>
+            </div>
+            <div class="col-md-6" style="text-align: right;border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('FCFF')">
+                <div class="row">
+                    <div class="col-md-11">
+                        <mat-slider
+                            class="example-margin mat-accent"
+                            [disabled]="'false'"
+                            [max]="'100'"
+                            [min]="'0'"
+                            [step]="'1'"
+                            [discrete]="'false'"
+                            [showTickMarks]="'false'"
+                            style="width: 50%;">
+                            <input matSliderThumb #fcffSlider>
+                        </mat-slider>
+                    </div>
+                    <div class="col-md-1" style="margin-top: auto;margin-bottom: auto;">
+                        <span class="fcfe-slider" >{{fcffSlider.value}}</span>
+                    </div>
+                </div>
+            </div>
+            <hr class="weight-hr">
+    
+            <div class="col-md-6 text-left mt-4" style="border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('Relative_Valuation')">
+                <p style="font-weight: 500;font-size: 17px;margin-bottom: 0px;">Relative Valuations</p>
+            </div>
+            <div class="col-md-6" style="text-align: right;border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('Relative_Valuation')">
+                <div class="row">
+                    <div class="col-md-11">
+                        <mat-slider
+                            class="example-margin mat-accent"
+                            [disabled]="'false'"
+                            [max]="'100'"
+                            [min]="'0'"
+                            [step]="'1'"
+                            [discrete]="'false'"
+                            [showTickMarks]="'false'"
+                            style="width: 50%;">
+                            <input matSliderThumb #relativeValSlider>
+                        </mat-slider>
+                    </div>
+                    <div class="col-md-1" style="margin-top: auto;margin-bottom: auto;">
+                        <span class="fcfe-slider" >{{relativeValSlider.value}}</span>
+                    </div>
+                </div>
+                
+
+            </div>
+            <hr class="weight-hr">
+        </div>
+    </div>
+</div>
+<!-- modal weightage ends -->
+
+<div class="text-center" style="padding-bottom: 1%;padding-top: 1%;">
     <button (click)="previous()" mat-raised-button style="box-shadow: 1px 2px 15px #d1d1d1;color:#bb0d0d;font-weight: bold !important;margin-right: 1%;">
         Back
         <mat-icon style="font-weight: bold;color: #d42121;">arrow_left</mat-icon>
