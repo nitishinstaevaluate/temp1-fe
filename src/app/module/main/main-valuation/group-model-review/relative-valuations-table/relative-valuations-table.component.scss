@@ -20,7 +20,7 @@ table {
   tr:nth-child(even) {
     background-color: #f5f5f5;
   }
-  ::ng-deep table .mat-mdc-header-row .mat-mdc-header-cell{
+   table .mat-mdc-header-row .mat-mdc-header-cell{
     background-color: #25fdff !important    ;
   }
   .company-head {
@@ -55,4 +55,20 @@ table {
     background-color: #ebebeb;
     cursor: pointer;
   }
-  
+  .result-table .mat-mdc-header-row .mat-mdc-header-cell{
+    background-color: #d6d6d6 !important;
+    border: 1px solid white;
+  }
+
+  .result-table-head {
+    padding-bottom: 1%;
+    font-size: 15px;
+    font-weight: 500;
+    color: #009688;
+    background-color: #fff;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .result-table-head:hover {
+    cursor: pointer;
+  }

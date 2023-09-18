@@ -1,6 +1,7 @@
 import { Component, ViewChild, OnChanges } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
+import { IS_ARRAY_EMPTY_OR_NULL } from 'src/app/shared/enums/functions';
 
 @Component({
   selector: 'app-main-valuation',
@@ -12,13 +13,13 @@ export class MainValuationComponent{
   headerLabel='Valuation of Company';
   initiateForm:any=true;
   currentStepIndex:any=0;    
-  transferSteppertwo:any;    
+  transferSteppertwo:any;
   transferStepperthree:any;    
   formOneData: any;
-
-  fcfeData:any
-  fcffData:any
-  relativeData:any
+  fcfeData:any;
+  fcffData:any;
+  relativeData:any;
+  formOneAndTwoData:any;
 
   next=0;
   
@@ -41,7 +42,16 @@ export class MainValuationComponent{
 
   onStepChange(event: any,stepper:any) {
     this.currentStepIndex = this.stepper.selectedIndex;
+    if(this.stepper.selectedIndex === 1){
+      this.formOneAndTwoData={
+      ...this.formOneData,
+      ...this.fcffData,
+      ...this.fcfeData,
+      ...this.relativeData
+    }
+    }
     if(event.selectedIndex +1 == 1) return this.headerLabel = 'Valuation of Company';
+    if(event.selectedIndex +1 == 2) return this.headerLabel = 'Model Inputs';
     if(event.selectedIndex +1 == 3) return this.headerLabel = 'Review Form';
     if(event.selectedIndex +1 == 4) return this.headerLabel = 'Evaluate Result';
     return 'Valuation of Company';
@@ -66,7 +76,6 @@ export class MainValuationComponent{
   fcfeDetails(data:any){
     this.fcfeData=data;
     this.nextModelSelection(data.status);
-
   }
 
   fcffDetails(data:any){
@@ -77,7 +86,6 @@ export class MainValuationComponent{
   relativeValDetails(data:any){
     this.relativeData=data;
     this.nextModelSelection(data.status);
-
   }
 
   nextModelSelection(data?:any){
@@ -133,14 +141,5 @@ export class MainValuationComponent{
 
   relativeValDetailsPrev(data:any){
     this.previousModelSelection(data?.status);
-  }
-
-  formOneAndTwoData(){
-    return {
-      ...this.transferSteppertwo,
-      ...this.fcffData,
-      ...this.fcfeData,
-      ...this.relativeData
-    }
   }
 }

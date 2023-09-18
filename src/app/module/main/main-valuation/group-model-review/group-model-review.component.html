@@ -110,9 +110,9 @@
     <!--Modify parameter set in ends  -->
 
     <!-- relative valuations table section starts -->
-    <div class="outer-wrapper">
+    <div class="outer-wrapper" *ngIf="isRelativeValuation('Relative_Valuation')">
         <h4 class="card-header">Relative Valuations</h4>
-       <div *ngIf="transferStepperTwo?.companies || transferStepperTwo?.industries">
+       <div *ngIf="(transferStepperTwo?.companies || transferStepperTwo?.industries) || (transferStepperTwo?.preferenceRatioSelect === '' || !transferStepperTwo?.preferenceRatioSelect)">
         <app-relative-valuations-table [tableData]="tableData"></app-relative-valuations-table>
        </div>
     </div>

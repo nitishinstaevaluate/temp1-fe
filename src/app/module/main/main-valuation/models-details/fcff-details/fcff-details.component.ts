@@ -211,7 +211,15 @@ saveAndNext(): void {
   
   const payload = {...this.fcffForm.value,specficRiskPremium:this.specificRiskPremiumModalForm.value,status:'FCFF'}
 
-
+  if (this.fcffForm.controls['capitalStructureType'].value == 'Industry_based') {
+    let capitalStructure = {
+      capitalStructureType : 'Industry_Based',
+      debtProp : this.debtRatio,
+      equityProp : this.equityProp,
+      totalCapital : this.totalCapital
+    }
+    payload['capitalStructure'] = capitalStructure;
+  }
   // check if expected market return  is empty or not
   if (!this.fcffForm.controls['expMarketReturn'].value) {
     this.dataReferenceService

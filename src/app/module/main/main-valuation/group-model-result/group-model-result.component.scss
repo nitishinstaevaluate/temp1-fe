@@ -1,0 +1,34 @@
+  .card-header{
+    font-weight: 500;
+    color:#656765;
+    font-size: 17px;
+    border-top: 1px solid #e3e3f7;
+    font-size: 17px;
+  }
+
+  .gray-slider-track {
+    background-color: gray; /* Color of the track */
+  }
+  
+  .gray-slider-thumb {
+    background-color: gray; /* Color of the thumb */
+  }
+  ::ng-deep .mat-slider-track-fill, ::ng-deep .mat-slider-thumb {
+    background-color: gray !important;
+  }
+  ::ng-deep .mat-accent mat-slider-visual-thumb .mdc-slider__thumb-knob {
+    border-color: #3e77a1 !important;
+  }
+
+  ::ng-deep .mat-accent .mdc-slider__track .mdc-slider__track--inactive::before{
+    background-color: rgb(96, 210, 210) !important;
+
+  }
+  ::ng-deep .mat-accent .mdc-slider__track .mdc-slider__track--active .mdc-slider__track--active_fill{
+    border-color: #3e77a1 !important;
+  }
+  .fcfe-slider{
+    color: #27a5c9;
+    font-size: 14px;
+    font-weight: 500;
+  }

@@ -171,7 +171,6 @@ getDocList(doc: any) {
 }
 
 onSlideToggleChange(event:any){
-  console.log(event,"event value")
   this.fcfeForm.controls['specificRiskPremium'].setValue(event?.checked);
   if(event?.checked){
     const data={
@@ -228,7 +227,6 @@ saveAndNext(): void {
       );
   }
   
-  
   // submit final payload
   this.fcfeDetails.emit(payload)
 }
@@ -236,8 +234,5 @@ saveAndNext(): void {
 previous(){
   this.fcfeDetailsPrev.emit({status:'FCFE'})
 }
-
-
-
 
 }

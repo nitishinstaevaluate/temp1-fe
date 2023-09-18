@@ -21,12 +21,12 @@ export class GroupModelReviewComponent implements OnChanges {
   taxRateValue:any;
   debtValue:any
   tableData:any
+  valuationData: any;
   constructor(private valuationService:ValuationService){
 
   }
   ngOnChanges(changes: SimpleChanges): void {
     if(this.transferStepperTwo){
-      console.log(this.transferStepperTwo,"data from all 2 stepper")
       this.betaValue=this.transferStepperTwo?.beta ? parseFloat(this.transferStepperTwo?.beta).toFixed(2) : 0;
       this.debtValue=this.transferStepperTwo?.costOfDebt ? parseFloat(this.transferStepperTwo?.costOfDebt).toFixed(2): 0;
       this.taxRateValue= this.transferStepperTwo?.taxRate ? parseFloat(this.transferStepperTwo?.taxRate).toFixed(2) : 0;
@@ -37,11 +37,14 @@ export class GroupModelReviewComponent implements OnChanges {
     }
   }
   saveAndNext(): void {
-    this.groupReviewControls.emit({PL:this.profitLoss,BL:this.balanceSheet})
-    console.log(this.transferStepperTwo,"input payload")
     this.valuationService.submitForm(this.transferStepperTwo).subscribe((response)=>{
       console.log(response,"output payload")
+      if(response?.valuationResult){
+        this.valuationData= response; 
+        this.groupReviewControls.emit({PL:this.profitLoss,BL:this.balanceSheet,appData:this.valuationData})
+      }
     })
+    console.log(this.transferStepperTwo,"input payload")
   }
   previous(){
     this.previousPage.emit(true)
@@ -57,5 +60,9 @@ export class GroupModelReviewComponent implements OnChanges {
       this.isLoadingBalanceSheet=false;
       this.balanceSheet = data.result;
     }
+  }
+
+  isRelativeValuation(value:string){
+    return this.transferStepperTwo?.model.includes(value) ? true :false;
   }
 }

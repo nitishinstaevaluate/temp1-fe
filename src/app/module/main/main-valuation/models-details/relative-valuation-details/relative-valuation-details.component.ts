@@ -35,15 +35,10 @@ export class RelativeValuationDetailsComponent implements OnInit,OnChanges {
   }
   ngOnChanges(){
     this.formOneData;
-    console.log(this.formOneData,"form one data in relative valuation component")
-    // if(this.formOneData?.preferenceCompanies){
-
-    //   this.addInput();
-    // }
   }
 
   isRelativeValuation(value:string){
-    return !!this.formOneData?.model.includes(value);
+    return this.formOneData?.model.includes(value) ? true :false;
   }
   ngOnInit(): void {
     this.loadFormControl();
@@ -83,7 +78,7 @@ export class RelativeValuationDetailsComponent implements OnInit,OnChanges {
     }
     if(this.relativeValuation.controls['preferenceRatioSelect'].value === 'Industry Based'){
       this.relativeValuation.controls['companies'].reset();
-    }
+    }  
     this.relativeValDetails.emit({...this.relativeValuation.value,status:'Relative_Valuation',industries})
   }
 }

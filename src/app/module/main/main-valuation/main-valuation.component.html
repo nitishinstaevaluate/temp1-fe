@@ -13,7 +13,7 @@
               <app-relative-valuation-details (relativeValDetailsPrev)="relativeValDetailsPrev($event)" (relativeValDetails)="relativeValDetails($event)" [hidden]="next !== 3" [formOneData]="formOneData"></app-relative-valuation-details>
             </mat-step>
             <mat-step  [stepControl]="thirdFormGroup" errorMessage="Address is required.">
-              <app-group-model-review *ngIf="formOneData" (groupReviewControls)="groupReviewControls($event)" [currentStepIndex]="stepper.selectedIndex" (previousPage)="previous($event)" [transferStepperTwo]="formOneAndTwoData()"
+              <app-group-model-review (groupReviewControls)="groupReviewControls($event)" [currentStepIndex]="stepper.selectedIndex" (previousPage)="previous($event)" [transferStepperTwo]="formOneAndTwoData"
               ></app-group-model-review>
             </mat-step>
             <mat-step [stepControl]="fourthFormGroup" errorMessage="Address is required.">
