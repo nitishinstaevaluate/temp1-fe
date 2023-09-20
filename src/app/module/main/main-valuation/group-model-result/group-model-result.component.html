@@ -8,7 +8,7 @@
 <!-- valuation results ends -->
 
 <!-- modal weightage starts -->
-<div class="outer-wrapper">
+<div class="outer-wrapper" style="padding-top: 3%;">
     <h4 class="card-header" >Model Weightage</h4>
     <div class="container">
         <div class="row">
@@ -87,6 +87,32 @@
                 </div>
                 
 
+            </div>
+            <hr class="weight-hr">
+
+            <div class="col-md-6 text-left mt-4" style="border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('Excess_Earnings')">
+                <p style="font-weight: 500;font-size: 17px;margin-bottom: 0px;">Excess Earning</p>
+            </div>
+            <div class="col-md-6" style="text-align: right;border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('Excess_Earnings')">
+                <div class="row">
+                    <div class="col-md-11">
+                        <mat-slider
+                        class="example-margin mat-accent"
+                        [disabled]="'false'"
+                        [max]="'100'"
+                        [min]="'0'"
+                        [step]="'1'"
+                        [discrete]="'false'"
+                        [showTickMarks]="'false'"
+                        style="width: 50%;">
+                        <input matSliderThumb #excessEarnSlider>
+                    </mat-slider>
+                    </div>
+                    <div class="col-md-1" style="margin-top: auto;margin-bottom: auto;">
+                        <span class="excessEarn-slider" >{{excessEarnSlider.value}}</span>
+                    </div>
+                </div>
+                
             </div>
             <hr class="weight-hr">
         </div>

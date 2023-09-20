@@ -51,5 +51,26 @@
           </div>
       </div>
     </div>  
+  </mat-tab>
+  <mat-tab label="Excess Earning" *ngIf = "excessEarn">
+    <div>
+      <h5 class="company-head-excEarn">Excess Earning Result</h5>
+      <div class="table-container">
+        <!-- excess earning table starts -->
+      <table>
+        <thead>
+          <tr>
+            <th style="border: 1px solid #d1d1d1;font-size: 15px;text-align: center;" *ngFor="let columnName of columnName">{{ columnName }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of dataSourceExcessEarn">
+            <td style="text-align: center;font-size: 14px;text-transform: capitalize;" [ngClass]="checkVal(cellValue,'fcfe') ? 'make-bold' : 'make-light'" *ngFor="let cellValue of row">{{ formatNumber(cellValue) }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- excess earning table ends -->
+      </div>
+  </div>  
   </mat-tab> 
 </mat-tab-group>

@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import {  MatTableDataSource } from '@angular/material/table';
-import { COMMON_COLUMN, FCFE_COLUMN, FCFF_COLUMN} from 'src/app/shared/enums/constant';
+import { COMMON_COLUMN, EXCESS_EARNING_COLUMN, FCFE_COLUMN, FCFF_COLUMN} from 'src/app/shared/enums/constant';
 
 @Component({
   selector: 'app-valuation-result-table',
@@ -13,11 +13,13 @@ export class ValuationResultTableComponent implements OnInit, OnChanges{
 fcfe=false;
 fcff=false;
 relativeVal = false;
+excessEarn = false;
 tableData:any;
 valuationDataReport:any=[];
 columnName = COMMON_COLUMN;
 dataSourceFcfe:any;
 dataSourceFcff:any;
+dataSourceExcessEarn:any;
 companyData :any;
 formData :any;
 industryData:any = new MatTableDataSource();
@@ -46,10 +48,17 @@ ngOnChanges(): void {
       this.tableData = {company,industry,status:toggleIndustryOrCompany,tableClass:true};
       this.valuationDataReport = response?.valuationData?.valuation;
     }
+    if(response.model === 'Excess_Earnings'){
+      this.dataSourceExcessEarn = (this.transposeData(response.valuationData))?.slice(1);
+      this.dataSourceExcessEarn = this.dataSourceExcessEarn.map((subArray:any, index:any) => {
+        return [EXCESS_EARNING_COLUMN[index], ...subArray.slice(1)];
+      });
+    }
   })
   this.dataSourceFcff && this.transferStepperthree?.formOneAndTwoData?.model.includes('FCFF') ? this.fcff = true : this.fcff = false;
   this.dataSourceFcfe && this.transferStepperthree?.formOneAndTwoData?.model.includes('FCFE') ? this.fcfe = true : this.fcfe = false;
   this.valuationDataReport && this.transferStepperthree?.formOneAndTwoData?.model.includes('Relative_Valuation') ? this.relativeVal = true : this.relativeVal = false;
+  this.dataSourceExcessEarn && this.transferStepperthree?.formOneAndTwoData?.model.includes('Excess_Earnings') ? this.excessEarn = true : this.excessEarn = false;
 }
   
 transposeData(data: any[][]): any[][] {
@@ -71,6 +80,7 @@ formatNumber(value: any): string {
 checkVal(value:string,model:any){
   if(model === 'fcfe') return !!FCFE_COLUMN.includes(value);
   if(model === 'fcff') return !!FCFF_COLUMN.includes(value);
+  if(model === 'Excess_Earnings') return !!EXCESS_EARNING_COLUMN.includes(value);
   return;
 }
 }

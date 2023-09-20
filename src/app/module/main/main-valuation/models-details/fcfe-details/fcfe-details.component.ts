@@ -29,27 +29,11 @@ export class FcfeDetailsComponent implements OnChanges,OnInit{
   discountR: any=[];
   equityM: any=[];
   indianTreasuryY: any=[];
-
-  wacc={
-    result: 13.49,
-    valuationDate : 'valuationDate',
-    message: 'Calculated WACC value',
-    status: true
-  }
-
-  costOfEquity={
-    result: 15.39,
-    valuationDate : 'valuationDate',
-    message: 'Calculated cost Of Equity value',
-    status: true
-  }
-
-  adjustedCostOfEquity={
-    result: 17.39,
-    valuationDate : 'valuationDate',
-    message: 'Calculated Adjusted value',
-    status: true
-  }
+  rPremium:any=[];
+  adjCoe:number=0;
+  coe:number=0;
+  apiCallMade = false;
+  isLoader = false;
 
   @ViewChild('countElement', { static: false }) countElement!: ElementRef;
   @ViewChild(MatStepper, { static: false }) stepper!: MatStepper;
@@ -58,8 +42,7 @@ constructor(private valuationService:ValuationService,
   private dataReferenceService: DataReferencesService,
   private formBuilder:FormBuilder,
   private dialog:MatDialog,
-  private snackBar:MatSnackBar,
-  private builder: AnimationBuilder){}
+  private snackBar:MatSnackBar){}
   
 ngOnChanges(): void {
   this.formOneData;
@@ -79,7 +62,9 @@ loadValues(){
     .subscribe((resp: any) => {
       this.discountR = resp[0][DROPDOWN.DISCOUNT];
       this.equityM = resp[0][DROPDOWN.EQUITY];
-      this.indianTreasuryY = resp[DROPDOWN.INDIANTREASURYYIELDS]
+      this.indianTreasuryY = resp[DROPDOWN.INDIANTREASURYYIELDS],
+      this.rPremium = resp[0][DROPDOWN.PREMIUM];
+
     });
 }
 
@@ -113,12 +98,35 @@ loadOnChangeValue(){
           }
         })
       }
+      else{
+        this.dataReferenceService
+        .getBSE500(
+          val?.years,
+          this.formOneData?.valuationDate
+        )
+        .subscribe(
+          (response) => {
+            if (response.status) {
+              this.fcfeForm.controls['expMarketReturn'].value = response?.result;
+              this.apiCallMade=false;
+            }
+            else{
+            
+            }
+          },
+          (error) => {
+            console.error(error);
+            
+          }
+          );
+      }
     }
   );
 
   this.fcfeForm.controls['betaType'].valueChanges.subscribe((val:any) => {
     if(!val) return;
     const beta = parseFloat(this.formOneData?.betaIndustry?.beta);
+    console.log(beta,"beta valueon change")
     if (val == 'levered'){
       this.fcfeForm.controls['beta'].setValue(
         beta
@@ -137,6 +145,23 @@ loadOnChangeValue(){
     }
     
   });
+
+  this.subscribeToFormChanges();
+  
+}
+subscribeToFormChanges() {
+  const controlsToWatch = [
+    'riskFreeRate',
+    'beta',
+    'riskPremium',
+    'coeMethod',
+  ];
+
+  for (const controlName of controlsToWatch) {
+    this.fcfeForm.get(controlName).valueChanges.subscribe(() => {
+      this.apiCallMade = false;
+    });
+  }
 }
 
 loadFormControl(){
@@ -149,7 +174,8 @@ loadFormControl(){
     expMarketReturnType:['',[Validators.required]],
     expMarketReturn:['',[Validators.required]],
     specificRiskPremium:[false,[Validators.required]],
-    beta:['',[Validators.required]]
+    beta:['',[Validators.required]],
+    riskPremium:['',[Validators.required]],
   })
 
   this.specificRiskPremiumModalForm=this.formBuilder.group({
@@ -203,39 +229,52 @@ onSlideToggleChange(event:any){
 }
 
 saveAndNext(): void {
-  
-  const payload = {...this.fcfeForm.value,alpha:this.specificRiskPremiumModalForm.value,status:'FCFE'}
-
-
-  // check if expected market return  is empty or not
-    this.dataReferenceService
-      .getBSE500(
-        this.fcfeForm.controls['expMarketReturnType'].value.years,
-        this.formOneData?.valuationDate
-      )
-      .subscribe(
-        (response) => {
-          if (response.status) {
-            payload['expMarketReturn'] = response?.result;
-            payload['expMarketReturnType']=this.fcfeForm.controls['expMarketReturnType']?.value?.value;
-            this.fcfeDetails.emit(payload)
-          }
-          else{
-          payload['expMarketReturnType']=this.fcfeForm.controls['expMarketReturnType']?.value?.value;
-          this.fcfeDetails.emit(payload)
-          }
-        },
-        (error) => {
-          console.error(error);
-          
-        }
-        );
+  const payload = {...this.fcfeForm.value,alpha:this.specificRiskPremiumModalForm.value,status:'FCFE'};
+  payload['expMarketReturnType']=this.fcfeForm.controls['expMarketReturnType']?.value?.value;
   
   // submit final payload
+  this.fcfeDetails.emit(payload);
 }
 
 previous(){
   this.fcfeDetailsPrev.emit({status:'FCFE'})
+}
+
+calculateCoeAndAdjustedCoe() {
+  if (this.apiCallMade) {
+    // If the API call has already been made, return true immediately.
+    return true;
+  }
+  if (
+    !this.fcfeForm.controls['riskFreeRate'].value ||
+    !this.fcfeForm.controls['expMarketReturn'].value ||
+    !this.fcfeForm.controls['riskPremium'].value ||
+    !this.fcfeForm.controls['coeMethod'].value
+    ) {
+      return false;
+    }
+    
+  this.isLoader=true
+  const coePayload = {
+    riskFreeRate: this.fcfeForm.controls['riskFreeRate'].value,
+    expMarketReturn: this.fcfeForm.controls['expMarketReturn'].value,
+    beta: this.fcfeForm.controls['beta']?.value ? this.fcfeForm.controls['beta'].value : 0,
+    riskPremium: this.fcfeForm.controls['riskPremium'].value,
+    coeMethod: this.fcfeForm.controls['coeMethod'].value,
+  };
+
+  this.dataReferenceService.getCostOfEquity(coePayload).subscribe((response: any) => {
+    if (response.status) {
+      this.adjCoe = response?.result?.adjCOE;
+      this.coe = response?.result?.coe;
+      // Set the flag to true to indicate that the API call has been made.
+      this.apiCallMade = true;
+      this.isLoader=false;
+    }
+  });
+  this.isLoader=false;
+  // Always return false the first time to prevent the template from displaying prematurely.
+  return false;
 }
 
 }

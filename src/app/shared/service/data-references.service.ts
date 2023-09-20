@@ -61,6 +61,13 @@ export class DataReferencesService {
 //   getCompanies(id:any){
 //     return this.http.get(`${HOST}companies/${id}`);
 //   }
- 
+
+  getCostOfEquity(payload:any){
+    return this.http.get(`${HOST}coe/adjcoe/?riskFreeRate=${payload.riskFreeRate}&expMarketReturn=${payload.expMarketReturn}&beta=${payload.beta}&riskPremium=${payload.riskPremium}&coeMethod=${payload.coeMethod}`)
   }
+
+  getWacc(payload:any){
+    return this.http.get(`${HOST}coe/wacc?adjustedCostOfEquity=${payload.adjCoe}&equityProp=${payload.equityProp}&costOfDebt=${payload.costOfDebt}&taxRate=${payload.taxRate}&debtProp=${payload.debtProp}&copShareCapital=${payload.copShareCapital}&prefProp=${payload.prefProp}&coeMethod=${payload.coeMethod}`)
+  }
+}
 

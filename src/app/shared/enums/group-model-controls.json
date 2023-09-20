@@ -268,8 +268,13 @@
                 "placeholder":"Other Adjustments",
                 "type":"text",
                 "toolTip":"Enter Other Adjustments"
+            },
+            "riskPremium":{
+                "name":"riskPremium",
+                "placeholder":"Company Specific Risk Premium",
+                "type":"dropdown",
+                "toolTip":"Enter Company Specific Risk Premium"
             }
-            
         }
     },
     "fcff":{
@@ -368,6 +373,117 @@
                 "placeholder":"Cost Of Debt",
                 "type":"text",
                 "toolTip":"Please select Cost Of Debt"
+            },
+            "riskPremium":{
+                "name":"riskPremium",
+                "placeholder":"Company Specific Risk Premium",
+                "type":"dropdown",
+                "toolTip":"Enter Company Specific Risk Premium"
+            },
+            "copShareCapital": {
+                "name":"copShareCapital",
+                "placeholder":"Cost Of Preference Share Capital",
+                "type":"text",
+                "toolTip":"Please select Cost Of Preference Share Capital"
+            }
+        }
+    },
+    "excessEarning":{
+        "type":"Excess_Earnings",
+        "header":"Excess Earning Calculations",
+        "options":{
+            "discountRate":{
+                "name":"discountRate",
+                "placeholder":"Discount Rate",
+                "type":"dropdown",
+                "toolTip":"Please select Discount Rate"
+            },
+            "discountPeriod":{
+                "name":"discountPeriod",
+                "placeholder":"Discount Period",
+                "type":"dropdown",
+                "toolTip":"Please select discount period",
+                "options":[
+                    {
+                        "name":"Full Period"
+                    },
+                    {
+                        "name":"Mid Period"
+                    }
+                ]
+            },
+            "betaType":{
+                "name":"betaType",
+                "placeholder":"Beta",
+                "type":"dropdown",
+                "toolTip":"Please select Beta",
+                "options":[
+                    {
+                        "name":"Levered",
+                        "value":"levered"
+                    },
+                    {
+                        "name":"Unlevered",
+                        "value":"unlevered"
+                    }
+                ]
+            },
+            "coeMethod":{
+                "name":"coeMethod",
+                "placeholder":"Cost Of Equity Method",
+                "type":"dropdown",
+                "toolTip":"Please select cost Of Equivalent Method"
+            },
+            "riskFreeRate":{
+                "name":"riskFreeRate",
+                "placeholder":"Risk Free Rate",
+                "type":"dropdown",
+                "toolTip":"Please select Risk Free Rate"
+            },
+            "expMarketReturnType":{
+                "name":"expMarketReturnType",
+                "placeholder":"Expected Market Return",
+                "type":"dropdown",
+                "toolTip":"Please select Expected Market Return",
+                "options":[
+                    {
+                        "name":"Analyst Consensus Estimates",
+                        "value":"Analyst_Consensus_Estimates",
+                        "years":"null"
+                    },
+                    {
+                        "name":"BSE500 Since Inception",
+                        "value":"BSE500_Since_Inception",
+                        "years":"0"
+                    },
+                    {
+                        "name":"BSE500 Since 5 years",
+                        "value":"BSE500_Since_5_years",
+                        "years":"5"
+                    },
+                    {
+                        "name":"BSE500 Since 10 years",
+                        "value":"BSE500_Since_10_years",
+                        "years":"10"
+                    },
+                    {
+                        "name":"BSE500 Since 15 years",
+                        "value":"BSE500_Since_15_years",
+                        "years":"15"
+                    }
+                ]
+            },
+            "otherAdj":{
+                "name":"otherAdj",
+                "placeholder":"Other Adjustments",
+                "type":"text",
+                "toolTip":"Enter Other Adjustments"
+            },
+            "riskPremium":{
+                "name":"riskPremium",
+                "placeholder":"Company Specific Risk Premium",
+                "type":"dropdown",
+                "toolTip":"Enter Company Specific Risk Premium"
             }
         }
     },

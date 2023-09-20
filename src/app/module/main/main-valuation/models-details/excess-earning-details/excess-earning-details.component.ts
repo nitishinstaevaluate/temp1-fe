@@ -1,46 +1,41 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import {  AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Validators,FormBuilder,FormGroup,FormControl } from '@angular/forms';
+import groupModelControl from '../../../../../shared/enums/group-model-controls.json';
+import { ValuationService } from 'src/app/shared/service/valuation.service';
+import { DataReferencesService } from 'src/app/shared/service/data-references.service';
 import { forkJoin } from 'rxjs';
 import { DROPDOWN } from 'src/app/shared/enums/enum';
+import { MatDialog } from '@angular/material/dialog';
 import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal-box/generic-modal-box.component';
-import { DataReferencesService } from 'src/app/shared/service/data-references.service';
-import { ValuationService } from 'src/app/shared/service/valuation.service';
-import groupModelControl from '../../../../../shared/enums/group-model-controls.json';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AnimationBuilder, animate, style } from '@angular/animations';
+import { MatStepper } from '@angular/material/stepper';
 
 @Component({
-  selector: 'app-fcff-details',
-  templateUrl: './fcff-details.component.html',
-  styleUrls: ['./fcff-details.component.scss']
+  selector: 'app-excess-earning-details',
+  templateUrl: './excess-earning-details.component.html',
+  styleUrls: ['./excess-earning-details.component.scss']
 })
-export class FcffDetailsComponent implements OnInit{
+export class ExcessEarningDetailsComponent {
 
   modelControl:any = groupModelControl;
 
+  @Output() excessEarnDetails=new EventEmitter<any>();
+  @Output() excessEarnDetailsPrev=new EventEmitter<any>();
   @Input() formOneData:any;
-  @Output() fcffDetails=new EventEmitter<any>();
-  @Output() fcffDetailsPrev=new EventEmitter<any>();
-  
-
-  fcffForm:any;
+  excessEarningForm:any;
   specificRiskPremiumModalForm:any;
   floatLabelType:any = 'never';
   discountR: any=[];
   equityM: any=[];
   indianTreasuryY: any=[];
-  cStructure:any=[];
   rPremium:any=[];
-  debtRatio: any;
-  totalCapital: any;
-  debtProp: any;
-  prefProp: any;
-  equityProp: any;
   adjCoe:number=0;
   coe:number=0;
-  wacc:number=0;
   apiCallMade = false;
   isLoader = false;
+
+  @ViewChild(MatStepper, { static: false }) stepper!: MatStepper;
   
 constructor(private valuationService:ValuationService,
   private dataReferenceService: DataReferencesService,
@@ -67,13 +62,13 @@ loadValues(){
       this.discountR = resp[0][DROPDOWN.DISCOUNT];
       this.equityM = resp[0][DROPDOWN.EQUITY];
       this.indianTreasuryY = resp[DROPDOWN.INDIANTREASURYYIELDS],
-      this.cStructure = resp[0][DROPDOWN.CAPTIAL_STRUCTURE],
       this.rPremium = resp[0][DROPDOWN.PREMIUM];
+
     });
 }
 
 loadOnChangeValue(){
-  this.fcffForm.controls['expMarketReturnType'].valueChanges.subscribe(
+  this.excessEarningForm.controls['expMarketReturnType'].valueChanges.subscribe(
     (val:any) => {
       if(!val) return;
       if(val.value === "Analyst_Consensus_Estimates"){
@@ -84,7 +79,7 @@ loadOnChangeValue(){
         const dialogRef = this.dialog.open(GenericModalBoxComponent,data);
         dialogRef.afterClosed().subscribe((result)=>{
           if (result) {
-            this.fcffForm.controls['expMarketReturn'].patchValue(result?.analystConsensusEstimates)
+            this.excessEarningForm.controls['expMarketReturn'].patchValue(result?.analystConsensusEstimates)
             this.snackBar.open('Analyst Estimation Added','OK',{
               horizontalPosition: 'center',
               verticalPosition: 'top',
@@ -92,7 +87,7 @@ loadOnChangeValue(){
               panelClass: 'app-notification-success'
             })
           } else {
-            this.fcffForm.controls['expMarketReturnType'].reset();
+            this.excessEarningForm.controls['expMarketReturnType'].reset();
             this.snackBar.open('Expected Market Return Not Saved','OK',{
               horizontalPosition: 'center',
               verticalPosition: 'top',
@@ -111,43 +106,26 @@ loadOnChangeValue(){
         .subscribe(
           (response) => {
             if (response.status) {
-              this.fcffForm.controls['expMarketReturn'].value = response?.result;
-              
+              this.excessEarningForm.controls['expMarketReturn'].value = response?.result;
+              this.apiCallMade=false;
             }
             else{
+            
             }
           },
           (error) => {
             console.error(error);
-            
           }
           );
       }
-      
     }
   );
 
-  this.fcffForm.controls['capitalStructureType'].valueChanges.subscribe(
-    (val:any) => {
-      if(!val) return;
-      if (val == 'Industry_Based') {
-        this.debtRatio = parseFloat(this.formOneData?.betaIndustry?.deRatio)/100;
-        this.totalCapital = 1 + this.debtRatio;
-        this.debtProp = this.debtRatio/this.totalCapital;
-        this.equityProp = 1 - this.debtProp;
-        this.prefProp = 1 - this.debtProp - this.equityProp;
-        // });
-      } else {
-        // this.anaConEst = null;
-      }
-    }
-  );
-
-  this.fcffForm.controls['betaType'].valueChanges.subscribe((val:any) => {
+  this.excessEarningForm.controls['betaType'].valueChanges.subscribe((val:any) => {
     if(!val) return;
     const beta = parseFloat(this.formOneData?.betaIndustry?.beta);
     if (val == 'levered'){
-      this.fcffForm.controls['beta'].setValue(
+      this.excessEarningForm.controls['beta'].setValue(
         beta
         );
       }
@@ -155,7 +133,7 @@ loadOnChangeValue(){
       const deRatio = parseFloat(this.formOneData?.betaIndustry?.deRatio)/100
       const effectiveTaxRate = parseFloat(this.formOneData?.betaIndustry?.effectiveTaxRate)/100;        
       const unleveredBeta = beta / (1 + (1-effectiveTaxRate) * deRatio);
-      this.fcffForm.controls['beta'].setValue(
+      this.excessEarningForm.controls['beta'].setValue(
         unleveredBeta
       );
     }
@@ -164,7 +142,6 @@ loadOnChangeValue(){
     }
     
   });
-
   this.subscribeToFormChanges();
 }
 
@@ -174,19 +151,17 @@ subscribeToFormChanges() {
     'beta',
     'riskPremium',
     'coeMethod',
-    'copShareCapital',
-    'costOfDebt'
   ];
 
   for (const controlName of controlsToWatch) {
-    this.fcffForm.get(controlName).valueChanges.subscribe(() => {
+    this.excessEarningForm.get(controlName).valueChanges.subscribe(() => {
       this.apiCallMade = false;
     });
   }
 }
 
 loadFormControl(){
-    this.fcffForm=this.formBuilder.group({
+    this.excessEarningForm=this.formBuilder.group({
     discountRate:[null,[Validators.required]],
     discountingPeriod:['',[Validators.required]],
     betaType:['',[Validators.required]],
@@ -196,10 +171,7 @@ loadFormControl(){
     expMarketReturn:['',[Validators.required]],
     specificRiskPremium:[false,[Validators.required]],
     beta:['',[Validators.required]],
-    capitalStructureType:['',[Validators.required]],
-    costOfDebt:['',[Validators.required]],
     riskPremium:['',[Validators.required]],
-    copShareCapital:['',[Validators.required]],
   })
 
   this.specificRiskPremiumModalForm=this.formBuilder.group({
@@ -213,15 +185,15 @@ loadFormControl(){
 
 getDocList(doc: any) {
   if (this.formOneData?.model.length>0 && this.formOneData?.model.includes('FCFE')) {
-    this.fcffForm.controls['discountRate'].setValue('Cost_Of_Equity');
+    this.excessEarningForm.controls['discountRate'].setValue('Cost_Of_Equity');
   } else if (this.formOneData?.model.length>0 && this.formOneData?.model.includes('FCFF')) {
-    this.fcffForm.controls['discountRate'].setValue('Cost_Of_Equity'); //temporary set value as cost of equity ,change later
+    this.excessEarningForm.controls['discountRate'].setValue('Cost_Of_Equity'); //temporary set value as cost of equity ,change later
   }
     return doc.type;
 }
 
 onSlideToggleChange(event:any){
-  this.fcffForm.controls['specificRiskPremium'].setValue(event?.checked);
+  this.excessEarningForm.controls['specificRiskPremium'].setValue(event?.checked);
   if(event?.checked){
     const data={
       data: 'specificRiskPremiumForm', //hardcoded for now,store in enum
@@ -239,7 +211,7 @@ onSlideToggleChange(event:any){
         panelClass: 'app-notification-success'
       })
     } else {
-      this.fcffForm.controls['specificRiskPremium'].reset();
+      this.excessEarningForm.controls['specificRiskPremium'].reset();
       this.specificRiskPremiumModalForm.reset();
       this.snackBar.open('Specific Risk Premium not saved','OK',{
         horizontalPosition: 'center',
@@ -254,80 +226,49 @@ onSlideToggleChange(event:any){
 
 saveAndNext(): void {
   
-  const payload = {...this.fcffForm.value,alpha:this.specificRiskPremiumModalForm.value,status:'FCFF'}
+  const payload = {...this.excessEarningForm.value,alpha:this.specificRiskPremiumModalForm.value,status:'Excess_Earnings'}
 
-  if (this.fcffForm.controls['capitalStructureType'].value == 'Industry_based') {
-    let capitalStructure = {
-      capitalStructureType : 'Industry_Based',
-      debtProp : this.debtRatio,
-      equityProp : this.equityProp,
-      totalCapital : this.totalCapital
-    }
-    payload['capitalStructure'] = capitalStructure;
-  }
-  // check if expected market return  is empty or not
- 
-  payload['expMarketReturnType']=this.fcffForm.controls['expMarketReturnType']?.value?.value;
-  this.fcffDetails.emit(payload)
+  payload['expMarketReturnType']=this.excessEarningForm.controls['expMarketReturnType']?.value?.value;
   
   // submit final payload
+  this.excessEarnDetails.emit(payload)
+  
 }
 
 previous(){
-  this.fcffDetailsPrev.emit({status:'FCFE'})
+  this.excessEarnDetailsPrev.emit({status:'Excess_Earnings'})
 }
 
-
 calculateCoeAndAdjustedCoe() {
-  console.log(this.equityProp,"equity prop",
-  this.prefProp,"pref prop",
-  this.debtProp,"debt prop",)
   if (this.apiCallMade) {
     // If the API call has already been made, return true immediately.
     return true;
   }
   if (
-    !this.fcffForm.controls['riskFreeRate'].value ||
-    !this.fcffForm.controls['expMarketReturn'].value ||
-    !this.fcffForm.controls['riskPremium'].value ||
-    !this.fcffForm.controls['coeMethod'].value ||
-    !this.fcffForm.controls['copShareCapital'].value ||
-    !this.fcffForm.controls['costOfDebt'].value
+    !this.excessEarningForm.controls['riskFreeRate'].value ||
+    !this.excessEarningForm.controls['expMarketReturn'].value ||
+    !this.excessEarningForm.controls['riskPremium'].value ||
+    !this.excessEarningForm.controls['coeMethod'].value
     ) {
       return false;
     }
     
   this.isLoader=true
   const coePayload = {
-    riskFreeRate: this.fcffForm.controls['riskFreeRate'].value,
-    expMarketReturn: this.fcffForm.controls['expMarketReturn'].value,
-    beta: this.fcffForm.controls['beta']?.value ? this.fcffForm.controls['beta'].value : 0,
-    riskPremium: this.fcffForm.controls['riskPremium'].value,
-    coeMethod: this.fcffForm.controls['coeMethod'].value,
+    riskFreeRate: this.excessEarningForm.controls['riskFreeRate'].value,
+    expMarketReturn: this.excessEarningForm.controls['expMarketReturn'].value,
+    beta: this.excessEarningForm.controls['beta']?.value ? this.excessEarningForm.controls['beta'].value : 0,
+    riskPremium: this.excessEarningForm.controls['riskPremium'].value,
+    coeMethod: this.excessEarningForm.controls['coeMethod'].value,
   };
 
   this.dataReferenceService.getCostOfEquity(coePayload).subscribe((response: any) => {
     if (response.status) {
-      const waccPayload={
-        adjCoe:response?.result?.adjCOE,
-        equityProp:this.equityProp,
-        costOfDebt:this.fcffForm.controls['costOfDebt'].value,
-        taxRate:this.formOneData?.taxRate,
-        debtProp:this.debtProp,
-        copShareCapital:this.fcffForm.controls['copShareCapital'].value,
-        prefProp:this.prefProp,
-        coeMethod:response?.result?.coe
-      }
-      this.dataReferenceService.getWacc(waccPayload).subscribe((data:any)=>{
-        if(data.status){
-          this.adjCoe = response?.result?.adjCOE;
-          this.coe = response?.result?.coe;
-          this.wacc = data?.result?.wacc;
-          // Set the flag to true to indicate that the API call has been made.
-          this.apiCallMade = true;
-          this.isLoader=false;
-        }
-      })
+      this.adjCoe = response?.result?.adjCOE;
+      this.coe = response?.result?.coe;
+      // Set the flag to true to indicate that the API call has been made.
+      this.apiCallMade = true;
+      this.isLoader=false;
     }
   });
   this.isLoader=false;
@@ -336,3 +277,4 @@ calculateCoeAndAdjustedCoe() {
 }
 
 }
+

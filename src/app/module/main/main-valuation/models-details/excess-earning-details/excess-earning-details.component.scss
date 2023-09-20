@@ -133,74 +133,65 @@ mat-checkbox{
   font-family: fangsong;
 }
 
-.coeval{
-  font-size: 17px;
-  color: #968d8d;
-  padding-left: 2%;
-}
-.coe{
-  font-size: 18px;
-  color: #f17f7f;
-}
-
+// loader
 // loader 
 .loader-container {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgb(156 156 156 / 50%); /* Semi-transparent background */
-  z-index: 9999; /* Ensure it's on top of other elements */
-}
-
-.loader {
-  text-align: center;
-  background-color: #fff; /* Background color for the loader */
-  padding: 20px; /* Add some padding for better visibility */
-  border-radius: 8px; /* Rounded corners for the loader */
-}
-
-.text {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 16px;
-}
-
-.dots-container {
-  display: inline-block;
-}
-
-.dot {
-  width: 20px;
-  height: 20px;
-  background-color: #3498db;
-  border-radius: 50%;
-  display: inline-block;
-  margin: 0 5px;
-  animation: bounce 1s infinite;
-}
-
-.dot1 {
-  animation-delay: 0.2s;
-}
-
-.dot2 {
-  animation-delay: 0.4s;
-}
-
-.dot3 {
-  animation-delay: 0.6s;
-}
-
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(156 156 156 / 50%); /* Semi-transparent background */
+    z-index: 9999; /* Ensure it's on top of other elements */
   }
-  50% {
-    transform: translateY(-10px);
+  
+  .loader {
+    text-align: center;
+    background-color: #fff; /* Background color for the loader */
+    padding: 20px; /* Add some padding for better visibility */
+    border-radius: 8px; /* Rounded corners for the loader */
   }
-}
+  
+  .text {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 16px;
+  }
+  
+  .dots-container {
+    display: inline-block;
+  }
+  
+  .dot {
+    width: 20px;
+    height: 20px;
+    background-color: #3498db;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0 5px;
+    animation: bounce 1s infinite;
+  }
+  
+  .dot1 {
+    animation-delay: 0.2s;
+  }
+  
+  .dot2 {
+    animation-delay: 0.4s;
+  }
+  
+  .dot3 {
+    animation-delay: 0.6s;
+  }
+  
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
