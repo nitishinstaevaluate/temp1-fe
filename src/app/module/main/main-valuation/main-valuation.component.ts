@@ -19,6 +19,7 @@ export class MainValuationComponent{
   fcfeData:any;
   fcffData:any;
   relativeData:any;
+  excessEarnData:any;
   formOneAndTwoData:any;
 
   next=0;
@@ -47,7 +48,8 @@ export class MainValuationComponent{
         ...this.formOneData,
         ...(this.formOneData?.model.includes('FCFF') ? this.fcffData : {}),
         ...(this.formOneData?.model.includes('FCFE') ? this.fcfeData : {}),
-        ...(this.formOneData?.model.includes('Relative_Valuation') ? this.relativeData : {})
+        ...(this.formOneData?.model.includes('Relative_Valuation') ? this.relativeData : {}),
+        ...(this.formOneData?.model.includes('Excess_Earnings') ? this.excessEarnData : {})
       };
       
     }
@@ -88,6 +90,10 @@ export class MainValuationComponent{
     this.relativeData=data;
     this.nextModelSelection(data.status);
   }
+  excessEarnDetails(data:any){
+    this.excessEarnData=data;
+    this.nextModelSelection(data.status);
+  }
 
   nextModelSelection(data?:any){
     const model = this.formOneData.model;
@@ -103,6 +109,9 @@ export class MainValuationComponent{
           break;
         case 'Relative_Valuation':
           this.next = 3;
+          break;
+        case 'Excess_Earnings':
+          this.next = 4;
           break;
         default:
           console.log("went in default");
@@ -127,6 +136,9 @@ export class MainValuationComponent{
        case 'Relative_Valuation':
          this.next = 3;
          break;
+       case 'Excess_Earnings':
+         this.next = 4;
+         break;
        default:
         this.stepper.previous(); 
      }
@@ -141,6 +153,9 @@ export class MainValuationComponent{
   }
 
   relativeValDetailsPrev(data:any){
+    this.previousModelSelection(data?.status);
+  }
+  excessEarnDetailsPrev(data:any){
     this.previousModelSelection(data?.status);
   }
 }

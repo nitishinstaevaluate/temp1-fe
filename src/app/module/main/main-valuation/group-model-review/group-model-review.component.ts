@@ -37,7 +37,7 @@ export class GroupModelReviewComponent implements OnChanges {
     }
   }
   saveAndNext(): void {
-    const keysToRemove = ['status', 'industriesRatio', 'betaIndustry'];
+    const keysToRemove = ['status', 'industriesRatio', 'betaIndustry', 'preferenceCompanies'];
 
     const filteredData = Object.keys(this.transferStepperTwo).reduce((result:any, key) => {
         if (!keysToRemove.includes(key)) {

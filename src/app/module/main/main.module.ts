@@ -18,9 +18,10 @@ import { FcffDetailsComponent } from './main-valuation/models-details/fcff-detai
 import { RelativeValuationDetailsComponent } from './main-valuation/models-details/relative-valuation-details/relative-valuation-details.component';
 import { ValuationResultTableComponent } from './main-valuation/group-model-result/valuation-result-table/valuation-result-table.component';
 import { ModelRelativeValuationResultTableComponent } from './main-valuation/group-model-result/valuation-result-table/model-relative-valuation-result-table/model-relative-valuation-result-table.component';
+import { ExcessEarningDetailsComponent } from './main-valuation/models-details/excess-earning-details/excess-earning-details.component';
 
 @NgModule({
-  declarations: [ValuationComponent, ActivityComponent, MainValuationComponent, GroupModelControlsComponent, GroupModelReviewComponent, GroupModelResultComponent, ProfitLossDataComponent, BalanceSheetDetailsComponent, RelativeValuationsTableComponent,ValuationResultTableComponent, ModelRelativeValuationResultTableComponent,FcfeDetailsComponent,FcffDetailsComponent,RelativeValuationDetailsComponent],
+  declarations: [ValuationComponent, ActivityComponent, MainValuationComponent, GroupModelControlsComponent, GroupModelReviewComponent, GroupModelResultComponent, ProfitLossDataComponent, BalanceSheetDetailsComponent, RelativeValuationsTableComponent,ValuationResultTableComponent, ModelRelativeValuationResultTableComponent,FcfeDetailsComponent,FcffDetailsComponent,RelativeValuationDetailsComponent, ExcessEarningDetailsComponent],
   imports: [CommonModule, MainRoutingModule, NgxDropzoneModule, SharedModule],
 })
 export class MainModule {}

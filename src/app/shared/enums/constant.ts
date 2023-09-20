@@ -47,6 +47,22 @@ export const FCFF_HEADING_OBJ = {
   valuePerShare: 'Value per Share',
 };
 
+export const EXCESS_EARNING_HEADING_OBJ={
+  particulars:'Particulars',
+  netWorth:'Networth',
+  pat:'PAT',
+  expectedProfitCOE:'Expected Profit COE',
+  excessReturn:'Excess Return',
+  discountingPeriod:'Discount Period',
+  discountingFactor:'Discount Factor',
+  presentValueOfExcessReturn:'Present Value Of Excess Return',
+  sumOfCashFlows:'Sum of Cash Flows',
+  bookValue:'Book Value',
+  equityValue:'Equity Value',
+  noOfShares:'No. of Shares',
+  valuePerShare:'Value per Share'
+}
+
 export const PAGINATION_VAL = [10, 20, 50, 100];
 
 export const MODELS = {
@@ -196,6 +212,22 @@ export const FCFF_COLUMN = [
   'Equity Value',
   'No. of Shares',
   'Value per Share'
+]
+
+export const EXCESS_EARNING_COLUMN=[
+'Particulars',
+'Networth',
+'PAT',
+'Expected Profit COE',
+'Excess Return',
+'Discount Period',
+'Discount Factor',
+'Present Value Of Excess Return',
+'Sum of Cash Flows',
+'Book Value',
+'Equity Value',
+'No. of Shares',
+'Value per Share'
 ]
 
 export const COMMON_COLUMN = [
