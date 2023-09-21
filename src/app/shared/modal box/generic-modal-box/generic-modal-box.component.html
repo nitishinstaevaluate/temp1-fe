@@ -20,11 +20,11 @@
     <h1 class="head-modal">{{label}}</h1>
     <div class="container">
       <mat-form-field class="full-width-input" [floatLabel]="floatLabelType" >
-        <input [type]="'text'" #analystConsensuEstimates matInput  [placeholder]="'Enter Rate'">
+        <input [type]="'text'" #analystConsensusEstimates matInput  [placeholder]="'Enter Rate'">
       </mat-form-field>
     </div>
     <div mat-dialog-actions style="float: right;"> 
-      <button mat-raised-button [disabled]="!analystConsensuEstimates.value" [ngClass]="!analystConsensuEstimates.value ? 'modal-button-disable' : 'modal-button-enable'" (click)="modalData({analystConsensuEstimates:analystConsensuEstimates.value},'analystConsensusEstimates')"><mat-icon>keyboard_arrow_right</mat-icon>Save</button>
+      <button mat-raised-button [disabled]="!analystConsensusEstimates.value" [ngClass]="!analystConsensusEstimates.value ? 'modal-button-disable' : 'modal-button-enable'" (click)="modalData({analystConsensusEstimates:analystConsensusEstimates.value},'analystConsensusEstimates')"><mat-icon>keyboard_arrow_right</mat-icon>Save</button>
     </div>
   </div>
 
