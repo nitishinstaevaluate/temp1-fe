@@ -27,16 +27,46 @@
   ::ng-deep .mat-accent .mdc-slider__track .mdc-slider__track--active .mdc-slider__track--active_fill{
     border-color: #3e77a1 !important;
   }
-  // .fcfe-slider{
-  //   color: #27a5c9;
-  //   font-size: 14px;
-  //   font-weight: 500;
-  // }
+  
+  // table css
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-family: Arial, sans-serif;
+    margin-bottom: 20px;
+  }
+  
+  thead {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  thead th {
+    padding: 10px;
+    text-align: left;
+  }
+  
+  tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  tbody tr:hover {
+    background-color: #ddd;
+  }
+  
+  td {
+    padding: 10px;
+    border: 1px solid #ddd;
+  }
 
-  // .excessEarn-slider{
-    
-  //     color: #27a5c9;
-  //     font-size: 14px;
-  //     font-weight: 500;
-    
-  // }
+  
+  .bottom-head{
+    font-weight: 700 !important;
+    font-size: 14px;
+    color: #b95252;
+  }
+  .bottom-val{
+    color: #54545c;
+    font-weight: 600;
+    font-size: 13px;
+  }

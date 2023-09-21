@@ -2,20 +2,39 @@
         <h4 class="card-header">{{modelControl.fcfe.header}}</h4>
         <form [formGroup]="fcfeForm">
             <div class="row" >
+
+                <!-- discount rate -->
+                <div class="col-md-4 field">
+                    <mat-form-field class="full-width-input" [floatLabel]="floatLabelType" >
+                            <mat-select formControlName="discountRate" [placeholder]="modelControl.fcfe.options.discountRate.placeholder">
+                            <mat-option *ngFor="let doc of discountR"  [value]="getDocList(doc)">{{doc.label}}</mat-option>
+                            </mat-select>
+                      </mat-form-field>
+                </div>
+
+                <!-- discount period -->
+                <div class="col-md-4 field">
+                    <mat-form-field class="full-width-input" [floatLabel]="floatLabelType">
+                        <mat-select formControlName="discountingPeriod" [placeholder]="modelControl.fcfe.options.discountPeriod.placeholder">
+                        <mat-option *ngFor="let doc of modelControl.fcfe.options.discountPeriod.options"  [value]="doc.name">{{doc.name}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                </div>
+
+                 <!-- cost of equity -->
+                 <div class="col-md-4 field">
+                    <mat-form-field class="full-width-input" [floatLabel]="floatLabelType" >
+                        <mat-select formControlName="coeMethod" [placeholder]="modelControl.fcfe.options.coeMethod.placeholder">
+                        <mat-option *ngFor="let doc of equityM"  [value]="doc.type">{{doc.label}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                </div>
+
                 <!-- risk free rate -->
                 <div class="col-md-4 field">
                     <mat-form-field class="full-width-input" [floatLabel]="floatLabelType" >
                         <mat-select formControlName="riskFreeRate" [placeholder]="modelControl.fcfe.options.riskFreeRate.placeholder">
                         <mat-option *ngFor="let doc of indianTreasuryY"  [value]="doc.latest">Yield on {{ doc.maturityInYrs }} Years Indian Treasury Bond</mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                </div>
-
-                <!-- risk premium -->
-                <div class="col-md-4 field">
-                    <mat-form-field class="full-width-input" [floatLabel]="floatLabelType" >
-                        <mat-select formControlName="riskPremium" [placeholder]="modelControl.fcfe.options.riskPremium.placeholder">
-                        <mat-option *ngFor="let doc of rPremium"  [value]="doc.riskPremium">{{doc.riskPremium}}</mat-option>
                         </mat-select>
                       </mat-form-field>
                 </div>
@@ -38,29 +57,11 @@
                       </mat-form-field>
                 </div>
 
-                <!-- cost of equity -->
+                <!-- risk premium -->
                 <div class="col-md-4 field">
                     <mat-form-field class="full-width-input" [floatLabel]="floatLabelType" >
-                        <mat-select formControlName="coeMethod" [placeholder]="modelControl.fcfe.options.coeMethod.placeholder">
-                        <mat-option *ngFor="let doc of equityM"  [value]="doc.type">{{doc.label}}</mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                </div>
-
-                <!-- discount rate -->
-                <div class="col-md-4 field">
-                    <mat-form-field class="full-width-input" [floatLabel]="floatLabelType" >
-                            <mat-select formControlName="discountRate" [placeholder]="modelControl.fcfe.options.discountRate.placeholder">
-                            <mat-option *ngFor="let doc of discountR"  [value]="getDocList(doc)">{{doc.label}}</mat-option>
-                            </mat-select>
-                      </mat-form-field>
-                </div>
-
-                <!-- discount period -->
-                <div class="col-md-4 field">
-                    <mat-form-field class="full-width-input" [floatLabel]="floatLabelType">
-                        <mat-select formControlName="discountingPeriod" [placeholder]="modelControl.fcfe.options.discountPeriod.placeholder">
-                        <mat-option *ngFor="let doc of modelControl.fcfe.options.discountPeriod.options"  [value]="doc.name">{{doc.name}}</mat-option>
+                        <mat-select formControlName="riskPremium" [placeholder]="modelControl.fcfe.options.riskPremium.placeholder">
+                        <mat-option *ngFor="let doc of rPremium"  [value]="doc.riskPremium">{{doc.riskPremium}}</mat-option>
                         </mat-select>
                       </mat-form-field>
                 </div>

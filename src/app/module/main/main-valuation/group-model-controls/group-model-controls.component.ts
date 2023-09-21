@@ -112,7 +112,9 @@ export class GroupModelControlsComponent implements OnInit {
       outstandingShares:['',[Validators.required]],
       taxRateType:['',[Validators.required]],
       taxRate:['',[Validators.required]],
-      terminalGrowthRate:['',[Validators.required]]
+      terminalGrowthRate:['',[Validators.required]],
+      discountRateType: ['WACC'],                                  // removed as required field
+      discountRateValue: [20],
     })
     this.modelSpecificCalculation=this.formBuilder.group({
       discountRate:[null,[Validators.required]],

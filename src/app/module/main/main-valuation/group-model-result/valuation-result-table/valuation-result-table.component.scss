@@ -103,9 +103,11 @@
   .make-bold{
     font-weight: 500;
     text-transform: capitalize;
+    border-color:  1px solid #ddd !important;
   }
   .make-light{
     font-weight: 400;
+    border-color: 1px solid #ddd !important;
   }
 
    .my-table .mat-mdc-header-row .mat-mdc-header-cell{
@@ -132,4 +134,9 @@
     border-top: 1px solid rgb(218, 218, 218);
     text-align: center;
     text-transform: uppercase;
+  }
+  
+  td:empty {
+    border: none;
+    background-color: #ffffff;
   }

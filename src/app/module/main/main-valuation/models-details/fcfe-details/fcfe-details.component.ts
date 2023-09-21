@@ -10,6 +10,7 @@ import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AnimationBuilder, animate, style } from '@angular/animations';
 import { MatStepper } from '@angular/material/stepper';
+import { CalculationsService } from 'src/app/shared/service/calculations.service';
 
 @Component({
   selector: 'app-fcfe-details',
@@ -34,6 +35,7 @@ export class FcfeDetailsComponent implements OnChanges,OnInit{
   coe:number=0;
   apiCallMade = false;
   isLoader = false;
+  riskRate:any;
 
   @ViewChild('countElement', { static: false }) countElement!: ElementRef;
   @ViewChild(MatStepper, { static: false }) stepper!: MatStepper;
@@ -42,7 +44,8 @@ constructor(private valuationService:ValuationService,
   private dataReferenceService: DataReferencesService,
   private formBuilder:FormBuilder,
   private dialog:MatDialog,
-  private snackBar:MatSnackBar){}
+  private snackBar:MatSnackBar,
+  private calculationsService:CalculationsService){}
   
 ngOnChanges(): void {
   this.formOneData;
@@ -64,7 +67,6 @@ loadValues(){
       this.equityM = resp[0][DROPDOWN.EQUITY];
       this.indianTreasuryY = resp[DROPDOWN.INDIANTREASURYYIELDS],
       this.rPremium = resp[0][DROPDOWN.PREMIUM];
-
     });
 }
 
@@ -126,7 +128,6 @@ loadOnChangeValue(){
   this.fcfeForm.controls['betaType'].valueChanges.subscribe((val:any) => {
     if(!val) return;
     const beta = parseFloat(this.formOneData?.betaIndustry?.beta);
-    console.log(beta,"beta valueon change")
     if (val == 'levered'){
       this.fcfeForm.controls['beta'].setValue(
         beta
@@ -263,7 +264,7 @@ calculateCoeAndAdjustedCoe() {
     coeMethod: this.fcfeForm.controls['coeMethod'].value,
   };
 
-  this.dataReferenceService.getCostOfEquity(coePayload).subscribe((response: any) => {
+  this.calculationsService.getCostOfEquity(coePayload).subscribe((response: any) => {
     if (response.status) {
       this.adjCoe = response?.result?.adjCOE;
       this.coe = response?.result?.coe;
@@ -276,5 +277,4 @@ calculateCoeAndAdjustedCoe() {
   // Always return false the first time to prevent the template from displaying prematurely.
   return false;
 }
-
 }
