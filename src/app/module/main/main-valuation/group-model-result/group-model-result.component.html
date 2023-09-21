@@ -26,12 +26,13 @@
                         [step]="'1'"
                         [discrete]="'false'"
                         [showTickMarks]="'false'"
-                        style="width: 50%;">
-                        <input matSliderThumb #fcfeSlider>
+                        style="width: 50%;"
+                        (input)="onFcfeSliderChange($event)">
+                        <input matSliderThumb>
                     </mat-slider>
                     </div>
                     <div class="col-md-1" style="margin-top: auto;margin-bottom: auto;">
-                        <span class="fcfe-slider" >{{fcfeSlider.value}}</span>
+                        <span class="fcfe-slider" >{{fcfeSlider}}</span>
                     </div>
                 </div>
                 
@@ -52,12 +53,13 @@
                             [step]="'1'"
                             [discrete]="'false'"
                             [showTickMarks]="'false'"
-                            style="width: 50%;">
-                            <input matSliderThumb #fcffSlider>
+                            style="width: 50%;"
+                            (input)="onFcffSliderChange($event)">
+                            <input matSliderThumb>
                         </mat-slider>
                     </div>
                     <div class="col-md-1" style="margin-top: auto;margin-bottom: auto;">
-                        <span class="fcfe-slider" >{{fcffSlider.value}}</span>
+                        <span class="fcfe-slider" >{{fcffSlider}}</span>
                     </div>
                 </div>
             </div>
@@ -77,12 +79,13 @@
                             [step]="'1'"
                             [discrete]="'false'"
                             [showTickMarks]="'false'"
-                            style="width: 50%;">
-                            <input matSliderThumb #relativeValSlider>
+                            style="width: 50%;"
+                            (input)="onRelativeValSliderChange($event)">
+                            <input matSliderThumb>
                         </mat-slider>
                     </div>
                     <div class="col-md-1" style="margin-top: auto;margin-bottom: auto;">
-                        <span class="fcfe-slider" >{{relativeValSlider.value}}</span>
+                        <span class="fcfe-slider" >{{relativeValSlider}}</span>
                     </div>
                 </div>
                 
@@ -104,12 +107,13 @@
                         [step]="'1'"
                         [discrete]="'false'"
                         [showTickMarks]="'false'"
-                        style="width: 50%;">
-                        <input matSliderThumb #excessEarnSlider>
+                        style="width: 50%;"
+                        (input)="onExcessEarnSliderChange($event)">
+                        <input matSliderThumb>
                     </mat-slider>
                     </div>
                     <div class="col-md-1" style="margin-top: auto;margin-bottom: auto;">
-                        <span class="excessEarn-slider" >{{excessEarnSlider.value}}</span>
+                        <span class="excessEarn-slider" >{{excessEarnSlider}}</span>
                     </div>
                 </div>
                 
@@ -119,6 +123,34 @@
     </div>
 </div>
 <!-- modal weightage ends -->
+
+<!-- Model Weigtage Result starts -->
+<div class="outer-wrapper" style="padding-top: 3%;" *ngIf="data">
+    <h4 class="card-header" >Model Weightage Result</h4>
+    <table>
+        <thead>
+          <tr>
+            <th>Model</th>
+            <th>Indicated Value</th>
+            <th>Weight</th>
+            <th>Weighted Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data">
+            <td>{{ item.model }}</td>
+            <td>{{ item.indicatedValue | currency:'INR':'symbol':'1.0-2' }}</td>
+            <td>{{ item.weight | percent:'1.0-2' }}</td>
+            <td>{{ item.weightedValue | currency:'INR':'symbol':'1.0-2' }}</td>
+          </tr>
+          <tr>
+            <td colspan="3" class="bottom-head">Total Invested Capital (Controlling,Marketable Basis)</td>
+            <td class="bottom-val">{{ finalWeightedValue.toFixed(2) | currency:'INR':'symbol':'1.0-2' }}</td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+<!-- Model Weigtage Result ends -->
 
 <div class="text-center" style="padding-bottom: 1%;padding-top: 1%;">
     <button (click)="previous()" mat-raised-button style="box-shadow: 1px 2px 15px #d1d1d1;color:#bb0d0d;font-weight: bold !important;margin-right: 1%;">

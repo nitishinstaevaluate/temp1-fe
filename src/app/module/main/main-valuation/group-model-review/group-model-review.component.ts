@@ -1,11 +1,16 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
+import groupModelControl from '../../../../shared/enums/group-model-controls.json';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-group-model-review',
   templateUrl: './group-model-review.component.html',
   styleUrls: ['./group-model-review.component.scss']
 })
 export class GroupModelReviewComponent implements OnChanges {
+
+  modelControl=groupModelControl;
+
   @Output() saveAndNextEvent = new EventEmitter<void>();
   @Output() previousPage = new EventEmitter<any>();
   @Output() groupReviewControls = new EventEmitter<any>();
@@ -13,6 +18,9 @@ export class GroupModelReviewComponent implements OnChanges {
   @Input() transferStepperTwo :any;
   @Input() currentStepIndex :any;
 
+  reviewForm:FormGroup;
+
+  floatLabelType:any='never';
   profitLoss:any;
   balanceSheet:any;
   isLoadingBalanceSheet=true;
@@ -22,7 +30,11 @@ export class GroupModelReviewComponent implements OnChanges {
   debtValue:any
   tableData:any
   valuationData: any;
-  constructor(private valuationService:ValuationService){
+  constructor(private valuationService:ValuationService,
+    private formBuilder:FormBuilder){
+    this.reviewForm=this.formBuilder.group({
+      otherAdj:['',[Validators.required]],
+    })
 
   }
   ngOnChanges(changes: SimpleChanges): void {
@@ -36,7 +48,7 @@ export class GroupModelReviewComponent implements OnChanges {
       this.tableData = {company,industry,status:toggleIndustryOrCompany};
     }
   }
-  saveAndNext(): void {
+  saveAndNext() {
     const keysToRemove = ['status', 'industriesRatio', 'betaIndustry', 'preferenceCompanies'];
 
     const filteredData = Object.keys(this.transferStepperTwo).reduce((result:any, key) => {
@@ -45,7 +57,7 @@ export class GroupModelReviewComponent implements OnChanges {
         }
         return result;
     }, {});
-    this.valuationService.submitForm(filteredData).subscribe((response)=>{
+    this.valuationService.submitForm({...filteredData,otherAdj:this.reviewForm.controls['otherAdj'].value && this.isRelativeValuation('FCFE') ? this.reviewForm.controls['otherAdj'].value : null}).subscribe((response)=>{
       console.log(response,"output payload")
       if(response?.valuationResult){
         this.valuationData= response; 

@@ -8,6 +8,7 @@ import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal
 import { DataReferencesService } from 'src/app/shared/service/data-references.service';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
 import groupModelControl from '../../../../../shared/enums/group-model-controls.json';
+import { CalculationsService } from 'src/app/shared/service/calculations.service';
 
 @Component({
   selector: 'app-fcff-details',
@@ -46,7 +47,8 @@ constructor(private valuationService:ValuationService,
   private dataReferenceService: DataReferencesService,
   private formBuilder:FormBuilder,
   private dialog:MatDialog,
-  private snackBar:MatSnackBar){}
+  private snackBar:MatSnackBar,
+  private calculationsService:CalculationsService){}
   
 ngOnChanges(): void {
   this.formOneData;
@@ -279,9 +281,6 @@ previous(){
 
 
 calculateCoeAndAdjustedCoe() {
-  console.log(this.equityProp,"equity prop",
-  this.prefProp,"pref prop",
-  this.debtProp,"debt prop",)
   if (this.apiCallMade) {
     // If the API call has already been made, return true immediately.
     return true;
@@ -306,7 +305,7 @@ calculateCoeAndAdjustedCoe() {
     coeMethod: this.fcffForm.controls['coeMethod'].value,
   };
 
-  this.dataReferenceService.getCostOfEquity(coePayload).subscribe((response: any) => {
+  this.calculationsService.getCostOfEquity(coePayload).subscribe((response: any) => {
     if (response.status) {
       const waccPayload={
         adjCoe:response?.result?.adjCOE,
@@ -318,7 +317,7 @@ calculateCoeAndAdjustedCoe() {
         prefProp:this.prefProp,
         coeMethod:response?.result?.coe
       }
-      this.dataReferenceService.getWacc(waccPayload).subscribe((data:any)=>{
+      this.calculationsService.getWacc(waccPayload).subscribe((data:any)=>{
         if(data.status){
           this.adjCoe = response?.result?.adjCOE;
           this.coe = response?.result?.coe;

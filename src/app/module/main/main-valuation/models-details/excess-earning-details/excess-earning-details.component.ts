@@ -10,6 +10,7 @@ import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AnimationBuilder, animate, style } from '@angular/animations';
 import { MatStepper } from '@angular/material/stepper';
+import { CalculationsService } from 'src/app/shared/service/calculations.service';
 
 @Component({
   selector: 'app-excess-earning-details',
@@ -41,7 +42,8 @@ constructor(private valuationService:ValuationService,
   private dataReferenceService: DataReferencesService,
   private formBuilder:FormBuilder,
   private dialog:MatDialog,
-  private snackBar:MatSnackBar){}
+  private snackBar:MatSnackBar,
+  private calculationsService: CalculationsService){}
   
 ngOnChanges(): void {
   this.formOneData;
@@ -262,7 +264,7 @@ calculateCoeAndAdjustedCoe() {
     coeMethod: this.excessEarningForm.controls['coeMethod'].value,
   };
 
-  this.dataReferenceService.getCostOfEquity(coePayload).subscribe((response: any) => {
+  this.calculationsService.getCostOfEquity(coePayload).subscribe((response: any) => {
     if (response.status) {
       this.adjCoe = response?.result?.adjCOE;
       this.coe = response?.result?.coe;

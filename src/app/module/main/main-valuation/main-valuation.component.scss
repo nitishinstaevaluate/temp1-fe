@@ -281,3 +281,41 @@ input {
   box-shadow: 0 0 0 2px #fff, 0 0 0 3px var(--primary-color);
 }
 // trial bootstrap stepper ends
+
+// bread crumbs
+.breadcrumb-container {
+  background: linear-gradient(135deg, #59b7a7, #9ff2f9); /* Classy gradient background */
+  padding: 10px 20px;
+  color: #fff;
+  border-radius: 5px;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.breadcrumb {
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+}
+
+a {
+  text-decoration: none;
+  color: #fff;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #e74c3c;
+}
+
+.separator {
+  margin: 0 5px;
+  color: #fff; /* Separator color matches text color */
+  font-weight: bold;
+}
+
+.current-page {
+  font-weight: bold;
+  font-size: 18px;
+  color: #1c6a41;
+}
+

@@ -2,20 +2,39 @@
     <h4 class="card-header">{{modelControl.excessEarning.header}}</h4>
     <form [formGroup]="excessEarningForm">
         <div class="row" >
+
+            <!-- discount rate -->
+            <div class="col-md-4 field">
+                <mat-form-field class="full-width-input" [floatLabel]="floatLabelType" >
+                        <mat-select formControlName="discountRate" [placeholder]="modelControl.excessEarning.options.discountRate.placeholder">
+                        <mat-option *ngFor="let doc of discountR"  [value]="getDocList(doc)">{{doc.label}}</mat-option>
+                        </mat-select>
+                  </mat-form-field>
+            </div>
+
+            <!-- discount period -->
+            <div class="col-md-4 field">
+                <mat-form-field class="full-width-input" [floatLabel]="floatLabelType">
+                    <mat-select formControlName="discountingPeriod" [placeholder]="modelControl.excessEarning.options.discountPeriod.placeholder">
+                    <mat-option *ngFor="let doc of modelControl.excessEarning.options.discountPeriod.options"  [value]="doc.name">{{doc.name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+            </div>
+
+            <!-- cost of equity -->
+            <div class="col-md-4 field">
+                <mat-form-field class="full-width-input" [floatLabel]="floatLabelType" >
+                    <mat-select formControlName="coeMethod" [placeholder]="modelControl.excessEarning.options.coeMethod.placeholder">
+                    <mat-option *ngFor="let doc of equityM"  [value]="doc.type">{{doc.label}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+            </div>
+
             <!-- risk free rate -->
             <div class="col-md-4 field">
                 <mat-form-field class="full-width-input" [floatLabel]="floatLabelType" >
                     <mat-select formControlName="riskFreeRate" [placeholder]="modelControl.excessEarning.options.riskFreeRate.placeholder">
                     <mat-option *ngFor="let doc of indianTreasuryY"  [value]="doc.latest">Yield on {{ doc.maturityInYrs }} Years Indian Treasury Bond</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-            </div>
-
-            <!-- risk premium -->
-            <div class="col-md-4 field">
-                <mat-form-field class="full-width-input" [floatLabel]="floatLabelType" >
-                    <mat-select formControlName="riskPremium" [placeholder]="modelControl.excessEarning.options.riskPremium.placeholder">
-                    <mat-option *ngFor="let doc of rPremium"  [value]="doc.riskPremium">{{doc.riskPremium}}</mat-option>
                     </mat-select>
                   </mat-form-field>
             </div>
@@ -38,33 +57,15 @@
                   </mat-form-field>
             </div>
 
-            <!-- cost of equity -->
+            <!-- risk premium -->
             <div class="col-md-4 field">
                 <mat-form-field class="full-width-input" [floatLabel]="floatLabelType" >
-                    <mat-select formControlName="coeMethod" [placeholder]="modelControl.excessEarning.options.coeMethod.placeholder">
-                    <mat-option *ngFor="let doc of equityM"  [value]="doc.type">{{doc.label}}</mat-option>
+                    <mat-select formControlName="riskPremium" [placeholder]="modelControl.excessEarning.options.riskPremium.placeholder">
+                    <mat-option *ngFor="let doc of rPremium"  [value]="doc.riskPremium">{{doc.riskPremium}}</mat-option>
                     </mat-select>
                   </mat-form-field>
             </div>
-
-            <!-- discount rate -->
-            <div class="col-md-4 field">
-                <mat-form-field class="full-width-input" [floatLabel]="floatLabelType" >
-                        <mat-select formControlName="discountRate" [placeholder]="modelControl.excessEarning.options.discountRate.placeholder">
-                        <mat-option *ngFor="let doc of discountR"  [value]="getDocList(doc)">{{doc.label}}</mat-option>
-                        </mat-select>
-                  </mat-form-field>
-            </div>
-
-            <!-- discount period -->
-            <div class="col-md-4 field">
-                <mat-form-field class="full-width-input" [floatLabel]="floatLabelType">
-                    <mat-select formControlName="discountingPeriod" [placeholder]="modelControl.excessEarning.options.discountPeriod.placeholder">
-                    <mat-option *ngFor="let doc of modelControl.excessEarning.options.discountPeriod.options"  [value]="doc.name">{{doc.name}}</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-            </div>
-
+            
             <!-- Specific Risk Premium -->
             <div class="col-md-12" style="padding-left: 3%;padding-top: 1%;padding-bottom: 1%;">
                 <span class="alpha">Add Company Specific Risk Premium/Alpha</span>
