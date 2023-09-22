@@ -35,6 +35,7 @@ export class ExcessEarningDetailsComponent {
   coe:number=0;
   apiCallMade = false;
   isLoader = false;
+  isDialogOpen = false;
 
   @ViewChild(MatStepper, { static: false }) stepper!: MatStepper;
   
@@ -45,8 +46,20 @@ constructor(private valuationService:ValuationService,
   private snackBar:MatSnackBar,
   private calculationsService: CalculationsService){}
   
-ngOnChanges(): void {
+ngOnChanges(changes:SimpleChanges): void {
   this.formOneData;
+  if (changes['formOneData']) {
+    const current = changes['formOneData'].currentValue;
+    const previous = changes['formOneData'].previousValue;
+    if((current && previous) && current.industry !== previous.industry){
+      this.excessEarningForm.controls['betaType'].reset();
+      this.excessEarningForm.controls['beta'].reset();
+    }
+    if((current && previous) && current.valuationDate !== previous.valuationDate){
+      this.excessEarningForm.controls['expMarketReturnType'].reset();
+      this.excessEarningForm.controls['expMarketReturn'].reset();
+    }
+  }
 }
 
 ngOnInit(): void {
@@ -81,7 +94,7 @@ loadOnChangeValue(){
         const dialogRef = this.dialog.open(GenericModalBoxComponent,data);
         dialogRef.afterClosed().subscribe((result)=>{
           if (result) {
-            this.excessEarningForm.controls['expMarketReturn'].patchValue(result?.analystConsensusEstimates)
+            this.excessEarningForm.controls['expMarketReturn'].patchValue(parseInt(result?.analystConsensusEstimates))
             this.snackBar.open('Analyst Estimation Added','OK',{
               horizontalPosition: 'center',
               verticalPosition: 'top',
@@ -195,8 +208,9 @@ getDocList(doc: any) {
 }
 
 onSlideToggleChange(event:any){
-  this.excessEarningForm.controls['specificRiskPremium'].setValue(event?.checked);
-  if(event?.checked){
+  if(event  && !this.isDialogOpen){
+    this.isDialogOpen = true;
+
     const data={
       data: 'specificRiskPremiumForm', //hardcoded for now,store in enum
       width:'50%',
@@ -204,8 +218,20 @@ onSlideToggleChange(event:any){
    const dialogRef = this.dialog.open(GenericModalBoxComponent,data);
 
    dialogRef.afterClosed().subscribe((result) => {
+    this.isDialogOpen = false; // Reset the flag
+
     if (result) {
       this.specificRiskPremiumModalForm.patchValue(result);
+
+      const controlNames = ['companySize', 'marketPosition', 'liquidityFactor', 'competition'];
+
+        const summationQualitativeAnalysis = controlNames.reduce((sum, controlName) => {
+          const controlValue = parseInt(this.specificRiskPremiumModalForm.controls[controlName].value) || 0;
+          return sum + controlValue;
+        }, 0);
+
+        this.excessEarningForm.controls['riskPremium'].setValue(summationQualitativeAnalysis);
+        this.excessEarningForm.controls['riskPremium'].markAsUntouched();
       this.snackBar.open('Specific Risk Premium is added','OK',{
         horizontalPosition: 'center',
         verticalPosition: 'top',
@@ -213,7 +239,6 @@ onSlideToggleChange(event:any){
         panelClass: 'app-notification-success'
       })
     } else {
-      this.excessEarningForm.controls['specificRiskPremium'].reset();
       this.specificRiskPremiumModalForm.reset();
       this.snackBar.open('Specific Risk Premium not saved','OK',{
         horizontalPosition: 'center',

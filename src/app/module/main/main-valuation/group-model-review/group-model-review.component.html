@@ -18,19 +18,19 @@
         </div>
     </div>  
 
-    <!-- relative valuations table section starts -->
-    <div class="outer-wrapper" *ngIf="isRelativeValuation('Relative_Valuation')" style="padding-top: 2%;">
+    <!-- relative valuations table section starts,whenever want to use just uncomment this-->
+    <!-- <div class="outer-wrapper" *ngIf="isRelativeValuation('Relative_Valuation')" style="padding-top: 2%;">
         <h4 class="card-header">Relative Valuations</h4>
        <div *ngIf="(transferStepperTwo?.companies || transferStepperTwo?.industries) || (transferStepperTwo?.preferenceRatioSelect === '' || !transferStepperTwo?.preferenceRatioSelect)">
         <app-relative-valuations-table [tableData]="tableData"></app-relative-valuations-table>
        </div>
-    </div>
+    </div> -->
     <!-- relative valuations table section ends -->
 
      <!-- Modify paramter set in starts -->
-     <div class="outer-wrapper" style="padding-top: 2%;">
-        <h4 class="card-header">Model Parameter Set In</h4>
-       <div class="container-fluid" *ngIf="transferStepperTwo">
+     <div class="outer-wrapper" style="padding-top: 2%;" *ngIf="isRelativeValuation('FCFE')">
+        <h4 class="card-header">Other adjustments</h4>
+       <!-- <div class="container-fluid" *ngIf="transferStepperTwo">
         <div class="row">
             <div class="col-md-4 outer-main-div" *ngIf="transferStepperTwo?.beta">
                 <mat-card class="main-block" >
@@ -42,30 +42,10 @@
                             <mat-card-subtitle>
                             <mat-icon class="mat-check-circle">check_circle</mat-icon>
                             <span>Industrial Beta</span></mat-card-subtitle>
-                           <p class="betaType"><span style="color: gray;font-size: 25px;">--</span> Levered  <span style="color:#00caff;">{{betaValue}}%</span></p>
-                            <!-- <div class="row mat-head">
-                                
-                                <div class="col-md-2 inner-div-mat-spinner">
-                                    <mat-progress-spinner
-                                        class="example-margin"
-                                        [color]="'accent'"
-                                        [mode]="'determinate'"
-                                        [ngClass]="betaValue <= 40 ? 'percen-warn' : (betaValue > 40 && betaValue <= 70) ? 'percen-ok' : 'percen-pass'"
-                                        [value]="betaValue">
-                                    </mat-progress-spinner>
-                                    <div 
-                                    [ngClass]="betaValue <= 40 ? 'percen-warn percentage-class' : (betaValue > 40 && betaValue <= 70) ? 'percen-ok percentage-class' : 'percen-pass percentage-class'">
-                                        {{ betaValue }}%
-                                    </div>
-                                </div>
-                            </div> -->
-                            
+                           <p class="betaType"><span style="color: gray;font-size: 25px;">--</span> Levered  <span style="color:#00caff;">{{betaValue}}%</span></p>                
                             <mat-card-actions>
                             <button mat-button> <mat-icon>first_page</mat-icon>Edit</button>
                             </mat-card-actions>
-                            <!-- <mat-card-footer>
-                            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-                            </mat-card-footer> -->
                         </div>
                     </div>
                   </mat-card>
@@ -85,9 +65,6 @@
                             <mat-card-actions>
                             <button mat-button> <mat-icon>first_page</mat-icon>Edit</button>
                             </mat-card-actions>
-                            <!-- <mat-card-footer>
-                            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-                            </mat-card-footer> -->
                         </div>
                     </div>
                   </mat-card>
@@ -106,17 +83,14 @@
                             <mat-card-actions>
                                 <button mat-button> <mat-icon>first_page</mat-icon>Edit</button>
                             </mat-card-actions>
-                            <!-- <mat-card-footer>
-                            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-                            </mat-card-footer> -->
                         </div>
                     </div>
                   </mat-card>
             </div>
         </div>
-       </div>
+       </div> -->
        <!-- other adjustments -->
-       <div class="container-fluid" *ngIf="isRelativeValuation('FCFE')" style="padding-top: 2%;">
+       <div class="container-fluid" style="padding-top: 2%;">
         <div class="row">
             <div class="col-md-6 field">
                 <mat-form-field class="full-width-input" [floatLabel]="floatLabelType">

@@ -44,6 +44,20 @@
     background-color: #1a0ef1  !important;
   }
 
+  .bg-info{
+    background: linear-gradient(to bottom, #ffffff, #d0fffb) !important;
+    padding: 20px;
+    /* text-align: center; */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .taxrate-hint{
+    padding: 0px;
+      color: #12a912;
+      font-weight: 500;
+      font-family: math;
+  }
+  
   ::ng-deep .mat-form-field-appearance-fill .mdc-text-field--filled:not(.mdc-text-field--disabled){
     background-color: white !important;
   }

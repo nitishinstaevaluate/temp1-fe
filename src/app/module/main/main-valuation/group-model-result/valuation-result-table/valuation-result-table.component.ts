@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import {  MatTableDataSource } from '@angular/material/table';
 import { COMMON_COLUMN, EXCESS_EARNING_COLUMN, FCFE_COLUMN, FCFF_COLUMN} from 'src/app/shared/enums/constant';
 
@@ -23,10 +23,11 @@ dataSourceExcessEarn:any;
 companyData :any;
 formData :any;
 industryData:any = new MatTableDataSource();
+selectedTabIndex:any;
 
 ngOnInit(): void {}
 
-ngOnChanges(): void {
+ngOnChanges(changes:SimpleChanges): void {
   this.formData = this.transferStepperthree;
   this.transferStepperthree?.formThreeData?.appData?.valuationResult.map((response:any)=>{
     if(response.model === 'FCFE'){
@@ -59,6 +60,7 @@ ngOnChanges(): void {
   this.dataSourceFcfe && this.transferStepperthree?.formOneAndTwoData?.model.includes('FCFE') ? this.fcfe = true : this.fcfe = false;
   this.valuationDataReport && this.transferStepperthree?.formOneAndTwoData?.model.includes('Relative_Valuation') ? this.relativeVal = true : this.relativeVal = false;
   this.dataSourceExcessEarn && this.transferStepperthree?.formOneAndTwoData?.model.includes('Excess_Earnings') ? this.excessEarn = true : this.excessEarn = false;
+  this.onTabSelectionChange();
 }
   
 transposeData(data: any[][]): any[][] {
@@ -82,6 +84,32 @@ checkVal(value:string,model:any){
   if(model === 'fcff') return !!FCFF_COLUMN.includes(value);
   if(model === 'Excess_Earnings') return !!EXCESS_EARNING_COLUMN.includes(value);
   return;
+}
+
+onTabSelectionChange() {
+  // Update the selectedTabIndex when the user selects a tab
+  const findFirstEle = this.transferStepperthree?.formOneAndTwoData?.model.sort();
+  // console.log(findFirstEle,"first element")
+  if(findFirstEle){
+    switch (findFirstEle[0]) {
+      case 'FCFE':
+        this.selectedTabIndex = 0;
+        break;
+      case 'FCFF':
+        this.selectedTabIndex = 1;
+        break;
+      case 'Relative_Valuation':
+        this.selectedTabIndex = 2;
+        break;
+      case 'Excess_Earnings':
+        this.selectedTabIndex = 3;
+        break;
+      default:
+        console.log("went in default");
+    
+  }
+  }
+// console.log(this.selectedTabIndex,"index selected")
 }
 }
 

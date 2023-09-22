@@ -79,7 +79,14 @@
     color:#656765;
     font-size: 17px;
     border-top: 1px solid #e3e3f7;
-    font-size: 17px;
+    // font-size: 17px;
+   
+  }
+  .bg-info{
+    background: linear-gradient(to bottom, #ffffff, #d0fffb) !important;
+    padding: 20px;
+    /* text-align: center; */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   ::ng-deep mat-checkbox .mdc-form-field>label{
     font-size: 14px;

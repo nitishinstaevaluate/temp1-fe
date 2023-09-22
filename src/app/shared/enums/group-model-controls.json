@@ -272,7 +272,7 @@
             "riskPremium":{
                 "name":"riskPremium",
                 "placeholder":"Company Specific Risk Premium",
-                "type":"dropdown",
+                "type":"text",
                 "toolTip":"Enter Company Specific Risk Premium"
             }
         }
@@ -377,7 +377,7 @@
             "riskPremium":{
                 "name":"riskPremium",
                 "placeholder":"Company Specific Risk Premium",
-                "type":"dropdown",
+                "type":"text",
                 "toolTip":"Enter Company Specific Risk Premium"
             },
             "copShareCapital": {
@@ -482,7 +482,7 @@
             "riskPremium":{
                 "name":"riskPremium",
                 "placeholder":"Company Specific Risk Premium",
-                "type":"dropdown",
+                "type":"text",
                 "toolTip":"Enter Company Specific Risk Premium"
             }
         }
