@@ -4,10 +4,10 @@
               <thead>
                 <tr>
                   <th  colspan="2" style="border-right: none;text-align: center;">
-                    Valuation of <span style="font-size: 13xpx;font-weight: 600;text-transform: uppercase;">{{formData?.formOneData?.company}}</span> 
+                    Valuation of <span style="font-size: 13xpx;font-weight: 600;text-transform: uppercase;">{{formData?.formOneAndTwoData?.company}}</span> 
                   </th>
                   <th colspan="2" style="border-left: none;text-align: right !important;">
-                    Amount in INR (1,00,000)
+                    Amount in INR (Lakh)
                   </th>
                 </tr>
                 <tr >
@@ -15,8 +15,8 @@
                   <th >Particulars</th>
                   <!-- <th>As on {{returnDate(firstFormGroup.value?.valuationDate) | date}}</th>
                   <th>As on {{returnDate(firstFormGroup.value?.valuationDate) | date}}</th> -->
-                  <th>As on {{formData?.formOneData?.valuationDate | date:'MMM d, yyyy'}} </th>
-                  <th>As on {{formData?.formOneData?.valuationDate | date:'MMM d, yyyy'}} </th>
+                  <th>As on {{formData?.formOneAndTwoData?.valuationDate | date:'MMM d, yyyy'}} </th>
+                  <th>As on {{formData?.formOneAndTwoData?.valuationDate | date:'MMM d, yyyy'}} </th>
                 </tr>
                 <tr>
                   <th></th>

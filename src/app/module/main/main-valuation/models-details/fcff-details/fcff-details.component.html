@@ -36,6 +36,7 @@
                     <mat-select formControlName="riskFreeRate" [placeholder]="modelControl.fcff.options.riskFreeRate.placeholder">
                     <mat-option *ngFor="let doc of indianTreasuryY"  [value]="doc.latest">Yield on {{ doc.maturityInYrs }} Years Indian Treasury Bond</mat-option>
                     </mat-select>
+                    <mat-hint *ngIf="fcffForm.controls['riskFreeRate'].value" class="taxrate-hint">Risk-Free rate is {{fcffForm.controls['riskFreeRate'].value}}</mat-hint>
                   </mat-form-field>
             </div>
 
@@ -45,6 +46,7 @@
                     <mat-select formControlName="expMarketReturnType" [placeholder]="modelControl.fcff.options.expMarketReturnType.placeholder">
                     <mat-option *ngFor="let doc of modelControl.fcff.options.expMarketReturnType.options"  [value]="doc">{{doc.name}}</mat-option>
                     </mat-select>
+                    <mat-hint *ngIf="fcffForm.controls['expMarketReturn'].value" class="taxrate-hint">Expected Market Return is {{fcffForm.controls['expMarketReturn'].value.toFixed(2)}}</mat-hint>
                   </mat-form-field>
             </div>
 
@@ -53,18 +55,25 @@
                 <mat-form-field class="full-width-input" [floatLabel]="floatLabelType" >
                     <mat-select formControlName="betaType" [placeholder]="modelControl.fcff.options.betaType.placeholder">
                     <mat-option [disabled]="!formOneData?.industry" *ngFor="let doc of modelControl.fcff.options.betaType.options"  [value]="doc.value" >{{doc.name}}</mat-option>
-                    </mat-select>
+                </mat-select>
+                <mat-hint *ngIf="fcffForm.controls['beta'].value" class="taxrate-hint">Beta is {{fcffForm.controls['beta'].value.toFixed(2)}}</mat-hint>
                   </mat-form-field>
             </div>
 
-            <!-- risk premium -->
-            <div class="col-md-4 field">
+            <!-- <div class="col-md-4 field">
                 <mat-form-field class="full-width-input" [floatLabel]="floatLabelType" >
                     <mat-select formControlName="riskPremium" [placeholder]="modelControl.fcfe.options.riskPremium.placeholder">
-                    <mat-option *ngFor="let doc of rPremium"  [value]="doc.riskPremium">{{doc.riskPremium}}</mat-option>
+                        <mat-option *ngFor="let doc of rPremium"  [value]="doc.riskPremium">{{doc.riskPremium}}</mat-option>
                     </mat-select>
-                  </mat-form-field>
-            </div>
+                </mat-form-field>
+            </div> -->
+            
+            <!-- risk premium -->
+            <div class="col-md-4 field">
+                <mat-form-field class="full-width-input" [floatLabel]="floatLabelType">
+                    <input (mousedown)="onSlideToggleChange($event)" formControlName="riskPremium" [type]="modelControl.fcff.options.riskPremium.type" matInput  [placeholder]="modelControl.fcfe.options.riskPremium.placeholder">
+                </mat-form-field>
+                </div>
 
             <!--cost of debt  -->
             <div class="col-md-4 field">
@@ -87,35 +96,15 @@
                 <mat-form-field class="full-width-input" [floatLabel]="floatLabelType">
                     <input formControlName="copShareCapital" [type]="modelControl.fcff.options.copShareCapital.type" matInput  [placeholder]="modelControl.fcff.options.copShareCapital.placeholder">
                 </mat-form-field>
-                </div>
-
-             <!-- Specific Risk Premium -->
-             <div class="col-md-12" style="padding-left: 3%;padding-top: 1%;padding-bottom: 1%;">
-                <span class="alpha">Add Company Specific Risk Premium/Alpha</span>
-                <mat-slide-toggle
-                    class="example-margin"
-                    [color]="'primary'"
-                    (change)="onSlideToggleChange($event)"
-                    formControlName="specificRiskPremium"
-                    style="transform: scale(0.9);">
-                </mat-slide-toggle>
             </div>
             
             <div class="col-md-12 text-center" style="padding: 2%; padding-top: 3%;" *ngIf="calculateCoeAndAdjustedCoe()">
                 <div class="card shadow">
                     <div class="card-header bg-info text-white"> <!-- Change background color to 'bg-info' -->
-                        <h4 class="card-title">FCFF Workings</h4>
+                        <h4 class="card-title">Estimated WACC Calculation</h4>
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6 mb-4">
-                                <div class="card border-0">
-                                    <div class="card-body">
-                                        <h5 class="card-title" style="font-size: 1.25rem;">Adjusted Cost Of Equity</h5> <!-- Increase font size -->
-                                        <p class="card-text" style="font-size: 1.1rem;">{{adjCoe.toFixed(2)}}%</p> <!-- Increase font size -->
-                                    </div>
-                                </div>
-                            </div>
                             <div class="col-md-6 mb-4">
                                 <div class="card border-0">
                                     <div class="card-body">
@@ -124,6 +113,16 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="col-md-6 mb-4">
+                                <div class="card border-0">
+                                    <div class="card-body">
+                                        <h5 class="card-title" style="font-size: 1.25rem;">Adjusted Cost Of Equity</h5> <!-- Increase font size -->
+                                        <p class="card-text" style="font-size: 1.1rem;">{{adjCoe.toFixed(2)}}%</p> <!-- Increase font size -->
+                                    </div>
+                                </div>
+                            </div>
+                            
                             <div class="col-md-6 mb-4" *ngIf="wacc !== null">
                                 <div class="card border-0">
                                     <div class="card-body">

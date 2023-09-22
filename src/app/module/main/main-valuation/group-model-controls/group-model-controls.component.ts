@@ -249,6 +249,14 @@ export class GroupModelControlsComponent implements OnInit {
       }
       
     });
+    this.modelValuation.controls['model'].valueChanges.subscribe((val) => {
+      if(!val) return;
+      if (val == 'Relative_Valuation'){
+        this.modelValuation.controls['projectionYearSelect'].reset();
+        this.modelValuation.controls['terminalGrowthRate'].reset();
+        this.modelValuation.controls['projectionYears'].reset();
+      }
+    });
     
     // this.modelSpecificCalculation.controls['expMarketReturnType'].valueChanges.subscribe(
     //   (val) => {

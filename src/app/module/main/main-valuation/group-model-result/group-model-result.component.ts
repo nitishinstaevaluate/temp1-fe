@@ -65,6 +65,31 @@ export class GroupModelResultComponent implements OnChanges {
       }
     );
 
+    if(changes['transferStepperthree'].currentValue && changes['transferStepperthree'].previousValue ){
+        const currentModel:any=[];
+        const previousModel:any=[];
+        this.data=null;
+        // console.log(changes['transferStepperthree']?.currentValue?.formThreeData?.appData,"current final")
+        // console.log(changes['transferStepperthree']?.previousValue?.formThreeData?.appData,"previous final")
+        changes['transferStepperthree']?.currentValue?.formThreeData?.appData?.valuationResult.map((val:any)=>{
+          currentModel.push(val.model); 
+        })
+        changes['transferStepperthree']?.previousValue?.formThreeData?.appData?.valuationResult.map((val:any)=>{
+          previousModel.push(val.model);
+        })
+        // console.log(currentModel,"current array",previousModel,"previous array")
+        const elementsNotInArray = previousModel.filter((item:any) => !currentModel.includes(item));
+        if(elementsNotInArray){
+          for (let ele of elementsNotInArray){
+            // console.log(ele,"for loop ele along with the payload:", this.calculateModelWeigtagePayload.results)
+            const findIndex=this.calculateModelWeigtagePayload.results.findIndex((res:any)=>res.model === ele);
+            // console.log(findIndex,"index to remove")
+            // console.log(this.calculateModelWeigtagePayload.results,"before payload")
+            this.calculateModelWeigtagePayload.results.splice(findIndex,1);
+            // console.log(this.calculateModelWeigtagePayload.results,"after payload");
+          }
+        }
+    }
   
   }
   

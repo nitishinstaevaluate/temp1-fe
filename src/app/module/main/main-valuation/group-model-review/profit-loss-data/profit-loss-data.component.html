@@ -1,9 +1,22 @@
-<mat-table [dataSource]="data" *ngIf="transferStepperTwo?.excelSheetId">
-  <ng-container matColumnDef="{{ column }}" *ngFor="let column of displayedColumns">
-    <mat-header-cell *matHeaderCellDef>{{ column }}</mat-header-cell>
-    <mat-cell  *matCellDef="let element">{{ element[column] }}</mat-cell>
+<mat-table [dataSource]="data" *ngIf="transferStepperTwo?.excelSheetId && !isRelativeValuation('Relative_Valuation')">
+  <ng-container >
+    <ng-container matColumnDef="{{ column }}" *ngFor="let column of displayedColumns">
+      <mat-header-cell *matHeaderCellDef>{{ column }}</mat-header-cell>
+      <mat-cell  *matCellDef="let element">{{ element[column] }}</mat-cell>
+    </ng-container>
+  
+    <mat-header-row  *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </ng-container>
-
-  <mat-header-row  *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+<mat-table [dataSource]="data" *ngIf="transferStepperTwo?.excelSheetId && isRelativeValuation('Relative_Valuation')">
+  <ng-container >
+    <ng-container matColumnDef="{{ column }}" *ngFor="let column of displayedRelativeColumns">
+      <mat-header-cell *matHeaderCellDef>{{ column }}</mat-header-cell>
+      <mat-cell  *matCellDef="let element">{{ element[column] }}</mat-cell>
+    </ng-container>
+  
+    <mat-header-row  *matHeaderRowDef="displayedRelativeColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedRelativeColumns;"></mat-row>
+  </ng-container>
 </mat-table>

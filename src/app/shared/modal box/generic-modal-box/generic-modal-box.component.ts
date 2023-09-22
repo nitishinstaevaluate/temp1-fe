@@ -48,13 +48,12 @@ modalData(data?:any,knownAs?:string) {
 
       case 'analystConsensusEstimates':
         this.dialogRef.close({
-          analystConsensusEstimates: data?.analystConsensusEstimates
+          analystConsensusEstimates: `${data?.analystConsensusEstimates}`
         });
         break;
 
     case 'specificRiskPremium':
       this.dialogRef.close({
-        qualitativeFactor:data?.qualitativeFactor,
         companySize:data?.companySize,
         marketPosition:data?.marketPosition,
         liquidityFactor:data?.liquidityFactor,

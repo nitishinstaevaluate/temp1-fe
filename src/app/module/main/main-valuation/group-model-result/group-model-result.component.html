@@ -1,6 +1,10 @@
 <!-- valuation results starts -->
 <div class="outer-wrapper">
-    <h4 class="card-header">Valuations Results</h4>
+    <div class="mydiv" style="border-top: 1px solid #e3e3f7;border-bottom:1px solid #e3e3f7;">
+        <h4 class="card-header-2" style="border-top: none;">Valuation Results</h4>
+        <h4 class="card-header-2" style="margin-left: auto;">Valuation Date {{transferStepperthree?.formOneAndTwoData?.valuationDate | date:'MMM d, yyyy'}}</h4>
+    </div>
+    <!-- <h4 class="card-header">Valuations Results</h4> -->
    <div >
     <app-valuation-result-table [transferStepperthree]="transferStepperthree"></app-valuation-result-table>
    </div>
@@ -8,7 +12,7 @@
 <!-- valuation results ends -->
 
 <!-- modal weightage starts -->
-<div class="outer-wrapper" style="padding-top: 3%;">
+<div class="outer-wrapper" style="padding-top: 3%;" *ngIf="transferStepperthree?.formOneAndTwoData?.model.length > 1">
     <h4 class="card-header" >Model Weightage</h4>
     <div class="container">
         <div class="row">
@@ -144,7 +148,7 @@
             <td>{{ item.weightedValue | currency:'INR':'symbol':'1.0-2' }}</td>
           </tr>
           <tr>
-            <td colspan="3" class="bottom-head">Total Invested Capital (Controlling,Marketable Basis)</td>
+            <td colspan="3" class="bottom-head">Weighted Average Value</td>
             <td class="bottom-val">{{ finalWeightedValue.toFixed(2) | currency:'INR':'symbol':'1.0-2' }}</td>
           </tr>
         </tbody>
