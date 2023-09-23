@@ -149,7 +149,7 @@
           </tr>
           <tr>
             <td colspan="3" class="bottom-head">Weighted Average Value</td>
-            <td class="bottom-val">{{ finalWeightedValue.toFixed(2) | currency:'INR':'symbol':'1.0-2' }}</td>
+            <td class="bottom-val">{{ finalWeightedValue !==0 && finalWeightedValue ? (finalWeightedValue.toFixed(2) | currency:'INR':'symbol':'1.0-2') : finalWeightedValue }}</td>
           </tr>
         </tbody>
       </table>

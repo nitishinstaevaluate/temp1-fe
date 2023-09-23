@@ -119,7 +119,7 @@ export class GroupModelResultComponent implements OnChanges {
       this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
         if(response.status){
           this.data = response?.result?.modelValue;
-          this.finalWeightedValue = response?.result?.weightedVal;
+          this.finalWeightedValue = response?.result?.weightedVal ?? 0;
         }
       })
     }
@@ -136,7 +136,7 @@ export class GroupModelResultComponent implements OnChanges {
       this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
         if(response.status){
           this.data = response?.result?.modelValue;
-          this.finalWeightedValue = response?.result?.weightedVal;
+          this.finalWeightedValue = response?.result?.weightedVal ?? 0;
         }
       })
     }
@@ -152,7 +152,7 @@ export class GroupModelResultComponent implements OnChanges {
       this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
         if(response.status){
           this.data = response?.result?.modelValue;
-          this.finalWeightedValue = response?.result?.weightedVal;
+          this.finalWeightedValue = response?.result?.weightedVal ?? 0;
         }
       })
     }
@@ -168,7 +168,7 @@ export class GroupModelResultComponent implements OnChanges {
       this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
         if(response.status){
           this.data = response?.result?.modelValue;
-          this.finalWeightedValue = response?.result?.weightedVal;
+          this.finalWeightedValue = response?.result?.weightedVal ?? 0;
         }
       })
     }

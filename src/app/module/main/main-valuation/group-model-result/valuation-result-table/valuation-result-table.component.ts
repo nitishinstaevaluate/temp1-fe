@@ -24,6 +24,9 @@ companyData :any;
 formData :any;
 industryData:any = new MatTableDataSource();
 selectedTabIndex:any;
+fcfeColumn=[];
+excessEarnColumn=[];
+fcffColumn=[];
 
 ngOnInit(): void {}
 
@@ -31,12 +34,14 @@ ngOnChanges(changes:SimpleChanges): void {
   this.formData = this.transferStepperthree;
   this.transferStepperthree?.formThreeData?.appData?.valuationResult.map((response:any)=>{
     if(response.model === 'FCFE'){
+      this.fcfeColumn = response?.columnHeader;
       this.dataSourceFcfe = (this.transposeData(response.valuationData))?.slice(1);
       this.dataSourceFcfe = this.dataSourceFcfe.map((subArray:any, index:any) => {
         return [FCFE_COLUMN[index], ...subArray.slice(1)];
       });
     }
     if(response.model === 'FCFF'){
+      this.fcffColumn=response?.columnHeader;
       this.dataSourceFcff = (this.transposeData(response.valuationData))?.slice(1);
       this.dataSourceFcff = this.dataSourceFcff.map((subArray:any, index:any) => {
         return [FCFF_COLUMN[index], ...subArray.slice(1)];
@@ -50,6 +55,7 @@ ngOnChanges(changes:SimpleChanges): void {
       this.valuationDataReport = response?.valuationData?.valuation;
     }
     if(response.model === 'Excess_Earnings'){
+      this.excessEarnColumn = response?.columnHeader;
       this.dataSourceExcessEarn = (this.transposeData(response.valuationData))?.slice(1);
       this.dataSourceExcessEarn = this.dataSourceExcessEarn.map((subArray:any, index:any) => {
         return [EXCESS_EARNING_COLUMN[index], ...subArray.slice(1)];
