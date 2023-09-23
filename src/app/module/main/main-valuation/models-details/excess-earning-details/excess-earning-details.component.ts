@@ -226,7 +226,7 @@ onSlideToggleChange(event:any){
       const controlNames = ['companySize', 'marketPosition', 'liquidityFactor', 'competition'];
 
         const summationQualitativeAnalysis = controlNames.reduce((sum, controlName) => {
-          const controlValue = parseInt(this.specificRiskPremiumModalForm.controls[controlName].value) || 0;
+          const controlValue = parseFloat(this.specificRiskPremiumModalForm.controls[controlName].value) || 0;
           return sum + controlValue;
         }, 0);
 
