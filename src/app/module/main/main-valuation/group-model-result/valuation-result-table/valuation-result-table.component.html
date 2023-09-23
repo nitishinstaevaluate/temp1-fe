@@ -1,4 +1,4 @@
-<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="selectedTabIndex" (selectedTabChange)="onTabSelectionChange()">
+<mat-tab-group style="padding-bottom: 3% !important;" mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="selectedTabIndex" (selectedTabChange)="onTabSelectionChange()">
   <mat-tab label="FCFE" *ngIf = "fcfe">
     <div>
       <!-- <h5 class="company-head-fcfe">FCFE Result</h5> -->
@@ -6,6 +6,8 @@
         <!-- fcfe table starts -->
       <table>
         <thead>
+          <tr style="border: 1px solid #d1d1d1;font-size: 15px;text-align: center;" >
+            <th colspan="7" style="text-align: right;padding-right: 2%;">Amount in INR (Lakh)</th></tr>
           <tr>
             <th style="border: 1px solid #d1d1d1;font-size: 15px;text-align: center;" *ngFor="let columnName of columnName">{{ columnName }}</th>
           </tr>
@@ -27,6 +29,9 @@
         <!-- table fcff  starts -->
         <table>
           <thead>
+            <tr style="border: 1px solid #d1d1d1;font-size: 15px;text-align: center;" >
+              <th colspan="7" style="text-align: right;padding-right: 2%;">Amount in INR (Lakh)</th></tr>
+            <tr>
             <tr>
               <th style="border: 1px solid #d1d1d1;font-size: 15px;text-align: center;" *ngFor="let columnName of columnName">{{ columnName }}</th>
             </tr>
@@ -48,6 +53,9 @@
         <!-- excess earning table starts -->
       <table>
         <thead>
+          <tr style="border: 1px solid #d1d1d1;font-size: 15px;text-align: center;" >
+            <th colspan="7" style="text-align: right;padding-right: 2%;">Amount in INR (Lakh)</th></tr>
+          <tr>
           <tr>
             <th style="border: 1px solid #d1d1d1;font-size: 15px;text-align: center;" *ngFor="let columnName of columnName">{{ columnName }}</th>
           </tr>
