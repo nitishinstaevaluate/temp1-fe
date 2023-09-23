@@ -215,7 +215,6 @@ export const FCFF_COLUMN = [
 ]
 
 export const EXCESS_EARNING_COLUMN=[
-'Particulars',
 'Networth',
 'PAT',
 'Expected Profit COE',

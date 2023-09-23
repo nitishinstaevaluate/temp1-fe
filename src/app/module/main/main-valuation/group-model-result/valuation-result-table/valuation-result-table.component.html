@@ -54,7 +54,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let row of dataSourceExcessEarn">
-            <td style="text-align: center;font-size: 14px;text-transform: capitalize;" [ngClass]="checkVal(cellValue,'fcfe') ? 'make-bold' : 'make-light'" *ngFor="let cellValue of row">{{ formatNumber(cellValue) }}</td>
+            <td style="text-align: center;font-size: 14px;text-transform: capitalize;" [ngClass]="checkVal(cellValue,'Excess_Earnings') ? 'make-bold' : 'make-light'" *ngFor="let cellValue of row">{{ formatNumber(cellValue) }}</td>
           </tr>
         </tbody>
       </table>

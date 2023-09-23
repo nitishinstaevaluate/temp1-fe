@@ -12,19 +12,8 @@ export class BalanceSheetDetailsComponent implements OnChanges {
   @Input() transferStepperTwo :any; 
   @Output() balanceSheetData: any= new EventEmitter(); 
   data:any=[];
-  displayedColumns:any = [
-    'Particulars',
-    'Provisionals as on ,2022-23',
-    '2023-24',
-    '2024-25',
-    '2025-26',
-    '2026-27',
-    '2027-28',
-  ];
-  displayedRelativeColumns:any = [
-    'Particulars',
-    'Provisionals as on ,2022-23'
-  ];
+  displayedColumns:any =[];
+  displayedRelativeColumns:any = [];
   constructor(private valuationService:ValuationService,private snackBar:MatSnackBar){
 
   }
@@ -32,14 +21,24 @@ export class BalanceSheetDetailsComponent implements OnChanges {
     if(this.transferStepperTwo?.excelSheetId){
       this.valuationService.getProfitLossSheet(this.transferStepperTwo.excelSheetId,'BS').subscribe(
         (response:any)=>{
-          if(this.isRelativeValuation('Relative_Valuation')){
-            response = response.map((value:any)=>{
-              return {
-                "Particulars":value.Particulars,
-                "Provisionals as on ,2022-23":value['Provisionals as on ,2022-23']
-              }
-            })
+          this.displayedColumns= response[0];
+          this.displayedColumns.map((val:any,index:any)=>{
+          if(index <=1){
+            this.displayedRelativeColumns.push(val);
           }
+         })
+          response.splice(0,1);
+
+          if(this.isRelativeValuation('Relative_Valuation')){
+            const firstKey = this.displayedColumns[0];
+            const secondKey = this.displayedColumns[1];
+          response = response.map((value:any)=>{
+            return {
+              [firstKey]:value[firstKey],
+              [secondKey]:value[secondKey]
+            }
+          })
+        }
           this.data = response;
           this.balanceSheetData.emit({status:true,result:response});
 
