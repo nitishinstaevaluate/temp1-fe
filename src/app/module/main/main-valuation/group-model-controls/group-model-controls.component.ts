@@ -398,14 +398,18 @@ isSelectedpreferenceRatio(value:any){
     if (event && event.target.files && event.target.files.length > 0) {
       this.files = event.target.files;
     }
+  
     if (this.files.length === 0) {
       return;
     }
-
+  
     const formData = new FormData();
     formData.append('file', this.files[0]);
     this.valuationService.fileUpload(formData).subscribe((res: any) => {
       this.modelValuation.get('excelSheetId')?.setValue(res.excelSheetId);
+      
+      // Clear the input element value to allow selecting the same file again
+      event.target.value = '';
     });
   }
  
