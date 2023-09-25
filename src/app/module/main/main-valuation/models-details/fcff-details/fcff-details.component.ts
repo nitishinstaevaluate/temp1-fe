@@ -65,6 +65,9 @@ ngOnChanges(changes:SimpleChanges): void {
       this.fcffForm.controls['expMarketReturn'].reset();
     }
   }
+  if(this.equityM?.length > 0){
+    this.fcffForm.controls['coeMethod'].setValue(this.equityM[0].type);
+  }
 }
 
 ngOnInit(): void {

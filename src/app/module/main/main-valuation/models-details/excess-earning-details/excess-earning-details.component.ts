@@ -60,6 +60,9 @@ ngOnChanges(changes:SimpleChanges): void {
       this.excessEarningForm.controls['expMarketReturn'].reset();
     }
   }
+  if(this.equityM?.length > 0){
+    this.excessEarningForm.controls['coeMethod'].setValue(this.equityM[0].type);
+  }
 }
 
 ngOnInit(): void {
