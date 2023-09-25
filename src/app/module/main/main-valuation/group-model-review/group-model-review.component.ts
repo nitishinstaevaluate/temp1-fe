@@ -57,7 +57,7 @@ export class GroupModelReviewComponent implements OnChanges {
         }
         return result;
     }, {});
-    this.valuationService.submitForm({...filteredData,otherAdj:this.reviewForm.controls['otherAdj'].value && this.isRelativeValuation('FCFE') ? this.reviewForm.controls['otherAdj'].value : null}).subscribe((response)=>{
+    this.valuationService.submitForm({...filteredData,otherAdj:this.reviewForm.controls['otherAdj'].value && (this.isRelativeValuation('FCFE') || this.isRelativeValuation('FCFF')) ? this.reviewForm.controls['otherAdj'].value : null}).subscribe((response)=>{
       console.log(response,"output payload")
       if(response?.valuationResult){
         this.valuationData= response; 
@@ -83,6 +83,9 @@ export class GroupModelReviewComponent implements OnChanges {
   }
 
   isRelativeValuation(value:string){
+    return this.transferStepperTwo?.model.includes(value) ? true :false;
+  }
+  isFcff(value:string){
     return this.transferStepperTwo?.model.includes(value) ? true :false;
   }
 }
