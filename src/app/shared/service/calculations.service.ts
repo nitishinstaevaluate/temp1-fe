@@ -21,4 +21,8 @@ export class CalculationsService {
   getWeightedValuation(payload:any){
     return this.http.post(`${HOST}calculation/weightedvaluation`,payload);
   }
+  
+  generatePdf(payload: any,specificity:boolean = false) {
+    return this.http.get(`${HOST}upload/generate/${payload?.reportId}/${payload?.model}/${specificity}`);
+  }
 }

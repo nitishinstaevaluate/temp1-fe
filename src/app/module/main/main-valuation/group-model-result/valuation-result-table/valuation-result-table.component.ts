@@ -1,6 +1,8 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {  MatTableDataSource } from '@angular/material/table';
 import { COMMON_COLUMN, EXCESS_EARNING_COLUMN, FCFE_COLUMN, FCFF_COLUMN} from 'src/app/shared/enums/constant';
+import { CalculationsService } from 'src/app/shared/service/calculations.service';
 
 @Component({
   selector: 'app-valuation-result-table',
@@ -27,8 +29,11 @@ selectedTabIndex:any;
 fcfeColumn=[];
 excessEarnColumn=[];
 fcffColumn=[];
+isLoader=false;
 
 ngOnInit(): void {}
+
+constructor(private calculationService:CalculationsService,private snackbar:MatSnackBar){}
 
 ngOnChanges(changes:SimpleChanges): void {
   this.formData = this.transferStepperthree;
@@ -115,7 +120,52 @@ onTabSelectionChange() {
     
   }
   }
-// console.log(this.selectedTabIndex,"index selected")
+}
+
+exportPdf(modelName:string){
+  this.isLoader=true;
+  let model
+  this.transferStepperthree?.formThreeData?.appData?.valuationResult.map((response:any)=>{
+    if(response.model === modelName){
+      model = response.model;
+    }
+  })
+  const payload={
+    model,
+    reportId:this.transferStepperthree?.formThreeData?.appData?.reportId,
+  }
+   this.calculationService.generatePdf(payload, true).subscribe(
+    (data:any) => {
+      this.isLoader = false;
+      if(data.status){
+        this.snackbar.open('Pdf is downloaded successfully','Ok',{
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 3000,
+          panelClass: 'app-notification-success'
+        })
+        
+      }
+      else{
+        this.snackbar.open(data.msg,'Ok',{
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 3000,
+          panelClass: 'app-notification-error'
+        })
+      }
+    },
+    (error) => {
+      this.isLoader = false;
+      this.snackbar.open(error.message,'Ok',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 4000,
+        panelClass: 'app-notification-error'
+      })
+      // Handle the error here
+    }
+  );
 }
 }
 

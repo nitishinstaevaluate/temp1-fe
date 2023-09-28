@@ -140,3 +140,66 @@
     border: none;
     background-color: #ffffff;
   }
+
+  .model-btn {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .exp {
+    background-color: #0481dc;
+    color: white;
+    border: 2px solid #007bff; /* Blue border */
+    font-size: 14px; /* Adjust font size */
+    border-radius: 5px; /* Rounded corners for a polished look */
+    cursor: pointer; /* Show a pointer cursor on hover */
+  }
+
+  /* Add hover effect for a polished look */
+  .exp:hover {
+    background-color: #0056b3; /* Slightly darker blue on hover */
+  }
+
+  // loader css starts
+  .loader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+  
+  .loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .loader-spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+  }
+  
+  .loader-message {
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }

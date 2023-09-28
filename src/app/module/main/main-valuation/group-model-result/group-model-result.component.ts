@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChange, SimpleChanges } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
 
@@ -26,8 +27,9 @@ export class GroupModelResultComponent implements OnChanges {
     results:[]
   }
   data:any;
+  isLoader=false;
   
-  constructor(private valuationService:ValuationService,private calculationsService:CalculationsService){
+  constructor(private calculationsService:CalculationsService,private snackbar:MatSnackBar){
     
   }
   ngOnChanges(changes:SimpleChanges){
@@ -94,7 +96,42 @@ export class GroupModelResultComponent implements OnChanges {
   }
   
   saveAndNext(){
-    console.log(this.transferStepperthree,"data from all the forms")
+    this.isLoader=true;
+    const payload={
+      reportId:this.transferStepperthree?.formThreeData?.appData?.reportId,
+    }
+    this.calculationsService.generatePdf(payload)
+    .subscribe((appData:any)=>{
+      console.log(appData)
+      this.isLoader = false
+      if(appData.status){
+        this.snackbar.open('Pdf is downloaded successfully','Ok',{
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 3000,
+          panelClass: 'app-notification-success'
+        })
+        
+      }
+      else{
+        this.snackbar.open('Please try again','Ok',{
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 3000,
+          panelClass: 'app-notification-error'
+        })
+      }
+    },
+    (err)=>{
+      this.isLoader = false;
+      this.snackbar.open(err.message,'Ok',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 4000,
+        panelClass: 'app-notification-error'
+      })
+    })
+    
   }
   previous(){
       this.previousPage.emit(true)
