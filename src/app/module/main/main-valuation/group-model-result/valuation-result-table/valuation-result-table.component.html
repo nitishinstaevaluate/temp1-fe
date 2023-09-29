@@ -1,5 +1,8 @@
 <mat-tab-group style="padding-bottom: 3% !important;" mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="selectedTabIndex" (selectedTabChange)="onTabSelectionChange()">
   <mat-tab label="FCFE" *ngIf = "fcfe">
+    <div class="btn" style="text-align: right;width: 100%;">
+      <button mat-stroked-button class="exp" (click)="exportPdf('FCFE')">Export <mat-icon>save_alt</mat-icon></button>
+    </div>
     <div>
       <!-- <h5 class="company-head-fcfe">FCFE Result</h5> -->
       <div class="table-container">
@@ -21,9 +24,12 @@
       </table>
       <!-- fcfe table ends -->
       </div>
-  </div>  
+  </div>
   </mat-tab>
    <mat-tab label="FCFF" *ngIf = "fcff">
+    <div class="btn" style="text-align: right;width: 100%;">
+      <button mat-stroked-button class="exp" (click)="exportPdf('FCFF')">Export <mat-icon>save_alt</mat-icon></button>
+    </div>
     <div>
       <!-- <h5 class="company-head-fcff">FCFF Result</h5> -->
       <div class="table-container">
@@ -45,9 +51,12 @@
         </table>
         <!-- table fcff  ends -->
       </div>
-    </div>  
+    </div>
   </mat-tab>
   <mat-tab label="Excess Earning" *ngIf = "excessEarn">
+    <div class="btn" style="text-align: right;width: 100%;">
+      <button mat-stroked-button class="exp" (click)="exportPdf('Excess_Earnings')">Export <mat-icon>save_alt</mat-icon></button>
+    </div>
     <div>
       <h5 class="company-head-excEarn">Excess Earning Result</h5>
       <div class="table-container">
@@ -69,9 +78,12 @@
       </table>
       <!-- excess earning table ends -->
       </div>
-  </div>  
+  </div>
   </mat-tab> 
   <mat-tab label="Relative Valuations" *ngIf="relativeVal">
+    <div class="btn" style="text-align: right;width: 100%;">
+      <button mat-stroked-button class="exp" (click)="exportPdf('Relative_Valuation')">Export <mat-icon>save_alt</mat-icon></button>
+    </div>
     <div>
         <!-- <h5 class="company-head-relativeval">Relative Valuations Result</h5> -->
         <div class="table-container">
@@ -83,3 +95,9 @@
     </div>  
   </mat-tab>
 </mat-tab-group>
+<div class="loader-overlay" *ngIf="isLoader">
+  <div class="loader">
+    <div class="loader-spinner"></div>
+    <div class="loader-message">Please wait...</div>
+  </div>
+</div>
