@@ -32,7 +32,7 @@
                         [showTickMarks]="'false'"
                         style="width: 50%;"
                         (input)="onFcfeSliderChange($event)">
-                        <input matSliderThumb>
+                        <input [(ngModel)]="fcfeSlider" matSliderThumb>
                     </mat-slider>
                     </div>
                     <div class="col-md-1" style="margin-top: auto;margin-bottom: auto;">
@@ -59,7 +59,7 @@
                             [showTickMarks]="'false'"
                             style="width: 50%;"
                             (input)="onFcffSliderChange($event)">
-                            <input matSliderThumb>
+                            <input [(ngModel)]="fcffSlider" matSliderThumb>
                         </mat-slider>
                     </div>
                     <div class="col-md-1" style="margin-top: auto;margin-bottom: auto;">
@@ -85,7 +85,7 @@
                             [showTickMarks]="'false'"
                             style="width: 50%;"
                             (input)="onRelativeValSliderChange($event)">
-                            <input matSliderThumb>
+                            <input [(ngModel)]="relativeValSlider" matSliderThumb>
                         </mat-slider>
                     </div>
                     <div class="col-md-1" style="margin-top: auto;margin-bottom: auto;">
@@ -113,7 +113,7 @@
                         [showTickMarks]="'false'"
                         style="width: 50%;"
                         (input)="onExcessEarnSliderChange($event)">
-                        <input matSliderThumb>
+                        <input [(ngModel)]="excessEarnSlider" matSliderThumb>
                     </mat-slider>
                     </div>
                     <div class="col-md-1" style="margin-top: auto;margin-bottom: auto;">

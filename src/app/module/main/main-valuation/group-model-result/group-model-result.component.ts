@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChange, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChange, SimpleChanges, ViewChild } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
@@ -12,10 +12,10 @@ export class GroupModelResultComponent implements OnChanges {
   @Output() previousPage = new EventEmitter<any>();
   @Input() transferStepperthree:any; //use this property as it contains data from form 1(stepper 1) and form 2 (stepper 2)
   
-  fcfeSlider:any;
-  fcffSlider:any;
-  relativeValSlider:any;
-  excessEarnSlider:any;
+  fcfeSlider:any=0;
+  fcffSlider:any=0;
+  relativeValSlider:any=0;
+  excessEarnSlider:any=0;
   finalWeightedValue:any;
 
   valuationResult:any;
@@ -146,11 +146,19 @@ export class GroupModelResultComponent implements OnChanges {
 
     onFcfeSliderChange(event: any): void {
       // Handle slider value change here
+      let isRelative = false;
       const slider = event.target as HTMLInputElement;
       this.fcfeSlider = parseFloat(slider.value);
+      if(this.transferStepperthree?.formOneAndTwoData.model.includes('Relative_Valuation')){
+        isRelative = true;
+        this.relativeValSlider = 100 - this.fcfeSlider;
+      }
       this.calculateModelWeigtagePayload.results.map((response:any)=>{
         if(response.model==='FCFE'){
           response.weightage = this.fcfeSlider
+        }
+        if(response.model === 'Relative_Valuation' && isRelative){
+          response.weightage = this.relativeValSlider;
         }
       })
       this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
@@ -163,11 +171,19 @@ export class GroupModelResultComponent implements OnChanges {
 
     onFcffSliderChange(event: any): void {
       // Handle slider value change here
+      let isRelative = false;
       const slider = event.target as HTMLInputElement;
       this.fcffSlider = parseFloat(slider.value);
+      if(this.transferStepperthree?.formOneAndTwoData.model.includes('Relative_Valuation')){
+        isRelative = true;
+        this.relativeValSlider = 100 - this.fcffSlider;
+      }
       this.calculateModelWeigtagePayload.results.map((response:any)=>{
         if(response.model==='FCFF'){
           response.weightage = this.fcffSlider
+        }
+        if(response.model === 'Relative_Valuation' && isRelative){
+          response.weightage = this.relativeValSlider;
         }
       })
       this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
@@ -179,11 +195,35 @@ export class GroupModelResultComponent implements OnChanges {
     }
     onRelativeValSliderChange(event: any): void {
       // Handle slider value change here
+      let isFcfe = false;
+      let isFcff= false;
+      let isExcessEarn = false;
       const slider = event.target as HTMLInputElement;
       this.relativeValSlider = parseFloat(slider.value);
+      if(this.transferStepperthree?.formOneAndTwoData.model.includes('FCFE')){
+        isFcfe = true;
+        this.fcfeSlider = 100 - this.relativeValSlider;
+      }
+      if(this.transferStepperthree?.formOneAndTwoData.model.includes('FCFF')){
+        isFcff = true;
+        this.fcffSlider = 100 - this.relativeValSlider;
+      }
+      if(this.transferStepperthree?.formOneAndTwoData.model.includes('Excess_Earnings')){
+        isExcessEarn = true;
+        this.excessEarnSlider = 100 - this.relativeValSlider;
+      }
       this.calculateModelWeigtagePayload.results.map((response:any)=>{
         if(response.model==='Relative_Valuation'){
           response.weightage = this.relativeValSlider
+        }
+        if(response.model === 'FCFE' && isFcfe){
+          response.weightage = this.fcfeSlider;
+        }
+        if(response.model === 'FCFF' && isFcff){
+          response.weightage = this.fcffSlider;
+        }
+        if(response.model === 'Excess_Earnings' && isExcessEarn){
+          response.weightage = this.excessEarnSlider;
         }
       })
       this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
@@ -195,11 +235,19 @@ export class GroupModelResultComponent implements OnChanges {
     }
     onExcessEarnSliderChange(event: any): void {
       // Handle slider value change here
+      let isRelative = false;
       const slider = event.target as HTMLInputElement;
       this.excessEarnSlider = parseFloat(slider.value);
+      if(this.transferStepperthree?.formOneAndTwoData.model.includes('Relative_Valuation')){
+        isRelative = true;
+        this.relativeValSlider = 100 - this.excessEarnSlider;
+      }
       this.calculateModelWeigtagePayload.results.map((response:any)=>{
         if(response.model==='Excess_Earnings'){
           response.weightage = this.excessEarnSlider
+        }
+        if(response.model === 'Relative_Valuation' && isRelative){
+          response.weightage = this.relativeValSlider;
         }
       })
       this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
