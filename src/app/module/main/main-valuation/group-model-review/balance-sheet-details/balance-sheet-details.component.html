@@ -1,22 +1,56 @@
-<mat-table [dataSource]="data" *ngIf="transferStepperTwo?.excelSheetId && !isRelativeValuation('Relative_Valuation')">
+<!-- <mat-table [dataSource]="data" *ngIf="transferStepperTwo?.excelSheetId && !isRelativeValuation('Relative_Valuation')">
   <ng-container >
     <ng-container matColumnDef="{{ column }}" *ngFor="let column of displayedColumns">
       <mat-header-cell *matHeaderCellDef>{{ column }}</mat-header-cell>
-      <mat-cell  *matCellDef="let element">{{ element[column] }}</mat-cell>
+      <mat-cell  *matCellDef="let element" [ngClass]="checkType(element[column]) ? 'label-c' : ''">{{ element[column] ? element[column] : '---' }}</mat-cell>
     </ng-container>
   
     <mat-header-row  *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </ng-container>
+</mat-table> -->
+<mat-table [dataSource]="data" *ngIf="transferStepperTwo?.excelSheetId && !isRelativeValuation('Relative_Valuation')">
+  <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+    <mat-header-cell *matHeaderCellDef [ngClass]="column === 'Particulars' ? 'inc-width' : ''">{{ column }}</mat-header-cell>
+    <mat-cell *matCellDef="let element" [ngClass]="{'label-c': checkType(element[column]) && !isNumberOrEmpty(element[column])}">
+      <ng-container *ngIf="checkType(element[column])">
+        <span >{{ element[column] ? element[column] : '---' }}</span>
+      </ng-container>
+      <mat-form-field [appearance]="appearance" style="margin-bottom: -17%;" *ngIf="isNumberOrEmpty(element[column])" [floatLabel]="floatLabelType">
+        <input style="text-align: center" [value]="element[column] ? element[column] : null "  matInput placeholder="---" >
+      </mat-form-field>
+    </mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </mat-table>
+
 <mat-table [dataSource]="data" *ngIf="transferStepperTwo?.excelSheetId && isRelativeValuation('Relative_Valuation')">
-  <ng-container >
-    <ng-container matColumnDef="{{ column }}" *ngFor="let column of displayedRelativeColumns">
-      <mat-header-cell *matHeaderCellDef>{{ column }}</mat-header-cell>
-      <mat-cell  *matCellDef="let element">{{ element[column] }}</mat-cell>
+  <ng-container>
+    <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+      <mat-header-cell *matHeaderCellDef [ngClass]="column === 'Particulars' ? 'inc-width' : ''">{{ column }}</mat-header-cell>
+      <mat-cell *matCellDef="let element" [ngClass]="{'label-c': checkType(element[column]) && !isNumberOrEmpty(element[column])}">
+        <ng-container style="min-width: 30%;" *ngIf="checkType(element[column])">
+          <span>{{ element[column] ? element[column] : '---' }}</span>
+        </ng-container>
+        <mat-form-field [appearance]="appearance" style="margin-bottom: -4%;width: 100%;" *ngIf="isNumberOrEmpty(element[column])" [floatLabel]="floatLabelType">
+          <input style="text-align: center" [value]="element[column] ? element[column] : null "  matInput placeholder="---" >
+        </mat-form-field>
+      </mat-cell>
     </ng-container>
   
     <mat-header-row  *matHeaderRowDef="displayedRelativeColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedRelativeColumns;"></mat-row>
   </ng-container>
 </mat-table>
+<!-- <mat-table [dataSource]="data" *ngIf="transferStepperTwo?.excelSheetId && isRelativeValuation('Relative_Valuation')">
+  <ng-container >
+    <ng-container matColumnDef="{{ column }}" *ngFor="let column of displayedRelativeColumns">
+      <mat-header-cell *matHeaderCellDef>{{ column }}</mat-header-cell>
+      <mat-cell  *matCellDef="let element" [ngClass]="checkType(element[column]) ? 'label-c' : ''">{{ element[column] ? element[column] : '---' }}</mat-cell>
+    </ng-container>
+  
+    <mat-header-row  *matHeaderRowDef="displayedRelativeColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedRelativeColumns;"></mat-row>
+  </ng-container>
+</mat-table> -->

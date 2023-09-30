@@ -1,5 +1,5 @@
 <div *ngIf="!isArrayEmptyOrNull(companyData) && tableData.status">
-    <h5 [ngClass]="tableData?.tableClass ? 'result-table-head' : 'company-head'">Companies</h5>
+    <h5 [ngClass]="tableData?.tableClass ? 'result-table-head' : 'company-head'">Company Based</h5>
     <table mat-table [dataSource]="companyData" [ngClass]="tableData?.tableClass ? 'result-table': 'mat-elevation-z8 my-table'">
         <ng-container *ngFor="let column of companyColumn; let i = index" [matColumnDef]="column">
           <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
@@ -11,7 +11,7 @@
 </div>
 
 <div class="mt-4" *ngIf="!isArrayEmptyOrNull(industryData) && !tableData.status">
-    <h5 [ngClass]="tableData?.tableClass ? 'result-table-head' : 'industry-head'">Industries</h5>
+    <h5 [ngClass]="tableData?.tableClass ? 'result-table-head' : 'industry-head'">Industry Based</h5>
     <table mat-table [dataSource]="industryData" [ngClass]="tableData?.tableClass ? 'result-table': 'mat-elevation-z8 my-table'">
         <ng-container *ngFor="let column of industryColumn; let i = index" [matColumnDef]="column">
           <th mat-header-cell *matHeaderCellDef>{{ column }}</th>

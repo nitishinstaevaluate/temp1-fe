@@ -1,18 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Croissant+One&family=Karla&family=Oxygen&family=Raleway&family=Roboto+Condensed&family=Roboto:wght@300&family=Space+Grotesk:wght@500&family=Teko&family=Ubuntu:wght@300&display=swap');
 ::ng-deep mat-row mat-cell,mat-header-cell,mat-table{
     border:  0.5px solid #d1d0d0 !important;
 }
 mat-header-cell{
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
-    font-family: system-ui;
+    font-family: 'Karla', sans-serif;
     display: flex;
     justify-content: center;
     padding: 0px !important;
+    background-color: #dadada87 !important;
 }
 ::ng-deep mat-row mat-cell{
     display: flex;
     justify-content: center;
     padding: 0px !important;
-    font-size: 12px !important;
+    font-size: 11px !important;
     text-align: center !important;
+    font-family: 'Space Grotesk', sans-serif;
+    text-transform: capitalize !important;
+}
+
+::ng-deep mat-row:nth-child(odd) {
+    background-color: #f5f5f5;
+}
+::ng-deep mat-row:nth-child(odd) mat-cell mat-form-field input{
+    color: #eb6666 !important;
+}
+::ng-deep mat-row:nth-child(even) mat-cell input{
+    color: #14a052 !important;
+}
+
+
+::ng-deep mat-row:hover mat-cell {
+    background-color: #e5e5e5;
+  }
+
+.label-c{
+    color: #288790 !important;
+    font-size: 13px !important;
+    font-weight: 600;
+    min-width:30% ;
+    font-family: 'Raleway', sans-serif !important;
+}
+
+.hover-cell:hover {
+    background-color: #e5e5e5;
+}
+
+.inc-width{
+    min-width: 30%;
 }

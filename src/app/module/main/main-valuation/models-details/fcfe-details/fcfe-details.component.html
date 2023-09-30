@@ -136,7 +136,35 @@
                     </div>
                   </div>
                   
-                  
+                  <div class="card-container col-md-12" style="padding: 2%;" *ngIf="specificRiskPremiumModalForm.controls['companySize'].value || specificRiskPremiumModalForm.controls['marketPosition'].value || specificRiskPremiumModalForm.controls['liquidityFactor'].value || specificRiskPremiumModalForm.controls['competition'].value">
+                    <p class="rp-p">Risk Premium</p>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="card card-est">
+                                <div class="card-header-rp card-header">Company Size <span><mat-icon style="padding-top: 2.5%;">keyboard_arrow_right</mat-icon></span></div>
+                                <div class="card-subtext">{{specificRiskPremiumModalForm.controls['companySize'].value}}%</div>
+                              </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card card-est">
+                                <div class="card-header-rp card-header">Market Position <span><mat-icon style="padding-top: 2.5%;">keyboard_arrow_right</mat-icon></span></div>
+                                <div class="card-subtext">{{specificRiskPremiumModalForm.controls['marketPosition'].value}}%</div>
+                              </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card card-est">
+                                <div class="card-header-rp card-header">Liquidity Factor <span><mat-icon style="padding-top: 2.5%;">keyboard_arrow_right</mat-icon></span></div>
+                                <div class="card-subtext">{{specificRiskPremiumModalForm.controls['liquidityFactor'].value}}%</div>
+                              </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card card-est">
+                                <div class="card-header-rp card-header">Competetion <span><mat-icon style="padding-top: 2.5%;">keyboard_arrow_right</mat-icon></span></div>
+                                <div class="card-subtext">{{specificRiskPremiumModalForm.controls['competition'].value}}%</div>
+                              </div>
+                        </div>
+                    </div>
+                  </div>
 
                 <div class="col-md-12" style="text-align: center;padding-bottom: 1%;padding-top: 1%;">
                     <button (click)="previous()" mat-raised-button style="box-shadow: 1px 2px 15px #d1d1d1;color:#bb0d0d;font-weight: bold !important;margin-right: 1%;">
@@ -151,3 +179,5 @@
             </div>
           </form>  
     </div>
+
+    
