@@ -1,4 +1,6 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Croissant+One&family=Roboto+Condensed&family=Roboto:wght@300&family=Ubuntu:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Croissant+One&family=Roboto+Condensed&family=Roboto:wght@300&family=Teko&family=Ubuntu:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Croissant+One&family=Oxygen&family=Roboto+Condensed&family=Roboto:wght@300&family=Teko&family=Ubuntu:wght@300&display=swap');
 
 .full-width-input {
     width: 100%; /* Set the width to 100% to occupy the full width of the container */
@@ -208,3 +210,57 @@ mat-checkbox{
     transform: translateY(-10px);
   }
 }
+
+//risk premium card css
+.card-container {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.card-est {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s,box-shadow 0.2s, background-color 0.2s;
+  cursor: pointer;
+}
+
+.card-est:hover {
+  // transform: translateY(-5px);
+  box-shadow: 0px 4px 8px rgba(45, 45, 45, 0.6);
+  background-color: #f1f1f1;
+}
+
+.card-header-rp {
+  font-size: 19px;
+  font-weight: 600;
+  font-family: 'Ubuntu', sans-serif;
+  border-top: 1px solid #e3e3f7;
+  color: #0075a3;
+  display: table-cell;
+}
+
+.card-subtext {
+  color: #0075a3;
+  height: 100%;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  font-size: 22px;
+  padding-top: 4%;
+  font-family: 'Teko', sans-serif;
+}
+
+.rp-p{
+  color: #089e94;
+  font-family: 'Oxygen', sans-serif;
+  font-size: 20px;
+  border-top: 1px solid #e3e3f7;
+  font-weight: 500;
+  padding-top: 2%;
+  padding-left: 1%;
+}
+

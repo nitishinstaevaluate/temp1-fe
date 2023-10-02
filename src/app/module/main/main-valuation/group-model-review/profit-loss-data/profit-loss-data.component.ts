@@ -14,23 +14,14 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
   @Input() transferStepperTwo :any;
   @Input() currentStepIndex :any;
   @Output() profitLossData :any = new EventEmitter();
+  @Output() excelData :any = new EventEmitter();
 
   data:any=[];
   displayedColumns:any=[]
-  // displayedColumns:any = [
-  //   'Particulars',
-  //   'Provisionals as on ,2022-23',
-  //   '2023-24',
-  //   '2024-25',
-  //   '2025-26',
-  //   '2026-27',
-  //   '2027-28',
-  // ];
-  // displayedRelativeColumns:any = [
-  //   'Particulars',
-  //   'Provisionals as on ,2022-23'
-  // ];
   displayedRelativeColumns:any=[];
+  floatLabelType:any='never';
+  appearance:any='fill';
+  editedValues:any = [];
   constructor(private valuationService:ValuationService,
     private snackBar: MatSnackBar){
 
@@ -48,14 +39,14 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
           response.splice(0,1)
           if(this.isRelativeValuation('Relative_Valuation')){
             
-            const firstKey = this.displayedColumns[0]
-            const secondKey = this.displayedColumns[1]
-          response = response.map((value:any)=>{
-            return {
-              [firstKey]:value[firstKey],
-              [secondKey]:value[secondKey]
-            }
-          })
+            const firstKey = this.displayedColumns[0];
+            const secondKey = this.displayedColumns[1];
+            response = response.map((value:any)=>{
+              return {
+                [firstKey]:value[firstKey],
+                [secondKey]:value[secondKey]
+              }
+            })
         }
           this.data = response
           this.profitLossData.emit({status:true,result:response});
@@ -78,5 +69,46 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
   }
   isRelativeValuation(modelName:string){
     return (isSelected(modelName,this.transferStepperTwo?.model) && this.transferStepperTwo.model.length <= 1)
+  }
+
+  checkType(ele:any){
+    if(typeof ele === 'string' && isNaN(parseFloat(ele)))
+     return true;
+    return false
+  }
+
+  isNumberOrEmpty(value: any): boolean {
+    return (typeof value === 'number' || value === '' || typeof value === 'string' || value === null || value === undefined) && !isNaN(value) ? true : false;
+  }
+
+  onInputChange(value: any, column: string,originalValue:any) {
+    // const spanContent = (value as HTMLInputElement).closest('mat-row').querySelector('span').textContent;
+  
+    const inputElement = value;
+    const closestRow = inputElement.closest('mat-row');
+    
+    if (closestRow) {
+      const spanElement = closestRow.querySelector('span');
+      const spanContent = spanElement ? spanElement.textContent : null;
+      if(value?.value !== originalValue || (originalValue === null && value.value === '')){
+        if(this.editedValues.some((item:any)=>item.subHeader == spanContent && item.columnName === column)){
+          this.editedValues.map((val:any)=>{
+            if(val.subHeader == spanContent && val.columnName === column){
+              val.newValue = value.value;
+            }
+          })
+        }
+        else{
+          let payload={
+            subHeader:spanContent,
+            originalValue,
+            newValue:value.value,
+            columnName:column
+          }
+          this.editedValues.push(payload)
+        }
+      }
+    }
+    this.excelData.emit({ excelSheet:'P&L',editedValues: this.editedValues });
   }
 }

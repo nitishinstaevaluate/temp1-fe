@@ -30,6 +30,8 @@ export class GroupModelReviewComponent implements OnChanges {
   debtValue:any
   tableData:any
   valuationData: any;
+  updateExcel=false;
+  editedExcel:any=[];
   constructor(private valuationService:ValuationService,
     private formBuilder:FormBuilder){
     this.reviewForm=this.formBuilder.group({
@@ -57,29 +59,46 @@ export class GroupModelReviewComponent implements OnChanges {
         }
         return result;
     }, {});
-    this.valuationService.submitForm({...filteredData,otherAdj:this.reviewForm.controls['otherAdj'].value && (this.isRelativeValuation('FCFE') || this.isRelativeValuation('FCFF')) ? this.reviewForm.controls['otherAdj'].value : null}).subscribe((response)=>{
+
+    const payload = {
+      ...filteredData,
+      otherAdj:this.reviewForm.controls['otherAdj'].value && (this.isRelativeValuation('FCFE') || this.isRelativeValuation('FCFF')) ? this.reviewForm.controls['otherAdj'].value : null,
+      excelEditedData:this.editedExcel
+    }
+    this.valuationService.submitForm(payload).subscribe((response)=>{
       console.log(response,"output payload")
       if(response?.valuationResult){
         this.valuationData= response; 
         this.groupReviewControls.emit({PL:this.profitLoss,BL:this.balanceSheet,appData:this.valuationData})
       }
     })
-    console.log(this.transferStepperTwo,"input payload")
+    console.log(payload,"input payload")
   }
+
   previous(){
     this.previousPage.emit(true)
   }
+
   profitLossData(data:any){
     if(data){
       this.profitLoss = data.result;
       this.isLoadingProfitLoss=false;
     }
   }
+
   balanceSheetData(data:any){
     if(data){
       this.isLoadingBalanceSheet=false;
       this.balanceSheet = data.result;
     }
+  }
+
+  excelData(data:any){
+    if(data.editedValues.length !==0){
+      this.editedExcel=data
+      return this.updateExcel = true;
+    }
+    return this.updateExcel=false;
   }
 
   isRelativeValuation(value:string){

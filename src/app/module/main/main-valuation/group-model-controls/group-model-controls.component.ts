@@ -202,7 +202,13 @@ export class GroupModelControlsComponent implements OnInit {
       }
       const indst = this.industries.find((e:any) => e.industry == val);
       this.valuationService.getIndustries(indst._id).subscribe((resp: any) => {
-        this.subIndustries = resp;
+        if(resp.length !== 0){
+          this.subIndustries = resp;
+        }
+        else{
+          this.subIndustries = [];
+          this.modelValuation.controls['subIndustry'].reset();
+        }
       });
       this._dataReferencesService.getIndustriesRatio(indst._id).subscribe((resp: any) => {
         this.industriesRatio = resp[0];
@@ -357,15 +363,6 @@ isSelectedpreferenceRatio(value:any){
       payload['taxRate'] = '25.17%';
       payload['taxRateType'] = 'Default';
     }
-    // if (this.waccCalculation.controls['capitalStructureType'].value == 'Industry_based') {
-    //   let capitalStructure = {
-    //     capitalStructureType : 'Industry_Based',
-    //     debtProp : this.debtRatio,
-    //     equityProp : this.equityProp,
-    //     totalCapital : this.totalCapital
-    //   }
-    //   payload['capitalStructure'] = capitalStructure;
-    // }
 
     // check if valuation date is empty
     const valuationDate = this.modelValuation.get('valuationDate')?.value;

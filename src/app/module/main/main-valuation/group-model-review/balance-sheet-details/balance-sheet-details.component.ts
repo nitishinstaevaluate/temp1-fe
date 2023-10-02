@@ -14,9 +14,11 @@ export class BalanceSheetDetailsComponent implements OnChanges {
   data:any=[];
   displayedColumns:any =[];
   displayedRelativeColumns:any = [];
-  constructor(private valuationService:ValuationService,private snackBar:MatSnackBar){
+  floatLabelType:any='never';
+  appearance:any='fill';
 
-  }
+  constructor(private valuationService:ValuationService,private snackBar:MatSnackBar){}
+
   ngOnChanges(){
     if(this.transferStepperTwo?.excelSheetId){
       this.valuationService.getProfitLossSheet(this.transferStepperTwo.excelSheetId,'BS').subscribe(
@@ -61,5 +63,15 @@ export class BalanceSheetDetailsComponent implements OnChanges {
   }
   isRelativeValuation(modelName:string){
     return (isSelected(modelName,this.transferStepperTwo?.model) && this.transferStepperTwo.model.length <= 1)
+  }
+
+  checkType(ele:any){
+    if(typeof ele === 'string' && isNaN(parseFloat(ele)))
+     return true;
+    return false
+  }
+
+  isNumberOrEmpty(value: any): boolean {
+    return (typeof value === 'number' || value === '' || typeof value === 'string' || value === null || value === undefined) && !isNaN(value) ? true : false;
   }
 }
