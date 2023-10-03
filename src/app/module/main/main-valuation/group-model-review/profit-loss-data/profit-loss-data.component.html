@@ -35,7 +35,7 @@
           <span >{{ element[column] ? element[column] : '---' }}</span>
         </ng-container>
         <mat-form-field [appearance]="appearance" style="margin-bottom: -4%;width: 100%;" *ngIf="isNumberOrEmpty(element[column])" [floatLabel]="floatLabelType">
-          <input style="text-align: center" [value]="element[column] ? element[column] : null "  matInput placeholder="---" >
+          <input style="text-align: center" [value]="element[column] ? element[column] : null "  matInput placeholder="---" (input)="onInputChange($event.target, column,element[column])">
         </mat-form-field>
       </mat-cell>
     </ng-container>
@@ -44,3 +44,7 @@
     <mat-row *matRowDef="let row; columns: displayedRelativeColumns;"></mat-row>
   </ng-container>
 </mat-table>
+
+<div class="container-fluid btn-update">
+  <button mat-raised-button class="btn-up" (click)="updateExcel()"><mat-icon>keyboard_capslock</mat-icon>Update</button>
+</div>

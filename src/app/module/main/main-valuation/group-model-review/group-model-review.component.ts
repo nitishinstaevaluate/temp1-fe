@@ -32,6 +32,8 @@ export class GroupModelReviewComponent implements OnChanges {
   valuationData: any;
   updateExcel=false;
   editedExcel:any=[];
+  isPAndLExcelModified=false;
+  isBSExcelModified=false;
   constructor(private valuationService:ValuationService,
     private formBuilder:FormBuilder){
     this.reviewForm=this.formBuilder.group({
@@ -63,7 +65,7 @@ export class GroupModelReviewComponent implements OnChanges {
     const payload = {
       ...filteredData,
       otherAdj:this.reviewForm.controls['otherAdj'].value && (this.isRelativeValuation('FCFE') || this.isRelativeValuation('FCFF')) ? this.reviewForm.controls['otherAdj'].value : null,
-      excelEditedData:this.editedExcel
+      isExcelModified:this.isPAndLExcelModified === true ? this.isPAndLExcelModified : this.isBSExcelModified,
     }
     this.valuationService.submitForm(payload).subscribe((response)=>{
       console.log(response,"output payload")
@@ -83,6 +85,7 @@ export class GroupModelReviewComponent implements OnChanges {
     if(data){
       this.profitLoss = data.result;
       this.isLoadingProfitLoss=false;
+      this.isPAndLExcelModified = data.isExcelModified === true ?? false;
     }
   }
 
@@ -90,15 +93,8 @@ export class GroupModelReviewComponent implements OnChanges {
     if(data){
       this.isLoadingBalanceSheet=false;
       this.balanceSheet = data.result;
+      this.isBSExcelModified = data.isExcelModified === true ?? false;
     }
-  }
-
-  excelData(data:any){
-    if(data.editedValues.length !==0){
-      this.editedExcel=data
-      return this.updateExcel = true;
-    }
-    return this.updateExcel=false;
   }
 
   isRelativeValuation(value:string){
