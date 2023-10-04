@@ -82,7 +82,7 @@
   </mat-tab> 
   <mat-tab label="Relative Valuations" *ngIf="relativeVal">
     <div class="btn" style="text-align: right;width: 100%;">
-      <button mat-stroked-button class="exp" (click)="exportPdf('Relative_Valuation')">Export <mat-icon>save_alt</mat-icon></button>
+      <button mat-stroked-button class="exp" (click)="checkIndustryOrCompany() ? exportPdf('Relative_Valuation') : exportPdf('CTM') ">Export <mat-icon>save_alt</mat-icon></button>
     </div>
     <div>
         <!-- <h5 class="company-head-relativeval">Relative Valuations Result</h5> -->

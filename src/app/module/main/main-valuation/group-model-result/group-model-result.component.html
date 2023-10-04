@@ -70,7 +70,7 @@
             <hr class="weight-hr">
     
             <div class="col-md-6 text-left mt-4" style="border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('Relative_Valuation')">
-                <p style="font-weight: 500;font-size: 17px;margin-bottom: 0px;">Relative Valuations</p>
+                <p style="font-weight: 500;font-size: 17px;margin-bottom: 0px;">Comparable Companies</p>
             </div>
             <div class="col-md-6" style="text-align: right;border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('Relative_Valuation')">
                 <div class="row">
@@ -90,6 +90,33 @@
                     </div>
                     <div class="col-md-1" style="margin-top: auto;margin-bottom: auto;">
                         <span class="fcfe-slider" >{{relativeValSlider}}</span>
+                    </div>
+                </div>
+                
+
+            </div>
+            <hr class="weight-hr">
+            <div class="col-md-6 text-left mt-4" style="border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('CTM')">
+                <p style="font-weight: 500;font-size: 17px;margin-bottom: 0px;">Comparable Industries</p>
+            </div>
+            <div class="col-md-6" style="text-align: right;border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('CTM')">
+                <div class="row">
+                    <div class="col-md-11">
+                        <mat-slider
+                            class="example-margin mat-accent"
+                            [disabled]="'false'"
+                            [max]="'100'"
+                            [min]="'0'"
+                            [step]="'1'"
+                            [discrete]="'false'"
+                            [showTickMarks]="'false'"
+                            style="width: 50%;"
+                            (input)="onComparableIndustrySliderChange($event)">
+                            <input [(ngModel)]="comparableIndustrySlider" matSliderThumb>
+                        </mat-slider>
+                    </div>
+                    <div class="col-md-1" style="margin-top: auto;margin-bottom: auto;">
+                        <span class="fcfe-slider" >{{comparableIndustrySlider}}</span>
                     </div>
                 </div>
                 
@@ -142,7 +169,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of data">
-            <td>{{ item.model }}</td>
+            <td style="text-transform: capitalize;">{{ item.model === 'Relative_Valuation' ? 'Comparable Companies' : item.model === 'CTM' ? 'Comparable Industries'  : item.model }}</td>
             <td>{{ item.indicatedValue | currency:'INR':'symbol':'1.0-2' }}</td>
             <td>{{ item.weight | percent:'1.0-2' }}</td>
             <td>{{ item.weightedValue | currency:'INR':'symbol':'1.0-2' }}</td>

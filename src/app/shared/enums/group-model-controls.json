@@ -78,7 +78,12 @@
                         "value":"NAV"
                     },
                     {
-                        "name":"Relative Valuation",
+                        "name":"Comparable Industries",
+                        "checked":false,
+                        "value":"CTM"
+                    },
+                    {
+                        "name":"Comparable Companies",
                         "checked":false,
                         "value":"Relative_Valuation"
                     },
@@ -86,11 +91,6 @@
                         "name":"Excess Earnings",
                         "checked":false,
                         "value":"Excess_Earnings"
-                    },
-                    {
-                        "name":"Comparable Industries",
-                        "checked":false,
-                        "value":"CTM"
                     }
                 ]
             },
@@ -514,11 +514,41 @@
     },
     "relativeValuation":{
         "type":"relativeValuation",
-        "header":"Relative Valuations",
+        "header":"Comparable Companies",
         "options":{
             "preferenceRatioSelect": {
             "name":"preferenceRatioSelect",
-            "placeholder":"Preference For Ratio :-",
+            "placeholder":"Select companies from the dropdown",
+            "type":"radio",
+            "toolTip":"Please select Cost Of Debt",
+            "options":[
+                    {
+                        "name":"Industry Based"
+                    },
+                    {
+                        "name":"Company Based"
+                    }
+                ]
+            },
+            "companyBasedSelection":{
+                "name":"companyBasedSelection",
+                "placeholder":"Company Based",
+                "toolTip":"Select Company"
+            },
+            "industryBasedSelection":{
+                "name":"industryBasedSelection",
+                "placeholder":"Industry Based",
+                "toolTip":"Select Industry"
+            }
+        }
+    },
+    "comparableIndustries":{
+        "type":"comparableIndustries",
+        "header":"Comparable Industries",
+        "options":{
+            "preferenceRatioSelect": {
+            "name":"preferenceRatioSelect",
+            "placeholder":"Selected Comparable Industry",
             "type":"radio",
             "toolTip":"Please select Cost Of Debt",
             "options":[

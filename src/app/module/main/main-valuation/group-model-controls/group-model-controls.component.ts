@@ -101,7 +101,7 @@ export class GroupModelControlsComponent implements OnInit {
       company:['',[Validators.required]],
       valuationDate:['',[Validators.required]],
       projectionYears:['',[Validators.required]],
-      location:['',[Validators.required]],
+      location:['India',[Validators.required]],
       projectionYearSelect:['',[Validators.required]],
       industry:['',[Validators.required]],
       subIndustry:['',[Validators.required]],
@@ -257,7 +257,7 @@ export class GroupModelControlsComponent implements OnInit {
     });
     this.modelValuation.controls['model'].valueChanges.subscribe((val) => {
       if(!val) return;
-      if (val == 'Relative_Valuation'){
+      if (val == 'Relative_Valuation' || val == 'CTM'){
         this.modelValuation.controls['projectionYearSelect'].reset();
         this.modelValuation.controls['terminalGrowthRate'].reset();
         this.modelValuation.controls['projectionYears'].reset();

@@ -1,0 +1,37 @@
+<div class="outer-wrapper" *ngIf="modelControl.comparableIndustries.type === 'comparableIndustries' && isRelativeValuation(MODEL.COMPARABLE_INDUSTRIES)">
+    <h4 class="card-header">{{modelControl.comparableIndustries.header}}</h4>
+    <form [formGroup]="comparableIndustries">
+        <div class="row" style="padding-top: 1%;">
+                <div class="col-md-12 revalmodel" *ngIf="formOneData?.industry">
+                    <mat-label class="label">{{modelControl.comparableIndustries.options.preferenceRatioSelect.placeholder}}</mat-label>
+                </div>
+                <div class="bookmark-container" *ngIf="formOneData?.industry">
+                    <div><mat-icon class="book-icon">label_important</mat-icon></div>
+                    <div class="text-content">
+                        {{formOneData.industry}}
+                    </div>
+                </div>
+
+            <div *ngIf="!formOneData?.industry" class="message-container col-md-12">
+                <div class="message-icon">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <div class="message-content">
+                    Please select an industry to proceed.
+                </div>
+            </div>
+
+          <div class="col-md-12" style="text-align: center;padding-bottom: 1%;padding-top: 15%;">
+            <button (click)="previous()" mat-raised-button style="box-shadow: 1px 2px 15px #d1d1d1;color:#bb0d0d;font-weight: bold !important;margin-right: 1%;">
+                Back
+                <mat-icon style="font-weight: bold;color: #d42121;">arrow_left</mat-icon>
+            </button>
+            <button [disabled]="!formOneData?.industry" (click)="saveAndNext()" style="box-shadow: 1px 2px 15px #d1d1d1;color:#228822;margin-right: 1%"  mat-raised-button>
+           Next
+                <mat-icon style="font-weight: bold;color: green;">send</mat-icon>
+        </button>
+       
+    </div>
+        </div>
+    </form>  
+</div>
