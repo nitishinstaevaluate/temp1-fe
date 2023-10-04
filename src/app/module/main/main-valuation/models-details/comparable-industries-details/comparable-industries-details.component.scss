@@ -159,6 +159,7 @@ mat-checkbox{
     padding-left: 2%;
     cursor: pointer;
     transition: color .3s;
+    text-transform: capitalize;
 }
 .text-content:hover{
     color: #1e9f3b;
@@ -168,39 +169,30 @@ mat-checkbox{
     color: rgb(43 231 216);
     padding-top: 5%;
 }
-// error message
+
+//error message
 .message-container {
-  display: flex;
-  align-items: center;
-  background-color: #f8d7da; /* Red background color */
-  color: #721c24; /* Dark red text color */
-  padding: 15px;
-  border: 1px solid #f5c6cb; /* Light red border color */
-  border-radius: 5px;
-  margin: 20px 0;
-  margin-bottom: 3%;
+    display: flex;
+    align-items: center;
+    background-color: #f8d7da; /* Red background color */
+    color: #721c24; /* Dark red text color */
+    padding: 15px;
+    border: 1px solid #f5c6cb; /* Light red border color */
+    border-radius: 5px;
+    margin: 20px 0;
+    margin-bottom: 3%;
 }
 
 .message-icon {
-  margin-right: 10px;
-  color: #721c24; /* Dark red color for the icon */
+    margin-right: 10px;
+    color: #721c24; /* Dark red color for the icon */
 }
 
 .message-icon i {
-  font-size: 24px;
+    font-size: 24px;
 }
 
 .message-content {
-  font-family: Arial, sans-serif;
-  font-size: 16px;
-}
-
-::ng-deep .mat-select-value .mat-mdc-select-trigger .mat-mdc-select-value .mat-mdc-select-value-text{    
-  padding: 0px !important;
-  color: #004e67 !important;
-    font-family: 'AR One Sans';
-}
-::ng-deep .mat-relative-val .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) .mat-mdc-form-field-infix {
-  padding-top: 0px !important;
-  padding-bottom: 0px !important;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
 }

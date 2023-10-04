@@ -9,7 +9,7 @@
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </ng-container>
 </mat-table> -->
-<mat-table [dataSource]="data" *ngIf="transferStepperTwo?.excelSheetId && !isRelativeValuation('Relative_Valuation')">
+<mat-table [dataSource]="data" *ngIf="transferStepperTwo?.excelSheetId && (!isRelativeValuation('Relative_Valuation') && !isRelativeValuation('CTM'))">
   <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
     <mat-header-cell *matHeaderCellDef [ngClass]="column === 'Particulars' ? 'inc-width' : ''">{{ column }}</mat-header-cell>
     <mat-cell *matCellDef="let element" [ngClass]="{'label-c': checkType(element[column]) && !isNumberOrEmpty(element[column])}">
@@ -26,7 +26,7 @@
 </mat-table>
 
 
-<mat-table [dataSource]="data" *ngIf="transferStepperTwo?.excelSheetId && isRelativeValuation('Relative_Valuation')">
+<mat-table [dataSource]="data" *ngIf="transferStepperTwo?.excelSheetId && (isRelativeValuation('Relative_Valuation') || isRelativeValuation('CTM'))">
   <ng-container>
     <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
       <mat-header-cell *matHeaderCellDef [ngClass]="column === 'Particulars' ? 'inc-width' : ''">{{ column }}</mat-header-cell>

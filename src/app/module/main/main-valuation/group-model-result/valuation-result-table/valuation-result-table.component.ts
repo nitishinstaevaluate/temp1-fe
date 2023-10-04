@@ -52,7 +52,7 @@ ngOnChanges(changes:SimpleChanges): void {
         return [FCFF_COLUMN[index], ...subArray.slice(1)];
       });
     }
-    if(response.model === 'Relative_Valuation'){
+    if(response.model === 'Relative_Valuation' || response.model === 'CTM'){
       const company = response?.valuationData?.companies;
       const industry = response?.valuationData?.industries;
       const toggleIndustryOrCompany = this.checkIndustryOrCompany();
@@ -69,7 +69,7 @@ ngOnChanges(changes:SimpleChanges): void {
   })
   this.dataSourceFcff && this.transferStepperthree?.formOneAndTwoData?.model.includes('FCFF') ? this.fcff = true : this.fcff = false;
   this.dataSourceFcfe && this.transferStepperthree?.formOneAndTwoData?.model.includes('FCFE') ? this.fcfe = true : this.fcfe = false;
-  this.valuationDataReport && this.transferStepperthree?.formOneAndTwoData?.model.includes('Relative_Valuation') ? this.relativeVal = true : this.relativeVal = false;
+  this.valuationDataReport && (this.transferStepperthree?.formOneAndTwoData?.model.includes('Relative_Valuation') || this.transferStepperthree?.formOneAndTwoData?.model.includes('CTM')) ? this.relativeVal = true : this.relativeVal = false;
   this.dataSourceExcessEarn && this.transferStepperthree?.formOneAndTwoData?.model.includes('Excess_Earnings') ? this.excessEarn = true : this.excessEarn = false;
   this.onTabSelectionChange();
 }

@@ -21,8 +21,9 @@ export class MainValuationComponent{
   relativeData:any;
   excessEarnData:any;
   formOneAndTwoData:any;
+  comparableIndustriesData:any;
   modelArray:any=[];
-
+  
   // breadcrumb property
   fcfePrev=false;
   fcffPrev=false;
@@ -56,7 +57,8 @@ export class MainValuationComponent{
         ...(this.formOneData?.model.includes('FCFF') ? this.fcffData : {}),
         ...(this.formOneData?.model.includes('FCFE') ? this.fcfeData : {}),
         ...(this.formOneData?.model.includes('Relative_Valuation') ? this.relativeData : {}),
-        ...(this.formOneData?.model.includes('Excess_Earnings') ? this.excessEarnData : {})
+        ...(this.formOneData?.model.includes('Excess_Earnings') ? this.excessEarnData : {}),
+        ...(this.formOneData?.model.includes('CTM') ? this.comparableIndustriesData : {})
       };
       
     }
@@ -99,6 +101,11 @@ export class MainValuationComponent{
     this.excessEarnData=data;
     this.nextModelSelection(data.status);
   }
+  comparableIndustriesDetails(data:any){
+    this.comparableIndustriesData=data;
+    this.nextModelSelection(data.status);
+
+  }
 
   nextModelSelection(data?:any){
     const model = this.formOneData.model;
@@ -118,6 +125,9 @@ export class MainValuationComponent{
         case 'Excess_Earnings':
           this.next = 4;
           break;
+        case 'CTM':
+          this.next = 5;
+          break;
         default:
           console.log("went in default");
           this.stepper.next(); 
@@ -128,8 +138,6 @@ export class MainValuationComponent{
   previousModelSelection(modelName?:string){
      // Determine the 'next' property based on the current model
      const currentModel = this.formOneData?.model[this.formOneData?.model.indexOf(modelName)-1];
-     console.log(currentModel,"current model")
-     console.log(this.formOneData.model,"models array")
   
      switch (currentModel) {
        case 'FCFE':
@@ -144,16 +152,17 @@ export class MainValuationComponent{
        case 'Excess_Earnings':
          this.next = 4;
          break;
+       case 'CTM':
+         this.next = 5;
+         break;
        default:
         this.stepper.previous(); 
      }
   }
   fcfeDetailsPrev(data:any){
-    console.log("fcfe data",data)
     this.previousModelSelection(data?.status)
   }
   fcffDetailsPrev(data:any){
-    console.log(data,"status")
     this.previousModelSelection(data?.status)
   }
 
@@ -161,6 +170,9 @@ export class MainValuationComponent{
     this.previousModelSelection(data?.status);
   }
   excessEarnDetailsPrev(data:any){
+    this.previousModelSelection(data?.status);
+  }
+  comparableIndustriesDetailsPrev(data:any){
     this.previousModelSelection(data?.status);
   }
 

@@ -24,10 +24,9 @@ export class RelativeValuationDetailsComponent implements OnInit,OnChanges {
 
   loadFormControl(){
     this.relativeValuation=this.formBuilder.group({
-      preferenceRatioSelect:['',[Validators.required]],
+      preferenceRatioSelect:['Company Based',[Validators.required]],
       companies:this.formBuilder.array([]),
-      industries:this.formBuilder.array([]),
-
+      industries:this.formBuilder.array([])
     })
 
 
@@ -35,6 +34,11 @@ export class RelativeValuationDetailsComponent implements OnInit,OnChanges {
   }
   ngOnChanges(){
     this.formOneData;
+    if(this.formOneData?.preferenceCompanies){
+      this.Companies.controls[0]?.patchValue(this.formOneData?.preferenceCompanies[0]);
+      this.Companies.controls[1]?.patchValue(this.formOneData?.preferenceCompanies[1]);
+      this.Companies.controls[2]?.patchValue(this.formOneData?.preferenceCompanies[2]);
+    }
   }
 
   isRelativeValuation(value:string){
@@ -77,9 +81,6 @@ export class RelativeValuationDetailsComponent implements OnInit,OnChanges {
     if (this.isRelativeValuation(this.MODEL.RELATIVE_VALUATION)) {
       industries = this.formOneData?.industriesRatio;
     }
-    if(this.relativeValuation.controls['preferenceRatioSelect'].value === 'Industry Based'){
-      this.relativeValuation.controls['companies'].reset();
-    }  
     this.relativeValDetails.emit({...this.relativeValuation.value,status:'Relative_Valuation',industries})
   }
 }
