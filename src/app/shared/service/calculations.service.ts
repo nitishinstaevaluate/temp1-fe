@@ -25,4 +25,8 @@ export class CalculationsService {
   generatePdf(payload: any,specificity:boolean = false) {
     return this.http.get(`${HOST}upload/generate/${payload?.reportId}/${payload?.model}/${specificity}`);
   }
+
+  modifyExcel(payload:any){
+    return this.http.post(`${HOST}upload/modifyExcel`,payload)
+  }
 }

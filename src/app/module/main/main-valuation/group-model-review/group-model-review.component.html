@@ -4,7 +4,7 @@
         <div>
             <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
                 <mat-tab label="Profit & Loss">
-                    <app-profit-loss-data [transferStepperTwo]="transferStepperTwo" (profitLossData)="profitLossData($event)" (excelData)="excelData($event)" [currentStepIndex]="currentStepIndex"></app-profit-loss-data>
+                    <app-profit-loss-data [transferStepperTwo]="transferStepperTwo" (profitLossData)="profitLossData($event)" [currentStepIndex]="currentStepIndex"></app-profit-loss-data>
                 </mat-tab>
                 <mat-tab label="Balance Sheet">
                     <app-balance-sheet-details [transferStepperTwo]="transferStepperTwo" (balanceSheetData)="balanceSheetData($event)"></app-balance-sheet-details>

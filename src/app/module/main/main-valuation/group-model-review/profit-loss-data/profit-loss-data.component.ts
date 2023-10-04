@@ -1,6 +1,7 @@
 import { Component,EventEmitter,Input,OnChanges,OnInit, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { isSelected } from 'src/app/shared/enums/functions';
+import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
 
 @Component({
@@ -14,7 +15,6 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
   @Input() transferStepperTwo :any;
   @Input() currentStepIndex :any;
   @Output() profitLossData :any = new EventEmitter();
-  @Output() excelData :any = new EventEmitter();
 
   data:any=[];
   displayedColumns:any=[]
@@ -22,13 +22,24 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
   floatLabelType:any='never';
   appearance:any='fill';
   editedValues:any = [];
+  isExcelModified=false;
+
   constructor(private valuationService:ValuationService,
-    private snackBar: MatSnackBar){
+    private snackBar: MatSnackBar,private calculationService:CalculationsService){
 
   }
   ngOnChanges(){
+    this.fetchExcelData();
+  }
+  ngOnInit(): void {
+  }
+  isRelativeValuation(modelName:string){
+    return (isSelected(modelName,this.transferStepperTwo?.model) && this.transferStepperTwo.model.length <= 1)
+  }
+  
+  fetchExcelData(){
     if(this.transferStepperTwo?.excelSheetId){
-      this.valuationService.getProfitLossSheet(this.transferStepperTwo?.excelSheetId ? this.transferStepperTwo.excelSheetId : 'Equity Value-31.03.2023_Full Year 0.2.xlsx','P&L').subscribe(
+      this.valuationService.getProfitLossSheet(this.transferStepperTwo?.excelSheetId,'P&L').subscribe(
         (response:any)=>{
           this.displayedColumns= response[0];
          this.displayedColumns.map((val:any,index:any)=>{
@@ -49,7 +60,7 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
             })
         }
           this.data = response
-          this.profitLossData.emit({status:true,result:response});
+          this.profitLossData.emit({status:true,result:response,isExcelModified:this.isExcelModified});
         },
         (err)=>{
           this.profitLossData.emit({status:false,error:err})
@@ -64,11 +75,6 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
         panelClass: 'app-notification-error'
       })
     }
-  }
-  ngOnInit(): void {
-  }
-  isRelativeValuation(modelName:string){
-    return (isSelected(modelName,this.transferStepperTwo?.model) && this.transferStepperTwo.model.length <= 1)
   }
 
   checkType(ele:any){
@@ -109,6 +115,20 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
         }
       }
     }
-    this.excelData.emit({ excelSheet:'P&L',editedValues: this.editedValues });
+    // this.excelData.emit({ excelSheet:'P&L',editedValues: this.editedValues });
+  }
+  
+  updateExcel(){
+    const payload = {
+      excelSheet:'P&L',
+      excelSheetId:`${this.transferStepperTwo.excelSheetId}`,
+      editedValues: this.editedValues 
+    }
+    this.calculationService.modifyExcel(payload).subscribe((response:any)=>{
+      console.log(response)
+      if(response.status){
+        this.isExcelModified = true;
+      }
+    })
   }
 }

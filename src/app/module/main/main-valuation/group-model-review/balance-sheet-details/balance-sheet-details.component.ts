@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { isSelected } from 'src/app/shared/enums/functions';
+import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
 
 @Component({
@@ -16,10 +17,23 @@ export class BalanceSheetDetailsComponent implements OnChanges {
   displayedRelativeColumns:any = [];
   floatLabelType:any='never';
   appearance:any='fill';
+  editedValues:any=[];
+  isExcelModified=false;
 
-  constructor(private valuationService:ValuationService,private snackBar:MatSnackBar){}
+  constructor(private valuationService:ValuationService,
+    private snackBar:MatSnackBar,
+    private calculationService:CalculationsService ){}
 
   ngOnChanges(){
+   this.fetchExcelData();
+  }
+  ngOnInit(): void {
+  }
+  isRelativeValuation(modelName:string){
+    return (isSelected(modelName,this.transferStepperTwo?.model) && this.transferStepperTwo.model.length <= 1)
+  }
+
+  fetchExcelData(){
     if(this.transferStepperTwo?.excelSheetId){
       this.valuationService.getProfitLossSheet(this.transferStepperTwo.excelSheetId,'BS').subscribe(
         (response:any)=>{
@@ -59,12 +73,6 @@ export class BalanceSheetDetailsComponent implements OnChanges {
       })
     }
   }
-  ngOnInit(): void {
-  }
-  isRelativeValuation(modelName:string){
-    return (isSelected(modelName,this.transferStepperTwo?.model) && this.transferStepperTwo.model.length <= 1)
-  }
-
   checkType(ele:any){
     if(typeof ele === 'string' && isNaN(parseFloat(ele)))
      return true;
@@ -73,5 +81,50 @@ export class BalanceSheetDetailsComponent implements OnChanges {
 
   isNumberOrEmpty(value: any): boolean {
     return (typeof value === 'number' || value === '' || typeof value === 'string' || value === null || value === undefined) && !isNaN(value) ? true : false;
+  }
+
+  onInputChange(value: any, column: string,originalValue:any) {
+    // const spanContent = (value as HTMLInputElement).closest('mat-row').querySelector('span').textContent;
+  
+    const inputElement = value;
+    const closestRow = inputElement.closest('mat-row');
+    
+    if (closestRow) {
+      const spanElement = closestRow.querySelector('span');
+      const spanContent = spanElement ? spanElement.textContent : null;
+      if(value?.value !== originalValue || (originalValue === null && value.value === '')){
+        if(this.editedValues.some((item:any)=>item.subHeader == spanContent && item.columnName === column)){
+          this.editedValues.map((val:any)=>{
+            if(val.subHeader == spanContent && val.columnName === column){
+              val.newValue = value.value;
+            }
+          })
+        }
+        else{
+          let payload={
+            subHeader:spanContent,
+            originalValue,
+            newValue:value.value,
+            columnName:column
+          }
+          this.editedValues.push(payload)
+        }
+      }
+    }
+    // this.excelData.emit({ excelSheet:'P&L',editedValues: this.editedValues });
+  }
+
+  updateExcel(){
+    const payload = {
+      excelSheet:'BS',
+      excelSheetId:`${this.transferStepperTwo.excelSheetId}`,
+      editedValues: this.editedValues 
+    }
+    this.calculationService.modifyExcel(payload).subscribe((response:any)=>{
+      console.log(response)
+      if(response.status){
+        this.isExcelModified = true;
+      }
+    })
   }
 }
