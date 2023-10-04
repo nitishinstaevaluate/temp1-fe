@@ -12,7 +12,7 @@ import { ValuationService } from 'src/app/shared/service/valuation.service';
 import { DataReferencesService } from 'src/app/shared/service/data-references.service';
 import { DROPDOWN } from 'src/app/shared/enums/enum';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { environment } from 'src/enviroments/enviroments';
+import { environment } from 'src/environments/environment';
 import { FCFF_HEADING_OBJ,FCFE_HEADING_OBJ } from 'src/app/shared/enums/constant';
 import { MatStepper } from '@angular/material/stepper';
 import { UserInputComponent } from 'src/app/shared/Modal/user-input.component';
@@ -584,12 +584,12 @@ export class ValuationComponent implements OnInit {
   }
 
   get exportResult() {
-    return environment.HOST + 'export/' + this.reportId;
+    return environment.baseUrl + 'export/' + this.reportId;
   }
 
   get downloadTemplate() {
     return (
-      environment.HOST +
+      environment.baseUrl +
       'download/template/' +
       (this.firstFormGroup.controls['projectionYears'].value || '1')
     );
