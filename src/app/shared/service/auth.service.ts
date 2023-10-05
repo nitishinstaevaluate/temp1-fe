@@ -1,5 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 // import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 
@@ -10,21 +12,17 @@ export class AuthService {
   afu:any;
   authState: any;
 
-  constructor ( private router: Router) {
+  constructor ( private router: Router,private http:HttpClient) {
     // this.afu.authState.subscribe(((auth:any) =>{
     //   this.authState = auth;
     // }))
   }
   loginWithEmail(email: string, password: string) {
-    return this.afu
-      .signInWithEmailAndPassword(email, password)
-      .then((user:any) => {
-        this.authState = user;
-      })
-      .catch((_error:any) => {
-        console.log(_error);
-        throw _error;
-      });
+    const payload = {
+      username:email,
+      password
+    }
+    return this.http.post(`${environment.baseUrl}authentication/login`,payload)
   }
 
   singout(): void {

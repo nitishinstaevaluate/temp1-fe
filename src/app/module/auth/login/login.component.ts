@@ -1,5 +1,6 @@
 import { Component,OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/service/auth.service';
 
@@ -12,7 +13,7 @@ import { AuthService } from 'src/app/shared/service/auth.service';
 export class LoginComponent  implements OnInit {
   disabled = ""
   active:any;
-  constructor(private authservice: AuthService, private router: Router, private formBuilder : FormBuilder) { }
+  constructor(private authservice: AuthService, private router: Router, private formBuilder : FormBuilder,private snackbar:MatSnackBar) { }
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
@@ -22,29 +23,43 @@ export class LoginComponent  implements OnInit {
   }
 
   // firebase
-  email = "spruko@admin.com";
-  password = "sprukoadmin";
+  // email = "spruko@admin.com";
+  // password = "sprukoadmin";
   errorMessage = ''; // validation _error handle
   _error: { name: string, message: string } = { name: '', message: '' }; // for firbase _error handle
 
-  clearErrorMessage() {
-    this.errorMessage = '';
-    this._error = { name: '', message: '' };
-  }
+  // clearErrorMessage() {
+  //   this.errorMessage = '';
+  //   this._error = { name: '', message: '' };
+  // }
 
   login()
   {
     this.disabled = "btn-loading"
-    this.clearErrorMessage();
-    if (this.validateForm(this.email, this.password)) {
-      this.authservice.loginWithEmail(this.email, this.password)
-        .then(() => {
-         this.router.navigate(['/dashboard'])
-        //  console.clear()
-        }).catch((_error:any)=> {
-          this._error = _error
-          this.router.navigate(['/'])
+    // this.clearErrorMessage();
+    // console.log(this.loginForm.controls['username'].value, this.loginForm.controls['password'].value)
+    if (this.validateForm(this.loginForm.controls['username'].value, this.loginForm.controls['password'].value)) {
+      this.authservice.loginWithEmail(this.loginForm.controls['username'].value, this.loginForm.controls['password'].value).subscribe((response)=>{
+        this.snackbar.open('Login successful','Ok',{
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 4000,
+          panelClass: 'app-notification-success'
         })
+        this.router.navigate(['/dashboard']);
+        this.disabled='';
+      },
+      (error)=>{
+        this._error = error
+        this.disabled = '';
+          this.router.navigate(['/']);
+          this.snackbar.open('Login failed,contact administrator','Ok',{
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 4000,
+            panelClass: 'app-notification-error'
+          })
+      })
     }
   }
 
@@ -75,14 +90,14 @@ export class LoginComponent  implements OnInit {
     return this.loginForm.controls;
   }
 
-  Submit(){
-    this.disabled = "btn-loading"
-    if (this.loginForm.controls['username'].value === "spruko@admin.com" && this.loginForm.controls['password'].value === "sprukoadmin" )
-    {
-      this.router.navigate(['/dashboard']);
-    }
-    else{
-      this.error = "Please check email and passowrd"
-    }
-  }
+  // Submit(){
+  //   this.disabled = "btn-loading"
+  //   if (this.loginForm.controls['username'].value === "spruko@admin.com" && this.loginForm.controls['password'].value === "sprukoadmin" )
+  //   {
+  //     this.router.navigate(['/dashboard']);
+  //   }
+  //   else{
+  //     this.error = "Please check email and passowrd"
+  //   }
+  // }
 }
