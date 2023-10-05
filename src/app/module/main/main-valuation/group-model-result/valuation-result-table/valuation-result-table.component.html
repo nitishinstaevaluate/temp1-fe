@@ -1,7 +1,9 @@
 <mat-tab-group style="padding-bottom: 3% !important;" mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="selectedTabIndex" (selectedTabChange)="onTabSelectionChange()">
   <mat-tab label="FCFE" *ngIf = "fcfe">
     <div class="btn" style="text-align: right;width: 100%;">
-      <button mat-stroked-button class="exp" (click)="exportPdf('FCFE')">Export <mat-icon>save_alt</mat-icon></button>
+      <button mat-stroked-button class="exp">
+        <a class="exp-a" [href]="'https://localhost:3000/upload/generate/' + (transferStepperthree?.formThreeData?.appData?.reportId || 'null') +'/FCFE/' + 'true'" download>Export</a>
+      </button>
     </div>
     <div>
       <!-- <h5 class="company-head-fcfe">FCFE Result</h5> -->
@@ -28,7 +30,9 @@
   </mat-tab>
    <mat-tab label="FCFF" *ngIf = "fcff">
     <div class="btn" style="text-align: right;width: 100%;">
-      <button mat-stroked-button class="exp" (click)="exportPdf('FCFF')">Export <mat-icon>save_alt</mat-icon></button>
+      <button mat-stroked-button class="exp">
+        <a class="exp-a" [href]="'https://localhost:3000/upload/generate/' + (transferStepperthree?.formThreeData?.appData?.reportId || 'null') +'/FCFF/' + 'true'" download>Export</a>
+      </button>
     </div>
     <div>
       <!-- <h5 class="company-head-fcff">FCFF Result</h5> -->
@@ -55,7 +59,9 @@
   </mat-tab>
   <mat-tab label="Excess Earning" *ngIf = "excessEarn">
     <div class="btn" style="text-align: right;width: 100%;">
-      <button mat-stroked-button class="exp" (click)="exportPdf('Excess_Earnings')">Export <mat-icon>save_alt</mat-icon></button>
+      <button mat-stroked-button class="exp">
+        <a class="exp-a" [href]="'https://localhost:3000/upload/generate/' + (transferStepperthree?.formThreeData?.appData?.reportId || 'null') +'/Excess_Earnings/' + 'true'" download>Export</a>
+      </button>
     </div>
     <div>
       <h5 class="company-head-excEarn">Excess Earning Result</h5>
@@ -80,9 +86,11 @@
       </div>
   </div>
   </mat-tab> 
-  <mat-tab label="Relative Valuations" *ngIf="relativeVal">
+  <mat-tab [label]="checkIndustryOrCompany() ? 'Comparable Companies' : 'Comparable Industries'" *ngIf="relativeVal">
     <div class="btn" style="text-align: right;width: 100%;">
-      <button mat-stroked-button class="exp" (click)="checkIndustryOrCompany() ? exportPdf('Relative_Valuation') : exportPdf('CTM') ">Export <mat-icon>save_alt</mat-icon></button>
+      <button mat-stroked-button class="exp">
+        <a class="exp-a" [href]="'https://localhost:3000/upload/generate/' + (transferStepperthree?.formThreeData?.appData?.reportId || 'null') + (checkIndustryOrCompany() ? '/Relative_Valuation/' : '/CTM/') + 'true'" download>Export</a>
+      </button>
     </div>
     <div>
         <!-- <h5 class="company-head-relativeval">Relative Valuations Result</h5> -->
