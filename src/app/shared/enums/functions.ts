@@ -1,4 +1,4 @@
-import { environment } from "src/enviroments/enviroments";
+import { environment } from "src/environments/environment";
 
 export function  isSelected(value: string,checkList:Array<any>): boolean {
     return checkList.includes(value);
@@ -17,7 +17,7 @@ export function  isSelected(value: string,checkList:Array<any>): boolean {
 }
 export function GET_TEMPLATE(value:string){
     return (
-    environment.HOST +
+    environment.baseUrl +
     'download/template/' +
     (value || '1')
   )

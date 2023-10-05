@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ValuationService } from '../../../shared/service/valuation.service';
-import { environment } from 'src/enviroments/enviroments';
+import { environment } from 'src/environments/environment';
 import { PAGINATION_VAL } from 'src/app/shared/enums/constant';
 
 @Component({
@@ -30,7 +30,7 @@ export class ActivityComponent {
   }
 
   getReport(id: any):string {
-    return environment.HOST + 'export/' + id;
+    return environment.baseUrl + 'export/' + id;
   }
 
   fetchData(page:number=1,pageSize:number=10): void {

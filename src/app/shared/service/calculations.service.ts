@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'src/enviroments/enviroments';
-const HOST = environment.HOST;
+import { environment } from 'src/environments/environment';
+const HOST = environment.baseUrl;
 
 @Injectable({
   providedIn: 'root'
