@@ -28,6 +28,7 @@
               <app-relative-valuation-details (relativeValDetailsPrev)="relativeValDetailsPrev($event)" (relativeValDetails)="relativeValDetails($event)" [hidden]="next !== 3" [formOneData]="formOneData"></app-relative-valuation-details>
               <app-excess-earning-details (excessEarnDetailsPrev)="excessEarnDetailsPrev($event)" (excessEarnDetails)="excessEarnDetails($event)" [hidden]="next !== 4" [formOneData]="formOneData"></app-excess-earning-details>
               <app-comparable-industries-details (comparableIndustriesDetailsPrev)="comparableIndustriesDetailsPrev($event)" (comparableIndustriesDetails)="comparableIndustriesDetails($event)" [hidden]="next !== 5" [formOneData]="formOneData"></app-comparable-industries-details>
+              <app-net-asset-value-details (navDetailsPrev)="navDetailsPrev($event)" (navDetails)="navDetails($event)" [hidden]="next !== 6" [formOneData]="formOneData"></app-net-asset-value-details>
             </mat-step>
             <mat-step  [stepControl]="thirdFormGroup" errorMessage="Address is required.">
               <app-group-model-review (groupReviewControls)="groupReviewControls($event)" [currentStepIndex]="stepper.selectedIndex" (previousPage)="previous($event)" [transferStepperTwo]="formOneAndTwoData"

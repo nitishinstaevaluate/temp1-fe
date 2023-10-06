@@ -22,6 +22,7 @@ export class MainValuationComponent{
   excessEarnData:any;
   formOneAndTwoData:any;
   comparableIndustriesData:any;
+  navData:any;
   modelArray:any=[];
   
   // breadcrumb property
@@ -29,6 +30,7 @@ export class MainValuationComponent{
   fcffPrev=false;
   relativePrev=false;
   excessPrev=false;
+  navPrev=false;
 
   next=0;
   
@@ -58,7 +60,8 @@ export class MainValuationComponent{
         ...(this.formOneData?.model.includes('FCFE') ? this.fcfeData : {}),
         ...(this.formOneData?.model.includes('Relative_Valuation') ? this.relativeData : {}),
         ...(this.formOneData?.model.includes('Excess_Earnings') ? this.excessEarnData : {}),
-        ...(this.formOneData?.model.includes('CTM') ? this.comparableIndustriesData : {})
+        ...(this.formOneData?.model.includes('CTM') ? this.comparableIndustriesData : {}),
+        ...(this.formOneData?.model.includes('NAV') ? this.navData : {}),
       };
       
     }
@@ -104,7 +107,10 @@ export class MainValuationComponent{
   comparableIndustriesDetails(data:any){
     this.comparableIndustriesData=data;
     this.nextModelSelection(data.status);
-
+  }
+  navDetails(data:any){
+    this.navData=data;
+    this.nextModelSelection(data.status);
   }
 
   nextModelSelection(data?:any){
@@ -127,6 +133,9 @@ export class MainValuationComponent{
           break;
         case 'CTM':
           this.next = 5;
+          break;
+        case 'NAV':
+          this.next = 6;
           break;
         default:
           console.log("went in default");
@@ -155,6 +164,9 @@ export class MainValuationComponent{
        case 'CTM':
          this.next = 5;
          break;
+       case 'NAV':
+         this.next = 6;
+         break;
        default:
         this.stepper.previous(); 
      }
@@ -173,6 +185,9 @@ export class MainValuationComponent{
     this.previousModelSelection(data?.status);
   }
   comparableIndustriesDetailsPrev(data:any){
+    this.previousModelSelection(data?.status);
+  }
+  navDetailsPrev(data:any){
     this.previousModelSelection(data?.status);
   }
 

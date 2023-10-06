@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=AR+One+Sans:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+// ::ng-deep mat-row mat-cell,mat-header-cell,mat-table{
+//     border:  0.5px solid #d1d0d0 !important;
+// }
+// mat-header-cell{
+//     font-size: 14px;
+//     font-weight: 600;
+//     font-family: 'Karla', sans-serif;
+//     display: flex;
+//     justify-content: center;
+//     padding: 0px !important;
+//     background-color: #dadada87 !important;
+// }
+// ::ng-deep mat-row mat-cell{
+//     display: flex;
+//     justify-content: center;
+//     padding: 0px !important;
+//     font-size: 11px !important;
+//     text-align: center !important;
+//     font-family: 'Space Grotesk', sans-serif;
+//     text-transform: capitalize !important;
+// }
+
+// ::ng-deep mat-row:nth-child(odd) {
+//     background-color: #f5f5f5;
+// }
+
+// ::ng-deep .mat-select-value .mat-mdc-select-trigger .mat-mdc-select-value .mat-mdc-select-value-text{    
+//     padding: 0px !important;
+//     color: #004e67 !important;
+//       font-family: 'AR One Sans';
+//   }
+//   ::ng-deep .mat-relative-val .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) .mat-mdc-form-field-infix {
+//     padding-top: 0px !important;
+//     padding-bottom: 0px !important;
+//   }
+
+
+// ::ng-deep mat-row:hover mat-cell {
+//     background-color: #e5e5e5;
+//   }
+
+// ::ng-deep mat-row{
+//     // border-bottom: 1px solid #22cd9e !important;
+// }
+
+// .label-c{
+//     color: #22a932 !important;
+//     font-size: 13px !important;
+//     font-weight: 600;
+//     min-width:30% ;
+//     font-family: 'Raleway', sans-serif !important;
+// }
+// .make-bld{
+//     font-weight: 700 !important;
+//     font-size: 15px !important;
+//     min-width:30% ;
+//     font-family: 'Raleway', sans-serif !important;
+//     color: #288ad3 !important;
+// }
+
+// .hover-cell:hover {
+//     background-color: #e5e5e5;
+// }
+
+// .inc-width{
+//     min-width: 30%;
+// }
+
+// .btn-update{
+//     text-align: right;
+//     padding: 2%;
+// }
+// .btn-up{
+//     background-color: rgb(255 255 255);
+//     transition: color 0.2s, box-shadow 0.2s;
+//     color: #268f8f;
+//     font-size: 14px;
+//     font-weight: 600;
+//     font-family: 'Roboto';
+//     transition: color .2s;
+// }
+// .btn-up:hover{
+//     color:rgb(226, 29, 29);
+// }
+
+// .nav-header{
+//     font-size: 16px;
+//     font-weight: 600;
+//     font-family: 'Karla', sans-serif;
+//     color: #005969;;
+//     background-color: #dadada87 !important;
+// }
+
+.full-width-input {
+    width: 50%; /* Set the width to 100% to occupy the full width of the container */
+  }
+  .col-md-6 mat-form-field{
+    width: 100% !important;
+  }
+
+  .label{
+    border-radius: 5px;
+    font-family: 'AR One Sans', sans-serif;
+    font-size: 17px;
+    color: #26879d;
+    padding-left: 2%;
+    cursor: pointer;
+    transition:color .3s;
+  }
+  
+  ::ng-deep .mat-relative-val input
+  {
+    color: #004e67 !important;
+    font-family: 'AR One Sans';
+  }
+  mat-label{
+    color:#38a3b8;
+  }
+  .field{
+    padding-left: 2.5%;
+    padding-top: 0.5%;
+    padding-right: 2.5%;
+  }
+
+.card-header{
+    color: #1c6e8f;
+    border-top: 1px solid #e3e3f7;
+    font-size: 19px;
+    font-family: 'Poppins', sans-serif;
+  }
+
+// keep this css
+.revalmodel{
+    margin-top: auto;
+    margin-bottom: auto;
+    padding-top: 1%;
+    position: relative;
+    padding-left: 1.8%;
+  }
+  .label:hover{
+    color: #26879d;
+  }
+
+  .mat-bullet{
+    position: absolute;
+    left: 2%;
+    top: 30%;
+    mat-icon{
+        transform: scale(.5);
+        color: #26879d;
+    }
+  }
+
+  ::ng-deep .mat-select-value .mat-mdc-select-trigger .mat-mdc-select-value .mat-mdc-select-value-text{    
+    padding: 0px !important;
+    color: #004e67 !important;
+      font-family: 'AR One Sans';
+  }
+  ::ng-deep .mat-relative-val .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) .mat-mdc-form-field-infix {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+  }

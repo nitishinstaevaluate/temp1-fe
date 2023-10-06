@@ -19,20 +19,21 @@ export class SidebarComponent {
 
   }
 menues :MENU[] =[
+  // {
+  //   title: "Valuation",
+  //   link : "/dashboard",
+  //   icon:'fa fa-usd mx-2',
+  // },
+  
   {
     title: "Valuation",
     link : "/dashboard",
-    icon:'fa fa-usd mx-2',
+    icon:"fa fa-usd mx-2",
   },
   {
     title: "Activity",
     link : "/dashboard/activity",
     icon:"fa fa-clock-o",
-  },
-  {
-    title: "Valuation (New)",
-    link : "/dashboard/rewampvaluation",
-    icon:"fa fa-usd mx-2",
   }
 ];
 sidebarClose(){

@@ -5,18 +5,19 @@ import { ValuationComponent } from './valuation/valuation.component';
 import { MainValuationComponent } from './main-valuation/main-valuation.component';
 
 const routes: Routes = [
+  // {
+  //   path : "",
+  //   component : ValuationComponent
+  // },
+  
   {
     path : "",
-    component : ValuationComponent
+    component : MainValuationComponent
   },
   {
     path : "activity",
     component : ActivityComponent
-  },
-  {
-    path : "rewampvaluation",
-    component : MainValuationComponent
-  },
+  }
 ];
 
 @NgModule({

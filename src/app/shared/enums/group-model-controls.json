@@ -571,5 +571,119 @@
                 "toolTip":"Select Industry"
             }
         }
+    },
+    "NAV":{
+        "type":"NAV",
+        "header":"Net Asset Value",
+        "options":{
+            "netAssetValue": {
+            "name":"nav",
+            "placeholder":"Net Asset Value",
+            "type":"text",
+            "toolTip":"Please select Net asset value",
+            "options":[               
+                    {
+                        "name":"BookValue",
+                        "value":"book_value"
+                    },
+                    {
+                        "name":"Market Value",
+                        "value":"market_value"
+                    }
+                ]
+            },
+            "columns":{
+                "nonCurrentAssets":{
+                    "colHead":"Non-Current-Assets",
+                    "value":"",
+                    "ifMarketVal":""
+                },
+                "fixedAssets":{
+                    "colHead":"Fixed Assets",
+                    "value":[],
+                    "ifMarketVal":""
+                },
+                "longTermLoansAdvnce":{
+                    "colHead":"Long-Term Loans and advances",
+                    "value":[],
+                    "ifMarketVal":""
+                },
+                "nonCurrentInvestments":{
+                    "colHead":"Non-Current Investments",
+                    "value":[],
+                    "ifMarketVal":""
+                },
+                "defferedTaxAssets":{
+                    "colHead":"Deffered Tax Assets",
+                    "value":[],
+                    "ifMarketVal":""
+                },
+                "netCurrentAssets":{
+                    "colHead":"Net Current Assets",
+                    "value":[],
+                    "ifMarketVal":""
+                },
+                "inventories":{
+                    "colHead":"Inventories",
+                    "value":[],
+                    "ifMarketVal":""
+                },
+                "shortTermLoansAdvnce":{
+                    "colHead":"Short Term Loans and advances",
+                    "value":[],
+                    "ifMarketVal":""
+                },
+                "tradeRecievables":{
+                    "colHead":"Trade Recievables",
+                    "value":[],
+                    "ifMarketVal":""
+                },
+                "cash":{
+                    "colHead":"Cash",
+                    "value":[],
+                    "ifMarketVal":""
+                },
+                "otherCurrentAssets":{
+                    "colHead":"Other Current Assets",
+                    "value":[],
+                    "ifMarketVal":""
+                },
+                "lessShortTermProvisions":{
+                    "colHead":"Less:Short term Provisions",
+                    "value":[],
+                    "ifMarketVal":""
+                },
+                "shortTermborrowings":{
+                    "colHead":"Short term borrowings",
+                    "value":[],
+                    "ifMarketVal":""
+                },
+                "tradePayables":{
+                    "colHead":"Trade Payables",
+                    "value":[],
+                    "ifMarketVal":""
+                },
+                "otherCurrentLiabilities":{
+                    "colHead":"Other Current Liabilities",
+                    "value":[],
+                    "ifMarketVal":""
+                },
+                "lessLongTermBorrowings":{
+                    "colHead":"Less:Long Term Borrowings",
+                    "value":[],
+                    "ifMarketVal":""
+                },
+                "lessLongTermProvisions":{
+                    "colHead":"Less:Long Term Provisions",
+                    "value":[],
+                    "ifMarketVal":""
+                },
+                "lessShareApplicableMoney":{
+                    "colHead":"Less:Share Applicable Money",
+                    "value":[],
+                    "ifMarketVal":""
+                }
+            }
+        }
     }
 }

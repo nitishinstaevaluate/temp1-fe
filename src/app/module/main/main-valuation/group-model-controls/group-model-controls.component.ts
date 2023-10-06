@@ -352,11 +352,7 @@ isSelectedpreferenceRatio(value:any){
     if(!this.isRelativeValuation(this.MODEL.RELATIVE_VALUATION)){
       this.relativeValuation.controls['preferenceRatioSelect'].setValue('');
     }
-    const payload = {...this.modelValuation.value,betaIndustry:this.betaIndustriesId,preferenceCompanies:this.preferenceCompanies,industriesRatio:[this.industriesRatio]}
-
-    // if (this.isRelativeValuation(this.MODEL.RELATIVE_VALUATION)) {
-    //   payload['industries'] = [this.industriesRatio];
-    // }
+    let payload = {...this.modelValuation.value,betaIndustry:this.betaIndustriesId,preferenceCompanies:this.preferenceCompanies,industriesRatio:[this.industriesRatio]}
     
     //  check if tax rate is null
     if (payload['taxRate'] == null || payload['taxRateType']=='25.17') {
@@ -377,6 +373,16 @@ isSelectedpreferenceRatio(value:any){
       // this.modelValuation.controls['valuationDate'].setValue(this.newDate.getTime());
       payload['valuationDate'] = this.newDate.getTime();
     }
+    if(this.isRelativeValuation('NAV') &&  this.modelValuation.controls['model'].value.length=== 1){
+      const keysToRemove = ['taxRate', 'taxRateType', 'terminalGrowthRate', 'preferenceCompanies','projectionYears','projectionYearSelect','location'];
+
+    payload = Object.keys(payload).reduce((result:any, key) => {
+        if (!keysToRemove.includes(key)) {
+            result[key] = payload[key];
+        }
+        return result;
+    }, {});
+  }
   
     
     // submit final payload
