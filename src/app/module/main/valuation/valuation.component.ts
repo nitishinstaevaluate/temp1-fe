@@ -342,6 +342,9 @@ export class ValuationComponent implements OnInit {
           unleveredBeta
         );
       }
+      else if (val == 'market_beta') {
+        this.thirdFormGroup.controls['beta'].setValue(1);
+      }
       else {
         // Do nothing for now
       }

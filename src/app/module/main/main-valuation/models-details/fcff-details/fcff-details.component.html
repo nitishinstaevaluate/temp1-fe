@@ -56,7 +56,7 @@
                     <mat-select formControlName="betaType" [placeholder]="modelControl.fcff.options.betaType.placeholder">
                     <mat-option [disabled]="!formOneData?.industry" *ngFor="let doc of modelControl.fcff.options.betaType.options"  [value]="doc.value" >{{doc.name}}</mat-option>
                 </mat-select>
-                <mat-hint *ngIf="fcffForm.controls['beta'].value" class="taxrate-hint">Beta is {{fcffForm.controls['beta'].value.toFixed(2)}}%</mat-hint>
+                <mat-hint *ngIf="fcffForm.controls['beta'].value" class="taxrate-hint">Beta is {{fcffForm.controls['beta'].value.toFixed(2)}}</mat-hint>
                   </mat-form-field>
             </div>
 

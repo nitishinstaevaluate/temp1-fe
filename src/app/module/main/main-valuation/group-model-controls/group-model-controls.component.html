@@ -71,39 +71,11 @@
                             <mat-option (click)="openDialog()" value="25.17"> Default</mat-option> 
                         <mat-option *ngFor="let doc of taxRate" (click)="openDialog(true)" [value]="doc.type">{{doc.label}}</mat-option>
                         </mat-select>
-                        <mat-hint *ngIf="taxRateModelBox" class="taxrate-hint">Tax rate is {{taxRateModelBox}}</mat-hint>
+                        <mat-hint *ngIf="taxRateModelBox" class="taxrate-hint">Tax rate is {{taxRateModelBox}}%</mat-hint>
                     </mat-form-field>
                 </div>
 
-                <!-- upload excel documents -->
-                <div class="col-md-6 field upload-doc">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <input
-                              type="file"
-                              hidden
-                              #fileInput
-                              accept="image/png, image/jpeg, .pdf, .xlsx"
-                              (change)="onFileSelected($event)"
-                            />
-                            <mat-label class="label">Upload File</mat-label>
-                            <p class="download">(If you want to download template,
-                              <a [href]="downloadTemplate" target="_blank" style="font-weight: 500;">Click Me!</a>)
-                            </p>
-                          </div>
-                          <div class="col-md-4" style="margin-top: auto; margin-bottom: auto;">
-                            <button
-                              type="button"
-                              mat-raised-button
-                              [ngClass]="'upload-btn-enabled'"
-                              (click)="fileInput.click()"
-                            >
-                              <mat-icon>cloud_upload</mat-icon> Upload File
-                            </button>
-                          </div>
-                    </div>
-                </div>
-
+              
                 <!-- valiuation model selection -->
                 <div class="col-md-12 field" >
                   <div class="row">
@@ -129,6 +101,37 @@
                 </mat-radio-group>
             </div>
             </div>
+
+            <!-- upload excel documents -->
+            <div class="col-md-6 field upload-doc">
+              <div class="row">
+                  <div class="col-md-8">
+                      <input
+                        type="file"
+                        hidden
+                        #fileInput
+                        accept="image/png, image/jpeg, .pdf, .xlsx"
+                        (change)="onFileSelected($event)"
+                      />
+                      <mat-label class="label">Add provisional Profit Loss and Balance Sheet statements </mat-label>
+                      <p class="download">
+                        <!-- (If you want to download template, -->
+                        <a [href]="downloadTemplate" target="_blank" style="font-weight: 500;">Download Template!</a>
+                      </p>
+                    </div>
+                    <div class="col-md-4" style="margin-top: auto; margin-bottom: auto;">
+                      <button
+                        type="button"
+                        mat-raised-button
+                        [ngClass]="'upload-btn-enabled'"
+                        (click)="fileInput.click()"
+                      >
+                        <mat-icon>cloud_upload</mat-icon> Upload File
+                      </button>
+                    </div>
+              </div>
+          </div>
+
       </form>   
     </div>
 

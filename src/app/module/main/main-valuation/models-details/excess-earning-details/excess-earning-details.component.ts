@@ -155,6 +155,9 @@ loadOnChangeValue(){
         unleveredBeta
       );
     }
+    else if (val == 'market_beta') {
+      this.excessEarningForm.controls['beta'].setValue(1);
+    }
     else {
       // Do nothing for now
     }
