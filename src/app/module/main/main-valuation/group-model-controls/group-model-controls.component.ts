@@ -250,6 +250,9 @@ export class GroupModelControlsComponent implements OnInit {
           unleveredBeta
         );
       }
+      else if (val == 'market_beta') {
+        this.modelSpecificCalculation.controls['beta'].setValue(1);
+      }
       else {
         // Do nothing for now
       }

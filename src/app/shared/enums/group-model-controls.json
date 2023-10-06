@@ -59,7 +59,7 @@
             "model":{
                 "name":"model",
                 "type":"radio",
-                "placeholder":"Select Model :-",
+                "placeholder":"Select Model",
                 "toolTip":"Select model valuation",
                 "options":[
                     {
@@ -215,6 +215,10 @@
                     {
                         "name":"Unlevered",
                         "value":"unlevered"
+                    },
+                    {
+                        "name":"Market Beta",
+                        "value":"market_beta"
                     }
                 ]
             },
@@ -314,6 +318,10 @@
                     {
                         "name":"Unlevered",
                         "value":"unlevered"
+                    },
+                    {
+                        "name":"Market Beta",
+                        "value":"market_beta"
                     }
                 ]
             },
@@ -425,6 +433,10 @@
                     {
                         "name":"Unlevered",
                         "value":"unlevered"
+                    },
+                    {
+                        "name":"Market Beta",
+                        "value":"market_beta"
                     }
                 ]
             },

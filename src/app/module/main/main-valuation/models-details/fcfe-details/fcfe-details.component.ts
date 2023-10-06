@@ -157,6 +157,9 @@ loadOnChangeValue(){
         unleveredBeta
       );
     }
+    else if (val == 'market_beta') {
+      this.fcfeForm.controls['beta'].setValue(1);
+    }
     else {
       // Do nothing for now
     }
