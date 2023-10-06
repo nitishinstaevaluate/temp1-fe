@@ -7,7 +7,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
 
 @import "../../../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
-
+@import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
 /* ###### bootstrap ####### */
 /*primary color variables*/
 /*Color variables*/
@@ -876,10 +876,11 @@ html {
     }
     
   }
-  ::ng-deep .mat-mdc-snack-bar-container  .app-notification-success .mdc-snackbar__surface .mat-mdc-snack-bar-label .mat-mdc-simple-snack-bar .mat-mdc-snack-bar-label {
-    color:blue !important;
+  .mdc-tooltip__surface {
+    background-color:#eeeeee !important;
+    color:#004e67 !important;
+    font-family: 'Rubik', sans-serif !important;
   }
-
 body *::-webkit-scrollbar {
     width: 6px;
     height: 6px;

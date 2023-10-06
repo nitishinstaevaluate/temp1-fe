@@ -1,0 +1,421 @@
+<!-- dynamic table format  -->
+<!-- <mat-table [dataSource]="data">
+    <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+      <mat-header-cell *matHeaderCellDef class="nav-header">{{ col[column] }}</mat-header-cell>
+      <mat-cell *matCellDef="let element" >
+        <mat-form-field [appearance]="appearance" style="margin-bottom: -6%;width: 100%;min-width: 129%;"  *ngIf="isEmptyString(element[column],element)" [floatLabel]="floatLabelType">
+            <input style="text-align: center;" [value]="element[column] ? element[column] : null"  matInput placeholder="---" (input)="onInputChange($event.target, column,element[column])">
+          </mat-form-field>
+        <ng-container *ngIf="checkType(element[column])">
+          <span [ngClass]="checkType(element[column]) && (element[column] === 'Non-Current-Assets' || element[column] === 'Net Current Assets') ? 'label-c make-bld' : ' label-c'">{{ element[column] ? element[column] : '' }}</span>
+        </ng-container>
+        <mat-form-field [appearance]="appearance" style="margin-bottom: -5.5%;width: 100%;" class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" *ngIf="isOptions(element[column])">
+            <mat-select class="mat-select-value">
+            <mat-option *ngFor="let doc of element[column]"  [value]="doc.value" >{{doc.name}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table> -->
+
+  <!-- form starts -->
+  <div class="outer-wrapper" *ngIf="controls.NAV.type === 'NAV' && formOneData">
+    <h4 class="card-header">{{controls.NAV.header}}</h4>
+    <form [formGroup]="navForm">
+        <div class="row">
+          <div class="col-md-12 revalmodel">
+            <mat-label class="label" >{{controls.NAV.options.columns.nonCurrentAssets.colHead}}</mat-label>
+            <span class="mat-bullet"><mat-icon>fiber_manual_record</mat-icon></span>
+        </div>
+
+            <!-- Fixed Assets  -->
+            <div class="col-md-12 field">
+                <mat-form-field *ngIf="navForm.controls['fixedAsset'].value === 'book_value'" class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" [appearance]="appearance">
+                  <mat-label>Fixed Assets</mat-label>
+                  <mat-select #fixedAsset formControlName="fixedAsset" (selectionChange)="onSelectorChange(fixedAsset.value,'fixedAsset')"  class="mat-select-value" [placeholder]="controls.NAV.options.columns.fixedAssets.colHead">
+                  <mat-option *ngFor="let data of controls.NAV.options.netAssetValue.options"  [value]="data.value">{{data.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div class="row" *ngIf="navForm.controls['fixedAsset'].value !== 'book_value'">
+                  <div class="col-md-6">
+                    <mat-form-field  class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" [appearance]="appearance">
+                  <mat-label>Fixed Assets</mat-label>
+                      <input matInput formControlName="fixedAsset">
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-2">
+                    <mat-radio-group>
+                      <mat-radio-button matTooltip="By clicking,Book-value will be selected" matTooltipPosition="above" value="market_value" [color]="'primary'" (change)="resetBookValue('book_value','fixedAsset')"></mat-radio-button>
+                  </mat-radio-group>
+                  </div>
+                </div>
+              </div>
+              <br>
+            <!-- Long-Term Loans and advances -->
+            <div class="col-md-12 field">
+                <mat-form-field *ngIf="navForm.controls['longTermLoansAdvances'].value === 'book_value'" class="full-width-input" [floatLabel]="floatLabelType">
+                  <mat-label>Long Term Loan-Advances</mat-label>
+                    <mat-select #longTermLoansAdvances class="mat-select-value" formControlName="longTermLoansAdvances" (selectionChange)="onSelectorChange(longTermLoansAdvances.value,'longTermLoansAdvances')" [placeholder]="controls.NAV.options.columns.longTermLoansAdvnce.colHead">
+                    <mat-option *ngFor="let data of controls.NAV.options.netAssetValue.options"  [value]="data.value">{{data.name}}</mat-option>
+                  </mat-select>
+                  </mat-form-field>
+                  <div class="row" *ngIf="navForm.controls['longTermLoansAdvances'].value !== 'book_value'">
+                    <div class="col-md-6">
+                      <mat-form-field  class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" [appearance]="appearance">
+                        <mat-label>Long Term Loan-Advances</mat-label>
+                        <input matInput formControlName="longTermLoansAdvances">
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-2">
+                      <mat-radio-group>
+                        <mat-radio-button matTooltip="By clicking,Book-value will be selected" matTooltipPosition="above" value="market_value" [color]="'primary'" (change)="resetBookValue('book_value','longTermLoansAdvances')"></mat-radio-button>
+                    </mat-radio-group>
+                    </div>
+                  </div>
+            </div>
+            <br>
+            <!-- Non-Current Investments -->
+            <div class="col-md-12 field">
+                <mat-form-field *ngIf="navForm.controls['nonCurrentInvestment'].value === 'book_value'" class="full-width-input" [floatLabel]="floatLabelType">
+                  <mat-label>Non-Current Investments</mat-label>
+                  <mat-select #nonCurrentInvestment formControlName="nonCurrentInvestment" (selectionChange)="onSelectorChange(nonCurrentInvestment.value,'nonCurrentInvestment')" class="mat-select-value" [placeholder]="controls.NAV.options.columns.nonCurrentInvestments.colHead">
+                  <mat-option *ngFor="let data of controls.NAV.options.netAssetValue.options"  [value]="data.value">{{data.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div class="row" *ngIf="navForm.controls['nonCurrentInvestment'].value !== 'book_value'">
+                  <div class="col-md-6">
+                    <mat-form-field  class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" [appearance]="appearance">
+                      <mat-label>Non-Current Investments</mat-label>
+                      <input matInput formControlName="nonCurrentInvestment">
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-2">
+                    <mat-radio-group>
+                      <mat-radio-button matTooltip="By clicking,Book-value will be selected" matTooltipPosition="above" value="market_value" [color]="'primary'" (change)="resetBookValue('book_value','nonCurrentInvestment')"></mat-radio-button>
+                  </mat-radio-group>
+                  </div>
+                </div>
+            </div>
+            <br>
+            <!-- Deffered Tax Assets -->
+            <div class="col-md-12 field">
+                <mat-form-field *ngIf="navForm.controls['deferredTaxAsset'].value === 'book_value'" class="full-width-input" [floatLabel]="floatLabelType">
+                  <mat-label>Deffered Tax Assets</mat-label>
+                  <mat-select #deferredTaxAsset (selectionChange)="onSelectorChange(deferredTaxAsset.value,'deferredTaxAsset')" formControlName="deferredTaxAsset" class="mat-select-value" [placeholder]="controls.NAV.options.columns.defferedTaxAssets.colHead">
+                  <mat-option *ngFor="let data of controls.NAV.options.netAssetValue.options"  [value]="data.value">{{data.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div class="row" *ngIf="navForm.controls['deferredTaxAsset'].value !== 'book_value'">
+                  <div class="col-md-6">
+                    <mat-form-field  class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" [appearance]="appearance">
+                      <mat-label>Deffered Tax Assets</mat-label>
+                      <input matInput formControlName="deferredTaxAsset">
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-2">
+                    <mat-radio-group>
+                      <mat-radio-button matTooltip="By clicking,Book-value will be selected" matTooltipPosition="above" value="market_value" [color]="'primary'" (change)="resetBookValue('book_value','deferredTaxAsset')"></mat-radio-button>
+                  </mat-radio-group>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 revalmodel" style="border-top: 1px solid #ccdfe3">
+              <mat-label class="label" >{{controls.NAV.options.columns.netCurrentAssets.colHead}}</mat-label>
+              <span class="mat-bullet"><mat-icon>fiber_manual_record</mat-icon></span>
+          </div>
+            <!-- Inventories -->
+            <div class="col-md-12 field">
+                <mat-form-field *ngIf="navForm.controls['inventories'].value === 'book_value'" class="full-width-input" [floatLabel]="floatLabelType">
+                  <mat-label>Inventories</mat-label>
+                  <mat-select #inventories formControlName="inventories" (selectionChange)="onSelectorChange(inventories.value,'inventories')" class="mat-select-value" [placeholder]="controls.NAV.options.columns.inventories.colHead">
+                    <mat-option *ngFor="let data of controls.NAV.options.netAssetValue.options"  [value]="data.value">{{data.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                  <div class="row" *ngIf="navForm.controls['inventories'].value !== 'book_value'">
+                    <div class="col-md-6">
+                      <mat-form-field  class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" [appearance]="appearance">
+                        <mat-label>Inventories</mat-label>
+                        <input matInput formControlName="inventories">
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-2">
+                      <mat-radio-group>
+                        <mat-radio-button matTooltip="By clicking,Book-value will be selected" matTooltipPosition="above" value="market_value" [color]="'primary'" (change)="resetBookValue('book_value','inventories')"></mat-radio-button>
+                    </mat-radio-group>
+                    </div>
+                  </div>
+            </div>
+
+            <!-- Short Term Loans and advances -->
+            <div class="col-md-12 field">
+                <mat-form-field *ngIf="navForm.controls['shortTermLoanAdvances'].value === 'book_value'" class="full-width-input" [floatLabel]="floatLabelType">
+                  <mat-label>Short Term Loan-Advance</mat-label>
+                  <mat-select #shortTermLoanAdvances formControlName="shortTermLoanAdvances" (selectionChange)="onSelectorChange(shortTermLoanAdvances.value,'shortTermLoanAdvances')" class="mat-select-value" [placeholder]="controls.NAV.options.columns.shortTermLoansAdvnce.colHead">
+                  <mat-option *ngFor="let data of controls.NAV.options.netAssetValue.options"  [value]="data.value">{{data.name}}</mat-option>
+                </mat-select>
+                </mat-form-field>
+                <div class="row" *ngIf="navForm.controls['shortTermLoanAdvances'].value !== 'book_value'">
+                  <div class="col-md-6">
+                    <mat-form-field  class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" [appearance]="appearance">
+                      <mat-label>Short Term Loan-Advance</mat-label>
+                      <input matInput formControlName="shortTermLoanAdvances">
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-2">
+                    <mat-radio-group>
+                      <mat-radio-button matTooltip="By clicking,Book-value will be selected" matTooltipPosition="above" value="market_value" [color]="'primary'" (change)="resetBookValue('book_value','shortTermLoanAdvances')"></mat-radio-button>
+                  </mat-radio-group>
+                  </div>
+                </div>
+            </div>
+
+            <!-- Trade Recievables -->
+            <div class="col-md-12 field">
+                <mat-form-field *ngIf="navForm.controls['tradeReceivables'].value === 'book_value'" class="full-width-input" [floatLabel]="floatLabelType">
+                  <mat-label>Trade Recievables</mat-label>
+                  <mat-select #tradeReceivables formControlName="tradeReceivables" (selectionChange)="onSelectorChange(tradeReceivables.value,'tradeReceivables')" class="mat-select-value" [placeholder]="controls.NAV.options.columns.tradeRecievables.colHead">
+                  <mat-option *ngFor="let data of controls.NAV.options.netAssetValue.options"  [value]="data.value">{{data.name}}</mat-option>
+                </mat-select>
+                </mat-form-field>
+                <div class="row" *ngIf="navForm.controls['tradeReceivables'].value !== 'book_value'">
+                  <div class="col-md-6">
+                    <mat-form-field  class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" [appearance]="appearance">
+                      <mat-label>Trade Recievables</mat-label>
+                      <input matInput formControlName="tradeReceivables">
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-2">
+                    <mat-radio-group>
+                      <mat-radio-button matTooltip="By clicking,Book-value will be selected" matTooltipPosition="above" value="market_value" [color]="'primary'" (change)="resetBookValue('book_value','tradeReceivables')"></mat-radio-button>
+                  </mat-radio-group>
+                  </div>
+                </div>
+            </div>
+
+            <!-- Cash -->
+            <div class="col-md-12 field">
+                <mat-form-field *ngIf="navForm.controls['cash'].value === 'book_value'" class="full-width-input" [floatLabel]="floatLabelType">
+                  <mat-label>Cash</mat-label>
+                  <mat-select #cash formControlName="cash" (selectionChange)="onSelectorChange(cash.value,'cash')" class="mat-select-value" [placeholder]="controls.NAV.options.columns.cash.colHead">
+                    <mat-option *ngFor="let data of controls.NAV.options.netAssetValue.options"  [value]="data.value">{{data.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div class="row" *ngIf="navForm.controls['cash'].value !== 'book_value'">
+                  <div class="col-md-6">
+                    <mat-form-field  class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" [appearance]="appearance">
+                      <mat-label>Cash</mat-label>
+                      <input matInput formControlName="cash">
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-2">
+                    <mat-radio-group>
+                      <mat-radio-button matTooltip="By clicking,Book-value will be selected" matTooltipPosition="above" value="market_value" [color]="'primary'" (change)="resetBookValue('book_value','cash')"></mat-radio-button>
+                  </mat-radio-group>
+                  </div>
+                </div>
+            </div>
+
+            <!-- Other Current Assets -->
+            <div class="col-md-12 field">
+                <mat-form-field *ngIf="navForm.controls['otherCurrentAssets'].value === 'book_value'" class="full-width-input" [floatLabel]="floatLabelType">
+                  <mat-label>Other Current Assets</mat-label>
+                  <mat-select #otherCurrentAssets formControlName="otherCurrentAssets" (selectionChange)="onSelectorChange(otherCurrentAssets.value,'otherCurrentAssets')" class="mat-select-value" [placeholder]="controls.NAV.options.columns.otherCurrentAssets.colHead">
+                  <mat-option *ngFor="let data of controls.NAV.options.netAssetValue.options"  [value]="data.value">{{data.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div class="row" *ngIf="navForm.controls['otherCurrentAssets'].value !== 'book_value'">
+                  <div class="col-md-6">
+                    <mat-form-field  class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" [appearance]="appearance">
+                      <mat-label>Other Current Assets</mat-label>
+                      <input matInput formControlName="otherCurrentAssets">
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-2">
+                    <mat-radio-group>
+                      <mat-radio-button matTooltip="By clicking,Book-value will be selected" matTooltipPosition="above" value="market_value" [color]="'primary'" (change)="resetBookValue('book_value','otherCurrentAssets')"></mat-radio-button>
+                  </mat-radio-group>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 revalmodel" style="border-top: 1px solid #ccdfe3">
+              <mat-label class="label" >{{controls.NAV.options.columns.netCurrentAssets.colHead}}</mat-label>
+              <span class="mat-bullet"><mat-icon>fiber_manual_record</mat-icon></span>
+          </div>
+            <!-- Less:Short term Provisions -->
+            <div class="col-md-12 field">
+                <mat-form-field *ngIf="navForm.controls['shortTermProvisions'].value === 'book_value'" class="full-width-input" [floatLabel]="floatLabelType">
+                  <mat-label>Less:Short Term Provisions</mat-label>
+                  <mat-select #shortTermProvisions formControlName="shortTermProvisions" (selectionChange)="onSelectorChange(shortTermProvisions.value,'shortTermProvisions')" class="mat-select-value" [placeholder]="controls.NAV.options.columns.lessShortTermProvisions.colHead">
+                  <mat-option *ngFor="let data of controls.NAV.options.netAssetValue.options"  [value]="data.value">{{data.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div class="row" *ngIf="navForm.controls['shortTermProvisions'].value !== 'book_value'">
+                  <div class="col-md-6">
+                    <mat-form-field  class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" [appearance]="appearance">
+                      <mat-label>Less:Short Term Provisions</mat-label>
+                      <input matInput formControlName="shortTermProvisions">
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-2">
+                    <mat-radio-group>
+                      <mat-radio-button matTooltip="By clicking,Book-value will be selected" matTooltipPosition="above" value="market_value" [color]="'primary'" (change)="resetBookValue('book_value','shortTermProvisions')"></mat-radio-button>
+                  </mat-radio-group>
+                  </div>
+                </div>
+            </div>
+
+            <!-- Short term borrowings -->
+            <div class="col-md-12 field">
+                <mat-form-field *ngIf="navForm.controls['shortTermBorrowings'].value === 'book_value'" class="full-width-input" [floatLabel]="floatLabelType">
+                  <mat-label>Short Term Borrowings</mat-label>
+                  <mat-select #shortTermBorrowings formControlName="shortTermBorrowings" (selectionChange)="onSelectorChange(shortTermBorrowings.value,'shortTermBorrowings')" class="mat-select-value" [placeholder]="controls.NAV.options.columns.shortTermborrowings.colHead">
+                  <mat-option *ngFor="let data of controls.NAV.options.netAssetValue.options"  [value]="data.value">{{data.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                  <div class="row" *ngIf="navForm.controls['shortTermBorrowings'].value !== 'book_value'">
+                    <div class="col-md-6">
+                      <mat-form-field  class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" [appearance]="appearance">
+                        <mat-label>Short Term Borrowings</mat-label>
+                        <input matInput formControlName="shortTermBorrowings">
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-2">
+                      <mat-radio-group>
+                        <mat-radio-button matTooltip="By clicking,Book-value will be selected" matTooltipPosition="above" value="market_value" [color]="'primary'" (change)="resetBookValue('book_value','shortTermBorrowings')"></mat-radio-button>
+                    </mat-radio-group>
+                    </div>
+                  </div>
+            </div>
+
+            <!-- Trade Payables -->
+            <div class="col-md-12 field">
+                <mat-form-field *ngIf="navForm.controls['tradePayables'].value === 'book_value'" class="full-width-input" [floatLabel]="floatLabelType">
+                  <mat-label>Trade Payables</mat-label>
+                  <mat-select #tradePayables formControlName="tradePayables" (selectionChange)="onSelectorChange(tradePayables.value,'tradePayables')" class="mat-select-value" [placeholder]="controls.NAV.options.columns.tradePayables.colHead">
+                    <mat-option *ngFor="let data of controls.NAV.options.netAssetValue.options"  [value]="data.value">{{data.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                  <div class="row" *ngIf="navForm.controls['tradePayables'].value !== 'book_value'">
+                    <div class="col-md-6">
+                      <mat-form-field  class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" [appearance]="appearance">
+                        <mat-label>Trade Payables</mat-label>
+                        <input matInput formControlName="tradePayables">
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-2">
+                      <mat-radio-group>
+                        <mat-radio-button matTooltip="By clicking,Book-value will be selected" matTooltipPosition="above" value="market_value" [color]="'primary'" (change)="resetBookValue('book_value','tradePayables')"></mat-radio-button>
+                    </mat-radio-group>
+                    </div>
+                  </div>
+            </div>
+
+            <!-- Other Current Liabilities -->
+            <div class="col-md-12 field">
+                <mat-form-field *ngIf="navForm.controls['otherCurrentLiabilities'].value === 'book_value'" class="full-width-input" [floatLabel]="floatLabelType">
+                  <mat-label>Other Current Liablities</mat-label>
+                  <mat-select #otherCurrentLiabilities formControlName="otherCurrentLiabilities" (selectionChange)="onSelectorChange(otherCurrentLiabilities.value,'otherCurrentLiabilities')" class="mat-select-value" [placeholder]="controls.NAV.options.columns.otherCurrentLiabilities.colHead">
+                    <mat-option *ngFor="let data of controls.NAV.options.netAssetValue.options"  [value]="data.value">{{data.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                  <div class="row" *ngIf="navForm.controls['otherCurrentLiabilities'].value !== 'book_value'">
+                    <div class="col-md-6">
+                      <mat-form-field  class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" [appearance]="appearance">
+                        <mat-label>Other Current Liablities</mat-label>
+                        <input matInput formControlName="otherCurrentLiabilities">
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-2">
+                      <mat-radio-group>
+                        <mat-radio-button matTooltip="By clicking,Book-value will be selected" matTooltipPosition="above" value="market_value" [color]="'primary'" (change)="resetBookValue('book_value','otherCurrentLiabilities')"></mat-radio-button>
+                    </mat-radio-group>
+                    </div>
+                  </div>
+            </div>
+
+            <!-- Less:Long Term Borrowings -->
+            <div class="col-md-12 field">
+                <mat-form-field *ngIf="navForm.controls['lessLongTermBorrowings'].value === 'book_value'" class="full-width-input" [floatLabel]="floatLabelType">
+                  <mat-label>Less:Long Term Borrowings</mat-label>
+                  <mat-select #lessLongTermBorrowings formControlName="lessLongTermBorrowings" (selectionChange)="onSelectorChange(lessLongTermBorrowings.value,'lessLongTermBorrowings')" class="mat-select-value" [placeholder]="controls.NAV.options.columns.lessLongTermBorrowings.colHead">
+                    <mat-option *ngFor="let data of controls.NAV.options.netAssetValue.options"  [value]="data.value">{{data.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                  <div class="row" *ngIf="navForm.controls['lessLongTermBorrowings'].value !== 'book_value'">
+                    <div class="col-md-6">
+                      <mat-form-field  class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" [appearance]="appearance">
+                        <mat-label>Less:Long Term Borrowings</mat-label>
+                        <input matInput formControlName="lessLongTermBorrowings">
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-2">
+                      <mat-radio-group>
+                        <mat-radio-button matTooltip="By clicking,Book-value will be selected" matTooltipPosition="above" value="market_value" [color]="'primary'" (change)="resetBookValue('book_value','lessLongTermBorrowings')"></mat-radio-button>
+                    </mat-radio-group>
+                    </div>
+                  </div>
+            </div>
+
+            <!-- Less:Long Term Provisions -->
+            <div class="col-md-12 field">
+                <mat-form-field *ngIf="navForm.controls['lessLongTermProvisions'].value === 'book_value'" class="full-width-input" [floatLabel]="floatLabelType">
+                  <mat-label>Less:Short Term Provisions</mat-label>
+                  <mat-select #lessLongTermProvisions formControlName="lessLongTermProvisions" (selectionChange)="onSelectorChange(lessLongTermProvisions.value,'lessLongTermProvisions')" class="mat-select-value" [placeholder]="controls.NAV.options.columns.lessLongTermProvisions.colHead">
+                    <mat-option *ngFor="let data of controls.NAV.options.netAssetValue.options"  [value]="data.value">{{data.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                  <div class="row" *ngIf="navForm.controls['lessLongTermProvisions'].value !== 'book_value'">
+                    <div class="col-md-6">
+                      <mat-form-field  class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" [appearance]="appearance">
+                        <mat-label>Less:Short Term Provisions</mat-label>
+                        <input matInput formControlName="lessLongTermProvisions">
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-2">
+                      <mat-radio-group>
+                        <mat-radio-button matTooltip="By clicking,Book-value will be selected" matTooltipPosition="above" value="market_value" [color]="'primary'" (change)="resetBookValue('book_value','lessLongTermProvisions')"></mat-radio-button>
+                    </mat-radio-group>
+                    </div>
+                  </div>
+            </div>
+
+            <!-- Less:Share Applicable Money -->
+            <div class="col-md-12 field">
+                <mat-form-field *ngIf="navForm.controls['shareApplicationMoney'].value === 'book_value'" class="full-width-input" [floatLabel]="floatLabelType">
+                  <mat-label>Less:Share Applicable Money</mat-label>
+                  <mat-select #shareApplicationMoney formControlName="shareApplicationMoney" (selectionChange)="onSelectorChange(shareApplicationMoney.value,'shareApplicationMoney')" class="mat-select-value" [placeholder]="controls.NAV.options.columns.lessShareApplicableMoney.colHead">
+                   <mat-option *ngFor="let data of controls.NAV.options.netAssetValue.options"  [value]="data.value">{{data.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                  <div class="row" *ngIf="navForm.controls['shareApplicationMoney'].value !== 'book_value'">
+                    <div class="col-md-6">
+                      <mat-form-field  class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" [appearance]="appearance">
+                        <mat-label>Less:Share Applicable Money</mat-label>
+                        <input matInput formControlName="shareApplicationMoney">
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-2">
+                      <mat-radio-group>
+                        <mat-radio-button matTooltip="By clicking,Book-value will be selected" matTooltipPosition="above" value="market_value" [color]="'primary'" (change)="resetBookValue('book_value','shareApplicationMoney')"></mat-radio-button>
+                    </mat-radio-group>
+                    </div>
+                  </div>
+            </div>
+
+            <div class="col-md-12" style="text-align: center;padding-bottom: 1%;padding-top: 1%;">
+                <button (click)="previous()" mat-raised-button style="box-shadow: 1px 2px 15px #d1d1d1;color:#bb0d0d;font-weight: bold !important;margin-right: 1%;">
+                    Back
+                    <mat-icon style="font-weight: bold;color: #d42121;">arrow_left</mat-icon>
+                </button>
+                <button (click)="saveAndNext()" style="box-shadow: 1px 2px 15px #d1d1d1;color:#228822;margin-right: 1%"  mat-raised-button>
+               Next
+                    <mat-icon style="font-weight: bold;color: green;">send</mat-icon>
+            </button> 
+        </div>
+        </div>
+      </form>  
+</div>
