@@ -121,8 +121,8 @@
           <tbody>
             <tr *ngFor="let item of dataSourceNav" class="nav-tr">
               <td [ngClass]="item.fieldName === 'Non Current Assets' || item.fieldName === 'Total Non Current Assets' || item.fieldName === 'Net Current Assets' || item.fieldName === 'Firm Value' || item.fieldName === 'Equity Value' || item.fieldName === 'Value per share' ? 'nav-style-header' : 'nav-style-sub-header'">{{ item.fieldName }}</td>
-              <td class="nav-style-sub-text">{{ item.value ?? '' }}</td>
               <td class="nav-style-sub-text">{{ item.type === 'book_value' ? 'Book Value' : item.type === 'market_value' ? 'Market Value' : item.type }}</td>
+              <td class="nav-style-sub-text">{{ item.value ?? '' }}</td>
             </tr>
           </tbody>
         </table>
