@@ -149,6 +149,31 @@
                 </div>
                 
             </div>
+            <div class="col-md-6 text-left mt-4" style="border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('NAV')">
+                <p style="font-weight: 500;font-size: 17px;margin-bottom: 0px;">Net Asset value</p>
+            </div>
+            <div class="col-md-6" style="text-align: right;border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('NAV')">
+                <div class="row">
+                    <div class="col-md-11">
+                        <mat-slider
+                        class="example-margin mat-accent"
+                        [disabled]="'false'"
+                        [max]="'100'"
+                        [min]="'0'"
+                        [step]="'1'"
+                        [discrete]="'false'"
+                        [showTickMarks]="'false'"
+                        style="width: 50%;"
+                        (input)="onNavSliderChange($event)">
+                        <input [(ngModel)]="navSlider" matSliderThumb>
+                    </mat-slider>
+                    </div>
+                    <div class="col-md-1" style="margin-top: auto;margin-bottom: auto;">
+                        <span class="excessEarn-slider" >{{navSlider}}</span>
+                    </div>
+                </div>
+                
+            </div>
             <hr class="weight-hr">
         </div>
     </div>

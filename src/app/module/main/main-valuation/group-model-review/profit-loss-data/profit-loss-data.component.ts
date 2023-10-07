@@ -128,6 +128,12 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
       console.log(response)
       if(response.status){
         this.isExcelModified = true;
+        this.snackBar.open('Successfully updated excel','Ok',{
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 3000,
+          panelClass: 'app-notification-success'
+        })
       }
     })
   }

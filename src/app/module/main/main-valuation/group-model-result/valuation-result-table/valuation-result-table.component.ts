@@ -16,12 +16,14 @@ fcfe=false;
 fcff=false;
 relativeVal = false;
 excessEarn = false;
+nav=false;
 tableData:any;
 valuationDataReport:any=[];
 columnName = COMMON_COLUMN;
 dataSourceFcfe:any;
 dataSourceFcff:any;
 dataSourceExcessEarn:any;
+dataSourceNav:any;
 companyData :any;
 formData :any;
 industryData:any = new MatTableDataSource();
@@ -31,6 +33,20 @@ excessEarnColumn=[];
 fcffColumn=[];
 isLoader=false;
 
+getKeys(navData:any){
+this.dataSourceNav =[navData].map((response:any)=>{
+  let obj = Object.values(response);
+  obj = obj.map((objVal:any)=>{
+    return {
+      fieldName:objVal?.fieldName,
+      value:objVal?.value ? parseFloat(objVal.value)?.toFixed(3) : objVal.value,
+      type:objVal?.type
+    }
+  })
+  return obj;
+})
+this.dataSourceNav=this.dataSourceNav[0];
+}
 ngOnInit(): void {}
 
 constructor(private calculationService:CalculationsService,private snackbar:MatSnackBar){}
@@ -66,11 +82,15 @@ ngOnChanges(changes:SimpleChanges): void {
         return [EXCESS_EARNING_COLUMN[index], ...subArray.slice(1)];
       });
     }
+    if(response.model === 'NAV'){
+      this.getKeys(response.valuationData);
+    }
   })
   this.dataSourceFcff && this.transferStepperthree?.formOneAndTwoData?.model.includes('FCFF') ? this.fcff = true : this.fcff = false;
   this.dataSourceFcfe && this.transferStepperthree?.formOneAndTwoData?.model.includes('FCFE') ? this.fcfe = true : this.fcfe = false;
   this.valuationDataReport && (this.transferStepperthree?.formOneAndTwoData?.model.includes('Relative_Valuation') || this.transferStepperthree?.formOneAndTwoData?.model.includes('CTM')) ? this.relativeVal = true : this.relativeVal = false;
   this.dataSourceExcessEarn && this.transferStepperthree?.formOneAndTwoData?.model.includes('Excess_Earnings') ? this.excessEarn = true : this.excessEarn = false;
+  this.dataSourceNav && this.transferStepperthree?.formOneAndTwoData?.model.includes('NAV') ? this.nav = true : this.nav = false;
   this.onTabSelectionChange();
 }
   
@@ -100,7 +120,6 @@ checkVal(value:string,model:any){
 onTabSelectionChange() {
   // Update the selectedTabIndex when the user selects a tab
   const findFirstEle = this.transferStepperthree?.formOneAndTwoData?.model.sort();
-  // console.log(findFirstEle,"first element")
   if(findFirstEle){
     switch (findFirstEle[0]) {
       case 'FCFE':

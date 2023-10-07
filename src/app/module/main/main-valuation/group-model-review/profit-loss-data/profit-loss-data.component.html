@@ -45,6 +45,6 @@
   </ng-container>
 </mat-table>
 
-<div class="container-fluid btn-update">
+<div class="container-fluid btn-update" *ngIf="editedValues.length !== 0">
   <button mat-raised-button class="btn-up" (click)="updateExcel()"><mat-icon>keyboard_capslock</mat-icon>Update</button>
 </div>

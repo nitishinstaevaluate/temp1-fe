@@ -413,6 +413,14 @@ isSelectedpreferenceRatio(value:any){
     formData.append('file', this.files[0]);
     this.valuationService.fileUpload(formData).subscribe((res: any) => {
       this.modelValuation.get('excelSheetId')?.setValue(res.excelSheetId);
+      if(res.excelSheetId){
+        this.snackBar.open('File has been uploaded successfully','Ok',{
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 3000,
+          panelClass: 'app-notification-success'
+        })
+      }
       
       // Clear the input element value to allow selecting the same file again
       event.target.value = '';

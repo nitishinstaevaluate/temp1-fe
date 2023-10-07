@@ -18,6 +18,7 @@ export class GroupModelResultComponent implements OnChanges {
   relativeValSlider:any=0;
   excessEarnSlider:any=0;
   comparableIndustrySlider:any=0;
+  navSlider:any=0;
   finalWeightedValue:any;
 
   valuationResult:any;
@@ -25,7 +26,8 @@ export class GroupModelResultComponent implements OnChanges {
   fcffValuation:any;
   relativeValuation:any;
   excessEarnValuation:any;
-  comparableIndustryValuation:any
+  comparableIndustryValuation:any;
+  navValuation:any;
   calculateModelWeigtagePayload:any = {
     results:[]
   }
@@ -72,6 +74,13 @@ export class GroupModelResultComponent implements OnChanges {
           if(this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "Excess_Earnings") === -1)
           {
             this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.excessEarnValuation,weightage:0});
+          }
+        }
+        else if(response.model === 'NAV'){
+          this.navValuation = response.valuation;
+          if(this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "NAV") === -1)
+          {
+            this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.navValuation,weightage:0});
           }
         }
       }
@@ -158,6 +167,7 @@ export class GroupModelResultComponent implements OnChanges {
       // Handle slider value change here
       let isRelative = false;
       let isComparable = false;
+      let isNav = false;
       const slider = event.target as HTMLInputElement;
       this.fcfeSlider = parseFloat(slider.value);
       if(this.transferStepperthree?.formOneAndTwoData.model.includes('Relative_Valuation')){
@@ -168,6 +178,10 @@ export class GroupModelResultComponent implements OnChanges {
         isComparable = true;
         this.comparableIndustrySlider = 100 - this.fcfeSlider;
       }
+      if(this.transferStepperthree?.formOneAndTwoData.model.includes('NAV')){
+        isNav = true;
+        this.navSlider = 100 - this.fcfeSlider;
+      }
       this.calculateModelWeigtagePayload.results.map((response:any)=>{
         if(response.model==='FCFE'){
           response.weightage = this.fcfeSlider
@@ -177,6 +191,9 @@ export class GroupModelResultComponent implements OnChanges {
         }
         if(response.model === 'CTM' && isComparable){
           response.weightage = this.comparableIndustrySlider;
+        }
+        if(response.model === 'NAV' && isNav){
+          response.weightage = this.navSlider;
         }
       })
       this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
@@ -191,6 +208,7 @@ export class GroupModelResultComponent implements OnChanges {
       // Handle slider value change here
       let isRelative = false;
       let isComparable = false;
+      let isNav = false;
       const slider = event.target as HTMLInputElement;
       this.fcffSlider = parseFloat(slider.value);
       if(this.transferStepperthree?.formOneAndTwoData.model.includes('Relative_Valuation')){
@@ -201,6 +219,10 @@ export class GroupModelResultComponent implements OnChanges {
         isComparable = true;
         this.comparableIndustrySlider = 100 - this.fcffSlider;
       }
+      if(this.transferStepperthree?.formOneAndTwoData.model.includes('NAV')){
+        isNav = true;
+        this.navSlider = 100 - this.fcffSlider;
+      }
       this.calculateModelWeigtagePayload.results.map((response:any)=>{
         if(response.model==='FCFF'){
           response.weightage = this.fcffSlider
@@ -210,6 +232,9 @@ export class GroupModelResultComponent implements OnChanges {
         }
         if(response.model === 'CTM' && isComparable){
           response.weightage = this.comparableIndustrySlider;
+        }
+        if(response.model === 'NAV' && isNav){
+          response.weightage = this.navSlider;
         }
       })
       this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
@@ -224,6 +249,7 @@ export class GroupModelResultComponent implements OnChanges {
       let isFcfe = false;
       let isFcff= false;
       let isExcessEarn = false;
+      let isNav = false;
       const slider = event.target as HTMLInputElement;
       this.relativeValSlider = parseFloat(slider.value);
       if(this.transferStepperthree?.formOneAndTwoData.model.includes('FCFE')){
@@ -238,6 +264,10 @@ export class GroupModelResultComponent implements OnChanges {
         isExcessEarn = true;
         this.excessEarnSlider = 100 - this.relativeValSlider;
       }
+      if(this.transferStepperthree?.formOneAndTwoData.model.includes('NAV')){
+        isNav = true;
+        this.navSlider = 100 - this.relativeValSlider;
+      }
       this.calculateModelWeigtagePayload.results.map((response:any)=>{
         if(response.model==='Relative_Valuation'){
           response.weightage = this.relativeValSlider
@@ -250,6 +280,9 @@ export class GroupModelResultComponent implements OnChanges {
         }
         if(response.model === 'Excess_Earnings' && isExcessEarn){
           response.weightage = this.excessEarnSlider;
+        }
+        if(response.model === 'NAV' && isNav){
+          response.weightage = this.navSlider;
         }
       })
       this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
@@ -264,6 +297,7 @@ export class GroupModelResultComponent implements OnChanges {
       let isFcfe = false;
       let isFcff= false;
       let isExcessEarn = false;
+      let isNav = false;
       const slider = event.target as HTMLInputElement;
       this.comparableIndustrySlider = parseFloat(slider.value);
       if(this.transferStepperthree?.formOneAndTwoData.model.includes('FCFE')){
@@ -278,6 +312,10 @@ export class GroupModelResultComponent implements OnChanges {
         isExcessEarn = true;
         this.excessEarnSlider = 100 - this.comparableIndustrySlider;
       }
+      if(this.transferStepperthree?.formOneAndTwoData.model.includes('NAV')){
+        isNav = true;
+        this.navSlider = 100 - this.comparableIndustrySlider;
+      }
       this.calculateModelWeigtagePayload.results.map((response:any)=>{
         if(response.model==='CTM'){
           response.weightage = this.comparableIndustrySlider
@@ -290,6 +328,9 @@ export class GroupModelResultComponent implements OnChanges {
         }
         if(response.model === 'Excess_Earnings' && isExcessEarn){
           response.weightage = this.excessEarnSlider;
+        }
+        if(response.model === 'NAV' && isNav){
+          response.weightage = this.navSlider;
         }
       })
       this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
@@ -304,6 +345,7 @@ export class GroupModelResultComponent implements OnChanges {
       // Handle slider value change here
       let isRelative = false;
       let isComparable = false;
+      let isNav = false;
       const slider = event.target as HTMLInputElement;
       this.excessEarnSlider = parseFloat(slider.value);
       if(this.transferStepperthree?.formOneAndTwoData.model.includes('Relative_Valuation')){
@@ -314,6 +356,10 @@ export class GroupModelResultComponent implements OnChanges {
         isComparable = true;
         this.comparableIndustrySlider = 100 - this.excessEarnSlider;
       }
+      if(this.transferStepperthree?.formOneAndTwoData.model.includes('NAV')){
+        isNav = true;
+        this.navSlider = 100 - this.excessEarnSlider;
+      }
       this.calculateModelWeigtagePayload.results.map((response:any)=>{
         if(response.model==='Excess_Earnings'){
           response.weightage = this.excessEarnSlider
@@ -323,6 +369,65 @@ export class GroupModelResultComponent implements OnChanges {
         }
         if(response.model === 'CTM' && isComparable){
           response.weightage = this.comparableIndustrySlider;
+        }
+        if(response.model === 'NAV' && isNav){
+          response.weightage = this.navSlider;
+        }
+      })
+      this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
+        if(response.status){
+          this.data = response?.result?.modelValue;
+          this.finalWeightedValue = response?.result?.weightedVal ?? 0;
+        }
+      })
+    }
+
+    onNavSliderChange(event:any){
+      let isRelative = false;
+      let isComparable = false;
+      let isExcessEarn = false;
+      let isFcff = false;
+      let isFcfe = false;
+      const slider = event.target as HTMLInputElement;
+      this.navSlider = parseFloat(slider.value);
+      if(this.transferStepperthree?.formOneAndTwoData.model.includes('Relative_Valuation')){
+        isRelative = true;
+        this.relativeValSlider = 100 - this.navSlider;
+      }
+      if(this.transferStepperthree?.formOneAndTwoData.model.includes('CTM')){
+        isComparable = true;
+        this.comparableIndustrySlider = 100 - this.navSlider;
+      }
+      if(this.transferStepperthree?.formOneAndTwoData.model.includes('Excess_Earnings')){
+        isExcessEarn = true;
+        this.excessEarnSlider = 100 - this.navSlider;
+      }
+      if(this.transferStepperthree?.formOneAndTwoData.model.includes('FCFF')){
+        isFcff = true;
+        this.fcffSlider = 100 - this.navSlider;
+      }
+      if(this.transferStepperthree?.formOneAndTwoData.model.includes('FCFE')){
+        isFcfe = true;
+        this.fcfeSlider = 100 - this.navSlider;
+      }
+      this.calculateModelWeigtagePayload.results.map((response:any)=>{
+        if(response.model==='Excess_Earnings' && isExcessEarn){
+          response.weightage = this.excessEarnSlider
+        }
+        if(response.model === 'Relative_Valuation' && isRelative){
+          response.weightage = this.relativeValSlider;
+        }
+        if(response.model === 'CTM' && isComparable){
+          response.weightage = this.comparableIndustrySlider;
+        }
+        if(response.model === 'NAV'){
+          response.weightage = this.navSlider;
+        }
+        if(response.model === 'FCFE' && isFcfe){
+          response.weightage = this.fcfeSlider;
+        }
+        if(response.model === 'FCFF' && isFcff){
+          response.weightage = this.fcffSlider;
         }
       })
       this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
