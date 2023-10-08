@@ -59,7 +59,7 @@
             "model":{
                 "name":"model",
                 "type":"radio",
-                "placeholder":"Select Model :-",
+                "placeholder":"Select Model",
                 "toolTip":"Select model valuation",
                 "options":[
                     {
@@ -215,6 +215,10 @@
                     {
                         "name":"Unlevered",
                         "value":"unlevered"
+                    },
+                    {
+                        "name":"Market Beta",
+                        "value":"market_beta"
                     }
                 ]
             },
@@ -314,6 +318,10 @@
                     {
                         "name":"Unlevered",
                         "value":"unlevered"
+                    },
+                    {
+                        "name":"Market Beta",
+                        "value":"market_beta"
                     }
                 ]
             },
@@ -425,6 +433,10 @@
                     {
                         "name":"Unlevered",
                         "value":"unlevered"
+                    },
+                    {
+                        "name":"Market Beta",
+                        "value":"market_beta"
                     }
                 ]
             },
@@ -583,7 +595,7 @@
             "toolTip":"Please select Net asset value",
             "options":[               
                     {
-                        "name":"BookValue",
+                        "name":"Book Value",
                         "value":"book_value"
                     },
                     {
@@ -594,7 +606,7 @@
             },
             "columns":{
                 "nonCurrentAssets":{
-                    "colHead":"Non-Current-Assets",
+                    "colHead":"Non Current Assets",
                     "value":"",
                     "ifMarketVal":""
                 },
@@ -614,7 +626,7 @@
                     "ifMarketVal":""
                 },
                 "defferedTaxAssets":{
-                    "colHead":"Deffered Tax Assets",
+                    "colHead":"Deferred Tax Assets",
                     "value":[],
                     "ifMarketVal":""
                 },
@@ -649,7 +661,7 @@
                     "ifMarketVal":""
                 },
                 "lessShortTermProvisions":{
-                    "colHead":"Less:Short term Provisions",
+                    "colHead":"Short term Provisions",
                     "value":[],
                     "ifMarketVal":""
                 },
@@ -668,18 +680,23 @@
                     "value":[],
                     "ifMarketVal":""
                 },
+                "firmValue":{
+                    "colHead":"Other Firm Values",
+                    "value":[],
+                    "ifMarketVal":""
+                },
                 "lessLongTermBorrowings":{
-                    "colHead":"Less:Long Term Borrowings",
+                    "colHead":"Long Term Borrowings",
                     "value":[],
                     "ifMarketVal":""
                 },
                 "lessLongTermProvisions":{
-                    "colHead":"Less:Long Term Provisions",
+                    "colHead":"Long Term Provisions",
                     "value":[],
                     "ifMarketVal":""
                 },
                 "lessShareApplicableMoney":{
-                    "colHead":"Less:Share Applicable Money",
+                    "colHead":"Share Applicable Money",
                     "value":[],
                     "ifMarketVal":""
                 }

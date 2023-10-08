@@ -47,7 +47,7 @@
                   </div>
                   <div class="col-md-2">
                     <mat-radio-group>
-                      <mat-radio-button matTooltip="By clicking,Book-value will be selected" matTooltipPosition="above" value="market_value" [color]="'primary'" (change)="resetBookValue('book_value','fixedAsset')"></mat-radio-button>
+                      <mat-radio-button matTooltip="By choosing this, Book-value will be selected" matTooltipPosition="above" value="market_value" [color]="'primary'" (change)="resetBookValue('book_value','fixedAsset')"></mat-radio-button>
                   </mat-radio-group>
                   </div>
                 </div>
@@ -241,14 +241,11 @@
                 </div>
             </div>
 
-            <div class="col-md-12 revalmodel" style="border-top: 1px solid #ccdfe3">
-              <mat-label class="label" >{{controls.NAV.options.columns.netCurrentAssets.colHead}}</mat-label>
-              <span class="mat-bullet"><mat-icon>fiber_manual_record</mat-icon></span>
-          </div>
+            
             <!-- Less:Short term Provisions -->
             <div class="col-md-12 field">
                 <mat-form-field *ngIf="navForm.controls['shortTermProvisions'].value === 'book_value'" class="full-width-input" [floatLabel]="floatLabelType">
-                  <mat-label>Less:Short Term Provisions</mat-label>
+                  <mat-label>Short Term Provisions</mat-label>
                   <mat-select #shortTermProvisions formControlName="shortTermProvisions" (selectionChange)="onSelectorChange(shortTermProvisions.value,'shortTermProvisions')" class="mat-select-value" [placeholder]="controls.NAV.options.columns.lessShortTermProvisions.colHead">
                   <mat-option *ngFor="let data of controls.NAV.options.netAssetValue.options"  [value]="data.value">{{data.name}}</mat-option>
                   </mat-select>
@@ -256,7 +253,7 @@
                 <div class="row" *ngIf="navForm.controls['shortTermProvisions'].value !== 'book_value'">
                   <div class="col-md-6">
                     <mat-form-field  class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" [appearance]="appearance">
-                      <mat-label>Less:Short Term Provisions</mat-label>
+                      <mat-label>Short Term Provisions</mat-label>
                       <input matInput formControlName="shortTermProvisions">
                     </mat-form-field>
                   </div>
@@ -336,6 +333,11 @@
                     </div>
                   </div>
             </div>
+
+            <div class="col-md-12 revalmodel" style="border-top: 1px solid #ccdfe3">
+              <mat-label class="label" >{{controls.NAV.options.columns.firmValue.colHead}}</mat-label>
+              <span class="mat-bullet"><mat-icon>fiber_manual_record</mat-icon></span>
+          </div>
 
             <!-- Less:Long Term Borrowings -->
             <div class="col-md-12 field">
