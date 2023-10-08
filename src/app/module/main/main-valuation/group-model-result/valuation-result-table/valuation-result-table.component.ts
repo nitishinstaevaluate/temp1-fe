@@ -40,7 +40,7 @@ this.dataSourceNav =[navData].map((response:any)=>{
     return {
       fieldName:objVal?.fieldName,
       value:objVal?.value ? parseFloat(objVal.value)?.toFixed(3) : objVal.value,
-      type:objVal?.type
+      type:objVal?.type === 'book_value' ? 'Book Value' : objVal.type === 'market_value' ? 'Market Value' : objVal.type
     }
   })
   return obj;

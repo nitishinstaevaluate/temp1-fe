@@ -103,11 +103,11 @@
     </div>  
   </mat-tab>
   <mat-tab label="Net Asset Value" *ngIf="nav">
-    <!-- <div class="btn" style="text-align: right;width: 100%;">
+    <div class="btn" style="text-align: right;width: 100%;">
       <button mat-stroked-button class="exp">
-        <a class="exp-a" [href]="'https://localhost:3000/upload/generate/' + (transferStepperthree?.formThreeData?.appData?.reportId || 'null') + (checkIndustryOrCompany() ? '/Relative_Valuation/' : '/CTM/') + 'true'" download>Export</a>
+        <a class="exp-a" [href]="'https://localhost:3000/upload/generate/' + (transferStepperthree?.formThreeData?.appData?.reportId || 'null') + '/NAV/' + 'true'" download>Export</a>
       </button>
-    </div> -->
+    </div>
     <div>
       <h5 class="head-nav">NAV Result</h5>
       <div class="table-container">
@@ -121,7 +121,7 @@
           <tbody>
             <tr *ngFor="let item of dataSourceNav" class="nav-tr">
               <td [ngClass]="item.fieldName === 'Non Current Assets' || item.fieldName === 'Total Non Current Assets' || item.fieldName === 'Net Current Assets' || item.fieldName === 'Firm Value' || item.fieldName === 'Equity Value' || item.fieldName === 'Value per share' ? 'nav-style-header' : 'nav-style-sub-header'">{{ item.fieldName }}</td>
-              <td class="nav-style-sub-text">{{ item.type === 'book_value' ? 'Book Value' : item.type === 'market_value' ? 'Market Value' : item.type }}</td>
+              <td class="nav-style-sub-text">{{ item.type }}</td>
               <td class="nav-style-sub-text">{{ item.value ?? '' }}</td>
             </tr>
           </tbody>
