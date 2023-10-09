@@ -16,6 +16,66 @@
     <h4 class="card-header" >Model Weightage</h4>
     <div class="container">
         <div class="row">
+            <!-- Comparable Industries slider -->
+            <div class="col-md-6 text-left mt-4" style="border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('CTM')">
+                <p style="font-weight: 500;font-size: 17px;margin-bottom: 0px;">Comparable Industries</p>
+            </div>
+            <div class="col-md-6" style="text-align: right;border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('CTM')">
+                <div class="row">
+                    <div class="col-md-11">
+                        <mat-slider
+                            class="example-margin mat-accent"
+                            [disabled]="'false'"
+                            [max]="comparableIndustryMaxValue"
+                            [min]="'0'"
+                            [step]="'1'"
+                            [discrete]="'false'"
+                            [showTickMarks]="'false'"
+                            style="width: 50%;"
+                            (input)="modelWeightageSlider($event,'CTM',comparableIndustryMaxValue,comparableIndustrySlider)">
+                            <input [(ngModel)]="comparableIndustrySlider" matSliderThumb>
+                        </mat-slider>
+                    </div>
+                    <div class="col-md-1" style="margin-top: auto;margin-bottom: auto;">
+                        <span class="fcfe-slider" >{{comparableIndustrySlider}}</span>
+                    </div>
+                </div>
+                
+
+            </div>
+
+            <!-- Excess earning slider -->
+            <hr class="weight-hr">
+            
+            <div class="col-md-6 text-left mt-4" style="border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('Excess_Earnings')">
+                <p style="font-weight: 500;font-size: 17px;margin-bottom: 0px;">Excess Earning</p>
+            </div>
+            <div class="col-md-6" style="text-align: right;border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('Excess_Earnings')">
+                <div class="row">
+                    <div class="col-md-11">
+                        <mat-slider
+                        class="example-margin mat-accent"
+                        [disabled]="'false'"
+                        [max]="excessEarnMaxValue"
+                        [min]="'0'"
+                        [step]="'1'"
+                        [discrete]="'false'"
+                        [showTickMarks]="'false'"
+                        style="width: 50%;"
+                        (input)="modelWeightageSlider($event,'Excess_Earnings',excessEarnMaxValue,excessEarnSlider)">
+                        <input [(ngModel)]="excessEarnSlider" matSliderThumb>
+                    </mat-slider>
+                    </div>
+                    <div class="col-md-1" style="margin-top: auto;margin-bottom: auto;">
+                        <span class="excessEarn-slider" >{{excessEarnSlider}}</span>
+                    </div>
+                </div>
+                
+            </div>
+
+
+            <!-- FCFE slider -->
+            <hr class="weight-hr">
             <div class="col-md-6 text-left mt-4" style="border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('FCFE')">
                 <p style="font-weight: 500;font-size: 17px;margin-bottom: 0px;">FCFE</p>
             </div>
@@ -25,13 +85,13 @@
                         <mat-slider
                         class="example-margin mat-accent"
                         [disabled]="'false'"
-                        [max]="'100'"
+                        [max]="fcfeMaxValue"
                         [min]="'0'"
                         [step]="'1'"
                         [discrete]="'false'"
                         [showTickMarks]="'false'"
                         style="width: 50%;"
-                        (input)="onFcfeSliderChange($event)">
+                        (input)="modelWeightageSlider($event,'FCFE',fcfeMaxValue,fcfeSlider)">
                         <input [(ngModel)]="fcfeSlider" matSliderThumb>
                     </mat-slider>
                     </div>
@@ -52,13 +112,13 @@
                         <mat-slider
                             class="example-margin mat-accent"
                             [disabled]="'false'"
-                            [max]="'100'"
+                            [max]="fcffMaxValue"
                             [min]="'0'"
                             [step]="'1'"
                             [discrete]="'false'"
                             [showTickMarks]="'false'"
                             style="width: 50%;"
-                            (input)="onFcffSliderChange($event)">
+                            (input)="modelWeightageSlider($event,'FCFF',fcffMaxValue,fcffSlider)">
                             <input [(ngModel)]="fcffSlider" matSliderThumb>
                         </mat-slider>
                     </div>
@@ -67,6 +127,36 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Net Asset Value -->
+            <hr class="weight-hr">
+            <div class="col-md-6 text-left mt-4" style="border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('NAV')">
+                <p style="font-weight: 500;font-size: 17px;margin-bottom: 0px;">Net Asset value</p>
+            </div>
+            <div class="col-md-6" style="text-align: right;border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('NAV')">
+                <div class="row">
+                    <div class="col-md-11">
+                        <mat-slider
+                        class="example-margin mat-accent"
+                        [disabled]="'false'"
+                        [max]="navMaxValue"
+                        [min]="'0'"
+                        [step]="'1'"
+                        [discrete]="'false'"
+                        [showTickMarks]="'false'"
+                        style="width: 50%;"
+                        (input)="modelWeightageSlider($event,'NAV',navMaxValue,navSlider)">
+                        <input [(ngModel)]="navSlider" matSliderThumb>
+                    </mat-slider>
+                    </div>
+                    <div class="col-md-1" style="margin-top: auto;margin-bottom: auto;">
+                        <span class="excessEarn-slider" >{{navSlider}}</span>
+                    </div>
+                </div>
+                
+            </div>
+
+            <!-- Relative Valuation slider -->
             <hr class="weight-hr">
     
             <div class="col-md-6 text-left mt-4" style="border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('Relative_Valuation')">
@@ -78,13 +168,13 @@
                         <mat-slider
                             class="example-margin mat-accent"
                             [disabled]="'false'"
-                            [max]="'100'"
+                            [max]="relativeValMaxValue"
                             [min]="'0'"
                             [step]="'1'"
                             [discrete]="'false'"
                             [showTickMarks]="'false'"
                             style="width: 50%;"
-                            (input)="onRelativeValSliderChange($event)">
+                            (input)="modelWeightageSlider($event,'Relative_Valuation',relativeValMaxValue,relativeValSlider)">
                             <input [(ngModel)]="relativeValSlider" matSliderThumb>
                         </mat-slider>
                     </div>
@@ -94,85 +184,6 @@
                 </div>
                 
 
-            </div>
-            <hr class="weight-hr">
-            <div class="col-md-6 text-left mt-4" style="border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('CTM')">
-                <p style="font-weight: 500;font-size: 17px;margin-bottom: 0px;">Comparable Industries</p>
-            </div>
-            <div class="col-md-6" style="text-align: right;border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('CTM')">
-                <div class="row">
-                    <div class="col-md-11">
-                        <mat-slider
-                            class="example-margin mat-accent"
-                            [disabled]="'false'"
-                            [max]="'100'"
-                            [min]="'0'"
-                            [step]="'1'"
-                            [discrete]="'false'"
-                            [showTickMarks]="'false'"
-                            style="width: 50%;"
-                            (input)="onComparableIndustrySliderChange($event)">
-                            <input [(ngModel)]="comparableIndustrySlider" matSliderThumb>
-                        </mat-slider>
-                    </div>
-                    <div class="col-md-1" style="margin-top: auto;margin-bottom: auto;">
-                        <span class="fcfe-slider" >{{comparableIndustrySlider}}</span>
-                    </div>
-                </div>
-                
-
-            </div>
-            <hr class="weight-hr">
-
-            <div class="col-md-6 text-left mt-4" style="border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('Excess_Earnings')">
-                <p style="font-weight: 500;font-size: 17px;margin-bottom: 0px;">Excess Earning</p>
-            </div>
-            <div class="col-md-6" style="text-align: right;border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('Excess_Earnings')">
-                <div class="row">
-                    <div class="col-md-11">
-                        <mat-slider
-                        class="example-margin mat-accent"
-                        [disabled]="'false'"
-                        [max]="'100'"
-                        [min]="'0'"
-                        [step]="'1'"
-                        [discrete]="'false'"
-                        [showTickMarks]="'false'"
-                        style="width: 50%;"
-                        (input)="onExcessEarnSliderChange($event)">
-                        <input [(ngModel)]="excessEarnSlider" matSliderThumb>
-                    </mat-slider>
-                    </div>
-                    <div class="col-md-1" style="margin-top: auto;margin-bottom: auto;">
-                        <span class="excessEarn-slider" >{{excessEarnSlider}}</span>
-                    </div>
-                </div>
-                
-            </div>
-            <div class="col-md-6 text-left mt-4" style="border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('NAV')">
-                <p style="font-weight: 500;font-size: 17px;margin-bottom: 0px;">Net Asset value</p>
-            </div>
-            <div class="col-md-6" style="text-align: right;border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('NAV')">
-                <div class="row">
-                    <div class="col-md-11">
-                        <mat-slider
-                        class="example-margin mat-accent"
-                        [disabled]="'false'"
-                        [max]="'100'"
-                        [min]="'0'"
-                        [step]="'1'"
-                        [discrete]="'false'"
-                        [showTickMarks]="'false'"
-                        style="width: 50%;"
-                        (input)="onNavSliderChange($event)">
-                        <input [(ngModel)]="navSlider" matSliderThumb>
-                    </mat-slider>
-                    </div>
-                    <div class="col-md-1" style="margin-top: auto;margin-bottom: auto;">
-                        <span class="excessEarn-slider" >{{navSlider}}</span>
-                    </div>
-                </div>
-                
             </div>
             <hr class="weight-hr">
         </div>

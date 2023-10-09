@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChange, SimpleChanges, ViewChild } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MODELS } from 'src/app/shared/enums/constant';
 import { isSelected } from 'src/app/shared/enums/functions';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
@@ -33,6 +34,13 @@ export class GroupModelResultComponent implements OnChanges {
   }
   data:any;
   isLoader=false;
+  fcfeMaxValue: number=100;
+  fcffMaxValue: number=100;
+  excessEarnMaxValue: number=100;
+  relativeValMaxValue: number=100;
+  comparableIndustryMaxValue: number=100;
+  navMaxValue: number=100;
+  maxModelValue: any;
   
   constructor(private calculationsService:CalculationsService,private snackbar:MatSnackBar){
     
@@ -90,6 +98,12 @@ export class GroupModelResultComponent implements OnChanges {
         const currentModel:any=[];
         const previousModel:any=[];
         this.data=null;
+        this.fcfeSlider=0;
+        this.fcffSlider=0;
+        this.navSlider=0;
+        this.comparableIndustrySlider=0;
+        this.relativeValSlider=0;
+        this.excessEarnSlider=0;
         // console.log(changes['transferStepperthree']?.currentValue?.formThreeData?.appData,"current final")
         // console.log(changes['transferStepperthree']?.previousValue?.formThreeData?.appData,"previous final")
         changes['transferStepperthree']?.currentValue?.formThreeData?.appData?.valuationResult.map((val:any)=>{
@@ -163,39 +177,37 @@ export class GroupModelResultComponent implements OnChanges {
       );
     }
 
-    onFcfeSliderChange(event: any): void {
-      // Handle slider value change here
-      let isRelative = false;
-      let isComparable = false;
-      let isNav = false;
+    modelWeightageSlider(event:any,modelName:any,maxValue:number,sliderValue:number){
+      let sortedModelArray = [];
       const slider = event.target as HTMLInputElement;
-      this.fcfeSlider = parseFloat(slider.value);
-      if(this.transferStepperthree?.formOneAndTwoData.model.includes('Relative_Valuation')){
-        isRelative = true;
-        this.relativeValSlider = 100 - this.fcfeSlider;
+      
+      const availPercentage = this.setModelSliderValue(modelName,parseFloat(slider.value));
+      const modelIndexToRemove = this.transferStepperthree?.formOneAndTwoData.model.sort().indexOf(modelName);
+       sortedModelArray = this.transferStepperthree?.formOneAndTwoData.model
+       .sort()
+       .slice(0, modelIndexToRemove)
+       .concat(this.transferStepperthree?.formOneAndTwoData.model.slice(modelIndexToRemove + 1));
+      const remainingEle = modelIndexToRemove !== -1 ? modelIndexToRemove - sortedModelArray.length : sortedModelArray.length; 
+      console.log(sortedModelArray,"sorted array","modelIndexToRemove",modelIndexToRemove,"remaining elements",remainingEle)
+      if(sortedModelArray.length == 1){
+        for (let i = 0 ; i <= sortedModelArray.length;i++){
+          this.setModelSliderValue(sortedModelArray[i],Math.abs(sliderValue-maxValue),Math.abs(sliderValue-maxValue));
+        }
+        
       }
-      if(this.transferStepperthree?.formOneAndTwoData.model.includes('CTM')){
-        isComparable = true;
-        this.comparableIndustrySlider = 100 - this.fcfeSlider;
+      if(sortedModelArray.length > 1 && Math.abs(remainingEle) > 1){
+        for (let i = modelIndexToRemove ; i < sortedModelArray.length;i++){
+          this.setModelSliderValue(sortedModelArray[i], Math.abs((sliderValue-maxValue)/Math.abs(remainingEle)), Math.abs(sliderValue-maxValue));
+          this.setMaxModelValue(sortedModelArray[i],  Math.abs(sliderValue-maxValue));
+        }
       }
-      if(this.transferStepperthree?.formOneAndTwoData.model.includes('NAV')){
-        isNav = true;
-        this.navSlider = 100 - this.fcfeSlider;
+      if(sortedModelArray.length > 1 && Math.abs(remainingEle) === 1){
+        for (let i = modelIndexToRemove ; i < sortedModelArray.length;i++){
+          this.setModelSliderValue(sortedModelArray[i], Math.abs(sliderValue-maxValue), Math.abs(sliderValue-maxValue));
+          this.setMaxModelValue(sortedModelArray[i],  Math.abs(sliderValue-maxValue));
+        }
       }
-      this.calculateModelWeigtagePayload.results.map((response:any)=>{
-        if(response.model==='FCFE'){
-          response.weightage = this.fcfeSlider
-        }
-        if(response.model === 'Relative_Valuation' && isRelative){
-          response.weightage = this.relativeValSlider;
-        }
-        if(response.model === 'CTM' && isComparable){
-          response.weightage = this.comparableIndustrySlider;
-        }
-        if(response.model === 'NAV' && isNav){
-          response.weightage = this.navSlider;
-        }
-      })
+
       this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
         if(response.status){
           this.data = response?.result?.modelValue;
@@ -204,240 +216,134 @@ export class GroupModelResultComponent implements OnChanges {
       })
     }
 
-    onFcffSliderChange(event: any): void {
-      // Handle slider value change here
-      let isRelative = false;
-      let isComparable = false;
-      let isNav = false;
-      const slider = event.target as HTMLInputElement;
-      this.fcffSlider = parseFloat(slider.value);
-      if(this.transferStepperthree?.formOneAndTwoData.model.includes('Relative_Valuation')){
-        isRelative = true;
-        this.relativeValSlider = 100 - this.fcffSlider;
+    setModelSliderValue(modelName:string,value:number,availPercent?:number){
+      let availablePercentage=availPercent || 100;
+      switch(modelName){
+        case MODELS.FCFE:
+          this.fcfeSlider = value.toFixed(2);
+          this.calculateModelWeigtagePayload.results.map((response:any)=>{
+            if(response.model=== MODELS.FCFE){
+              response.weightage = this.fcfeSlider
+            }
+          })
+          return availablePercentage - value;
+          break;
+         
+        case MODELS.FCFF:
+          this.fcffSlider = value.toFixed(2);
+          this.calculateModelWeigtagePayload.results.map((response:any)=>{
+            if(response.model=== MODELS.FCFF){
+              response.weightage = this.fcffSlider
+            }
+          })
+          return availablePercentage - value;
+          break;
+          
+        case MODELS.EXCESS_EARNINGS:
+          this.excessEarnSlider = value.toFixed(2);
+          this.calculateModelWeigtagePayload.results.map((response:any)=>{
+            if(response.model=== MODELS.EXCESS_EARNINGS){
+              response.weightage = this.excessEarnSlider
+            }
+          })
+          return availablePercentage - value;
+          break;
+
+        case MODELS.RELATIVE_VALUATION:
+          this.relativeValSlider = value.toFixed(2);
+          this.calculateModelWeigtagePayload.results.map((response:any)=>{
+            if(response.model=== MODELS.RELATIVE_VALUATION){
+              response.weightage = this.relativeValSlider;
+            }
+          })
+          return availablePercentage - value;
+          break;
+
+        case MODELS.COMPARABLE_INDUSTRIES:
+          this.comparableIndustrySlider = value.toFixed(2);
+          this.calculateModelWeigtagePayload.results.map((response:any)=>{
+            if(response.model=== MODELS.COMPARABLE_INDUSTRIES){
+              response.weightage = this.comparableIndustrySlider
+            }
+          })
+          return availablePercentage - value;
+          break;
+
+        case MODELS.NAV:
+          this.navSlider = value.toFixed(2);
+          this.calculateModelWeigtagePayload.results.map((response:any)=>{
+            if(response.model=== MODELS.NAV){
+              response.weightage = this.navSlider
+            }
+          })
+          return availablePercentage - value;
+          break;
+          
+         default:
+          return availablePercentage;
       }
-      if(this.transferStepperthree?.formOneAndTwoData.model.includes('CTM')){
-        isComparable = true;
-        this.comparableIndustrySlider = 100 - this.fcffSlider;
-      }
-      if(this.transferStepperthree?.formOneAndTwoData.model.includes('NAV')){
-        isNav = true;
-        this.navSlider = 100 - this.fcffSlider;
-      }
-      this.calculateModelWeigtagePayload.results.map((response:any)=>{
-        if(response.model==='FCFF'){
-          response.weightage = this.fcffSlider
-        }
-        if(response.model === 'Relative_Valuation' && isRelative){
-          response.weightage = this.relativeValSlider;
-        }
-        if(response.model === 'CTM' && isComparable){
-          response.weightage = this.comparableIndustrySlider;
-        }
-        if(response.model === 'NAV' && isNav){
-          response.weightage = this.navSlider;
-        }
-      })
-      this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
-        if(response.status){
-          this.data = response?.result?.modelValue;
-          this.finalWeightedValue = response?.result?.weightedVal ?? 0;
-        }
-      })
-    }
-    onRelativeValSliderChange(event: any): void {
-      // Handle slider value change here
-      let isFcfe = false;
-      let isFcff= false;
-      let isExcessEarn = false;
-      let isNav = false;
-      const slider = event.target as HTMLInputElement;
-      this.relativeValSlider = parseFloat(slider.value);
-      if(this.transferStepperthree?.formOneAndTwoData.model.includes('FCFE')){
-        isFcfe = true;
-        this.fcfeSlider = 100 - this.relativeValSlider;
-      }
-      if(this.transferStepperthree?.formOneAndTwoData.model.includes('FCFF')){
-        isFcff = true;
-        this.fcffSlider = 100 - this.relativeValSlider;
-      }
-      if(this.transferStepperthree?.formOneAndTwoData.model.includes('Excess_Earnings')){
-        isExcessEarn = true;
-        this.excessEarnSlider = 100 - this.relativeValSlider;
-      }
-      if(this.transferStepperthree?.formOneAndTwoData.model.includes('NAV')){
-        isNav = true;
-        this.navSlider = 100 - this.relativeValSlider;
-      }
-      this.calculateModelWeigtagePayload.results.map((response:any)=>{
-        if(response.model==='Relative_Valuation'){
-          response.weightage = this.relativeValSlider
-        }
-        if(response.model === 'FCFE' && isFcfe){
-          response.weightage = this.fcfeSlider;
-        }
-        if(response.model === 'FCFF' && isFcff){
-          response.weightage = this.fcffSlider;
-        }
-        if(response.model === 'Excess_Earnings' && isExcessEarn){
-          response.weightage = this.excessEarnSlider;
-        }
-        if(response.model === 'NAV' && isNav){
-          response.weightage = this.navSlider;
-        }
-      })
-      this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
-        if(response.status){
-          this.data = response?.result?.modelValue;
-          this.finalWeightedValue = response?.result?.weightedVal ?? 0;
-        }
-      })
-    }
-    onComparableIndustrySliderChange(event: any): void {
-      // Handle slider value change here
-      let isFcfe = false;
-      let isFcff= false;
-      let isExcessEarn = false;
-      let isNav = false;
-      const slider = event.target as HTMLInputElement;
-      this.comparableIndustrySlider = parseFloat(slider.value);
-      if(this.transferStepperthree?.formOneAndTwoData.model.includes('FCFE')){
-        isFcfe = true;
-        this.fcfeSlider = 100 - this.comparableIndustrySlider;
-      }
-      if(this.transferStepperthree?.formOneAndTwoData.model.includes('FCFF')){
-        isFcff = true;
-        this.fcffSlider = 100 - this.comparableIndustrySlider;
-      }
-      if(this.transferStepperthree?.formOneAndTwoData.model.includes('Excess_Earnings')){
-        isExcessEarn = true;
-        this.excessEarnSlider = 100 - this.comparableIndustrySlider;
-      }
-      if(this.transferStepperthree?.formOneAndTwoData.model.includes('NAV')){
-        isNav = true;
-        this.navSlider = 100 - this.comparableIndustrySlider;
-      }
-      this.calculateModelWeigtagePayload.results.map((response:any)=>{
-        if(response.model==='CTM'){
-          response.weightage = this.comparableIndustrySlider
-        }
-        if(response.model === 'FCFE' && isFcfe){
-          response.weightage = this.fcfeSlider;
-        }
-        if(response.model === 'FCFF' && isFcff){
-          response.weightage = this.fcffSlider;
-        }
-        if(response.model === 'Excess_Earnings' && isExcessEarn){
-          response.weightage = this.excessEarnSlider;
-        }
-        if(response.model === 'NAV' && isNav){
-          response.weightage = this.navSlider;
-        }
-      })
-      this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
-        if(response.status){
-          this.data = response?.result?.modelValue;
-          this.finalWeightedValue = response?.result?.weightedVal ?? 0;
-        }
-      })
-    }
-    
-    onExcessEarnSliderChange(event: any): void {
-      // Handle slider value change here
-      let isRelative = false;
-      let isComparable = false;
-      let isNav = false;
-      const slider = event.target as HTMLInputElement;
-      this.excessEarnSlider = parseFloat(slider.value);
-      if(this.transferStepperthree?.formOneAndTwoData.model.includes('Relative_Valuation')){
-        isRelative = true;
-        this.relativeValSlider = 100 - this.excessEarnSlider;
-      }
-      if(this.transferStepperthree?.formOneAndTwoData.model.includes('CTM')){
-        isComparable = true;
-        this.comparableIndustrySlider = 100 - this.excessEarnSlider;
-      }
-      if(this.transferStepperthree?.formOneAndTwoData.model.includes('NAV')){
-        isNav = true;
-        this.navSlider = 100 - this.excessEarnSlider;
-      }
-      this.calculateModelWeigtagePayload.results.map((response:any)=>{
-        if(response.model==='Excess_Earnings'){
-          response.weightage = this.excessEarnSlider
-        }
-        if(response.model === 'Relative_Valuation' && isRelative){
-          response.weightage = this.relativeValSlider;
-        }
-        if(response.model === 'CTM' && isComparable){
-          response.weightage = this.comparableIndustrySlider;
-        }
-        if(response.model === 'NAV' && isNav){
-          response.weightage = this.navSlider;
-        }
-      })
-      this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
-        if(response.status){
-          this.data = response?.result?.modelValue;
-          this.finalWeightedValue = response?.result?.weightedVal ?? 0;
-        }
-      })
     }
 
-    onNavSliderChange(event:any){
-      let isRelative = false;
-      let isComparable = false;
-      let isExcessEarn = false;
-      let isFcff = false;
-      let isFcfe = false;
-      const slider = event.target as HTMLInputElement;
-      this.navSlider = parseFloat(slider.value);
-      if(this.transferStepperthree?.formOneAndTwoData.model.includes('Relative_Valuation')){
-        isRelative = true;
-        this.relativeValSlider = 100 - this.navSlider;
+    setMaxModelValue(modelName:string,maxValue:number){
+      let availablePercentage = 0
+      switch(modelName){
+        case MODELS.FCFE:
+          this.fcfeMaxValue = maxValue;
+          return maxValue;
+          break;
+         
+        case MODELS.FCFF:
+          this.fcffMaxValue = maxValue;
+          return maxValue;
+          break;
+          
+        case MODELS.EXCESS_EARNINGS:
+          this.excessEarnMaxValue = maxValue;
+          return maxValue;
+          break;
+
+        case MODELS.RELATIVE_VALUATION:
+          this.relativeValMaxValue = maxValue;
+          return maxValue
+          break;
+
+        case MODELS.COMPARABLE_INDUSTRIES:
+          this.comparableIndustryMaxValue = maxValue;
+          console.log(maxValue,"available maxValue CTM");
+          return maxValue;
+          break;
+
+        case MODELS.NAV:
+          this.navMaxValue = maxValue;
+          console.log(maxValue,"available maxValue NAV");
+          return maxValue;
+          break;
+          
+         default:
+          return availablePercentage;
       }
-      if(this.transferStepperthree?.formOneAndTwoData.model.includes('CTM')){
-        isComparable = true;
-        this.comparableIndustrySlider = 100 - this.navSlider;
-      }
-      if(this.transferStepperthree?.formOneAndTwoData.model.includes('Excess_Earnings')){
-        isExcessEarn = true;
-        this.excessEarnSlider = 100 - this.navSlider;
-      }
-      if(this.transferStepperthree?.formOneAndTwoData.model.includes('FCFF')){
-        isFcff = true;
-        this.fcffSlider = 100 - this.navSlider;
-      }
-      if(this.transferStepperthree?.formOneAndTwoData.model.includes('FCFE')){
-        isFcfe = true;
-        this.fcfeSlider = 100 - this.navSlider;
-      }
-      this.calculateModelWeigtagePayload.results.map((response:any)=>{
-        if(response.model==='Excess_Earnings' && isExcessEarn){
-          response.weightage = this.excessEarnSlider
-        }
-        if(response.model === 'Relative_Valuation' && isRelative){
-          response.weightage = this.relativeValSlider;
-        }
-        if(response.model === 'CTM' && isComparable){
-          response.weightage = this.comparableIndustrySlider;
-        }
-        if(response.model === 'NAV'){
-          response.weightage = this.navSlider;
-        }
-        if(response.model === 'FCFE' && isFcfe){
-          response.weightage = this.fcfeSlider;
-        }
-        if(response.model === 'FCFF' && isFcff){
-          response.weightage = this.fcffSlider;
-        }
-      })
-      this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
-        if(response.status){
-          this.data = response?.result?.modelValue;
-          this.finalWeightedValue = response?.result?.weightedVal ?? 0;
-        }
-      })
     }
 
+    getMaxModelValue(modelName: string): number {
+      switch (modelName) {
+          case MODELS.FCFE:
+              return this.fcfeMaxValue; // Assuming fcfeMaxValue is a property storing the maximum value for FCFE model.
+          case MODELS.FCFF:
+              return this.fcffMaxValue; // Assuming fcffMaxValue is a property storing the maximum value for FCFF model.
+          case MODELS.EXCESS_EARNINGS:
+              return this.excessEarnMaxValue; // Assuming fcffMaxValue is a property storing the maximum value for FCFF model.
+          case MODELS.COMPARABLE_INDUSTRIES:
+              return this.comparableIndustryMaxValue; // Assuming fcffMaxValue is a property storing the maximum value for FCFF model.
+          case MODELS.RELATIVE_VALUATION:
+              return this.relativeValMaxValue; // Assuming fcffMaxValue is a property storing the maximum value for FCFF model.
+          case MODELS.NAV:
+              return this.navMaxValue; // Assuming fcffMaxValue is a property storing the maximum value for FCFF model.
+          default:
+              return 100; // Default maximum value if model name is not recognized.
+      }
+  }
+
+    // setMaxModelSliderValue()
     isRelativeValuation(modelName:string,array:any){
       return isSelected( modelName,array)
     }
