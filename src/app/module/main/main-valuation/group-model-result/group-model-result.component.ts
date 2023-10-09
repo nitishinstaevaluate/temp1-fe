@@ -324,26 +324,6 @@ export class GroupModelResultComponent implements OnChanges {
       }
     }
 
-    getMaxModelValue(modelName: string): number {
-      switch (modelName) {
-          case MODELS.FCFE:
-              return this.fcfeMaxValue; // Assuming fcfeMaxValue is a property storing the maximum value for FCFE model.
-          case MODELS.FCFF:
-              return this.fcffMaxValue; // Assuming fcffMaxValue is a property storing the maximum value for FCFF model.
-          case MODELS.EXCESS_EARNINGS:
-              return this.excessEarnMaxValue; // Assuming fcffMaxValue is a property storing the maximum value for FCFF model.
-          case MODELS.COMPARABLE_INDUSTRIES:
-              return this.comparableIndustryMaxValue; // Assuming fcffMaxValue is a property storing the maximum value for FCFF model.
-          case MODELS.RELATIVE_VALUATION:
-              return this.relativeValMaxValue; // Assuming fcffMaxValue is a property storing the maximum value for FCFF model.
-          case MODELS.NAV:
-              return this.navMaxValue; // Assuming fcffMaxValue is a property storing the maximum value for FCFF model.
-          default:
-              return 100; // Default maximum value if model name is not recognized.
-      }
-  }
-
-    // setMaxModelSliderValue()
     isRelativeValuation(modelName:string,array:any){
       return isSelected( modelName,array)
     }
