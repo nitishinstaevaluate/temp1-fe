@@ -1,15 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Croissant+One&family=Karla&family=Oxygen&family=Raleway&family=Roboto+Condensed&family=Roboto:wght@300&family=Space+Grotesk:wght@500&family=Teko&family=Ubuntu:wght@300&display=swap');
 ::ng-deep mat-row mat-cell,mat-header-cell,mat-table{
     border:  0.5px solid #d1d0d0 !important;
+    padding: 1%;
 }
 mat-header-cell{
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
     font-family: 'Karla', sans-serif;
     display: flex;
     justify-content: center;
     padding: 0px !important;
-    background-color: #dadada87 !important;
+    background-color: rgb(204 255 249 / 26%) !important;
+    color: #3d797d;
+}
+mat-header-row{
+    min-height: 49px !important;
 }
 ::ng-deep mat-row mat-cell{
     display: flex;
@@ -21,26 +26,30 @@ mat-header-cell{
     text-transform: capitalize !important;
 }
 
-::ng-deep mat-row:nth-child(odd) {
-    background-color: #f5f5f5;
-}
-::ng-deep mat-row:nth-child(odd) mat-cell mat-form-field input{
-    color: #eb6666 !important;
-}
-::ng-deep mat-row:nth-child(even) mat-cell input{
-    color: #14a052 !important;
+::ng-deep mat-row{
+    height: 10px !important;
+    min-height: 32px !important;
 }
 
+::ng-deep mat-row:nth-child(odd) {
+    background-color: #b1ffcc14 !important;
+}
+::ng-deep mat-row:nth-child(odd) mat-cell mat-form-field .input-pl{
+    color: rgb(39 87 110 / 87%) !important;
+}
+::ng-deep mat-row:nth-child(even) mat-cell mat-form-field .input-pl{
+    color: #055357 !important
+}
 
 ::ng-deep mat-row:hover mat-cell {
-    background-color: #e5e5e5;
+    background-color: #7ad5b529 !important;
   }
 
 .label-c{
     color: #288790 !important;
     font-size: 13px !important;
     font-weight: 600;
-    min-width:30% ;
+    min-width:45% ;
     font-family: 'Raleway', sans-serif !important;
 }
 
@@ -49,7 +58,7 @@ mat-header-cell{
 }
 
 .inc-width{
-    min-width: 30%;
+    min-width: 45%;
 }
 
 .btn-update{

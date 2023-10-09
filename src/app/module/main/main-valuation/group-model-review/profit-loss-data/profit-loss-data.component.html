@@ -16,8 +16,8 @@
       <ng-container *ngIf="checkType(element[column])">
         <span >{{ element[column] ? element[column] : '---' }}</span>
       </ng-container>
-      <mat-form-field [appearance]="appearance" style="margin-bottom: -17%;" *ngIf="isNumberOrEmpty(element[column])" [floatLabel]="floatLabelType">
-        <input style="text-align: center" [value]="element[column] ? element[column] : null"  matInput placeholder="---" (input)="onInputChange($event.target, column,element[column])">
+      <mat-form-field [appearance]="appearance" style="margin-bottom: -15%;" *ngIf="isNumberOrEmpty(element[column])" [floatLabel]="floatLabelType">
+        <input class="input-pl" style="text-align: center" [value]="element[column] ? convertIntoNumber(element[column]) : null"  matInput placeholder="---" (input)="onInputChange($event.target, column,element[column])">
       </mat-form-field>
     </mat-cell>
   </ng-container>
@@ -34,8 +34,8 @@
         <ng-container *ngIf="checkType(element[column])">
           <span >{{ element[column] ? element[column] : '---' }}</span>
         </ng-container>
-        <mat-form-field [appearance]="appearance" style="margin-bottom: -4%;width: 100%;" *ngIf="isNumberOrEmpty(element[column])" [floatLabel]="floatLabelType">
-          <input style="text-align: center" [value]="element[column] ? element[column] : null "  matInput placeholder="---" (input)="onInputChange($event.target, column,element[column])">
+        <mat-form-field [appearance]="appearance" style="margin-bottom: -3%;width: 100%;" *ngIf="isNumberOrEmpty(element[column])" [floatLabel]="floatLabelType">
+          <input class="input-pl" style="text-align: center" [value]="element[column] ? convertIntoNumber(element[column]) : null "  matInput placeholder="---" (input)="onInputChange($event.target, column,element[column])">
         </mat-form-field>
       </mat-cell>
     </ng-container>

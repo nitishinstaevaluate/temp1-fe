@@ -121,7 +121,6 @@ export class BalanceSheetDetailsComponent implements OnChanges {
       editedValues: this.editedValues 
     }
     this.calculationService.modifyExcel(payload).subscribe((response:any)=>{
-      console.log(response)
       if(response.status){
         this.isExcelModified = true;
         this.snackBar.open('Successfully updated excel','Ok',{
@@ -132,5 +131,9 @@ export class BalanceSheetDetailsComponent implements OnChanges {
         })
       }
     })
+  }
+
+  convertIntoNumber(value:any){
+    return parseFloat(value)?.toFixed(2);
   }
 }

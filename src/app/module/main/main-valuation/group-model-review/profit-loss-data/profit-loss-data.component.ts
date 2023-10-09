@@ -87,6 +87,9 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
     return (typeof value === 'number' || value === '' || typeof value === 'string' || value === null || value === undefined) && !isNaN(value) ? true : false;
   }
 
+  convertIntoNumber(value:any){
+    return parseFloat(value)?.toFixed(2);
+  }
   onInputChange(value: any, column: string,originalValue:any) {
     // const spanContent = (value as HTMLInputElement).closest('mat-row').querySelector('span').textContent;
   
