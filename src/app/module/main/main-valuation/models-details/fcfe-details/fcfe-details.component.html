@@ -2,11 +2,15 @@
         <h4 class="card-header">{{modelControl.fcfe.header}}</h4>
         <form [formGroup]="fcfeForm">
             <div class="row" >
-
+                <div class="col-md-12 revalmodel">
+                    <mat-label class="label" >Free Cash Flow to Equity</mat-label>
+                    <span class="mat-bullet"><mat-icon>fiber_manual_record</mat-icon></span>
+                </div>
                 <!-- discount rate -->
                 <div class="col-md-4 field">
-                    <mat-form-field class="full-width-input" [floatLabel]="floatLabelType" >
-                            <mat-select formControlName="discountRate" [placeholder]="modelControl.fcfe.options.discountRate.placeholder">
+                    <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
+                        <mat-label>Discount Rate</mat-label>    
+                        <mat-select class="mat-select-value" formControlName="discountRate">
                             <mat-option *ngFor="let doc of discountR"  [value]="getDocList(doc)">{{doc.label}}</mat-option>
                             </mat-select>
                       </mat-form-field>
@@ -14,8 +18,9 @@
 
                 <!-- discount period -->
                 <div class="col-md-4 field">
-                    <mat-form-field class="full-width-input" [floatLabel]="floatLabelType">
-                        <mat-select formControlName="discountingPeriod" [placeholder]="modelControl.fcfe.options.discountPeriod.placeholder">
+                    <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
+                        <mat-label>Disount Period</mat-label>
+                        <mat-select class="mat-select-value" formControlName="discountingPeriod">
                         <mat-option *ngFor="let doc of modelControl.fcfe.options.discountPeriod.options"  [value]="doc.name">{{doc.name}}</mat-option>
                         </mat-select>
                       </mat-form-field>
@@ -23,8 +28,9 @@
 
                  <!-- cost of equity -->
                  <div class="col-md-4 field">
-                    <mat-form-field class="full-width-input" [floatLabel]="floatLabelType" >
-                        <mat-select formControlName="coeMethod" [placeholder]="modelControl.fcfe.options.coeMethod.placeholder">
+                    <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
+                        <mat-label>Cost Of Equity</mat-label>
+                        <mat-select class="mat-select-value" formControlName="coeMethod">
                         <mat-option *ngFor="let doc of equityM"  [value]="doc.type">{{doc.label}}</mat-option>
                         </mat-select>
                       </mat-form-field>
@@ -32,8 +38,9 @@
 
                 <!-- risk free rate -->
                 <div class="col-md-4 field">
-                    <mat-form-field class="full-width-input" [floatLabel]="floatLabelType" >
-                        <mat-select formControlName="riskFreeRate" [placeholder]="modelControl.fcfe.options.riskFreeRate.placeholder">
+                    <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
+                        <mat-label>Risk Free Rate</mat-label>
+                        <mat-select class="mat-select-value" formControlName="riskFreeRate">
                         <mat-option *ngFor="let doc of indianTreasuryY"  [value]="doc.latest">Yield on {{ doc.maturityInYrs }} Years Indian Treasury Bond</mat-option>
                         </mat-select>
                         <mat-hint *ngIf="fcfeForm.controls['riskFreeRate'].value" class="taxrate-hint">Risk-Free rate is {{fcfeForm.controls['riskFreeRate'].value}}%</mat-hint>
@@ -42,8 +49,9 @@
 
                 <!-- expected market return -->
                 <div class="col-md-4 field">
-                    <mat-form-field class="full-width-input" [floatLabel]="floatLabelType" >
-                        <mat-select formControlName="expMarketReturnType" [placeholder]="modelControl.fcfe.options.expMarketReturnType.placeholder">
+                    <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
+                        <mat-label>Expected Market Return</mat-label>
+                        <mat-select class="mat-select-value" formControlName="expMarketReturnType">
                         <mat-option *ngFor="let doc of modelControl.fcfe.options.expMarketReturnType.options"  [value]="doc">{{doc.name}}</mat-option>
                         </mat-select>
                         <mat-hint *ngIf="fcfeForm.controls['expMarketReturn'].value" class="taxrate-hint">Expected Market Return is {{fcfeForm.controls['expMarketReturn'].value.toFixed(2)}}%</mat-hint>
@@ -52,8 +60,9 @@
 
                 <!-- beta -->
                 <div class="col-md-4 field">
-                    <mat-form-field class="full-width-input" [floatLabel]="floatLabelType" >
-                        <mat-select formControlName="betaType" [placeholder]="modelControl.fcfe.options.betaType.placeholder">
+                    <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
+                        <mat-label>Beta</mat-label>
+                        <mat-select class="mat-select-value" formControlName="betaType">
                         <mat-option [disabled]="!formOneData?.industry" *ngFor="let doc of modelControl.fcfe.options.betaType.options"  [value]="doc.value" >{{doc.name}}</mat-option>
                     </mat-select>
                     <mat-hint *ngIf="fcfeForm.controls['beta'].value" class="taxrate-hint">Beta is {{fcfeForm.controls['beta'].value.toFixed(2)}}</mat-hint>
@@ -71,8 +80,9 @@
 
                 <!-- Specific Risk Premium -->
                 <div class="col-md-4 field">
-                    <mat-form-field class="full-width-input" [floatLabel]="floatLabelType">
-                        <input (mousedown)="onSlideToggleChange($event)" formControlName="riskPremium" [type]="modelControl.fcfe.options.riskPremium.type" matInput  [placeholder]="modelControl.fcfe.options.riskPremium.placeholder">
+                    <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
+                        <mat-label>Specific Risk Premium</mat-label>
+                        <input (mousedown)="onSlideToggleChange($event)" formControlName="riskPremium" [type]="modelControl.fcfe.options.riskPremium.type" matInput>
                     </mat-form-field>
                     </div>
 
@@ -95,28 +105,29 @@
                 </mat-form-field>
                 </div> -->
 
-                <div class="col-md-12 text-center" style="padding: 2%; padding-top: 3%;" *ngIf="calculateCoeAndAdjustedCoe()">
+                <div class="col-md-12 revalmodel" style="border-top: 1px solid #ccdfe3" *ngIf="specificRiskPremiumModalForm.controls['companySize'].value || specificRiskPremiumModalForm.controls['marketPosition'].value || specificRiskPremiumModalForm.controls['liquidityFactor'].value || specificRiskPremiumModalForm.controls['competition'].value">
+                    <mat-label class="label">Estimated Cost of Equity</mat-label>
+                    <span class="mat-bullet"><mat-icon>fiber_manual_record</mat-icon></span>
+                </div>
+                <div class="col-md-12 text-center" style="padding: 2%; padding-top: 1%;padding-bottom: 1%;" *ngIf="calculateCoeAndAdjustedCoe()">
                     <div class="card shadow">
-                        <div class="card-header bg-info text-white"> <!-- Change background color to 'bg-info' -->
-                            <h4 class="card-title">Estimated Cost of Equity</h4>
-                        </div>
                         <div class="card-body">
                             <div class="row">
                                 
-                                <div class="col-md-6 mb-4">
+                                <div class="col-md-6">
                                     <div class="card border-0">
                                         <div class="card-body">
-                                            <h5 class="card-title" style="font-size: 1.25rem;">Cost Of Equity</h5> <!-- Increase font size -->
-                                            <p class="card-text" style="font-size: 1.1rem;">{{coe.toFixed(2)}}%</p> <!-- Increase font size -->
+                                            <h5 class="card-title">Cost Of Equity</h5> <!-- Increase font size -->
+                                            <p class="card-text">{{coe.toFixed(2)}}%</p> <!-- Increase font size -->
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-md-6 mb-4">
+                                <div class="col-md-6">
                                     <div class="card border-0">
                                         <div class="card-body">
-                                            <h5 class="card-title" style="font-size: 1.25rem;">Adjusted Cost Of Equity</h5> <!-- Increase font size -->
-                                            <p class="card-text"  style="font-size: 1.1rem;">{{adjCoe.toFixed(2)}}%</p> <!-- Increase font size -->
+                                            <h5 class="card-title">Adjusted Cost Of Equity</h5> <!-- Increase font size -->
+                                            <p class="card-text">{{adjCoe.toFixed(2)}}%</p> <!-- Increase font size -->
                                         </div>
                                     </div>
                                 </div>
@@ -136,8 +147,12 @@
                     </div>
                   </div>
                   
-                  <div class="card-container col-md-12" style="padding: 2%;" *ngIf="specificRiskPremiumModalForm.controls['companySize'].value || specificRiskPremiumModalForm.controls['marketPosition'].value || specificRiskPremiumModalForm.controls['liquidityFactor'].value || specificRiskPremiumModalForm.controls['competition'].value">
-                    <p class="rp-p">Risk Premium</p>
+
+                  <div class="col-md-12 revalmodel" style="border-top: 1px solid #ccdfe3" *ngIf="specificRiskPremiumModalForm.controls['companySize'].value || specificRiskPremiumModalForm.controls['marketPosition'].value || specificRiskPremiumModalForm.controls['liquidityFactor'].value || specificRiskPremiumModalForm.controls['competition'].value">
+                    <mat-label class="label" >Risk Premium</mat-label>
+                    <span class="mat-bullet"><mat-icon>fiber_manual_record</mat-icon></span>
+                </div>
+                  <div class="card-container col-md-12" style="padding: 2%;padding-top: 1%;" *ngIf="specificRiskPremiumModalForm.controls['companySize'].value || specificRiskPremiumModalForm.controls['marketPosition'].value || specificRiskPremiumModalForm.controls['liquidityFactor'].value || specificRiskPremiumModalForm.controls['competition'].value">
                     <div class="row">
                         <div class="col-md-3">
                             <div class="card card-est">
