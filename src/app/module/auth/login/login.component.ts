@@ -39,7 +39,7 @@ export class LoginComponent  implements OnInit {
     // this.clearErrorMessage();
     // console.log(this.loginForm.controls['username'].value, this.loginForm.controls['password'].value)
     if (this.validateForm(this.loginForm.controls['username'].value, this.loginForm.controls['password'].value)) {
-      this.authservice.loginWithEmail(this.loginForm.controls['username'].value, this.loginForm.controls['password'].value).subscribe((response)=>{
+      this.authservice.loginWithEmail(this.loginForm.controls['username'].value, this.loginForm.controls['password'].value).subscribe((response:any)=>{
         this.snackbar.open('Login successful','Ok',{
           horizontalPosition: 'right',
           verticalPosition: 'top',
@@ -49,7 +49,7 @@ export class LoginComponent  implements OnInit {
         this.router.navigate(['/dashboard']);
         this.disabled='';
       },
-      (error)=>{
+      (error:any)=>{
         this._error = error
         this.disabled = '';
           this.router.navigate(['/']);

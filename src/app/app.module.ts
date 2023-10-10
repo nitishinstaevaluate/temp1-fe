@@ -8,10 +8,11 @@ import { SharedModule } from './shared/shared.module';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { MaterialModuleModule } from './shared/material-module.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { HttpInterceptorService } from './interceptors/http-interceptor.service';
 
 
 
@@ -28,7 +29,7 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
     MaterialModuleModule,
     BrowserAnimationsModule,HttpClientModule,NgxDropzoneModule,NgxSliderModule,
   ],
-  providers: [],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
