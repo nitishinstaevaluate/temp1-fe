@@ -319,3 +319,29 @@ a:hover {
   color: #1c6a41;
 }
 
+
+
+// new css
+.revalmodel{
+  margin-top: auto;
+  margin-bottom: auto;
+  padding-top: 1%;
+  position: relative;
+  padding-left: 1.8%;
+}
+
+.label{
+  border-radius: 5px;
+  font-family: 'AR One Sans', sans-serif;
+  font-size: 19px;
+  color: #26879d;
+  padding-left: 2%;
+  cursor: pointer;
+  transition:color .3s;
+  padding-top: 1%;
+}
+
+.label:hover{
+  color: #26879d;
+}
+

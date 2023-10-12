@@ -1,7 +1,7 @@
 {
     "modelValuation":{
         "type":"modelValuation",
-        "header":"Valuation Details",
+        "header":"Valuation Of Company",
         "options":{
             "company":{
                 "name":"company",
@@ -398,7 +398,7 @@
     },
     "excessEarning":{
         "type":"Excess_Earnings",
-        "header":"Excess Earning Calculations",
+        "header":"Excess Earnings Calculations",
         "options":{
             "discountRate":{
                 "name":"discountRate",
@@ -701,6 +701,34 @@
                     "ifMarketVal":""
                 }
             }
+        }
+    },
+    "reportDetails":{
+        "type":"reportDetails",
+        "header":"Reporting Details",
+        "options":{
+            "reportData":[
+                {
+                    "name":"Millions",
+                    "value":"Millions"
+                },
+                {
+                    "name":"Thousands",
+                    "value":"Thousands"
+                },
+                {
+                    "name":"Lakhs",
+                    "value":"Lakhs"
+                },
+                {
+                    "name":"Crores",
+                    "value":"Crores"
+                },
+                {
+                    "name":"Hundreds",
+                    "value":"Hundreds"
+                }
+            ]
         }
     }
 }

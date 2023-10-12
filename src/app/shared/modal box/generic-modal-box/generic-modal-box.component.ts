@@ -28,6 +28,7 @@ loadModel(data:any){
   if( data === this.appValues.ANALYST_CONSENSUS_ESTIMATES.value) return this.label = this.appValues.ANALYST_CONSENSUS_ESTIMATES.name;
   if( data === this.appValues.GOING_CONCERN.value) return this.label = this.appValues.GOING_CONCERN.name;
   if( data === this.appValues.SPECIFIC_RISK_PREMIUM.value) return this.label = this.appValues.SPECIFIC_RISK_PREMIUM.name;
+  if( data === this.appValues.REGISTERED_VALUER_DETAILS.value) return this.label = this.appValues.REGISTERED_VALUER_DETAILS.name;
   return '';
 }
 
@@ -58,6 +59,18 @@ modalData(data?:any,knownAs?:string) {
         marketPosition:data?.marketPosition,
         liquidityFactor:data?.liquidityFactor,
         competition:data?.competition
+      });
+      break;  
+    case 'registeredValuer':
+      this.dialogRef.close({
+        registeredValuerName:data?.registeredValuerName,
+        registeredValuerMobileNumber:data?.registeredValuerMobileNumber,
+        registeredValuerEmailId:data?.registeredValuerEmailId,
+        registeredValuerGeneralAddress:data?.registeredValuerGeneralAddress,
+        registeredValuerCorporateAddress:data?.registeredValuerCorporateAddress,
+        registeredValuerQualifications:data?.registeredValuerQualifications,
+        registeredvaluerDOIorConflict:'no',
+        registeredValuerIbbiId:data?.registeredValuerIbbiId,
       });
       break;  
   

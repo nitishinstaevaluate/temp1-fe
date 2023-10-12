@@ -299,6 +299,9 @@ saveAndNext(): void {
     }
     payload['capitalStructure'] = capitalStructure;
   }
+  payload['adjustedCostOfEquity']=this.adjCoe;
+  payload['costOfEquity']=this.coe;
+  payload['wacc']=this.wacc;
   // check if expected market return  is empty or not
  
   payload['expMarketReturnType']=this.fcffForm.controls['expMarketReturnType']?.value?.value;

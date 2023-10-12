@@ -53,7 +53,7 @@ export class LoginComponent  implements OnInit {
         this._error = error
         this.disabled = '';
           this.router.navigate(['/']);
-          this.snackbar.open('Login failed,contact administrator','Ok',{
+          this.snackbar.open('Login failed, contact administrator','Ok',{
             horizontalPosition: 'right',
             verticalPosition: 'top',
             duration: 4000,

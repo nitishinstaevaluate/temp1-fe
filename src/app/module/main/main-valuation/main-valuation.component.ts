@@ -10,11 +10,12 @@ import { IS_ARRAY_EMPTY_OR_NULL, isSelected } from 'src/app/shared/enums/functio
 })
 
 export class MainValuationComponent{
-  headerLabel='Valuation of Company';
+  headerLabel='';
   initiateForm:any=true;
   currentStepIndex:any=0;    
   transferSteppertwo:any;
   transferStepperthree:any;    
+  transferStepperFour:any;    
   formOneData: any;
   fcfeData:any;
   fcffData:any;
@@ -50,6 +51,9 @@ export class MainValuationComponent{
   fourthFormGroup = this._formBuilder.group({
     fourthCtrl: ['', Validators.required],
   });
+  fifthFormGroup = this._formBuilder.group({
+    fifthCtrl: ['', Validators.required],
+  });
 
   onStepChange(event: any,stepper:any) {
     this.currentStepIndex = this.stepper.selectedIndex;
@@ -65,11 +69,11 @@ export class MainValuationComponent{
       };
       
     }
-    if(event.selectedIndex +1 == 1) return this.headerLabel = 'Valuation of Company';
+    if(event.selectedIndex +1 == 1) return this.headerLabel = '';
     if(event.selectedIndex +1 == 2) return this.headerLabel = 'Model Inputs';
     if(event.selectedIndex +1 == 3) return this.headerLabel = 'Review Form';
     if(event.selectedIndex +1 == 4) return this.headerLabel = 'Evaluate Result';
-    return 'Valuation of Company';
+    return '';
   }
 
   groupModelControls(data:any){
@@ -85,6 +89,11 @@ export class MainValuationComponent{
   groupReviewControls(data:any){
     this.transferStepperthree= {formOneAndTwoData:this.formOneAndTwoData,formThreeData:data};
     this.stepper.next();
+  }
+
+  resultData(data:any){
+    this.stepper.next();
+    this.transferStepperFour = data; 
   }
   fcfeDetails(data:any){
     this.fcfeData=data;

@@ -19,7 +19,7 @@
                 <!-- discount period -->
                 <div class="col-md-4 field">
                     <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
-                        <mat-label>Disount Period</mat-label>
+                        <mat-label>Discount Period</mat-label>
                         <mat-select class="mat-select-value" formControlName="discountingPeriod">
                         <mat-option *ngFor="let doc of modelControl.fcfe.options.discountPeriod.options"  [value]="doc.name">{{doc.name}}</mat-option>
                         </mat-select>

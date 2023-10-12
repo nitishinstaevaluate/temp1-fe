@@ -45,3 +45,155 @@
     color: #539e53;
     padding-bottom: 1%;
 }
+
+
+// new css
+@import url('https://fonts.googleapis.com/css2?family=AR+One+Sans:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+.full-width-input {
+    width: 100%; /* Set the width to 100% to occupy the full width of the container */
+  }
+  .col-md-6 mat-form-field{
+    width: 100% !important;
+  }
+
+  .label{
+    border-radius: 5px;
+    font-family: 'AR One Sans', sans-serif;
+    font-size: 17px;
+    color: #26879d;
+    padding-left: 2%;
+    cursor: pointer;
+    transition:color .3s;
+  }
+  
+  ::ng-deep .mat-relative-val input
+  {
+    color: #004e67 !important;
+    font-family: 'AR One Sans';
+  }
+  mat-label{
+    color:#38a3b8;
+  }
+  .field{
+    padding-left: 2.5%;
+    padding-top: 0.5%;
+    padding-right: 2.5%;
+  }
+
+.card-header{
+    color: #1c6e8f;
+    border-top: 1px solid #e3e3f7;
+    font-size: 19px;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .card-title{
+    font-size: 1.25rem;
+    color: #004e67 !important;
+    font-family: 'AR One Sans';
+    font-weight: 500;
+  }
+  .card-text{
+    font-size: 1.1rem;
+    color: #1c6e8f !important;
+    font-family: 'AR One Sans';
+    font-weight: 500;
+  }
+
+// keep this css
+.revalmodel{
+    margin-top: auto;
+    margin-bottom: auto;
+    padding-top: 1%;
+    position: relative;
+    padding-left: 1.8%;
+  }
+  .label:hover{
+    color: #26879d;
+  }
+
+  .mat-bullet{
+    position: absolute;
+    left: 2%;
+    top: 30%;
+    mat-icon{
+        transform: scale(.5);
+        color: #26879d;
+    }
+  }
+
+  mat-hint{
+    font-family: 'Poppins', sans-serif;
+    color: #219476;
+    font-size: 10px;
+    font-weight: 500;
+  }
+
+  ::ng-deep .mat-select-value .mat-mdc-select-trigger .mat-mdc-select-value .mat-mdc-select-value-text{    
+    padding: 0px !important;
+    color: #004e67 !important;
+      font-family: 'AR One Sans';
+  }
+  ::ng-deep .mat-relative-val .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) .mat-mdc-form-field-infix {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+  }
+
+//risk premium card css
+.card-container {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.card-est {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s,box-shadow 0.2s, background-color 0.2s;
+  cursor: pointer;
+}
+
+.card-est:hover {
+  // transform: translateY(-5px);
+  box-shadow: 0px 4px 8px rgba(45, 45, 45, 0.6);
+  background-color: #f1f1f1;
+}
+
+.card-header-rp {
+  font-size: 19px;
+  font-weight: 500;
+  // font-family: 'Ubuntu', sans-serif;
+  font-family: 'AR One Sans';
+  border-top: 1px solid #e3e3f7;
+  color: #0075a3;
+  display: table-cell;
+}
+
+.card-subtext {
+  color: #0075a3;
+  height: 100%;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  font-size: 18px;
+  padding-top: 4%;
+  // font-family: 'Teko', sans-serif;
+  font-family: 'AR One Sans';
+  font-weight: 500;
+}
+
+.rp-p{
+  color: #089e94;
+  font-family: 'Oxygen', sans-serif;
+  font-size: 20px;
+  border-top: 1px solid #e3e3f7;
+  font-weight: 500;
+  padding-top: 2%;
+  padding-left: 1%;
+}
+
