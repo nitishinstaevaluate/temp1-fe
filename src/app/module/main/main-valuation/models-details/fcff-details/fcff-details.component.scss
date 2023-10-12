@@ -1,221 +1,97 @@
-@import url('https://fonts.googleapis.com/css2?family=Croissant+One&family=Roboto+Condensed&family=Roboto:wght@300&family=Ubuntu:wght@300&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Croissant+One&family=Roboto+Condensed&family=Roboto:wght@300&family=Teko&family=Ubuntu:wght@300&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Croissant+One&family=Oxygen&family=Roboto+Condensed&family=Roboto:wght@300&family=Teko&family=Ubuntu:wght@300&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=AR+One+Sans:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
 .full-width-input {
     width: 100%; /* Set the width to 100% to occupy the full width of the container */
   }
+  .col-md-6 mat-form-field{
+    width: 100% !important;
+  }
+
+  .label{
+    border-radius: 5px;
+    font-family: 'AR One Sans', sans-serif;
+    font-size: 17px;
+    color: #26879d;
+    padding-left: 2%;
+    cursor: pointer;
+    transition:color .3s;
+  }
   
-  .full-width-input mat-label,
-  .full-width-input input {
-    display: block; /* Display the label and input as block-level elements */
-    width: 100%; /* Make the label and input take up the full width of the container */
+  ::ng-deep .mat-relative-val input
+  {
+    color: #004e67 !important;
+    font-family: 'AR One Sans';
+  }
+  mat-label{
+    color:#38a3b8;
   }
   .field{
     padding-left: 2.5%;
-    padding-top: 3.5%;
+    padding-top: 0.5%;
     padding-right: 2.5%;
   }
-  .label{
-    font-size: 17px;
-    color: #797a79;
-  }
-  .label2{
-    font-size: 17px;
-    padding-right:10%;
-    color: #797a79;
 
-  }
-  
-  .upload-btn-disabled {
-    font-weight: 700 !important;
-    color: #373838 !important;
-    border: solid 1px #dedede;
-    opacity: 0.6;
-    cursor: not-allowed;
-    width: 30%;
-    background-color: #acacac  !important;
-  }
-  .upload-btn-enabled {
-    font-weight: 700 !important;
-    color: #ffffff !important;
-    border: solid 1px #dedede;
-    opacity: 0.6;
-    cursor: pointer;
-    width: 100%;
-    background-color: #1a0ef1  !important;
+.card-header{
+    color: #1c6e8f;
+    border-top: 1px solid #e3e3f7;
+    font-size: 19px;
+    font-family: 'Poppins', sans-serif;
   }
 
-  ::ng-deep .mat-form-field-appearance-fill .mdc-text-field--filled:not(.mdc-text-field--disabled){
-    background-color: white !important;
+  .card-title{
+    font-size: 1.25rem;
+    color: #004e67 !important;
+    font-family: 'AR One Sans';
+    font-weight: 500;
+  }
+  .card-text{
+    font-size: 1.1rem;
+    color: #1c6e8f !important;
+    font-family: 'AR One Sans';
+    font-weight: 500;
   }
 
-   ::ng-deep .mat-mdc-select .mat-mdc-select-trigger .mat-mdc-select-value .mat-mdc-select-placeholder,
-   ::ng-deep .mat-form-field-appearance-fill .mdc-text-field--filled:not(.mdc-text-field--disabled) .mat-mdc-form-field-flex .mat-mdc-form-field-infix .mat-mdc-form-field-input-control,
-   ::ng-deep .mat-mdc-select .mat-mdc-select-trigger .mat-mdc-select-value .mat-mdc-select-value-text
- {
-     font-size: 14px !important;
-}
-::ng-deep .full-width-input .mat-form-field-infix{
+// keep this css
+.revalmodel{
+    margin-top: auto;
+    margin-bottom: auto;
+    padding-top: 1%;
+    position: relative;
+    padding-left: 1.8%;
+  }
+  .label:hover{
+    color: #26879d;
+  }
+
+  .mat-bullet{
+    position: absolute;
+    left: 2%;
+    top: 30%;
+    mat-icon{
+        transform: scale(.5);
+        color: #26879d;
+    }
+  }
+
+  mat-hint{
+    font-family: 'Poppins', sans-serif;
+    color: #219476;
+    font-size: 10px;
+    font-weight: 500;
+  }
+
+  ::ng-deep .mat-select-value .mat-mdc-select-trigger .mat-mdc-select-value .mat-mdc-select-value-text{    
+    padding: 0px !important;
+    color: #004e67 !important;
+      font-family: 'AR One Sans';
+  }
+  ::ng-deep .mat-relative-val .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) .mat-mdc-form-field-infix {
     padding-top: 0px !important;
     padding-bottom: 0px !important;
   }
-  mat-label{
-    margin-bottom: 0px !important;
-    font-size: 16px;
-    font-weight: 500;
-  }
 
-  ::ng-deep mat-radio-group mat-radio-button .mdc-form-field>label{
-    font-size: 14px;
-    color: #797a79;
-    margin: 0px !important;
-    font-weight: 400;
-  }
-  .mat-radio{
-    margin-top: auto;
-    margin-bottom: auto;
-  }
-  .card-header{
-    font-weight: 500;
-    color:#656765;
-    font-size: 17px;
-    border-top: 1px solid #e3e3f7;
-    // font-size: 17px;
-   
-  }
-  .bg-info{
-    background: linear-gradient(to bottom, #ffffff, #d0fffb) !important;
-    padding: 20px;
-    /* text-align: center; */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  ::ng-deep mat-checkbox .mdc-form-field>label{
-    font-size: 14px;
-    color: #797a79;
-    margin: 0px !important;
-    font-weight: 400;
-  }
-.modelview{
-  text-align: end;
-  margin-top: auto;
-  margin-bottom: auto;
-  max-width: 11.667% !important;
-}
-.outer-wrapper{
-  padding-bottom:1.5% !important;
-}
-.revalmodel{
-  text-align: end;
-  margin-top: auto;
-  margin-bottom: auto;
-}
-mat-checkbox{
-  padding-right: 1%;
-}
-.download{
-  color: #a5a5a5;
-  font-weight: 400;
-  font-family: cursive;
-  font-size: 12px;
-}
-.upload-doc{
-  box-shadow: 1px 2px 13px #ffffff;
-    border-radius: -3%;
-    border: 1px solid #f4e9e9; // another gradient 1px solid #f5f3f3
-    text-align: center;
-}
-.taxrate-hint{
-  padding: 0px;
-    color: #12a912;
-    font-weight: 500;
-    font-family: math;
-}
-
-.alpha{
-  font-weight: 500;
-  font-size: 14px;
-  font-weight: 500;
-  color: #2c3475;
-  padding-top: 1%;
-  padding-right: 1%;
-  font-family: fangsong;
-}
-
-.coeval{
-  font-size: 17px;
-  color: #968d8d;
-  padding-left: 2%;
-}
-.coe{
-  font-size: 18px;
-  color: #f17f7f;
-}
-
-// loader 
-.loader-container {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgb(156 156 156 / 50%); /* Semi-transparent background */
-  z-index: 9999; /* Ensure it's on top of other elements */
-}
-
-.loader {
-  text-align: center;
-  background-color: #fff; /* Background color for the loader */
-  padding: 20px; /* Add some padding for better visibility */
-  border-radius: 8px; /* Rounded corners for the loader */
-}
-
-.text {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 16px;
-}
-
-.dots-container {
-  display: inline-block;
-}
-
-.dot {
-  width: 20px;
-  height: 20px;
-  background-color: #3498db;
-  border-radius: 50%;
-  display: inline-block;
-  margin: 0 5px;
-  animation: bounce 1s infinite;
-}
-
-.dot1 {
-  animation-delay: 0.2s;
-}
-
-.dot2 {
-  animation-delay: 0.4s;
-}
-
-.dot3 {
-  animation-delay: 0.6s;
-}
-
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-// risk premium card css
+//risk premium card css
 .card-container {
   margin-left: auto;
   margin-right: auto;
@@ -240,8 +116,9 @@ mat-checkbox{
 
 .card-header-rp {
   font-size: 19px;
-  font-weight: 600;
-  font-family: 'Ubuntu', sans-serif;
+  font-weight: 500;
+  // font-family: 'Ubuntu', sans-serif;
+  font-family: 'AR One Sans';
   border-top: 1px solid #e3e3f7;
   color: #0075a3;
   display: table-cell;
@@ -253,9 +130,11 @@ mat-checkbox{
   display: table-cell;
   vertical-align: middle;
   text-align: center;
-  font-size: 22px;
+  font-size: 18px;
   padding-top: 4%;
-  font-family: 'Teko', sans-serif;
+  // font-family: 'Teko', sans-serif;
+  font-family: 'AR One Sans';
+  font-weight: 500;
 }
 
 .rp-p{

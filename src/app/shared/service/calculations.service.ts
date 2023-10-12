@@ -29,4 +29,11 @@ export class CalculationsService {
   modifyExcel(payload:any){
     return this.http.post(`${HOST}upload/modifyExcel`,payload)
   }
+
+  postReportData(payload:any){
+    return this.http.post(`${HOST}report/generateReport`,payload);
+  }
+  generateReport(reportId:string){
+    return this.http.get(`${HOST}report/getReport/${reportId}`);
+  }
 }

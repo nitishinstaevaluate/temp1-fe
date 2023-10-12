@@ -85,3 +85,54 @@
       <button mat-raised-button [disabled]="!companySize.value || !marketPosition.value || !liquidityFactor.value || !competition.value" [ngClass]="!companySize.value || !marketPosition.value || !liquidityFactor.value || !competition.value ? 'modal-button-disable' : 'modal-button-enable'" (click)="modalData({companySize:companySize.value,marketPosition:marketPosition.value,liquidityFactor:liquidityFactor.value,competition:competition.value},'specificRiskPremium')"><mat-icon>keyboard_arrow_right</mat-icon>Save</button>
     </div>
   </div>
+
+
+  <div *ngIf="data === appValues.REGISTERED_VALUER_DETAILS.value">
+    <div class="row" >
+      <div class="col-md-12 revalmodel">
+          <mat-label class="label" >Report</mat-label>
+          <span class="mat-bullet"><mat-icon>fiber_manual_record</mat-icon></span>
+      </div>
+      <!-- discount rate -->
+      <div class="col-md-4 field">
+          <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
+              <mat-label>{{appValues.REGISTERED_VALUER_DETAILS.data.registeredValuerName}}</mat-label>
+              <input #registeredValuerName matInput>
+          </mat-form-field>
+      </div>
+      <div class="col-md-4 field">
+          <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
+              <mat-label>{{appValues.REGISTERED_VALUER_DETAILS.data.registeredValuerMobileNumber}}</mat-label>
+              <input #registeredValuerMobileNumber matInput>
+          </mat-form-field>
+      </div>
+      <div class="col-md-4 field">
+          <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
+              <mat-label>{{appValues.REGISTERED_VALUER_DETAILS.data.registeredValuerEmailId}}</mat-label>
+              <input #registeredValuerEmailId matInput>
+          </mat-form-field>
+      </div>
+      <div class="col-md-4 field">
+          <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
+              <mat-label>{{appValues.REGISTERED_VALUER_DETAILS.data.registeredValuerIbbiId}}</mat-label>
+              <input #registeredValuerIbbiId matInput>
+          </mat-form-field>
+      </div>
+      <div class="col-md-4 field">
+          <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
+              <mat-label>{{appValues.REGISTERED_VALUER_DETAILS.data.registeredValuerGeneralAddress}}</mat-label>
+              <input #registeredValuerGeneralAddress matInput>
+          </mat-form-field>
+      </div>
+      <div class="col-md-4 field">
+          <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
+              <mat-label>{{appValues.REGISTERED_VALUER_DETAILS.data.registeredValuerQualifications}}</mat-label>
+              <input #registeredValuerQualifications matInput>
+          </mat-form-field>
+      </div>
+
+      <div mat-dialog-actions style="float: right;">
+        <button mat-raised-button [disabled]="!registeredValuerMobileNumber.value || !registeredValuerEmailId.value || !registeredValuerName.value || !registeredValuerIbbiId.value || !registeredValuerGeneralAddress.value || !registeredValuerQualifications.value" [ngClass]="!registeredValuerMobileNumber.value || !registeredValuerEmailId.value || !registeredValuerName.value || !registeredValuerIbbiId.value || !registeredValuerGeneralAddress.value || !registeredValuerQualifications.value ? 'modal-button-disable' : 'modal-button-enable'" (click)="modalData({registeredValuerName:registeredValuerName.value,registeredValuerMobileNumber:registeredValuerMobileNumber.value,registeredValuerEmailId:registeredValuerEmailId.value,registeredValuerGeneralAddress:registeredValuerGeneralAddress.value,registeredValuerQualifications:registeredValuerQualifications.value},'projection&terminal')"><mat-icon>keyboard_arrow_right</mat-icon>Save</button>
+      </div>
+  </div>
+  </div>

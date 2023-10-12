@@ -1,7 +1,11 @@
 <div class="row">
     <div class="col">
       <div class="card mt-4">
-        <h4 class="card-header" style="font-weight: 400;">Valuation of Firm</h4>
+        <h4 class="card-header label" style="font-weight: 400;">Valuation of Company</h4>
+        <!-- <div class="col-md-12 revalmodel">
+          <mat-label class="label">Valuation Of Company</mat-label>
+          <span class="mat-bullet"><mat-icon>fiber_manual_record</mat-icon></span>
+        </div> -->
         <h4 style="text-align: center;padding-top: 1.5%;font-weight: 400;color:#858985;margin-bottom: 0px !important;">{{headerLabel}}</h4>
         <div class="card-body">
           <mat-stepper #stepper (selectionChange)="onStepChange($event,stepper)">
@@ -35,7 +39,10 @@
               ></app-group-model-review>
             </mat-step>
             <mat-step [stepControl]="fourthFormGroup" errorMessage="Address is required.">
-                <app-group-model-result [transferStepperthree]="transferStepperthree"  (previousPage)="previous($event)"></app-group-model-result>
+                <app-group-model-result [transferStepperthree]="transferStepperthree"  (previousPage)="previous($event)" (resultData)="resultData($event)"></app-group-model-result>
+            </mat-step>
+            <mat-step [stepControl]="fifthFormGroup" errorMessage="Address is required.">
+                <app-report-details [transferStepperFour]="transferStepperFour"></app-report-details>
             </mat-step>
           </mat-stepper>
         </div>

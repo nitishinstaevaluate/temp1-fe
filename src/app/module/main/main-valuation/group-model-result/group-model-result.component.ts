@@ -12,6 +12,7 @@ import { ValuationService } from 'src/app/shared/service/valuation.service';
 })
 export class GroupModelResultComponent implements OnChanges {
   @Output() previousPage = new EventEmitter<any>();
+  @Output() resultData = new EventEmitter<any>();
   @Input() transferStepperthree:any; //use this property as it contains data from form 1(stepper 1) and form 2 (stepper 2)
   
   fcfeSlider:any=0;
@@ -129,41 +130,43 @@ export class GroupModelResultComponent implements OnChanges {
   }
   
   saveAndNext(){
-    this.isLoader=true;
-    const payload={
-      reportId:this.transferStepperthree?.formThreeData?.appData?.reportId,
-    }
-    this.calculationsService.generatePdf(payload)
-    .subscribe((appData:any)=>{
-      console.log(appData)
-      this.isLoader = false
-      if(appData.status){
-        this.snackbar.open('Pdf is downloaded successfully','Ok',{
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-          duration: 3000,
-          panelClass: 'app-notification-success'
-        })
+    // this.isLoader=true;
+    // const payload={
+    //   reportId:this.transferStepperthree?.formThreeData?.appData?.reportId,
+    // }
+    // this.calculationsService.generatePdf(payload)
+    // .subscribe((appData:any)=>{
+    //   console.log(appData)
+    //   this.isLoader = false
+    //   if(appData.status){
+    //     this.snackbar.open('Pdf is downloaded successfully','Ok',{
+    //       horizontalPosition: 'right',
+    //       verticalPosition: 'top',
+    //       duration: 3000,
+    //       panelClass: 'app-notification-success'
+    //     })
         
-      }
-      else{
-        this.snackbar.open('Please try again','Ok',{
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-          duration: 3000,
-          panelClass: 'app-notification-error'
-        })
-      }
-    },
-    (err)=>{
-      this.isLoader = false;
-      this.snackbar.open(err.message,'Ok',{
-        horizontalPosition: 'right',
-        verticalPosition: 'top',
-        duration: 4000,
-        panelClass: 'app-notification-error'
-      })
-    })
+    //   }
+    //   else{
+    //     this.snackbar.open('Please try again','Ok',{
+    //       horizontalPosition: 'right',
+    //       verticalPosition: 'top',
+    //       duration: 3000,
+    //       panelClass: 'app-notification-error'
+    //     })
+    //   }
+    // },
+    // (err)=>{
+    //   this.isLoader = false;
+    //   this.snackbar.open(err.message,'Ok',{
+    //     horizontalPosition: 'right',
+    //     verticalPosition: 'top',
+    //     duration: 4000,
+    //     panelClass: 'app-notification-error'
+    //   })
+    // })
+
+    this.resultData.emit({...this.transferStepperthree})
     
   }
   previous(){

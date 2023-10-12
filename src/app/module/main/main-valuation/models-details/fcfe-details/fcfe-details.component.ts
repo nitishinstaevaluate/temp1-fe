@@ -8,7 +8,6 @@ import { DROPDOWN } from 'src/app/shared/enums/enum';
 import { MatDialog } from '@angular/material/dialog';
 import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal-box/generic-modal-box.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AnimationBuilder, animate, style } from '@angular/animations';
 import { MatStepper } from '@angular/material/stepper';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 
@@ -264,7 +263,10 @@ onSlideToggleChange(event: any) {
 saveAndNext(): void {
   const payload = {...this.fcfeForm.value,alpha:this.specificRiskPremiumModalForm.value,status:'FCFE'};
   payload['expMarketReturnType']=this.fcfeForm.controls['expMarketReturnType']?.value?.value;
+  payload['adjustedCostOfEquity']=this.adjCoe;
+  payload['costOfEquity']=this.coe;
   
+  console.log(payload,"paylaod")
   // submit final payload
   this.fcfeDetails.emit(payload);
 }

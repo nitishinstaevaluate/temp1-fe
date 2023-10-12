@@ -121,6 +121,22 @@ export const MODELS = {
           name:"Competition"
         }
       }
+    },
+    REGISTERED_VALUER_DETAILS:{
+      value:'registeredValuerDetails',
+      name:'Registered Valuer Details',
+      data:{
+        registeredValuerName:"Name",
+        registeredValuerMobileNumber:'Mobile Number',
+        registeredValuerEmailId:"Email Id",
+        registeredValuerIbbiId:'Ibbi Id',
+        registeredValuerGeneralAddress:'General Address',
+        registeredValuerCorporateAddress:'Corporate Address',
+        registeredValuerQualifications:'Qualifications',
+        registeredvaluerDOIorConflict:'Disclosure of Interest or Conflicts',
+        otherinvolvedExperts:'Other Involved Experts'
+      }
+
     }
   }
 export const RELATIVE_VALUATION_COMPANY_MAPPING: { [key: string]: string } = {
