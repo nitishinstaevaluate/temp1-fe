@@ -34,6 +34,8 @@ export class CalculationsService {
     return this.http.post(`${HOST}report/generateReport`,payload);
   }
   generateReport(reportId:string){
-    return this.http.get(`${HOST}report/getReport/${reportId}`);
+    return this.http.get(`${HOST}report/getReport/${reportId}`,{
+    responseType: 'blob'
+});
   }
 }

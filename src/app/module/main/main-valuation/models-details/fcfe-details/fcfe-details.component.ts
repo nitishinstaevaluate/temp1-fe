@@ -36,6 +36,7 @@ export class FcfeDetailsComponent implements OnChanges,OnInit{
   isLoader = false;
   riskRate:any;
   isDialogOpen = false;
+  bse500Value:number=0;
 
   @ViewChild('countElement', { static: false }) countElement!: ElementRef;
   @ViewChild(MatStepper, { static: false }) stepper!: MatStepper;
@@ -126,6 +127,7 @@ loadOnChangeValue(){
             if (response.status) {
               this.fcfeForm.controls['expMarketReturn'].value = response?.result;
               this.apiCallMade=false;
+              this.bse500Value=response?.close?.Close.toFixed(2);
             }
             else{
             
@@ -265,8 +267,7 @@ saveAndNext(): void {
   payload['expMarketReturnType']=this.fcfeForm.controls['expMarketReturnType']?.value?.value;
   payload['adjustedCostOfEquity']=this.adjCoe;
   payload['costOfEquity']=this.coe;
-  
-  console.log(payload,"paylaod")
+  payload['bse500Value']=this.bse500Value;
   // submit final payload
   this.fcfeDetails.emit(payload);
 }

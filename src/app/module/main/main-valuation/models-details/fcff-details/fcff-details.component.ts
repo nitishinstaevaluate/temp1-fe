@@ -43,6 +43,7 @@ export class FcffDetailsComponent implements OnInit{
   apiCallMade = false;
   isLoader = false;
   isDialogOpen = false; 
+  bse500Value:number=0;
   
 constructor(private valuationService:ValuationService,
   private dataReferenceService: DataReferencesService,
@@ -130,6 +131,7 @@ loadOnChangeValue(){
           (response) => {
             if (response.status) {
               this.fcffForm.controls['expMarketReturn'].value = response?.result;
+              this.bse500Value=response?.close?.Close.toFixed(2);
               
             }
             else{
@@ -302,6 +304,7 @@ saveAndNext(): void {
   payload['adjustedCostOfEquity']=this.adjCoe;
   payload['costOfEquity']=this.coe;
   payload['wacc']=this.wacc;
+  payload['bse500Value']=this.bse500Value;
   // check if expected market return  is empty or not
  
   payload['expMarketReturnType']=this.fcffForm.controls['expMarketReturnType']?.value?.value;
