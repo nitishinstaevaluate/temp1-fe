@@ -1,10 +1,11 @@
 {
   "name": "valuation-mvp",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build:ssr:outhashall": "npm run build:client-and-server-bundles:outhashall && npm run compile:server",
+    "build:client-and-server-bundles:outhashall": "ng build --prod --output-hashing=all && ng run sample-project:server:production --bundleDependencies all",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

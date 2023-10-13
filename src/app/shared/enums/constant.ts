@@ -205,7 +205,7 @@ export const FCFE_COLUMN = [
  'Add/Less: Other Adjustments(if any)',
  'Equity Value',
  'No. of Shares',
- 'Value per Share',
+ 'Value per Share (INR)',
 ]
 export const FCFF_COLUMN = [
   'PAT',
@@ -227,7 +227,7 @@ export const FCFF_COLUMN = [
   'Add/Less: Other Adjustments(if any)',
   'Equity Value',
   'No. of Shares',
-  'Value per Share'
+  'Value per Share (INR)'
 ]
 
 export const EXCESS_EARNING_COLUMN=[
@@ -242,7 +242,7 @@ export const EXCESS_EARNING_COLUMN=[
 'Book Value',
 'Equity Value',
 'No. of Shares',
-'Value per Share'
+'Value per Share (INR)'
 ]
 
 export const COMMON_COLUMN = [

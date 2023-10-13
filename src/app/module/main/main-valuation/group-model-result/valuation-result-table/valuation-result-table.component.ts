@@ -60,10 +60,10 @@ ngOnChanges(changes:SimpleChanges): void {
       this.dataSourceFcfe = this.dataSourceFcfe.map((subArray:any, index:any) => {
         subArray.map((subelements:any)=>{
             if(subelements && subelements === 'stubAdjValue'){
-              FCFE_COLUMN.splice(17,0,'Stub Value');
+              FCFE_COLUMN.splice(17,0,'Add: Stub Period Adjustment');
             }
             else if( subelements && subelements === 'equityValueNew'){
-              FCFE_COLUMN.splice(18,0,'Equity Value New');
+              FCFE_COLUMN.splice(18,0,'Equity Value as on ');
             }
         })
         return [FCFE_COLUMN[index], ...subArray.slice(1)];
@@ -73,6 +73,14 @@ ngOnChanges(changes:SimpleChanges): void {
       this.fcffColumn=response?.columnHeader;
       this.dataSourceFcff = (this.transposeData(response.valuationData))?.slice(1);
       this.dataSourceFcff = this.dataSourceFcff.map((subArray:any, index:any) => {
+        subArray.map((subelements:any)=>{
+          if(subelements && subelements === 'stubAdjValue'){
+            FCFE_COLUMN.splice(18,0,'Add: Stub Period Adjustment');
+          }
+          else if( subelements && subelements === 'equityValueNew'){
+            FCFE_COLUMN.splice(19,0,'Equity Value as on ');
+          }
+      })
         return [FCFF_COLUMN[index], ...subArray.slice(1)];
       });
     }
