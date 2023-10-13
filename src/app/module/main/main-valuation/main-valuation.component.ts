@@ -73,6 +73,7 @@ export class MainValuationComponent{
     if(event.selectedIndex +1 == 2) return this.headerLabel = 'Model Inputs';
     if(event.selectedIndex +1 == 3) return this.headerLabel = 'Review Form';
     if(event.selectedIndex +1 == 4) return this.headerLabel = 'Evaluate Result';
+    if(event.selectedIndex +1 == 5) return this.headerLabel = '';
     return '';
   }
 
