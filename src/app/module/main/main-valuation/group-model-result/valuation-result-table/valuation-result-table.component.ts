@@ -58,6 +58,14 @@ ngOnChanges(changes:SimpleChanges): void {
       this.fcfeColumn = response?.columnHeader;
       this.dataSourceFcfe = (this.transposeData(response.valuationData))?.slice(1);
       this.dataSourceFcfe = this.dataSourceFcfe.map((subArray:any, index:any) => {
+        subArray.map((subelements:any)=>{
+            if(subelements && subelements === 'stubAdjValue'){
+              FCFE_COLUMN.splice(17,0,'Stub Value');
+            }
+            else if( subelements && subelements === 'equityValueNew'){
+              FCFE_COLUMN.splice(18,0,'Equity Value New');
+            }
+        })
         return [FCFE_COLUMN[index], ...subArray.slice(1)];
       });
     }

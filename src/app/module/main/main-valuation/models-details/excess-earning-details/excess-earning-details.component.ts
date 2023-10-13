@@ -36,6 +36,7 @@ export class ExcessEarningDetailsComponent {
   apiCallMade = false;
   isLoader = false;
   isDialogOpen = false;
+  bse500Value:number=0;
 
   @ViewChild(MatStepper, { static: false }) stepper!: MatStepper;
   
@@ -126,6 +127,7 @@ loadOnChangeValue(){
             if (response.status) {
               this.excessEarningForm.controls['expMarketReturn'].value = response?.result;
               this.apiCallMade=false;
+              this.bse500Value=response?.close?.Close.toFixed(2);
             }
             else{
             
@@ -262,6 +264,9 @@ saveAndNext(): void {
   const payload = {...this.excessEarningForm.value,alpha:this.specificRiskPremiumModalForm.value,status:'Excess_Earnings'}
 
   payload['expMarketReturnType']=this.excessEarningForm.controls['expMarketReturnType']?.value?.value;
+  payload['adjustedCostOfEquity']=this.adjCoe;
+  payload['costOfEquity']=this.coe;
+  payload['bse500Value']=this.bse500Value;
   
   // submit final payload
   this.excessEarnDetails.emit(payload)

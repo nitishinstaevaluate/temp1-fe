@@ -61,7 +61,7 @@
   .label{
     border-radius: 5px;
     font-family: 'AR One Sans', sans-serif;
-    font-size: 17px;
+    font-size: 19px;
     color: #26879d;
     padding-left: 2%;
     cursor: pointer;
@@ -75,6 +75,7 @@
   }
   mat-label{
     color:#38a3b8;
+    font-size: 14px;
   }
   .field{
     padding-left: 2.5%;
@@ -103,12 +104,20 @@
   }
 
 // keep this css
+.close-modal-valuer{
+  float: right;
+  padding-right: 4%;
+  padding-top: 0%;
+  color: #807a7b;
+  cursor: pointer;
+}
 .revalmodel{
     margin-top: auto;
     margin-bottom: auto;
-    padding-top: 1%;
     position: relative;
-    padding-left: 1.8%;
+    padding-top: 2%;
+    padding-left: 2.8%;
+    border-bottom: 1px solid #bbcc
   }
   .label:hover{
     color: #26879d;
@@ -117,7 +126,7 @@
   .mat-bullet{
     position: absolute;
     left: 2%;
-    top: 30%;
+    top: 34%;
     mat-icon{
         transform: scale(.5);
         color: #26879d;
@@ -139,6 +148,9 @@
   ::ng-deep .mat-relative-val .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) .mat-mdc-form-field-infix {
     padding-top: 0px !important;
     padding-bottom: 0px !important;
+  }
+  .mat-relative-val{
+    height: 95%;
   }
 
 //risk premium card css
