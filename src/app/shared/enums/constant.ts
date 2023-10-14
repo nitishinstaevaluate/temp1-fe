@@ -203,7 +203,7 @@ export const FCFE_COLUMN = [
  'Add: Cash & Cash Equivalents',
  'Add: Surplus Assets/Investments',
  'Add/Less: Other Adjustments(if any)',
- 'Equity Value',
+ 'Equity Value on',
  'No. of Shares',
  'Value per Share',
 ]
@@ -225,7 +225,7 @@ export const FCFF_COLUMN = [
   'Add: Cash & Cash Equivalents',
   'Add: Surplus Assets/Investments',
   'Add/Less: Other Adjustments(if any)',
-  'Equity Value',
+  'Equity Value on',
   'No. of Shares',
   'Value per Share'
 ]
@@ -240,7 +240,7 @@ export const EXCESS_EARNING_COLUMN=[
 'Present Value Of Excess Return',
 'Sum of Cash Flows',
 'Book Value',
-'Equity Value',
+'Equity Value on',
 'No. of Shares',
 'Value per Share'
 ]

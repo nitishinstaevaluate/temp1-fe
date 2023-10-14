@@ -28,11 +28,13 @@ companyData :any;
 formData :any;
 industryData:any = new MatTableDataSource();
 selectedTabIndex:any;
-fcfeColumn=[];
+fcfeColumn:any=[];
 excessEarnColumn=[];
 fcffColumn=[];
 isLoader=false;
-
+displayFcfeColumn=FCFE_COLUMN;
+displayFcffColumn=FCFF_COLUMN;
+displayExcessEarnColumn=EXCESS_EARNING_COLUMN;
 getKeys(navData:any){
 this.dataSourceNav =[navData].map((response:any)=>{
   let obj = Object.values(response);
@@ -52,29 +54,146 @@ ngOnInit(): void {}
 constructor(private calculationService:CalculationsService,private snackbar:MatSnackBar){}
 
 ngOnChanges(changes:SimpleChanges): void {
+  let equityValuationDate='';
   this.formData = this.transferStepperthree;
   this.transferStepperthree?.formThreeData?.appData?.valuationResult.map((response:any)=>{
     if(response.model === 'FCFE'){
       this.fcfeColumn = response?.columnHeader;
       this.dataSourceFcfe = (this.transposeData(response.valuationData))?.slice(1);
-      this.dataSourceFcfe = this.dataSourceFcfe.map((subArray:any, index:any) => {
-        subArray.map((subelements:any)=>{
-            if(subelements && subelements === 'stubAdjValue'){
-              FCFE_COLUMN.splice(17,0,'Stub Value');
-            }
-            else if( subelements && subelements === 'equityValueNew'){
-              FCFE_COLUMN.splice(18,0,'Equity Value New');
-            }
-        })
-        return [FCFE_COLUMN[index], ...subArray.slice(1)];
-      });
+      const particularsIndex = this.fcfeColumn.map((values:any)=>values.toLowerCase()).indexOf('particulars');
+      if(particularsIndex !== -1){
+         equityValuationDate = this.fcfeColumn[particularsIndex+1]
+      }
+      let checkIfStubExistInColumnHeaders = this.displayFcfeColumn.some((values:any)=>{
+        return (values.includes(`Equity Value as on`) || values.includes('Add:Stub Period Adjustment'))
+      })
+      if (this.displayFcfeColumn.includes(`Equity Value on`)) {
+        this.displayFcfeColumn.splice(this.displayFcfeColumn.indexOf('Equity Value on'), 1, ` Equity Value on ${this.formatDate(this.transferStepperthree.formOneAndTwoData.valuationDate)} `);
+      }
+      if (this.displayFcfeColumn.includes(`Discounting Period`)) {
+        this.displayFcfeColumn.splice(this.displayFcfeColumn.indexOf('Discounting Period'), 1, `Discounting Period is ${this.transferStepperthree.formOneAndTwoData.discountingPeriod}`);
+      }
+      let checkIfKeyExistInResult = this.dataSourceFcfe.some((item:any)=> {return item.some((checkVal:any)=>{return  (checkVal === 'stubAdjValue' || checkVal === 'equityValueNew')})});
+      this.dataSourceFcfe = this.dataSourceFcfe.map((subArray: any, index: any) => {
+      
+        if(checkIfKeyExistInResult){
+          const stubIndex = 17;
+        const equityValueIndex = 18;
+          
+        if (!checkIfStubExistInColumnHeaders) {
+          if (!this.displayFcfeColumn.includes('Add:Stub Period Adjustment')) {
+            this.displayFcfeColumn.splice(stubIndex, 0, 'Add:Stub Period Adjustment');
+          }
+  
+          const equityValueString = `Equity Value as on ${equityValuationDate}`;
+          if (!this.displayFcfeColumn.includes(equityValueString)) {
+            this.displayFcfeColumn.splice(equityValueIndex, 0, equityValueString);
+          }
+        } else {
+          if (!this.displayFcfeColumn.includes('Add:Stub Period Adjustment')) {
+            this.displayFcfeColumn = this.displayFcfeColumn.map((item: string) => {
+              if (item.includes('Add:Stub Period Adjustment')) {
+                return item.replace(item, 'Add:Stub Period Adjustment');
+              }
+              return item;
+            });
+          }
+  
+          const equityValueString = `Equity Value as on ${equityValuationDate}`;
+          if (!this.displayFcfeColumn.includes(equityValueString)) {
+            this.displayFcfeColumn = this.displayFcfeColumn.map((item: string) => {
+              if (item.includes('Equity Value as on')) {
+                return item.replace(item, equityValueString);
+              }
+              return item;
+            });
+          }
+        }
+    
+        return [this.displayFcfeColumn[index], ...subArray.slice(1)];
+        }
+        else{
+          const indexOfEquity = this.displayFcfeColumn.findIndex(item => item.includes('Equity Value as on'));
+          const indexOfStub = this.displayFcfeColumn.findIndex(item => item.includes('Add:Stub Period Adjustment'));
+          if (indexOfEquity !== -1) {
+              this.displayFcfeColumn.splice(indexOfEquity, 1);
+          }
+          if (indexOfStub !== -1) {
+              this.displayFcfeColumn.splice(indexOfStub, 1);
+          }
+          return [this.displayFcfeColumn[index], ...subArray.slice(1)];
+        }
+    });
+      
     }
     if(response.model === 'FCFF'){
       this.fcffColumn=response?.columnHeader;
       this.dataSourceFcff = (this.transposeData(response.valuationData))?.slice(1);
-      this.dataSourceFcff = this.dataSourceFcff.map((subArray:any, index:any) => {
-        return [FCFF_COLUMN[index], ...subArray.slice(1)];
-      });
+      const particularsIndex = this.fcffColumn.map((values:any)=>values.toLowerCase()).indexOf('particulars');
+      if(particularsIndex !== -1){
+         equityValuationDate = this.fcffColumn[particularsIndex+1]
+      }
+      let checkIfStubExistInColumnHeaders = this.displayFcffColumn.some((values:any)=>{
+        return (values.includes(`Equity Value as on`) || values.includes('Add:Stub Period Adjustment'))
+      })
+      let checkIfKeyExistInResult = this.dataSourceFcff.some((item:any)=> {return item.some((checkVal:any)=>{return  (checkVal === 'stubAdjValue' || checkVal === 'equityValueNew')})});
+      if (this.displayFcffColumn.includes(`Equity Value on`)) {
+        this.displayFcffColumn.splice(this.displayFcffColumn.indexOf('Equity Value on'), 1, ` Equity Value on ${this.formatDate(this.transferStepperthree.formOneAndTwoData.valuationDate)} `);
+      }
+      if (this.displayFcffColumn.includes(`Discounting Period`)) {
+        this.displayFcffColumn.splice(this.displayFcffColumn.indexOf('Discounting Period'), 1, `Discounting Period is ${this.transferStepperthree.formOneAndTwoData.discountingPeriod} `);
+      }
+      this.dataSourceFcff = this.dataSourceFcff.map((subArray: any, index: any) => {
+        if(checkIfKeyExistInResult){
+          const stubIndex = 18;
+          const equityValueIndex = 19;
+      
+          if (!checkIfStubExistInColumnHeaders) {
+              if (!this.displayFcffColumn.includes('Add:Stub Period Adjustment')) {
+                  this.displayFcffColumn.splice(stubIndex, 0, 'Add:Stub Period Adjustment');
+              }
+      
+              const equityValueString = `Equity Value as on ${equityValuationDate}`;
+              if (!this.displayFcffColumn.includes(equityValueString)) {
+                  this.displayFcffColumn.splice(equityValueIndex, 0, equityValueString);
+              }
+          } else {
+              if (!this.displayFcffColumn.includes('Add:Stub Period Adjustment')) {
+                  this.displayFcffColumn = this.displayFcffColumn.map((item: string) => {
+                      if (item.includes('Add:Stub Period Adjustment')) {
+                          return item.replace(item, 'Add:Stub Period Adjustment');
+                      }
+                      return item;
+                  });
+              }
+      
+              const equityValueString = `Equity Value as on ${equityValuationDate}`;
+              if (!this.displayFcffColumn.includes(equityValueString)) {
+                  this.displayFcffColumn = this.displayFcffColumn.map((item: string) => {
+                      if (item.includes('Equity Value as on')) {
+                          return item.replace(item, equityValueString);
+                      }
+                      return item;
+                  });
+              }
+          }
+          return [this.displayFcffColumn[index], ...subArray.slice(1)];
+          
+        }
+        else{
+          const indexOfEquity = this.displayFcffColumn.findIndex(item => item.includes('Equity Value as on'));
+          const indexOfStub = this.displayFcffColumn.findIndex(item => item.includes('Add:Stub Period Adjustment'));
+          if (indexOfEquity !== -1) {
+              this.displayFcffColumn.splice(indexOfEquity, 1);
+          }
+          if (indexOfStub !== -1) {
+              this.displayFcffColumn.splice(indexOfStub, 1);
+          }
+          return [this.displayFcffColumn[index], ...subArray.slice(1)];
+        }
+       
+    });
+    
     }
     if(response.model === 'Relative_Valuation' || response.model === 'CTM'){
       const company = response?.valuationData?.companies;
@@ -86,9 +205,70 @@ ngOnChanges(changes:SimpleChanges): void {
     if(response.model === 'Excess_Earnings'){
       this.excessEarnColumn = response?.columnHeader;
       this.dataSourceExcessEarn = (this.transposeData(response.valuationData))?.slice(1);
-      this.dataSourceExcessEarn = this.dataSourceExcessEarn.map((subArray:any, index:any) => {
-        return [EXCESS_EARNING_COLUMN[index], ...subArray.slice(1)];
-      });
+      const particularsIndex = this.excessEarnColumn.map((values:any)=>values.toLowerCase()).indexOf('particulars');
+      if(particularsIndex !== -1){
+         equityValuationDate = this.excessEarnColumn[particularsIndex+1]
+      }
+      let checkIfStubExistInColumnHeaders = this.displayExcessEarnColumn.some((values:any)=>{
+        return (values.includes(`Equity Value as on`) || values.includes('Add:Stub Period Adjustment'))
+      })
+      let checkIfKeyExistInResult = this.dataSourceExcessEarn.some((item:any)=> {return item.some((checkVal:any)=>{return  (checkVal === 'stubAdjValue' || checkVal === 'equityValueNew')})});
+      if (this.displayExcessEarnColumn.includes(`Equity Value on`)) {
+        this.displayExcessEarnColumn.splice(this.displayExcessEarnColumn.indexOf('Equity Value on'), 1, ` Equity Value on ${this.formatDate(this.transferStepperthree.formOneAndTwoData.valuationDate)} `);
+      }
+      if (this.displayExcessEarnColumn.includes(`Discounting Period`)) {
+        this.displayExcessEarnColumn.splice(this.displayExcessEarnColumn.indexOf('Discounting Period'), 1, `Discounting Period is ${this.transferStepperthree.formOneAndTwoData.discountingPeriod} `);
+      }
+      this.dataSourceExcessEarn = this.dataSourceExcessEarn.map((subArray: any, index: any) => {
+       if(checkIfKeyExistInResult){
+        const stubIndex = 10;
+        const equityValueIndex = 11;
+    
+        if (!checkIfStubExistInColumnHeaders) {
+          if (!this.displayExcessEarnColumn.includes('Add:Stub Period Adjustment')) {
+              this.displayExcessEarnColumn.splice(stubIndex, 0, 'Add:Stub Period Adjustment');
+          }
+  
+          const equityValueString = `Equity Value as on ${equityValuationDate}`;
+          if (!this.displayExcessEarnColumn.includes(equityValueString)) {
+              this.displayExcessEarnColumn.splice(equityValueIndex, 0, equityValueString);
+          }
+        } else {
+            if (!this.displayExcessEarnColumn.includes('Add:Stub Period Adjustment')) {
+              this.displayExcessEarnColumn = this.displayExcessEarnColumn.map((item: string) => {
+                if (item.includes('Add:Stub Period Adjustment')) {
+                    return item.replace(item, 'Add:Stub Period Adjustment');
+                }
+                return item;
+              });
+            }
+    
+            const equityValueString = `Equity Value as on ${equityValuationDate}`;
+            if (!this.displayExcessEarnColumn.includes(equityValueString)) {
+                this.displayExcessEarnColumn = this.displayExcessEarnColumn.map((item: string) => {
+                    if (item.includes('Equity Value as on')) {
+                        return item.replace(item, equityValueString);
+                    }
+                    return item;
+                });
+            }
+        }
+    
+        return [this.displayExcessEarnColumn[index], ...subArray.slice(1)];
+      }
+      
+      else{
+        const indexOfEquity = this.displayExcessEarnColumn.findIndex(item => item.includes('Equity Value as on'));
+        const indexOfStub = this.displayExcessEarnColumn.findIndex(item => item.includes('Add:Stub Period Adjustment'));
+        if (indexOfEquity !== -1) {
+          this.displayExcessEarnColumn.splice(indexOfEquity, 1);
+        }
+        if (indexOfStub !== -1) {
+          this.displayExcessEarnColumn.splice(indexOfStub, 1);
+        }
+        return [this.displayExcessEarnColumn[index], ...subArray.slice(1)];
+       }
+    });
     }
     if(response.model === 'NAV'){
       this.getKeys(response.valuationData);
@@ -119,10 +299,18 @@ formatNumber(value: any): string {
 }
 
 checkVal(value:string,model:any){
-  if(model === 'fcfe') return !!FCFE_COLUMN.includes(value);
-  if(model === 'fcff') return !!FCFF_COLUMN.includes(value);
-  if(model === 'Excess_Earnings') return !!EXCESS_EARNING_COLUMN.includes(value);
+  if(model === 'fcfe') return !!this.displayFcfeColumn.includes(value);
+  if(model === 'fcff') return !!this.displayFcffColumn.includes(value);
+  if(model === 'Excess_Earnings') return !!this.displayExcessEarnColumn.includes(value);
   return;
+}
+
+formatDate(epochTimestamp:any) {
+  const date = new Date(epochTimestamp);
+    const day = ('0' + date.getDate()).slice(-2);
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
 }
 
 onTabSelectionChange() {
