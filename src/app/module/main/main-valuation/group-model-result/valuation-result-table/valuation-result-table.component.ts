@@ -70,6 +70,9 @@ ngOnChanges(changes:SimpleChanges): void {
       if (this.displayFcfeColumn.includes(`Equity Value on`)) {
         this.displayFcfeColumn.splice(this.displayFcfeColumn.indexOf('Equity Value on'), 1, ` Equity Value on ${this.formatDate(this.transferStepperthree.formOneAndTwoData.valuationDate)} `);
       }
+      if (this.displayFcfeColumn.includes(`Discounting Period`)) {
+        this.displayFcfeColumn.splice(this.displayFcfeColumn.indexOf('Discounting Period'), 1, `Discounting Period is ${this.transferStepperthree.formOneAndTwoData.discountingPeriod}`);
+      }
       let checkIfKeyExistInResult = this.dataSourceFcfe.some((item:any)=> {return item.some((checkVal:any)=>{return  (checkVal === 'stubAdjValue' || checkVal === 'equityValueNew')})});
       this.dataSourceFcfe = this.dataSourceFcfe.map((subArray: any, index: any) => {
       
@@ -136,6 +139,9 @@ ngOnChanges(changes:SimpleChanges): void {
       let checkIfKeyExistInResult = this.dataSourceFcff.some((item:any)=> {return item.some((checkVal:any)=>{return  (checkVal === 'stubAdjValue' || checkVal === 'equityValueNew')})});
       if (this.displayFcffColumn.includes(`Equity Value on`)) {
         this.displayFcffColumn.splice(this.displayFcffColumn.indexOf('Equity Value on'), 1, ` Equity Value on ${this.formatDate(this.transferStepperthree.formOneAndTwoData.valuationDate)} `);
+      }
+      if (this.displayFcffColumn.includes(`Discounting Period`)) {
+        this.displayFcffColumn.splice(this.displayFcffColumn.indexOf('Discounting Period'), 1, `Discounting Period is ${this.transferStepperthree.formOneAndTwoData.discountingPeriod} `);
       }
       this.dataSourceFcff = this.dataSourceFcff.map((subArray: any, index: any) => {
         if(checkIfKeyExistInResult){
@@ -209,6 +215,9 @@ ngOnChanges(changes:SimpleChanges): void {
       let checkIfKeyExistInResult = this.dataSourceExcessEarn.some((item:any)=> {return item.some((checkVal:any)=>{return  (checkVal === 'stubAdjValue' || checkVal === 'equityValueNew')})});
       if (this.displayExcessEarnColumn.includes(`Equity Value on`)) {
         this.displayExcessEarnColumn.splice(this.displayExcessEarnColumn.indexOf('Equity Value on'), 1, ` Equity Value on ${this.formatDate(this.transferStepperthree.formOneAndTwoData.valuationDate)} `);
+      }
+      if (this.displayExcessEarnColumn.includes(`Discounting Period`)) {
+        this.displayExcessEarnColumn.splice(this.displayExcessEarnColumn.indexOf('Discounting Period'), 1, `Discounting Period is ${this.transferStepperthree.formOneAndTwoData.discountingPeriod} `);
       }
       this.dataSourceExcessEarn = this.dataSourceExcessEarn.map((subArray: any, index: any) => {
        if(checkIfKeyExistInResult){
