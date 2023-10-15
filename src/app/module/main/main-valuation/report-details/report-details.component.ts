@@ -18,6 +18,7 @@ export class ReportDetailsComponent implements OnInit {
   modelControl:any = groupModelControl;
   reportForm:any=FormGroup;
   registeredValuerDetails:any=FormGroup;
+  appointeeDetails:any=FormGroup;
   @Input() transferStepperFour:any;
 
   isLoading=false;
@@ -47,6 +48,10 @@ export class ReportDetailsComponent implements OnInit {
       registeredvaluerDOIorConflict:['',[Validators.required]],
       registeredValuerQualifications:['',[Validators.required]],
     })
+    this.appointeeDetails=this.fb.group({
+      appointingAuthorityName:['',[Validators.required]],
+      dateOfAppointment:['',[Validators.required]]
+    })
   }
 
 
@@ -55,6 +60,7 @@ export class ReportDetailsComponent implements OnInit {
     const payload = {
       ...this.reportForm.value,
       ...this.registeredValuerDetails.value,
+      ...this.appointeeDetails.value,
       reportId:this.transferStepperFour?.formThreeData?.appData?.reportId,
       reportDate:this.reportForm.controls['reportDate'].value
     }
