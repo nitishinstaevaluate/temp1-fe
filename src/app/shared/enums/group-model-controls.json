@@ -283,7 +283,7 @@
     },
     "fcff":{
         "type":"FCFF",
-        "header":"(WACC) Calculations",
+        "header":"WACC Calculations",
         "options":{
             "discountRate":{
                 "name":"discountRate",
