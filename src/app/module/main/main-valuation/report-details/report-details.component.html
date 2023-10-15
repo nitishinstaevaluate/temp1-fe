@@ -33,10 +33,34 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
+                <div class="col-md-12 revalmodel">
+                    <mat-label class="label" >Appointing Authority</mat-label>
+                    <span class="mat-bullet"><mat-icon>fiber_manual_record</mat-icon></span>
+                </div>
+                <div class="col-md-4 field">
+                    <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
+                        <mat-label>Name of Appointing Authority</mat-label>
+                        <!-- <mat-select class="mat-select-value">
+                            <mat-option *ngFor="let doc of modelControl.reportDetails.options.reportData"  [value]="doc.value">{{doc.name}}</mat-option>
+                        </mat-select> -->
+                        <input formControlName="appointingAuthorityName" matInput>
+                        <!-- [type]="modelControl.modelValuation.options.company.type"  -->
+                        
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-4 field">
+                    <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
+                      <mat-label>Date Of Appointment</mat-label>  
+                      <input formControlName="dateOfAppointment" matInput [matDatepicker]="picker">
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
 
 
                 <div class="col-md-12 revalmodel" style="border-top: 1px solid #ccdfe3">
-                    <mat-label class="label" style="font-size: 15px;">Register New Valuer</mat-label>
+                    <mat-label class="label" style="font-size: 15px;">Registered Valuer Details</mat-label>
                     <mat-slide-toggle
                         class="example-margin"
                         [color]="'primary'"

@@ -705,7 +705,7 @@
     },
     "reportDetails":{
         "type":"reportDetails",
-        "header":"Reporting Details",
+        "header":"Valuation Report Details",
         "options":{
             "reportData":[
                 {
