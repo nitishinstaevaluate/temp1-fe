@@ -115,6 +115,8 @@ export class GroupModelControlsComponent implements OnInit {
       terminalGrowthRate:['',[Validators.required]],
       discountRateType: ['WACC'],                                  // removed as required field
       discountRateValue: [20],
+      reportingUnit:['',[Validators.required]],
+      currencyUnit:['',[Validators.required]],
     })
     this.modelSpecificCalculation=this.formBuilder.group({
       discountRate:[null,[Validators.required]],
@@ -386,7 +388,6 @@ isSelectedpreferenceRatio(value:any){
         return result;
     }, {});
   }
-  
     
     // submit final payload
     this.groupModelControls.emit(payload)

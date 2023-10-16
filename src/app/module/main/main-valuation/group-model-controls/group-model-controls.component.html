@@ -111,37 +111,59 @@
                     [value]="option.value">{{option.name}}</mat-radio-button>
                 </mat-radio-group>
             </div>
+
+            
             </div>
 
-            <!-- upload excel documents -->
-            <div class="col-md-6 field upload-doc">
-              <div class="row">
-                  <div class="col-md-8">
-                      <input
-                        type="file"
-                        hidden
-                        #fileInput
-                        accept="image/png, image/jpeg, .pdf, .xlsx"
-                        (change)="onFileSelected($event)"
-                      />
-                      <mat-label class="label">Add provisional Profit Loss and Balance Sheet statements </mat-label>
-                      <p class="download">
-                        <!-- (If you want to download template, -->
-                        <a [href]="downloadTemplate" target="_blank" style="font-weight: 500;">Download Template!</a>
-                      </p>
-                    </div>
-                    <div class="col-md-4" style="margin-top: auto; margin-bottom: auto;">
-                      <button
-                        type="button"
-                        mat-raised-button
-                        [ngClass]="'upload-btn-enabled'"
-                        (click)="fileInput.click()"
-                      >
-                        <mat-icon>cloud_upload</mat-icon> Upload File
-                      </button>
-                    </div>
+            <div class="row">
+                <!-- upload excel documents -->
+                <div class="col-md-6 field upload-doc">
+                  <div class="row">
+                      <div class="col-md-8">
+                          <input
+                            type="file"
+                            hidden
+                            #fileInput
+                            accept="image/png, image/jpeg, .pdf, .xlsx"
+                            (change)="onFileSelected($event)"
+                          />
+                          <mat-label class="label">Add provisional Profit Loss and Balance Sheet statements </mat-label>
+                          <p class="download">
+                            <!-- (If you want to download template, -->
+                            <a [href]="downloadTemplate" target="_blank" style="font-weight: 500;">Download Template!</a>
+                          </p>
+                        </div>
+                        <div class="col-md-4" style="margin-top: auto; margin-bottom: auto;">
+                          <button
+                            type="button"
+                            mat-raised-button
+                            [ngClass]="'upload-btn-enabled'"
+                            (click)="fileInput.click()"
+                          >
+                            <mat-icon>cloud_upload</mat-icon> Upload File
+                          </button>
+                        </div>
+                  </div>
               </div>
+    
+              <div class="col-md-3 field">
+                <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
+                    <mat-label>Reporting Units</mat-label>
+                    <mat-select formControlName="reportingUnit" class="mat-select-value">
+                        <mat-option *ngFor="let doc of modelControl.reportDetails.options.reportingUnit"  [value]="doc.value">{{doc.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+    
+            <div class="col-md-3 field">
+              <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
+                  <mat-label>Currency</mat-label>
+                  <mat-select formControlName="currencyUnit" class="mat-select-value">
+                      <mat-option *ngFor="let doc of modelControl.reportDetails.options.currencyUnit"  [value]="doc.value">{{doc.name}}</mat-option>
+                  </mat-select>
+              </mat-form-field>
           </div>
+            </div>
 
       </form>   
     </div>
