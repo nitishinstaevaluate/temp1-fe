@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import groupModelControl from '../../../../shared/enums/group-model-controls.json'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
@@ -20,6 +20,7 @@ export class ReportDetailsComponent implements OnInit {
   registeredValuerDetails:any=FormGroup;
   appointeeDetails:any=FormGroup;
   @Input() transferStepperFour:any;
+  @Output() previousPage=new EventEmitter<any>();
 
   isLoading=false;
   
@@ -36,7 +37,9 @@ export class ReportDetailsComponent implements OnInit {
     this.reportForm = this.fb.group({
       clientName:['',[Validators.required]],
       reportDate:['',[Validators.required]],
-      useExistingValuer:[false,[Validators.required]]
+      useExistingValuer:[false,[Validators.required]],
+      appointingAuthorityName:['',[Validators.required]],
+      dateOfAppointment:['',[Validators.required]]
     })
     this.registeredValuerDetails=this.fb.group({
       registeredValuerName:['',[Validators.required]],
@@ -48,10 +51,6 @@ export class ReportDetailsComponent implements OnInit {
       registeredvaluerDOIorConflict:['',[Validators.required]],
       registeredValuerQualifications:['',[Validators.required]],
     })
-    this.appointeeDetails=this.fb.group({
-      appointingAuthorityName:['',[Validators.required]],
-      dateOfAppointment:['',[Validators.required]]
-    })
   }
 
 
@@ -60,7 +59,6 @@ export class ReportDetailsComponent implements OnInit {
     const payload = {
       ...this.reportForm.value,
       ...this.registeredValuerDetails.value,
-      ...this.appointeeDetails.value,
       reportId:this.transferStepperFour?.formThreeData?.appData?.reportId,
       reportDate:this.reportForm.controls['reportDate'].value
     }
@@ -130,5 +128,9 @@ export class ReportDetailsComponent implements OnInit {
         }
       });
     }
+  }
+
+  previous(){
+    this.previousPage.emit(true)
   }
 }
