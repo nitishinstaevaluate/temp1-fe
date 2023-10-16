@@ -42,7 +42,7 @@
                 <app-group-model-result [transferStepperthree]="transferStepperthree"  (previousPage)="previous($event)" (resultData)="resultData($event)"></app-group-model-result>
             </mat-step>
             <mat-step [stepControl]="fifthFormGroup" errorMessage="Address is required.">
-                <app-report-details [transferStepperFour]="transferStepperFour"></app-report-details>
+                <app-report-details [transferStepperFour]="transferStepperFour" (previousPage)="previous($event)"></app-report-details>
             </mat-step>
           </mat-stepper>
         </div>
