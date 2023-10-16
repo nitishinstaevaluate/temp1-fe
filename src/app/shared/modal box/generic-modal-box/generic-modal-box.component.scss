@@ -132,6 +132,15 @@
         color: #26879d;
     }
   }
+  .mat-specific-risk-premium{
+    position: absolute;
+    left: 2%;
+    top: 23%;
+    mat-icon{
+        transform: scale(.5);
+        color: #26879d;
+    }
+  }
 
   mat-hint{
     font-family: 'Poppins', sans-serif;
