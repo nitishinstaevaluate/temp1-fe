@@ -707,10 +707,14 @@
         "type":"reportDetails",
         "header":"Valuation Report Details",
         "options":{
-            "reportData":[
+            "reportingUnit":[
                 {
-                    "name":"Millions",
-                    "value":"Millions"
+                    "name":"Actual",
+                    "value":"absolute"
+                },
+                {
+                    "name":"Hundreds",
+                    "value":"Hundreds"
                 },
                 {
                     "name":"Thousands",
@@ -721,12 +725,45 @@
                     "value":"Lakhs"
                 },
                 {
+                    "name":"Millions",
+                    "value":"Millions"
+                },
+                
+                
+                {
                     "name":"Crores",
                     "value":"Crores"
+                }
+               
+            ],
+            "currencyUnit":[
+                {
+                    "name":"INR",
+                    "value":"INR"
                 },
                 {
-                    "name":"Hundreds",
-                    "value":"Hundreds"
+                    "name":"USD",
+                    "value":"USD"
+                },
+                {
+                    "name":"CAD",
+                    "value":"CAD"
+                },
+                {
+                    "name":"EUR",
+                    "value":"EUR"
+                },
+                {
+                    "name":"GBP",
+                    "value":"GBP"
+                },
+                {
+                    "name":"JPY",
+                    "value":"JPY"
+                },
+                {
+                    "name":"CHF",
+                    "value":"CHF"
                 }
             ]
         }

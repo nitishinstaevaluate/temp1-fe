@@ -70,6 +70,7 @@ ngOnChanges(changes:SimpleChanges): void {
       if (this.displayFcfeColumn.includes(`Discounting Period`)) {
         this.displayFcfeColumn.splice(this.displayFcfeColumn.indexOf('Discounting Period'), 1, `Discounting Period - ${this.transferStepperthree.formOneAndTwoData.discountingPeriod}`);
       }
+      this.displayFcfeColumn.splice(this.displayFcfeColumn.length-1,1,`Value per Share (${this.transferStepperthree?.formOneAndTwoData?.currencyUnit})`)
       let checkIfKeyExistInResult = this.dataSourceFcfe.some((item:any)=> {return item.some((checkVal:any)=>{return  (checkVal === 'stubAdjValue' || checkVal === 'equityValueNew')})});
       this.dataSourceFcfe = this.dataSourceFcfe.map((subArray: any, index: any) => {
       
@@ -141,6 +142,7 @@ ngOnChanges(changes:SimpleChanges): void {
       if (this.displayFcffColumn.includes(`Discounting Period`)) {
         this.displayFcffColumn.splice(this.displayFcffColumn.indexOf('Discounting Period'), 1, `Discounting Period - ${this.transferStepperthree.formOneAndTwoData.discountingPeriod} `);
       }
+      this.displayFcffColumn.splice(this.displayFcffColumn.length-1,1,`Value per Share (${this.transferStepperthree?.formOneAndTwoData?.currencyUnit})`)
       this.dataSourceFcff = this.dataSourceFcff.map((subArray: any, index: any) => {
         if(checkIfKeyExistInResult){
           const stubIndex = 18;
@@ -217,6 +219,7 @@ ngOnChanges(changes:SimpleChanges): void {
       if (this.displayExcessEarnColumn.includes(`Discounting Period`)) {
         this.displayExcessEarnColumn.splice(this.displayExcessEarnColumn.indexOf('Discounting Period'), 1, `Discounting Period - ${this.transferStepperthree.formOneAndTwoData.discountingPeriod} `);
       }
+      this.dataSourceExcessEarn.splice(this.dataSourceExcessEarn.length-1,1,`Value per Share (${this.transferStepperthree?.formOneAndTwoData?.currencyUnit})`)
       this.dataSourceExcessEarn = this.dataSourceExcessEarn.map((subArray: any, index: any) => {
        if(checkIfKeyExistInResult){
         const stubIndex = 10;

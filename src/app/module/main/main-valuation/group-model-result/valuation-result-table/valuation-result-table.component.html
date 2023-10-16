@@ -12,7 +12,7 @@
       <table>
         <thead>
           <tr style="border: 1px solid #d1d1d1;font-size: 15px;text-align: center;" >
-            <th colspan="7" style="text-align: right;padding-right: 2%;">Amount in INR (Lakh)</th>
+            <th colspan="7" style="text-align: right;padding-right: 2%;">Amount in {{transferStepperthree?.formOneAndTwoData?.currencyUnit}} ({{transferStepperthree?.formOneAndTwoData?.reportingUnit}})</th>
           </tr>
           <tr style="text-transform: capitalize;">
             <th style="border: 1px solid #d1d1d1;font-size: 15px;text-align: center;" *ngFor="let columnName of fcfeColumn">{{ columnName }}</th>
@@ -41,7 +41,7 @@
         <table>
           <thead>
             <tr style="border: 1px solid #d1d1d1;font-size: 15px;text-align: center;" >
-              <th colspan="7" style="text-align: right;padding-right: 2%;">Amount in INR (Lakh)</th></tr>
+              <th colspan="7" style="text-align: right;padding-right: 2%;">Amount in {{transferStepperthree?.formOneAndTwoData?.currencyUnit}} ({{transferStepperthree?.formOneAndTwoData?.reportingUnit}})</th></tr>
             <tr>
             <tr style="text-transform: capitalize;">
               <th style="border: 1px solid #d1d1d1;font-size: 15px;text-align: center;" *ngFor="let columnName of fcffColumn">{{ columnName }}</th>
@@ -70,7 +70,7 @@
       <table>
         <thead>
           <tr style="border: 1px solid #d1d1d1;font-size: 15px;text-align: center;" >
-            <th colspan="7" style="text-align: right;padding-right: 2%;">Amount in INR (Lakh)</th></tr>
+            <th colspan="7" style="text-align: right;padding-right: 2%;">Amount in {{transferStepperthree?.formOneAndTwoData?.currencyUnit}} ({{transferStepperthree?.formOneAndTwoData?.reportingUnit}})</th></tr>
           <tr>
           <tr style="text-transform: capitalize;">
             <th style="border: 1px solid #d1d1d1;font-size: 15px;text-align: center;" *ngFor="let columnName of excessEarnColumn">{{ columnName }}</th>
@@ -115,7 +115,7 @@
           <thead>
             <tr class="nav-th">
               <th>Particulars</th>
-              <th colspan="2">Amount in INR (Lakh)</th>
+              <th colspan="2">Amount in {{transferStepperthree?.formOneAndTwoData?.currencyUnit}} ({{transferStepperthree?.formOneAndTwoData?.reportingUnit}})</th>
             </tr>
           </thead>
           <tbody>
