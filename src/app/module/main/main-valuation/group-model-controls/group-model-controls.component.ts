@@ -116,7 +116,7 @@ export class GroupModelControlsComponent implements OnInit {
       discountRateType: ['WACC'],                                  // removed as required field
       discountRateValue: [20],
       reportingUnit:['',[Validators.required]],
-      currencyUnit:['',[Validators.required]],
+      currencyUnit:['INR',[Validators.required]],
     })
     this.modelSpecificCalculation=this.formBuilder.group({
       discountRate:[null,[Validators.required]],
