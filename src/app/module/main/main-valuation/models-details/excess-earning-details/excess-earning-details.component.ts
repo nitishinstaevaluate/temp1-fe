@@ -257,6 +257,7 @@ onSlideToggleChange(event:any){
         duration: 3000,
         panelClass: 'app-notification-success'
       })
+  this.calculateCoeAndAdjustedCoe();
     } else {
       this.specificRiskPremiumModalForm.reset();
       this.snackBar.open('Specific Risk Premium not saved','OK',{
@@ -265,9 +266,9 @@ onSlideToggleChange(event:any){
         duration: 3000,
         panelClass: 'app-notification-error'
       })
+  this.calculateCoeAndAdjustedCoe();
     }
   });
-  this.calculateCoeAndAdjustedCoe()
   }
 }
 
