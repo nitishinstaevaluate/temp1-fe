@@ -90,7 +90,7 @@ loadValues(){
       this.indianTreasuryY = resp[DROPDOWN.INDIANTREASURYYIELDS],
       this.cStructure = resp[0][DROPDOWN.CAPTIAL_STRUCTURE],
       this.rPremium = resp[0][DROPDOWN.PREMIUM];
-      this.cStructure.push({type:'target_based',label:'Target Capital Structure'});
+      this.cStructure.push({type:'Target_Based',label:'Target Capital Structure'});
     });
 }
 
@@ -418,7 +418,7 @@ calculateCoeAndAdjustedCoe() {
         if(data.status){
           this.adjCoe = response?.result?.adjCOE;
           this.coe = response?.result?.coe;
-          this.wacc = data?.result?.wacc;
+          this.wacc = data?.result?.wacc/100;
           // Set the flag to true to indicate that the API call has been made.
           this.apiCallMade = true;
           this.isLoader=false;
