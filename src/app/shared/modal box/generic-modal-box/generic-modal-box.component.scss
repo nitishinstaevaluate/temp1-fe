@@ -132,6 +132,37 @@
         color: #26879d;
     }
   }
+  .mat-target-capital-structure{
+    position: absolute;
+    left: 2%;
+    top: 43%;
+    mat-icon{
+        transform: scale(.5);
+        color: #26879d;
+    }
+  }
+  .total-caps{
+    font-size: 19px;
+    color: #45a845;
+    font-weight: 500;
+    font-family: 'Teko', sans-serif;
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+  .error-target-caps{
+    float: right;
+    color: #ff0a0a;
+    padding-top: 1%;
+    padding-right: 8%;
+  }
+  .total-caps-red{
+    font-size: 19px;
+    color: #e42727;
+    font-weight: 500;
+    font-family: 'Teko', sans-serif;
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
   .mat-specific-risk-premium{
     position: absolute;
     left: 2%;

@@ -12,7 +12,13 @@ export class GenericModalBoxComponent implements OnInit {
 label:string='';
 appValues= GLOBAL_VALUES;
 floatLabelType:any = 'never';
-modelControl=groupModelControl
+modelControl=groupModelControl;
+totalCapital:any={
+  equityProp:0,
+  prefProp:0,
+  debtProp:0
+}
+summationTargetCaps:number=0;
 
 constructor(@Inject(MAT_DIALOG_DATA) public data: any,
 private dialogRef:MatDialogRef<GenericModalBoxComponent>){
@@ -29,6 +35,7 @@ loadModel(data:any){
   if( data === this.appValues.GOING_CONCERN.value) return this.label = this.appValues.GOING_CONCERN.name;
   if( data === this.appValues.SPECIFIC_RISK_PREMIUM.value) return this.label = this.appValues.SPECIFIC_RISK_PREMIUM.name;
   if( data === this.appValues.REGISTERED_VALUER_DETAILS.value) return this.label = this.appValues.REGISTERED_VALUER_DETAILS.name;
+  if( data === this.appValues.TARGET_CAPITAL_STRUCTURE.value) return this.label = this.appValues.TARGET_CAPITAL_STRUCTURE.name;
   return '';
 }
 
@@ -61,6 +68,7 @@ modalData(data?:any,knownAs?:string) {
         competition:data?.competition
       });
       break;  
+
     case 'registeredValuer':
       this.dialogRef.close({
         registeredValuerName:data?.registeredValuerName,
@@ -73,10 +81,24 @@ modalData(data?:any,knownAs?:string) {
         registeredValuerIbbiId:data?.registeredValuerIbbiId,
       });
       break;  
+
+    case 'targetCapitalStructure':
+      this.dialogRef.close({
+        debtProportion:data?.debtProportion,
+        equityProportion:data?.equityProportion,
+        preferenceProportion:data?.preferenceProportion,
+        totalCapital:this.summationTargetCaps
+      });
+      break;    
   
     default:
       this.dialogRef.close();
       break;
   }
+}
+
+onTargetCapitalChange(control:string,value:string){
+  this.totalCapital[`${control}`] = +value;
+  this.summationTargetCaps = this.totalCapital.equityProp + this.totalCapital.prefProp + this.totalCapital.debtProp;
 }
 }

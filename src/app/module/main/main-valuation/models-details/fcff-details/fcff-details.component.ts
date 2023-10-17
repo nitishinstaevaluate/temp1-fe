@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, OnInit, SimpleChanges } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin } from 'rxjs';
@@ -24,9 +24,10 @@ export class FcffDetailsComponent implements OnInit{
   @Output() fcffDetailsPrev=new EventEmitter<any>();
   
 
-  fcffForm:any;
-  specificRiskPremiumModalForm:any;
+  fcffForm:any=FormGroup;
+  specificRiskPremiumModalForm:any=FormGroup;
   floatLabelType:any = 'never';
+  targetCapitalStructureForm:any=FormGroup;
   discountR: any=[];
   equityM: any=[];
   indianTreasuryY: any=[];
@@ -37,6 +38,7 @@ export class FcffDetailsComponent implements OnInit{
   debtProp: any;
   prefProp: any;
   equityProp: any;
+  deRatio:number=0;
   adjCoe:number=0;
   coe:number=0;
   wacc:number=0;
@@ -88,6 +90,7 @@ loadValues(){
       this.indianTreasuryY = resp[DROPDOWN.INDIANTREASURYYIELDS],
       this.cStructure = resp[0][DROPDOWN.CAPTIAL_STRUCTURE],
       this.rPremium = resp[0][DROPDOWN.PREMIUM];
+      this.cStructure.push({type:'target_based',label:'Target Capital Structure'});
     });
 }
 
@@ -143,23 +146,67 @@ loadOnChangeValue(){
           }
           );
       }
+      this.calculateCoeAndAdjustedCoe()
       
     }
   );
-
   this.fcffForm.controls['capitalStructureType'].valueChanges.subscribe(
     (val:any) => {
       if(!val) return;
-      if (val == 'Industry_Based') {
-        this.debtRatio = parseFloat(this.formOneData?.betaIndustry?.deRatio)/100;
-        this.totalCapital = 1 + this.debtRatio;
-        this.debtProp = this.debtRatio/this.totalCapital;
-        this.equityProp = 1 - this.debtProp;
-        this.prefProp = 1 - this.debtProp - this.equityProp;
+      if (val == 'Industry_Based' || val === 'Company_Based') {
+        // this.deRatio = parseFloat(this.formOneData?.betaIndustry?.deRatio);
+        // this.debtProp = this.debtRatio/this.totalCapital;
+        // this.equityProp = 1 - this.debtProp;
+        // this.prefProp = 1 - this.debtProp - this.equityProp;
+        // this.totalCapital = 1 + this.debtRatio;
+        this.deRatio = parseFloat(this.formOneData?.betaIndustry?.deRatio);
+        this.debtProp = null;
+        this.equityProp = null;
+        this.prefProp = null;
+        this.totalCapital = null;
         // });
       } else {
-        // this.anaConEst = null;
+        const data={
+          data: 'targetCapitalStructure',
+          width:'60%',
+        }
+        const dialogRef = this.dialog.open(GenericModalBoxComponent,data);
+
+        dialogRef.afterClosed().subscribe((result)=>{
+          if(result){
+            this.targetCapitalStructureForm.setValue(result);
+
+            this.deRatio = parseFloat(this.formOneData?.betaIndustry?.deRatio);
+            this.debtProp = +this.targetCapitalStructureForm.controls['debtProportion'].value;
+            this.equityProp = +this.targetCapitalStructureForm.controls['equityProportion'].value;
+            this.prefProp = +this.targetCapitalStructureForm.controls['preferenceProportion'].value;
+            this.totalCapital = +this.targetCapitalStructureForm.controls['totalCapital'].value;
+
+            this.snackBar.open('Target Capital Structure saved','Ok',{
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              duration: 3000,
+              panelClass: 'app-notification-success'
+            })
+
+          }
+          else {
+            this.fcffForm.controls['capitalStructureType'].reset();
+
+            this.snackBar.open('Target Capital Structure Not Saved','OK',{
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              duration: 3000,
+              panelClass: 'app-notification-error'
+            })
+           
+          }
+          
+        })
+       
       }
+      this.calculateCoeAndAdjustedCoe()
+
     }
   );
 
@@ -185,8 +232,21 @@ loadOnChangeValue(){
     else {
       // Do nothing for now
     }
+    this.calculateCoeAndAdjustedCoe()
     
   });
+  this.fcffForm.controls['copShareCapital'].valueChanges.subscribe((val:any)=>{
+    if(!val) return;
+    this.calculateCoeAndAdjustedCoe();
+  })
+  this.fcffForm.controls['costOfDebt'].valueChanges.subscribe((val:any)=>{
+    if(!val) return;
+    this.calculateCoeAndAdjustedCoe();
+  })
+  this.fcffForm.controls['coeMethod'].valueChanges.subscribe((val:any)=>{
+    if(!val) return;
+    this.calculateCoeAndAdjustedCoe();
+  })
 
   this.subscribeToFormChanges();
 }
@@ -231,6 +291,13 @@ loadFormControl(){
     marketPosition:['',[Validators.required]],
     liquidityFactor:['',[Validators.required]],
     competition:['',[Validators.required]],
+  })
+
+  this.targetCapitalStructureForm=this.formBuilder.group({
+    equityProportion:['',[Validators.required]],
+    debtProportion:['',[Validators.required]],
+    preferenceProportion:['',[Validators.required]],
+    totalCapital:['',[Validators.required]],
   })
 }
 
@@ -292,15 +359,14 @@ saveAndNext(): void {
   
   const payload = {...this.fcffForm.value,alpha:this.specificRiskPremiumModalForm.value,status:'FCFF'}
 
-  if (this.fcffForm.controls['capitalStructureType'].value == 'Industry_based') {
     let capitalStructure = {
-      capitalStructureType : 'Industry_Based',
-      debtProp : this.debtRatio,
-      equityProp : this.equityProp,
-      totalCapital : this.totalCapital
+        deRatio:this.deRatio ,
+        debtProp:this.debtProp,
+        equityProp:this.equityProp,
+        prefProp:this.prefProp ,
+        totalCapital:this.totalCapital,
     }
     payload['capitalStructure'] = capitalStructure;
-  }
   payload['adjustedCostOfEquity']=this.adjCoe;
   payload['costOfEquity']=this.coe;
   payload['wacc']=this.wacc;
@@ -319,21 +385,6 @@ previous(){
 
 
 calculateCoeAndAdjustedCoe() {
-  if (this.apiCallMade) {
-    // If the API call has already been made, return true immediately.
-    return true;
-  }
-  if (
-    !this.fcffForm.controls['riskFreeRate'].value ||
-    !this.fcffForm.controls['expMarketReturn'].value ||
-    !this.fcffForm.controls['riskPremium'].value ||
-    !this.fcffForm.controls['coeMethod'].value ||
-    !this.fcffForm.controls['copShareCapital'].value ||
-    !this.fcffForm.controls['costOfDebt'].value
-    ) {
-      return false;
-    }
-    
   this.isLoader=true
   const coePayload = {
     riskFreeRate: this.fcffForm.controls['riskFreeRate'].value,
@@ -344,16 +395,24 @@ calculateCoeAndAdjustedCoe() {
   };
 
   this.calculationsService.getCostOfEquity(coePayload).subscribe((response: any) => {
+    console.log(response,"response")
     if (response.status) {
+      console.log(this.deRatio,"de ratio",this.equityProp,"equity prop",this.debtRatio,"deb rattio",this.prefProp,"pref prop",this.totalCapital,"toal cap")
+
       const waccPayload={
         adjCoe:response?.result?.adjCOE,
         equityProp:this.equityProp,
         costOfDebt:this.fcffForm.controls['costOfDebt'].value,
-        taxRate:this.formOneData?.taxRate,
+        taxRate:this.formOneData?.taxRate.includes('%') ? parseFloat(this.formOneData?.taxRate.replace("%", "")) : this.formOneData?.taxRate,
         debtProp:this.debtProp,
         copShareCapital:this.fcffForm.controls['copShareCapital'].value,
         prefProp:this.prefProp,
         coeMethod:response?.result?.coe
+        // this.deRatio = parseFloat(this.formOneData?.betaIndustry?.deRatio);
+        // this.debtProp = +this.targetCapitalStructureForm.controls['debtProportion'].value;
+        // this.equityProp = +this.targetCapitalStructureForm.controls['equityProportion'].value;
+        // this.prefProp = +this.targetCapitalStructureForm.controls['preferenceProportion'].value;
+        // this.totalCapital = +this.targetCapitalStructureForm.controls['totalCapital'].value;
       }
       this.calculationsService.getWacc(waccPayload).subscribe((data:any)=>{
         if(data.status){
@@ -366,6 +425,7 @@ calculateCoeAndAdjustedCoe() {
         }
       })
     }
+    this.apiCallMade = true;
   });
   this.isLoader=false;
   // Always return false the first time to prevent the template from displaying prematurely.

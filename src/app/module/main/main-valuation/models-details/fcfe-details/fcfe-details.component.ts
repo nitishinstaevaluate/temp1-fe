@@ -139,6 +139,7 @@ loadOnChangeValue(){
           }
           );
       }
+      this.calculateCoeAndAdjustedCoe()
     }
   );
 
@@ -164,8 +165,17 @@ loadOnChangeValue(){
     else {
       // Do nothing for now
     }
+    this.calculateCoeAndAdjustedCoe();
     
   });
+  this.fcfeForm.controls['riskFreeRate'].valueChanges.subscribe((value:any)=>{
+    if(!value) return;
+    this.calculateCoeAndAdjustedCoe();
+  })
+  this.fcfeForm.controls['coeMethod'].valueChanges.subscribe((value:any)=>{
+    if(!value) return;
+    this.calculateCoeAndAdjustedCoe();
+  })
 
   this.subscribeToFormChanges();
   
@@ -259,6 +269,7 @@ onSlideToggleChange(event: any) {
         });
       }
     });
+    this.calculateCoeAndAdjustedCoe()
   }
 }
 
@@ -277,18 +288,6 @@ previous(){
 }
 
 calculateCoeAndAdjustedCoe() {
-  if (this.apiCallMade) {
-    // If the API call has already been made, return true immediately.
-    return true;
-  }
-  if (
-    !this.fcfeForm.controls['riskFreeRate'].value ||
-    !this.fcfeForm.controls['expMarketReturn'].value ||
-    !this.fcfeForm.controls['riskPremium'].value ||
-    !this.fcfeForm.controls['coeMethod'].value
-    ) {
-      return false;
-    }
     
   this.isLoader=true
   const coePayload = {
@@ -303,13 +302,11 @@ calculateCoeAndAdjustedCoe() {
     if (response.status) {
       this.adjCoe = response?.result?.adjCOE;
       this.coe = response?.result?.coe;
-      // Set the flag to true to indicate that the API call has been made.
       this.apiCallMade = true;
       this.isLoader=false;
     }
   });
   this.isLoader=false;
-  // Always return false the first time to prevent the template from displaying prematurely.
   return false;
 }
 }

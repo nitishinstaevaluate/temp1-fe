@@ -137,7 +137,25 @@ export const MODELS = {
         otherinvolvedExperts:'Other Involved Experts'
       }
 
-    }
+    },
+    TARGET_CAPITAL_STRUCTURE:{
+      name:"Target Capital Structure",
+      value:"targetCapitalStructure",
+      options:{
+        debtProp:{
+          name:"Debt Proportion"
+        },
+        equityProp:{
+          name:"Equity Proportion"
+        },
+        prefProp:{
+          name:"Preference Share Capital Proportion"
+        },
+        totalCapital:{
+          name:"Total Capital"
+        }
+      }
+    },
   }
 export const RELATIVE_VALUATION_COMPANY_MAPPING: { [key: string]: string } = {
   'Company Name': 'company',

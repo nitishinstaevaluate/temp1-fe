@@ -138,6 +138,7 @@ loadOnChangeValue(){
           }
           );
       }
+      this.calculateCoeAndAdjustedCoe()
     }
   );
 
@@ -163,8 +164,18 @@ loadOnChangeValue(){
     else {
       // Do nothing for now
     }
+    this.calculateCoeAndAdjustedCoe()
     
   });
+
+  this.excessEarningForm.controls['riskFreeRate'].valueChanges.subscribe((value:any)=>{
+    if(!value) return;
+    this.calculateCoeAndAdjustedCoe();
+  })
+  this.excessEarningForm.controls['coeMethod'].valueChanges.subscribe((value:any)=>{
+    if(!value) return;
+    this.calculateCoeAndAdjustedCoe();
+  })
   this.subscribeToFormChanges();
 }
 
@@ -256,6 +267,7 @@ onSlideToggleChange(event:any){
       })
     }
   });
+  this.calculateCoeAndAdjustedCoe()
   }
 }
 
@@ -278,19 +290,6 @@ previous(){
 }
 
 calculateCoeAndAdjustedCoe() {
-  if (this.apiCallMade) {
-    // If the API call has already been made, return true immediately.
-    return true;
-  }
-  if (
-    !this.excessEarningForm.controls['riskFreeRate'].value ||
-    !this.excessEarningForm.controls['expMarketReturn'].value ||
-    !this.excessEarningForm.controls['riskPremium'].value ||
-    !this.excessEarningForm.controls['coeMethod'].value
-    ) {
-      return false;
-    }
-    
   this.isLoader=true
   const coePayload = {
     riskFreeRate: this.excessEarningForm.controls['riskFreeRate'].value,

@@ -53,6 +53,7 @@
     </div>
   </div>
 
+  <!-- Specific Risk Premium Details -->
   <div class="container-fluid" *ngIf="data === appValues.SPECIFIC_RISK_PREMIUM.value">
     <div class="row">
       <div class="col-md-12 revalmodel">
@@ -91,7 +92,7 @@
     </div>
   </div>
 
-
+  <!-- Registered Valuer Details -->
   <div class="container-fluid" *ngIf="data === appValues.REGISTERED_VALUER_DETAILS.value">
     <div class="row" >
       <div class="col-md-12 revalmodel">
@@ -140,5 +141,41 @@
   </div>
   <div mat-dialog-actions style="display: flex;align-items: center;justify-content: center;">
     <button mat-raised-button [disabled]="!registeredValuerMobileNumber.value || !registeredValuerEmailId.value || !registeredValuerName.value || !registeredValuerIbbiId.value || !registeredValuerGeneralAddress.value || !registeredValuerQualifications.value" [ngClass]="!registeredValuerMobileNumber.value || !registeredValuerEmailId.value || !registeredValuerName.value || !registeredValuerIbbiId.value || !registeredValuerGeneralAddress.value || !registeredValuerQualifications.value ? 'modal-button-disable' : 'modal-button-enable'" (click)="modalData({registeredValuerName:registeredValuerName.value,registeredValuerMobileNumber:registeredValuerMobileNumber.value,registeredValuerEmailId:registeredValuerEmailId.value,registeredValuerGeneralAddress:registeredValuerGeneralAddress.value,registeredValuerQualifications:registeredValuerQualifications.value,registeredValuerIbbiId:registeredValuerIbbiId.value},'registeredValuer')"><mat-icon>keyboard_arrow_right</mat-icon>Register</button>
+  </div>
+  </div>
+
+  <!-- Target Capital Structure Details -->
+  <div class="container-fluid" *ngIf="data === appValues.TARGET_CAPITAL_STRUCTURE.value">
+    <div class="row" >
+      <div class="col-md-12 revalmodel">
+        <mat-label class="label" >{{label}}</mat-label>
+        <span class="mat-target-capital-structure"><mat-icon>fiber_manual_record</mat-icon></span>
+        <span><mat-icon class="close-modal-valuer" (click)="modalData()">close</mat-icon></span>
+        <span class="error-target-caps" *ngIf="summationTargetCaps>100">Target Capital structure should not exceed 100%</span>
+      </div>
+      <!-- discount rate -->
+      <div class="col-md-4 field" style="padding-top: 3%;">
+          <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
+              <mat-label>{{appValues.TARGET_CAPITAL_STRUCTURE.options.debtProp.name}}</mat-label>
+              <input #debtProp matInput (keyup)="onTargetCapitalChange('debtProp',debtProp.value)">
+          </mat-form-field>
+      </div>
+      <div class="col-md-4 field" style="padding-top: 3%;">
+          <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
+              <mat-label>{{appValues.TARGET_CAPITAL_STRUCTURE.options.equityProp.name}}</mat-label>
+              <input #equityProp matInput (keyup)="onTargetCapitalChange('equityProp',equityProp.value)">
+          </mat-form-field>
+      </div>
+      <div class="col-md-4 field" style="padding-top: 3%;">
+          <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
+              <mat-label>{{appValues.TARGET_CAPITAL_STRUCTURE.options.prefProp.name}}</mat-label>
+              <input #prefProp matInput (keyup)="onTargetCapitalChange('prefProp',prefProp.value)">
+          </mat-form-field>
+      </div>
+
+  </div>
+  <div mat-dialog-actions>
+    <p [ngClass]="summationTargetCaps > 100 ? 'total-caps-red' : 'total-caps'">Total Target Capital Structure - {{summationTargetCaps}}%</p>
+    <button style="text-align: center;margin:auto;" mat-raised-button [disabled]="!debtProp.value || !equityProp.value || !prefProp.value || summationTargetCaps > 100" [ngClass]="!debtProp.value || !equityProp.value || !prefProp.value || summationTargetCaps > 100 ? 'modal-button-disable' : 'modal-button-enable'" (click)="modalData({debtProportion:debtProp.value,equityProportion:equityProp.value,preferenceProportion:prefProp.value},'targetCapitalStructure')"><mat-icon>keyboard_arrow_right</mat-icon>Register</button>
   </div>
   </div>
