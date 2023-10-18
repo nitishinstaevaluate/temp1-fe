@@ -2,7 +2,7 @@
   <mat-tab label="FCFE" *ngIf = "fcfe">
     <div class="btn" style="text-align: right;width: 100%;">
       <button mat-stroked-button class="exp">
-        <a class="exp-a" [href]="'https://localhost:3000/upload/generate/' + (transferStepperthree?.formThreeData?.appData?.reportId || 'null') +'/FCFE/' + 'true'" download>Export</a>
+        <a class="exp-a" [href]="HOST + 'upload/generate/' + (transferStepperthree?.formThreeData?.appData?.reportId || 'null') +'/FCFE/' + 'true'" download>Export</a>
       </button>
     </div>
     <div>
@@ -31,7 +31,7 @@
    <mat-tab label="FCFF" *ngIf = "fcff">
     <div class="btn" style="text-align: right;width: 100%;">
       <button mat-stroked-button class="exp">
-        <a class="exp-a" [href]="'https://localhost:3000/upload/generate/' + (transferStepperthree?.formThreeData?.appData?.reportId || 'null') +'/FCFF/' + 'true'" download>Export</a>
+        <a class="exp-a" [href]="HOST + 'upload/generate/' + (transferStepperthree?.formThreeData?.appData?.reportId || 'null') +'/FCFF/' + 'true'" download>Export</a>
       </button>
     </div>
     <div>
@@ -60,7 +60,7 @@
   <mat-tab label="Excess Earning" *ngIf = "excessEarn">
     <div class="btn" style="text-align: right;width: 100%;">
       <button mat-stroked-button class="exp">
-        <a class="exp-a" [href]="'https://localhost:3000/upload/generate/' + (transferStepperthree?.formThreeData?.appData?.reportId || 'null') +'/Excess_Earnings/' + 'true'" download>Export</a>
+        <a class="exp-a" [href]="HOST + 'upload/generate/' + (transferStepperthree?.formThreeData?.appData?.reportId || 'null') +'/Excess_Earnings/' + 'true'" download>Export</a>
       </button>
     </div>
     <div>
@@ -89,7 +89,7 @@
   <mat-tab [label]="checkIndustryOrCompany() ? 'Comparable Companies' : 'Comparable Industries'" *ngIf="relativeVal">
     <div class="btn" style="text-align: right;width: 100%;">
       <button mat-stroked-button class="exp">
-        <a class="exp-a" [href]="'https://localhost:3000/upload/generate/' + (transferStepperthree?.formThreeData?.appData?.reportId || 'null') + (checkIndustryOrCompany() ? '/Relative_Valuation/' : '/CTM/') + 'true'" download>Export</a>
+        <a class="exp-a" [href]="HOST + 'upload/generate/' + (transferStepperthree?.formThreeData?.appData?.reportId || 'null') + (checkIndustryOrCompany() ? '/Relative_Valuation/' : '/CTM/') + 'true'" download>Export</a>
       </button>
     </div>
     <div>
@@ -105,7 +105,7 @@
   <mat-tab label="Net Asset Value" *ngIf="nav">
     <div class="btn" style="text-align: right;width: 100%;">
       <button mat-stroked-button class="exp">
-        <a class="exp-a" [href]="'https://localhost:3000/upload/generate/' + (transferStepperthree?.formThreeData?.appData?.reportId || 'null') + '/NAV/' + 'true'" download>Export</a>
+        <a class="exp-a" [href]="HOST + 'upload/generate/' + (transferStepperthree?.formThreeData?.appData?.reportId || 'null') + '/NAV/' + 'true'" download>Export</a>
       </button>
     </div>
     <div>

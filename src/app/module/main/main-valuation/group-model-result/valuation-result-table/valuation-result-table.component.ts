@@ -3,6 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import {  MatTableDataSource } from '@angular/material/table';
 import { COMMON_COLUMN, EXCESS_EARNING_COLUMN, FCFE_COLUMN, FCFF_COLUMN} from 'src/app/shared/enums/constant';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-valuation-result-table',
@@ -11,6 +12,8 @@ import { CalculationsService } from 'src/app/shared/service/calculations.service
 })
 export class ValuationResultTableComponent implements OnInit, OnChanges{
 @Input() transferStepperthree:any;
+
+HOST = environment.baseUrl
 
 fcfe=false;
 fcff=false;

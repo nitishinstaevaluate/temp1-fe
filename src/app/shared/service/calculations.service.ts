@@ -38,4 +38,9 @@ export class CalculationsService {
     responseType: 'blob'
 });
   }
+
+  getWaccIndustryOrCompanyBased(payload:any){
+    return this.http.get(`${HOST}coe/industryOrCompanyBasedWacc?adjCoe=${payload.adjCoe}&costOfDebt=${payload.costOfDebt}&copShareCapital=${payload.copShareCapital}&deRatio=${payload.deRatio}&type=${payload.type}&taxRate=${payload.taxRate}&excelSheetId=${payload.excelSheetId}`)
+
+  }
 }
