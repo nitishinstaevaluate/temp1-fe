@@ -164,7 +164,7 @@ loadOnChangeValue(){
         this.equityProp = null;
         this.prefProp = null;
         this.totalCapital = null;
-        // });
+        this.getWaccIndustryOrCompanyBased();
       } else {
         const data={
           data: 'targetCapitalStructure',
@@ -188,6 +188,7 @@ loadOnChangeValue(){
               duration: 3000,
               panelClass: 'app-notification-success'
             })
+            this.calculateCoeAndAdjustedCoe();
 
           }
           else {
@@ -199,13 +200,13 @@ loadOnChangeValue(){
               duration: 3000,
               panelClass: 'app-notification-error'
             })
+            this.calculateCoeAndAdjustedCoe()
            
           }
           
         })
        
       }
-      this.calculateCoeAndAdjustedCoe()
 
     }
   );
@@ -401,31 +402,9 @@ calculateCoeAndAdjustedCoe() {
     if (response.status) {
       console.log(this.deRatio,"de ratio",this.equityProp,"equity prop",this.debtRatio,"deb rattio",this.prefProp,"pref prop",this.totalCapital,"toal cap")
 
-      const waccPayload={
-        adjCoe:response?.result?.adjCOE,
-        equityProp:this.equityProp,
-        costOfDebt:this.fcffForm.controls['costOfDebt'].value,
-        taxRate:this.formOneData?.taxRate.includes('%') ? parseFloat(this.formOneData?.taxRate.replace("%", "")) : this.formOneData?.taxRate,
-        debtProp:this.debtProp,
-        copShareCapital:this.fcffForm.controls['copShareCapital'].value,
-        prefProp:this.prefProp,
-        coeMethod:response?.result?.coe
-        // this.deRatio = parseFloat(this.formOneData?.betaIndustry?.deRatio);
-        // this.debtProp = +this.targetCapitalStructureForm.controls['debtProportion'].value;
-        // this.equityProp = +this.targetCapitalStructureForm.controls['equityProportion'].value;
-        // this.prefProp = +this.targetCapitalStructureForm.controls['preferenceProportion'].value;
-        // this.totalCapital = +this.targetCapitalStructureForm.controls['totalCapital'].value;
-      }
-      this.calculationsService.getWacc(waccPayload).subscribe((data:any)=>{
-        if(data.status){
-          this.adjCoe = response?.result?.adjCOE;
-          this.coe = response?.result?.coe;
-          this.wacc = data?.result?.wacc/100;
-          // Set the flag to true to indicate that the API call has been made.
-          this.apiCallMade = true;
-          this.isLoader=false;
-        }
-      })
+     this.adjCoe=response.result.adjCOE;
+     this.coe=response.result.coe;
+      this.getWaccIndustryOrCompanyBased();
     }
   });
   this.isLoader=false;
@@ -433,4 +412,46 @@ calculateCoeAndAdjustedCoe() {
   return false;
 }
 
+getWaccIndustryOrCompanyBased(){
+
+  if(this.fcffForm.controls['capitalStructureType'].value=== 'Target_Based'){
+    // console.log()
+    const waccPayload={
+      adjCoe:this.adjCoe,
+      equityProp:this.equityProp,
+      costOfDebt:this.fcffForm.controls['costOfDebt'].value,
+      taxRate:this.formOneData?.taxRate.includes('%') ? parseFloat(this.formOneData?.taxRate.replace("%", "")) : this.formOneData?.taxRate,
+      debtProp:this.debtProp,
+      copShareCapital:this.fcffForm.controls['copShareCapital'].value,
+      prefProp:this.prefProp,
+      coeMethod:this.fcffForm.controls['coeMethod'].value
+    }
+    this.calculationsService.getWacc(waccPayload).subscribe((data:any)=>{
+      if(data.status){
+        this.adjCoe = data?.result?.adjCOE;
+        this.wacc = data?.result?.wacc/100;
+        this.isLoader=false;
+      }
+    })
+    this.isLoader=false;
+  }
+  else{
+    const payload={
+      adjCoe:this.adjCoe,
+      excelSheetId:this.formOneData.excelSheetId,
+      costOfDebt:this.fcffForm.controls['costOfDebt'].value,
+      copShareCapital:this.fcffForm.controls['copShareCapital'].value,
+      deRatio:this.deRatio,
+      type:this.fcffForm.controls['capitalStructureType'].value,
+      taxRate:this.formOneData?.taxRate.includes('%') ? parseFloat(this.formOneData?.taxRate.replace("%", "")) : this.formOneData?.taxRate,
+    }
+    this.calculationsService.getWaccIndustryOrCompanyBased(payload).subscribe((response:any)=>{
+      if(response.status){
+        this.adjCoe = response?.result?.adjCOE;
+        this.wacc = response?.result?.wacc;
+      }
+    })
+  }
+ 
+}
 }
