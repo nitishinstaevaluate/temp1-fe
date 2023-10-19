@@ -63,18 +63,26 @@ ngOnChanges(changes:SimpleChanges): void {
     if(response.model === 'FCFE'){
       this.fcfeColumn = response?.columnHeader;
       this.dataSourceFcfe = (this.transposeData(response.valuationData))?.slice(1);
+      
       const particularsIndex = this.fcfeColumn.map((values:any)=>values.toLowerCase()).indexOf('particulars');
+     
       if(particularsIndex !== -1){
          equityValuationDate = this.fcfeColumn[particularsIndex+1]
       }
+      
       let checkIfStubExistInColumnHeaders = this.displayFcfeColumn.some((values:any)=>{
         return (values.includes(`Equity Value as on`) || values.includes('Add:Stub Period Adjustment'))
       })
-      if (this.displayFcfeColumn.includes(`Discounting Period`)) {
-        this.displayFcfeColumn.splice(this.displayFcfeColumn.indexOf('Discounting Period'), 1, `Discounting Period - ${this.transferStepperthree.formOneAndTwoData.discountingPeriod}`);
+     
+      const discPeriodIndex = this.displayFcfeColumn.findIndex(element => element.includes('Discounting Period'));
+      if (discPeriodIndex !== -1  ) {
+        this.displayFcfeColumn.splice(discPeriodIndex, 1, `Discounting Period - ${this.transferStepperthree.formOneAndTwoData.discountingPeriod} `);
       }
+
       this.displayFcfeColumn.splice(this.displayFcfeColumn.length-1,1,`Value per Share (${this.transferStepperthree?.formOneAndTwoData?.currencyUnit})`)
+      
       let checkIfKeyExistInResult = this.dataSourceFcfe.some((item:any)=> {return item.some((checkVal:any)=>{return  (checkVal === 'stubAdjValue' || checkVal === 'equityValueNew')})});
+      
       this.dataSourceFcfe = this.dataSourceFcfe.map((subArray: any, index: any) => {
       
         if(checkIfKeyExistInResult){
@@ -134,18 +142,26 @@ ngOnChanges(changes:SimpleChanges): void {
     if(response.model === 'FCFF'){
       this.fcffColumn=response?.columnHeader;
       this.dataSourceFcff = (this.transposeData(response.valuationData))?.slice(1);
+      
       const particularsIndex = this.fcffColumn.map((values:any)=>values.toLowerCase()).indexOf('particulars');
+      
       if(particularsIndex !== -1){
          equityValuationDate = this.fcffColumn[particularsIndex+1]
       }
+      
       let checkIfStubExistInColumnHeaders = this.displayFcffColumn.some((values:any)=>{
         return (values.includes(`Equity Value as on`) || values.includes('Add:Stub Period Adjustment'))
       })
+      
       let checkIfKeyExistInResult = this.dataSourceFcff.some((item:any)=> {return item.some((checkVal:any)=>{return  (checkVal === 'stubAdjValue' || checkVal === 'equityValueNew')})});
-      if (this.displayFcffColumn.includes(`Discounting Period`)) {
-        this.displayFcffColumn.splice(this.displayFcffColumn.indexOf('Discounting Period'), 1, `Discounting Period - ${this.transferStepperthree.formOneAndTwoData.discountingPeriod} `);
+      
+      const discPeriodIndex = this.displayFcffColumn.findIndex(element => element.includes('Discounting Period'));
+      if (discPeriodIndex !== -1  ) {
+        this.displayFcffColumn.splice(discPeriodIndex, 1, `Discounting Period - ${this.transferStepperthree.formOneAndTwoData.discountingPeriod} `);
       }
+      
       this.displayFcffColumn.splice(this.displayFcffColumn.length-1,1,`Value per Share (${this.transferStepperthree?.formOneAndTwoData?.currencyUnit})`)
+      
       this.dataSourceFcff = this.dataSourceFcff.map((subArray: any, index: any) => {
         if(checkIfKeyExistInResult){
           const stubIndex = 18;
@@ -208,21 +224,29 @@ ngOnChanges(changes:SimpleChanges): void {
       this.tableData = {company,industry,status:toggleIndustryOrCompany,tableClass:true};
       this.valuationDataReport = response?.valuationData?.valuation;
     }
+    
     if(response.model === 'Excess_Earnings'){
       this.excessEarnColumn = response?.columnHeader;
       this.dataSourceExcessEarn = (this.transposeData(response.valuationData))?.slice(1);
       const particularsIndex = this.excessEarnColumn.map((values:any)=>values.toLowerCase()).indexOf('particulars');
+      
       if(particularsIndex !== -1){
          equityValuationDate = this.excessEarnColumn[particularsIndex+1]
       }
+
       let checkIfStubExistInColumnHeaders = this.displayExcessEarnColumn.some((values:any)=>{
         return (values.includes(`Equity Value as on`) || values.includes('Add:Stub Period Adjustment'))
       })
+
       let checkIfKeyExistInResult = this.dataSourceExcessEarn.some((item:any)=> {return item.some((checkVal:any)=>{return  (checkVal === 'stubAdjValue' || checkVal === 'equityValueNew')})});
-      if (this.displayExcessEarnColumn.includes(`Discounting Period`)) {
-        this.displayExcessEarnColumn.splice(this.displayExcessEarnColumn.indexOf('Discounting Period'), 1, `Discounting Period - ${this.transferStepperthree.formOneAndTwoData.discountingPeriod} `);
+  
+      const discPeriodIndex = this.displayExcessEarnColumn.findIndex(element => element.includes('Discounting Period'));
+      if (discPeriodIndex !== -1  ) {
+        this.displayExcessEarnColumn.splice(discPeriodIndex, 1, `Discounting Period - ${this.transferStepperthree.formOneAndTwoData.discountingPeriod} `);
       }
-      this.dataSourceExcessEarn.splice(this.dataSourceExcessEarn.length-1,1,`Value per Share (${this.transferStepperthree?.formOneAndTwoData?.currencyUnit})`)
+
+      this.displayExcessEarnColumn.splice(this.displayExcessEarnColumn.length-1,1,`Value per Share (${this.transferStepperthree?.formOneAndTwoData?.currencyUnit})`)
+     
       this.dataSourceExcessEarn = this.dataSourceExcessEarn.map((subArray: any, index: any) => {
        if(checkIfKeyExistInResult){
         const stubIndex = 10;
