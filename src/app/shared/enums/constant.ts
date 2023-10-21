@@ -272,3 +272,10 @@ export const COMMON_COLUMN = [
   "2027-28",
   "Terminal Value"
 ];
+
+export const REPORT_OBJECTIVE = {
+  companiesAct:"Companies Act",
+  ita1961:"Income Tax Act, 1961",
+  fema:"Fema",
+  sebiRegulations:"SEBI Regulations",
+}
