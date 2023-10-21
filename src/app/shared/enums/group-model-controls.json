@@ -765,6 +765,24 @@
                     "name":"CHF",
                     "value":"CHF"
                 }
+            ],
+            "reportPurpose":[
+                {
+                    "name":"Companies Act",
+                    "value":"companiesAct"
+                },
+                {
+                    "name":"Income Tax Act, 1961",
+                    "value":"ita1961"
+                },
+                {
+                    "name":"Fema",
+                    "value":"fema"
+                },
+                {
+                    "name":"SEBI Regulations",
+                    "value":"sebiRegulations"
+                }
             ]
         }
     }

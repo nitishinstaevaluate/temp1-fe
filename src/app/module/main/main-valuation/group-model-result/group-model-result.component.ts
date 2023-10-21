@@ -52,44 +52,68 @@ export class GroupModelResultComponent implements OnChanges {
       (response: any) => {
         if(response.model === 'FCFE'){
           this.fcfeValuation =  response.valuation;
-          if(this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "FCFE") === -1)
+          const fcfeIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "FCFE")
+          if(fcfeIndex === -1)
           {
             this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.fcfeValuation,weightage:0});
+          }
+          else{
+            this.calculateModelWeigtagePayload.resuls.splice(fcfeIndex,1,{model:response.model,value:this.fcfeValuation,weightage:0})
           }
         }
         else if(response.model === 'FCFF'){
           this.fcffValuation = response.valuation;
-          if(this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "FCFF") === -1)
+          const fcffIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "FCFF");
+          if(fcffIndex === -1)
           {
             this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.fcffValuation,weightage:0});
+          }
+          else{
+            this.calculateModelWeigtagePayload.results.splice(fcffIndex,1,{model:response.model,value:this.fcffValuation,weightage:0});
           }
         }
         else if(response.model === 'Relative_Valuation'){
           this.relativeValuation = response.valuation?.finalPriceMed;
-          if(this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "Relative_Valuation") === -1)
+          const relativeValuationIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "Relative_Valuation");
+          if(relativeValuationIndex === -1)
           {
             this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.relativeValuation,weightage:0});
+          }
+          else{
+            this.calculateModelWeigtagePayload.results.splice(relativeValuationIndex,1,{model:response.model,value:this.relativeValuation,weightage:0});
           }
         }
         else if(response.model === 'CTM'){
           this.comparableIndustryValuation = response.valuation?.finalPriceMed;
-          if(this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "CTM") === -1)
+          const comparableIndustriesIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "CTM");
+          if(comparableIndustriesIndex === -1)
           {
             this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.comparableIndustryValuation,weightage:0});
+          }
+          else{
+            this.calculateModelWeigtagePayload.results.splice(comparableIndustriesIndex,1,{model:response.model,value:this.comparableIndustryValuation,weightage:0});
           }
         }
         else if(response.model === 'Excess_Earnings'){
           this.excessEarnValuation = response.valuation;
-          if(this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "Excess_Earnings") === -1)
+          const excessEarningIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "Excess_Earnings");
+          if(excessEarningIndex === -1)
           {
             this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.excessEarnValuation,weightage:0});
+          }
+          else{
+            this.calculateModelWeigtagePayload.results.splice(excessEarningIndex,1,{model:response.model,value:this.excessEarnValuation,weightage:0});
           }
         }
         else if(response.model === 'NAV'){
           this.navValuation = response.valuation;
-          if(this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "NAV") === -1)
+          const navIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "NAV");
+          if(navIndex === -1)
           {
             this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.navValuation,weightage:0});
+          }
+          else{
+            this.calculateModelWeigtagePayload.results.splice(navIndex,1,{model:response.model,value:this.navValuation,weightage:0});
           }
         }
       }

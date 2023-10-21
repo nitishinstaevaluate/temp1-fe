@@ -6,6 +6,8 @@ import { saveAs } from 'file-saver';
 import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal-box/generic-modal-box.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
+import { DataReferencesService } from 'src/app/shared/service/data-references.service';
+import { REPORT_OBJECTIVE } from 'src/app/shared/enums/constant';
 
 
 @Component({
@@ -21,12 +23,21 @@ export class ReportDetailsComponent implements OnInit {
   appointeeDetails:any=FormGroup;
   @Input() transferStepperFour:any;
   @Output() previousPage=new EventEmitter<any>();
+  shouldShowReportPurpose=false;
+  reportPurposeData:any=[];
+  reportObjectives:any= REPORT_OBJECTIVE
 
   isLoading=false;
+  reportObjective='';
   
-  constructor(private fb : FormBuilder,private calculationService:CalculationsService,private dialog:MatDialog,private snackBar:MatSnackBar){}
+  constructor(private fb : FormBuilder,
+    private calculationService:CalculationsService,
+    private dialog:MatDialog,
+    private snackBar:MatSnackBar,
+    private dataReferenceService:DataReferencesService){}
   ngOnInit(): void {
     this.loadForm();
+    this.onValueChangeControl()
   }
 
   ngOnChanges(changes:SimpleChanges){
@@ -39,7 +50,8 @@ export class ReportDetailsComponent implements OnInit {
       reportDate:['',[Validators.required]],
       useExistingValuer:[false,[Validators.required]],
       appointingAuthorityName:['',[Validators.required]],
-      dateOfAppointment:['',[Validators.required]]
+      dateOfAppointment:['',[Validators.required]],
+      reportPurpose:['',[Validators.required]],
     })
     this.registeredValuerDetails=this.fb.group({
       registeredValuerName:['',[Validators.required]],
@@ -50,6 +62,25 @@ export class ReportDetailsComponent implements OnInit {
       registeredValuerCorporateAddress:['',[Validators.required]],
       registeredvaluerDOIorConflict:['',[Validators.required]],
       registeredValuerQualifications:['',[Validators.required]],
+    })
+  }
+
+  onValueChangeControl(){
+    this.reportForm.controls['reportPurpose'].valueChanges.subscribe((value:any)=>{
+      if(!value) return;
+      this.dataReferenceService.getReportPurpose(value).subscribe((reportPurposeData:any)=>{
+        this.reportPurposeData = reportPurposeData?.reportPurpose;
+        this.reportObjective = this.reportObjectives[`${value}`];
+        if(this.reportPurposeData.length>0){
+          this.shouldShowReportPurpose=true;
+        }
+        else{
+          this.shouldShowReportPurpose=false;
+        }
+      },
+      (error)=>{
+        this.shouldShowReportPurpose=false;
+      })
     })
   }
 

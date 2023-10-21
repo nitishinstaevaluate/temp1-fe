@@ -187,3 +187,55 @@
 }
 
 // loader css ends
+
+// table css starts
+.fade-in-table {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.fade-in-table-visible {
+  opacity: 1;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  color: #212529;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+  border: 1px solid #dee2e6;
+  padding: 15px;
+  text-align: left;
+}
+
+th {
+  background-color: #379eab;
+  color: #fff;
+  border-color: #4cbba9;
+  font-size: 13px;
+  font-family: 'Oxygen', sans-serif;
+  font-weight: 600;
+}
+td{
+  font-size: 13px;
+  color:#2682a9;
+  font-weight: 500;
+}
+
+tr:nth-child(even) {
+  background-color: #f1f3f5;
+}
+
+tr:hover {
+  background-color: #cef0f5;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+// table css ends

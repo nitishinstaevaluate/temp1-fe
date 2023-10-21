@@ -61,5 +61,9 @@ export class DataReferencesService {
 //   getCompanies(id:any){
 //     return this.http.get(`${HOST}companies/${id}`);
 //   }
+
+ getReportPurpose(reportObjective:string){
+  return this.http.get(`${HOST}reportPurpose/get?reportObjective=${reportObjective}`);
+ }
 }
 

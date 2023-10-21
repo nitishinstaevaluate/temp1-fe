@@ -32,8 +32,8 @@ formData :any;
 industryData:any = new MatTableDataSource();
 selectedTabIndex:any;
 fcfeColumn:any=[];
-excessEarnColumn=[];
-fcffColumn=[];
+excessEarnColumn:any=[];
+fcffColumn:any=[];
 isLoader=false;
 displayFcfeColumn=FCFE_COLUMN;
 displayFcffColumn=FCFF_COLUMN;
@@ -64,11 +64,7 @@ ngOnChanges(changes:SimpleChanges): void {
       this.fcfeColumn = response?.columnHeader;
       this.dataSourceFcfe = (this.transposeData(response.valuationData))?.slice(1);
       
-      const particularsIndex = this.fcfeColumn.map((values:any)=>values.toLowerCase()).indexOf('particulars');
-     
-      if(particularsIndex !== -1){
-         equityValuationDate = this.fcfeColumn[particularsIndex+1]
-      }
+      equityValuationDate = response?.provisionalDate;
       
       let checkIfStubExistInColumnHeaders = this.displayFcfeColumn.some((values:any)=>{
         return (values.includes(`Equity Value as on`) || values.includes('Add:Stub Period Adjustment'))
@@ -143,11 +139,12 @@ ngOnChanges(changes:SimpleChanges): void {
       this.fcffColumn=response?.columnHeader;
       this.dataSourceFcff = (this.transposeData(response.valuationData))?.slice(1);
       
-      const particularsIndex = this.fcffColumn.map((values:any)=>values.toLowerCase()).indexOf('particulars');
+         equityValuationDate = response?.provisionalDate;
+      // const particularsIndex = this.fcffColumn.map((values:any)=>values.toLowerCase()).indexOf('particulars');
       
-      if(particularsIndex !== -1){
-         equityValuationDate = this.fcffColumn[particularsIndex+1]
-      }
+      // if(particularsIndex !== -1){
+      //    equityValuationDate = this.fcffColumn[particularsIndex+1]
+      // }
       
       let checkIfStubExistInColumnHeaders = this.displayFcffColumn.some((values:any)=>{
         return (values.includes(`Equity Value as on`) || values.includes('Add:Stub Period Adjustment'))
@@ -228,11 +225,12 @@ ngOnChanges(changes:SimpleChanges): void {
     if(response.model === 'Excess_Earnings'){
       this.excessEarnColumn = response?.columnHeader;
       this.dataSourceExcessEarn = (this.transposeData(response.valuationData))?.slice(1);
-      const particularsIndex = this.excessEarnColumn.map((values:any)=>values.toLowerCase()).indexOf('particulars');
+      equityValuationDate = response?.provisionalDate;
+      // const particularsIndex = this.excessEarnColumn.map((values:any)=>values.toLowerCase()).indexOf('particulars');
       
-      if(particularsIndex !== -1){
-         equityValuationDate = this.excessEarnColumn[particularsIndex+1]
-      }
+      // if(particularsIndex !== -1){
+      //    equityValuationDate = this.excessEarnColumn[particularsIndex+1]
+      // }
 
       let checkIfStubExistInColumnHeaders = this.displayExcessEarnColumn.some((values:any)=>{
         return (values.includes(`Equity Value as on`) || values.includes('Add:Stub Period Adjustment'))
