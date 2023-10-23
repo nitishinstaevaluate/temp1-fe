@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {  MatTableDataSource } from '@angular/material/table';
 import { COMMON_COLUMN, EXCESS_EARNING_COLUMN, FCFE_COLUMN, FCFF_COLUMN} from 'src/app/shared/enums/constant';
+import { CustomDatePipe } from 'src/app/shared/pipe/date.pipe';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { environment } from 'src/environments/environment';
 
@@ -54,17 +55,19 @@ this.dataSourceNav=this.dataSourceNav[0];
 }
 ngOnInit(): void {}
 
-constructor(private calculationService:CalculationsService,private snackbar:MatSnackBar){}
+constructor(private calculationService:CalculationsService,
+  private snackbar:MatSnackBar,
+  private customDatePipe:CustomDatePipe){}
 
 ngOnChanges(changes:SimpleChanges): void {
-  let equityValuationDate='';
+  let equityValuationDate:any;
   this.formData = this.transferStepperthree;
   this.transferStepperthree?.formThreeData?.appData?.valuationResult.map((response:any)=>{
     if(response.model === 'FCFE'){
       this.fcfeColumn = response?.columnHeader;
       this.dataSourceFcfe = (this.transposeData(response.valuationData))?.slice(1);
-      
-      equityValuationDate = response?.provisionalDate;
+
+      equityValuationDate = this.customDatePipe.transform(response?.provisionalDate);
       
       let checkIfStubExistInColumnHeaders = this.displayFcfeColumn.some((values:any)=>{
         return (values.includes(`Equity Value as on`) || values.includes('Add:Stub Period Adjustment'))
@@ -139,7 +142,7 @@ ngOnChanges(changes:SimpleChanges): void {
       this.fcffColumn=response?.columnHeader;
       this.dataSourceFcff = (this.transposeData(response.valuationData))?.slice(1);
       
-         equityValuationDate = response?.provisionalDate;
+         equityValuationDate = this.customDatePipe.transform(response?.provisionalDate);
       // const particularsIndex = this.fcffColumn.map((values:any)=>values.toLowerCase()).indexOf('particulars');
       
       // if(particularsIndex !== -1){
@@ -225,7 +228,7 @@ ngOnChanges(changes:SimpleChanges): void {
     if(response.model === 'Excess_Earnings'){
       this.excessEarnColumn = response?.columnHeader;
       this.dataSourceExcessEarn = (this.transposeData(response.valuationData))?.slice(1);
-      equityValuationDate = response?.provisionalDate;
+      equityValuationDate = this.customDatePipe.transform(response?.provisionalDate);
       // const particularsIndex = this.excessEarnColumn.map((values:any)=>values.toLowerCase()).indexOf('particulars');
       
       // if(particularsIndex !== -1){

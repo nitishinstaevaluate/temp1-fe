@@ -705,7 +705,7 @@
     },
     "reportDetails":{
         "type":"reportDetails",
-        "header":"Valuation Report Details",
+        "header":"Details Of Valuation Report",
         "options":{
             "reportingUnit":[
                 {
@@ -768,7 +768,7 @@
             ],
             "reportPurpose":[
                 {
-                    "name":"Companies Act",
+                    "name":"Companies Act, 2023",
                     "value":"companiesAct"
                 },
                 {
@@ -776,12 +776,50 @@
                     "value":"ita1961"
                 },
                 {
-                    "name":"Fema",
+                    "name":"Foreign Exchange Management Act",
                     "value":"fema"
                 },
                 {
                     "name":"SEBI Regulations",
                     "value":"sebiRegulations"
+                }
+            ],
+            "natureOfInstrument":[
+                {
+                    "name":"Equity Shares",
+                    "value":"equityShares"
+                },
+                {
+                    "name":"Equity Shares & CCPS",
+                    "value":"equitySharesAndCcps"
+                },
+                {
+                    "name":"Compulsorily Convertible Preference Shares",
+                    "value":"ccps"
+                },
+                {
+                    "name":"Compulsorily Convertible Dimentures",
+                    "value":"ccds"
+                },
+                {
+                    "name":"Optionally Convertible Dimentures",
+                    "value":"ocds"
+                },
+                {
+                    "name":"Optionally Convertible Redeemable Preference Shares",
+                    "value":"ocrps"
+                },
+                {
+                    "name":"Redeemable Preference Shares",
+                    "value":"rps"
+                },
+                {
+                    "name":"Simple Agreement for Future Equity",
+                    "value":"safe"
+                },
+                {
+                    "name":"Convertible Notes",
+                    "value":"convertibleNotes"
                 }
             ]
         }

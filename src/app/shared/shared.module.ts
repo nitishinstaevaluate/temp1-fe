@@ -11,6 +11,7 @@ import { UserInputComponent } from './Modal/user-input.component';
 import { RelativeComponent } from './Modal/relative/relative.component';
 import { NgxSliderModule } from '@angular-slider/ngx-slider'
 import { GenericModalBoxComponent } from './modal box/generic-modal-box/generic-modal-box.component';
+import { CustomDatePipe } from './pipe/date.pipe';
 
 
 
@@ -21,6 +22,7 @@ const MODULES = [NgbModule, ReactiveFormsModule, FormsModule,MaterialModuleModul
   declarations: [ToggleThemeDirective, FullscreenDirective, SidemenuToggleDirective,UserInputComponent,RelativeComponent,GenericModalBoxComponent],
   imports: [CommonModule,NgxSliderModule,...MODULES],
   exports: [RelativeComponent,UserInputComponent,...MODULES,GenericModalBoxComponent],
-  entryComponents:[GenericModalBoxComponent]
+  entryComponents:[GenericModalBoxComponent],
+  providers:[CustomDatePipe]
 })
 export class SharedModule {}
