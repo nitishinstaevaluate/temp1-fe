@@ -76,6 +76,16 @@
                       </mat-form-field>
                 </div>
 
+                <div class="col-md-6 field" *ngIf="shouldShowReportPurpose">
+                    <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
+                        <mat-label>Section Details</mat-label>
+                        <mat-select class="mat-select-value" formControlName="reportSection">
+                        <!-- <mat-option *ngFor="let doc of modelControl.reportDetails.options.reportPurpose"  [value]="doc.value" >{{doc.name}}</mat-option> -->
+                        <mat-option *ngFor="let purpose of reportPurposeData"  [value]="purpose.section" >{{purpose.section}} - {{purpose.Description}}</mat-option>
+                    </mat-select>
+                      </mat-form-field>
+                </div>
+
                 <div class="col-md-12 revalmodel" style="border-top: 1px solid #ccdfe3" *ngIf="reportObjective">
                     <mat-label class="label" >{{reportObjective}}</mat-label>
                     <span class="mat-bullet"><mat-icon>fiber_manual_record</mat-icon></span>
