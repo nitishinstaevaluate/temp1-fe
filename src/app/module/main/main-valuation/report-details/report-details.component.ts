@@ -52,6 +52,8 @@ export class ReportDetailsComponent implements OnInit {
       appointingAuthorityName:['',[Validators.required]],
       dateOfAppointment:['',[Validators.required]],
       reportPurpose:['',[Validators.required]],
+      natureOfInstrument:['',[Validators.required]],
+      reportSection:['',[Validators.required]],
     })
     this.registeredValuerDetails=this.fb.group({
       registeredValuerName:['',[Validators.required]],
@@ -86,6 +88,7 @@ export class ReportDetailsComponent implements OnInit {
 
 
   generateReport(){
+    console.log(this.reportForm.value,"reports value")
     this.isLoading=true;
     const payload = {
       ...this.reportForm.value,
