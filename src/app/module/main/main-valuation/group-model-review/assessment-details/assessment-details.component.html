@@ -1,0 +1,22 @@
+<mat-table [dataSource]="assessmentDataSource" *ngIf="transferStepperTwo?.excelSheetId">
+    <ng-container *ngFor="let column of displayColumns;let columnIndex = index" [matColumnDef]="column">
+      <mat-header-cell *matHeaderCellDef [ngClass]="column === 'Particulars' ? 'inc-width' : ''">{{ column }}</mat-header-cell>
+      <mat-cell *matCellDef="let element" [ngClass]="element[column] === 'Operating Assets' || element[column] === 'Operating Liabilities' ? 'highlight-header' :  element[column] === 'Other Operating Assets' || element[column] === 'Other Operating Liabilities' ? 'label-highlight' : checkType(element[column]) && !isNumberOrEmpty(element[column]) ? 'label-c' : '' ">
+        <ng-container *ngIf="checkType(element[column]) && columnIndex === 0">
+          <span>{{ element[column] }}</span>
+        </ng-container>
+        <ng-container *ngIf="ifOnlyNumber(element) && columnIndex !== 0">
+          <span style="font-size: 14px;font-weight: 500;color: rgb(39 87 110 / 87%);">{{ element[column] }}</span>
+        </ng-container>
+        <mat-form-field class="assessment-field" [appearance]="appearance" style="margin-bottom: -9%;width: 100%;" *ngIf="checkIfEditable(element) && columnIndex !== 0" [floatLabel]="floatLabelType">
+          <input class="input-pl" style="text-align: center;color: #000000 !important;font-weight: 500;" [value]="element[column]"  matInput placeholder="---" (input)="onInputChange($event.target, column,element[column])">
+        </mat-form-field>
+    
+        <!-- <ng-container *ngIf="isOnlyNull(element[column])">
+            <span >{{ element[column] }}</span>
+          </ng-container> -->
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
+  </mat-table>

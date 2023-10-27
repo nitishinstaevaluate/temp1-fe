@@ -9,6 +9,9 @@
                 <mat-tab label="Balance Sheet">
                     <app-balance-sheet-details [transferStepperTwo]="transferStepperTwo" (balanceSheetData)="balanceSheetData($event)"></app-balance-sheet-details>
                 </mat-tab>
+                <mat-tab label="Assessment of Working Capital">
+                    <app-assessment-details [transferStepperTwo]="transferStepperTwo"></app-assessment-details>
+                </mat-tab>
             </mat-tab-group>
         </div>
         <div *ngIf="!transferStepperTwo?.excelSheetId" style="margin-top: auto;margin-bottom: auto;">

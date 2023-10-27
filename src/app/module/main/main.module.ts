@@ -22,9 +22,10 @@ import { ExcessEarningDetailsComponent } from './main-valuation/models-details/e
 import { ComparableIndustriesDetailsComponent } from './main-valuation/models-details/comparable-industries-details/comparable-industries-details.component';
 import { NetAssetValueDetailsComponent } from './main-valuation/models-details/net-asset-value-details/net-asset-value-details.component';
 import { ReportDetailsComponent } from './main-valuation/report-details/report-details.component';
+import { AssessmentDetailsComponent } from './main-valuation/group-model-review/assessment-details/assessment-details.component';
 
 @NgModule({
-  declarations: [ValuationComponent, ActivityComponent, MainValuationComponent, GroupModelControlsComponent, GroupModelReviewComponent, GroupModelResultComponent, ProfitLossDataComponent, BalanceSheetDetailsComponent, RelativeValuationsTableComponent,ValuationResultTableComponent, ModelRelativeValuationResultTableComponent,FcfeDetailsComponent,FcffDetailsComponent,RelativeValuationDetailsComponent, ExcessEarningDetailsComponent, ComparableIndustriesDetailsComponent, NetAssetValueDetailsComponent, ReportDetailsComponent],
+  declarations: [ValuationComponent, ActivityComponent, MainValuationComponent, GroupModelControlsComponent, GroupModelReviewComponent, GroupModelResultComponent, ProfitLossDataComponent, BalanceSheetDetailsComponent, RelativeValuationsTableComponent,ValuationResultTableComponent, ModelRelativeValuationResultTableComponent,FcfeDetailsComponent,FcffDetailsComponent,RelativeValuationDetailsComponent, ExcessEarningDetailsComponent, ComparableIndustriesDetailsComponent, NetAssetValueDetailsComponent, ReportDetailsComponent, AssessmentDetailsComponent],
   imports: [CommonModule, MainRoutingModule, NgxDropzoneModule, SharedModule],
 })
 export class MainModule {}
