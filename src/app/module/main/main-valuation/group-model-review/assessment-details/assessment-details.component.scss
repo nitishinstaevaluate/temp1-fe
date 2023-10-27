@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Croissant+One&family=Karla&family=Oxygen&family=Raleway&family=Roboto+Condensed&family=Roboto:wght@300&family=Space+Grotesk:wght@500&family=Teko&family=Ubuntu:wght@300&display=swap');
+::ng-deep mat-row mat-cell,mat-header-cell,mat-table{
+    border:  0.5px solid #d1d0d0 !important;
+    padding: 1%;
+}
+mat-header-cell{
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Karla', sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 0px !important;
+    background-color: rgb(204 255 249 / 26%) !important;
+    color: #3d797d;
+}
+mat-header-row{
+    min-height: 49px !important;
+}
+::ng-deep mat-row mat-cell{
+    display: flex;
+    justify-content: center;
+    padding: 0px !important;
+    font-size: 11px !important;
+    text-align: center !important;
+    font-family: 'Space Grotesk', sans-serif;
+    text-transform: capitalize !important;
+}
+
+::ng-deep mat-row{
+    height: 10px !important;
+    min-height: 32px !important;
+}
+
+::ng-deep mat-row:nth-child(odd) {
+    background-color: #b1ffcc14 !important;
+}
+::ng-deep mat-row:nth-child(odd) mat-cell mat-form-field .input-pl{
+    color: rgb(39 87 110 / 87%) !important;
+}
+// ::ng-deep mat-row:nth-child(even) mat-cell mat-form-field .input-pl{
+//     color: #055357 !important
+// }
+::ng-deep .assessment-field .mdc-text-field--filled:not(.mdc-text-field--disabled){
+    background: radial-gradient(#a3fd97, transparent);
+  }
+
+::ng-deep mat-row mat-cell mat-form-field .mdc-text-field--filled{
+    background-color: red !important;
+}
+::ng-deep mat-row:hover mat-cell {
+    background-color: #7ad5b529 !important;
+  }
+
+.label-c{
+    color: #288790 !important;
+    font-size: 13px !important;
+    font-weight: 600;
+    min-width:45% ;
+    font-family: 'Raleway', sans-serif !important;
+}
+.label-highlight{
+    color: #000000  !important;
+    font-size: 13px !important;
+    font-weight: 600;
+    min-width:45% ;
+    font-family: 'Raleway', sans-serif !important;
+    background: radial-gradient(#a3fd97, transparent);
+}
+.highlight-header{
+    color: #215054 !important;
+    font-size: 16px !important;
+    font-weight: bold !important;
+    min-width:45% ;
+    font-family: 'Raleway', sans-serif !important;
+    background: linear-gradient(90deg, #c7ece4, #dbffff);
+}
+
+.hover-cell:hover {
+    background-color: #e5e5e5;
+}
+
+.inc-width{
+    min-width: 45%;
+}
+
+.btn-update{
+    text-align: right;
+    padding: 2%;
+}
+.btn-up{
+    background-color: rgb(255 255 255);
+    transition: color 0.2s, box-shadow 0.2s;
+    color: #268f8f;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Roboto';
+    transition: color .2s;
+}
+.btn-up:hover{
+    color:rgb(226, 29, 29);
+}
