@@ -35,7 +35,7 @@
               <app-net-asset-value-details (navDetailsPrev)="navDetailsPrev($event)" (navDetails)="navDetails($event)" [hidden]="next !== 6" [formOneData]="formOneData"></app-net-asset-value-details>
             </mat-step>
             <mat-step  [stepControl]="thirdFormGroup" errorMessage="Address is required.">
-              <app-group-model-review (groupReviewControls)="groupReviewControls($event)" [currentStepIndex]="stepper.selectedIndex" (previousPage)="previous($event)" [transferStepperTwo]="formOneAndTwoData"
+              <app-group-model-review (groupReviewControls)="groupReviewControls($event)" (previousGroupReviewControls)="previousGroupReviewControls($event)" [currentStepIndex]="stepper.selectedIndex" (previousPage)="previous($event)" [transferStepperTwo]="formOneAndTwoData"
               ></app-group-model-review>
             </mat-step>
             <mat-step [stepControl]="fourthFormGroup" errorMessage="Address is required.">

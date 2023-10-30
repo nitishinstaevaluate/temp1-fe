@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
 
 @Component({
@@ -7,34 +8,30 @@ import { ValuationService } from 'src/app/shared/service/valuation.service';
   styleUrls: ['./assessment-details.component.scss']
 })
 export class AssessmentDetailsComponent implements OnInit {
-  constructor(private valuationService:ValuationService){}
+  constructor(private valuationService:ValuationService,
+    private calculationService:CalculationsService){}
 
   @Input() transferStepperTwo:any;
+  @Output() assessmentSheetData=new EventEmitter<any>();
+
   displayColumns:any;
   assessmentDataSource:any;
   floatLabelType:any='never';
   appearance:any='fill';
   dataSource:any;
+  editedValues:any=[];
+  isExcelModified=false;
+  modifiedExcelSheetId:string='';
 
   ngOnInit(): void {
     this.fetchExcelData();
   }
 
   fetchExcelData(){
-    this.valuationService.getProfitLossSheet(this.transferStepperTwo?.excelSheetId,'assessmentSheet').subscribe((response:any)=>{
-      this.displayColumns = Object.keys(response[0]);
-      this.dataSource = response;
-      this.displayColumns.splice(this.displayColumns.indexOf('lineEntry'),1,'Particulars')
-      this.assessmentDataSource = response.map((result:any)=>{
-        const transformedItem: any = {};
-        transformedItem['Particulars'] = result.lineEntry.particulars;
-        for (let i = 1; i < this.displayColumns.length; i++) {
-          const yearKey = this.displayColumns[i];
-          transformedItem[yearKey] = result[yearKey];
-        }
-        return transformedItem;
-      });
-      this.assessmentDataSource.splice(this.assessmentDataSource.findIndex((item:any) => item.Particulars.includes('Operating Liabilities')),0,{Particulars:"  "}) //push empty object for line break      
+    this.valuationService.getProfitLossSheet(this.transferStepperTwo?.modifiedExcelSheetId && this.transferStepperTwo?.modifiedExcelSheetId !== '' ? this.transferStepperTwo?.modifiedExcelSheetId :  this.transferStepperTwo?.excelSheetId,'Assessment of Working Capital').subscribe((response:any)=>{
+     if(response.status){
+      this.createAssessmentDataSource(response)
+     }
     })
   }
 
@@ -61,40 +58,162 @@ export class AssessmentDetailsComponent implements OnInit {
   }
 
   ifOnlyNumber(value:any){
-    return (Object.values(value).some(value => typeof value === 'number' && !isNaN(value)) && value.Particulars !== 'Other Operating Assets' && value.Particulars !== 'Other Operating Liabilities');
+    // return (Object.values(value).some(value => typeof value === 'number' && !isNaN(value)) && value.Particulars !== 'Other Operating Assets' && value.Particulars !== 'Other Operating Liabilities');
+    if(value?.Particulars){
+      return this.dataSource.some((data:any)=>{
+        if(data.lineEntry.particulars === value?.Particulars && data.lineEntry?.sysCode !== 3009 && data.lineEntry?.sysCode !== 3018){
+          return true;
+        }
+        return false
+      })
+    }
+    return false
   }
 
   convertIntoNumber(value:any){
     return parseFloat(value)?.toFixed(2);
   }
+  checkSubHeader(value:any,index:number){
+    if(index === 0){
+      if(value?.Particulars){
+        return this.dataSource.some((data:any)=>{
+          if(data.lineEntry.particulars === value?.Particulars && data.lineEntry?.subHeader){
+            return true;
+          }
+          return false
+        })
+      }
+      return false
+    }
+  }
+  checkHeader(value:any,index:number){
+    if(index === 0){
+      if(value?.Particulars){
+        return this.dataSource.some((data:any)=>{
+          if(data.lineEntry.particulars === value?.Particulars && data.lineEntry?.header){
+            return true;
+          }
+          return false
+        })
+      }
+      return false
+    }
+  }
   onInputChange(value: any, column: string,originalValue:any) {
     // const spanContent = (value as HTMLInputElement).closest('mat-row').querySelector('span').textContent;
-  
-    // const inputElement = value;
-    // const closestRow = inputElement.closest('mat-row');
+    // console.log(originalValue,"original value",column,"this is the column",value.value,"changed value")
+    const inputElement = value;
+    const closestRow = inputElement.closest('mat-row');
     
-    // if (closestRow) {
-    //   const spanElement = closestRow.querySelector('span');
-    //   const spanContent = spanElement ? spanElement.textContent : null;
-    //   if(value?.value !== originalValue || (originalValue === null && value.value === '')){
-    //     if(this.editedValues.some((item:any)=>item.subHeader == spanContent && item.columnName === column)){
-    //       this.editedValues.map((val:any)=>{
-    //         if(val.subHeader == spanContent && val.columnName === column){
-    //           val.newValue = value.value;
-    //         }
-    //       })
-    //     }
-    //     else{
-    //       let payload={
-    //         subHeader:spanContent,
-    //         originalValue,
-    //         newValue:value.value,
-    //         columnName:column
-    //       }
-    //       this.editedValues.push(payload)
-    //     }
-    //   }
-    // }
-    // this.excelData.emit({ excelSheet:'P&L',editedValues: this.editedValues });
+    if (closestRow) {
+      // const spanElement = closestRow.querySelector('span');
+      // const spanContent = spanElement ? spanElement.textContent : null;
+      if(value?.value !== originalValue[`${column}`] || (originalValue[`${column}`] === null && value.value === '')){
+        const findIndex = this.editedValues.findIndex((item:any)=> item.particulars === originalValue.Particulars)
+        if(findIndex !== -1){
+          // this.editedValues.map((val:any)=>{
+          //     val.newValue = value.value;
+          // })
+          const cellData = this.getCellAddress(originalValue,column);
+          const cellStructure={
+            cellData,
+            oldValue:originalValue[`${column}`],
+            newValue:+value.value,
+            particulars:originalValue.Particulars
+          }
+          this.editedValues.splice(findIndex,1,cellStructure)
+          const payload = {
+            excelSheet:'Assessment of Working Capital',
+            excelSheetId:this.modifiedExcelSheetId !== '' ? `${this.modifiedExcelSheetId}`: `${this.transferStepperTwo.excelSheetId}`,
+            ...this.editedValues[0] 
+          }
+          this.calculationService.modifyExcel(payload).subscribe((response:any)=>{
+            console.log(response)
+            if(response.status){
+              this.isExcelModified = true;
+              this.createAssessmentDataSource(response)
+              
+              // this.snackBar.open('Successfully updated excel','Ok',{
+              //   horizontalPosition: 'right',
+              //   verticalPosition: 'top',
+              //   duration: 3000,
+              //   panelClass: 'app-notification-success'
+              // })
+            }
+          })
+        }
+        else{
+          // originalValue[`${column}`] = value?.value;
+          // console.log("new base pyload",this.editedValues)
+          const cellData = this.getCellAddress(originalValue,column);
+          const cellStructure={
+            cellData,
+            oldValue:originalValue[`${column}`],
+            newValue:+value.value,
+            particulars:originalValue.Particulars
+          }
+          this.editedValues.push(cellStructure)
+          // console.log(payload,"new payoad")
+          const payload = {
+            excelSheet:'Assessment of Working Capital',
+            excelSheetId:this.modifiedExcelSheetId !== '' ? `${this.modifiedExcelSheetId}`: `${this.transferStepperTwo.excelSheetId}`,
+            ...this.editedValues[0] 
+          }
+          this.calculationService.modifyExcel(payload).subscribe((response:any)=>{
+            console.log(response)
+            if(response.status){
+              this.isExcelModified = true;
+              this.createAssessmentDataSource(response)
+              // this.snackBar.open('Successfully updated excel','Ok',{
+              //   horizontalPosition: 'right',
+              //   verticalPosition: 'top',
+              //   duration: 3000,
+              //   panelClass: 'app-notification-success'
+              // })
+            }
+          })
+        }
+      }
+    }
+  }
+
+  getCellAddress(data:any,changedColumn:any){
+    const cellAddresses:any = [];
+
+    this.displayColumns.forEach((column:any, columnIndex:any) => {
+      this.dataSource.forEach((row:any, rowIndex:any) => {
+        if (row.lineEntry.particulars === data.Particulars && column === changedColumn) {
+          console.log(column,"changedColumn",changedColumn,"column reference",data.Particulars,"from changed values",row.lineEntry.particulars)
+          cellAddresses.push({
+            cellAddress: `${String.fromCharCode(columnIndex + 65)}${row.lineEntry?.rowNumber}`, // add one since we are looping inside for loop
+            columnCell: String.fromCharCode(columnIndex + 65), // add one since we are looping inside for loop
+            rowCell: row.lineEntry.rowNumber,
+            sysCode: row.lineEntry.sysCode
+          });
+        }
+      });
+    });
+  
+    return cellAddresses;
+  }
+
+  createAssessmentDataSource(response:any){
+    this.dataSource = response?.data;
+    this.displayColumns = Object.keys(this.dataSource[0]);
+    this.displayColumns.splice(this.displayColumns.indexOf('lineEntry'),1,'Particulars')
+    this.assessmentDataSource = this.dataSource.map((result:any)=>{
+      const transformedItem: any = {};
+      transformedItem['Particulars'] = result.lineEntry.particulars;
+      for (let i = 1; i < this.displayColumns.length; i++) {
+        const yearKey = this.displayColumns[i];
+        transformedItem[yearKey] = result[yearKey];
+      }
+      return transformedItem;
+    });
+    this.assessmentDataSource.splice(this.assessmentDataSource.findIndex((item:any) => item.Particulars.includes('Operating Liabilities')),0,{Particulars:"  "}) //push empty object for line break      
+    if(response?.modifiedFileName){
+      this.modifiedExcelSheetId=response.modifiedFileName;
+      this.assessmentSheetData.emit({modifiedExcelSheetId:this.modifiedExcelSheetId,isModified:this.isExcelModified});
+    }
   }
 }

@@ -9,8 +9,8 @@
                 <mat-tab label="Balance Sheet">
                     <app-balance-sheet-details [transferStepperTwo]="transferStepperTwo" (balanceSheetData)="balanceSheetData($event)"></app-balance-sheet-details>
                 </mat-tab>
-                <mat-tab label="Assessment of Working Capital">
-                    <app-assessment-details [transferStepperTwo]="transferStepperTwo"></app-assessment-details>
+                <mat-tab label="Assessment of Working Capital" *ngIf="!hasSingleModel('NAV')">
+                    <app-assessment-details [transferStepperTwo]="transferStepperTwo" (assessmentSheetData)="assessmentSheetData($event)"></app-assessment-details>
                 </mat-tab>
             </mat-tab-group>
         </div>

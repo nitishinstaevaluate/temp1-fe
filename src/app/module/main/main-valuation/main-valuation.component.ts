@@ -91,6 +91,9 @@ export class MainValuationComponent{
     this.transferStepperthree= {formOneAndTwoData:this.formOneAndTwoData,formThreeData:data};
     this.stepper.next();
   }
+  previousGroupReviewControls(data:any){
+    this.formOneData= {...this.formOneData,modifiedExcelSheetId:data.modifiedExcelSheetId};
+  }
 
   resultData(data:any){
     this.stepper.next();
