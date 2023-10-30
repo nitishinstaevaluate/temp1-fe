@@ -81,7 +81,7 @@
                     <div class="row">
                         <div *ngIf="shouldShowReportPurpose" style="padding-top: 1%;" [ngClass]="reportForm.controls['reportPurpose'].value !== 'companiesAct' ? 'col-md-10 field' : 'col-md-8 field'">
                             <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
-                                <mat-label>---</mat-label>
+                                <mat-label>Section/Regulation Reference</mat-label>
                                 <mat-select class="mat-select-value" formControlName="reportSection" multiple>
                                 <!-- <mat-option *ngFor="let doc of modelControl.reportDetails.options.reportPurpose"  [value]="doc.value" >{{doc.name}}</mat-option> -->
                                 <mat-option *ngFor="let purpose of reportPurposeData"  [value]="purpose.section" >{{purpose.section}} - {{purpose.Description}}</mat-option>
