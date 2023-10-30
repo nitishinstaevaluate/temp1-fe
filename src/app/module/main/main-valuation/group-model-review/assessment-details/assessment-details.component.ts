@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
 
@@ -7,9 +8,10 @@ import { ValuationService } from 'src/app/shared/service/valuation.service';
   templateUrl: './assessment-details.component.html',
   styleUrls: ['./assessment-details.component.scss']
 })
-export class AssessmentDetailsComponent implements OnInit {
+export class AssessmentDetailsComponent implements OnInit,OnChanges {
   constructor(private valuationService:ValuationService,
-    private calculationService:CalculationsService){}
+    private calculationService:CalculationsService,
+    private snackbar:MatSnackBar){}
 
   @Input() transferStepperTwo:any;
   @Output() assessmentSheetData=new EventEmitter<any>();
@@ -24,6 +26,9 @@ export class AssessmentDetailsComponent implements OnInit {
   modifiedExcelSheetId:string='';
 
   ngOnInit(): void {
+    // this.fetchExcelData();
+  }
+  ngOnChanges(): void {
     this.fetchExcelData();
   }
 
@@ -100,81 +105,46 @@ export class AssessmentDetailsComponent implements OnInit {
     }
   }
   onInputChange(value: any, column: string,originalValue:any) {
-    // const spanContent = (value as HTMLInputElement).closest('mat-row').querySelector('span').textContent;
-    // console.log(originalValue,"original value",column,"this is the column",value.value,"changed value")
-    const inputElement = value;
-    const closestRow = inputElement.closest('mat-row');
-    
-    if (closestRow) {
-      // const spanElement = closestRow.querySelector('span');
-      // const spanContent = spanElement ? spanElement.textContent : null;
-      if(value?.value !== originalValue[`${column}`] || (originalValue[`${column}`] === null && value.value === '')){
-        const findIndex = this.editedValues.findIndex((item:any)=> item.particulars === originalValue.Particulars)
-        if(findIndex !== -1){
-          // this.editedValues.map((val:any)=>{
-          //     val.newValue = value.value;
-          // })
-          const cellData = this.getCellAddress(originalValue,column);
+        this.editedValues=[];
+
+        const cellData = this.getCellAddress(originalValue,column);
+
           const cellStructure={
             cellData,
             oldValue:originalValue[`${column}`],
             newValue:+value.value,
             particulars:originalValue.Particulars
           }
-          this.editedValues.splice(findIndex,1,cellStructure)
+          this.editedValues.push(cellStructure);
+
           const payload = {
             excelSheet:'Assessment of Working Capital',
-            excelSheetId:this.modifiedExcelSheetId !== '' ? `${this.modifiedExcelSheetId}`: `${this.transferStepperTwo.excelSheetId}`,
+            excelSheetId:this.transferStepperTwo?.modifiedExcelSheetId && this.transferStepperTwo?.modifiedExcelSheetId !== '' ? this.transferStepperTwo?.modifiedExcelSheetId: `${this.transferStepperTwo.excelSheetId}`,
             ...this.editedValues[0] 
           }
-          this.calculationService.modifyExcel(payload).subscribe((response:any)=>{
-            console.log(response)
+
+          this.calculationService.modifyExcel(payload).subscribe(
+            (response:any)=>{
             if(response.status){
               this.isExcelModified = true;
-              this.createAssessmentDataSource(response)
-              
-              // this.snackBar.open('Successfully updated excel','Ok',{
-              //   horizontalPosition: 'right',
-              //   verticalPosition: 'top',
-              //   duration: 3000,
-              //   panelClass: 'app-notification-success'
-              // })
+              this.createAssessmentDataSource(response);
             }
-          })
-        }
-        else{
-          // originalValue[`${column}`] = value?.value;
-          // console.log("new base pyload",this.editedValues)
-          const cellData = this.getCellAddress(originalValue,column);
-          const cellStructure={
-            cellData,
-            oldValue:originalValue[`${column}`],
-            newValue:+value.value,
-            particulars:originalValue.Particulars
-          }
-          this.editedValues.push(cellStructure)
-          // console.log(payload,"new payoad")
-          const payload = {
-            excelSheet:'Assessment of Working Capital',
-            excelSheetId:this.modifiedExcelSheetId !== '' ? `${this.modifiedExcelSheetId}`: `${this.transferStepperTwo.excelSheetId}`,
-            ...this.editedValues[0] 
-          }
-          this.calculationService.modifyExcel(payload).subscribe((response:any)=>{
-            console.log(response)
-            if(response.status){
-              this.isExcelModified = true;
-              this.createAssessmentDataSource(response)
-              // this.snackBar.open('Successfully updated excel','Ok',{
-              //   horizontalPosition: 'right',
-              //   verticalPosition: 'top',
-              //   duration: 3000,
-              //   panelClass: 'app-notification-success'
-              // })
+            else{
+               this.snackbar.open(response.error,'Ok',{
+                horizontalPosition: 'right',
+                verticalPosition: 'top',
+                duration: 3000,
+                panelClass: 'app-notification-error'
+              })
             }
+          },(error)=>{
+            this.snackbar.open(error.message,'Ok',{
+              horizontalPosition: 'right',
+                verticalPosition: 'top',
+                duration: 3000,
+                panelClass: 'app-notification-error'
+            })
           })
-        }
-      }
-    }
   }
 
   getCellAddress(data:any,changedColumn:any){
@@ -183,7 +153,7 @@ export class AssessmentDetailsComponent implements OnInit {
     this.displayColumns.forEach((column:any, columnIndex:any) => {
       this.dataSource.forEach((row:any, rowIndex:any) => {
         if (row.lineEntry.particulars === data.Particulars && column === changedColumn) {
-          console.log(column,"changedColumn",changedColumn,"column reference",data.Particulars,"from changed values",row.lineEntry.particulars)
+          // console.log(column,"changedColumn",changedColumn,"column reference",data.Particulars,"from changed values",row.lineEntry.particulars)
           cellAddresses.push({
             cellAddress: `${String.fromCharCode(columnIndex + 65)}${row.lineEntry?.rowNumber}`, // add one since we are looping inside for loop
             columnCell: String.fromCharCode(columnIndex + 65), // add one since we are looping inside for loop
