@@ -119,7 +119,7 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
 
           const payload = {
             excelSheet:'Assessment of Working Capital',
-            excelSheetId:this.transferStepperTwo?.modifiedExcelSheetId && this.transferStepperTwo?.modifiedExcelSheetId !== '' ? this.transferStepperTwo?.modifiedExcelSheetId: `${this.transferStepperTwo.excelSheetId}`,
+            excelSheetId:this.transferStepperTwo?.modifiedExcelSheetId && this.transferStepperTwo?.modifiedExcelSheetId !== '' ? this.transferStepperTwo?.modifiedExcelSheetId: this.modifiedExcelSheetId !== '' ? `${this.modifiedExcelSheetId}`: `${this.transferStepperTwo.excelSheetId}`,
             ...this.editedValues[0] 
           }
 
