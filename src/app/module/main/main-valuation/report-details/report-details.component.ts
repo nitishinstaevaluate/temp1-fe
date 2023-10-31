@@ -96,9 +96,11 @@ export class ReportDetailsComponent implements OnInit {
       reportId:this.transferStepperFour?.formThreeData?.appData?.reportId,
       reportDate:this.reportForm.controls['reportDate'].value
     }
+    const approach = this.transferStepperFour?.formOneAndTwoData?.model.includes('NAV') ? 'NAV' : this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFE') ? 'DCF' : '';
+   if(approach !== ''){
     this.calculationService.postReportData(payload).subscribe((response:any)=>{
       if(response){
-        this.calculationService.generateReport(response).subscribe((reportData:any)=>{
+        this.calculationService.generateReport(response,approach).subscribe((reportData:any)=>{
           if (reportData instanceof Blob) {
             this.isLoading=false;
             this.snackBar.open('Report generated successfully', 'OK', {
@@ -116,7 +118,7 @@ export class ReportDetailsComponent implements OnInit {
             horizontalPosition: 'center',
             verticalPosition: 'top',
             duration: 2000,
-            panelClass: 'app-notification-success',
+            panelClass: 'app-notification-error',
           });
         })
       }
@@ -127,9 +129,18 @@ export class ReportDetailsComponent implements OnInit {
         horizontalPosition: 'center',
         verticalPosition: 'top',
         duration: 2000,
-        panelClass: 'app-notification-success',
+        panelClass: 'app-notification-error',
       });
     })
+   }
+   else{
+    this.snackBar.open('We are working on report for that model ', 'OK', {
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      duration: 2000,
+      panelClass: 'app-notification-error',
+    });
+   }
   }
   onSlideToggleChange(event: any) {
     if (event) {
