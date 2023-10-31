@@ -9,7 +9,7 @@
           <span style="font-size: 14px;font-weight: 500;color: rgb(39 87 110 / 87%);">{{ element[column] }}</span>
         </ng-container>
         <mat-form-field class="assessment-field" [appearance]="appearance" style="margin-bottom: -9%;width: 100%;" *ngIf="checkIfEditable(element) && columnIndex !== 0" [floatLabel]="floatLabelType">
-          <input class="input-pl" style="text-align: center;color: #000000 !important;font-weight: 500;" [value]="element[column]"  matInput placeholder="---" (input)="onInputChange($event.target, column,element)">
+          <input class="input-pl" style="text-align: center;color: #000000 !important;font-weight: 500;" [value]="element[column]"  matInput placeholder="---" (blur)="onInputChange($event.target, column,element)">
         </mat-form-field>
     
         <!-- <ng-container *ngIf="isOnlyNull(element[column])">

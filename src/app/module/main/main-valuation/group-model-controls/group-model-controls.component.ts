@@ -18,12 +18,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './group-model-controls.component.html',
   styleUrls: ['./group-model-controls.component.scss']
 })
-export class GroupModelControlsComponent implements OnInit {
+export class GroupModelControlsComponent implements OnInit,OnChanges {
   // decorators declaration
   @Output() saveAndNextEvent = new EventEmitter<void>();
   @Output() groupModelControls = new EventEmitter<any>();
   @Output() previousPage = new EventEmitter<any>();
   @Input() currentStepIndex: any;
+  @Input() oldPayloadResponse: any;
 
   // form declaration
   modelControl:any = groupModelControl;
@@ -86,6 +87,7 @@ export class GroupModelControlsComponent implements OnInit {
   newDate: any;
   discountRateSelection: any;
   betaIndustries: any;
+  isExcelReupload=false;
 
   constructor(private formBuilder: FormBuilder,
     private valuationService: ValuationService,
@@ -161,6 +163,9 @@ export class GroupModelControlsComponent implements OnInit {
   }
   addInputIndustry() {
     this.Industries.push(new FormControl(null));
+  }
+  ngOnChanges(){
+    this.oldPayloadResponse;
   }
 
   ngOnInit(){
@@ -388,9 +393,14 @@ isSelectedpreferenceRatio(value:any){
         return result;
     }, {});
   }
-    
+    // check if modified excel sheet id exist or not
+    payload['modifiedExcelSheetId']=this.isExcelReupload ? '' : this.oldPayloadResponse?.modifiedExcelSheetId;
+    payload['isExcelModified']= this.isExcelReupload ? false :this.oldPayloadResponse?.isExcelModified;
+
     // submit final payload
     this.groupModelControls.emit(payload)
+
+    this.isExcelReupload = false; // reset it once payload has modified excel sheet id
   }
   
   get isDownload() {
@@ -415,6 +425,7 @@ isSelectedpreferenceRatio(value:any){
     this.valuationService.fileUpload(formData).subscribe((res: any) => {
       this.modelValuation.get('excelSheetId')?.setValue(res.excelSheetId);
       if(res.excelSheetId){
+        this.isExcelReupload = true;
         this.snackBar.open('File has been uploaded successfully','Ok',{
           horizontalPosition: 'right',
           verticalPosition: 'top',

@@ -58,7 +58,7 @@ export class GroupModelResultComponent implements OnChanges {
             this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.fcfeValuation,weightage:0});
           }
           else{
-            this.calculateModelWeigtagePayload.resuls.splice(fcfeIndex,1,{model:response.model,value:this.fcfeValuation,weightage:0})
+            this.calculateModelWeigtagePayload.results.splice(fcfeIndex,1,{model:response.model,value:this.fcfeValuation,weightage:0})
           }
         }
         else if(response.model === 'FCFF'){
