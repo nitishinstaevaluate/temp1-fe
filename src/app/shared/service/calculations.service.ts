@@ -33,8 +33,8 @@ export class CalculationsService {
   postReportData(payload:any){
     return this.http.post(`${HOST}report/generateReport`,payload);
   }
-  generateReport(reportId:string){
-    return this.http.get(`${HOST}report/getReport/${reportId}`,{
+  generateReport(reportId:string,approach:string){
+    return this.http.get(`${HOST}report/getReport/${approach}/${reportId}`,{
     responseType: 'blob'
 });
   }

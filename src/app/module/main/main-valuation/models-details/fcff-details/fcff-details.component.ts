@@ -420,7 +420,7 @@ getWaccIndustryOrCompanyBased(){
       adjCoe:this.adjCoe,
       equityProp:this.equityProp,
       costOfDebt:this.fcffForm.controls['costOfDebt'].value,
-      taxRate:this.formOneData?.taxRate.includes('%') ? parseFloat(this.formOneData?.taxRate.replace("%", "")) : this.formOneData?.taxRate,
+      taxRate:this.formOneData?.taxRate?.includes('%') ? parseFloat(this.formOneData?.taxRate.replace("%", "")) : this.formOneData?.taxRate,
       debtProp:this.debtProp,
       copShareCapital:this.fcffForm.controls['copShareCapital'].value,
       prefProp:this.prefProp,
@@ -443,7 +443,7 @@ getWaccIndustryOrCompanyBased(){
       copShareCapital:this.fcffForm.controls['copShareCapital'].value,
       deRatio:this.deRatio,
       type:this.fcffForm.controls['capitalStructureType'].value,
-      taxRate:this.formOneData?.taxRate.includes('%') ? parseFloat(this.formOneData?.taxRate.replace("%", "")) : this.formOneData?.taxRate,
+      taxRate:this.formOneData?.taxRate?.includes('%') ? parseFloat(this.formOneData?.taxRate.replace("%", "")) : this.formOneData?.taxRate,
     }
     this.calculationsService.getWaccIndustryOrCompanyBased(payload).subscribe((response:any)=>{
       if(response.status){

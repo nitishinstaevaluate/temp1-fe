@@ -38,6 +38,7 @@ export class GroupModelReviewComponent implements OnChanges {
   isBSExcelModified=false;
   isAssessmentSheetModified=false;
   modifiedExcelSheetId='';
+  isExcelModified=false
   constructor(private valuationService:ValuationService,
     private formBuilder:FormBuilder){
     this.reviewForm=this.formBuilder.group({
@@ -69,14 +70,14 @@ export class GroupModelReviewComponent implements OnChanges {
     const payload = {
       ...filteredData,
       otherAdj:this.reviewForm.controls['otherAdj'].value && (this.isRelativeValuation('FCFE') || this.isRelativeValuation('FCFF')) ? this.reviewForm.controls['otherAdj'].value : null,
-      isExcelModified:this.isPAndLExcelModified === true ? this.isPAndLExcelModified : this.isBSExcelModified === true ? this.isBSExcelModified : this.isAssessmentSheetModified,
-      modifiedExcelSheetId:this.modifiedExcelSheetId
+      isExcelModified: this.isExcelModified ?? false,
+      modifiedExcelSheetId:this.isExcelModified ? this.modifiedExcelSheetId : ''
     }
     this.valuationService.submitForm(payload).subscribe((response)=>{
       console.log(response,"output payload")
       if(response?.valuationResult){
         this.valuationData= response; 
-        this.groupReviewControls.emit({PL:this.profitLoss,BL:this.balanceSheet,appData:this.valuationData})
+        this.groupReviewControls.emit({PL:this.profitLoss,BL:this.balanceSheet,appData:this.valuationData,payload:payload});
       }
     })
     console.log(payload,"input payload")
@@ -84,14 +85,14 @@ export class GroupModelReviewComponent implements OnChanges {
 
   previous(){
     this.previousPage.emit(true)
-    this.previousGroupReviewControls.emit({modifiedExcelSheetId:this.modifiedExcelSheetId})
+    this.previousGroupReviewControls.emit({modifiedExcelSheetId:this.modifiedExcelSheetId,isExcelModified:this.isExcelModified ? this.isExcelModified : false})
   }
 
   profitLossData(data:any){
     if(data){
       this.profitLoss = data.result;
       this.isLoadingProfitLoss=false;
-      this.isPAndLExcelModified = data.isExcelModified === true ?? false;
+      this.isExcelModified = data.isExcelModified;
     }
   }
 
@@ -99,12 +100,12 @@ export class GroupModelReviewComponent implements OnChanges {
     if(data){
       this.isLoadingBalanceSheet=false;
       this.balanceSheet = data.result;
-      this.isBSExcelModified = data.isExcelModified === true ?? false;
+      this.isExcelModified = data.isExcelModified;
     }
   }
 
   assessmentSheetData(data:any){
-    this.isAssessmentSheetModified = data.isModified;
+    this.isExcelModified = data.isModified;
     this.modifiedExcelSheetId = data.modifiedExcelSheetId;
   }
 

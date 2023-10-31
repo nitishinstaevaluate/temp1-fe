@@ -183,7 +183,7 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
     this.assessmentDataSource.splice(this.assessmentDataSource.findIndex((item:any) => item.Particulars.includes('Operating Liabilities')),0,{Particulars:"  "}) //push empty object for line break      
     if(response?.modifiedFileName){
       this.modifiedExcelSheetId=response.modifiedFileName;
-      this.assessmentSheetData.emit({modifiedExcelSheetId:this.modifiedExcelSheetId,isModified:this.isExcelModified});
+      this.assessmentSheetData.emit({modifiedExcelSheetId:this.modifiedExcelSheetId,isModified:true});
     }
   }
 }

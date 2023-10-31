@@ -67,7 +67,6 @@ export class MainValuationComponent{
         ...(this.formOneData?.model.includes('CTM') ? this.comparableIndustriesData : {}),
         ...(this.formOneData?.model.includes('NAV') ? this.navData : {}),
       };
-      
     }
     if(event.selectedIndex +1 == 1) return this.headerLabel = '';
     if(event.selectedIndex +1 == 2) return this.headerLabel = 'Model Inputs';
@@ -88,11 +87,15 @@ export class MainValuationComponent{
     this.stepper.previous();
   }
   groupReviewControls(data:any){
-    this.transferStepperthree= {formOneAndTwoData:this.formOneAndTwoData,formThreeData:data};
+    const {payload,...rest} = data;
+    this.formOneAndTwoData.modifiedExcelSheetId = payload.modifiedExcelSheetId;
+    this.formOneAndTwoData.isExcelModified = payload.isExcelModified;
+    this.transferStepperthree= {formOneAndTwoData:this.formOneAndTwoData,formThreeData:rest};
     this.stepper.next();
   }
   previousGroupReviewControls(data:any){
-    this.formOneData= {...this.formOneData,modifiedExcelSheetId:data.modifiedExcelSheetId};
+    this.formOneData.modifiedExcelSheetId = data.modifiedExcelSheetId;
+    this.formOneData.isExcelModified = data.isExcelModified
   }
 
   resultData(data:any){
@@ -151,7 +154,6 @@ export class MainValuationComponent{
           this.next = 6;
           break;
         default:
-          console.log("went in default");
           this.stepper.next(); 
       
     }
@@ -209,7 +211,6 @@ export class MainValuationComponent{
   // }
 
   updateSelectedItems(item: string) {
-    console.log(item,"index")
     const index = this.modelArray.indexOf(item);
     if (index === -1) {
       this.modelArray.push(item);
