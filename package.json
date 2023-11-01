@@ -7,7 +7,8 @@
     "build:ssr:outhashall": "npm run build:client-and-server-bundles:outhashall && npm run compile:server",
     "build:client-and-server-bundles:outhashall": "ng build --prod --output-hashing=all && ng run sample-project:server:production --bundleDependencies all",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "move-static": "cp -a ./node_modules/@pdftron/webviewer/public/. ./dist/public/webviewer"
   },
   "private": true,
   "dependencies": {
@@ -24,6 +25,7 @@
     "@angular/router": "^15.1.0",
     "@ng-bootstrap/ng-bootstrap": "^14.0.1",
     "@ng-select/ng-select": "^10.0.4",
+    "@pdftron/webviewer": "^10.5.0",
     "angular2-multiselect-dropdown": "^5.0.4",
     "bootstrap": "^5.2.3",
     "file-saver": "^2.0.5",
