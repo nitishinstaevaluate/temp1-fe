@@ -179,3 +179,6 @@
     <button style="text-align: center;margin:auto;" mat-raised-button [disabled]="!debtProp.value || !equityProp.value || !prefProp.value || summationTargetCaps > 100" [ngClass]="!debtProp.value || !equityProp.value || !prefProp.value || summationTargetCaps > 100 ? 'modal-button-disable' : 'modal-button-enable'" (click)="modalData({debtProportion:debtProp.value,equityProportion:equityProp.value,preferenceProportion:prefProp.value},'targetCapitalStructure')"><mat-icon>keyboard_arrow_right</mat-icon>Register</button>
   </div>
   </div>
+
+  <div #viewer class="container webviewer" *ngIf="data === appValues.PREVIEW_DOC.value">
+  </div>

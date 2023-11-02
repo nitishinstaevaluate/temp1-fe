@@ -156,6 +156,10 @@ export const MODELS = {
         }
       }
     },
+    PREVIEW_DOC:{
+      name:'Document Preview',
+      value:'previewDoc'
+    }
   }
 export const RELATIVE_VALUATION_COMPANY_MAPPING: { [key: string]: string } = {
   'Company Name': 'company',
