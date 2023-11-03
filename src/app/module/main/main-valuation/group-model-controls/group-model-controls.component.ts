@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output,OnInit, Input,OnChanges } from '@angular/core';
+import { Component, EventEmitter, Output,OnInit, Input } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { hasError } from 'src/app/shared/enums/errorMethods';
 import groupModelControl from '../../../../shared/enums/group-model-controls.json'
@@ -18,13 +18,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './group-model-controls.component.html',
   styleUrls: ['./group-model-controls.component.scss']
 })
-export class GroupModelControlsComponent implements OnInit,OnChanges {
+export class GroupModelControlsComponent implements OnInit {
   // decorators declaration
   @Output() saveAndNextEvent = new EventEmitter<void>();
   @Output() groupModelControls = new EventEmitter<any>();
   @Output() previousPage = new EventEmitter<any>();
   @Input() currentStepIndex: any;
-  @Input() oldPayloadResponse: any;
 
   // form declaration
   modelControl:any = groupModelControl;
@@ -163,9 +162,6 @@ export class GroupModelControlsComponent implements OnInit,OnChanges {
   }
   addInputIndustry() {
     this.Industries.push(new FormControl(null));
-  }
-  ngOnChanges(){
-    this.oldPayloadResponse;
   }
 
   ngOnInit(){
@@ -394,8 +390,15 @@ isSelectedpreferenceRatio(value:any){
     }, {});
   }
     // check if modified excel sheet id exist or not
-    payload['modifiedExcelSheetId']=this.isExcelReupload ? '' : this.oldPayloadResponse?.modifiedExcelSheetId;
-    payload['isExcelModified']= this.isExcelReupload ? false :this.oldPayloadResponse?.isExcelModified;
+    if(localStorage.getItem('excelStat') === 'true' && !this.isExcelReupload){
+      payload['modifiedExcelSheetId']=  `edited-${this.modelValuation.controls['excelSheetId'].value}`;
+      payload['isExcelModified']= true;
+    }
+    else{
+      payload['modifiedExcelSheetId']=  this.modelValuation.controls['excelSheetId'].value;
+      payload['isExcelModified']= false;
+      localStorage.setItem('excelStat','false')
+    }
 
     // submit final payload
     this.groupModelControls.emit(payload)

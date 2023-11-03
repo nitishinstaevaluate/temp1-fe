@@ -9,7 +9,7 @@
         <h4 style="text-align: center;padding-top: 1.5%;font-weight: 400;color:#858985;margin-bottom: 0px !important;">{{headerLabel}}</h4>
         <div class="card-body">
           <mat-stepper #stepper (selectionChange)="onStepChange($event,stepper)">
-            <mat-step  [stepControl]="firstFormGroup" errorMessage="Name is required."><app-group-model-controls [currentStepIndex]="currentStepIndex" (groupModelControls)="groupModelControls($event)" [oldPayloadResponse]="formOneData"></app-group-model-controls>
+            <mat-step  [stepControl]="firstFormGroup" errorMessage="Name is required."><app-group-model-controls [currentStepIndex]="currentStepIndex" (groupModelControls)="groupModelControls($event)"></app-group-model-controls>
             </mat-step>
             <mat-step  [stepControl]="secondFormGroup" errorMessage="Name is required.">
               <!-- bread crumb starts,store this into another component for maintaining the integrity and reuseablity -->
@@ -35,7 +35,7 @@
               <app-net-asset-value-details (navDetailsPrev)="navDetailsPrev($event)" (navDetails)="navDetails($event)" [hidden]="next !== 6" [formOneData]="formOneData"></app-net-asset-value-details>
             </mat-step>
             <mat-step  [stepControl]="thirdFormGroup" errorMessage="Address is required.">
-              <app-group-model-review (groupReviewControls)="groupReviewControls($event)" (previousGroupReviewControls)="previousGroupReviewControls($event)" [currentStepIndex]="stepper.selectedIndex" (previousPage)="previous($event)" [transferStepperTwo]="formOneAndTwoData"
+              <app-group-model-review (groupReviewControls)="groupReviewControls($event)" [currentStepIndex]="stepper.selectedIndex" (previousPage)="previous($event)" [transferStepperTwo]="formOneAndTwoData"
               ></app-group-model-review>
             </mat-step>
             <mat-step [stepControl]="fourthFormGroup" errorMessage="Address is required.">
