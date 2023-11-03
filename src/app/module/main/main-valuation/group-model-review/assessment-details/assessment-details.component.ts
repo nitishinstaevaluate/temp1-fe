@@ -33,7 +33,7 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
   }
 
   fetchExcelData(){
-    this.valuationService.getProfitLossSheet(this.transferStepperTwo?.modifiedExcelSheetId && this.transferStepperTwo?.modifiedExcelSheetId !== '' ? this.transferStepperTwo?.modifiedExcelSheetId :  this.transferStepperTwo?.excelSheetId,'Assessment of Working Capital').subscribe((response:any)=>{
+    this.valuationService.getProfitLossSheet(localStorage.getItem('excelStat') === 'true' ? `edited-${this.transferStepperTwo?.excelSheetId}` :  this.transferStepperTwo?.excelSheetId,'Assessment of Working Capital').subscribe((response:any)=>{
      if(response.status){
       this.createAssessmentDataSource(response)
      }
@@ -119,7 +119,7 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
 
           const payload = {
             excelSheet:'Assessment of Working Capital',
-            excelSheetId:this.transferStepperTwo?.modifiedExcelSheetId && this.transferStepperTwo?.modifiedExcelSheetId !== '' ? this.transferStepperTwo?.modifiedExcelSheetId: this.modifiedExcelSheetId !== '' ? `${this.modifiedExcelSheetId}`: `${this.transferStepperTwo.excelSheetId}`,
+            excelSheetId:localStorage.getItem('excelStat')==='true' ? `edited-${this.transferStepperTwo.excelSheetId}` : this.transferStepperTwo.excelSheetId,
             ...this.editedValues[0] 
           }
 
@@ -185,6 +185,7 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
     if(response?.modifiedFileName){
       this.modifiedExcelSheetId=response.modifiedFileName;
       this.assessmentSheetData.emit({modifiedExcelSheetId:this.modifiedExcelSheetId,isModified:true});
+      localStorage.setItem('excelStat','true')
     }
   }
 }

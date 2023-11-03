@@ -87,15 +87,8 @@ export class MainValuationComponent{
     this.stepper.previous();
   }
   groupReviewControls(data:any){
-    const {payload,...rest} = data;
-    this.formOneAndTwoData.modifiedExcelSheetId = payload.modifiedExcelSheetId;
-    this.formOneAndTwoData.isExcelModified = payload.isExcelModified;
-    this.transferStepperthree= {formOneAndTwoData:this.formOneAndTwoData,formThreeData:rest};
+    this.transferStepperthree= {formOneAndTwoData:this.formOneAndTwoData,formThreeData:data};
     this.stepper.next();
-  }
-  previousGroupReviewControls(data:any){
-    this.formOneData.modifiedExcelSheetId = data.modifiedExcelSheetId;
-    this.formOneData.isExcelModified = data.isExcelModified
   }
 
   resultData(data:any){
