@@ -31,7 +31,7 @@ showWebViewer=false;
 constructor(@Inject(MAT_DIALOG_DATA) public data: any,
 private dialogRef:MatDialogRef<GenericModalBoxComponent>){
 this.loadModel(data);
-if(data === this.appValues.PREVIEW_DOC.value){
+if(data?.value === this.appValues.PREVIEW_DOC.value){
 this.showWebViewer = true;
 }
 }
@@ -43,15 +43,16 @@ ngOnInit() {
 }
 async webViewer(){
   if (this.viewerRef && this.viewerRef.nativeElement && this.showWebViewer) {
-
     const instance = await WebViewer({
       path: '../../../../assets/lib',
       fullAPI:true,
       licenseKey:environment.webViewerLicense, 
     }, this.viewerRef.nativeElement);
       
+    const blob = new Blob([this.data.dataBlob], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+    const blobUrl = URL.createObjectURL(blob);
     instance.UI.loadDocument(
-      '../../../../assets/report.docx',
+      blobUrl,
       {
         filename: 'report.docx',
         enableOfficeEditing: true,
@@ -95,7 +96,7 @@ loadModel(data:any){
   if( data === this.appValues.SPECIFIC_RISK_PREMIUM.value) return this.label = this.appValues.SPECIFIC_RISK_PREMIUM.name;
   if( data === this.appValues.REGISTERED_VALUER_DETAILS.value) return this.label = this.appValues.REGISTERED_VALUER_DETAILS.name;
   if( data === this.appValues.TARGET_CAPITAL_STRUCTURE.value) return this.label = this.appValues.TARGET_CAPITAL_STRUCTURE.name;
-  if( data === this.appValues.PREVIEW_DOC.value) return this.label = this.appValues.PREVIEW_DOC.name;
+  if( data?.value === this.appValues.PREVIEW_DOC.value) return this.label = this.appValues.PREVIEW_DOC.name;
   return '';
 }
 
