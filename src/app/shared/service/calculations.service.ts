@@ -39,6 +39,14 @@ export class CalculationsService {
 });
   }
 
+  previewReport(reportId:string,approach:string){
+    return this.http.get(`${HOST}report/previewReport/${approach}/${reportId}`
+    // ,{
+    // responseType: 'blob'
+// }
+);
+  }
+
   getWaccIndustryOrCompanyBased(payload:any){
     return this.http.get(`${HOST}coe/industryOrCompanyBasedWacc?adjCoe=${payload.adjCoe}&costOfDebt=${payload.costOfDebt}&copShareCapital=${payload.copShareCapital}&deRatio=${payload.deRatio}&type=${payload.type}&taxRate=${payload.taxRate}&excelSheetId=${payload.excelSheetId}`)
 

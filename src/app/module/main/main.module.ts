@@ -23,9 +23,10 @@ import { ComparableIndustriesDetailsComponent } from './main-valuation/models-de
 import { NetAssetValueDetailsComponent } from './main-valuation/models-details/net-asset-value-details/net-asset-value-details.component';
 import { ReportDetailsComponent } from './main-valuation/report-details/report-details.component';
 import { AssessmentDetailsComponent } from './main-valuation/group-model-review/assessment-details/assessment-details.component';
+import { QuillModule } from 'ngx-quill';
 
 @NgModule({
   declarations: [ValuationComponent, ActivityComponent, MainValuationComponent, GroupModelControlsComponent, GroupModelReviewComponent, GroupModelResultComponent, ProfitLossDataComponent, BalanceSheetDetailsComponent, RelativeValuationsTableComponent,ValuationResultTableComponent, ModelRelativeValuationResultTableComponent,FcfeDetailsComponent,FcffDetailsComponent,RelativeValuationDetailsComponent, ExcessEarningDetailsComponent, ComparableIndustriesDetailsComponent, NetAssetValueDetailsComponent, ReportDetailsComponent, AssessmentDetailsComponent],
-  imports: [CommonModule, MainRoutingModule, NgxDropzoneModule, SharedModule],
+  imports: [CommonModule, MainRoutingModule, NgxDropzoneModule, SharedModule,QuillModule.forRoot()],
 })
 export class MainModule {}

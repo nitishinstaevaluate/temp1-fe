@@ -151,31 +151,78 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
   }
   }
   previewReport(){
-    const dataSet={
-      data: 'previewDoc',
-      width:'65%',
-      height:'90%'
+  
+      this.isLoading=true;
+    const payload = {
+      ...this.reportForm.value,
+      ...this.registeredValuerDetails.value,
+      reportId:this.transferStepperFour?.formThreeData?.appData?.reportId,
+      reportDate:this.reportForm.controls['reportDate'].value
     }
-     const dialogRef =  this.dialog.open(GenericModalBoxComponent, dataSet);
-      dialogRef.afterClosed().subscribe((result)=>{
-        // if (result) {
-        //   this.fcfeForm.controls['expMarketReturn'].patchValue(parseInt(result?.analystConsensusEstimates))
-        //   this.snackBar.open('Analyst Estimation Added','OK',{
-        //     horizontalPosition: 'center',
-        //     verticalPosition: 'top',
-        //     duration: 3000,
-        //     panelClass: 'app-notification-success'
-        //   })
-        // } else {
-        //   this.fcfeForm.controls['expMarketReturnType'].reset();
-        //   this.snackBar.open('Expected Market Return Not Saved','OK',{
-        //     horizontalPosition: 'center',
-        //     verticalPosition: 'top',
-        //     duration: 3000,
-        //     panelClass: 'app-notification-error'
-        //   })
-        // }
-      })
+    const approach = this.transferStepperFour?.formOneAndTwoData?.model.includes('NAV') ? 'NAV' : this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFE') ? 'DCF' : '';
+   if(approach !== ''){
+    this.calculationService.postReportData(payload).subscribe((response:any)=>{
+      if(response){
+        this.calculationService.previewReport(response,approach).subscribe((reportData:any)=>{
+          if (reportData) {
+            this.isLoading=false;
+
+            const dataSet={
+              value: 'previewDoc',
+              dataBlob:reportData.html
+            }
+             const dialogRef =  this.dialog.open(GenericModalBoxComponent, {data:dataSet,height:'90%',width:'65%'});
+              dialogRef.afterClosed().subscribe((result)=>{
+                // if (result) {
+                //   this.fcfeForm.controls['expMarketReturn'].patchValue(parseInt(result?.analystConsensusEstimates))
+                //   this.snackBar.open('Analyst Estimation Added','OK',{
+                //     horizontalPosition: 'center',
+                //     verticalPosition: 'top',
+                //     duration: 3000,
+                //     panelClass: 'app-notification-success'
+                //   })
+                // } else {
+                //   this.fcfeForm.controls['expMarketReturnType'].reset();
+                //   this.snackBar.open('Expected Market Return Not Saved','OK',{
+                //     horizontalPosition: 'center',
+                //     verticalPosition: 'top',
+                //     duration: 3000,
+                //     panelClass: 'app-notification-error'
+                //   })
+                // }
+              })
+        }
+        },
+        (error)=>{
+          this.isLoading=false;
+          this.snackBar.open('Something went wrong', 'OK', {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            duration: 2000,
+            panelClass: 'app-notification-error',
+          });
+        })
+      }
+    },
+    (error)=>{
+      this.isLoading = false;
+      this.snackBar.open('Something went wrong', 'OK', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        duration: 2000,
+        panelClass: 'app-notification-error',
+      });
+    })
+  }
+  else{
+    this.isLoading=false;
+    this.snackBar.open('We are working on report for that model ', 'OK', {
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+      duration: 2000,
+      panelClass: 'app-notification-error',
+    });
+  }
   }
   
   onSlideToggleChange(event: any) {

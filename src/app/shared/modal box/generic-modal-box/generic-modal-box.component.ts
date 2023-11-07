@@ -27,11 +27,24 @@ totalCapital:any={
 }
 summationTargetCaps:number=0;
 showWebViewer=false;
+htmlContent:any='';
+
+  // Quill toolbar options
+  quillModules = {
+    theme:'snow',
+    toolbar: [
+    ['bold', 'italic', 'underline', 'strike'], // Basic formatting
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }], // Lists
+    [{ 'align': [] }], // Text alignment
+    ['link', 'image'], // Links and images
+    ['clean'], // Remove formatting
+  ]
+}
 
 constructor(@Inject(MAT_DIALOG_DATA) public data: any,
 private dialogRef:MatDialogRef<GenericModalBoxComponent>){
 this.loadModel(data);
-if(data === this.appValues.PREVIEW_DOC.value){
+if(data?.value === this.appValues.PREVIEW_DOC.value){
 this.showWebViewer = true;
 }
 }
@@ -42,49 +55,7 @@ ngOnInit() {
     this.webViewer()
 }
 async webViewer(){
-  if (this.viewerRef && this.viewerRef.nativeElement && this.showWebViewer) {
-
-    const instance = await WebViewer({
-      path: '../../../../assets/lib',
-      fullAPI:true,
-      licenseKey:environment.webViewerLicense, 
-    }, this.viewerRef.nativeElement);
-      
-    instance.UI.loadDocument(
-      '../../../../assets/report.docx',
-      {
-        filename: 'report.docx',
-        enableOfficeEditing: true,
-      });
-
-      const { documentViewer, annotationManager } = instance.Core;
-
-      instance.UI.disableElements(['menuButton'])
-    
-      instance.UI.setHeaderItems(header => {
-        header.push({
-            type: 'actionButton',
-            // img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>',
-            img:'../../../../assets/save-file-logo.gif',
-            onClick: async () => 
-            {
-              const doc = documentViewer.getDocument();
-              const xfdfString = await annotationManager.exportAnnotations();
-              const data = await doc.getFileData({
-                // saves the document with annotations in it
-                xfdfString
-              });
-              const arr = new Uint8Array(data);
-              const blob = new Blob([arr], { type: 'application/docx' });
-              const url = URL.createObjectURL(blob);
-              // window.open(url);
-            }
-        });
-      });
-    
-  } else {
-    console.error('Viewer element not found or not initialized.');
-  }
+  this.htmlContent = this.data?.dataBlob;
 }
 
 loadModel(data:any){
@@ -95,7 +66,7 @@ loadModel(data:any){
   if( data === this.appValues.SPECIFIC_RISK_PREMIUM.value) return this.label = this.appValues.SPECIFIC_RISK_PREMIUM.name;
   if( data === this.appValues.REGISTERED_VALUER_DETAILS.value) return this.label = this.appValues.REGISTERED_VALUER_DETAILS.name;
   if( data === this.appValues.TARGET_CAPITAL_STRUCTURE.value) return this.label = this.appValues.TARGET_CAPITAL_STRUCTURE.name;
-  if( data === this.appValues.PREVIEW_DOC.value) return this.label = this.appValues.PREVIEW_DOC.name;
+  if( data?.value === this.appValues.PREVIEW_DOC.value) return this.label = this.appValues.PREVIEW_DOC.name;
   return '';
 }
 
