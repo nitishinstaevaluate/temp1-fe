@@ -164,12 +164,12 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     this.calculationService.postReportData(payload).subscribe((response:any)=>{
       if(response){
         this.calculationService.previewReport(response,approach).subscribe((reportData:any)=>{
-          if (reportData instanceof Blob) {
+          if (reportData) {
             this.isLoading=false;
 
             const dataSet={
               value: 'previewDoc',
-              dataBlob:reportData
+              dataBlob:reportData.html
             }
              const dialogRef =  this.dialog.open(GenericModalBoxComponent, {data:dataSet,height:'90%',width:'65%'});
               dialogRef.afterClosed().subscribe((result)=>{

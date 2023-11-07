@@ -40,9 +40,11 @@ export class CalculationsService {
   }
 
   previewReport(reportId:string,approach:string){
-    return this.http.get(`${HOST}report/previewReport/${approach}/${reportId}`,{
-    responseType: 'blob'
-});
+    return this.http.get(`${HOST}report/previewReport/${approach}/${reportId}`
+    // ,{
+    // responseType: 'blob'
+// }
+);
   }
 
   getWaccIndustryOrCompanyBased(payload:any){
