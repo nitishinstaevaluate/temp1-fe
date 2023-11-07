@@ -29,6 +29,18 @@ summationTargetCaps:number=0;
 showWebViewer=false;
 htmlContent:any='';
 
+  // Quill toolbar options
+  quillModules = {
+    theme:'snow',
+    toolbar: [
+    ['bold', 'italic', 'underline', 'strike'], // Basic formatting
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }], // Lists
+    [{ 'align': [] }], // Text alignment
+    ['link', 'image'], // Links and images
+    ['clean'], // Remove formatting
+  ]
+}
+
 constructor(@Inject(MAT_DIALOG_DATA) public data: any,
 private dialogRef:MatDialogRef<GenericModalBoxComponent>){
 this.loadModel(data);

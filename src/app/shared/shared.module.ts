@@ -12,6 +12,7 @@ import { RelativeComponent } from './Modal/relative/relative.component';
 import { NgxSliderModule } from '@angular-slider/ngx-slider'
 import { GenericModalBoxComponent } from './modal box/generic-modal-box/generic-modal-box.component';
 import { CustomDatePipe } from './pipe/date.pipe';
+import { QuillModule } from 'ngx-quill';
 
 
 
@@ -20,7 +21,7 @@ const MODULES = [NgbModule, ReactiveFormsModule, FormsModule,MaterialModuleModul
 
 @NgModule({
   declarations: [ToggleThemeDirective, FullscreenDirective, SidemenuToggleDirective,UserInputComponent,RelativeComponent,GenericModalBoxComponent],
-  imports: [CommonModule,NgxSliderModule,...MODULES],
+  imports: [CommonModule,NgxSliderModule,...MODULES,QuillModule.forRoot()],
   exports: [RelativeComponent,UserInputComponent,...MODULES,GenericModalBoxComponent],
   entryComponents:[GenericModalBoxComponent],
   providers:[CustomDatePipe]

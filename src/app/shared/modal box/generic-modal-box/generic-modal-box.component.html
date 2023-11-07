@@ -180,5 +180,8 @@
   </div>
   </div>
 
-  <div [innerHTML]="htmlContent" contenteditable="true" class="container webviewer" *ngIf="data?.value === appValues.PREVIEW_DOC.value">
+  <div class="container webviewer" *ngIf="data?.value === appValues.PREVIEW_DOC.value">
+    <quill-editor
+    [(ngModel)]="htmlContent"
+    [modules]="quillModules"></quill-editor>
   </div>

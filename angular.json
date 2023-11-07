@@ -30,11 +30,16 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "./node_modules/quill/dist/quill.core.css",
+              "./node_modules/quill/dist/quill.bubble.css",
+              "./node_modules/quill/dist/quill.snow.css",
+              "./node_modules/quill-mention/dist/quill.mention.min.css"
             ],
             "scripts": [
               "src/assets/js/vendors/jquery.min.js",
-              "src/assets/js/custom.js"
+              "src/assets/js/custom.js",
+              "./node_modules/quill/dist/quill.min.js"
             ]
           },
           "configurations": {
