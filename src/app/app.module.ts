@@ -13,7 +13,6 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { HttpInterceptorService } from './interceptors/http-interceptor.service';
-import { QuillModule } from 'ngx-quill';
 
 
 
@@ -25,7 +24,7 @@ import { QuillModule } from 'ngx-quill';
     AngularFireAuthModule,NgSelectModule,
     SharedModule,
     MaterialModuleModule,
-    BrowserAnimationsModule,HttpClientModule,NgxDropzoneModule,NgxSliderModule,QuillModule.forRoot()
+    BrowserAnimationsModule,HttpClientModule,NgxDropzoneModule,NgxSliderModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }],
   bootstrap: [AppComponent],
