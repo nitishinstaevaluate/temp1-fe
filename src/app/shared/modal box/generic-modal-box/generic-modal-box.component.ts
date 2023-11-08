@@ -31,7 +31,6 @@ htmlContent:any='';
 
   // Quill toolbar options
   quillModules = {
-    theme:'snow',
     toolbar: [
     ['bold', 'italic', 'underline', 'strike'], // Basic formatting
     [{ 'list': 'ordered'}, { 'list': 'bullet' }], // Lists
