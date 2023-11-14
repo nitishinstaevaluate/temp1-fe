@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { NavService } from 'src/app/shared/service/nav.service';
 
 interface MENU{
@@ -15,9 +16,11 @@ export class SidebarComponent {
   
   constructor(
     private navServices: NavService,
+    private route:Router
   ){
 
   }
+  selectedMenuItem: string = '/dashboard';
 menues :MENU[] =[
   // {
   //   title: "Valuation",
@@ -41,5 +44,10 @@ sidebarClose(){
     document.querySelector('.app')?.classList.remove('sidenav-toggled');
     this.navServices.collapseSidebar = false;
   }
+}
+
+selectMenuItem(route: string): void {
+  this.selectedMenuItem = route;
+  this.route.navigate([`${route}`])
 }
 }

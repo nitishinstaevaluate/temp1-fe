@@ -203,3 +203,180 @@
     <button mat-raised-button><mat-icon>keyboard_arrow_right</mat-icon>Save Report</button>
   </div>
   </div>
+
+  <div class="container"  *ngIf="data?.value === appValues.VALUATION_METHOD.value" style="padding-top: 4%;padding-bottom: 4%;">
+    <!-- income approach -->
+    <div class="incomeApproach">
+      <div class="pos-absolute">
+        <span>{{appValues.VALUATION_METHOD.incomeApproach.label}}</span>
+      </div>
+      <div class="row fcfe-hover" >
+        <div class="col-xl-4 n-models-fcfe">
+          <div class="form-check">
+            <input class="form-check-input" [checked]="fcfeSelectedModel" (click)="createModelControl('FCFE','incomeApproach')" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+            <label class="form-check-label" for="flexRadioDefault1">
+              DCF Method - FCFE
+            </label>
+          </div>
+        </div>
+        <div class="col-xl-8 hp-text-fcfe">
+          <p>Helper Text details about this model in 1-2 line</p>
+        </div>
+      </div>
+      <div class="row fcff-hover">
+        <div class="col-xl-4 n-models-fcff">
+          <div class="form-check">
+            <input class="form-check-input" [checked]="fcffSelectedModel" type="radio" (click)="createModelControl('FCFF','incomeApproach')" name="flexRadioDefault" id="flexRadioDefault1">
+            <label class="form-check-label" for="flexRadioDefault1">
+              DCF Method - FCFF
+            </label>
+          </div>
+        </div>
+        <div class="col-xl-8 hp-text-fcff">
+          <p>Helper Text details about this model in 1-2 line</p>
+        </div>
+      </div>
+      <div class="row excess-earn-hover">
+        <div class="col-xl-4 n-models-excessEarn">
+          <div class="form-check">
+            <input class="form-check-input" [checked]="excessEarningSelectedModel" (click)="createModelControl('Excess_Earnings','incomeApproach')" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+            <label class="form-check-label" for="flexRadioDefault1">
+              Excess Earning Method
+            </label>
+          </div>
+        </div>
+        <div class="col-xl-8 hp-text-excessEarn">
+          <p> Helper Text details about this model in 1-2 line</p>
+        </div>
+      </div>
+
+      <div class="row projectionSelect">
+        <div class="col-xl-4">
+            <div class="form-check">
+              <input class="form-check-input" [checked]="projectionYearSelect === 'Going_Concern'" (click)="selectProjections('Going_Concern','projectionSelection')" type="radio" name="flexRadioDefault2" id="flexRadioDefault2">
+              <label class="form-check-label" for="flexRadioDefault2">
+                Going Concern
+              </label>
+            </div>
+        </div>
+        <div class="col-xl-4">
+            <div class="form-check">
+              <input class="form-check-input" [checked]="projectionYearSelect === 'Finite_Projection'" (click)="selectProjections('Finite_Projection','projectionSelection')" type="radio" name="flexRadioDefault2" id="flexRadioDefault2">
+              <label class="form-check-label" for="flexRadioDefault2">
+                Finite Projection
+              </label>
+            </div>
+        </div>
+        <div class="col-xl-12" style="padding-top: 2%;" *ngIf="projectionYearSelect === 'Going_Concern'">
+          <div class="row">
+              <div class="col-xl-6">
+                <div class="material-textfield">
+                  <input class="new-inp" type="text" #projectionyear (blur)="projectionYear(projectionyear.value)" [value]="projectionYears ? projectionYears : '' " placeholder="Enter Projection Year"/>
+                  <label class="going-concern-label">Projection Years</label>
+               </div>
+              </div>
+              <div class="col-xl-6">
+                <div class="material-textfield">
+                  <select id="terminalGrowthRate" [formControl]="terminalGrowthRateControl"class="new-inp">
+                    <option value="" disabled>Select terminal growth rate</option>
+                    <option *ngFor="let doc of modelControl.modelValuation.options.terminalGrowthRate.options"  [value]="doc.value">{{ doc.value}}</option>
+                  </select>
+                  <label for="terminalGrowthRate" class="going-concern-label">Terminal Growth Year</label>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- net asset value approach -->
+    <div class="navApproach">
+      <div class="pos-absolute-nav">
+        <span>{{appValues.VALUATION_METHOD.assetApproach.label}}</span>
+      </div>
+      <div class="row nav-hover" >
+        <div class="col-xl-4 n-models-nav">
+          <div class="form-check">
+            <input class="form-check-input" [checked]="navSelectedModel" (click)="createModelControl('NAV','netAssetValueApproach')" type="radio" name="flexRadioDefault3" id="flexRadioDefault3">
+            <label class="form-check-label" for="flexRadioDefault3">
+              Net Asset Value Approach
+            </label>
+          </div>
+        </div>
+        <div class="col-xl-8 hp-text-nav">
+          <p>Helper Text details about this model in 1-2 line</p>
+        </div>
+      </div>
+    </div>
+
+  <!--Market approach  -->
+    <div class="marketApproach">
+      <div class="pos-absolute-marketApproach">
+        <span>{{appValues.VALUATION_METHOD.marketApproach.label}}</span>
+      </div>
+      <div class="row ccm-hover" >
+        <div class="col-xl-5 n-models-ccm">
+          <div class="form-check">
+            <input class="form-check-input" [checked]="ccmSelectedModel" (click)="createModelControl('CCM','marketApproach')" type="radio" name="flexRadioDefault4" id="flexRadioDefault4">
+            <label class="form-check-label" for="flexRadioDefault4">
+              Comparable Companies Method
+            </label>
+          </div>
+        </div>
+        <div class="col-xl-7 hp-text-ccm">
+          <p>Helper Text details about this model in 1-2 line</p>
+        </div>
+      </div>
+      <div class="row ctm-hover">
+        <div class="col-xl-5 n-models-ctm">
+          <div class="form-check">
+            <input class="form-check-input" [checked]="ctmSelectedModel" (click)="createModelControl('CTM','marketApproach')" type="radio" name="flexRadioDefault4" id="flexRadioDefault4">
+            <label class="form-check-label" for="flexRadioDefault4">
+              Comparable Transaction Method
+            </label>
+          </div>
+        </div>
+        <div class="col-xl-7 hp-text-ctm">
+          <p>Helper Text details about this model in 1-2 line</p>
+        </div>
+      </div>
+      <div class="row market-price-hover">
+        <div class="col-xl-5 n-models-market-price">
+          <div class="form-check">
+            <input class="form-check-input" [checked]="marketPriceSelectedModel" (click)="createModelControl('Market_Price','marketApproach')" type="radio" name="flexRadioDefault4" id="flexRadioDefault4">
+            <label class="form-check-label" for="flexRadioDefault4">
+              Market Price Method
+            </label>
+          </div>
+        </div>
+        <div class="col-xl-7 hp-text-market-price">
+          <p> Helper Text details about this model in 1-2 line</p>
+        </div>
+      </div>
+    </div>
+   
+    <!-- template download and upload -->
+    <div class="row" style="margin-top: 3%;padding-left: 1%;">
+      <div class="col-xl-9">
+        <span class="download-temp"><a [href]="downloadTemplate" target="_blank">Download Template</a></span>
+        <input
+          type="file"
+          hidden
+          #fileInput
+          accept="image/png, image/jpeg, .pdf, .xlsx"
+          (change)="onFileSelected($event)"
+        />
+        <button type="button" class="btn btn-primary upload-bt" (click)="fileInput.click()">
+          <span class="pos-upload-absolute">
+            <mat-icon>cloud_upload</mat-icon>
+          </span>
+          Upload file</button>
+        <span class="file-name" *ngIf="fileName">{{fileName}}</span>
+      </div>
+      <div class="col-xl-3" style="text-align: right;padding-right: 2%;">
+        <button type="button" class="btn btn-success submit-bt" (click)="submitModelValuation()">
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>

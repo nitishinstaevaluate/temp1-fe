@@ -117,6 +117,8 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
               panelClass: 'app-notification-success',
             });
             saveAs(reportData, 'Ifinworth-Report.pdf');
+            localStorage.setItem('stepFiveStats','true')
+            this.calculationService.checkStepStatus.next({status:true})
         }
         },
         (error)=>{
@@ -141,6 +143,8 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     })
   }
   else{
+    localStorage.setItem('stepFiveStats','false');
+    this.calculationService.checkStepStatus.next({status:true});
     this.isLoading=false;
     this.snackBar.open('We are working on report for that model ', 'OK', {
       horizontalPosition: 'right',
@@ -157,7 +161,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       ...this.reportForm.value,
       ...this.registeredValuerDetails.value,
       reportId:this.transferStepperFour?.formThreeData?.appData?.reportId,
-      reportDate:this.reportForm.controls['reportDate'].value
+      reportDate:this.reportForm.controls['reportDate'].value,
     }
     const approach = this.transferStepperFour?.formOneAndTwoData?.model.includes('NAV') ? 'NAV' : this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFE') ? 'DCF' : '';
    if(approach !== ''){

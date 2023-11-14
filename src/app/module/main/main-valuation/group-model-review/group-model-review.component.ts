@@ -3,6 +3,7 @@ import { ValuationService } from 'src/app/shared/service/valuation.service';
 import groupModelControl from '../../../../shared/enums/group-model-controls.json';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { isSelected } from 'src/app/shared/enums/functions';
+import { CalculationsService } from 'src/app/shared/service/calculations.service';
 @Component({
   selector: 'app-group-model-review',
   templateUrl: './group-model-review.component.html',
@@ -18,7 +19,7 @@ export class GroupModelReviewComponent implements OnChanges {
   @Output() previousGroupReviewControls = new EventEmitter<any>();
 
   @Input() transferStepperTwo :any;
-  @Input() currentStepIndex :any;
+  @Input() step :any;
 
   reviewForm:FormGroup;
 
@@ -40,7 +41,8 @@ export class GroupModelReviewComponent implements OnChanges {
   modifiedExcelSheetId='';
   isExcelModified=false
   constructor(private valuationService:ValuationService,
-    private formBuilder:FormBuilder){
+    private formBuilder:FormBuilder,
+    private calculationService:CalculationsService){
     this.reviewForm=this.formBuilder.group({
       otherAdj:['',[Validators.required]],
     })
@@ -81,7 +83,19 @@ export class GroupModelReviewComponent implements OnChanges {
       }
     })
     console.log(payload,"input payload")
+
+    if(this.reviewForm.controls['otherAdj'].value !== ''){
+      this.calculationService.checkStepStatus.next({stepStatus:true,step:this.step})
+      localStorage.setItem('step',`4`);
+      localStorage.setItem('stepThreeStats','true');
+    }
+    else{
+      this.calculationService.checkStepStatus.next({stepStatus:false,step:this.step})
+      localStorage.setItem('step',`4`);
+      localStorage.setItem('stepThreeStats','false');
+    }
   }
+
 
   previous(){
     this.previousPage.emit(true)
@@ -115,6 +129,9 @@ export class GroupModelReviewComponent implements OnChanges {
     return this.transferStepperTwo?.model.includes(value) ? true :false;
   }
   hasSingleModel(modelName:string){
-    return (isSelected(modelName,this.transferStepperTwo?.model) && this.transferStepperTwo.model.length <= 1)
+    if(this.step === 3 && this.transferStepperTwo?.excelSheetId){
+      return (isSelected(modelName,this.transferStepperTwo?.model) && this.transferStepperTwo.model.length <= 1)
+    }
+    return false;
   }
 }

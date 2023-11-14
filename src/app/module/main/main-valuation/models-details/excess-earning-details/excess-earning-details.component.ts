@@ -281,9 +281,26 @@ saveAndNext(): void {
   payload['costOfEquity']=this.coe;
   payload['bse500Value']=this.bse500Value;
   
-  // submit final payload
-  this.excessEarnDetails.emit(payload)
+  this.validateControls(this.excessEarningForm.controls,payload);
   
+}
+
+validateControls(controlArray: { [key: string]: FormControl },payload:any){
+  let allControlsFilled = true;
+    for (const controlName in controlArray) {
+      if (controlArray.hasOwnProperty(controlName)) {
+        const control = controlArray[controlName];
+        if (control.value === null || control.value === '' ) {
+          allControlsFilled = false;
+          break;
+        }
+       
+      }
+    }
+    if(localStorage.getItem('stepTwoStats') === 'true'){
+      localStorage.setItem('stepTwoStats',`${allControlsFilled}`);
+    }
+    this.excessEarnDetails.emit(payload);
 }
 
 previous(){

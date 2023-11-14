@@ -45,8 +45,8 @@ this.dataSourceNav =[navData].map((response:any)=>{
   obj = obj.map((objVal:any)=>{
     return {
       fieldName:objVal?.fieldName,
-      bookValue:objVal?.bookValue ? parseFloat(objVal.bookValue)?.toFixed(3) : objVal.bookValue,
-      fairValue:objVal?.fairValue  ? parseFloat(objVal.fairValue)?.toFixed(3) : objVal.value ? parseFloat(objVal.value)?.toFixed(3) : objVal.fairValue,
+      bookValue:objVal?.bookValue ? parseFloat(objVal.bookValue)?.toFixed(2) : objVal.bookValue,
+      fairValue:objVal?.fairValue  ? parseFloat(objVal.fairValue)?.toFixed(2) : objVal.value ? parseFloat(objVal.value)?.toFixed(2) : objVal.fairValue,
       type:objVal?.type === 'book_value' ? 'Book Value' : objVal.type === 'market_value' ? 'Market Value' : objVal.type
     }
   })

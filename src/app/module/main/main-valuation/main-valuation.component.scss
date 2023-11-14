@@ -345,3 +345,63 @@ a:hover {
   color: #26879d;
 }
 
+// .label2{
+//   color:#F00; 
+//   border:1px solid #CCC;
+//   }
+//   .label2:after{
+//       border-bottom:8px solid green;
+//       display: block;
+//       margin-left:35px;
+//       content: " ";
+//     width:80%;
+//   }
+
+.c-decorated-header {
+  position: relative;
+}
+
+.c-decorated-header h3 {
+  position: relative;
+  text-align: left;
+
+  font-family: 'AR One Sans', sans-serif;
+  font-size: 19px;
+  color: #3355dd;
+  cursor: pointer;
+}
+
+.c-decorated-header{
+  padding-top: 1%;
+}
+.c-decorated-header h3:after {
+  content: "";
+  height: 1px;
+  position: absolute;
+  right: 0;
+  left: 237px;
+  top: 7px;
+  bottom: 0;
+  margin: auto;
+  background: #e2e2e6;
+}
+
+.c-decorated-header h3 span {
+  position: relative;
+  font-size: 19px;
+  font-weight: 500;
+  font-stretch: condensed;
+}
+
+.c-decorated-header_link-view-more {
+  position: absolute;
+  top: 12px;
+  right: 40px;
+  font-size: 15px;
+  font-weight: 400;
+  font-family: 'AR One Sans', sans-serif;
+  color: #aaaaaa;
+  text-decoration: none;
+  background: #fcf8fe;;
+  padding: 5px;
+}

@@ -280,8 +280,27 @@ saveAndNext(): void {
   payload['adjustedCostOfEquity']=this.adjCoe;
   payload['costOfEquity']=this.coe;
   payload['bse500Value']=this.bse500Value;
-  // submit final payload
-  this.fcfeDetails.emit(payload);
+
+  // validate formcontrols
+  this.validateControls(this.fcfeForm.controls,payload);
+}
+
+
+validateControls(controlArray: { [key: string]: FormControl },payload:any){
+  let allControlsFilled = true;
+    for (const controlName in controlArray) {
+      if (controlArray.hasOwnProperty(controlName)) {
+        const control = controlArray[controlName];
+        if (control.value === null || control.value === '' ) {
+          allControlsFilled = false;
+          break;
+        }
+       
+      }
+    }
+    localStorage.setItem('stepTwoStats',`${allControlsFilled}`);
+
+    this.fcfeDetails.emit(payload);
 }
 
 previous(){

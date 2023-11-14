@@ -11,6 +11,7 @@ import { MODELS } from 'src/app/shared/enums/constant';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal-box/generic-modal-box.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CalculationsService } from 'src/app/shared/service/calculations.service';
 
 
 @Component({
@@ -23,7 +24,7 @@ export class GroupModelControlsComponent implements OnInit {
   @Output() saveAndNextEvent = new EventEmitter<void>();
   @Output() groupModelControls = new EventEmitter<any>();
   @Output() previousPage = new EventEmitter<any>();
-  @Input() currentStepIndex: any;
+  @Input() step: any;
 
   // form declaration
   modelControl:any = groupModelControl;
@@ -61,7 +62,7 @@ export class GroupModelControlsComponent implements OnInit {
   // property declaration
   industriesRatio: any = '';
   betaIndustriesId: any = '';
-  taxRateModelBox:any=false
+  taxRateModelBox:any='25.17'
   floatLabelType:any = 'never';
   isDragged=false;
   valuationM: any;
@@ -87,12 +88,14 @@ export class GroupModelControlsComponent implements OnInit {
   discountRateSelection: any;
   betaIndustries: any;
   isExcelReupload=false;
+  fileName:any='';
 
   constructor(private formBuilder: FormBuilder,
     private valuationService: ValuationService,
     private _dataReferencesService: DataReferencesService,
     public dialog: MatDialog,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar,
+    private calculationService:CalculationsService) {
     this.form=this.formBuilder.group({});
     this.inputs.forEach((_, i) => {
       this.form.addControl('select' + i, new FormControl(''));
@@ -111,7 +114,7 @@ export class GroupModelControlsComponent implements OnInit {
       excelSheetId:['',[Validators.required]],
       type: ['industry', Validators.required],
       outstandingShares:['',[Validators.required]],
-      taxRateType:['',[Validators.required]],
+      taxRateType:['25.17',[Validators.required]],
       taxRate:['',[Validators.required]],
       terminalGrowthRate:['',[Validators.required]],
       discountRateType: ['WACC'],                                  // removed as required field
@@ -165,6 +168,7 @@ export class GroupModelControlsComponent implements OnInit {
   }
 
   ngOnInit(){
+    console.log(this.step,"first stepper")
     this.formLoad();
     this.loadValues();
     this.addInput();
@@ -195,6 +199,7 @@ export class GroupModelControlsComponent implements OnInit {
         this.betaIndustries = resp[DROPDOWN.BETAINDUSTRIES]; // Set as array element 3
         // this.industriesRatio = resp[DROPDOWN.INDUSTRIESRATIO]; //Set as array element 4
       });
+
   }
   formLoad(){
 // Initiate form change detectors
@@ -302,36 +307,36 @@ export class GroupModelControlsComponent implements OnInit {
     //   }
     // );
 
-    this.modelValuation.controls['projectionYearSelect'].valueChanges.subscribe((val) => {
-      if(!val) return;
-      if(val=== "Going_Concern"){
-        const data={
-          data: 'Going_Concern',
-          width:'30%',
-        }
-        const dialogRef = this.dialog.open(GenericModalBoxComponent,data);
-        dialogRef.afterClosed().subscribe((result)=>{
-          if (result) {
-            this.modelValuation.controls['projectionYears'].patchValue(result?.projectionYear)
-            this.modelValuation.controls['terminalGrowthRate'].patchValue(result?.terminalGrowthYear)
-            this.snackBar.open('Going Concern Added','OK',{
-              horizontalPosition: 'center',
-              verticalPosition: 'top',
-              duration: 3000,
-              panelClass: 'app-notification-success'
-            })
-          } else {
-            this.modelValuation.controls['projectionYearSelect'].reset();
-            this.snackBar.open('Going Concern not added','OK',{
-              horizontalPosition: 'center',
-              verticalPosition: 'top',
-              duration: 3000,
-              panelClass: 'app-notification-error'
-            })
-          }
-        })
-      }
-    })
+    // this.modelValuation.controls['projectionYearSelect'].valueChanges.subscribe((val) => {
+    //   if(!val) return;
+    //   if(val=== "Going_Concern"){
+    //     const data={
+    //       data: 'Going_Concern',
+    //       width:'30%',
+    //     }
+    //     const dialogRef = this.dialog.open(GenericModalBoxComponent,data);
+    //     dialogRef.afterClosed().subscribe((result)=>{
+    //       if (result) {
+    //         this.modelValuation.controls['projectionYears'].patchValue(result?.projectionYear)
+    //         this.modelValuation.controls['terminalGrowthRate'].patchValue(result?.terminalGrowthYear)
+    //         this.snackBar.open('Going Concern Added','OK',{
+    //           horizontalPosition: 'center',
+    //           verticalPosition: 'top',
+    //           duration: 3000,
+    //           panelClass: 'app-notification-success'
+    //         })
+    //       } else {
+    //         this.modelValuation.controls['projectionYearSelect'].reset();
+    //         this.snackBar.open('Going Concern not added','OK',{
+    //           horizontalPosition: 'center',
+    //           verticalPosition: 'top',
+    //           duration: 3000,
+    //           panelClass: 'app-notification-error'
+    //         })
+    //       }
+    //     })
+    //   }
+    // })
 
   }
   
@@ -354,7 +359,7 @@ isSelectedpreferenceRatio(value:any){
 }
 
   saveAndNext(): void {
-    this.modelValuation.controls['model'].setValue(this.checkedItems);
+    // this.modelValuation.controls['model'].setValue(this.checkedItems);
     if(!this.isRelativeValuation(this.MODEL.RELATIVE_VALUATION)){
       this.relativeValuation.controls['preferenceRatioSelect'].setValue('');
     }
@@ -362,17 +367,19 @@ isSelectedpreferenceRatio(value:any){
     
     //  check if tax rate is null
     if (payload['taxRate'] == null || payload['taxRateType']=='25.17') {
+      this.modelValuation.controls['taxRate'].patchValue('25.17%')
       payload['taxRate'] = '25.17%';
       payload['taxRateType'] = 'Default';
     }
 
     // check if valuation date is empty
     const valuationDate = this.modelValuation.get('valuationDate')?.value;
+    console.log(valuationDate,"valuation date")
     if (valuationDate) {
       const myDate = {
-        year: valuationDate.getFullYear(),
-        month: valuationDate.getMonth() + 1, // Note that months are zero-based
-        day: valuationDate.getDate(),
+        year: valuationDate.split("-")[0],
+        month: valuationDate.split("-")[1], // Note that months are zero-based
+        day: valuationDate.split("-")[2],
       };
 
       this.newDate = new Date(myDate.year, myDate.month - 1, myDate.day);
@@ -400,10 +407,44 @@ isSelectedpreferenceRatio(value:any){
       localStorage.setItem('excelStat','false')
     }
 
-    // submit final payload
-    this.groupModelControls.emit(payload)
+
+    
+    
+    // validate form controls
+    let control:any;
+    if(this.subIndustries.length <= 0){
+      control = { ...this.modelValuation.controls };
+      delete control.subIndustry;
+    }
+   const stats =  this.validateControls(control,this.modelValuation.controls['model'].value);
 
     this.isExcelReupload = false; // reset it once payload has modified excel sheet id
+
+        // submit final payload
+        this.groupModelControls.emit(payload);
+  }
+
+  validateControls(controlArray: { [key: string]: FormControl },models:any){
+    let allControlsFilled = true;
+    console.log(controlArray,"array")
+    if (isSelected('FCFE', models) || isSelected('FCFF', models)) {
+      for (const controlName in controlArray) {
+        if (controlArray.hasOwnProperty(controlName)) {
+          const control = controlArray[controlName];
+          if (control.value === null || control.value === '' ) {
+            allControlsFilled = false;
+            break;
+          }
+         
+        }
+      }
+    } else {
+      allControlsFilled = false;
+    }
+    console.log(allControlsFilled,"valid or invalid")
+    localStorage.setItem('stepOneStats',`${allControlsFilled}`)
+    this.calculationService.checkStepStatus.next({stepStatus:allControlsFilled,step:this.step})
+    // localStorage.setItem('step',`${this.step}`)
   }
   
   get isDownload() {
@@ -469,7 +510,7 @@ isSelectedpreferenceRatio(value:any){
   previous(){
     this.previousPage.emit(true)
   }
-  openDialog(bool?:boolean){ 
+  openDialog(bool?:boolean){
     if(bool){
       const data={
         data: this.modelValuation.controls['taxRateType'].value,
@@ -488,8 +529,8 @@ isSelectedpreferenceRatio(value:any){
           panelClass: 'app-notification-success'
         })
       } else {
-        this.modelValuation.controls['taxRateType'].reset();
-        this.taxRateModelBox=false
+        this.modelValuation.controls['taxRateType'].setValue('25.17');
+        this.taxRateModelBox='25.17'
         this.snackBar.open('Tax Rate Not Saved','OK',{
           horizontalPosition: 'center',
           verticalPosition: 'top',
@@ -504,4 +545,61 @@ isSelectedpreferenceRatio(value:any){
     }
   }
 
+  onTaxRateChange(event: any) {
+    // Handle the change event here
+    const selectedValue = event.target.value;
+    if (selectedValue === '25.17') {
+      this.openDialog();
+    } else {
+      this.openDialog(true);
+    }
+  }
+
+  selectValuation(){
+    const data={
+        model: this.modelValuation.controls['model'].value,
+        projectionYearSelect:this.modelValuation.controls['projectionYearSelect'].value,
+        terminalGrowthRate:this.modelValuation.controls['terminalGrowthRate'].value,
+        projectionYears:this.modelValuation.controls['projectionYears'].value,
+        excelSheetId:this.modelValuation.controls['excelSheetId'].value,
+        fileName:this.fileName,
+        value:'valuationMethod'
+      }
+     const dialogRef = this.dialog.open(GenericModalBoxComponent,{data:data,width:'50%'});
+  
+     dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        if(result?.excelSheetId !== this.modelValuation.controls['excelSheetId']){
+          this.isExcelReupload=true
+        }
+        this.modelValuation.controls['model'].setValue(result?.model);
+        this.modelValuation.controls['projectionYearSelect'].setValue(result?.projectionYearSelect);
+        this.modelValuation.controls['projectionYears'].setValue(result?.projectionYears);
+        this.modelValuation.controls['terminalGrowthRate'].setValue(result?.terminalGrowthRate);
+        this.modelValuation.controls['excelSheetId'].setValue(result?.excelSheetId); 
+        this.fileName = result?.fileName; 
+        
+        this.snackBar.open('Valuaion models are added successfully','OK',{
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 3000,
+          panelClass: 'app-notification-success'
+        })
+      } else {
+        this.snackBar.open('Something went wrong','OK',{
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 3000,
+          panelClass: 'app-notification-error'
+        })
+      }
+    });
+   
+  }
+
+  removeTag(modelName:string){
+    const values = this.modelValuation.controls['model'].value;
+    values.splice(values.indexOf(modelName),1);
+    this.modelValuation.controls['model'].setValue(values)
+  }
 }

@@ -1,5 +1,5 @@
 
-<div class="app-sidebar__overlay" data-bs-toggle="sidebar" (click)="sidebarClose()"></div>
+<!-- <div class="app-sidebar__overlay" data-bs-toggle="sidebar" (click)="sidebarClose()"></div>
 <div class="sticky">
   <aside class="app-sidebar sidebar-scroll">
     <div class="main-sidebar-header active">
@@ -28,6 +28,40 @@
           
             <span class="side-menu__label">{{ item.title }}</span>
           </a>
+        </li>
+      </ul>
+    </div>
+    
+  </aside>
+</div> -->
+
+
+
+
+<!-- new navbar -->
+
+<div class="app-sidebar__overlay" data-bs-toggle="sidebar" (click)="sidebarClose()"></div>
+<div class="sticky">
+  <aside class="app-sidebar sidebar-scroll new-aside">
+    <div class="main-sidemenu" style="margin-top:40px">
+      <ul class="side-menu">
+        <li class="slide">
+         <div  class="new-menu" [class.selected]="selectedMenuItem === '/dashboard'" (click)="selectMenuItem('/dashboard')">
+          <p class="icon-c"><i class="side-menu__icon bx bx-grid-alt"><i class="fa fa-usd mx-2"></i></i></p>
+          <p class="label-c">
+            <a>
+              Valuation
+            </a>
+            </p>
+         </div>
+         <div  class="new-menu" [class.selected]="selectedMenuItem === '/dashboard/activity'" (click)="selectMenuItem('/dashboard/activity')">
+           <p class="icon-c"><i class="side-menu__icon bx bx-grid-alt" ><i class="fa fa-clock-o mx-2"></i></i></p>
+           <p class="label-c">
+            <a>
+              Activity
+            </a>
+            </p>
+         </div>
         </li>
       </ul>
     </div>

@@ -45,7 +45,7 @@
             "industry":{
                 "name":"industry",
                 "type":"dropdown",
-                "placeholder":"Industry",
+                "placeholder":"Select industry",
                 "toolTip":"Select Industry For Valuation",
                 "class":"col-md-4 field"
             },
@@ -768,7 +768,7 @@
             ],
             "reportPurpose":[
                 {
-                    "name":"Companies Act, 2023",
+                    "name":"Companies Act, 2013",
                     "value":"companiesAct"
                 },
                 {

@@ -24,9 +24,10 @@ import { NetAssetValueDetailsComponent } from './main-valuation/models-details/n
 import { ReportDetailsComponent } from './main-valuation/report-details/report-details.component';
 import { AssessmentDetailsComponent } from './main-valuation/group-model-review/assessment-details/assessment-details.component';
 import { QuillModule } from 'ngx-quill';
+import { NavbarDetailsComponent } from 'src/app/layout/main-layout/navbar-details/navbar-details.component';
 
 @NgModule({
-  declarations: [ValuationComponent, ActivityComponent, MainValuationComponent, GroupModelControlsComponent, GroupModelReviewComponent, GroupModelResultComponent, ProfitLossDataComponent, BalanceSheetDetailsComponent, RelativeValuationsTableComponent,ValuationResultTableComponent, ModelRelativeValuationResultTableComponent,FcfeDetailsComponent,FcffDetailsComponent,RelativeValuationDetailsComponent, ExcessEarningDetailsComponent, ComparableIndustriesDetailsComponent, NetAssetValueDetailsComponent, ReportDetailsComponent, AssessmentDetailsComponent],
+  declarations: [ValuationComponent, ActivityComponent, MainValuationComponent, GroupModelControlsComponent, GroupModelReviewComponent, GroupModelResultComponent, ProfitLossDataComponent, BalanceSheetDetailsComponent, RelativeValuationsTableComponent,ValuationResultTableComponent, ModelRelativeValuationResultTableComponent,FcfeDetailsComponent,FcffDetailsComponent,RelativeValuationDetailsComponent, ExcessEarningDetailsComponent, ComparableIndustriesDetailsComponent, NetAssetValueDetailsComponent, ReportDetailsComponent, AssessmentDetailsComponent,NavbarDetailsComponent],
   imports: [CommonModule, MainRoutingModule, NgxDropzoneModule, SharedModule,QuillModule.forRoot()],
 })
 export class MainModule {}

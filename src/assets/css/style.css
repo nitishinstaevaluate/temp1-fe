@@ -884,6 +884,10 @@ html {
     color:#004e67 !important;
     font-family: 'Rubik', sans-serif !important;
   }
+
+  .mat-mdc-dialog-container .mdc-dialog__surface{
+    border-radius:15px !important;
+  }
 body *::-webkit-scrollbar {
     width: 6px;
     height: 6px;

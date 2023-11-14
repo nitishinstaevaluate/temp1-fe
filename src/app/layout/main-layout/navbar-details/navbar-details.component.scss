@@ -1,0 +1,208 @@
+
+// new progress bar scsss
+[role="row"]:nth-of-type(-n+2) .textStyle {
+    color: lightgrey;
+    }
+    
+    .pipe {
+    height: 430px;
+    position: fixed;
+    // z-index: -1;
+    top: -60px;
+    border-left: double 6px #7ce39d !important;
+    transform: translate(21px,240px);
+    }
+    .pipe-1 {
+    height: 86px;
+    position: fixed;
+    // z-index: -1;
+    top: -60px;
+    border-left: solid 6px #0CCE8D !important;
+    transform: translate(21px,240px);
+    }
+    .pipe-2 {
+    height: 172px;
+    position: fixed;
+    // z-index: -1;
+    top: -60px;
+    border-left: solid 6px #0CCE8D !important;
+    transform: translate(21px,240px);
+    }
+    .pipe-3 {
+    height: 258px;
+    position: fixed;
+    // z-index: -1;
+    top: -60px;
+    border-left: solid 6px #0CCE8D !important;
+    transform: translate(21px,240px);
+    }
+    .pipe-4 {
+    height: 344px;
+    position: fixed;
+    // z-index: -1;
+    top: -60px;
+    border-left: solid 6px #0CCE8D !important;
+    transform: translate(21px,240px);
+    }
+    .pipe-5 {
+    height: 430px;
+    position: fixed;
+    // z-index: -1;
+    top: -60px;
+    border-left: solid 6px #0CCE8D !important;
+    transform: translate(21px,240px);
+    }
+    
+    [data-test="list-item-image"] {
+    border: solid 3px #0CCE8D;
+    margin-right: 20px !important;
+    //margin-left: -42px !important;
+    }
+    
+    .separator::after {
+    margin-left: 26px;
+    }
+    
+    [data-test="list-item-subtitle"] {
+    margin-bottom: 15px;
+    padding-right: 30px !important;
+    }
+    
+    [data-test="list-item-title"] {
+    margin-top: 15px;
+    }
+    
+    
+    
+    .mat-bullet{
+      position: absolute;
+      left: 35%;
+      top: -6%;
+      mat-icon{
+          transform: scale(.8);
+          color: #27bd68;
+      }
+    }
+    
+    .mat-bullet-pending{
+        position: absolute;
+        left: 35%;
+        top: -6%;
+        mat-icon{
+            transform: scale(.8);
+            color: black;
+        }
+    }
+    .mat-bullet-inprogress{
+        position: absolute;
+        left: 35%;
+        top: -6%;
+        mat-icon{
+            transform: scale(.8);
+            color: rgb(255, 255, 255);
+        }
+    }
+    .new-company-det{
+      padding-left: 3%;
+      padding-top: 4%;
+      font-size: 16px;
+      color: #464646;
+      font-family: 'AR One Sans', sans-serif;
+      font-weight: 500;
+    }
+
+    .new-company-det-inprogress{
+        padding-left: 3%;
+      padding-top: 4%;
+      font-size: 16px;
+      color: #ffffff;
+      font-family: 'AR One Sans', sans-serif;
+      font-weight: 500;
+    }
+    .status-completed{
+      background-color: #0BC587;
+        border-radius: 6px;
+        text-align: center;
+        color: white;
+    }
+    .status-pending{
+      background-color: #d0d8fc;
+        border-radius: 6px;
+        text-align: center;
+        color: #4b6df3;
+    }
+    .status-inprogress{
+      background-color: #99a9fa;
+        border-radius: 6px;
+        text-align: center;
+        color: #ffffff;
+    }
+
+    .navbars{
+        border: 1px solid;
+        border-radius: 10px;
+        width: 100%;
+        margin-left: 0px;
+        margin-right: 0px;
+        background-color: #dff5f2;
+        border-color: #2dd69e;
+        box-shadow: 1px 2px 15px #e2e2e2;
+    }
+    .navbars-pending{
+        
+        border-radius: 10px;
+        width: 100%;
+        margin-left: 0px;
+        margin-right: 0px;
+        background-color: #fcf8fe;
+        box-shadow: 1px 2px 15px #e2e2e2
+
+    }
+    .navbars-inprogress{
+        
+        border-radius: 10px;
+        width: 100%;
+        margin-left: 0px;
+        margin-right: 0px;
+        background-color: #4b6df3;
+        box-shadow: 1px 2px 15px #e2e2e2
+
+    }
+
+    .selected {
+        background-color: #4b6df3;
+        mat-icon {
+            color: rgb(255, 255, 255);
+        }
+        .row p{
+            color: #ffffff;
+            background-color: #99a9fa;
+        }
+        p{
+            color: #ffffff;
+        }
+      }
+
+      .navbar-h{
+        transition: background-color 0.3s;
+      }
+      .navbar-h:hover{
+        background-color: #2798bc;
+        cursor: pointer;
+        .new-company-h{
+            color:#ffffff;
+        }
+        .mat-bullet-h{
+            mat-icon{
+                color:#ffffff;
+                transition: color 0.3s;
+            }
+        }
+        .status-h{
+            color:#2798bc;
+            background-color: #ffffff;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+      }
+      

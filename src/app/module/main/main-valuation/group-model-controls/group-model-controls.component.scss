@@ -162,13 +162,13 @@
   }
   .field{
     padding-left: 2.5%;
-    padding-top: 0.5%;
+    padding-top: 3%;
     padding-right: 2.5%;
   }
 
 .card-header{
     color: #1c6e8f;
-    border-top: 1px solid #e3e3f7;
+    // border-top: 1px solid #e3e3f7;
     font-size: 19px;
     font-family: 'Poppins', sans-serif;
   }
@@ -211,8 +211,9 @@
   mat-hint{
     font-family: 'Poppins', sans-serif;
     color: #219476;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 500;
+    padding-left: 2%;
   }
 
   ::ng-deep .mat-select-value .mat-mdc-select-trigger .mat-mdc-select-value .mat-mdc-select-value-text{    
@@ -280,3 +281,214 @@
   padding-top: 2%;
   padding-left: 1%;
 }
+
+// new css
+.outer-section{
+  box-shadow: 1px 2px 10px #cecece;
+  border-radius: 10px;
+  background-color: #ffffff;
+}
+
+.c-decorated-header {
+  position: relative;
+}
+
+.c-decorated-header h3 {
+  position: relative;
+  text-align: left;
+
+  font-family: 'AR One Sans', sans-serif;
+  font-size: 19px;
+  color: #666666;
+  cursor: pointer;
+}
+
+.c-decorated-header{
+  padding-top: 2%;
+}
+.c-decorated-header h3:after {
+  content: "";
+  height: 1px;
+  position: absolute;
+  right: 0;
+  left: 16%;
+  top: 20%;
+  bottom: 0;
+  margin: auto;
+  background: #e2e2e6;
+}
+
+.c-decorated-header h3 span {
+  position: relative;
+  font-size: 19px;
+  font-weight: 500;
+  font-stretch: condensed;
+}
+
+.c-decorated-header_link-view-more {
+  position: absolute;
+  top: 12px;
+  right: 40px;
+  font-size: 15px;
+  font-weight: 400;
+  font-family: 'AR One Sans', sans-serif;
+  color: #aaaaaa;
+  text-decoration: none;
+  background: #fcf8fe;;
+  padding: 5px;
+}
+
+
+.material-textfield {
+  position: relative;
+}
+
+label {
+  position: absolute;
+  font-size: 1rem;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: white;
+  color: gray;
+  padding: 0 0.3rem;
+  margin: 0 0.5rem;
+  transition: 0.1s ease-out;
+  transform-origin: left top;
+  pointer-events: none;
+  font-family: 'AR One Sans', sans-serif;
+  font-weight: 500;
+}
+
+.new-inp {
+  font-size: 1rem;
+  outline: none;
+  border: 1px solid #e4e4e4;
+  border-radius: 10px;
+  color: #6d6d6d;
+  transition: 0.1s ease-out;
+  font-family: 'AR One Sans', sans-serif;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  width: 100%;
+  padding-left: 2%;
+  box-shadow: 1px 2px 10px #f0ebeb;
+}
+
+.new-inp:focus {
+  border-color: #6200ee;
+}
+
+.new-inp:focus+label {
+  color: #6200ee;
+  top: 0;
+  transform: translateY(-50%) scale(0.9) !important;
+}
+
+.new-inp:not(:placeholder-shown)+label {
+  top: 0;
+  transform: translateY(-50%) scale(0.9) !important;
+}
+
+.new-inp:not(:focus)::placeholder {
+  opacity: 0;
+}
+
+.button-save{
+  position: absolute;
+  left: 117%;
+  transform: scale(0.8);
+  top: -8%;
+}
+
+.button-save-mat{
+  box-shadow: 1px 2px 15px #d1d1d1;
+  color:#ffffff !important;
+  background-color: #0cd18f !important;
+  border-radius: 8px;
+  position: relative;
+  width: 20%;
+  font-family: 'AR One Sans', sans-serif;
+  font-weight: 500;
+}
+
+.model-button{
+  box-shadow: 1px 2px 15px #d1d1d1;
+  color:#ffffff !important;
+  background-color: #0cd18f !important;
+  border-radius: 8px;
+  font-family: 'AR One Sans', sans-serif;
+  font-weight: 500;
+}
+
+.chip-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.chip {
+  background-color: #e7faf4;
+  color: #44dba9;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin: 5px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  border-radius: 10px;
+}
+
+.icon-container {
+  position: absolute;
+  top: 20%;
+  left: 75%;
+  transform: translate(-50%, 0);
+}
+
+.check-icon {
+  color: green;
+}
+
+.close-btn {
+  position: absolute;
+  top: -19%   ;
+  right: 3%;
+  cursor: pointer;
+  color: #0cd18f; /* Color for the close icon */
+  transform: scale(1.3);
+}
+
+// file name scss starts
+.filename-container {
+  display: flex;
+  align-items: center;
+  padding-left: 2%;
+  padding-bottom: 1%;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: bold;
+  color: #3355dd; /* Blue color for the title */
+  margin-right: 5px;
+  font-family: 'AR One Sans', sans-serif;
+}
+
+.filename {
+  color: #1abaac; /* Dark gray font color for the filename */
+  font-size: 14px;
+  font-weight: bold;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: 'AR One Sans', sans-serif;
+}
+
+.filename:hover {
+  text-decoration: underline; /* Underline on hover */
+  transition: ease-in-out text-decoration 0.4s;
+  cursor: pointer;
+}
+// file name scss ends

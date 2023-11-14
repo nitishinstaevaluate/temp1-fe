@@ -84,7 +84,7 @@
                                 <mat-label>Section/Regulation Reference</mat-label>
                                 <mat-select class="mat-select-value" formControlName="reportSection" multiple>
                                 <!-- <mat-option *ngFor="let doc of modelControl.reportDetails.options.reportPurpose"  [value]="doc.value" >{{doc.name}}</mat-option> -->
-                                <mat-option *ngFor="let purpose of reportPurposeData"  [value]="purpose.section" >{{purpose.section}} - {{purpose.Description}}</mat-option>
+                                <mat-option *ngFor="let purpose of reportPurposeData"  [value]="purpose.section + ' - ' + purpose.Description" >{{purpose.section}} - {{purpose.Description}}</mat-option>
                             </mat-select>
                               </mat-form-field>
                         </div>

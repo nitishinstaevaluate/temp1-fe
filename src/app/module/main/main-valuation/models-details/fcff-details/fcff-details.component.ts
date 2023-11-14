@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, OnInit, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators,FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin } from 'rxjs';
@@ -377,13 +377,30 @@ saveAndNext(): void {
   // check if expected market return  is empty or not
  
   payload['expMarketReturnType']=this.fcffForm.controls['expMarketReturnType']?.value?.value;
-  this.fcffDetails.emit(payload)
-  
-  // submit final payload
+
+  this.validateControls(this.fcffForm.controls,payload);
 }
 
 previous(){
-  this.fcffDetailsPrev.emit({status:'FCFE'})
+  this.fcffDetailsPrev.emit({status:'FCFF'})
+}
+
+validateControls(controlArray: { [key: string]: FormControl },payload:any){
+  let allControlsFilled = true;
+    for (const controlName in controlArray) {
+      if (controlArray.hasOwnProperty(controlName)) {
+        const control = controlArray[controlName];
+        if (control.value === null || control.value === '' ) {
+          allControlsFilled = false;
+          break;
+        }
+       
+      }
+    }
+    if(localStorage.getItem('stepTwoStats') === 'true'){
+      localStorage.setItem('stepTwoStats',`${allControlsFilled}`);
+    }
+    this.fcffDetails.emit(payload);
 }
 
 
