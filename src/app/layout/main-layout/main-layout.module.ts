@@ -6,8 +6,8 @@ import { MainLayoutComponent } from './main-layout.component';
 import { HeaderComponent } from './header/header.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { NewMainLayoutComponent } from './new-main-layout/new-main-layout.component';
-import { NewHeaderComponent } from './new-header/new-header.component';
+// import { NewMainLayoutComponent } from './new-main-layout/new-main-layout.component';
+// import { NewHeaderComponent } from './new-header/new-header.component';
 
 
 @NgModule({
@@ -15,8 +15,8 @@ import { NewHeaderComponent } from './new-header/new-header.component';
     MainLayoutComponent,
     HeaderComponent,
     SidebarComponent,
-    NewMainLayoutComponent,
-    NewHeaderComponent,
+    // NewMainLayoutComponent,
+    // NewHeaderComponent,
   ],
   imports: [
     CommonModule,
