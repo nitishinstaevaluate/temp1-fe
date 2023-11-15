@@ -405,3 +405,48 @@ a:hover {
   background: #fcf8fe;;
   padding: 5px;
 }
+
+// tab scss starts
+/* Add this to your styles.css or component-specific styles */
+
+.tab-container {
+  display: flex;
+  background-color: #ffffff; /* Light green background color */
+  // padding: 10px;
+  box-shadow: 1px 2px 5px #e8e8e8;
+  border-radius: 16px;
+  
+}
+
+.tab-element {
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  padding-left: 2%;
+  padding-right: 2%;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  font-family: 'AR One Sans', sans-serif;
+  color: #464646;
+  font-size: 14px;
+}
+
+.tab-element.active {
+  // background-color: #dff5f2; /* Highlight color for active tab */
+  background-color: #cdf6f0;
+  color: #3b3b3b;
+  pointer-events: none; /* Disable click events */
+  border-radius: 10px;
+    padding-left: 2%;
+    padding-right: 2%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    font-size: 14px;
+    font-family: 'AR One Sans', sans-serif;
+    cursor: not-allowed;
+    border:1px solid #66c7bb;
+    transition: background-color 0.5s, color 0.5s; /* Smooth transition */
+    // pointer-events: none;
+}
+
+// tab scss ends

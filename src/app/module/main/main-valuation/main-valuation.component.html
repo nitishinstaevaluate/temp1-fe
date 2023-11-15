@@ -65,6 +65,21 @@
               <app-group-model-controls [step]="step" (groupModelControls)="groupModelControls($event)" [hidden]="step !== 1"></app-group-model-controls>
 
               <div [hidden]="step !== 2">
+                <!-- tab trial starts -->
+                <div class="tab-container">
+                  <div class="tab-element" [ngClass]="{ 'active': next === 1 }" *ngIf="ifModelExist('FCFE',formOneData?.model)">Free Cash Flow To Equity</div>
+                  <div class="tab-element" [ngClass]="{ 'active': next === 2 }" *ngIf="ifModelExist('FCFF',formOneData?.model)">Free Cash Flow To Firm</div>
+                  <div class="tab-element" [ngClass]="{ 'active': next === 3 }" *ngIf="ifModelExist('Relative_Valuation',formOneData?.model)">Comparable Companies</div>
+                  <div class="tab-element" [ngClass]="{ 'active': next === 4 }" *ngIf="ifModelExist('Excess_Earnings',formOneData?.model)">Excess Earning</div>
+                  <div class="tab-element" [ngClass]="{ 'active': next === 5 }" *ngIf="ifModelExist('CTM',formOneData?.model)">Comparable Industries</div>
+                  <div class="tab-element" [ngClass]="{ 'active': next === 6 }" *ngIf="ifModelExist('NAV',formOneData?.model)">Net Asset Value</div>
+                  <!-- Add more tab elements as needed -->
+                </div>
+                
+                <!-- tab trial ends -->
+
+
+
                 <app-fcfe-details (fcfeDetailsPrev)="fcfeDetailsPrev($event)" [hidden]="next !== 1" (fcfeDetails)="fcfeDetails($event)" [formOneData]="formOneData"></app-fcfe-details>
                 <app-fcff-details (fcffDetailsPrev)="fcffDetailsPrev($event)" (fcffDetails)="fcffDetails($event)" [hidden]="next !== 2" [formOneData]="formOneData"></app-fcff-details>
                 <app-relative-valuation-details (relativeValDetailsPrev)="relativeValDetailsPrev($event)" (relativeValDetails)="relativeValDetails($event)" [hidden]="next !== 3" [formOneData]="formOneData"></app-relative-valuation-details>

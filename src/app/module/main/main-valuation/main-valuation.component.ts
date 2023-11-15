@@ -73,11 +73,11 @@ export class MainValuationComponent implements OnInit{
         ...(this.formOneData?.model.includes('CTM') ? this.comparableIndustriesData : {}),
         ...(this.formOneData?.model.includes('NAV') ? this.navData : {}),
       };
-    if(this.step == 1) return this.headerLabel = '';
-    if(this.step == 2) return this.headerLabel = 'Model Inputs';
-    if(this.step == 3) return this.headerLabel = 'Review Form';
-    if(this.step == 4) return this.headerLabel = 'Evaluate Result';
-    if(this.step == 5) return this.headerLabel = '';
+    // if(this.step == 1) return this.headerLabel = '';
+    // if(this.step == 2) return this.headerLabel = 'Model Inputs';
+    // if(this.step == 3) return this.headerLabel = 'Review Form';
+    // if(this.step == 4) return this.headerLabel = 'Evaluate Result';
+    // if(this.step == 5) return this.headerLabel = '';
     return '';
   }
 
@@ -130,23 +130,28 @@ export class MainValuationComponent implements OnInit{
   fcffDetails(data:any){
     this.fcffData=data;
     this.nextModelSelection(data.status);
+    this.onStepChange();
   }
 
   relativeValDetails(data:any){
     this.relativeData=data;
     this.nextModelSelection(data.status);
+    this.onStepChange();
   }
   excessEarnDetails(data:any){
     this.excessEarnData=data;
     this.nextModelSelection(data.status);
+    this.onStepChange();
   }
   comparableIndustriesDetails(data:any){
     this.comparableIndustriesData=data;
     this.nextModelSelection(data.status);
+    this.onStepChange();
   }
   navDetails(data:any){
     this.navData=data;
     this.nextModelSelection(data.status);
+    this.onStepChange();
   }
 
   nextModelSelection(data?:any){
@@ -235,9 +240,11 @@ export class MainValuationComponent implements OnInit{
     this.previousModelSelection(data?.status);
   }
 
-  // isModelValid(name:string, modelArray:any){
-  //   return isSelected(name,modelArray)
-  // }
+  ifModelExist(name:string, modelArray:any){
+    if(modelArray)
+      return isSelected(name,modelArray);
+    return false;
+  }
 
   updateSelectedItems(item: string) {
     const index = this.modelArray.indexOf(item);
