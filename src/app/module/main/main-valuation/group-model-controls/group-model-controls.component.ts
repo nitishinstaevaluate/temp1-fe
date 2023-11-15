@@ -7,7 +7,7 @@ import { DataReferencesService } from 'src/app/shared/service/data-references.se
 import { forkJoin } from 'rxjs';
 import { DROPDOWN } from 'src/app/shared/enums/enum';
 import { GET_TEMPLATE, isSelected, toggleCheckbox } from 'src/app/shared/enums/functions';
-import { MODELS } from 'src/app/shared/enums/constant';
+import { ALL_MODELS, MODELS } from 'src/app/shared/enums/constant';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal-box/generic-modal-box.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -35,6 +35,7 @@ export class GroupModelControlsComponent implements OnInit {
   relativeValuation:FormGroup;
   hasError= hasError;
   MODEL=MODELS;
+  allModels:any = ALL_MODELS
 
 // array declaration
   inputs = [{}];
@@ -374,7 +375,6 @@ isSelectedpreferenceRatio(value:any){
 
     // check if valuation date is empty
     const valuationDate = this.modelValuation.get('valuationDate')?.value;
-    console.log(valuationDate,"valuation date")
     if (valuationDate) {
       const myDate = {
         year: valuationDate.split("-")[0],
@@ -412,11 +412,24 @@ isSelectedpreferenceRatio(value:any){
     
     // validate form controls
     let control:any;
+    control = { ...this.modelValuation.controls };
     if(this.subIndustries.length <= 0){
-      control = { ...this.modelValuation.controls };
       delete control.subIndustry;
     }
-   const stats =  this.validateControls(control,this.modelValuation.controls['model'].value);
+    const modelsNotRequireProjection = isSelected('NAV', this.modelValuation.controls['model'].value) || isSelected('CTM', this.modelValuation.controls['model'].value) || isSelected('CCM', this.modelValuation.controls['model'].value)
+    const mmodelsRequireProjection = isSelected('FCFE', this.modelValuation.controls['model'].value) || isSelected('FCFF', this.modelValuation.controls['model'].value) || isSelected('Excess_Earnings', this.modelValuation.controls['model'].value)
+    if (modelsNotRequireProjection && this.modelValuation.controls['model'].value.length === 1) {
+      delete control.projectionYearSelect
+      delete control.terminalGrowthRate
+      delete control.projectionYears
+    }
+    else if(modelsNotRequireProjection && !mmodelsRequireProjection){
+      delete control.projectionYearSelect
+      delete control.terminalGrowthRate
+      delete control.projectionYears
+    }
+  
+    this.validateControls(control,this.modelValuation.controls['model'].value);
 
     this.isExcelReupload = false; // reset it once payload has modified excel sheet id
 
@@ -426,8 +439,6 @@ isSelectedpreferenceRatio(value:any){
 
   validateControls(controlArray: { [key: string]: FormControl },models:any){
     let allControlsFilled = true;
-    console.log(controlArray,"array")
-    if (isSelected('FCFE', models) || isSelected('FCFF', models)) {
       for (const controlName in controlArray) {
         if (controlArray.hasOwnProperty(controlName)) {
           const control = controlArray[controlName];
@@ -438,13 +449,9 @@ isSelectedpreferenceRatio(value:any){
          
         }
       }
-    } else {
-      allControlsFilled = false;
-    }
-    console.log(allControlsFilled,"valid or invalid")
+
     localStorage.setItem('stepOneStats',`${allControlsFilled}`)
     this.calculationService.checkStepStatus.next({stepStatus:allControlsFilled,step:this.step})
-    // localStorage.setItem('step',`${this.step}`)
   }
   
   get isDownload() {

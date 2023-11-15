@@ -81,6 +81,7 @@ export class RelativeValuationDetailsComponent implements OnInit,OnChanges {
     if (this.isRelativeValuation(this.MODEL.RELATIVE_VALUATION)) {
       industries = this.formOneData?.industriesRatio;
     }
+    localStorage.setItem('stepTwoStats','true')
     this.relativeValDetails.emit({...this.relativeValuation.value,status:'Relative_Valuation',industries})
   }
 }

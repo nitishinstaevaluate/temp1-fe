@@ -81,7 +81,7 @@
               <!-- sub-industry -->
                 <div class="col-md-6 field"  *ngIf="modelValuation.controls['industry'].value && subIndustries.length > 0">
                       <div class="material-textfield">
-                        <select id="subIndustry" class="new-inp" #subIndustryVal (selectionChange)="subIndustryChange(subIndustryVal.value)" formControlName="subIndustry">
+                        <select id="subIndustry" class="new-inp" #subIndustryVal (change)="subIndustryChange(subIndustryVal.value)" formControlName="subIndustry">
                           <option value="" disabled selected>Select sub-industry</option>
                           <option *ngFor="let doc of subIndustries"  [value]="doc._id">{{doc.subIndustry}}</option>
                         </select>
@@ -376,7 +376,7 @@
     <div class="row" style="padding-left: 3%;padding-right: 3%;" *ngIf="modelValuation.controls['model'].value.length > 0">
       <div class="chip-container">
         <div class="chip" *ngFor="let indModel of modelValuation.controls['model'].value" style="padding-left: 2%;padding-right: 7%;padding-top: 2%;padding-bottom: 2%;">
-          {{ indModel }}
+          {{ allModels[indModel] }}
           <span class="icon-container">
             <!-- <mat-icon class="check-icon">beenhere</mat-icon> -->
             <!-- <mat-icon>offline_pin</mat-icon> -->

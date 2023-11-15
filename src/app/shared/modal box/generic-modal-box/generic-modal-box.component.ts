@@ -21,6 +21,12 @@ export class GenericModalBoxComponent implements OnInit {
   @ViewChild('viewer') viewerRef!: ElementRef;
 
   terminalGrowthRateControl: FormControl = new FormControl('');
+  analystConsensusEstimates: FormControl = new FormControl('');
+  liquidityFactor: FormControl = new FormControl('');
+  companySize: FormControl = new FormControl('');
+  marketPosition: FormControl = new FormControl('');
+  competition: FormControl = new FormControl('');
+  taxRate: FormControl = new FormControl('');
 
 label:string='';
 appValues= GLOBAL_VALUES;
@@ -40,7 +46,7 @@ fcffSelectedModel:any='';
 excessEarningSelectedModel:any='';
 navSelectedModel:any='';
 ctmSelectedModel:any='';
-ccmSelectedModel:any='';
+relativeValuationSelectedModel:any='';
 marketPriceSelectedModel:any = '';
 projectionYearSelect:any='';
 terminalGrowthRates:any='';
@@ -51,6 +57,7 @@ marketApproachmodels:any=[];
 files:any=[];
 excelSheetId:any;
 fileName:any;
+companyMaxValue:any=0;
 
   // Quill toolbar options
   quillModules = {
@@ -247,8 +254,8 @@ clearModelRadioButton(modelName:string){
       this.ctmSelectedModel = null;
       break;
 
-    case 'CCM':
-      this.ccmSelectedModel = null;
+    case 'Relative_Valuation':
+      this.relativeValuationSelectedModel = null;
       break;
 
     case 'Market_Price':
@@ -313,8 +320,8 @@ get downloadTemplate() {
           case 'CTM':
             this.ctmSelectedModel = true;
             break;
-          case 'CCM':
-            this.ccmSelectedModel = true;
+          case 'Relative_Valuation':
+            this.relativeValuationSelectedModel = true;
             break;
           case 'Market_Price':
             this.marketPriceSelectedModel = true;
@@ -356,4 +363,18 @@ get downloadTemplate() {
       this.excelSheetId = data.excelSheetId;
     }
   }
+
+  // updateSliderColor(event: any,maxValue:number) {
+  //   // const value = +(event.target as HTMLInputElement).value;
+  //   this.companyMaxValue = maxValue;
+
+  //   // if (value < 20) {
+  //   //   this.sliderStyle = { 'background': 'linear-gradient(to right, red, yellow, green)' };
+  //   // } else if (value >= 20 && value < 55) {
+  //   //   this.sliderStyle = { 'background': 'linear-gradient(to right, yellow, green)' };
+  //   // } else {
+  //   //   this.sliderStyle = { 'background': 'linear-gradient(to right, green)' };
+  //   // }
+
+  // }
 }

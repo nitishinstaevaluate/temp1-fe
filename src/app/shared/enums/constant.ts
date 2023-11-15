@@ -74,6 +74,15 @@ export const MODELS = {
   COMPARABLE_INDUSTRIES: 'CTM',
 }
 
+export const ALL_MODELS = {
+  FCFE:'Free Cash Flow to Equity',
+  FCFF:'Free Cash Flow to Firm',
+  Relative_Valuation:'Comparable Companies',
+  CTM:'Comparable Transaction',
+  NAV:'Net Asset Value',
+  Market_Price:'Market Price'
+}
+
   export const GLOBAL_VALUES = {
     Normal_Tax_Rate:{
       name:"Normal Tax Rate",
@@ -206,8 +215,8 @@ export const MODELS = {
   export const INCOME_APPROACH = ['FCFE','FCFF','Excess_Earnings'];
 
   export const NET_ASSET_APPROACH = ['NAV'];
-  
-  export const MARKET_APPROACH = ['CCM','CTM','Market_Price'];
+
+  export const MARKET_APPROACH = ['Relative_Valuation','CTM','Market_Price'];
 
 export const RELATIVE_VALUATION_COMPANY_MAPPING: { [key: string]: string } = {
   'Company Name': 'company',

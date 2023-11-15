@@ -1,31 +1,43 @@
-<div class="outer-wrapper" *ngIf="modelControl.relativeValuation.type === 'relativeValuation' && isRelativeValuation(MODEL.RELATIVE_VALUATION)">
+<div *ngIf="modelControl.relativeValuation.type === 'relativeValuation' && isRelativeValuation(MODEL.RELATIVE_VALUATION)">
     <h4 class="card-header">{{modelControl.relativeValuation.header}}</h4>
-    <form [formGroup]="relativeValuation">
+    <form [formGroup]="relativeValuation" class="outer-wrapper">
         <div class="row" style="padding-top: 1%;">
-            <div class="col-md-12 revalmodel" *ngIf="formOneData?.preferenceCompanies.length > 0">
+            <!-- <div class="col-md-12 revalmodel" *ngIf="formOneData?.preferenceCompanies.length > 0">
                 <mat-label class="label">{{modelControl.relativeValuation.options.preferenceRatioSelect.placeholder}}</mat-label>
-            </div>
-            <!-- <div class="col-md-8">
-                <mat-radio-group formControlName="preferenceRatioSelect" *ngIf = "modelControl.relativeValuation.options.preferenceRatioSelect.options">
-                    <mat-radio-button  *ngFor="let option of modelControl.relativeValuation.options.preferenceRatioSelect.options"
-                    [value]="option.name">{{option.name}}</mat-radio-button>
-                </mat-radio-group>
             </div> -->
+            <div class="col-md-12">
+              <div class='c-decorated-header'>
+                  <h3><span style="padding-left: 2%;">{{modelControl.relativeValuation.options.preferenceRatioSelect.placeholder}}</span></h3>
+                  <div class='c-decorated-header_link-view-more'>
+                  </div>
+                </div>
+          </div>
             
           <div formArrayName="companies" class="col-md-12 field" style="padding-top: 0.5% !important;" *ngIf="relativeValuation.controls['preferenceRatioSelect'].value ==='Company Based' && formOneData?.preferenceCompanies.length > 0">
             <div class="row">
-              <div style="padding-top: 0% !important;" class="col-md-4 field" *ngFor="let c of Companies.controls; let i = index; let last = last">
-                <mat-form-field style="width: 71%;"  [floatLabel]="floatLabelType" class="mat-relative-val">
+              <div style="padding-top: 2% !important;position: relative;padding-bottom: 3%;" class="col-md-4 field" *ngFor="let c of Companies.controls; let i = index; let last = last">
+                <!-- <mat-form-field style="width: 71%;"  [floatLabel]="floatLabelType" class="mat-relative-val">
+                  <mat-label>Company Name</mat-label>
                   <mat-select class="mat-select-value" [placeholder]="modelControl.relativeValuation.options.companyBasedSelection.placeholder" [formControlName]="i">
                     <mat-option [disabled]="item.company === 'No company Found'" [value]="item" *ngFor="let item of formOneData?.preferenceCompanies">{{item.company}}</mat-option>
                   </mat-select>
-                </mat-form-field>
-                <button mat-icon-button color="primary" *ngIf="i === formOneData?.preferenceCompanies.length - 1 ? false :true" (click)="addInput()">
-                  <mat-icon>add</mat-icon>
-                </button>
-                <button mat-icon-button color="warn" *ngIf="i > 0" (click)="removeField(i)">
-                  <mat-icon>remove</mat-icon>
-                </button>
+                </mat-form-field> -->
+
+                <div class="material-textfield">
+                  <select id="company" class="new-inp" [formControlName]="i">
+                    <option [disabled]="item.company === 'No company Found'" [value]="item" *ngFor="let item of formOneData?.preferenceCompanies">{{item.company}}</option>
+                  </select>
+                  <label for="company">Company Name</label>
+                </div>
+                <span style="position: absolute;right: 13%;transform: scale(0.6);cursor: pointer;bottom: 68%;" *ngIf="i === formOneData?.preferenceCompanies.length - 1 ? false :true" (click)="addInput()">
+                  <!-- <mat-icon style="color: #39e239;">add</mat-icon> -->
+                  <mat-icon style="color: #39e239;">control_point</mat-icon>
+                </span>
+                <span style="position: absolute;right: 8%;transform: scale(0.6);cursor: pointer;bottom: 68%;" *ngIf="i > 0" (click)="removeField(i)">
+                  <!-- <mat-icon style="color: #dd0e0e;">remove</mat-icon> -->
+                  <!-- <mat-icon style="color: #dd0e0e;">cancel</mat-icon> -->
+                  <mat-icon style="color: #dd0e0e;">remove_circle_outline</mat-icon>
+                </span>
               </div>
             </div>
           </div>
@@ -47,7 +59,7 @@
             </div>
         </div>
 
-          <div class="col-md-12" style="text-align: center;padding-bottom: 1%;padding-top: 15%;">
+          <!-- <div class="col-md-12" style="text-align: center;padding-bottom: 1%;padding-top: 15%;">
             <button (click)="previous()" mat-raised-button style="box-shadow: 1px 2px 15px #d1d1d1;color:#bb0d0d;font-weight: bold !important;margin-right: 1%;">
                 Back
                 <mat-icon style="font-weight: bold;color: #d42121;">arrow_left</mat-icon>
@@ -57,7 +69,19 @@
                 <mat-icon style="font-weight: bold;color: green;">send</mat-icon>
         </button>
        
-    </div>
+    </div> -->
+
+    <div class="col-md-12 btn-prop">
+      <button (click)="previous()" mat-raised-button class="prev-button">
+          Back
+          <mat-icon>arrow_left</mat-icon>
+      </button>
+
+  <button (click)="saveAndNext()" [disabled]="formOneData?.preferenceCompanies.length === 0" class="button-save-mat" mat-raised-button>
+      Next
+      <span class="button-save"><mat-icon>send</mat-icon></span>
+   </button>
+</div>
         </div>
       </form>  
 </div>

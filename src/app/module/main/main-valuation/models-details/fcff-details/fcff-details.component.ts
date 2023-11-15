@@ -168,7 +168,7 @@ loadOnChangeValue(){
       } else {
         const data={
           data: 'targetCapitalStructure',
-          width:'60%',
+          width:'30%',
         }
         const dialogRef = this.dialog.open(GenericModalBoxComponent,data);
 
@@ -240,6 +240,10 @@ loadOnChangeValue(){
     if(!val) return;
     this.calculateCoeAndAdjustedCoe();
   })
+  this.fcffForm.controls['riskFreeRate'].valueChanges.subscribe((val:any)=>{
+    if(!val) return;
+    this.calculateCoeAndAdjustedCoe();
+  })
   this.fcffForm.controls['costOfDebt'].valueChanges.subscribe((val:any)=>{
     if(!val) return;
     this.calculateCoeAndAdjustedCoe();
@@ -280,9 +284,9 @@ loadFormControl(){
     expMarketReturn:['',[Validators.required]],
     specificRiskPremium:[false,[Validators.required]],
     beta:['',[Validators.required]],
+    riskPremium:['',[Validators.required]],
     capitalStructureType:['',[Validators.required]],
     costOfDebt:['',[Validators.required]],
-    riskPremium:['',[Validators.required]],
     copShareCapital:['',[Validators.required]],
   })
 
@@ -317,7 +321,7 @@ onSlideToggleChange(event:any){
 
     const data={
       data: 'specificRiskPremiumForm', //hardcoded for now,store in enum
-      width:'50%',
+      width:'30%',
     }
    const dialogRef = this.dialog.open(GenericModalBoxComponent,data);
 
@@ -378,7 +382,11 @@ saveAndNext(): void {
  
   payload['expMarketReturnType']=this.fcffForm.controls['expMarketReturnType']?.value?.value;
 
-  this.validateControls(this.fcffForm.controls,payload);
+  const controls = {...this.fcffForm.controls};
+  delete controls.capitalStructureType;
+  delete controls.costOfDebt;
+  delete controls.copShareCapital;
+  this.validateControls(controls,payload);
 }
 
 previous(){
@@ -397,7 +405,7 @@ validateControls(controlArray: { [key: string]: FormControl },payload:any){
        
       }
     }
-    if(localStorage.getItem('stepTwoStats') === 'true'){
+    if(localStorage.getItem('stepTwoStats') === 'true' || localStorage.getItem('stepTwoStats') === null){
       localStorage.setItem('stepTwoStats',`${allControlsFilled}`);
     }
     this.fcffDetails.emit(payload);
