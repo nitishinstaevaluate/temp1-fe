@@ -80,7 +80,8 @@ export const ALL_MODELS = {
   Relative_Valuation:'Comparable Companies',
   CTM:'Comparable Transaction',
   NAV:'Net Asset Value',
-  Market_Price:'Market Price'
+  Market_Price:'Market Price',
+  Excess_Earnings:"Excess Earning"
 }
 
   export const GLOBAL_VALUES = {
