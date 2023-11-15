@@ -53,6 +53,8 @@ this.dataSourceNav =[navData].map((response:any)=>{
   return obj;
 })
 this.dataSourceNav=this.dataSourceNav[0];
+this.dataSourceNav.splice(this.dataSourceNav.findIndex((item:any) => item?.fieldName === 'Net Current Assets'),0,{fieldName:''})
+this.dataSourceNav.splice(this.dataSourceNav.findIndex((item:any) => item?.fieldName === 'Firm Value'),0,{fieldName:''})
 }
 ngOnInit(): void {}
 

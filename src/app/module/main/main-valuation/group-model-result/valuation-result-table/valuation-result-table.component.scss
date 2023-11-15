@@ -93,7 +93,7 @@
   td {
     padding: 8px;
     text-align: left;
-    border: 1px solid #ddd;
+    // border: 1px solid #ddd;
   }
   tr:nth-child(even) {
     background-color: #f5f5f5;
@@ -110,41 +110,59 @@
   .nav-tr:hover td {
     background-color: rgb(168 242 241 / 26%);
   }
-  .make-bold{
-    font-weight: 500;
-    text-transform: capitalize;
-    border-color:  1px solid #ddd !important;
-  }
-  .make-light{
-    font-weight: 400;
-    border-color: 1px solid #ddd !important;
-  }
   .nav-style-header{
-    font-weight: 600;
-    text-transform: capitalize;
-    border-color:  1px solid #ddd !important;
-    font-size: 15px;
-    color: #004e67 !important;
-    font-family: 'AR One Sans';
-    text-align: center;
+    // font-weight: 600;
+    // text-transform: capitalize;
+    // border-color:  1px solid #ddd !important;
+    // font-size: 15px;
+    // color: #004e67 !important;
+    // font-family: 'AR One Sans';
+    // text-align: center;
+    color: #666666 !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    // min-width:30% ;
+    // font-family: 'Raleway', sans-serif !important;
+    font-family: 'AR One Sans', sans-serif !important;
+    // background: linear-gradient(90deg, #c7ece4, #dbffff);
+    // justify-content: left;
+    padding-left: 3% !important;
+    text-align: left;
   }
   .nav-style-sub-header{
-    font-weight: 600;
-    text-transform: capitalize;
-    border-color:  1px solid #ddd !important;
-    font-size: 14px;
-    font-family: 'Open Sans', sans-serif;
-    color: #1c6e8f;
-    text-align: center;
+    // font-weight: 600;
+    // text-transform: capitalize;
+    // border-color:  1px solid #ddd !important;
+    // font-size: 14px;
+    // font-family: 'Open Sans', sans-serif;
+    // color: #1c6e8f;
+    // text-align: left;
+    // padding-left: 3% !important;
+
+    color: #666666 !important;
+    font-size: 13px !important;
+    font-weight: 500;
+    // font-family: 'Raleway', sans-serif !important;
+    font-family: 'AR One Sans', sans-serif !important;
+    text-align: left;
+    padding-left: 4% !important;
   }
   .nav-style-sub-text{
-    font-weight: 600;
-    text-transform: capitalize;
-    border-color:  1px solid #ddd !important;
-    font-size: 14px;
-    font-family: 'Titillium Web', sans-serif;
-    color: #1c6e8f;
-    text-align: center;
+    // font-weight: 600;
+    // text-transform: capitalize;
+    // border-color:  1px solid #ddd !important;
+    // font-size: 14px;
+    // font-family: 'Titillium Web', sans-serif;
+    // color: #1c6e8f;
+    // text-align: center;
+    color: #666666 !important;
+    font-size: 13px !important;
+    font-weight: 500;
+    // font-family: 'Raleway', sans-serif !important;
+    font-family: 'AR One Sans', sans-serif !important;
+    text-align: left;
+    padding-left: 4% !important;
+    background-color: none !important;
   }
   .nav-th th{
     border: 1px solid #d1d1d1;
@@ -199,7 +217,7 @@
   
   td:empty {
     border: none;
-    background-color: #ffffff;
+    // background-color: #ffffff;
   }
 
   .model-btn {
@@ -208,12 +226,14 @@
   }
 
   .exp {
-    background-color: #0481dc;
+    background-color: #4b6df3;
     color: white;
-    border: 2px solid #007bff; /* Blue border */
-    font-size: 14px; /* Adjust font size */
-    border-radius: 5px; /* Rounded corners for a polished look */
-    cursor: pointer; /* Show a pointer cursor on hover */
+    border-radius: 12px;
+    cursor: pointer;
+    padding-left: 2%;
+    padding-right: 2%;
+    padding-top: 0%;
+    font-family: 'AR One Sans', sans-serif
   }
   .exp-a{
     font-size: 14px;
@@ -268,3 +288,82 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
+
+  // new scss starts
+  ::ng-deep .tab-group .mat-mdc-tab-header .mat-mdc-tab-label-container .mat-mdc-tab-list .mat-mdc-tab-labels .mdc-tab-indicator--active .mdc-tab-indicator  .mdc-tab-indicator__content--underline{
+    border: 2px solid #0cd18f;
+  }
+  ::ng-deep .tab-group .mat-mdc-tab-header .mat-mdc-tab-label-container .mat-mdc-tab-list .mat-mdc-tab-labels .mdc-tab-indicator--active .mdc-tab__content  .mdc-tab__text-label{
+    // color: #23c496 !important;
+    color: #27a682 !important;
+    font-weight: 500;
+  }
+  ::ng-deep .tab-group .mat-mdc-tab-header .mat-mdc-tab-label-container .mat-mdc-tab-list .mat-mdc-tab-labels .mat-mdc-focus-indicator .mdc-tab__content  .mdc-tab__text-label{
+    color: #2c2c2c;
+    font-family: 'AR One Sans', sans-serif !important;
+  }
+  ::ng-deep .tab-group .mat-mdc-tab-header .mat-mdc-tab-label-container .mat-mdc-tab-list .mat-mdc-tab-labels .mat-mdc-focus-indicator{
+    padding-left: 3%;
+    padding-right: 3%;
+  }
+  
+  .mat-tab-g{
+    position: relative;
+  }
+
+  .currency-unit{
+    font-size: 13px;
+    font-weight: 500;
+    color: #108274;
+    position: absolute;
+    top:1%;
+    right: 2%;
+    font-family: 'AR One Sans', sans-serif;
+  }
+
+  .header{
+    font-size: 13px;
+    font-weight: 500;
+    padding: 0px !important;
+    background-color: #e7faf4 !important;
+    color: #0f8a76 ;
+    th{
+      text-align: left;
+      padding-left: 2%;
+    }
+  }
+  .content{
+    height: 28px;
+    .make-bold{
+      color: #666666 !important;
+    font-size: 13px !important;
+    font-weight: 500;
+    font-family: 'AR One Sans', sans-serif !important;
+    padding-left: 2% !important;
+    text-align: left !important;
+    }
+
+    .make-light{
+      color: #666666 !important;
+    font-size: 13px !important;
+    font-weight: 500;
+    font-family: 'AR One Sans', sans-serif !important;
+    text-align: left !important;
+    padding-left: 2% !important;
+    }
+  }
+
+  .mat-tab-g{
+    position: relative;
+  }
+
+  .currency-unit{
+    font-size: 13px;
+    font-weight: 500;
+    color: #108274;
+    position: absolute;
+    top:2%;
+    right: 2%;
+    font-family: 'AR One Sans', sans-serif;
+  }
+  // new scss ends

@@ -1,9 +1,17 @@
 <!-- valuation results starts -->
-<div class="outer-wrapper">
-    <div class="mydiv" style="border-top: 1px solid #e3e3f7;border-bottom:1px solid #e3e3f7;">
-        <h4 class="card-header-2" style="border-top: none;">Valuation Results</h4>
-        <h4 class="card-header-2" style="margin-left: auto;">Valuation Date {{transferStepperthree?.formOneAndTwoData?.valuationDate | date:'MMM d, yyyy'}}</h4>
+<!-- <div class="mydiv" style="border-top: 1px solid #e3e3f7;border-bottom:1px solid #e3e3f7;">
+    <h4 class="card-header-2" style="border-top: none;">Valuation Results</h4>
+    <h4 class="card-header-2" style="margin-left: auto;">Valuation Date {{transferStepperthree?.formOneAndTwoData?.valuationDate | date:'MMM d, yyyy'}}</h4>
+</div> -->
+
+<div class='c-decorated-header'>
+    <h3><span style="padding-left: 2%;">Valuation Results</span></h3>
+    <div class='c-decorated-header_link-view-more'>
+      <a ><span>Valuation Date {{transferStepperthree?.formOneAndTwoData?.valuationDate | date:'MMM d, yyyy'}}</span></a>
     </div>
+  </div>
+<div class="outer-wrapper">
+<div>
     <!-- <h4 class="card-header">Valuations Results</h4> -->
    <div >
     <app-valuation-result-table [transferStepperthree]="transferStepperthree"></app-valuation-result-table>
@@ -12,17 +20,22 @@
 <!-- valuation results ends -->
 
 <!-- modal weightage starts -->
-<div class="outer-wrapper" style="padding-top: 3%;" *ngIf="transferStepperthree?.formOneAndTwoData?.model.length > 1">
-    <h4 class="card-header" >Model Weightage</h4>
-    <div class="container">
-        <div class="row">
-            <!-- Comparable Industries slider -->
-            <div class="col-md-6 text-left mt-4" style="border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('CTM')">
-                <p style="font-weight: 500;font-size: 17px;margin-bottom: 0px;">Comparable Industries</p>
+<div *ngIf="transferStepperthree?.formOneAndTwoData?.model.length > 1">
+    <!-- <h4 class="card-header" >Model Weightage</h4> -->
+    <div class='c-decorated-header'>
+        <h3><span style="padding-left: 2%;color: #868686;">Model Weightage</span></h3>
+        <div class='c-decorated-header_link-view-more'>
+        </div>
+      </div>
+    <div class="container" >
+        <!-- Comparable Industries slider -->
+        <div class="row" *ngIf="checkModel('CTM')">
+            <div class="col-md-6 text-left mt-4" style="border-bottom:1px  solid #d6d0d0;">
+                <p class="slider-label">Comparable Industries</p>
             </div>
-            <div class="col-md-6" style="text-align: right;border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('CTM')">
+            <div class="col-md-6 t-right" style="text-align: right;border-bottom:1px  solid #d6d0d0;">
                 <div class="row">
-                    <div class="col-md-11">
+                    <div class="col-md-10">
                         <mat-slider
                             class="example-margin mat-accent"
                             [disabled]="'false'"
@@ -31,28 +44,30 @@
                             [step]="'1'"
                             [discrete]="'false'"
                             [showTickMarks]="'false'"
-                            style="width: 50%;"
+                            style="width: 63%;"
                             (input)="modelWeightageSlider($event,'CTM',comparableIndustryMaxValue,comparableIndustrySlider)">
                             <input [(ngModel)]="comparableIndustrySlider" matSliderThumb>
                         </mat-slider>
                     </div>
-                    <div class="col-md-1" style="margin-top: auto;margin-bottom: auto;">
-                        <span class="fcfe-slider" >{{comparableIndustrySlider}}</span>
+                    <div class="col-md-2" style="margin-top: auto;margin-bottom: auto;text-align: left;">
+                        <span class="slider-style">{{comparableIndustrySlider}}</span>
                     </div>
                 </div>
                 
 
             </div>
+        </div>
+
 
             <!-- Excess earning slider -->
+            <div class="row" *ngIf="checkModel('Excess_Earnings')">
             <hr class="weight-hr">
-            
-            <div class="col-md-6 text-left mt-4" style="border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('Excess_Earnings')">
+            <div class="col-md-6 text-left mt-4" style="border-bottom:1px  solid #d6d0d0;">
                 <p style="font-weight: 500;font-size: 17px;margin-bottom: 0px;">Excess Earning</p>
             </div>
-            <div class="col-md-6" style="text-align: right;border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('Excess_Earnings')">
+            <div class="col-md-6" style="text-align: right;border-bottom:1px  solid #d6d0d0;">
                 <div class="row">
-                    <div class="col-md-11">
+                    <div class="col-md-10">
                         <mat-slider
                         class="example-margin mat-accent"
                         [disabled]="'false'"
@@ -66,22 +81,23 @@
                         <input [(ngModel)]="excessEarnSlider" matSliderThumb>
                     </mat-slider>
                     </div>
-                    <div class="col-md-1" style="margin-top: auto;margin-bottom: auto;">
-                        <span class="excessEarn-slider" >{{excessEarnSlider}}</span>
+                    <div class="col-md-2" style="margin-top: auto;margin-bottom: auto;text-align: left;">
+                        <span class="slider-style" >{{excessEarnSlider}}</span>
                     </div>
                 </div>
                 
             </div>
-
+        </div>
 
             <!-- FCFE slider -->
-            <hr class="weight-hr">
-            <div class="col-md-6 text-left mt-4" style="border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('FCFE')">
-                <p style="font-weight: 500;font-size: 17px;margin-bottom: 0px;">FCFE</p>
+            <div class="row" *ngIf="checkModel('FCFE')">
+                <hr class="weight-hr">
+            <div class="col-md-6 text-left mt-4" style="border-bottom:1px  solid #d6d0d0;">
+                <p class="slider-label">FCFE</p>
             </div>
-            <div class="col-md-6" style="text-align: right;border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('FCFE')">
+            <div class="col-md-6 t-right" style="text-align: right;border-bottom:1px  solid #d6d0d0;">
                 <div class="row">
-                    <div class="col-md-11">
+                    <div class="col-md-10">
                         <mat-slider
                         class="example-margin mat-accent"
                         [disabled]="'false'"
@@ -89,26 +105,29 @@
                         [min]="'0'"
                         [step]="'1'"
                         [discrete]="'false'"
+                        [disableRipple]="true"
                         [showTickMarks]="'false'"
                         style="width: 50%;"
                         (input)="modelWeightageSlider($event,'FCFE',fcfeMaxValue,fcfeSlider)">
                         <input [(ngModel)]="fcfeSlider" matSliderThumb>
                     </mat-slider>
                     </div>
-                    <div class="col-md-1" style="margin-top: auto;margin-bottom: auto;">
-                        <span class="fcfe-slider" >{{fcfeSlider}}</span>
+                    <div class="col-md-2" style="margin-top: auto;margin-bottom: auto;text-align: left;">
+                        <span class="slider-style">{{fcfeSlider}}</span>
                     </div>
                 </div>
                 
             </div>
+        </div>
+        
+        <div class="row" *ngIf="checkModel('FCFF')">
             <hr class="weight-hr">
-    
-            <div class="col-md-6 text-left mt-4" style="border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('FCFF')">
+            <div class="col-md-6 text-left mt-4" style="border-bottom:1px  solid #d6d0d0;">
                 <p style="font-weight: 500;font-size: 17px;margin-bottom: 0px;">FCFF</p>
             </div>
-            <div class="col-md-6" style="text-align: right;border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('FCFF')">
+            <div class="col-md-6 t-right" style="text-align: right;border-bottom:1px  solid #d6d0d0;">
                 <div class="row">
-                    <div class="col-md-11">
+                    <div class="col-md-10">
                         <mat-slider
                             class="example-margin mat-accent"
                             [disabled]="'false'"
@@ -122,20 +141,21 @@
                             <input [(ngModel)]="fcffSlider" matSliderThumb>
                         </mat-slider>
                     </div>
-                    <div class="col-md-1" style="margin-top: auto;margin-bottom: auto;">
-                        <span class="fcfe-slider" >{{fcffSlider}}</span>
+                    <div class="col-md-2" style="margin-top: auto;margin-bottom: auto;text-align: left;">
+                        <span class="slider-style" >{{fcffSlider}}</span>
                     </div>
                 </div>
             </div>
-
+        </div>
             <!-- Net Asset Value -->
-            <hr class="weight-hr">
-            <div class="col-md-6 text-left mt-4" style="border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('NAV')">
-                <p style="font-weight: 500;font-size: 17px;margin-bottom: 0px;">Net Asset value</p>
+            <div class="row" *ngIf="checkModel('NAV')">    
+                <hr class="weight-hr">
+            <div class="col-md-6 text-left mt-4" style="border-bottom:1px  solid #d6d0d0;">
+                <p class="slider-label">Net Asset value</p>
             </div>
-            <div class="col-md-6" style="text-align: right;border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('NAV')">
+            <div class="col-md-6 t-right" style="text-align: right;border-bottom:1px  solid #d6d0d0;">
                 <div class="row">
-                    <div class="col-md-11">
+                    <div class="col-md-10">
                         <mat-slider
                         class="example-margin mat-accent"
                         [disabled]="'false'"
@@ -143,28 +163,30 @@
                         [min]="'0'"
                         [step]="'1'"
                         [discrete]="'false'"
+                        [disableRipple]="true"
                         [showTickMarks]="'false'"
                         style="width: 50%;"
                         (input)="modelWeightageSlider($event,'NAV',navMaxValue,navSlider)">
                         <input [(ngModel)]="navSlider" matSliderThumb>
                     </mat-slider>
                     </div>
-                    <div class="col-md-1" style="margin-top: auto;margin-bottom: auto;">
-                        <span class="excessEarn-slider" >{{navSlider}}</span>
+                    <div class="col-md-2" style="margin-top: auto;margin-bottom: auto;text-align: left;">
+                        <span class="slider-style">{{navSlider}}</span>
                     </div>
                 </div>
                 
             </div>
-
+        </div>
             <!-- Relative Valuation slider -->
-            <hr class="weight-hr">
-    
-            <div class="col-md-6 text-left mt-4" style="border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('Relative_Valuation')">
+            
+            <div class="row" *ngIf="checkModel('Relative_Valuation')">
+                <hr class="weight-hr">
+            <div class="col-md-6 text-left mt-4" style="border-bottom:1px  solid #d6d0d0;">
                 <p style="font-weight: 500;font-size: 17px;margin-bottom: 0px;">Comparable Companies</p>
             </div>
-            <div class="col-md-6" style="text-align: right;border-bottom:1px  solid #d6d0d0;" *ngIf="checkModel('Relative_Valuation')">
+            <div class="col-md-6" style="text-align: right;border-bottom:1px  solid #d6d0d0;">
                 <div class="row">
-                    <div class="col-md-11">
+                    <div class="col-md-10">
                         <mat-slider
                             class="example-margin mat-accent"
                             [disabled]="'false'"
@@ -178,25 +200,31 @@
                             <input [(ngModel)]="relativeValSlider" matSliderThumb>
                         </mat-slider>
                     </div>
-                    <div class="col-md-1" style="margin-top: auto;margin-bottom: auto;">
-                        <span class="fcfe-slider" >{{relativeValSlider}}</span>
+                    <div class="col-md-2" style="margin-top: auto;margin-bottom: auto;text-align: left;">
+                        <span class="slider-style">{{relativeValSlider}}</span>
                     </div>
                 </div>
                 
 
             </div>
-            <hr class="weight-hr">
         </div>
+            <!-- <hr class="weight-hr"> -->
+        
     </div>
 </div>
 <!-- modal weightage ends -->
 
 <!-- Model Weigtage Result starts -->
-<div class="outer-wrapper" style="padding-top: 3%;" *ngIf="data">
-    <h4 class="card-header" >Model Weightage Result</h4>
+<div *ngIf="data" style="padding-top: 2%;">
+    <!-- <h4 class="card-header" >Model Weightage Result</h4> -->
+    <div class='c-decorated-header-model-weightage-table'>
+        <h3><span style="padding-left: 2%;color: #868686;font-weight: 400;" >Model Weightage Result</span></h3>
+        <div class='c-decorated-header_link-view-more'>
+        </div>
+      </div>
     <table>
         <thead>
-          <tr>
+          <tr class="header">
             <th>Model</th>
             <th>Indicated Value</th>
             <th>Weight</th>
@@ -204,31 +232,33 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of data">
-            <td style="text-transform: capitalize;">{{ item.model === 'Relative_Valuation' ? 'Comparable Companies' : item.model === 'CTM' ? 'Comparable Industries'  : item.model }}</td>
-            <td>{{ item.indicatedValue | currency:'INR':'symbol':'1.0-2' }}</td>
-            <td>{{ item.weight | percent:'1.0-2' }}</td>
-            <td>{{ item.weightedValue | currency:'INR':'symbol':'1.0-2' }}</td>
+          <tr *ngFor="let item of data" class="content">
+            <td class="make-bold">{{ item.model === 'Relative_Valuation' ? 'Comparable Companies' : item.model === 'CTM' ? 'Comparable Industries'  : item.model }}</td>
+            <td class="make-light">{{ item.indicatedValue | currency:'INR':'symbol':'1.0-2' }}</td>
+            <td class="make-light">{{ item.weight | percent:'1.0-2' }}</td>
+            <td class="make-light">{{ item.weightedValue | currency:'INR':'symbol':'1.0-2' }}</td>
           </tr>
-          <tr>
-            <td colspan="3" class="bottom-head">Weighted Average Value</td>
-            <td class="bottom-val">{{ finalWeightedValue !==0 && finalWeightedValue ? (finalWeightedValue.toFixed(2) | currency:'INR':'symbol':'1.0-2') : finalWeightedValue }}</td>
+          <tr class="content">
+            <td colspan="3" class="bottom-head make-blue">Weighted Average Value</td>
+            <td class="bottom-val make-light">{{ finalWeightedValue !==0 && finalWeightedValue ? (finalWeightedValue.toFixed(2) | currency:'INR':'symbol':'1.0-2') : finalWeightedValue }}</td>
           </tr>
         </tbody>
       </table>
 </div>
 <!-- Model Weigtage Result ends -->
 
-<div class="text-center" style="padding-bottom: 1%;padding-top: 1%;">
-    <button (click)="previous()" mat-raised-button style="box-shadow: 1px 2px 15px #d1d1d1;color:#bb0d0d;font-weight: bold !important;margin-right: 1%;">
+<div class="col-md-12 btn-prop">
+    <button (click)="previous()" mat-raised-button class="prev-button">
         Back
-        <mat-icon style="font-weight: bold;color: #d42121;">arrow_left</mat-icon>
+        <mat-icon>arrow_left</mat-icon>
     </button>
-    <button style="box-shadow: 1px 2px 15px #d1d1d1;color:#228822;margin-right: 1%" (click)="saveAndNext()"  mat-raised-button>
-        Submit
-        <mat-icon style="font-weight: bold;color: green;">send</mat-icon>
+
+<button (click)="saveAndNext()" class="button-save-mat" mat-raised-button>
+    Next
+    <span class="button-save"><mat-icon>send</mat-icon></span>
         <!-- <a [href]="'https://localhost:3000/upload/generate/' + (transferStepperthree?.formThreeData?.appData?.reportId || 'null') +'/null/' + 'false'" download style="color:#228822;">Submit</a> -->
-    </button>
+ </button>
+</div>
 </div>
 
 <div class="loader-overlay" *ngIf="isLoader">
