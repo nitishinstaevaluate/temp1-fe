@@ -69,10 +69,10 @@
                 <div class="tab-container">
                   <div class="tab-element" [ngClass]="{ 'active': next === 1 }" *ngIf="ifModelExist('FCFE',formOneData?.model)">Free Cash Flow To Equity</div>
                   <div class="tab-element" [ngClass]="{ 'active': next === 2 }" *ngIf="ifModelExist('FCFF',formOneData?.model)">Free Cash Flow To Firm</div>
-                  <div class="tab-element" [ngClass]="{ 'active': next === 3 }" *ngIf="ifModelExist('Relative_Valuation',formOneData?.model)">Comparable Companies</div>
                   <div class="tab-element" [ngClass]="{ 'active': next === 4 }" *ngIf="ifModelExist('Excess_Earnings',formOneData?.model)">Excess Earning</div>
-                  <div class="tab-element" [ngClass]="{ 'active': next === 5 }" *ngIf="ifModelExist('CTM',formOneData?.model)">Comparable Industries</div>
                   <div class="tab-element" [ngClass]="{ 'active': next === 6 }" *ngIf="ifModelExist('NAV',formOneData?.model)">Net Asset Value</div>
+                  <div class="tab-element" [ngClass]="{ 'active': next === 3 }" *ngIf="ifModelExist('Relative_Valuation',formOneData?.model)">Comparable Companies</div>
+                  <div class="tab-element" [ngClass]="{ 'active': next === 5 }" *ngIf="ifModelExist('CTM',formOneData?.model)">Comparable Industries</div>
                   <!-- Add more tab elements as needed -->
                 </div>
                 

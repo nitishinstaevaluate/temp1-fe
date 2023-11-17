@@ -416,7 +416,7 @@ isSelectedpreferenceRatio(value:any){
     if(this.subIndustries.length <= 0){
       delete control.subIndustry;
     }
-    const modelsNotRequireProjection = isSelected('NAV', this.modelValuation.controls['model'].value) || isSelected('CTM', this.modelValuation.controls['model'].value) || isSelected('CCM', this.modelValuation.controls['model'].value)
+    const modelsNotRequireProjection = isSelected('NAV', this.modelValuation.controls['model'].value) || isSelected('CTM', this.modelValuation.controls['model'].value) || isSelected('Relative_Valuation', this.modelValuation.controls['model'].value)
     const mmodelsRequireProjection = isSelected('FCFE', this.modelValuation.controls['model'].value) || isSelected('FCFF', this.modelValuation.controls['model'].value) || isSelected('Excess_Earnings', this.modelValuation.controls['model'].value)
     if (modelsNotRequireProjection && this.modelValuation.controls['model'].value.length === 1) {
       delete control.projectionYearSelect
@@ -586,7 +586,7 @@ isSelectedpreferenceRatio(value:any){
         this.modelValuation.controls['excelSheetId'].setValue(result?.excelSheetId); 
         this.fileName = result?.fileName; 
         
-        this.snackBar.open('Valuaion models are added successfully','OK',{
+        this.snackBar.open('Valuation models are added successfully','OK',{
           horizontalPosition: 'right',
           verticalPosition: 'top',
           duration: 3000,
