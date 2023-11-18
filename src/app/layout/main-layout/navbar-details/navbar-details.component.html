@@ -1,7 +1,10 @@
-<div class="container" style="padding-left: 0px;padding-right: 0px;">
+<div class="container" style="padding-left: 0px;padding-right: 0px;position: relative;">
     <!-- <div class="col-xl-12"> -->
-      <div class="pipe"></div>
-      <div [ngClass]="selectedMenuItem === 5 ? 'pipe-5' : selectedMenuItem === 4 ? 'pipe-4' : selectedMenuItem ===3 ? 'pipe-3' : selectedMenuItem === 2 ? 'pipe-2' : 'pipe-1'"></div>
+      <div id='progress-bar'>
+      </div>
+      <div [ngClass]="selectedMenuItem === 5 ? 'pipe-new-5' : selectedMenuItem === 4 ? 'pipe-new-4' : selectedMenuItem ===3 ? 'pipe-new-3' : selectedMenuItem === 2 ? 'pipe-new-2' : 'pipe-new-1'"></div>
+      <!-- <div class="pipe"></div>
+      <div [ngClass]="selectedMenuItem === 5 ? 'pipe-5' : selectedMenuItem === 4 ? 'pipe-4' : selectedMenuItem ===3 ? 'pipe-3' : selectedMenuItem === 2 ? 'pipe-2' : 'pipe-1'"></div> -->
       <div class="main-sidemenu" style="padding-left: 18%;margin-top: 0px;">
         <ul class="side-menu">
           <li class="slide">

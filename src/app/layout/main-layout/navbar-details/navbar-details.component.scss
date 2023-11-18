@@ -205,4 +205,72 @@
             transition: color 0.3s;
         }
       }
+
+    #progress-bar {
+        position: absolute;
+        height: 443px;
+        width: 36px;
+        background: linear-gradient(to bottom, #8586854a 99.9%, transparent 99.9%), radial-gradient(circle at 50% 50%, #868585ad  7%, transparent 7%);
+        background-position: 48% 0%, 48% 58px;
+        background-repeat: no-repeat, repeat-y;
+        background-size: 2px 100%, 17px 109px;
+        top: 8%;
+    }
+
+    .pipe-new-2{
+        height: 115.8px;
+        position: absolute;
+        width: 36px;
+        background: linear-gradient(to bottom, #0CCE8D 99.9%, transparent 99.9%), radial-gradient(circle at 50% 50%, #0CCE8D 7%, transparent 7%);
+        background-position: 48% 0%, 48% 58px;
+        background-repeat: no-repeat, repeat-y;
+        z-index: 1;
+        background-size: 2px 100%, 17px 109px;
+        top: 8%;
+    }
+    .pipe-new-1{
+        height: 8.8px;
+        position: absolute;
+        width: 36px;
+        background: linear-gradient(to bottom, #0CCE8D 99.9%, transparent 99.9%), radial-gradient(circle at 50% 50%, #0CCE8D 7%, transparent 7%);
+        background-position: 48% 0%, 48% 58px;
+        background-repeat: no-repeat, repeat-y;
+        z-index: 1;
+        background-size: 2px 100%, 17px 109px;
+        top: 8%;
+    }
+    .pipe-new-3{
+        height: 225.8px;
+        position: absolute;
+        width: 36px;
+        background: linear-gradient(to bottom, #0CCE8D 99.9%, transparent 99.9%), radial-gradient(circle at 50% 50%, #0CCE8D 7%, transparent 7%);
+        background-position: 48% 0%, 48% 58px;
+        background-repeat: no-repeat, repeat-y;
+        z-index: 1;
+        background-size: 2px 100%, 17px 109px;
+        top: 8%;
+    }
+    .pipe-new-4{
+        height: 334.8px;
+        position: absolute;
+        width: 36px;
+        background: linear-gradient(to bottom, #0CCE8D 99.9%, transparent 99.9%), radial-gradient(circle at 50% 50%, #0CCE8D 7%, transparent 7%);
+        background-position: 48% 0%, 48% 58px;
+        background-repeat: no-repeat, repeat-y;
+        z-index: 1;
+        background-size: 2px 100%, 17px 109px;
+        top: 8%;
+    }
+    .pipe-new-5{
+        height: 443px;
+        position: absolute;
+        width: 36px;
+        background: linear-gradient(to bottom, #0CCE8D 99.9%, transparent 99.9%), radial-gradient(circle at 50% 50%, #0CCE8D 7%, transparent 7%);
+        background-position: 48% 0%, 48% 58px; 
+        background-repeat: no-repeat, repeat-y;
+        z-index: 1;
+        background-size: 2px 100%, 17px 109px;
+        top: 8%;
+    }
+    
       
