@@ -100,7 +100,7 @@ loadOnChangeValue(){
           if (result) {
             this.fcfeForm.controls['expMarketReturn'].patchValue(parseInt(result?.analystConsensusEstimates))
             this.snackBar.open('Analyst Estimation Added','OK',{
-              horizontalPosition: 'center',
+              horizontalPosition: 'right',
               verticalPosition: 'top',
               duration: 3000,
               panelClass: 'app-notification-success'
@@ -108,7 +108,7 @@ loadOnChangeValue(){
           } else {
             this.fcfeForm.controls['expMarketReturnType'].reset();
             this.snackBar.open('Expected Market Return Not Saved','OK',{
-              horizontalPosition: 'center',
+              horizontalPosition: 'right',
               verticalPosition: 'top',
               duration: 3000,
               panelClass: 'app-notification-error'
@@ -254,7 +254,7 @@ onSlideToggleChange(event: any) {
         this.fcfeForm.controls['riskPremium'].setValue(summationQualitativeAnalysis);
         this.fcfeForm.controls['riskPremium'].markAsUntouched();
         this.snackBar.open('Specific Risk Premium is added', 'OK', {
-          horizontalPosition: 'center',
+          horizontalPosition: 'right',
           verticalPosition: 'top',
           duration: 3000,
           panelClass: 'app-notification-success',
@@ -263,7 +263,7 @@ onSlideToggleChange(event: any) {
       } else {
         this.specificRiskPremiumModalForm.reset();
         this.snackBar.open('Specific Risk Premium not saved', 'OK', {
-          horizontalPosition: 'center',
+          horizontalPosition: 'right',
           verticalPosition: 'top',
           duration: 3000,
           panelClass: 'app-notification-error',

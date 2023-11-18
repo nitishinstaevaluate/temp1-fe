@@ -108,7 +108,7 @@ loadOnChangeValue(){
           if (result) {
             this.fcffForm.controls['expMarketReturn'].patchValue(parseInt(result?.analystConsensusEstimates))
             this.snackBar.open('Analyst Estimation Added','OK',{
-              horizontalPosition: 'center',
+              horizontalPosition: 'right',
               verticalPosition: 'top',
               duration: 3000,
               panelClass: 'app-notification-success'
@@ -116,7 +116,7 @@ loadOnChangeValue(){
           } else {
             this.fcffForm.controls['expMarketReturnType'].reset();
             this.snackBar.open('Expected Market Return Not Saved','OK',{
-              horizontalPosition: 'center',
+              horizontalPosition: 'right',
               verticalPosition: 'top',
               duration: 3000,
               panelClass: 'app-notification-error'
@@ -183,7 +183,7 @@ loadOnChangeValue(){
             this.totalCapital = +this.targetCapitalStructureForm.controls['totalCapital'].value;
 
             this.snackBar.open('Target Capital Structure saved','Ok',{
-              horizontalPosition: 'center',
+              horizontalPosition: 'right',
               verticalPosition: 'top',
               duration: 3000,
               panelClass: 'app-notification-success'
@@ -195,7 +195,7 @@ loadOnChangeValue(){
             this.fcffForm.controls['capitalStructureType'].reset();
 
             this.snackBar.open('Target Capital Structure Not Saved','OK',{
-              horizontalPosition: 'center',
+              horizontalPosition: 'right',
               verticalPosition: 'top',
               duration: 3000,
               panelClass: 'app-notification-error'
@@ -342,7 +342,7 @@ onSlideToggleChange(event:any){
         this.fcffForm.controls['riskPremium'].markAsUntouched();
 
       this.snackBar.open('Specific Risk Premium is added','OK',{
-        horizontalPosition: 'center',
+        horizontalPosition: 'right',
         verticalPosition: 'top',
         duration: 3000,
         panelClass: 'app-notification-success'
@@ -351,7 +351,7 @@ onSlideToggleChange(event:any){
     } else {
       this.specificRiskPremiumModalForm.reset();
       this.snackBar.open('Specific Risk Premium not saved','OK',{
-        horizontalPosition: 'center',
+        horizontalPosition: 'right',
         verticalPosition: 'top',
         duration: 3000,
         panelClass: 'app-notification-error'

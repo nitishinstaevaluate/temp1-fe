@@ -530,7 +530,7 @@ isSelectedpreferenceRatio(value:any){
         this.taxRateModelBox=result?.taxRate;
         this.modelValuation.controls['taxRate'].patchValue(result?.taxRate);
         this.snackBar.open('Tax Rate Saved Successfully','OK',{
-          horizontalPosition: 'center',
+          horizontalPosition: 'right',
           verticalPosition: 'top',
           duration: 3000,
           panelClass: 'app-notification-success'
@@ -539,9 +539,9 @@ isSelectedpreferenceRatio(value:any){
         this.modelValuation.controls['taxRateType'].setValue('25.17');
         this.taxRateModelBox='25.17'
         this.snackBar.open('Tax Rate Not Saved','OK',{
-          horizontalPosition: 'center',
+          horizontalPosition: 'right',
           verticalPosition: 'top',
-          duration: 3000,
+          // duration: 3000,
           panelClass: 'app-notification-error'
         })
       }

@@ -114,7 +114,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
           if (reportData instanceof Blob) {
             this.isLoading=false;
             this.snackBar.open('Report generated successfully', 'OK', {
-              horizontalPosition: 'center',
+              horizontalPosition: 'right',
               verticalPosition: 'top',
               duration: 2000,
               panelClass: 'app-notification-success',
@@ -127,7 +127,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
         (error)=>{
           this.isLoading=false;
           this.snackBar.open('Something went wrong', 'OK', {
-            horizontalPosition: 'center',
+            horizontalPosition: 'right',
             verticalPosition: 'top',
             duration: 2000,
             panelClass: 'app-notification-error',
@@ -138,7 +138,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     (error)=>{
       this.isLoading = false;
       this.snackBar.open('Something went wrong', 'OK', {
-        horizontalPosition: 'center',
+        horizontalPosition: 'right',
         verticalPosition: 'top',
         duration: 2000,
         panelClass: 'app-notification-error',
@@ -203,7 +203,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
         (error)=>{
           this.isLoading=false;
           this.snackBar.open('Something went wrong', 'OK', {
-            horizontalPosition: 'center',
+            horizontalPosition: 'right',
             verticalPosition: 'top',
             duration: 2000,
             panelClass: 'app-notification-error',
@@ -214,7 +214,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     (error)=>{
       this.isLoading = false;
       this.snackBar.open('Something went wrong', 'OK', {
-        horizontalPosition: 'center',
+        horizontalPosition: 'right',
         verticalPosition: 'top',
         duration: 2000,
         panelClass: 'app-notification-error',
@@ -252,7 +252,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
           this.registeredValuerDetails.patchValue(result);
           this.reportForm.controls['useExistingValuer'].setValue(true);
           this.snackBar.open('Valuer added successfully', 'OK', {
-            horizontalPosition: 'center',
+            horizontalPosition: 'right',
             verticalPosition: 'top',
             duration: 3000,
             panelClass: 'app-notification-success',
@@ -261,7 +261,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
           this.registeredValuerDetails.reset();
           this.reportForm.controls['useExistingValuer'].reset();
           this.snackBar.open('Valuer was not added', 'OK', {
-            horizontalPosition: 'center',
+            horizontalPosition: 'right',
             verticalPosition: 'top',
             duration: 3000,
             panelClass: 'app-notification-error',
@@ -285,7 +285,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
           this.registeredValuerDetails.patchValue(result);
           this.reportForm.controls['useExistingValuer'].setValue(true);
           this.snackBar.open('Valuer added successfully', 'OK', {
-            horizontalPosition: 'center',
+            horizontalPosition: 'right',
             verticalPosition: 'top',
             duration: 3000,
             panelClass: 'app-notification-success',

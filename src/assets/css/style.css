@@ -865,20 +865,6 @@ html {
     overflow-y: scroll;
     position: relative;
 } */
-.mat-mdc-snack-bar-container {
-    --mat-mdc-snack-bar-button-color: #f23a2f;
-    
-    &.app-notification-error {
-        --mdc-snackbar-supporting-text-color: red;
-        --mdc-snackbar-container-color: #fff;
-    }
-    
-    &.app-notification-success {
-        --mdc-snackbar-supporting-text-color: #21b053;
-        --mdc-snackbar-container-color: #fff;
-    }
-    
-  }
   .mdc-tooltip__surface {
     background-color:#eeeeee !important;
     color:#004e67 !important;
