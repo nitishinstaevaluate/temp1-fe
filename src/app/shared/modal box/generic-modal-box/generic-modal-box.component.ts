@@ -26,7 +26,16 @@ export class GenericModalBoxComponent implements OnInit {
   companySize: FormControl = new FormControl('');
   marketPosition: FormControl = new FormControl('');
   competition: FormControl = new FormControl('');
+
   taxRate: FormControl = new FormControl('');
+
+
+  registeredValuerName: FormControl = new FormControl('');
+  registeredValuerMobileNumber: FormControl = new FormControl('');
+  registeredValuerEmailId: FormControl = new FormControl('');
+  registeredValuerIbbiId: FormControl = new FormControl('');
+  registeredValuerGeneralAddress: FormControl = new FormControl('');
+  registeredValuerQualifications: FormControl = new FormControl('');
 
 label:string='';
 appValues= GLOBAL_VALUES;
@@ -90,12 +99,16 @@ async webViewer(){
 }
 
 loadModel(data:any){
+  console.log(data,"modal daat")
   if( data === this.appValues.Normal_Tax_Rate.value) return this.label = this.appValues.Normal_Tax_Rate.name;
   if( data === this.appValues.MAT_Rate.value) return this.label = this.appValues.MAT_Rate.name;
   if( data === this.appValues.ANALYST_CONSENSUS_ESTIMATES.value) return this.label = this.appValues.ANALYST_CONSENSUS_ESTIMATES.name;
   if( data === this.appValues.GOING_CONCERN.value) return this.label = this.appValues.GOING_CONCERN.name;
   if( data === this.appValues.SPECIFIC_RISK_PREMIUM.value) return this.label = this.appValues.SPECIFIC_RISK_PREMIUM.name;
-  if( data === this.appValues.REGISTERED_VALUER_DETAILS.value) return this.label = this.appValues.REGISTERED_VALUER_DETAILS.name;
+  if( data?.data?.value === this.appValues.REGISTERED_VALUER_DETAILS.value) {
+    this.patchValuerDetails(data.data);
+    return this.label = this.appValues.REGISTERED_VALUER_DETAILS.name;
+  }
   if( data === this.appValues.TARGET_CAPITAL_STRUCTURE.value) return this.label = this.appValues.TARGET_CAPITAL_STRUCTURE.name;
   if( data?.value === this.appValues.PREVIEW_DOC.value) return this.label = this.appValues.PREVIEW_DOC.name;
   if( data?.value === this.appValues.VALUATION_METHOD.value) {
@@ -364,17 +377,25 @@ get downloadTemplate() {
     }
   }
 
-  // updateSliderColor(event: any,maxValue:number) {
-  //   // const value = +(event.target as HTMLInputElement).value;
-  //   this.companyMaxValue = maxValue;
+  patchValuerDetails(data:any){
+    if(data?.registeredValuerName){
+      this.registeredValuerName.setValue(data.registeredValuerName);
+    }
+    if(data?.registeredValuerMobileNumber){
+      this.registeredValuerMobileNumber.setValue(data.registeredValuerMobileNumber);
+    }
+    if(data?.registeredValuerEmailId){
+      this.registeredValuerEmailId.setValue(data.registeredValuerEmailId);
+    }
+    if(data?.registeredValuerIbbiId){
+      this.registeredValuerIbbiId.setValue(data.registeredValuerIbbiId);
+    }
+    if(data?.registeredValuerGeneralAddress){
+      this.registeredValuerGeneralAddress.setValue(data.registeredValuerGeneralAddress);
+    }
+    if(data?.registeredValuerQualifications){
+      this.registeredValuerQualifications.setValue(data.registeredValuerQualifications);
+    }
 
-  //   // if (value < 20) {
-  //   //   this.sliderStyle = { 'background': 'linear-gradient(to right, red, yellow, green)' };
-  //   // } else if (value >= 20 && value < 55) {
-  //   //   this.sliderStyle = { 'background': 'linear-gradient(to right, yellow, green)' };
-  //   // } else {
-  //   //   this.sliderStyle = { 'background': 'linear-gradient(to right, green)' };
-  //   // }
-
-  // }
+  }
 }

@@ -1,13 +1,18 @@
 <div class="row">
   <div class="col">
-    <div class="card mt-4">
-      <h4 class="card-header">Activity</h4>
+    <div class="card" style="border-radius: 20px;background-color: #fcf8fe;">
+      <!-- <h4 class="card-header">Activity</h4> -->
+      <div class='c-decorated-header'>
+        <h3><span style="padding-left: 2%;">Activity</span></h3>
+        <div class='c-decorated-header_link-view-more'>
+        </div>
+      </div>
       <div class="card-body">
         <div class="row">
-          <div class="col">
-              <table class="table m-4">
-                <tr>
-                  <td *ngFor="let item of columnName">{{item}}</td>       
+          <div class="col" style="box-shadow: 1px 4px 8px #e2e2e2;padding-left: 0px;padding-right: 0px;">
+              <table class="table" >
+                <tr class="header">
+                  <th *ngFor="let item of columnName">{{item}}</th>       
                 </tr>
                 <tr *ngFor="let item of activity">
                   <td>{{ item.createdAt | date :"medium" }} </td>
@@ -22,7 +27,8 @@
               [pageSize]="pageSize"
               [pageSizeOptions]="pageSizeOptions"
               (page)="onPageChange($event)"
-              aria-label="Select page">
+              aria-label="Select page"
+              class="table-paginator">
               </mat-paginator>
               <!-- paginator section ends -->
           </div>

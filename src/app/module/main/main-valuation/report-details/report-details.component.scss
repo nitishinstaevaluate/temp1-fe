@@ -3,16 +3,22 @@
 
 .full-width-input {
     width: 100%; /* Set the width to 100% to occupy the full width of the container */
+    // height: 75px;
   }
   .col-md-6 mat-form-field{
     width: 100% !important;
+  }
+  .outer-wrapper{
+    box-shadow: 1px 2px 10px #cecece;
+    border-radius: 10px;
+    background-color: #ffffff;
   }
 
   .label{
     border-radius: 5px;
     font-family: 'AR One Sans', sans-serif;
     font-size: 17px;
-    color: #26879d;
+    color: #666666;
     padding-left: 2%;
     cursor: pointer;
     transition:color .3s;
@@ -24,32 +30,55 @@
     font-family: 'AR One Sans';
   }
   mat-label{
-    color:#38a3b8;
+    font-size: 1rem;
+    color: gray;
+    transform-origin: left top;
+    pointer-events: none;
+    font-family: 'AR One Sans', sans-serif;
+    font-weight: 500;
   }
+  ::ng-deep .mat-relative-val .mdc-text-field .mat-mdc-form-field-flex .mdc-notched-outline--notched .mdc-notched-outline__notch .mdc-floating-label--float-above {
+    // font-size: 20px !important;
+    // transform: scale(1);
+    position: absolute;
+    // font-size: 1rem;
+    left: 0;
+    top: -1%;
+    transform: translateY(-50%);
+    background-color: white;
+    color: gray;
+    padding: 0 0.3rem;
+    margin: 0 0.5rem;
+    transition: 0.1s ease-out;
+    transform-origin: left top;
+}
   .field{
     padding-left: 2.5%;
     padding-top: 0.5%;
     padding-right: 2.5%;
   }
 
-.card-header{
-    color: #1c6e8f;
-    border-top: 1px solid #e3e3f7;
-    font-size: 19px;
-    font-family: 'Poppins', sans-serif;
+  .card-header{
+    color: #4b6df3;
+    font-size: 17px;
+    font-weight: 500  ;
+    font-family: 'AR One Sans', sans-serif;
+    padding-left: 0px;
   }
 
   .card-title{
     font-size: 1.25rem;
-    color: #004e67 !important;
+    color: #777777 !important;
     font-family: 'AR One Sans';
     font-weight: 500;
+    padding-right: 1%;
   }
   .card-text{
     font-size: 1.1rem;
-    color: #1c6e8f !important;
+    color: #777777 !important;
     font-family: 'AR One Sans';
     font-weight: 500;
+    padding-left: 1%;
   }
 
 // keep this css
@@ -90,62 +119,6 @@
     padding-top: 0px !important;
     padding-bottom: 0px !important;
   }
-
-//risk premium card css
-.card-container {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.card-est {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 20px;
-  text-align: center;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s,box-shadow 0.2s, background-color 0.2s;
-  cursor: pointer;
-}
-
-.card-est:hover {
-  // transform: translateY(-5px);
-  box-shadow: 0px 4px 8px rgba(45, 45, 45, 0.6);
-  background-color: #f1f1f1;
-}
-
-.card-header-rp {
-  font-size: 19px;
-  font-weight: 500;
-  // font-family: 'Ubuntu', sans-serif;
-  font-family: 'AR One Sans';
-  border-top: 1px solid #e3e3f7;
-  color: #0075a3;
-  display: table-cell;
-}
-
-.card-subtext {
-  color: #0075a3;
-  height: 100%;
-  display: table-cell;
-  vertical-align: middle;
-  text-align: center;
-  font-size: 18px;
-  padding-top: 4%;
-  // font-family: 'Teko', sans-serif;
-  font-family: 'AR One Sans';
-  font-weight: 500;
-}
-
-.rp-p{
-  color: #089e94;
-  font-family: 'Oxygen', sans-serif;
-  font-size: 20px;
-  border-top: 1px solid #e3e3f7;
-  font-weight: 500;
-  padding-top: 2%;
-  padding-left: 1%;
-}
 
 // loader
 .loader-overlay {
@@ -239,3 +212,246 @@ tr:hover {
   transition: background-color 0.3s;
 }
 // table css ends
+
+
+// new scss starts
+// new css
+.outer-section{
+  box-shadow: 1px 2px 10px #cecece;
+  border-radius: 10px;
+  background-color: #ffffff;
+}
+
+.c-decorated-header {
+  position: relative;
+}
+
+.c-decorated-header h3 {
+  position: relative;
+  text-align: left;
+
+  font-family: 'AR One Sans', sans-serif;
+  font-size: 19px;
+  color: #666666;
+  cursor: pointer;
+}
+
+.c-decorated-header{
+  padding-top: 2%;
+}
+.c-decorated-header h3:after {
+  content: "";
+  height: 1px;
+  position: absolute;
+  right: 0;
+  left: 18.5%;
+  top: 20%;
+  bottom: 0;
+  margin: auto;
+  background: #e2e2e6;
+}
+
+.c-decorated-header h3 span {
+  position: relative;
+  font-size: 19px;
+  font-weight: 500;
+  font-stretch: condensed;
+}
+
+.c-decorated-header_link-view-more {
+  position: absolute;
+  top: 12px;
+  right: 40px;
+  font-size: 15px;
+  font-weight: 400;
+  font-family: 'AR One Sans', sans-serif;
+  color: #aaaaaa;
+  text-decoration: none;
+  background: #fcf8fe;;
+  padding: 5px;
+}
+
+
+.material-textfield {
+  position: relative;
+}
+
+label {
+  position: absolute;
+  font-size: 1rem;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: white;
+  color: gray;
+  padding: 0 0.3rem;
+  margin: 0 0.5rem;
+  transition: 0.1s ease-out;
+  transform-origin: left top;
+  pointer-events: none;
+  font-family: 'AR One Sans', sans-serif;
+  font-weight: 500;
+}
+
+.new-inp {
+  font-size: 1rem;
+  outline: none;
+  border: 1px solid #e4e4e4;
+  border-radius: 10px;
+  color: #6d6d6d;
+  transition: 0.1s ease-out;
+  font-family: 'AR One Sans', sans-serif;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  width: 100%;
+  padding-left: 2%;
+  box-shadow: 1px 2px 10px #f0ebeb;
+  height: 50px;
+}
+
+.new-inp:focus {
+  border-color: #6200ee;
+}
+
+.new-inp:focus+label {
+  color: #6200ee;
+  top: 3%;
+  transform: translateY(-50%) scale(0.8) !important;
+}
+
+.new-inp:not(:placeholder-shown)+label {
+  top: 3%;
+  transform: translateY(-50%) scale(0.8) !important;
+}
+
+.new-inp:not(:focus)::placeholder {
+  opacity: 0;
+}
+
+.button-save-mat{
+  box-shadow: 1px 2px 15px #d1d1d1;
+  color:#ffffff !important;
+  background-color: #0cd18f !important;
+  border-radius: 8px;
+  position: relative;
+  font-family: 'AR One Sans', sans-serif;
+  font-weight: 500;
+  width: 10%;
+}
+.button-save{
+  position: absolute;
+    left: 112%;
+    transform: scale(0.7);
+    top: -8%;
+    mat-icon{
+      font-weight: bold;
+      color: #ffffff;
+    }
+}
+.prev-button{
+  box-shadow: 1px 2px 15px #d1d1d1;
+  color:#ffffff !important;
+  font-weight: bold !important;
+  margin-right: 1%;
+  background-color: #fe6060 !important;
+  border-radius: 8px;
+  mat-icon{
+    font-weight: bold;
+    color: #ffffff !important;
+  }
+}
+
+.btn-prop{
+  text-align: right;
+  padding-bottom: 1%;
+  padding-top: 1%;
+  padding-right: 2%;
+}
+
+::ng-deep .example-margin {
+  --mdc-switch-selected-track-color:#0cd18f !important;
+}
+::ng-deep .example-margin .mdc-switch.mdc-switch--selected:enabled .mdc-switch__handle::after{
+  background: #6200ee !important;
+}
+::ng-deep .example-margin:hover {
+  background-color: transparent;
+  color: #0cd18f !important;    
+}
+::ng-deep .example-margin .mdc-switch.mdc-switch--selected .mdc-switch__handle-track .mdc-switch__handle{
+  width: 16px;
+  height: 16px;
+  left: 3px;
+}
+::ng-deep .example-margin .mdc-switch.mdc-switch--unselected .mdc-switch__handle-track .mdc-switch__handle{
+  width: 16px;
+  height: 16px;
+  right: 3px;
+}
+::ng-deep .example-margin .mdc-switch--selected .mdc-switch__icon--on, ::ng-deep .example-margin .mdc-switch--unselected .mdc-switch__icon--off{
+opacity: 0;
+}
+::ng-deep .example-margin .mdc-form-field .mat-button-focus-overlay{
+  outline:none !important;
+  display: none;
+}
+
+// card css starts
+.card {
+  background-color: #dff5f2; /* Light green background color */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  max-width: 70%; /* Adjust width as needed */
+  margin: 0 auto; /* Center the card */
+  position: relative;
+}
+
+.edit-icon {
+  position: relative;
+  top: -13px;
+  cursor: pointer;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Spacing between details */
+}
+
+.detail {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.icon {
+  font-size: 20px;
+  position: absolute;
+  top: -17%;
+  mat-icon{
+    color: #6200ee;
+    transform: scale(.8);
+  }
+}
+.edit-mat-icon {
+  font-size: 20px;
+  position: absolute;
+  right:-2%;
+  mat-icon{
+    color: #6200ee;
+    transform: scale(.7);
+  }
+}
+.text{
+  padding-left: 4%;
+  font-size: 13px;
+  font-family: 'AR One Sans', sans-serif;
+  color: #666666;
+}
+.valuer-i-label{
+  font-weight: 600;
+}
+// card css ends
+
+// new scss ends

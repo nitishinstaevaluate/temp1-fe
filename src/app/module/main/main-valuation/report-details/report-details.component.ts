@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import groupModelControl from '../../../../shared/enums/group-model-controls.json'
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { saveAs } from 'file-saver';
 import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal-box/generic-modal-box.component';
@@ -8,6 +8,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { DataReferencesService } from 'src/app/shared/service/data-references.service';
 import { REPORT_OBJECTIVE } from 'src/app/shared/enums/constant';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import { StringModificationPipe } from 'src/app/shared/pipe/string-modification.pipe';
 
 
 @Component({
@@ -24,7 +26,8 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
 
   @Input() transferStepperFour:any;
   @Output() previousPage=new EventEmitter<any>();
-   viewer:any 
+  @ViewChild('purposeInput') purposeInput!: ElementRef<any>;
+   viewer:any;
 
   shouldShowReportPurpose=false;
   reportPurposeData:any=[];
@@ -32,25 +35,24 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
 
   isLoading=false;
   reportObjective='';
+  reportPurposeDataChips:any=[];
+  separatorKeysCodes: number[] = [ENTER, COMMA];
   
   constructor(private fb : FormBuilder,
     private calculationService:CalculationsService,
     private dialog:MatDialog,
     private snackBar:MatSnackBar,
-    private dataReferenceService:DataReferencesService){}
+    private dataReferenceService:DataReferencesService,
+    private truncateStringPipe: StringModificationPipe){}
   ngOnInit(): void {
     this.loadForm();
     this.onValueChangeControl()
   }
   
-
   ngOnChanges(changes:SimpleChanges){
-    this.transferStepperFour
+    this.transferStepperFour;
   }
-  ngAfterViewInit(): void {
-
-    
-  }
+  ngAfterViewInit(): void {}
 
   loadForm(){
     this.reportForm = this.fb.group({
@@ -61,7 +63,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       dateOfAppointment:['',[Validators.required]],
       reportPurpose:['',[Validators.required]],
       natureOfInstrument:['',[Validators.required]],
-      reportSection:['',[Validators.required]],
+      reportSection:[[],[Validators.required]],
     })
     this.registeredValuerDetails=this.fb.group({
       registeredValuerName:['',[Validators.required]],
@@ -83,6 +85,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
         this.reportObjective = this.reportObjectives[`${value}`];
         if(this.reportPurposeData.length>0){
           this.shouldShowReportPurpose=true;
+          this.reportPurposeDataChips=[]
         }
         else{
           this.shouldShowReportPurpose=false;
@@ -229,13 +232,19 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
   }
   }
   
-  onSlideToggleChange(event: any) {
+  onSlideToggleChange(event?: any) {
     if (event) {
+      if(!event.checked){
+          this.registeredValuerDetails.reset();
+          this.reportForm.controls['useExistingValuer'].reset();
+          return;
+      }
       const data = {
-        data: 'registeredValuerDetails',
-        width: '50%',
+        data: {
+          value:'registeredValuerDetails'
+        }
       };
-      const dialogRef = this.dialog.open(GenericModalBoxComponent, data);
+      const dialogRef = this.dialog.open(GenericModalBoxComponent, {data:data,width: '50%',height:'55%'});
   
       dialogRef.afterClosed().subscribe((result:any) => {
   
@@ -260,9 +269,69 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
         }
       });
     }
+    else{
+      const data = {
+        data: {
+          ...this.registeredValuerDetails.value,
+          value:'registeredValuerDetails'
+        },
+       
+      };
+      const dialogRef = this.dialog.open(GenericModalBoxComponent, {data:data,width: '50%',height:'55%'});
+  
+      dialogRef.afterClosed().subscribe((result:any) => {
+  
+        if (result) {
+          this.registeredValuerDetails.patchValue(result);
+          this.reportForm.controls['useExistingValuer'].setValue(true);
+          this.snackBar.open('Valuer added successfully', 'OK', {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            duration: 3000,
+            panelClass: 'app-notification-success',
+          });
+        } 
+      });
+    }
   }
 
   previous(){
     this.previousPage.emit(true)
+  }
+
+  add(event: any): void {
+    const value = (event.value || '').trim();
+    let emptySection = [];
+    if (value) {
+      const truncatedString = this.truncateStringPipe.transform(value,30);
+      this.reportPurposeDataChips.push(truncatedString);
+      const reportSectionValue:any = this.reportForm.controls['reportSection'].value;
+      emptySection.push(value);
+      this.reportForm.controls['reportSection'].setValue([...this.reportForm.controls['reportSection'].value,...emptySection]);
+    }
+
+    event.chipInput!.clear();
+  }
+
+  remove(sectionIndex: any): void {
+    if (sectionIndex >= 0) {
+      this.reportPurposeDataChips.splice(sectionIndex, 1);
+      const reportSectionValue = this.reportForm.controls['reportSection'].value;
+      reportSectionValue.splice(sectionIndex,1)
+      this.reportForm.controls['reportSection'].setValue(reportSectionValue);
+    }
+  }
+
+  selected(event:any): void {
+    let emptySection = [];
+    let truncatedString; 
+    if(event.option.viewValue.length > 10){
+       truncatedString = this.truncateStringPipe.transform(event.option.viewValue,30)
+    }
+
+    this.reportPurposeDataChips.push(truncatedString !== '' ? truncatedString : event.option.viewValue);
+    this.purposeInput.nativeElement.value = '';
+    emptySection.push(event.option.viewValue);
+    this.reportForm.controls['reportSection'].setValue([...this.reportForm.controls['reportSection'].value,...emptySection]);
   }
 }

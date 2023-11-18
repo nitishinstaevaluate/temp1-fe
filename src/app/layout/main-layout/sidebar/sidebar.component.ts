@@ -13,21 +13,21 @@ interface MENU{
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent {
+  selectedMenuItem: string = '';
   
   constructor(
     private navServices: NavService,
     private route:Router
   ){
-
+    const url = this.route.url;
+    if(url.includes('activity')){
+      this.selectedMenuItem = '/dashboard/activity';
+    }
+    else{
+      this.selectedMenuItem = '/dashboard';
+    }
   }
-  selectedMenuItem: string = '/dashboard';
 menues :MENU[] =[
-  // {
-  //   title: "Valuation",
-  //   link : "/dashboard",
-  //   icon:'fa fa-usd mx-2',
-  // },
-  
   {
     title: "Valuation",
     link : "/dashboard",
