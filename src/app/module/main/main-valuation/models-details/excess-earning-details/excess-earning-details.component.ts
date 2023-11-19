@@ -298,38 +298,37 @@ validateControls(controlArray: { [key: string]: FormControl },payload:any){
       }
     }
 
-    // if(!allControlsFilled){
-    //   const stepTwoStats:any = localStorage.getItem('stepTwoStats');
-    //   let incompleteForm=[];
-    //   if(stepTwoStats !== null){
-    //      incompleteForm = stepTwoStats.split[','][1];
-    //     if(!incompleteForm.includes(6)){
-    //       incompleteForm.push(6);
-    //       localStorage.setItem('stepTwoStats',`${allControlsFilled},${incompleteForm}`)
-    //     }
-    //   }
-    //   else{
-    //     incompleteForm.push(6);
-    //     localStorage.setItem('stepTwoStats',`${allControlsFilled},${incompleteForm}`) 
-    //   }
-    // }
-    // else{
-    //   const stepTwoStats:any = localStorage.getItem('stepTwoStats');
-    //   let incompleteForm:any=[];
-    //   if(stepTwoStats !== null){
-    //      incompleteForm = stepTwoStats.split[','][1];
-    //     if(incompleteForm.includes(6)){
-    //       incompleteForm.splice(incompleteForm.indexOf(6),1);
-    //       localStorage.setItem('stepTwoStats',`${allControlsFilled},${incompleteForm}`)
-
-    //     }
-    //   }
-    //   else{
-    //     localStorage.setItem('stepTwoStats',`${allControlsFilled},${incompleteForm}`)
-    //   }
-    // }
-    if(localStorage.getItem('stepTwoStats') === 'true' || localStorage.getItem('stepTwoStats') === null){
-      localStorage.setItem('stepTwoStats',`${allControlsFilled}`);
+    if(!allControlsFilled){
+      const formStat = localStorage.getItem('pendingStat');
+      if(formStat !== null && !formStat.includes('4')){
+        localStorage.setItem('pendingStat',`${[...formStat,'4']}`)
+      }
+      else{
+        localStorage.setItem('pendingStat',`4`)
+      }
+      localStorage.setItem('stepTwoStats',`false`);
+    }
+    else{
+      const formStat = localStorage.getItem('pendingStat');
+      if(formStat !== null && formStat.includes('4')){
+        const splitFormStatus = formStat.split(',');
+        splitFormStatus.splice(splitFormStatus.indexOf('4'),1);
+        localStorage.setItem('pendingStat',`${splitFormStatus}`);
+        if(splitFormStatus.length>1){
+          localStorage.setItem('stepTwoStats',`false`);
+          
+        }else{
+        localStorage.setItem('stepTwoStats',`true`);
+        localStorage.removeItem('pendingStat');
+        }
+      }
+      else if (formStat !== null && !formStat.includes('4')){
+        localStorage.setItem('stepTwoStats',`false`);
+      }
+      else{
+        localStorage.setItem('stepTwoStats',`true`);
+        
+    }
     }
     this.excessEarnDetails.emit(payload);
 }

@@ -405,8 +405,38 @@ validateControls(controlArray: { [key: string]: FormControl },payload:any){
        
       }
     }
-    if(localStorage.getItem('stepTwoStats') === 'true' || localStorage.getItem('stepTwoStats') === null){
-      localStorage.setItem('stepTwoStats',`${allControlsFilled}`);
+
+    if(!allControlsFilled){
+      const formStat = localStorage.getItem('pendingStat');
+      if(formStat !== null && !formStat.includes('2')){
+        localStorage.setItem('pendingStat',`${[...formStat,'2']}`)
+      }
+      else{
+        localStorage.setItem('pendingStat',`2`)
+      }
+      localStorage.setItem('stepTwoStats',`false`);
+    }
+    else{
+      const formStat = localStorage.getItem('pendingStat');
+      if(formStat !== null && formStat.includes('2')){
+        const splitFormStatus = formStat.split(',');
+        splitFormStatus.splice(splitFormStatus.indexOf('2'),1);
+        localStorage.setItem('pendingStat',`${splitFormStatus}`);
+        if(splitFormStatus.length>1){
+          localStorage.setItem('stepTwoStats',`false`);
+          
+        }else{
+        localStorage.setItem('stepTwoStats',`true`);
+        localStorage.removeItem('pendingStat');
+        }
+      }
+      else if (formStat !== null && !formStat.includes('2')){
+        localStorage.setItem('stepTwoStats',`false`);
+      }
+      else{
+        localStorage.setItem('stepTwoStats',`true`);
+        
+    }
     }
     this.fcffDetails.emit(payload);
 }

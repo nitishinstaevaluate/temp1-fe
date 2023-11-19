@@ -14,12 +14,12 @@
                     <app-assessment-details [transferStepperTwo]="transferStepperTwo" (assessmentSheetData)="assessmentSheetData($event)"></app-assessment-details>
                 </mat-tab>
             </mat-tab-group>
-            <p class="currency-unit">Amount in INR (Lakhs)</p>
+            <p class="currency-unit" *ngIf="transferStepperTwo?.excelSheetId">Amount in INR (Lakhs)</p>
         </div>
         <div *ngIf="!transferStepperTwo?.excelSheetId" style="margin-top: auto;margin-bottom: auto;">
             <p style="padding: 2% !important;
             color: #c91919;
-            font-size: 19px;">No Records Found</p>
+            font-size: 19px;font-family: 'AR One Sans', sans-serif;">No Records Found</p>
         </div>
     </div>  
 

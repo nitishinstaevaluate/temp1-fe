@@ -298,7 +298,38 @@ validateControls(controlArray: { [key: string]: FormControl },payload:any){
        
       }
     }
-    localStorage.setItem('stepTwoStats',`${allControlsFilled}`);
+    if(!allControlsFilled){
+      const formStat = localStorage.getItem('pendingStat');
+      if(formStat !== null && !formStat.includes('1')){
+        localStorage.setItem('pendingStat',`${[...formStat,'1']}`)
+      }
+      else{
+        localStorage.setItem('pendingStat',`1`)
+      }
+      localStorage.setItem('stepTwoStats',`false`);
+    }
+    else{
+      const formStat = localStorage.getItem('pendingStat');
+      if(formStat !== null && formStat.includes('1')){
+        const splitFormStatus = formStat.split(',');
+        splitFormStatus.splice(splitFormStatus.indexOf('1'),1);
+        localStorage.setItem('pendingStat',`${splitFormStatus}`);
+        if(splitFormStatus.length>1){
+          localStorage.setItem('stepTwoStats',`false`);
+          
+        }else{
+        localStorage.setItem('stepTwoStats',`true`);
+        localStorage.removeItem('pendingStat');
+        }
+      }
+      else if (formStat !== null && !formStat.includes('1')){
+        localStorage.setItem('stepTwoStats',`false`);
+      }
+      else{
+        localStorage.setItem('stepTwoStats',`true`);
+        
+    }
+    }
 
     this.fcfeDetails.emit(payload);
 }

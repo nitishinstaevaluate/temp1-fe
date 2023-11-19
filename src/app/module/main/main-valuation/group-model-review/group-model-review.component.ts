@@ -84,15 +84,23 @@ export class GroupModelReviewComponent implements OnChanges {
     })
     console.log(payload,"input payload")
 
-    if(this.reviewForm.controls['otherAdj'].value !== ''){
-      this.calculationService.checkStepStatus.next({stepStatus:true,step:this.step})
-      localStorage.setItem('step',`4`);
-      localStorage.setItem('stepThreeStats','true');
+    if(this.isRelativeValuation('FCFE') || this.isFcff('FCFF')){
+
+      if(this.reviewForm.controls['otherAdj'].value !== ''){
+        this.calculationService.checkStepStatus.next({stepStatus:true,step:this.step})
+        localStorage.setItem('step',`4`);
+        localStorage.setItem('stepThreeStats','true');
+      }
+      else{
+        this.calculationService.checkStepStatus.next({stepStatus:false,step:this.step})
+        localStorage.setItem('step',`4`);
+        localStorage.setItem('stepThreeStats','false');
+      }
     }
     else{
-      this.calculationService.checkStepStatus.next({stepStatus:false,step:this.step})
-      localStorage.setItem('step',`4`);
-      localStorage.setItem('stepThreeStats','false');
+      this.calculationService.checkStepStatus.next({stepStatus:true,step:this.step})
+        localStorage.setItem('step',`4`);
+        localStorage.setItem('stepThreeStats','true');
     }
   }
 
