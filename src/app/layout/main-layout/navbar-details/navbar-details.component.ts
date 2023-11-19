@@ -24,6 +24,7 @@ export class NavbarDetailsComponent implements OnInit{
     localStorage.removeItem('stepThreeStats')
     localStorage.removeItem('stepFourStats')
     localStorage.removeItem('stepFiveStats')
+    localStorage.removeItem('pendingStat')
     this.calculationService.checkStepStatus.subscribe((response)=>{
       // console.log(response,"response stepper")
       const currentStep:any = localStorage.getItem('step');
