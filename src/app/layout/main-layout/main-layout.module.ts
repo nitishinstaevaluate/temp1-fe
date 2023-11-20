@@ -6,13 +6,17 @@ import { MainLayoutComponent } from './main-layout.component';
 import { HeaderComponent } from './header/header.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { SidebarComponent } from './sidebar/sidebar.component';
+// import { NewMainLayoutComponent } from './new-main-layout/new-main-layout.component';
+// import { NewHeaderComponent } from './new-header/new-header.component';
 
 
 @NgModule({
   declarations: [
     MainLayoutComponent,
     HeaderComponent,
-    SidebarComponent
+    SidebarComponent,
+    // NewMainLayoutComponent,
+    // NewHeaderComponent,
   ],
   imports: [
     CommonModule,

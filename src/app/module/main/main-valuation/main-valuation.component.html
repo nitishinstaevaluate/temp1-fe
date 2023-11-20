@@ -1,31 +1,19 @@
-<div class="row">
+
+
+
+<!-- 
+  <div class="row">
     <div class="col">
       <div class="card mt-4">
         <h4 class="card-header label" style="font-weight: 400;">Valuation of Company</h4>
-        <!-- <div class="col-md-12 revalmodel">
-          <mat-label class="label">Valuation Of Company</mat-label>
-          <span class="mat-bullet"><mat-icon>fiber_manual_record</mat-icon></span>
-        </div> -->
+        
         <h4 style="text-align: center;padding-top: 1.5%;font-weight: 400;color:#858985;margin-bottom: 0px !important;">{{headerLabel}}</h4>
         <div class="card-body">
           <mat-stepper #stepper (selectionChange)="onStepChange($event,stepper)">
             <mat-step  [stepControl]="firstFormGroup" errorMessage="Name is required."><app-group-model-controls [currentStepIndex]="currentStepIndex" (groupModelControls)="groupModelControls($event)"></app-group-model-controls>
             </mat-step>
             <mat-step  [stepControl]="secondFormGroup" errorMessage="Name is required.">
-              <!-- bread crumb starts,store this into another component for maintaining the integrity and reuseablity -->
-              <!-- <div class="breadcrumb-container">
-                <div class="breadcrumb">
-                  <span class="separator" >&rarr;</span>
-                  <a (click)="createBreadcrumb('FCFE') || fcfePrev">FCFE</a>
-                  <span class="separator" >&rarr;</span>
-                  <a (click)="createBreadcrumb('FCFF') || fcffPrev">FCFF</a>
-                  <span class="separator" >&rarr;</span>
-                  <a (click)="createBreadcrumb('Relative_Valuation') || relativePrev">Relative Valuation</a>
-                  <span class="separator">&rarr;</span>
-                  <a (click)="createBreadcrumb('Excess_Earnings')">Excess Earnings</a>
-                </div>
-              </div> -->
-              <!-- bread crumb ends -->
+             
               
               <app-fcfe-details (fcfeDetailsPrev)="fcfeDetailsPrev($event)" [hidden]="next !== 1" (fcfeDetails)="fcfeDetails($event)" [formOneData]="formOneData"></app-fcfe-details>
               <app-fcff-details (fcffDetailsPrev)="fcffDetailsPrev($event)" (fcffDetails)="fcffDetails($event)" [hidden]="next !== 2" [formOneData]="formOneData"></app-fcff-details>
@@ -45,6 +33,69 @@
                 <app-report-details [transferStepperFour]="transferStepperFour" (previousPage)="previous($event)"></app-report-details>
             </mat-step>
           </mat-stepper>
+
+         
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+
+
+
+  <div class="row" style="background-color: #ffffff;">
+    <div class="col">
+      <div class="card mt-4" style="background-color: #fcf8fe;padding-bottom: 4%;">       
+        <div class='c-decorated-header'>
+          <h3><span style="padding-left: 2%;">Valuation of Company</span></h3>
+          <div class='c-decorated-header_link-view-more'>
+            <a ><span style="border: #2dd79e;color: #2dd79e;"> Step {{step}} </span>of 5</a>
+          </div>
+        </div>
+        <h4 style="text-align: center;padding-top: 1.5%;font-weight: 400;color:#858985;margin-bottom: 0px !important;">{{headerLabel}}</h4>
+        <div class="card-body">
+          <div class="row" style="padding-right: 1%;">
+            <!-- Left Side Navbar -->
+            <div class="col-md-2">
+              <app-navbar-details></app-navbar-details>
+            </div>
+            <!-- Right Side Content -->
+            <div class="col-md-10">
+              <!-- <router-outlet></router-outlet> -->
+              <app-group-model-controls [step]="step" (groupModelControls)="groupModelControls($event)" [hidden]="step !== 1"></app-group-model-controls>
+
+              <div [hidden]="step !== 2">
+                <!-- tab trial starts -->
+                <div class="tab-container">
+                  <div class="tab-element" [ngClass]="{ 'active': next === 1 }" *ngIf="ifModelExist('FCFE',formOneData?.model)">Free Cash Flow To Equity</div>
+                  <div class="tab-element" [ngClass]="{ 'active': next === 2 }" *ngIf="ifModelExist('FCFF',formOneData?.model)">Free Cash Flow To Firm</div>
+                  <div class="tab-element" [ngClass]="{ 'active': next === 4 }" *ngIf="ifModelExist('Excess_Earnings',formOneData?.model)">Excess Earning</div>
+                  <div class="tab-element" [ngClass]="{ 'active': next === 6 }" *ngIf="ifModelExist('NAV',formOneData?.model)">Net Asset Value</div>
+                  <div class="tab-element" [ngClass]="{ 'active': next === 3 }" *ngIf="ifModelExist('Relative_Valuation',formOneData?.model)">Comparable Companies</div>
+                  <div class="tab-element" [ngClass]="{ 'active': next === 5 }" *ngIf="ifModelExist('CTM',formOneData?.model)">Comparable Transaction</div>
+                  <!-- Add more tab elements as needed -->
+                </div>
+                
+                <!-- tab trial ends -->
+
+
+
+                <app-fcfe-details (fcfeDetailsPrev)="fcfeDetailsPrev($event)" [hidden]="next !== 1" (fcfeDetails)="fcfeDetails($event)" [formOneData]="formOneData"></app-fcfe-details>
+                <app-fcff-details (fcffDetailsPrev)="fcffDetailsPrev($event)" (fcffDetails)="fcffDetails($event)" [hidden]="next !== 2" [formOneData]="formOneData"></app-fcff-details>
+                <app-relative-valuation-details (relativeValDetailsPrev)="relativeValDetailsPrev($event)" (relativeValDetails)="relativeValDetails($event)" [hidden]="next !== 3" [formOneData]="formOneData"></app-relative-valuation-details>
+                <app-excess-earning-details (excessEarnDetailsPrev)="excessEarnDetailsPrev($event)" (excessEarnDetails)="excessEarnDetails($event)" [hidden]="next !== 4" [formOneData]="formOneData"></app-excess-earning-details>
+                <app-comparable-industries-details (comparableIndustriesDetailsPrev)="comparableIndustriesDetailsPrev($event)" (comparableIndustriesDetails)="comparableIndustriesDetails($event)" [hidden]="next !== 5" [formOneData]="formOneData"></app-comparable-industries-details>
+                <app-net-asset-value-details (navDetailsPrev)="navDetailsPrev($event)" (navDetails)="navDetails($event)" [hidden]="next !== 6" [formOneData]="formOneData"></app-net-asset-value-details>
+              </div>
+
+              <app-group-model-review (groupReviewControls)="groupReviewControls($event)" [step]="step" (previousPage)="previous($event)" [transferStepperTwo]="formOneAndTwoData" [hidden]="step !== 3"></app-group-model-review>
+              
+              <app-group-model-result [transferStepperthree]="transferStepperthree"  (previousPage)="previous($event)" (resultData)="resultData($event)" [hidden]="step !== 4"></app-group-model-result>
+              
+              <app-report-details [transferStepperFour]="transferStepperFour" (previousPage)="previous($event)" [hidden]="step !== 5"></app-report-details>
+            </div>
+          </div>
+  
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import groupModelControl from '../../../../../shared/enums/group-model-controls.json';
 import { isSelected } from 'src/app/shared/enums/functions';
 import { MatSelect } from '@angular/material/select';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-net-asset-value-details',
@@ -236,7 +236,57 @@ saveAndNext(){
       navArray.push(navObj);
     }
   }
+  const payload = {navInputs:navArray,status:'NAV'}
+  this.validateControls(this.navForm.controls,payload);
 
-  this.navDetails.emit({navInputs:navArray,status:'NAV'})
+
+}
+
+validateControls(controlArray: { [key: string]: FormControl },payload:any){
+  let allControlsFilled = true;
+    for (const controlName in controlArray) {
+      if (controlArray.hasOwnProperty(controlName)) {
+        const control = controlArray[controlName];
+        if (control.value === null || control.value === '' ) {
+          allControlsFilled = false;
+          break;
+        }
+       
+      }
+    }
+    if(!allControlsFilled){
+      const formStat = localStorage.getItem('pendingStat');
+      if(formStat !== null && !formStat.includes('6')){
+        localStorage.setItem('pendingStat',`${[...formStat,'6']}`)
+      }
+      else{
+        localStorage.setItem('pendingStat',`6`)
+      }
+      localStorage.setItem('stepTwoStats',`false`);
+    }
+    else{
+      const formStat = localStorage.getItem('pendingStat');
+      if(formStat !== null && formStat.includes('6')){
+        const splitFormStatus = formStat.split(',');
+        splitFormStatus.splice(splitFormStatus.indexOf('6'),1);
+        localStorage.setItem('pendingStat',`${splitFormStatus}`);
+        if(splitFormStatus.length>1){
+          localStorage.setItem('stepTwoStats',`false`);
+          
+        }else{
+        localStorage.setItem('stepTwoStats',`true`);
+        localStorage.removeItem('pendingStat')
+        }
+      }
+      else if ((formStat !== null) && !formStat.includes('6')){
+          localStorage.setItem('stepTwoStats',`false`);
+        }
+        else{
+          localStorage.setItem('stepTwoStats',`true`);
+          
+      }
+    }
+
+  this.navDetails.emit(payload)
 }
 }

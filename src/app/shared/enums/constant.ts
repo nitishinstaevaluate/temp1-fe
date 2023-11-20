@@ -74,6 +74,16 @@ export const MODELS = {
   COMPARABLE_INDUSTRIES: 'CTM',
 }
 
+export const ALL_MODELS = {
+  FCFE:'Free Cash Flow to Equity',
+  FCFF:'Free Cash Flow to Firm',
+  Relative_Valuation:'Comparable Companies',
+  CTM:'Comparable Transaction',
+  NAV:'Net Asset Value',
+  Market_Price:'Market Price',
+  Excess_Earnings:"Excess Earning"
+}
+
   export const GLOBAL_VALUES = {
     Normal_Tax_Rate:{
       name:"Normal Tax Rate",
@@ -159,8 +169,56 @@ export const MODELS = {
     PREVIEW_DOC:{
       name:'Document Preview',
       value:'previewDoc'
+    },
+    VALUATION_METHOD:{
+      name:"valuationMethod",
+      value:"valuationMethod",
+      incomeApproach:{
+        label:'Income Approach',
+        fcfe:{
+          name:'DCF-Method FCFE',
+          info:'This is FCFE model'
+        },
+        fcff:{
+          name:'DCF-Method FCFF',
+          info:'This is FCFF model'
+        },
+        excessEarning:{
+          name:'Excess Earning Method',
+          info:'This is Excess Earning model'
+        },
+      },
+      assetApproach:{
+        label:'Net Asset Approach',
+        nav:{
+          name:'Net Asset Value (NAV) Method',
+          info:'This is NAV model'
+        }
+      },
+      marketApproach:{
+        label:'Market Approach',
+        ccm:{
+          name:'Comparable Companies Method (CCM)',
+          info:'This is CCM model'
+        },
+        ctm:{
+          name:'Comparable Transaction Method (CTM)',
+          info:'This is CTM model'
+        },
+        marketPriceMethod:{
+          name:'Market Price Method',
+          info:'This is Market Price model'
+        }
+      }
     }
   }
+
+  export const INCOME_APPROACH = ['FCFE','FCFF','Excess_Earnings'];
+
+  export const NET_ASSET_APPROACH = ['NAV'];
+
+  export const MARKET_APPROACH = ['Relative_Valuation','CTM','Market_Price'];
+
 export const RELATIVE_VALUATION_COMPANY_MAPPING: { [key: string]: string } = {
   'Company Name': 'company',
   'PE Ratio': 'peRatio',

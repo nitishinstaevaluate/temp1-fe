@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=AR+One+Sans:wght@500&display=swap');
+
 .side-menu .side-menu__icon:before{
     display: none;
 }
@@ -109,3 +111,60 @@ perfect-scrollbar{
 .light-menu .slide-rightRTL svg{
     fill: #333;
 }
+
+
+// new css starts
+.new-aside{
+    width: 111px;
+    top: 64px;
+    // border-top-right-radius: 24px;
+    // border-bottom-right-radius: 24px;
+    box-sizing: border-box;
+    background: linear-gradient(to bottom, #4767e5, #1dbcaa);
+}
+.new-menu .label-c a{
+    color: #ffffff;font-size: 16px;
+    font-family: 'AR One Sans', sans-serif;
+    padding-bottom: 4%;
+}
+.new-menu .icon-c{
+    margin-bottom: 0px;
+    padding-top: 4%;
+}
+.new-menu .icon-c i {
+    color: #ffffff;
+    margin-right: 0px;
+    opacity: 1;
+}
+.new-menu{
+    text-align: center;
+    transition: border-top-left-radius 0.5s,border-bottom-left-radius 0.5s,background-color 0.3s;
+}
+
+.new-menu:hover{
+    text-align: center;
+    border-top-left-radius:15px;
+    border-bottom-left-radius: 15px;
+    background-color: white;
+    cursor: pointer;
+    .icon-c i {
+        color: #1abaac;margin-right: 0px;opacity: 1;
+    }
+    .label-c a{
+        color: #3355dd
+    }
+}
+
+.selected {
+    background-color: #ffffff; 
+    text-align: center;
+    border-top-left-radius:15px;
+    border-bottom-left-radius: 15px;
+    background-color: white; 
+    .icon-c i {
+        color: #1abaac;
+    }
+    .label-c a{
+        color: #3355dd
+    }
+  }

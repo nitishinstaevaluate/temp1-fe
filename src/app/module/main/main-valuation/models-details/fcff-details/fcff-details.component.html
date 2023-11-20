@@ -1,72 +1,126 @@
-<div class="outer-wrapper" *ngIf="modelControl.fcff.type === 'FCFF' && formOneData">
+<div *ngIf="modelControl.fcff.type === 'FCFF' && formOneData">
     <h4 class="card-header">{{modelControl.fcff.header}}</h4>
-    <form [formGroup]="fcffForm">
+    <form [formGroup]="fcffForm" class="outer-wrapper">
         <div class="row" >
-            <div class="col-md-12 revalmodel">
-                <mat-label class="label" >Free Cash Flow to Firm</mat-label>
-                <span class="mat-bullet"><mat-icon>fiber_manual_record</mat-icon></span>
+            <div class="col-md-12">
+                <div class='c-decorated-header'>
+                    <h3><span style="padding-left: 2%;">Free Cash Flow to Firm</span></h3>
+                    <div class='c-decorated-header_link-view-more'>
+                    </div>
+                  </div>
             </div>
               <!-- discount rate -->
-              <div class="col-md-4 field">
-                <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
+              <div class="col-md-4 field" style="padding-top: 1%;">
+                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
                     <mat-label>Discount Rate</mat-label>        
                     <mat-select formControlName="discountRate" class="mat-select-value">
                         <mat-option *ngFor="let doc of discountR"  [value]="getDocList(doc)">{{doc.label}}</mat-option>
                         </mat-select>
-                  </mat-form-field>
+                  </mat-form-field> -->
+
+                  <div class="material-textfield">
+                    <select id="discountRate" class="new-inp" formControlName="discountRate">
+                      <option value="" disabled selected>Select discount Rate</option>
+                      <option *ngFor="let doc of discountR" [ngValue]="getDocList(doc)">{{ doc.label }}</option>
+                    </select>
+                    <label for="discountRate">Discount Rate</label>
+                  </div>
             </div>
 
             <!-- discount period -->
-            <div class="col-md-4 field">
-                <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
+            <div class="col-md-4 field" style="padding-top: 1%;">
+                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
                     <mat-label>Discount Period</mat-label>
                     <mat-select formControlName="discountingPeriod" class="mat-select-value">
                     <mat-option *ngFor="let doc of modelControl.fcff.options.discountPeriod.options"  [value]="doc.name">{{doc.name}}</mat-option>
                     </mat-select>
-                  </mat-form-field>
+                  </mat-form-field> -->
+
+                  <div class="material-textfield">
+                    <select id="discountingPeriod" class="new-inp" formControlName="discountingPeriod">
+                      <option value="" disabled selected>Select discount period</option>
+                      <option *ngFor="let doc of modelControl.fcff.options.discountPeriod.options" [ngValue]="doc.name">{{ doc.name }}</option>
+                    </select>
+                    <label for="discountingPeriod">Discount Period</label>
+                  </div>
             </div>
 
             <!-- cost of equity -->
-            <div class="col-md-4 field">
-                <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
+            <div class="col-md-4 field" style="padding-top: 1%;">
+                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
                     <mat-label>Cost Of Equity</mat-label>
                     <mat-select formControlName="coeMethod" class="mat-select-value">
                     <mat-option *ngFor="let doc of equityM"  [value]="doc.type">{{doc.label}}</mat-option>
                     </mat-select>
-                  </mat-form-field>
+                  </mat-form-field> -->
+
+                  <div class="material-textfield">
+                    <select id="coeMethod" class="new-inp" formControlName="coeMethod">
+                      <option value="" disabled selected>Select cost of equity</option>
+                      <option *ngFor="let doc of equityM"  [ngValue]="doc.type">{{ doc.label }}</option>
+                    </select>
+                    <label for="coeMethod">Cost Of Equity</label>
+                  </div>
             </div>
 
             <!-- risk free rate -->
             <div class="col-md-4 field">
-                <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
+                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
                     <mat-label>Risk Free Rate</mat-label>
                     <mat-select formControlName="riskFreeRate" class="mat-select-value">
                     <mat-option *ngFor="let doc of indianTreasuryY"  [value]="doc.latest">Yield on {{ doc.maturityInYrs }} Years Indian Treasury Bond</mat-option>
                     </mat-select>
                     <mat-hint *ngIf="fcffForm.controls['riskFreeRate'].value" class="taxrate-hint">Risk-Free rate is {{fcffForm.controls['riskFreeRate'].value}}%</mat-hint>
-                  </mat-form-field>
+                  </mat-form-field> -->
+
+                  <div class="material-textfield">
+                    <select id="riskFreeRate" class="new-inp" formControlName="riskFreeRate">
+                      <option value="" disabled selected>Select risk free rate</option>
+                      <option *ngFor="let doc of indianTreasuryY"  [ngValue]="doc.latest">Yield on {{ doc.maturityInYrs }} Years Indian Treasury Bond</option>
+                    </select>
+                    <label for="riskFreeRate">Risk Free Rate</label>
+                  <mat-hint *ngIf="fcffForm.controls['riskFreeRate'].value" class="taxrate-hint">Risk-Free rate is {{fcffForm.controls['riskFreeRate'].value}}%</mat-hint>
+                  </div>
             </div>
 
             <!-- expected market return -->
             <div class="col-md-4 field">
-                <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
+                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
                     <mat-label>Expected Market Return</mat-label>
                     <mat-select formControlName="expMarketReturnType" class="mat-select-value">
                     <mat-option *ngFor="let doc of modelControl.fcff.options.expMarketReturnType.options"  [value]="doc">{{doc.name}}</mat-option>
                     </mat-select>
                     <mat-hint *ngIf="fcffForm.controls['expMarketReturn'].value" class="taxrate-hint">Expected Market Return is {{fcffForm.controls['expMarketReturn'].value.toFixed(2)}}%</mat-hint>
-                  </mat-form-field>
+                  </mat-form-field> -->
+
+                  <div class="material-textfield">
+                    <select id="expMarketReturnType" class="new-inp" formControlName="expMarketReturnType">
+                      <option value="" disabled selected>Select expected market return</option>
+                      <option *ngFor="let doc of modelControl.fcff.options.expMarketReturnType.options" [ngValue]="doc">{{doc.name}}</option>
+                    </select>
+                    <label for="expMarketReturnType">Expected Market Return</label>
+                  <mat-hint *ngIf="fcffForm.controls['expMarketReturn'].value" class="taxrate-hint">Expected Market Return is {{fcffForm.controls['expMarketReturn'].value.toFixed(2)}}%</mat-hint>
+                  </div>
             </div>
 
             <!-- beta -->
             <div class="col-md-4 field">
-                <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
+                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
                     <mat-label>Beta</mat-label>
                     <mat-select formControlName="betaType" class="mat-select-value">
                     <mat-option [disabled]="!formOneData?.industry" *ngFor="let doc of modelControl.fcff.options.betaType.options"  [value]="doc.value" >{{doc.name}}</mat-option>
                 </mat-select>
                 <mat-hint *ngIf="fcffForm.controls['beta'].value" class="taxrate-hint">Beta is {{fcffForm.controls['beta'].value.toFixed(2)}}</mat-hint>
-                  </mat-form-field>
+                  </mat-form-field> -->
+
+                  <div class="material-textfield">
+                    <select id="betaType" class="new-inp" formControlName="betaType">
+                      <option value="" disabled selected>Select beta</option>
+                      <option [disabled]="!formOneData?.industry" *ngFor="let doc of modelControl.fcff.options.betaType.options"  [ngValue]="doc.value">{{doc.name}}</option>
+                    </select>
+                    <label for="betaType">Beta</label>
+                  <mat-hint *ngIf="fcffForm.controls['expMarketReturn'].value" class="taxrate-hint">Beta is {{fcffForm.controls['beta'].value.toFixed(2)}}</mat-hint>
+                  </div>
             </div>
 
             <!-- <div class="col-md-4 field">
@@ -79,107 +133,137 @@
             
             <!-- risk premium -->
             <div class="col-md-4 field">
-                <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
+                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
                     <mat-label>Specific Risk Premium</mat-label>
                     <input (mousedown)="onSlideToggleChange($event)" formControlName="riskPremium" [type]="modelControl.fcff.options.riskPremium.type" matInput>
-                </mat-form-field>
+                </mat-form-field> -->
+
+                <div class="material-textfield">
+                  <input class="new-inp" (click)="onSlideToggleChange($event)" formControlName="riskPremium" [type]="modelControl.fcff.options.riskPremium.type" placeholder="Enter risk premium"/>
+                  <label>Specific Risk Premium</label>
+            </div>
                 </div>
 
             <!--cost of debt  -->
             <div class="col-md-4 field">
-                <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
+                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
                     <mat-label>Cost Of Debt</mat-label>
                     <input formControlName="costOfDebt" type="text" matInput>
-                </mat-form-field>
+                </mat-form-field> -->
+
+                <div class="material-textfield">
+                  <input class="new-inp" formControlName="costOfDebt" [type]="modelControl.fcff.options.riskPremium.type" placeholder="Enter cost of debt"/>
+                  <label>Cost Of Debt</label>
+            </div>
                 </div>
 
             <!-- capital structure -->
             <div class="col-md-4 field">
-                <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
+                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
                     <mat-label>Capital Structure</mat-label>
                     <mat-select formControlName="capitalStructureType" class="mat-select-value">
                     <mat-option *ngFor="let doc of cStructure"  [value]="doc.type">{{doc.label}}</mat-option>
                     </mat-select>
                 <mat-hint *ngIf="totalCapital" class="taxrate-hint">Target Capital Structure is {{totalCapital}}%</mat-hint>
-                  </mat-form-field>
+                  </mat-form-field> -->
+
+                  <div class="material-textfield">
+                    <select id="capitalStructureType" class="new-inp" formControlName="capitalStructureType">
+                      <option value="" disabled selected>Select beta</option>
+                      <option  *ngFor="let doc of cStructure"  [ngValue]="doc.type">{{doc.label}}</option>
+                    </select>
+                    <label for="capitalStructureType">Capital Structure</label>
+                  <mat-hint *ngIf="totalCapital" class="taxrate-hint">Target Capital Structure is {{totalCapital}}%</mat-hint>
+                  </div>
             </div>
 
             <!-- cop share capital -->
             <div class="col-md-4 field">
-                <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
+                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
                     <mat-label>Cost Of Preference</mat-label>
                     <input formControlName="copShareCapital" [type]="modelControl.fcff.options.copShareCapital.type" matInput>
-                </mat-form-field>
+                </mat-form-field> -->
+
+                <div class="material-textfield">
+                  <input class="new-inp" formControlName="copShareCapital" [type]="modelControl.fcff.options.copShareCapital.type" placeholder="Enter cost of preference"/>
+                  <label>Cost Of Preference</label>
+            </div>
             </div>
             
 
-            <div class="col-md-12 revalmodel" style="border-top: 1px solid #ccdfe3" *ngIf="(adjCoe !== null && adjCoe !== 0)   && (coe !== null && coe !== 0)">
-                <mat-label class="label">Estimated WACC Calculation</mat-label>
-                <span class="mat-bullet"><mat-icon>fiber_manual_record</mat-icon></span>
+            <div class="col-md-12" *ngIf="(adjCoe !== null && adjCoe !== 0)   && (coe !== null && coe !== 0)">
+                <div class='c-decorated-header-coe'>
+                    <h3><span style="padding-left: 2%;">Estimated Cost of Equity</span></h3>
+                    <div class='c-decorated-header_link-view-more'>
+                    </div>
+                  </div>
             </div>
             <div class="col-md-12 text-center" style="padding: 2%; padding-top: 1%;padding-bottom: 1%;" *ngIf="(adjCoe !== null && adjCoe !== 0)   && (coe !== null && coe !== 0)">
-                <div class="card shadow">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="card border-0">
-                                    <div class="card-body">
-                                        <h5 class="card-title" style="font-size: 1.25rem;">Cost Of Equity</h5> <!-- Increase font size -->
-                                        <p class="card-text" style="font-size: 1.1rem;">{{coe.toFixed(2)}}%</p> <!-- Increase font size -->
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="card border-0">
-                                    <div class="card-body">
-                                        <h5 class="card-title" style="font-size: 1.25rem;">Adjusted Cost Of Equity</h5> <!-- Increase font size -->
-                                        <p class="card-text" style="font-size: 1.1rem;">{{adjCoe.toFixed(2)}}%</p> <!-- Increase font size -->
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="col-md-12" *ngIf="wacc !== null" style="text-align:center;">
-                                <div class="card border-0">
-                                    <div class="card-body">
-                                        <h5 class="card-title" style="font-size: 1.25rem;">WACC</h5> <!-- Increase font size -->
-                                        <p class="card-text" style="font-size: 1.1rem;">{{wacc.toFixed(2)}}%</p> <!-- Increase font size -->
-                                    </div>
-                                </div>
+                <div >
+                    <div class="row">
+                      <div class="col-md-4" *ngIf="wacc !== null" style="text-align:center;">
+                        <div class="card border-0">
+                            <div class="card-body">
+                                <span class="card-title">WACC</span> 
+                                <span class="separator"></span>
+                                <span class="card-text">{{wacc.toFixed(2)}}%</span>
                             </div>
                         </div>
+                      </div>
+                      <div [ngClass]="wacc !== null ? 'col-md-4' : 'col-md-6'">
+                        <div class="card border-0">
+                          <div class="card-body">
+                            <span class="card-title">Cost Of Equity</span>
+                            <span class="separator"></span>
+                            <span class="card-text">{{coe.toFixed(2)}}%</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div [ngClass]="wacc !== null ? 'col-md-4' : 'col-md-6'">
+                        <div class="card border-0">
+                          <div class="card-body">
+                            <span class="card-title">Adjusted Cost Of Equity</span>
+                            <span class="separator"></span>
+                            <span class="card-text">{{adjCoe.toFixed(2)}}%</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                </div>
+                  </div>
+
             </div>
 
-            <div class="col-md-12 revalmodel" style="border-top: 1px solid #ccdfe3" *ngIf="specificRiskPremiumModalForm.controls['companySize'].value || specificRiskPremiumModalForm.controls['marketPosition'].value || specificRiskPremiumModalForm.controls['liquidityFactor'].value || specificRiskPremiumModalForm.controls['competition'].value">
-                <mat-label class="label" >Risk Premium</mat-label>
-                <span class="mat-bullet"><mat-icon>fiber_manual_record</mat-icon></span>
+            <div class="col-md-12" *ngIf="specificRiskPremiumModalForm.controls['companySize'].value || specificRiskPremiumModalForm.controls['marketPosition'].value || specificRiskPremiumModalForm.controls['liquidityFactor'].value || specificRiskPremiumModalForm.controls['competition'].value">
+                <div class='c-decorated-header-rp'>
+                    <h3><span style="padding-left: 2%;">Risk Premium</span></h3>
+                    <div class='c-decorated-header_link-view-more'>
+                    </div>
+                  </div>
             </div>
-              <div class="card-container col-md-12" style="padding: 2%;padding-top: 1%;" *ngIf="specificRiskPremiumModalForm.controls['companySize'].value || specificRiskPremiumModalForm.controls['marketPosition'].value || specificRiskPremiumModalForm.controls['liquidityFactor'].value || specificRiskPremiumModalForm.controls['competition'].value">
+            <div class="card-container col-md-12" style="padding: 2%;padding-top: 1%;" *ngIf="specificRiskPremiumModalForm.controls['companySize'].value || specificRiskPremiumModalForm.controls['marketPosition'].value || specificRiskPremiumModalForm.controls['liquidityFactor'].value || specificRiskPremiumModalForm.controls['competition'].value">
                 <div class="row">
                     <div class="col-md-3">
                         <div class="card card-est">
-                            <div class="card-header-rp card-header">Company Size <span><mat-icon style="padding-top: 2.5%;">keyboard_arrow_right</mat-icon></span></div>
-                            <div class="card-subtext">{{specificRiskPremiumModalForm.controls['companySize'].value}}%</div>
+                            <div class="card-subtext"><span class="rp-relate-icon"><mat-icon> business</mat-icon></span>{{specificRiskPremiumModalForm.controls['companySize'].value}}%</div>
+                            <div class="card-header-rp card-header">Company Size <span class="rp-icon"><mat-icon>keyboard_arrow_right</mat-icon></span></div>
                           </div>
                     </div>
                     <div class="col-md-3">
                         <div class="card card-est">
-                            <div class="card-header-rp card-header">Market Position <span><mat-icon style="padding-top: 2.5%;">keyboard_arrow_right</mat-icon></span></div>
-                            <div class="card-subtext">{{specificRiskPremiumModalForm.controls['marketPosition'].value}}%</div>
+                            <div class="card-subtext"><span class="rp-relate-icon"><mat-icon>view_column</mat-icon></span>{{specificRiskPremiumModalForm.controls['marketPosition'].value}}%</div>
+                            <div class="card-header-rp card-header">Market Position <span class="rp-icon"><mat-icon >keyboard_arrow_right</mat-icon></span></div>
                           </div>
                     </div>
                     <div class="col-md-3">
                         <div class="card card-est">
-                            <div class="card-header-rp card-header">Liquidity Factor <span><mat-icon style="padding-top: 2.5%;">keyboard_arrow_right</mat-icon></span></div>
-                            <div class="card-subtext">{{specificRiskPremiumModalForm.controls['liquidityFactor'].value}}%</div>
+                            <div class="card-subtext"><span class="rp-relate-icon"><mat-icon>how_to_vote</mat-icon></span>{{specificRiskPremiumModalForm.controls['liquidityFactor'].value}}%</div>
+                            <div class="card-header-rp card-header">Liquidity Factor <span class="rp-icon"><mat-icon>keyboard_arrow_right</mat-icon></span></div>
                           </div>
                     </div>
                     <div class="col-md-3">
                         <div class="card card-est">
-                            <div class="card-header-rp card-header">Competition <span><mat-icon style="padding-top: 2.5%;">keyboard_arrow_right</mat-icon></span></div>
-                            <div class="card-subtext">{{specificRiskPremiumModalForm.controls['competition'].value}}%</div>
+                            <div class="card-subtext"><span class="rp-relate-icon"><mat-icon>whatshot</mat-icon></span>{{specificRiskPremiumModalForm.controls['competition'].value}}%</div>
+                            <div class="card-header-rp card-header">Competition <span class="rp-icon"><mat-icon>keyboard_arrow_right</mat-icon></span></div>
                           </div>
                     </div>
                 </div>
@@ -196,16 +280,16 @@
                 </div>
               </div>
 
-            <div class="col-md-12" style="text-align: center;padding-bottom: 1%;padding-top: 1%;">
-                <button (click)="previous()" mat-raised-button style="box-shadow: 1px 2px 15px #d1d1d1;color:#bb0d0d;font-weight: bold !important;margin-right: 1%;">
+              <div class="col-md-12 btn-prop">
+                <button (click)="previous()" mat-raised-button class="prev-button">
                     Back
-                    <mat-icon style="font-weight: bold;color: #d42121;">arrow_left</mat-icon>
+                    <mat-icon>arrow_left</mat-icon>
                 </button>
-                <button (click)="saveAndNext()" style="box-shadow: 1px 2px 15px #d1d1d1;color:#228822;margin-right: 1%"  mat-raised-button>
-               Next
-                    <mat-icon style="font-weight: bold;color: green;">send</mat-icon>
-            </button>
-           
+
+            <button (click)="saveAndNext()" class="button-save-mat" mat-raised-button>
+                Next
+                <span class="button-save"><mat-icon>send</mat-icon></span>
+             </button>
         </div>
         </div>
       </form>  

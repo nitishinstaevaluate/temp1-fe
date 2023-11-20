@@ -100,19 +100,19 @@ loadOnChangeValue(){
           if (result) {
             this.fcfeForm.controls['expMarketReturn'].patchValue(parseInt(result?.analystConsensusEstimates))
             this.snackBar.open('Analyst Estimation Added','OK',{
-              horizontalPosition: 'center',
+              horizontalPosition: 'right',
               verticalPosition: 'top',
               duration: 3000,
               panelClass: 'app-notification-success'
             })
           } else {
-            this.fcfeForm.controls['expMarketReturnType'].reset();
-            this.snackBar.open('Expected Market Return Not Saved','OK',{
-              horizontalPosition: 'center',
-              verticalPosition: 'top',
-              duration: 3000,
-              panelClass: 'app-notification-error'
-            })
+            this.fcfeForm.controls['expMarketReturnType'].setValue('');
+            // this.snackBar.open('Expected Market Return Not Saved','OK',{
+            //   horizontalPosition: 'right',
+            //   verticalPosition: 'top',
+            //   duration: 3000,
+            //   panelClass: 'app-notification-error'
+            // })
           }
         })
       }
@@ -232,11 +232,14 @@ onSlideToggleChange(event: any) {
     this.isDialogOpen = true;
 
     const data = {
-      data: 'specificRiskPremiumForm',
-      width: '50%',
+      data: {
+        ...this.specificRiskPremiumModalForm.value,
+        value:'specificRiskPremiumForm'
+      },
+     
     };
 
-    const dialogRef = this.dialog.open(GenericModalBoxComponent, data);
+    const dialogRef = this.dialog.open(GenericModalBoxComponent, {data:data,height:'64%',width:'30%'});
 
     dialogRef.afterClosed().subscribe((result) => {
       this.isDialogOpen = false; // Reset the flag
@@ -254,20 +257,20 @@ onSlideToggleChange(event: any) {
         this.fcfeForm.controls['riskPremium'].setValue(summationQualitativeAnalysis);
         this.fcfeForm.controls['riskPremium'].markAsUntouched();
         this.snackBar.open('Specific Risk Premium is added', 'OK', {
-          horizontalPosition: 'center',
+          horizontalPosition: 'right',
           verticalPosition: 'top',
           duration: 3000,
           panelClass: 'app-notification-success',
         });
         this.calculateCoeAndAdjustedCoe();
       } else {
-        this.specificRiskPremiumModalForm.reset();
-        this.snackBar.open('Specific Risk Premium not saved', 'OK', {
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-          duration: 3000,
-          panelClass: 'app-notification-error',
-        });
+        // this.specificRiskPremiumModalForm.reset();
+        // this.snackBar.open('Specific Risk Premium not saved', 'OK', {
+        //   horizontalPosition: 'right',
+        //   verticalPosition: 'top',
+        //   duration: 3000,
+        //   panelClass: 'app-notification-error',
+        // });
         this.calculateCoeAndAdjustedCoe();
       }
     });
@@ -280,8 +283,58 @@ saveAndNext(): void {
   payload['adjustedCostOfEquity']=this.adjCoe;
   payload['costOfEquity']=this.coe;
   payload['bse500Value']=this.bse500Value;
-  // submit final payload
-  this.fcfeDetails.emit(payload);
+
+  // validate formcontrols
+  this.validateControls(this.fcfeForm.controls,payload);
+}
+
+
+validateControls(controlArray: { [key: string]: FormControl },payload:any){
+  let allControlsFilled = true;
+    for (const controlName in controlArray) {
+      if (controlArray.hasOwnProperty(controlName)) {
+        const control = controlArray[controlName];
+        if (control.value === null || control.value === '' ) {
+          allControlsFilled = false;
+          break;
+        }
+       
+      }
+    }
+    if(!allControlsFilled){
+      const formStat = localStorage.getItem('pendingStat');
+      if(formStat !== null && !formStat.includes('1')){
+        localStorage.setItem('pendingStat',`${[...formStat,'1']}`)
+      }
+      else{
+        localStorage.setItem('pendingStat',`1`)
+      }
+      localStorage.setItem('stepTwoStats',`false`);
+    }
+    else{
+      const formStat = localStorage.getItem('pendingStat');
+      if(formStat !== null && formStat.includes('1')){
+        const splitFormStatus = formStat.split(',');
+        splitFormStatus.splice(splitFormStatus.indexOf('1'),1);
+        localStorage.setItem('pendingStat',`${splitFormStatus}`);
+        if(splitFormStatus.length>1){
+          localStorage.setItem('stepTwoStats',`false`);
+          
+        }else{
+        localStorage.setItem('stepTwoStats',`true`);
+        localStorage.removeItem('pendingStat');
+        }
+      }
+      else if (formStat !== null && !formStat.includes('1')){
+        localStorage.setItem('stepTwoStats',`false`);
+      }
+      else{
+        localStorage.setItem('stepTwoStats',`true`);
+        
+    }
+    }
+
+    this.fcfeDetails.emit(payload);
 }
 
 previous(){

@@ -190,8 +190,8 @@ export class GroupModelResultComponent implements OnChanges {
     //   })
     // })
 
-    this.resultData.emit({...this.transferStepperthree})
-    
+    localStorage.setItem('stepFourStats','true');
+    this.resultData.emit({...this.transferStepperthree});
   }
   previous(){
       this.previousPage.emit(true)

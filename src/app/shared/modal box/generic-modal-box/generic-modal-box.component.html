@@ -2,29 +2,44 @@
 <div>
   <!-- Taxation Rate -->
   <div *ngIf="data === appValues.Normal_Tax_Rate.value || data === appValues.MAT_Rate.value">
-    <span><mat-icon class="close-modal" (click)="modalData()">close</mat-icon></span>
-    <h1 class="head-modal">{{label}}</h1>
-    <div class="container">
-      <mat-form-field class="full-width-input" [floatLabel]="floatLabelType" >
-        <input [type]="'text'" #taxRate matInput  [placeholder]="'Enter Rate'">
-      </mat-form-field>
+    <div class="col-md-12 revalmodel" style="text-align: center;padding-top: 4%;">
+      <mat-label class="label" >{{label}}</mat-label>
+      <span><mat-icon class="close-modal-valuer" style="padding-right: 8%;" (click)="modalData()">close</mat-icon></span>
     </div>
-    <div mat-dialog-actions style="float: right;"> 
-      <button mat-raised-button [disabled]="!taxRate.value" [ngClass]="!taxRate.value ? 'modal-button-disable' : 'modal-button-enable'" (click)="modalData({taxRate:taxRate.value},'taxRate')"><mat-icon>keyboard_arrow_right</mat-icon>Save</button>
+    <div class="container" style="padding-top: 4%;padding-bottom: 4%;">
+      <!-- <mat-form-field class="full-width-input" [floatLabel]="floatLabelType" >
+        <input [type]="'text'" #taxRate matInput  [placeholder]="'Enter Rate'">
+      </mat-form-field> -->
+      <div class="material-textfield">
+        <input class="new-inp"  [formControl]="taxRate" [placeholder]="'Enter tax rate'" type="text"/>
+        <label class="going-concern-label">Tax Rate</label>
+      </div>
+    </div>
+    <div mat-dialog-actions> 
+      <button mat-raised-button style="margin-left: auto;" [disabled]="!taxRate.value" [ngClass]="!taxRate.value ? 'submit-bt-disable' : 'submit-bt'" (click)="modalData({taxRate:taxRate.value},'taxRate')">
+        <!-- <mat-icon>keyboard_arrow_right</mat-icon> -->
+        Save
+      </button>
     </div>
   </div>
 
   <!-- analyst consensus Estimates -->
   <div *ngIf="data === appValues.ANALYST_CONSENSUS_ESTIMATES.value">
-    <span><mat-icon class="close-modal" (click)="modalData()">close</mat-icon></span>
-    <h1 class="head-modal">{{label}}</h1>
-    <div class="container">
-      <mat-form-field class="full-width-input" [floatLabel]="floatLabelType" >
-        <input [type]="'text'" #analystConsensusEstimates matInput  [placeholder]="'Enter Rate'">
-      </mat-form-field>
+    <div class="col-md-12 revalmodel" style="text-align: center;padding-top: 4%;">
+      <mat-label class="label" >{{label}}</mat-label>
+      <span><mat-icon class="close-modal-valuer" (click)="modalData()" style="padding-right: 8%;">close</mat-icon></span>
     </div>
-    <div mat-dialog-actions style="float: right;"> 
-      <button mat-raised-button [disabled]="!analystConsensusEstimates.value" [ngClass]="!analystConsensusEstimates.value ? 'modal-button-disable' : 'modal-button-enable'" (click)="modalData({analystConsensusEstimates:analystConsensusEstimates.value},'analystConsensusEstimates')"><mat-icon>keyboard_arrow_right</mat-icon>Save</button>
+    <div class="container" style="padding-top: 4%;padding-bottom: 4%;">
+      <div class="material-textfield">
+        <input class="new-inp" [formControl]="analystConsensusEstimates" [placeholder]="'Enter Rate'" type="text"/>
+        <label class="going-concern-label">Analyst Consensus Rate</label>
+      </div>
+    </div>
+    <div mat-dialog-actions> 
+      <button mat-raised-button style="margin-left: auto;" [disabled]="!analystConsensusEstimates.value" [ngClass]="!analystConsensusEstimates.value ? 'submit-bt-disable' : 'submit-bt'" (click)="modalData({analystConsensusEstimates:analystConsensusEstimates.value},'analystConsensusEstimates')">
+        <!-- <mat-icon>keyboard_arrow_right</mat-icon> -->
+        Save
+      </button>
     </div>
   </div>
 
@@ -54,129 +69,208 @@
   </div>
 
   <!-- Specific Risk Premium Details -->
-  <div class="container-fluid" *ngIf="data === appValues.SPECIFIC_RISK_PREMIUM.value">
+  <div class="container-fluid" *ngIf="data?.data?.value === appValues.SPECIFIC_RISK_PREMIUM.value">
     <div class="row">
-      <div class="col-md-12 revalmodel">
+      <div class="col-md-12 revalmodel" style="text-align: left;padding-top: 4%;">
         <mat-label class="label" >{{label}}</mat-label>
-        <span class="mat-specific-risk-premium"><mat-icon>fiber_manual_record</mat-icon></span>
         <span><mat-icon class="close-modal-valuer" (click)="modalData()">close</mat-icon></span>
         <h4 class="modal-subtitle"><span>-</span>Qualitative Factors</h4>
       </div>
-      <div class="col-md-6" style="padding-top: 3%;">
-        <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
-          <mat-label>Company Size</mat-label>
-          <input [type]="'text'" #companySize matInput>
-        </mat-form-field>
+
+      <div class="col-md-12 field" style="padding-bottom: 5%;padding-top: 4%;">
+        <div class="material-textfield">
+          <input class="new-inp" type="text" placeholder="Enter company size" [formControl]="companySize"/>
+          <label class="going-concern-label">Company Size</label>
+        </div>
       </div>
-     <div class="col-md-6" style="padding-top: 3%;">
-      <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
-        <mat-label>Market Positioning</mat-label>
-        <input [type]="'text'" #marketPosition matInput>
-      </mat-form-field>
-    </div>
-     <div class="col-md-6">
-      <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
-        <mat-label>Liquidity Factor</mat-label>
-        <input [type]="'text'" #liquidityFactor matInput>
-      </mat-form-field>
-    </div>
-    <div class="col-md-6">
-      <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
-        <mat-label>Competition</mat-label>
-        <input [type]="'text'" #competition matInput>
-      </mat-form-field>
+
+      <div class="col-md-12 field" style="padding-bottom: 5%;">
+        <div class="material-textfield">
+          <input class="new-inp" type="text" placeholder="Enter market position" [formControl]="marketPosition"/>
+          <label class="going-concern-label">Market Positioning</label>
+        </div>
+      </div>
+
+      <div class="col-md-12 field" style="padding-bottom: 5%;">
+        <div class="material-textfield">
+            <input class="new-inp" type="text" placeholder="Enter liquidity proportion" [formControl]="liquidityFactor"/>
+            <label class="going-concern-label">Liquidity Factor</label>
+          </div>
+      </div>
+
+      <!-- <div class="col-md-12 field" style="padding-top: 3%;padding-bottom: 3%;">
+        <mat-label style="font-size: 15px;">Company Size</mat-label>
+       <div>
+        <mat-slider
+        class="example-margin "
+        [ngClass]="companyMaxValue <= 20 ? 'progress-1' : companyMaxValue > 20 && companyMaxValue <=60 ? 'progress-2' : 'progress-3'"
+        [disabled]="'false'"
+        [max]="'100'"
+        [min]="'0'"
+        [step]="'1'"
+        [discrete]="'false'"
+        [showTickMarks]="'false'"
+        style="width: 50%;"
+        (input)="updateSliderColor($event,companyMaxValue)">
+        <input [(ngModel)]="companyMaxValue" matSliderThumb>
+    </mat-slider>
+       </div>
+    </div> -->
+ 
+
+    <div class="col-md-12 field" style="padding-bottom: 5%;">
+      <div class="material-textfield">
+        <input class="new-inp" type="text" placeholder="Enter competitive value" [formControl]="competition"/>
+        <label class="going-concern-label">Competition</label>
+      </div>
     </div>
    </div>
-    <div mat-dialog-actions style="display: flex;align-items: center;justify-content: center;">
-      <button mat-raised-button [disabled]="!companySize.value || !marketPosition.value || !liquidityFactor.value || !competition.value" [ngClass]="!companySize.value || !marketPosition.value || !liquidityFactor.value || !competition.value ? 'modal-button-disable' : 'modal-button-enable'" (click)="modalData({companySize:companySize.value,marketPosition:marketPosition.value,liquidityFactor:liquidityFactor.value,competition:competition.value},'specificRiskPremium')"><mat-icon>keyboard_arrow_right</mat-icon>Save</button>
-    </div>
+    
+    <div class="col-md-12 btn-prop" style="text-align: center !important;">
+      <button style=" width: 20%;padding-right: 6%;" [disabled]="!companySize.value || !marketPosition.value || !liquidityFactor.value || !competition.value" [ngClass]="!companySize.value || !marketPosition.value || !liquidityFactor.value || !competition.value  ? 'valuer-button-disable' : 'button-save-mat'" (click)="modalData({companySize:companySize.value,marketPosition:marketPosition.value,liquidityFactor:liquidityFactor.value,competition:competition.value},'specificRiskPremium')" mat-raised-button>
+          Save
+          <span class="button-save"><mat-icon>send</mat-icon></span>
+       </button>
+      </div>
   </div>
 
   <!-- Registered Valuer Details -->
-  <div class="container-fluid" *ngIf="data === appValues.REGISTERED_VALUER_DETAILS.value">
-    <div class="row" >
-      <div class="col-md-12 revalmodel">
+  <div class="container-fluid" *ngIf="data?.data?.value === appValues.REGISTERED_VALUER_DETAILS.value">
+    <div class="row" style="padding-bottom: 4%;">
+      <!-- <div class="col-md-12 revalmodel">
         <mat-label class="label" >Register Valuer</mat-label>
         <span class="mat-bullet"><mat-icon>fiber_manual_record</mat-icon></span>
         <span><mat-icon class="close-modal-valuer" (click)="modalData()">close</mat-icon></span>
+      </div> -->
+
+      <div class="col-md-12 revalmodel" style="text-align: center;padding-top: 2%;">
+        <mat-label class="label" >Registered Valuer Detail</mat-label>
+        <!-- <span class="mat-target-capital-structure"><mat-icon>fiber_manual_record</mat-icon></span> -->
+        <span><mat-icon class="close-modal-valuer" (click)="modalData()">close</mat-icon></span>
       </div>
-      <!-- discount rate -->
-      <div class="col-md-6 field" style="padding-top: 3%;">
-          <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
+
+
+      <!-- valuer name -->
+      <div class="col-md-6 field valuer-details" >
+          <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
               <mat-label>{{appValues.REGISTERED_VALUER_DETAILS.data.registeredValuerName}}</mat-label>
               <input #registeredValuerName matInput>
-          </mat-form-field>
+          </mat-form-field> -->
+          <div class="material-textfield">
+            <input class="new-inp" [formControl]="registeredValuerName" [placeholder]="'Enter name'" type="text"/>
+            <label class="going-concern-label">{{appValues.REGISTERED_VALUER_DETAILS.data.registeredValuerName}}</label>
+          </div>
       </div>
-      <div class="col-md-6 field" style="padding-top: 3%;">
-          <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
+
+      <!-- valuer phone number -->
+      <div class="col-md-6 field valuer-details" >
+          <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
               <mat-label>{{appValues.REGISTERED_VALUER_DETAILS.data.registeredValuerMobileNumber}}</mat-label>
               <input #registeredValuerMobileNumber matInput>
-          </mat-form-field>
+          </mat-form-field> -->
+          <div class="material-textfield">
+            <input class="new-inp" [formControl]="registeredValuerMobileNumber" [placeholder]="'Enter phone number'" type="text"/>
+            <label class="going-concern-label">{{appValues.REGISTERED_VALUER_DETAILS.data.registeredValuerMobileNumber}}</label>
+          </div>
       </div>
-      <div class="col-md-6 field">
-          <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
+
+      <!-- valuer email-id -->
+      <div class="col-md-6 field valuer-details">
+          <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
               <mat-label>{{appValues.REGISTERED_VALUER_DETAILS.data.registeredValuerEmailId}}</mat-label>
               <input #registeredValuerEmailId matInput>
-          </mat-form-field>
+          </mat-form-field> -->
+          <div class="material-textfield">
+            <input class="new-inp" [formControl]="registeredValuerEmailId" [placeholder]="'Enter email-id'" type="text"/>
+            <label class="going-concern-label">{{appValues.REGISTERED_VALUER_DETAILS.data.registeredValuerEmailId}}</label>
+          </div>
       </div>
-      <div class="col-md-6 field">
-          <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
+
+      <!-- valuer ibbi-id -->
+      <div class="col-md-6 field valuer-details">
+          <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
               <mat-label>{{appValues.REGISTERED_VALUER_DETAILS.data.registeredValuerIbbiId}}</mat-label>
               <input #registeredValuerIbbiId matInput>
-          </mat-form-field>
+          </mat-form-field> -->
+          <div class="material-textfield">
+            <input class="new-inp" [formControl]="registeredValuerIbbiId" [placeholder]="'Enter email-id'" type="text"/>
+            <label class="going-concern-label">{{appValues.REGISTERED_VALUER_DETAILS.data.registeredValuerIbbiId}}</label>
+          </div>
       </div>
-      <div class="col-md-6 field">
-          <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
+
+      <!-- valuer address -->
+      <div class="col-md-6 field valuer-details">
+          <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
               <mat-label>{{appValues.REGISTERED_VALUER_DETAILS.data.registeredValuerGeneralAddress}}</mat-label>
               <input #registeredValuerGeneralAddress matInput>
-          </mat-form-field>
+          </mat-form-field> -->
+          <div class="material-textfield">
+            <input class="new-inp" [formControl]="registeredValuerGeneralAddress" [placeholder]="'Enter address'" type="text"/>
+            <label class="going-concern-label">{{appValues.REGISTERED_VALUER_DETAILS.data.registeredValuerGeneralAddress}}</label>
+          </div>
       </div>
-      <div class="col-md-6 field">
-          <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
+
+      <!-- valuer qualifications -->
+      <div class="col-md-6 field valuer-details">
+          <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
               <mat-label>{{appValues.REGISTERED_VALUER_DETAILS.data.registeredValuerQualifications}}</mat-label>
               <input #registeredValuerQualifications matInput>
-          </mat-form-field>
+          </mat-form-field> -->
+          <div class="material-textfield">
+            <input class="new-inp" [formControl]="registeredValuerQualifications" [placeholder]="'Enter qualifications'" type="text"/>
+            <label class="going-concern-label">{{appValues.REGISTERED_VALUER_DETAILS.data.registeredValuerQualifications}}</label>
+          </div>
       </div>
 
   </div>
-  <div mat-dialog-actions style="display: flex;align-items: center;justify-content: center;">
+  <!-- <div mat-dialog-actions style="display: flex;align-items: center;justify-content: center;">
     <button mat-raised-button [disabled]="!registeredValuerMobileNumber.value || !registeredValuerEmailId.value || !registeredValuerName.value || !registeredValuerIbbiId.value || !registeredValuerGeneralAddress.value || !registeredValuerQualifications.value" [ngClass]="!registeredValuerMobileNumber.value || !registeredValuerEmailId.value || !registeredValuerName.value || !registeredValuerIbbiId.value || !registeredValuerGeneralAddress.value || !registeredValuerQualifications.value ? 'modal-button-disable' : 'modal-button-enable'" (click)="modalData({registeredValuerName:registeredValuerName.value,registeredValuerMobileNumber:registeredValuerMobileNumber.value,registeredValuerEmailId:registeredValuerEmailId.value,registeredValuerGeneralAddress:registeredValuerGeneralAddress.value,registeredValuerQualifications:registeredValuerQualifications.value,registeredValuerIbbiId:registeredValuerIbbiId.value},'registeredValuer')"><mat-icon>keyboard_arrow_right</mat-icon>Register</button>
-  </div>
+  </div> -->
+
+  <div class="col-md-12 btn-prop" style="text-align: center !important;">
+<button style=" width: 20%;padding-right: 6%;" [disabled]="!registeredValuerMobileNumber.value || !registeredValuerEmailId.value || !registeredValuerName.value || !registeredValuerIbbiId.value || !registeredValuerGeneralAddress.value || !registeredValuerQualifications.value" [ngClass]="!registeredValuerMobileNumber.value || !registeredValuerEmailId.value || !registeredValuerName.value || !registeredValuerIbbiId.value || !registeredValuerGeneralAddress.value || !registeredValuerQualifications.value ? 'valuer-button-disable' : 'button-save-mat'" (click)="modalData({registeredValuerName:registeredValuerName.value,registeredValuerMobileNumber:registeredValuerMobileNumber.value,registeredValuerEmailId:registeredValuerEmailId.value,registeredValuerGeneralAddress:registeredValuerGeneralAddress.value,registeredValuerQualifications:registeredValuerQualifications.value,registeredValuerIbbiId:registeredValuerIbbiId.value},'registeredValuer')" mat-raised-button>
+    Register
+    <span class="button-save"><mat-icon>send</mat-icon></span>
+ </button>
+</div>
   </div>
 
   <!-- Target Capital Structure Details -->
   <div class="container-fluid" *ngIf="data === appValues.TARGET_CAPITAL_STRUCTURE.value">
     <div class="row" >
-      <div class="col-md-12 revalmodel">
+      <div class="col-md-12 revalmodel" style="text-align: center;">
         <mat-label class="label" >{{label}}</mat-label>
-        <span class="mat-target-capital-structure"><mat-icon>fiber_manual_record</mat-icon></span>
+        <!-- <span class="mat-target-capital-structure"><mat-icon>fiber_manual_record</mat-icon></span> -->
         <span><mat-icon class="close-modal-valuer" (click)="modalData()">close</mat-icon></span>
         <span class="error-target-caps" *ngIf="summationTargetCaps>100">Target Capital structure should not exceed 100%</span>
       </div>
       <!-- discount rate -->
-      <div class="col-md-4 field" style="padding-top: 3%;">
-          <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
-              <mat-label>{{appValues.TARGET_CAPITAL_STRUCTURE.options.debtProp.name}}</mat-label>
-              <input #debtProp matInput (keyup)="onTargetCapitalChange('debtProp',debtProp.value)">
-          </mat-form-field>
+      <div class="col-md-12 field" style="padding-top: 3%;padding-bottom: 3%;">
+            <div class="material-textfield">
+              <input class="new-inp" type="text" placeholder="Enter debt proportion" #debtProp (keyup)="onTargetCapitalChange('debtProp',debtProp.value)"/>
+              <label class="going-concern-label">{{appValues.TARGET_CAPITAL_STRUCTURE.options.debtProp.name}}</label>
+            </div>
+        </div>
+      <div class="col-md-12 field" style="padding-top: 3%;padding-bottom: 3%;">
+          <div class="material-textfield">
+            <input class="new-inp" #equityProp placeholder="Enter equity proportion" type="text" (keyup)="onTargetCapitalChange('equityProp',equityProp.value)"/>
+            <label class="going-concern-label">{{appValues.TARGET_CAPITAL_STRUCTURE.options.equityProp.name}}</label>
+          </div>
       </div>
-      <div class="col-md-4 field" style="padding-top: 3%;">
-          <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
-              <mat-label>{{appValues.TARGET_CAPITAL_STRUCTURE.options.equityProp.name}}</mat-label>
-              <input #equityProp matInput (keyup)="onTargetCapitalChange('equityProp',equityProp.value)">
-          </mat-form-field>
-      </div>
-      <div class="col-md-4 field" style="padding-top: 3%;">
-          <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
-              <mat-label>{{appValues.TARGET_CAPITAL_STRUCTURE.options.prefProp.name}}</mat-label>
-              <input #prefProp matInput (keyup)="onTargetCapitalChange('prefProp',prefProp.value)">
-          </mat-form-field>
+      <div class="col-md-12 field" style="padding-top: 3%;padding-bottom: 3%;">
+          <div class="material-textfield">
+            <input class="new-inp" #prefProp placeholder="Enter pref proportion" type="text" (keyup)="onTargetCapitalChange('prefProp',prefProp.value)"/>
+            <label class="going-concern-label">{{appValues.TARGET_CAPITAL_STRUCTURE.options.prefProp.name}}</label>
+          </div>
       </div>
 
   </div>
   <div mat-dialog-actions>
     <p [ngClass]="summationTargetCaps > 100 ? 'total-caps-red' : 'total-caps'">Total Target Capital Structure - {{summationTargetCaps}}%</p>
-    <button style="text-align: center;margin:auto;" mat-raised-button [disabled]="!debtProp.value || !equityProp.value || !prefProp.value || summationTargetCaps > 100" [ngClass]="!debtProp.value || !equityProp.value || !prefProp.value || summationTargetCaps > 100 ? 'modal-button-disable' : 'modal-button-enable'" (click)="modalData({debtProportion:debtProp.value,equityProportion:equityProp.value,preferenceProportion:prefProp.value},'targetCapitalStructure')"><mat-icon>keyboard_arrow_right</mat-icon>Register</button>
+    <button style="text-align: center;margin-left:auto;" mat-raised-button [disabled]="!debtProp.value || !equityProp.value || !prefProp.value || summationTargetCaps > 100" [ngClass]="!debtProp.value || !equityProp.value || !prefProp.value || summationTargetCaps > 100 ? 'submit-bt-disable' : 'submit-bt'" (click)="modalData({debtProportion:debtProp.value,equityProportion:equityProp.value,preferenceProportion:prefProp.value},'targetCapitalStructure')">
+      <!-- <mat-icon>keyboard_arrow_right</mat-icon> -->
+      Save
+    </button>
   </div>
   </div>
 
@@ -202,4 +296,182 @@
   <div mat-dialog-actions style="display: flex;align-items: center;justify-content: center;">
     <button mat-raised-button><mat-icon>keyboard_arrow_right</mat-icon>Save Report</button>
   </div>
+  </div>
+
+  <!-- valuation model -->
+  <div class="container"  *ngIf="data?.value === appValues.VALUATION_METHOD.value" style="padding-top: 4%;padding-bottom: 4%;">
+    <!-- income approach -->
+    <div class="incomeApproach">
+      <div [ngClass]=" (incomeApproachmodels?.length > 0) && (incomeApproachmodels.includes('FCFE') || incomeApproachmodels.includes('FCFF') || incomeApproachmodels.includes('Excess_Earnings')) && (projectionYearSelect === 'Going_Concern') ? 'pos-absolute' : (incomeApproachmodels?.length > 0) && (incomeApproachmodels.includes('FCFE') || incomeApproachmodels.includes('FCFF') || incomeApproachmodels.includes('Excess_Earnings')) ? 'pos-absolute2' :'pos-absolute3' ">
+        <span>{{appValues.VALUATION_METHOD.incomeApproach.label}}</span>
+      </div>
+      <div class="row fcfe-hover" >
+        <div class="col-xl-4 n-models-fcfe">
+          <div class="form-check">
+            <input class="form-check-input" [checked]="fcfeSelectedModel" (click)="createModelControl('FCFE','incomeApproach')" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+            <label class="form-check-label" for="flexRadioDefault1">
+              DCF Method - FCFE
+            </label>
+          </div>
+        </div>
+        <div class="col-xl-8 hp-text-fcfe">
+          <p>Helper Text details about this model in 1-2 line</p>
+        </div>
+      </div>
+      <div class="row fcff-hover">
+        <div class="col-xl-4 n-models-fcff">
+          <div class="form-check">
+            <input class="form-check-input" [checked]="fcffSelectedModel" type="radio" (click)="createModelControl('FCFF','incomeApproach')" name="flexRadioDefault" id="flexRadioDefault1">
+            <label class="form-check-label" for="flexRadioDefault1">
+              DCF Method - FCFF
+            </label>
+          </div>
+        </div>
+        <div class="col-xl-8 hp-text-fcff">
+          <p>Helper Text details about this model in 1-2 line</p>
+        </div>
+      </div>
+      <div class="row excess-earn-hover">
+        <div class="col-xl-4 n-models-excessEarn">
+          <div class="form-check">
+            <input class="form-check-input" [checked]="excessEarningSelectedModel" (click)="createModelControl('Excess_Earnings','incomeApproach')" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+            <label class="form-check-label" for="flexRadioDefault1">
+              Excess Earning Method
+            </label>
+          </div>
+        </div>
+        <div class="col-xl-8 hp-text-excessEarn">
+          <p> Helper Text details about this model in 1-2 line</p>
+        </div>
+      </div>
+
+      <div class="row projectionSelect" *ngIf="(incomeApproachmodels?.length > 0) && (incomeApproachmodels.includes('FCFE') || incomeApproachmodels.includes('FCFF') || incomeApproachmodels.includes('Excess_Earnings'))">
+        <div class="col-xl-4">
+            <div class="form-check">
+              <input class="form-check-input" [checked]="projectionYearSelect === 'Going_Concern'" (click)="selectProjections('Going_Concern','projectionSelection')" type="radio" name="flexRadioDefault2" id="flexRadioDefault2">
+              <label class="form-check-label" for="flexRadioDefault2">
+                Going Concern
+              </label>
+            </div>
+        </div>
+        <div class="col-xl-4">
+            <div class="form-check">
+              <input class="form-check-input" [checked]="projectionYearSelect === 'Finite_Projection'" (click)="selectProjections('Finite_Projection','projectionSelection')" type="radio" name="flexRadioDefault2" id="flexRadioDefault2">
+              <label class="form-check-label" for="flexRadioDefault2">
+                Finite Projection
+              </label>
+            </div>
+        </div>
+        <div class="col-xl-12" style="padding-top: 2%;" *ngIf="projectionYearSelect === 'Going_Concern'">
+          <div class="row">
+              <div class="col-xl-6">
+                <div class="material-textfield">
+                  <input class="new-inp" type="text" #projectionyear (blur)="projectionYear(projectionyear.value)" [value]="projectionYears ? projectionYears : '' " placeholder="Enter Projection Year"/>
+                  <label class="going-concern-label">Projection Years</label>
+               </div>
+              </div>
+              <div class="col-xl-6">
+                <div class="material-textfield">
+                  <select id="terminalGrowthRate" [formControl]="terminalGrowthRateControl"class="new-inp">
+                    <option value="" disabled>Select terminal growth rate</option>
+                    <option *ngFor="let doc of modelControl.modelValuation.options.terminalGrowthRate.options"  [value]="doc.value">{{ doc.value}}</option>
+                  </select>
+                  <label for="terminalGrowthRate" class="going-concern-label">Terminal Growth Rate</label>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- net asset value approach -->
+    <div class="navApproach">
+      <div class="pos-absolute-nav">
+        <span>{{appValues.VALUATION_METHOD.assetApproach.label}}</span>
+      </div>
+      <div class="row nav-hover" >
+        <div class="col-xl-4 n-models-nav">
+          <div class="form-check">
+            <input class="form-check-input" [checked]="navSelectedModel" (click)="createModelControl('NAV','netAssetValueApproach')" type="radio" name="flexRadioDefault3" id="flexRadioDefault3">
+            <label class="form-check-label" for="flexRadioDefault3">
+              Net Asset Value Approach
+            </label>
+          </div>
+        </div>
+        <div class="col-xl-8 hp-text-nav">
+          <p>Helper Text details about this model in 1-2 line</p>
+        </div>
+      </div>
+    </div>
+
+  <!--Market approach  -->
+    <div class="marketApproach">
+      <div class="pos-absolute-marketApproach">
+        <span>{{appValues.VALUATION_METHOD.marketApproach.label}}</span>
+      </div>
+      <div class="row ccm-hover" >
+        <div class="col-xl-5 n-models-ccm">
+          <div class="form-check">
+            <input class="form-check-input" [checked]="relativeValuationSelectedModel" (click)="createModelControl('Relative_Valuation','marketApproach')" type="radio" name="flexRadioDefault4" id="flexRadioDefault4">
+            <label class="form-check-label" for="flexRadioDefault4">
+              Comparable Companies Method
+            </label>
+          </div>
+        </div>
+        <div class="col-xl-7 hp-text-ccm">
+          <p>Helper Text details about this model in 1-2 line</p>
+        </div>
+      </div>
+      <div class="row ctm-hover">
+        <div class="col-xl-5 n-models-ctm">
+          <div class="form-check">
+            <input class="form-check-input" [checked]="ctmSelectedModel" (click)="createModelControl('CTM','marketApproach')" type="radio" name="flexRadioDefault4" id="flexRadioDefault4">
+            <label class="form-check-label" for="flexRadioDefault4">
+              Comparable Transaction Method
+            </label>
+          </div>
+        </div>
+        <div class="col-xl-7 hp-text-ctm">
+          <p>Helper Text details about this model in 1-2 line</p>
+        </div>
+      </div>
+      <div class="row market-price-hover">
+        <div class="col-xl-5 n-models-market-price">
+          <div class="form-check">
+            <input class="form-check-input" [checked]="marketPriceSelectedModel" (click)="createModelControl('Market_Price','marketApproach')" type="radio" name="flexRadioDefault4" id="flexRadioDefault4">
+            <label class="form-check-label" for="flexRadioDefault4">
+              Market Price Method
+            </label>
+          </div>
+        </div>
+        <div class="col-xl-7 hp-text-market-price">
+          <p> Helper Text details about this model in 1-2 line</p>
+        </div>
+      </div>
+    </div>
+   
+    <!-- template download and upload -->
+    <div class="row" style="margin-top: 3%;padding-left: 1%;">
+      <div class="col-xl-9">
+        <span class="download-temp"><a [href]="downloadTemplate" target="_blank">Download Template</a></span>
+        <input
+          type="file"
+          hidden
+          #fileInput
+          accept="image/png, image/jpeg, .pdf, .xlsx"
+          (change)="onFileSelected($event)"
+        />
+        <button type="button" class="btn btn-primary upload-bt" (click)="fileInput.click()">
+          <span class="pos-upload-absolute">
+            <mat-icon>cloud_upload</mat-icon>
+          </span>
+          Upload file</button>
+        <span class="file-name" *ngIf="fileName">{{fileName}}</span>
+      </div>
+      <div class="col-xl-3" style="text-align: right;padding-right: 2%;">
+        <button type="button" class="btn btn-success submit-bt" (click)="submitModelValuation()">
+          Submit
+        </button>
+      </div>
+    </div>
   </div>

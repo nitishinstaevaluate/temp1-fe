@@ -13,6 +13,7 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider'
 import { GenericModalBoxComponent } from './modal box/generic-modal-box/generic-modal-box.component';
 import { CustomDatePipe } from './pipe/date.pipe';
 import { QuillModule } from 'ngx-quill';
+import { StringModificationPipe } from './pipe/string-modification.pipe';
 
 
 
@@ -24,6 +25,6 @@ const MODULES = [NgbModule, ReactiveFormsModule, FormsModule,MaterialModuleModul
   imports: [CommonModule,NgxSliderModule,...MODULES,QuillModule.forRoot()],
   exports: [RelativeComponent,UserInputComponent,...MODULES,GenericModalBoxComponent],
   entryComponents:[GenericModalBoxComponent],
-  providers:[CustomDatePipe]
+  providers:[CustomDatePipe,StringModificationPipe]
 })
 export class SharedModule {}

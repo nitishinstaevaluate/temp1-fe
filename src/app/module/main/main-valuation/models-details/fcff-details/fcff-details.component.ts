@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, OnInit, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators,FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin } from 'rxjs';
@@ -108,19 +108,19 @@ loadOnChangeValue(){
           if (result) {
             this.fcffForm.controls['expMarketReturn'].patchValue(parseInt(result?.analystConsensusEstimates))
             this.snackBar.open('Analyst Estimation Added','OK',{
-              horizontalPosition: 'center',
+              horizontalPosition: 'right',
               verticalPosition: 'top',
               duration: 3000,
               panelClass: 'app-notification-success'
             })
           } else {
-            this.fcffForm.controls['expMarketReturnType'].reset();
-            this.snackBar.open('Expected Market Return Not Saved','OK',{
-              horizontalPosition: 'center',
-              verticalPosition: 'top',
-              duration: 3000,
-              panelClass: 'app-notification-error'
-            })
+            this.fcffForm.controls['expMarketReturnType'].setValue('');
+            // this.snackBar.open('Expected Market Return Not Saved','OK',{
+            //   horizontalPosition: 'right',
+            //   verticalPosition: 'top',
+            //   duration: 3000,
+            //   panelClass: 'app-notification-error'
+            // })
           }
         })
       }
@@ -168,7 +168,7 @@ loadOnChangeValue(){
       } else {
         const data={
           data: 'targetCapitalStructure',
-          width:'60%',
+          width:'30%',
         }
         const dialogRef = this.dialog.open(GenericModalBoxComponent,data);
 
@@ -183,7 +183,7 @@ loadOnChangeValue(){
             this.totalCapital = +this.targetCapitalStructureForm.controls['totalCapital'].value;
 
             this.snackBar.open('Target Capital Structure saved','Ok',{
-              horizontalPosition: 'center',
+              horizontalPosition: 'right',
               verticalPosition: 'top',
               duration: 3000,
               panelClass: 'app-notification-success'
@@ -195,7 +195,7 @@ loadOnChangeValue(){
             this.fcffForm.controls['capitalStructureType'].reset();
 
             this.snackBar.open('Target Capital Structure Not Saved','OK',{
-              horizontalPosition: 'center',
+              horizontalPosition: 'right',
               verticalPosition: 'top',
               duration: 3000,
               panelClass: 'app-notification-error'
@@ -240,6 +240,10 @@ loadOnChangeValue(){
     if(!val) return;
     this.calculateCoeAndAdjustedCoe();
   })
+  this.fcffForm.controls['riskFreeRate'].valueChanges.subscribe((val:any)=>{
+    if(!val) return;
+    this.calculateCoeAndAdjustedCoe();
+  })
   this.fcffForm.controls['costOfDebt'].valueChanges.subscribe((val:any)=>{
     if(!val) return;
     this.calculateCoeAndAdjustedCoe();
@@ -280,9 +284,9 @@ loadFormControl(){
     expMarketReturn:['',[Validators.required]],
     specificRiskPremium:[false,[Validators.required]],
     beta:['',[Validators.required]],
+    riskPremium:['',[Validators.required]],
     capitalStructureType:['',[Validators.required]],
     costOfDebt:['',[Validators.required]],
-    riskPremium:['',[Validators.required]],
     copShareCapital:['',[Validators.required]],
   })
 
@@ -315,11 +319,14 @@ onSlideToggleChange(event:any){
   if(event && !this.isDialogOpen){
     this.isDialogOpen = true;
 
-    const data={
-      data: 'specificRiskPremiumForm', //hardcoded for now,store in enum
-      width:'50%',
-    }
-   const dialogRef = this.dialog.open(GenericModalBoxComponent,data);
+    const data = {
+      data: {
+        ...this.specificRiskPremiumModalForm.value,
+        value:'specificRiskPremiumForm'
+      }
+    };
+    
+   const dialogRef = this.dialog.open(GenericModalBoxComponent,{data:data,height:'64%',width:'30%'});
 
    dialogRef.afterClosed().subscribe((result) => {
     this.isDialogOpen = false; // Reset the flag
@@ -338,20 +345,20 @@ onSlideToggleChange(event:any){
         this.fcffForm.controls['riskPremium'].markAsUntouched();
 
       this.snackBar.open('Specific Risk Premium is added','OK',{
-        horizontalPosition: 'center',
+        horizontalPosition: 'right',
         verticalPosition: 'top',
         duration: 3000,
         panelClass: 'app-notification-success'
       })
       this.calculateCoeAndAdjustedCoe()
     } else {
-      this.specificRiskPremiumModalForm.reset();
-      this.snackBar.open('Specific Risk Premium not saved','OK',{
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        duration: 3000,
-        panelClass: 'app-notification-error'
-      })
+      // this.specificRiskPremiumModalForm.reset();
+      // this.snackBar.open('Specific Risk Premium not saved','OK',{
+      //   horizontalPosition: 'right',
+      //   verticalPosition: 'top',
+      //   duration: 3000,
+      //   panelClass: 'app-notification-error'
+      // })
       this.calculateCoeAndAdjustedCoe()
     }
   });
@@ -377,13 +384,64 @@ saveAndNext(): void {
   // check if expected market return  is empty or not
  
   payload['expMarketReturnType']=this.fcffForm.controls['expMarketReturnType']?.value?.value;
-  this.fcffDetails.emit(payload)
-  
-  // submit final payload
+
+  const controls = {...this.fcffForm.controls};
+  delete controls.capitalStructureType;
+  delete controls.costOfDebt;
+  delete controls.copShareCapital;
+  this.validateControls(controls,payload);
 }
 
 previous(){
-  this.fcffDetailsPrev.emit({status:'FCFE'})
+  this.fcffDetailsPrev.emit({status:'FCFF'})
+}
+
+validateControls(controlArray: { [key: string]: FormControl },payload:any){
+  let allControlsFilled = true;
+    for (const controlName in controlArray) {
+      if (controlArray.hasOwnProperty(controlName)) {
+        const control = controlArray[controlName];
+        if (control.value === null || control.value === '' ) {
+          allControlsFilled = false;
+          break;
+        }
+       
+      }
+    }
+
+    if(!allControlsFilled){
+      const formStat = localStorage.getItem('pendingStat');
+      if(formStat !== null && !formStat.includes('2')){
+        localStorage.setItem('pendingStat',`${[...formStat,'2']}`)
+      }
+      else{
+        localStorage.setItem('pendingStat',`2`)
+      }
+      localStorage.setItem('stepTwoStats',`false`);
+    }
+    else{
+      const formStat = localStorage.getItem('pendingStat');
+      if(formStat !== null && formStat.includes('2')){
+        const splitFormStatus = formStat.split(',');
+        splitFormStatus.splice(splitFormStatus.indexOf('2'),1);
+        localStorage.setItem('pendingStat',`${splitFormStatus}`);
+        if(splitFormStatus.length>1){
+          localStorage.setItem('stepTwoStats',`false`);
+          
+        }else{
+        localStorage.setItem('stepTwoStats',`true`);
+        localStorage.removeItem('pendingStat');
+        }
+      }
+      else if (formStat !== null && !formStat.includes('2')){
+        localStorage.setItem('stepTwoStats',`false`);
+      }
+      else{
+        localStorage.setItem('stepTwoStats',`true`);
+        
+    }
+    }
+    this.fcffDetails.emit(payload);
 }
 
 

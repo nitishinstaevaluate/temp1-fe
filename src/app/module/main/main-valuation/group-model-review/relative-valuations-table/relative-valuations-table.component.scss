@@ -1,28 +1,32 @@
 table {
     width: 100%;
-    border-collapse: collapse;
-    border: 1px solid #ccc;
+    // border-collapse: collapse;
+    // border: 1px solid #ccc;
   }
   
   th {
     background-color: #f2f2f2;
     text-align: left;
     padding: 10px;
-    border: 1px solid #ccc;
+    // border: 1px solid #ccc;
     font-weight: bold; 
   }
   
   td {
     padding: 10px;
-    border: 1px solid #ccc;
+    // border: 1px solid #ccc;
+    border-bottom: 0px !important;
+    font-family: 'AR One Sans', sans-serif;
+    padding-left: 2%;
+
   }
   
   tr:nth-child(even) {
     background-color: #f5f5f5;
   }
-   table .mat-mdc-header-row .mat-mdc-header-cell{
-    background-color: #25fdff !important    ;
-  }
+  //  table .mat-mdc-header-row .mat-mdc-header-cell{
+  //   background-color: #25fdff !important    ;
+  // }
   .company-head {
     padding-top: 2%;
     padding-bottom: 1%;
@@ -56,8 +60,15 @@ table {
     cursor: pointer;
   }
   .result-table .mat-mdc-header-row .mat-mdc-header-cell{
-    background-color: #d6d6d6 !important;
-    border: 1px solid white;
+    
+      font-size: 15px;
+      font-weight: 500;
+      background-color: #e7faf4 ;
+      color: #0f8a76 ;
+      text-align: left;
+      font-family: 'AR One Sans', sans-serif;
+      border-bottom: 0px !important;
+      padding-left: 1%;
   }
 
   .result-table-head {
@@ -71,4 +82,8 @@ table {
   }
   .result-table-head:hover {
     cursor: pointer;
+  }
+
+  .inc-p{
+    padding-left: 2% !important;
   }

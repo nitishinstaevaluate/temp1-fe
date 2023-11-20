@@ -1,4 +1,5 @@
-<mat-tab-group style="padding-bottom: 3% !important;" mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="selectedTabIndex" (selectedTabChange)="onTabSelectionChange()">
+<div class="mat-tab-g">
+  <mat-tab-group style="padding-bottom: 1% !important;background-color: #ffffff;border-radius: 20px;" class="tab-group" mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="selectedTabIndex" (selectedTabChange)="onTabSelectionChange()">
   <mat-tab label="FCFE" *ngIf = "fcfe">
     <div class="btn" style="text-align: right;width: 100%;">
       <button mat-stroked-button class="exp">
@@ -11,15 +12,15 @@
         <!-- fcfe table starts -->
       <table>
         <thead>
-          <tr style="border: 1px solid #d1d1d1;font-size: 15px;text-align: center;" >
+          <!-- <tr style="border: 1px solid #d1d1d1;font-size: 15px;text-align: center;" >
             <th colspan="7" style="text-align: right;padding-right: 2%;">Amount in {{transferStepperthree?.formOneAndTwoData?.currencyUnit}} ({{transferStepperthree?.formOneAndTwoData?.reportingUnit}})</th>
-          </tr>
-          <tr style="text-transform: capitalize;">
-            <th style="border: 1px solid #d1d1d1;font-size: 15px;text-align: center;" *ngFor="let columnName of fcfeColumn">{{ columnName }}</th>
+          </tr> -->
+          <tr style="text-transform: capitalize;" class="header">
+            <th *ngFor="let columnName of fcfeColumn">{{ columnName }}</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let row of dataSourceFcfe">
+          <tr *ngFor="let row of dataSourceFcfe" class="content">
             <td style="text-align: center;font-size: 14px;text-transform: capitalize;" [ngClass]="checkVal(cellValue,'fcfe') ? 'make-bold' : 'make-light'" *ngFor="let cellValue of row">{{ formatNumber(cellValue) }}</td>
           </tr>
         </tbody>
@@ -40,15 +41,15 @@
         <!-- table fcff  starts -->
         <table>
           <thead>
-            <tr style="border: 1px solid #d1d1d1;font-size: 15px;text-align: center;" >
+            <!-- <tr style="border: 1px solid #d1d1d1;font-size: 15px;text-align: center;" >
               <th colspan="7" style="text-align: right;padding-right: 2%;">Amount in {{transferStepperthree?.formOneAndTwoData?.currencyUnit}} ({{transferStepperthree?.formOneAndTwoData?.reportingUnit}})</th></tr>
-            <tr>
-            <tr style="text-transform: capitalize;">
-              <th style="border: 1px solid #d1d1d1;font-size: 15px;text-align: center;" *ngFor="let columnName of fcffColumn">{{ columnName }}</th>
+            <tr> -->
+            <tr style="text-transform: capitalize;" class="header">
+              <th *ngFor="let columnName of fcffColumn">{{ columnName }}</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let row of dataSourceFcff">
+            <tr *ngFor="let row of dataSourceFcff" class="content">
               <td style="text-align: center;font-size: 14px;text-transform: capitalize;" [ngClass]="checkVal(cellValue,'fcff') ? 'make-bold' : 'make-light'" *ngFor="let cellValue of row">{{ formatNumber(cellValue) }}</td>
             </tr>
           </tbody>
@@ -69,15 +70,15 @@
         <!-- excess earning table starts -->
       <table>
         <thead>
-          <tr style="border: 1px solid #d1d1d1;font-size: 15px;text-align: center;" >
+          <!-- <tr style="border: 1px solid #d1d1d1;font-size: 15px;text-align: center;" >
             <th colspan="7" style="text-align: right;padding-right: 2%;">Amount in {{transferStepperthree?.formOneAndTwoData?.currencyUnit}} ({{transferStepperthree?.formOneAndTwoData?.reportingUnit}})</th></tr>
-          <tr>
-          <tr style="text-transform: capitalize;">
-            <th style="border: 1px solid #d1d1d1;font-size: 15px;text-align: center;" *ngFor="let columnName of excessEarnColumn">{{ columnName }}</th>
+          <tr> -->
+          <tr style="text-transform: capitalize;" class="header">
+            <th *ngFor="let columnName of excessEarnColumn">{{ columnName }}</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let row of dataSourceExcessEarn">
+          <tr *ngFor="let row of dataSourceExcessEarn" class="content">
             <td style="text-align: center;font-size: 14px;text-transform: capitalize;" [ngClass]="checkVal(cellValue,'Excess_Earnings') ? 'make-bold' : 'make-light'" *ngFor="let cellValue of row">{{ formatNumber(cellValue) }}</td>
           </tr>
         </tbody>
@@ -109,16 +110,16 @@
       </button>
     </div>
     <div>
-      <h5 class="head-nav">NAV Result</h5>
+      <!-- <h5 class="head-nav">NAV Result</h5> -->
       <div class="table-container">
         <table>
-          <thead>
+          <!-- <thead>
             <tr class="nav-th">
               <th colspan="4" style="text-align: right;padding-right: 1%;">Amount in {{transferStepperthree?.formOneAndTwoData?.currencyUnit}} ({{transferStepperthree?.formOneAndTwoData?.reportingUnit}})</th>
             </tr>
-          </thead>
+          </thead> -->
           <thead>
-            <tr class="nav-th">
+            <tr class="header">
               <th>Particulars</th>
               <!-- <th>Type</th> -->
               <th>Book Value</th>
@@ -126,11 +127,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of dataSourceNav" class="nav-tr">
+            <tr *ngFor="let item of dataSourceNav" class="content">
               <td [ngClass]="item.fieldName === 'Non Current Assets' || item.fieldName === 'Total Non Current Assets' || item.fieldName === 'Net Current Assets' || item.fieldName === 'Firm Value' || item.fieldName === 'Equity Value' || item.fieldName === 'Value per share' ? 'nav-style-header' : 'nav-style-sub-header'">{{ item.fieldName }}</td>
               <!-- <td class="nav-style-sub-text">{{ item.type }}</td> -->
-              <td class="nav-style-sub-text">{{ item.bookValue ?? '' }}</td>
-              <td class="nav-style-sub-text">{{ item.fairValue ?? '' }}</td>
+              <td class="nav-style-sub-text">{{ item.bookValue  }}</td>
+              <td class="nav-style-sub-text">{{ item.fairValue  }}</td>
             </tr>
           </tbody>
         </table>
@@ -138,6 +139,8 @@
     </div>
   </mat-tab>
 </mat-tab-group>
+<p class="currency-unit" *ngIf="transferStepperthree?.formOneAndTwoData?.excelSheetId">Amount in {{transferStepperthree?.formOneAndTwoData?.currencyUnit}} ({{transferStepperthree?.formOneAndTwoData?.reportingUnit}})</p>
+</div>
 <div class="loader-overlay" *ngIf="isLoader">
   <div class="loader">
     <div class="loader-spinner"></div>

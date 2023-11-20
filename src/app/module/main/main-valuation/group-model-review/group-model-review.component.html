@@ -1,10 +1,11 @@
-<div *ngIf="currentStepIndex===2" [formGroup]="reviewForm">
+<div *ngIf="step === 3" [formGroup]="reviewForm">
+    <h4 class="card-header">Financial Data Segment</h4>
+    <div class="outer-wrapper">
     <div>
-        <h4 class="card-header">Financial Data Segment</h4>
-        <div>
-            <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+        <div class="mat-tab-g">
+            <mat-tab-group mat-stretch-tabs="false" class="tab-group" mat-align-tabs="start" style="background-color: #ffffff;border-radius: 20px;">
                 <mat-tab label="Profit & Loss">
-                    <app-profit-loss-data [transferStepperTwo]="transferStepperTwo" (profitLossData)="profitLossData($event)" [currentStepIndex]="currentStepIndex"></app-profit-loss-data>
+                    <app-profit-loss-data [transferStepperTwo]="transferStepperTwo" (profitLossData)="profitLossData($event)" [currentStepIndex]="step"></app-profit-loss-data>
                 </mat-tab>
                 <mat-tab label="Balance Sheet">
                     <app-balance-sheet-details [transferStepperTwo]="transferStepperTwo" (balanceSheetData)="balanceSheetData($event)"></app-balance-sheet-details>
@@ -13,11 +14,12 @@
                     <app-assessment-details [transferStepperTwo]="transferStepperTwo" (assessmentSheetData)="assessmentSheetData($event)"></app-assessment-details>
                 </mat-tab>
             </mat-tab-group>
+            <p class="currency-unit" *ngIf="transferStepperTwo?.excelSheetId">Amount in INR (Lakhs)</p>
         </div>
         <div *ngIf="!transferStepperTwo?.excelSheetId" style="margin-top: auto;margin-bottom: auto;">
             <p style="padding: 2% !important;
             color: #c91919;
-            font-size: 19px;">No Records Found</p>
+            font-size: 19px;font-family: 'AR One Sans', sans-serif;">No Records Found</p>
         </div>
     </div>  
 
@@ -31,8 +33,8 @@
     <!-- relative valuations table section ends -->
 
      <!-- Modify paramter set in starts -->
-     <div class="outer-wrapper" style="padding-top: 2%;" *ngIf="isRelativeValuation('FCFE') || isFcff('FCFF')">
-        <h4 class="card-header">Other adjustments</h4>
+     <!-- <div class="outer-wrapper" style="padding-top: 2%;" *ngIf="isRelativeValuation('FCFE') || isFcff('FCFF')"> -->
+        <!-- <h4 class="card-header">Other adjustments</h4> -->
        <!-- <div class="container-fluid" *ngIf="transferStepperTwo">
         <div class="row">
             <div class="col-md-4 outer-main-div" *ngIf="transferStepperTwo?.beta">
@@ -93,19 +95,25 @@
         </div>
        </div> -->
        <!-- other adjustments -->
-       <div class="container-fluid" style="padding-top: 2%;">
-        <div class="row">
-            <div class="col-md-6 field">
+       <div class="container-fluid" *ngIf="isRelativeValuation('FCFE') || isFcff('FCFF')" style="padding-top: 2%;">
+        <!-- <div class="row"> -->
+            <!-- <div class="col-md-6 field">
                 <mat-form-field class="full-width-input" [floatLabel]="floatLabelType">
                     <input formControlName="otherAdj" [type]="modelControl.fcfe.options.otherAdj.type" matInput  [placeholder]="modelControl.fcfe.options.otherAdj.placeholder">
                 </mat-form-field>
+            </div> -->
+            <div class="col-md-6 field" style="padding-top: 1%;">
+                <div class="material-textfield">
+                  <input class="new-inp" formControlName="otherAdj" [type]="modelControl.fcfe.options.otherAdj.type" [placeholder]="modelControl.fcfe.options.otherAdj.placeholder"/>
+                  <label>Add other adjustments</label>
+                </div>
             </div>
-        </div>
-       </div>
+        <!-- </div> -->
+       <!-- </div> -->
     </div>
     <!--Modify parameter set in ends  -->
     
-    <div style="text-align: center;padding-bottom: 1%;padding-top: 1%;">
+    <!-- <div style="text-align: center;padding-bottom: 1%;padding-top: 1%;">
         <button (click)="previous()" mat-raised-button style="box-shadow: 1px 2px 15px #d1d1d1;color:#bb0d0d;font-weight: bold !important;margin-right: 1%;">
             Back
             <mat-icon style="font-weight: bold;color: #d42121;">arrow_left</mat-icon>
@@ -119,11 +127,25 @@
             <mat-icon style="font-weight: bold;color: green;">send</mat-icon>
     </button>
    
+</div> -->
+
+<div class="col-md-12 btn-prop">
+    <button (click)="previous()" mat-raised-button class="prev-button">
+        Back
+        <mat-icon>arrow_left</mat-icon>
+    </button>
+
+<button (click)="saveAndNext()" class="button-save-mat" mat-raised-button>
+    Next
+    <span class="button-save"><mat-icon>send</mat-icon></span>
+ </button>
 </div>
-<div class="loader-overlay" *ngIf="isLoadingProfitLoss || isLoadingBalanceSheet ">
+</div>
+
+<!-- <div class="loader-overlay">
     <div class="loader">
       <div class="loader-spinner"></div>
       <div class="loader-message">Please wait...</div>
     </div>
-  </div>
+  </div> -->
 </div>

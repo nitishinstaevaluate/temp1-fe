@@ -1,7 +1,9 @@
-import { Component, ViewChild, OnChanges } from '@angular/core';
+import { Component, ViewChild, OnChanges, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
+import { Router } from '@angular/router';
 import { IS_ARRAY_EMPTY_OR_NULL, isSelected } from 'src/app/shared/enums/functions';
+import { CalculationsService } from 'src/app/shared/service/calculations.service';
 
 @Component({
   selector: 'app-main-valuation',
@@ -9,7 +11,7 @@ import { IS_ARRAY_EMPTY_OR_NULL, isSelected } from 'src/app/shared/enums/functio
   styleUrls: ['./main-valuation.component.scss']
 })
 
-export class MainValuationComponent{
+export class MainValuationComponent implements OnInit{
   headerLabel='';
   initiateForm:any=true;
   currentStepIndex:any=0;    
@@ -33,9 +35,14 @@ export class MainValuationComponent{
   excessPrev=false;
   navPrev=false;
 
+  step:any=0;  
   next=0;
   
-  constructor(private _formBuilder : FormBuilder){
+  constructor(private _formBuilder : FormBuilder,private router:Router,private calculationService:CalculationsService){    }
+  ngOnInit(): void {
+    this.calculationService.steps.subscribe((response:number)=>{
+      this.step=response
+    })
   }
   @ViewChild('stepper') stepper!: MatStepper;
 
@@ -55,9 +62,8 @@ export class MainValuationComponent{
     fifthCtrl: ['', Validators.required],
   });
 
-  onStepChange(event: any,stepper:any) {
-    this.currentStepIndex = this.stepper.selectedIndex;
-    if(this.stepper.selectedIndex === 1){
+  
+  onStepChange() {  
       this.formOneAndTwoData = {
         ...this.formOneData,
         ...(this.formOneData?.model.includes('FCFF') ? this.fcffData : {}),
@@ -67,12 +73,11 @@ export class MainValuationComponent{
         ...(this.formOneData?.model.includes('CTM') ? this.comparableIndustriesData : {}),
         ...(this.formOneData?.model.includes('NAV') ? this.navData : {}),
       };
-    }
-    if(event.selectedIndex +1 == 1) return this.headerLabel = '';
-    if(event.selectedIndex +1 == 2) return this.headerLabel = 'Model Inputs';
-    if(event.selectedIndex +1 == 3) return this.headerLabel = 'Review Form';
-    if(event.selectedIndex +1 == 4) return this.headerLabel = 'Evaluate Result';
-    if(event.selectedIndex +1 == 5) return this.headerLabel = '';
+    // if(this.step == 1) return this.headerLabel = '';
+    // if(this.step == 2) return this.headerLabel = 'Model Inputs';
+    // if(this.step == 3) return this.headerLabel = 'Review Form';
+    // if(this.step == 4) return this.headerLabel = 'Evaluate Result';
+    // if(this.step == 5) return this.headerLabel = '';
     return '';
   }
 
@@ -80,46 +85,73 @@ export class MainValuationComponent{
     this.transferSteppertwo = data;
     this.formOneData = data;
     this.modelArray=this.formOneData?.model;
-    this.stepper.next();
-    this.nextModelSelection();
+    // this.stepper.next();
+    const currentStep:any = localStorage.getItem('step')
+
+  this.step = parseInt(currentStep) + 1;
+
+  localStorage.setItem('step',`${this.step}`);
+  this.calculationService.checkStepStatus.next({status:true,step:this.step})
+  this.nextModelSelection();
   }
+
   previous(event:any){
-    this.stepper.previous();
+    // this.stepper.previous();
+    const currentStep:any = localStorage.getItem('step')
+    this.step = parseInt(currentStep) - 1;
+    localStorage.setItem('step',`${this.step}`)
+    this.calculationService.checkStepStatus.next({stepStatus:false,step:this.step,prev:true})
   }
+
   groupReviewControls(data:any){
     this.transferStepperthree= {formOneAndTwoData:this.formOneAndTwoData,formThreeData:data};
-    this.stepper.next();
+    // this.stepper.next();
+    const currentStep:any = localStorage.getItem('step')
+    this.step=parseInt(currentStep)
+    this.calculationService.checkStepStatus.next({status:true,step:this.step})
   }
 
   resultData(data:any){
-    this.stepper.next();
+    // this.stepper.next();
+    const currentStep:any = localStorage.getItem('step');
+    this.step = parseInt(currentStep) + 1;
+    localStorage.setItem('step',`${this.step}`)
+    this.calculationService.checkStepStatus.next({stepStatus:true,step:this.step})
     this.transferStepperFour = data; 
   }
+
   fcfeDetails(data:any){
     this.fcfeData=data;
+    // console.log(data,"fcfe data")
     this.nextModelSelection(data.status);
+    this.onStepChange();
   }
 
   fcffDetails(data:any){
     this.fcffData=data;
     this.nextModelSelection(data.status);
+    this.onStepChange();
   }
 
   relativeValDetails(data:any){
     this.relativeData=data;
     this.nextModelSelection(data.status);
+    this.onStepChange();
   }
   excessEarnDetails(data:any){
     this.excessEarnData=data;
     this.nextModelSelection(data.status);
+    this.onStepChange();
   }
   comparableIndustriesDetails(data:any){
     this.comparableIndustriesData=data;
     this.nextModelSelection(data.status);
+    this.onStepChange();
   }
   navDetails(data:any){
     this.navData=data;
     this.nextModelSelection(data.status);
+    this.onStepChange();
   }
 
   nextModelSelection(data?:any){
@@ -147,7 +179,11 @@ export class MainValuationComponent{
           this.next = 6;
           break;
         default:
-          this.stepper.next(); 
+          // this.stepper.next(); 
+          const currentStep:any = localStorage.getItem('step')
+          this.step = parseInt(currentStep) + 1;
+          localStorage.setItem('step',`${this.step}`)
+          this.calculationService.checkStepStatus.next({stepStatus:false,step:this.step})
       
     }
   }
@@ -176,7 +212,12 @@ export class MainValuationComponent{
          this.next = 6;
          break;
        default:
-        this.stepper.previous(); 
+        // this.stepper.previous(); 
+        const currentStep:any = localStorage.getItem('step')
+        this.step = parseInt(currentStep) - 1;
+        localStorage.setItem('step',`${this.step}`)
+        this.calculationService.checkStepStatus.next({stepStatus:false,step:this.step,prev:true})
+
      }
   }
   fcfeDetailsPrev(data:any){
@@ -199,9 +240,11 @@ export class MainValuationComponent{
     this.previousModelSelection(data?.status);
   }
 
-  // isModelValid(name:string, modelArray:any){
-  //   return isSelected(name,modelArray)
-  // }
+  ifModelExist(name:string, modelArray:any){
+    if(modelArray)
+      return isSelected(name,modelArray);
+    return false;
+  }
 
   updateSelectedItems(item: string) {
     const index = this.modelArray.indexOf(item);
@@ -266,7 +309,6 @@ export class MainValuationComponent{
     console.log(this.modelArray)
     const valueRmv=this.modelArray[this.modelArray.indexOf(modelName) + 1 ]
     const indexSplice=this.modelArray.indexOf(modelName) + 1 
-    console.log(valueRmv,"to be removed")
     
     switch (modelName) {
       case 'FCFE':

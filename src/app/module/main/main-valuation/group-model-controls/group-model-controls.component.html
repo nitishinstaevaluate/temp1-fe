@@ -1,93 +1,109 @@
-<div class="outer-section">
+<div class="outer-section" *ngIf="step === 1">
     <div class="outer-wrapper" *ngIf="modelControl.modelValuation.type === 'modelValuation'">
-    <h4 class="card-header" >Company Details</h4>
+    <!-- <h4 class="card-header" >Company Details</h4> -->
+    <div class='c-decorated-header'>
+      <h3><span style="padding-left: 2%;">Company Details</span></h3>
+      <div class='c-decorated-header_link-view-more'>
+      </div>
+    </div>
     <form [formGroup]="modelValuation">
         <div class="row">
           <!-- <div class="col-md-12 revalmodel" style="border-top: 1px solid #ccdfe3">
             <mat-label class="label">Company Details</mat-label>
             <span class="mat-bullet"><mat-icon>fiber_manual_record</mat-icon></span>
           </div> -->
-          <!-- company -->
-            <div class="col-md-6 field">
-              <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
-                  <mat-label>Company Name</mat-label>
-                    <input formControlName="company" [type]="modelControl.modelValuation.options.company.type" matInput>
-                        <!-- <mat-error *ngIf="hasError(secondForm, 'valuation', 'required')">
-                            Please enter a valuations
-                        </mat-error> -->
-                </mat-form-field>
-            </div>
+
+            <!-- company -->
+              <div class="col-md-6 field" style="padding-top: 1%;">
+                <div class="material-textfield">
+                  <input class="new-inp" placeholder="Add company" type="text" formControlName="company" />
+                  <label> Company Name</label>
+                </div>
+              </div>
             
                 <!--valuation date  -->
-                <div class="col-md-6 field">
-                    <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
-                      <mat-label>Valuation Date</mat-label>  
-                      <input formControlName="valuationDate" [placeholder]="modelControl.modelValuation.options.valuationDate.placeholder" matInput [matDatepicker]="picker">
-                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                        <!-- <mat-error *ngIf="hasError(secondForm, 'date', 'required')">
-                            Please select Date
-                          </mat-error> -->
-                    </mat-form-field>
+                <div class="col-md-6 field" style="padding-top: 1%;">
+                    <div class="material-textfield">
+                      <input class="new-inp" formControlName="valuationDate" [placeholder]="modelControl.modelValuation.options.valuationDate.placeholder" type="date" />
+                      <label>Valuation Date</label>
+                    </div>
                 </div>
+
+                <!-- Reporting unit -->
+                <div class="col-md-6 field">
+                  <div class="material-textfield">
+                    <select id="reportingUnit" class="new-inp" formControlName="reportingUnit">
+                      <option value="" disabled selected>Select reporting unit</option>
+                      <option *ngFor="let doc of modelControl.reportDetails.options.reportingUnit"  [value]="doc.value">{{ doc.name }}</option>
+                    </select>
+                    <label for="reportingUnit">Reporting Unit</label>
+                  </div>
+              </div>
+
+              <!-- currency unit -->
+              <div class="col-md-6 field">
+                <div class="material-textfield">
+                  <select id="currencyUnit" class="new-inp" formControlName="currencyUnit">
+                    <option value="" disabled selected>Select currency</option>
+                    <option *ngFor="let doc of modelControl.reportDetails.options.currencyUnit"  [value]="doc.value">{{ doc.name }}</option>
+                  </select>
+                  <label for="currencyUnit">Currency</label>
+                </div>
+            </div>
 
                 <!-- location -->
                 <div class="col-md-6 field">
-                    <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
-                      <mat-label>Location</mat-label>  
-                      <input formControlName="location" [type]="modelControl.modelValuation.options.location.type" matInput [placeholder]="modelControl.modelValuation.options.location.placeholder">
-                            <!-- <mat-error *ngIf="hasError(secondForm, 'valuation', 'required')">
-                                Please enter a valuations
-                            </mat-error> -->
-                    </mat-form-field>
+                    <div class="material-textfield">
+                      <input class="new-inp"  formControlName="location" [type]="modelControl.modelValuation.options.location.type" [placeholder]="modelControl.modelValuation.options.location.placeholder"/>
+                      <label>Location</label>
+                    </div>
                 </div>
     
                 <!--industry  -->
                 <div class="col-md-6 field">
-                    <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
-                      <mat-label>Industry</mat-label>  
-                      <mat-select class="mat-select-value" formControlName="industry" [placeholder]="modelControl.modelValuation.options.industry.placeholder">
-                        <mat-option *ngFor="let doc of industries" [value]="doc.industry">{{doc.industry}}</mat-option>
-                        </mat-select>
-                        <!-- <mat-error *ngIf="hasError(loginForm, 'company', 'required')">
-                            Please select company
-                          </mat-error> -->
-                      </mat-form-field>
+                    <div class="material-textfield">
+                      <select id="industry" class="new-inp" formControlName="industry">
+                        <option value="" disabled selected>{{ modelControl.modelValuation.options.industry.placeholder }}</option>
+                        <option *ngFor="let doc of industries" [value]="doc.industry">{{ doc.industry }}</option>
+                      </select>
+                      <label for="industry">Industry</label>
+                    </div>
                 </div>
 
                 <!-- outstanding shares -->
                 <div class="col-md-6 field" >
-                  <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
-                    <mat-label>Outstanding Shares</mat-label>  
-                    <input [type]="modelControl.modelValuation.options.outstandingShares.type"  formControlName="outstandingShares" matInput  [placeholder]="modelControl.modelValuation.options.outstandingShares.placeholder">
-                    </mat-form-field>
+                      <div class="material-textfield">
+                        <input class="new-inp" [type]="modelControl.modelValuation.options.outstandingShares.type"  formControlName="outstandingShares" [placeholder]="modelControl.modelValuation.options.outstandingShares.placeholder"/>
+                        <label>Outstanding Shares</label>
+                  </div>
               </div>
 
               <!-- sub-industry -->
                 <div class="col-md-6 field"  *ngIf="modelValuation.controls['industry'].value && subIndustries.length > 0">
-                    <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
-                      <mat-label>Sub-Industry</mat-label>  
-                      <mat-select class="mat-select-value" #subIndustryVal (selectionChange)="subIndustryChange(subIndustryVal.value)" formControlName="subIndustry" [placeholder]="modelControl.modelValuation.options.subIndustry.placeholder">
-                        <mat-option *ngFor="let doc of subIndustries"  [value]="doc._id">{{doc.subIndustry}}</mat-option>
-                        </mat-select>
-                      </mat-form-field>
+                      <div class="material-textfield">
+                        <select id="subIndustry" class="new-inp" #subIndustryVal (change)="subIndustryChange(subIndustryVal.value)" formControlName="subIndustry">
+                          <option value="" disabled selected>Select sub-industry</option>
+                          <option *ngFor="let doc of subIndustries"  [value]="doc._id">{{doc.subIndustry}}</option>
+                        </select>
+                        <label for="subIndustry">Sub-Industry</label>
+                      </div>
                 </div>
 
                 <!-- tax rate -->
                 <div class="col-md-6 field">
-                    <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
-                      <mat-label>Tax Rate</mat-label>  
-                      <mat-select class="mat-select-value" formControlName="taxRateType" [placeholder]="modelControl.modelValuation.options.taxRate.placeholder">
-                            <mat-option (click)="openDialog()" value="25.17"> Default</mat-option> 
-                        <mat-option *ngFor="let doc of taxRate" (click)="openDialog(true)" [value]="doc.type">{{doc.label}}</mat-option>
-                        </mat-select>
-                        <mat-hint *ngIf="taxRateModelBox" class="taxrate-hint">Tax rate is {{taxRateModelBox}}%</mat-hint>
-                    </mat-form-field>
+                    <div class="material-textfield">
+                      <select id="subIndustry" class="new-inp"formControlName="taxRateType" (change)="onTaxRateChange($event)">
+                        <option value="25.17" selected>Default</option>
+                        <option *ngFor="let doc of taxRate" [value]="doc.type">{{doc.label}}</option>
+                      </select>
+                      <label for="subIndustry">Tax Rate</label>
+                      <mat-hint *ngIf="taxRateModelBox" class="taxrate-hint">Tax rate is {{taxRateModelBox}}%</mat-hint>
+                    </div>
                 </div>
 
               
                 <!-- valiuation model selection -->
-                <div class="col-md-12 field" style="    padding-top: 1%;
+                <!-- <div class="col-md-12 field" style="    padding-top: 1%;
                 padding-bottom: 1%;">
                   <div class="row">
                       <div class="col-md-3 modelview">
@@ -102,22 +118,22 @@
                       </span>
                       </div>
                   </div>
-              </div>
+              </div> -->
 
               <!-- going concer -->
-              <div class="col-md-6 mat-radio field" *ngIf="isRelativeValuation('FCFE') || isRelativeValuation('FCFF') || isRelativeValuation('Excess_Earnings')">
+              <!-- <div class="col-md-6 mat-radio field" *ngIf="isRelativeValuation('FCFE') || isRelativeValuation('FCFF') || isRelativeValuation('Excess_Earnings')">
                 <mat-radio-group class="radio-group-control" formControlName="projectionYearSelect" *ngIf="modelControl.modelValuation.options.projectionYears.options">
                     <mat-radio-button color="primary"  *ngFor="let option of modelControl.modelValuation.options.projectionYears.options"
                     [value]="option.value">{{option.name}}</mat-radio-button>
                 </mat-radio-group>
-            </div>
+            </div> -->
 
             
             </div>
 
-            <div class="row">
+            <!-- <div class="row"> -->
                 <!-- upload excel documents -->
-                <div class="col-md-6 field upload-doc">
+                <!-- <div class="col-md-6 field upload-doc">
                   <div class="row">
                       <div class="col-md-8">
                           <input
@@ -129,7 +145,6 @@
                           />
                           <mat-label class="label">Add provisional Profit Loss and Balance Sheet statements </mat-label>
                           <p class="download">
-                            <!-- (If you want to download template, -->
                             <a [href]="downloadTemplate" target="_blank" style="font-weight: 500;">Download Template!</a>
                           </p>
                         </div>
@@ -144,26 +159,26 @@
                           </button>
                         </div>
                   </div>
-              </div>
+              </div> -->
     
-              <div class="col-md-3 field">
+              <!-- <div class="col-md-3 field">
                 <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
                     <mat-label>Reporting Units</mat-label>
                     <mat-select formControlName="reportingUnit" class="mat-select-value">
                         <mat-option *ngFor="let doc of modelControl.reportDetails.options.reportingUnit"  [value]="doc.value">{{doc.name}}</mat-option>
                     </mat-select>
                 </mat-form-field>
-            </div>
+            </div> -->
     
-            <div class="col-md-3 field">
+            <!-- <div class="col-md-3 field">
               <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
                   <mat-label>Currency</mat-label>
                   <mat-select formControlName="currencyUnit" class="mat-select-value">
                       <mat-option *ngFor="let doc of modelControl.reportDetails.options.currencyUnit"  [value]="doc.value">{{doc.name}}</mat-option>
                   </mat-select>
               </mat-form-field>
-          </div>
-            </div>
+          </div> -->
+            <!-- </div> -->
 
       </form>   
     </div>
@@ -340,10 +355,41 @@
           </form>  
     </div>  -->
     <!-- relative valuation ends -->
-    <div style="padding-bottom: 1%;text-align: center;">
-    <button (click)="saveAndNext()" style="box-shadow: 1px 2px 15px #d1d1d1;color:#228822;"  mat-raised-button>
-        Next
-        <mat-icon style="font-weight: bold;color: green;">send</mat-icon>
-     </button>
+    <div class="row" style="padding-bottom: 1%;">
+      <div class="col-xl-6">
+        <div style="padding-left: 4%;text-align: left;" class="container">
+          <button (click)="selectValuation()" class="model-button" mat-raised-button>
+              Select Valuation Model
+           </button>
+          </div>
+      </div>
+      <div class="col-xl-6">
+        <div style="padding-right: 4%;text-align: right;" class="container">
+          <button (click)="saveAndNext()" class="button-save-mat" mat-raised-button>
+              Next
+              <span class="button-save"><mat-icon style="font-weight: bold;color: #ffffff;">send</mat-icon></span>
+           </button>
+          </div>
+      </div>
+    </div>
+
+    <div class="row" style="padding-left: 3%;padding-right: 3%;" *ngIf="modelValuation.controls['model'].value.length > 0">
+      <div class="chip-container">
+        <div class="chip" *ngFor="let indModel of modelValuation.controls['model'].value" style="padding-left: 2%;padding-right: 7%;padding-top: 2%;padding-bottom: 2%;">
+          {{ allModels[indModel] }}
+          <span class="icon-container">
+            <!-- <mat-icon class="check-icon">beenhere</mat-icon> -->
+            <!-- <mat-icon>offline_pin</mat-icon> -->
+            <mat-icon>done_all</mat-icon>
+            <!-- <mat-icon>done_outline</mat-icon> -->
+          </span>
+          <!-- <span style="position: absolute;top: 0%;left: 12%;top: 18%;"><mat-icon style="color: green;"> beenhere</mat-icon> </span> -->
+          <span class="close-btn" (click)="removeTag(indModel)">&times;</span>
+        </div>
+      </div>
+    </div>
+    <div class="filename-container" *ngIf="fileName">
+      <div class="title">Filename:</div>
+      <span class="filename">{{fileName}}</span>
     </div>
 </div>
