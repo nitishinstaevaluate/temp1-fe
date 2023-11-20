@@ -29,7 +29,7 @@
   }
   .field{
     padding-left: 2.5%;
-    padding-top: 0.5%;
+    padding-top: 3%;
     padding-right: 2.5%;
   }
   
@@ -354,5 +354,61 @@
   padding-bottom: 1%;
   padding-top: 1%;
   padding-right: 2%;
+}
+
+.material-textfield {
+  position: relative;
+}
+
+label {
+  position: absolute;
+  font-size: 1rem;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: white;
+  color: gray;
+  padding: 0 0.3rem;
+  margin: 0 0.5rem;
+  transition: 0.1s ease-out;
+  transform-origin: left top;
+  pointer-events: none;
+  font-family: 'AR One Sans', sans-serif;
+  font-weight: 500;
+}
+
+.new-inp {
+  font-size: 1rem;
+  outline: none;
+  border: 1px solid #e4e4e4;
+  border-radius: 10px;
+  color: #6d6d6d;
+  transition: 0.1s ease-out;
+  font-family: 'AR One Sans', sans-serif;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  width: 100%;
+  padding-left: 2%;
+  box-shadow: 1px 2px 10px #f0ebeb;
+  height: 50px;
+}
+
+.new-inp:focus {
+  border-color: #6200ee;
+}
+
+.new-inp:focus+label {
+  color: #6200ee;
+  top: 3%;
+  transform: translateY(-50%) scale(0.8) !important;
+}
+
+.new-inp:not(:placeholder-shown)+label {
+  top: 3%;
+  transform: translateY(-50%) scale(0.8) !important;
+}
+
+.new-inp:not(:focus)::placeholder {
+  opacity: 0;
 }
 // new scss ends

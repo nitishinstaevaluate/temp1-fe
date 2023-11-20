@@ -499,6 +499,22 @@ input.form-check-input[type="radio"] {
 }
 .pos-absolute{
   position: absolute;
+  top: -5.6%;
+  background: white;
+  font-size: 17px;
+  font-family: 'AR One Sans', sans-serif;
+  color: #666666;
+}
+.pos-absolute3{
+  position: absolute;
+  top: -9.6%;
+  background: white;
+  font-size: 17px;
+  font-family: 'AR One Sans', sans-serif;
+  color: #666666;
+}
+.pos-absolute2{
+  position: absolute;
   top: -6.6%;
   background: white;
   font-size: 17px;
@@ -565,6 +581,7 @@ input.form-check-input[type="radio"] {
   padding-top: 1%;
   padding-bottom: 1%;
   font-family: 'AR One Sans', sans-serif;
+  width: 7rem;
 }
 .submit-bt-disable{
   background-color: #0CD18F;

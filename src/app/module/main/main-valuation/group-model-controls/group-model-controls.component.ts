@@ -478,8 +478,8 @@ isSelectedpreferenceRatio(value:any){
       if(res.excelSheetId){
         this.isExcelReupload = true;
         this.snackBar.open('File has been uploaded successfully','Ok',{
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
           duration: 3000,
           panelClass: 'app-notification-success'
         })
@@ -587,8 +587,8 @@ isSelectedpreferenceRatio(value:any){
         this.fileName = result?.fileName; 
         
         this.snackBar.open('Valuation models are added successfully','OK',{
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
           duration: 3000,
           panelClass: 'app-notification-success'
         })

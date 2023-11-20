@@ -11,66 +11,117 @@
                   </div>
             </div>
             <!-- discount rate -->
-            <div class="col-md-4 field">
-                <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
+            <div class="col-md-4 field" style="padding-top:1%">
+                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
                     <mat-label>Discount Rate</mat-label>    
                     <mat-select class="mat-select-value" formControlName="discountRate">
                         <mat-option *ngFor="let doc of discountR"  [value]="getDocList(doc)">{{doc.label}}</mat-option>
                         </mat-select>
-                  </mat-form-field>
+                  </mat-form-field> -->
+
+                  <div class="material-textfield">
+                    <select id="discountRate" class="new-inp" formControlName="discountRate">
+                      <option value="" disabled selected>Select discount Rate</option>
+                      <option *ngFor="let doc of discountR" [ngValue]="getDocList(doc)">{{ doc.label }}</option>
+                    </select>
+                    <label for="discountRate">Discount Rate</label>
+                  </div>
             </div>
 
             <!-- discount period -->
-            <div class="col-md-4 field">
-                <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
+            <div class="col-md-4 field" style="padding-top:1%">
+                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
                     <mat-label>Discount Period</mat-label>
                     <mat-select class="mat-select-value" formControlName="discountingPeriod">
                     <mat-option *ngFor="let doc of modelControl.excessEarning.options.discountPeriod.options"  [value]="doc.name">{{doc.name}}</mat-option>
                     </mat-select>
-                  </mat-form-field>
+                  </mat-form-field> -->
+
+                  <div class="material-textfield">
+                    <select id="discountingPeriod" class="new-inp" formControlName="discountingPeriod">
+                      <option value="" disabled selected>Select discount period</option>
+                      <option *ngFor="let doc of modelControl.excessEarning.options.discountPeriod.options" [ngValue]="doc.name">{{ doc.name }}</option>
+                    </select>
+                    <label for="discountingPeriod">Discount Period</label>
+                  </div>
             </div>
 
             <!-- cost of equity -->
-            <div class="col-md-4 field">
-                <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
+            <div class="col-md-4 field" style="padding-top:1%">
+                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
                     <mat-label>Cost Of Equity</mat-label>
                     <mat-select class="mat-select-value" formControlName="coeMethod">
                     <mat-option *ngFor="let doc of equityM"  [value]="doc.type">{{doc.label}}</mat-option>
                     </mat-select>
-                  </mat-form-field>
+                  </mat-form-field> -->
+
+                  <div class="material-textfield">
+                    <select id="coeMethod" class="new-inp" formControlName="coeMethod">
+                      <option value="" disabled selected>Select cost of equity</option>
+                      <option *ngFor="let doc of equityM"  [ngValue]="doc.type">{{ doc.label }}</option>
+                    </select>
+                    <label for="coeMethod">Cost Of Equity</label>
+                  </div>
             </div>
 
             <!-- risk free rate -->
             <div class="col-md-4 field">
-                <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
+                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
                     <mat-label>Risk Free Rate</mat-label>
                     <mat-select class="mat-select-value" formControlName="riskFreeRate">
                     <mat-option *ngFor="let doc of indianTreasuryY"  [value]="doc.latest">Yield on {{ doc.maturityInYrs }} Years Indian Treasury Bond</mat-option>
                 </mat-select>
                 <mat-hint *ngIf="excessEarningForm.controls['riskFreeRate'].value" class="taxrate-hint">Risk-Free rate is {{excessEarningForm.controls['riskFreeRate'].value}}%</mat-hint>
-                </mat-form-field>
+                </mat-form-field> -->
+
+                <div class="material-textfield">
+                  <select id="riskFreeRate" class="new-inp" formControlName="riskFreeRate">
+                    <option value="" disabled selected>Select risk free rate</option>
+                    <option *ngFor="let doc of indianTreasuryY"  [ngValue]="doc.latest">Yield on {{ doc.maturityInYrs }} Years Indian Treasury Bond</option>
+                  </select>
+                  <label for="riskFreeRate">Risk Free Rate</label>
+                <mat-hint *ngIf="excessEarningForm.controls['riskFreeRate'].value" class="taxrate-hint">Risk-Free rate is {{excessEarningForm.controls['riskFreeRate'].value}}%</mat-hint>
+                </div>
             </div>
 
             <!-- expected market return -->
             <div class="col-md-4 field">
-                <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
+                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
                     <mat-label>Expected Market Return</mat-label>
                     <mat-select class="mat-select-value" formControlName="expMarketReturnType">
                     <mat-option *ngFor="let doc of modelControl.excessEarning.options.expMarketReturnType.options"  [value]="doc">{{doc.name}}</mat-option>
                 </mat-select>
                 <mat-hint *ngIf="excessEarningForm.controls['expMarketReturn'].value" class="taxrate-hint">Expected Market Return is {{excessEarningForm.controls['expMarketReturn'].value.toFixed(2)}}%</mat-hint>
-                  </mat-form-field>
+                  </mat-form-field> -->
+
+                  <div class="material-textfield">
+                    <select id="expMarketReturnType" class="new-inp" formControlName="expMarketReturnType">
+                      <option value="" disabled selected>Select expected market return</option>
+                      <option *ngFor="let doc of modelControl.excessEarning.options.expMarketReturnType.options" [ngValue]="doc">{{doc.name}}</option>
+                    </select>
+                    <label for="expMarketReturnType">Expected Market Return</label>
+                  <mat-hint *ngIf="excessEarningForm.controls['expMarketReturn'].value" class="taxrate-hint">Expected Market Return is {{excessEarningForm.controls['expMarketReturn'].value.toFixed(2)}}%</mat-hint>
+                  </div>
             </div>
 
             <!-- beta -->
             <div class="col-md-4 field">
-                <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
+                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
                     <mat-label>Beta</mat-label>
                     <mat-select class="mat-select-value" formControlName="betaType">
                     <mat-option [disabled]="!formOneData?.industry" *ngFor="let doc of modelControl.excessEarning.options.betaType.options"  [value]="doc.value" >{{doc.name}}</mat-option>
                 </mat-select>
                 <mat-hint *ngIf="excessEarningForm.controls['beta'].value" class="taxrate-hint">Beta is {{excessEarningForm.controls['beta'].value.toFixed(2)}}</mat-hint>
-                  </mat-form-field>
+                  </mat-form-field> -->
+
+                  <div class="material-textfield">
+                    <select id="betaType" class="new-inp" formControlName="betaType">
+                      <option value="" disabled selected>Select beta</option>
+                      <option [disabled]="!formOneData?.industry" *ngFor="let doc of modelControl.excessEarning.options.betaType.options"  [ngValue]="doc.value">{{doc.name}}</option>
+                    </select>
+                    <label for="betaType">Beta</label>
+                  <mat-hint *ngIf="excessEarningForm.controls['expMarketReturn'].value" class="taxrate-hint">Beta is {{excessEarningForm.controls['beta'].value.toFixed(2)}}</mat-hint>
+                  </div>
             </div>
 
             <!-- risk premium -->
@@ -84,10 +135,15 @@
             
             <!-- risk premium -->
             <div class="col-md-4 field">
-                <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
+                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
                     <mat-label>Specific Risk Premium</mat-label>
                     <input (mousedown)="onSlideToggleChange($event)" formControlName="riskPremium" [type]="modelControl.excessEarning.options.riskPremium.type" matInput  [placeholder]="modelControl.excessEarning.options.riskPremium.placeholder">
-                </mat-form-field>
+                </mat-form-field> -->
+
+                <div class="material-textfield">
+                  <input class="new-inp" (click)="onSlideToggleChange($event)" formControlName="riskPremium" [type]="modelControl.excessEarning.options.riskPremium.type" placeholder="Enter risk premium"/>
+                  <label>Specific Risk Premium</label>
+            </div>
                 </div>
             
             <!-- <div class="col-md-4 field">

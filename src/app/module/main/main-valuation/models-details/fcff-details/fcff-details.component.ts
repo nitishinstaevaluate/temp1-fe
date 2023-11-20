@@ -114,13 +114,13 @@ loadOnChangeValue(){
               panelClass: 'app-notification-success'
             })
           } else {
-            this.fcffForm.controls['expMarketReturnType'].reset();
-            this.snackBar.open('Expected Market Return Not Saved','OK',{
-              horizontalPosition: 'right',
-              verticalPosition: 'top',
-              duration: 3000,
-              panelClass: 'app-notification-error'
-            })
+            this.fcffForm.controls['expMarketReturnType'].setValue('');
+            // this.snackBar.open('Expected Market Return Not Saved','OK',{
+            //   horizontalPosition: 'right',
+            //   verticalPosition: 'top',
+            //   duration: 3000,
+            //   panelClass: 'app-notification-error'
+            // })
           }
         })
       }
@@ -319,11 +319,14 @@ onSlideToggleChange(event:any){
   if(event && !this.isDialogOpen){
     this.isDialogOpen = true;
 
-    const data={
-      data: 'specificRiskPremiumForm', //hardcoded for now,store in enum
-      width:'30%',
-    }
-   const dialogRef = this.dialog.open(GenericModalBoxComponent,data);
+    const data = {
+      data: {
+        ...this.specificRiskPremiumModalForm.value,
+        value:'specificRiskPremiumForm'
+      }
+    };
+    
+   const dialogRef = this.dialog.open(GenericModalBoxComponent,{data:data,height:'64%',width:'30%'});
 
    dialogRef.afterClosed().subscribe((result) => {
     this.isDialogOpen = false; // Reset the flag
@@ -349,13 +352,13 @@ onSlideToggleChange(event:any){
       })
       this.calculateCoeAndAdjustedCoe()
     } else {
-      this.specificRiskPremiumModalForm.reset();
-      this.snackBar.open('Specific Risk Premium not saved','OK',{
-        horizontalPosition: 'right',
-        verticalPosition: 'top',
-        duration: 3000,
-        panelClass: 'app-notification-error'
-      })
+      // this.specificRiskPremiumModalForm.reset();
+      // this.snackBar.open('Specific Risk Premium not saved','OK',{
+      //   horizontalPosition: 'right',
+      //   verticalPosition: 'top',
+      //   duration: 3000,
+      //   panelClass: 'app-notification-error'
+      // })
       this.calculateCoeAndAdjustedCoe()
     }
   });

@@ -69,15 +69,29 @@
   </div>
 
   <!-- Specific Risk Premium Details -->
-  <div class="container-fluid" *ngIf="data === appValues.SPECIFIC_RISK_PREMIUM.value">
+  <div class="container-fluid" *ngIf="data?.data?.value === appValues.SPECIFIC_RISK_PREMIUM.value">
     <div class="row">
-      <div class="col-md-12 revalmodel" style="text-align: left;">
+      <div class="col-md-12 revalmodel" style="text-align: left;padding-top: 4%;">
         <mat-label class="label" >{{label}}</mat-label>
         <span><mat-icon class="close-modal-valuer" (click)="modalData()">close</mat-icon></span>
         <h4 class="modal-subtitle"><span>-</span>Qualitative Factors</h4>
       </div>
 
-      <div class="col-md-12 field" style="padding-top: 2%;padding-bottom: 4%;">
+      <div class="col-md-12 field" style="padding-bottom: 5%;padding-top: 4%;">
+        <div class="material-textfield">
+          <input class="new-inp" type="text" placeholder="Enter company size" [formControl]="companySize"/>
+          <label class="going-concern-label">Company Size</label>
+        </div>
+      </div>
+
+      <div class="col-md-12 field" style="padding-bottom: 5%;">
+        <div class="material-textfield">
+          <input class="new-inp" type="text" placeholder="Enter market position" [formControl]="marketPosition"/>
+          <label class="going-concern-label">Market Positioning</label>
+        </div>
+      </div>
+
+      <div class="col-md-12 field" style="padding-bottom: 5%;">
         <div class="material-textfield">
             <input class="new-inp" type="text" placeholder="Enter liquidity proportion" [formControl]="liquidityFactor"/>
             <label class="going-concern-label">Liquidity Factor</label>
@@ -102,36 +116,22 @@
     </mat-slider>
        </div>
     </div> -->
+ 
 
-
-      <div class="col-md-12 field" style="padding-bottom: 4%;">
-        <div class="material-textfield">
-          <input class="new-inp" type="text" placeholder="Enter market position" [formControl]="companySize"/>
-          <label class="going-concern-label">Company Size</label>
-        </div>
-      </div>
-
-     <div class="col-md-12 field" style="padding-bottom: 4%;">
+    <div class="col-md-12 field" style="padding-bottom: 5%;">
       <div class="material-textfield">
-        <input class="new-inp" type="text" placeholder="Enter market position" [formControl]="marketPosition"/>
-        <label class="going-concern-label">Market Positioning</label>
-      </div>
-    </div>
-    
-
-    <div class="col-md-12 field" style="padding-bottom: 4%;">
-      <div class="material-textfield">
-        <input class="new-inp" type="text" placeholder="Enter liquidity proportion" [formControl]="competition"/>
+        <input class="new-inp" type="text" placeholder="Enter competitive value" [formControl]="competition"/>
         <label class="going-concern-label">Competition</label>
       </div>
     </div>
    </div>
-    <div mat-dialog-actions>
-      <button mat-raised-button style="margin-left: auto;" [disabled]="!companySize.value || !marketPosition.value || !liquidityFactor.value || !competition.value" [ngClass]="!companySize.value || !marketPosition.value || !liquidityFactor.value || !competition.value ? 'submit-bt-disable' : 'submit-bt'" (click)="modalData({companySize:companySize.value,marketPosition:marketPosition.value,liquidityFactor:liquidityFactor.value,competition:competition.value},'specificRiskPremium')">
-        <!-- <mat-icon>keyboard_arrow_right</mat-icon> -->
-        Save
-      </button>
-    </div>
+    
+    <div class="col-md-12 btn-prop" style="text-align: center !important;">
+      <button style=" width: 20%;padding-right: 6%;" [disabled]="!companySize.value || !marketPosition.value || !liquidityFactor.value || !competition.value" [ngClass]="!companySize.value || !marketPosition.value || !liquidityFactor.value || !competition.value  ? 'valuer-button-disable' : 'button-save-mat'" (click)="modalData({companySize:companySize.value,marketPosition:marketPosition.value,liquidityFactor:liquidityFactor.value,competition:competition.value},'specificRiskPremium')" mat-raised-button>
+          Save
+          <span class="button-save"><mat-icon>send</mat-icon></span>
+       </button>
+      </div>
   </div>
 
   <!-- Registered Valuer Details -->
@@ -144,7 +144,7 @@
       </div> -->
 
       <div class="col-md-12 revalmodel" style="text-align: center;padding-top: 2%;">
-        <mat-label class="label" >Register Valuer</mat-label>
+        <mat-label class="label" >Registered Valuer Detail</mat-label>
         <!-- <span class="mat-target-capital-structure"><mat-icon>fiber_manual_record</mat-icon></span> -->
         <span><mat-icon class="close-modal-valuer" (click)="modalData()">close</mat-icon></span>
       </div>
@@ -298,10 +298,11 @@
   </div>
   </div>
 
+  <!-- valuation model -->
   <div class="container"  *ngIf="data?.value === appValues.VALUATION_METHOD.value" style="padding-top: 4%;padding-bottom: 4%;">
     <!-- income approach -->
     <div class="incomeApproach">
-      <div class="pos-absolute">
+      <div [ngClass]=" (incomeApproachmodels?.length > 0) && (incomeApproachmodels.includes('FCFE') || incomeApproachmodels.includes('FCFF') || incomeApproachmodels.includes('Excess_Earnings')) && (projectionYearSelect === 'Going_Concern') ? 'pos-absolute' : (incomeApproachmodels?.length > 0) && (incomeApproachmodels.includes('FCFE') || incomeApproachmodels.includes('FCFF') || incomeApproachmodels.includes('Excess_Earnings')) ? 'pos-absolute2' :'pos-absolute3' ">
         <span>{{appValues.VALUATION_METHOD.incomeApproach.label}}</span>
       </div>
       <div class="row fcfe-hover" >
@@ -344,7 +345,7 @@
         </div>
       </div>
 
-      <div class="row projectionSelect">
+      <div class="row projectionSelect" *ngIf="(incomeApproachmodels?.length > 0) && (incomeApproachmodels.includes('FCFE') || incomeApproachmodels.includes('FCFF') || incomeApproachmodels.includes('Excess_Earnings'))">
         <div class="col-xl-4">
             <div class="form-check">
               <input class="form-check-input" [checked]="projectionYearSelect === 'Going_Concern'" (click)="selectProjections('Going_Concern','projectionSelection')" type="radio" name="flexRadioDefault2" id="flexRadioDefault2">

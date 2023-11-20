@@ -104,7 +104,10 @@ loadModel(data:any){
   if( data === this.appValues.MAT_Rate.value) return this.label = this.appValues.MAT_Rate.name;
   if( data === this.appValues.ANALYST_CONSENSUS_ESTIMATES.value) return this.label = this.appValues.ANALYST_CONSENSUS_ESTIMATES.name;
   if( data === this.appValues.GOING_CONCERN.value) return this.label = this.appValues.GOING_CONCERN.name;
-  if( data === this.appValues.SPECIFIC_RISK_PREMIUM.value) return this.label = this.appValues.SPECIFIC_RISK_PREMIUM.name;
+  if( data?.data?.value === this.appValues.SPECIFIC_RISK_PREMIUM.value) {
+    this.patchSpecificRiskPremiumDetails(data.data);
+    return this.label = this.appValues.SPECIFIC_RISK_PREMIUM.name
+  };
   if( data?.data?.value === this.appValues.REGISTERED_VALUER_DETAILS.value) {
     this.patchValuerDetails(data.data);
     return this.label = this.appValues.REGISTERED_VALUER_DETAILS.name;
@@ -302,8 +305,8 @@ get downloadTemplate() {
       if(res.excelSheetId){
         // this.isExcelReupload = true;
         this.snackBar.open('File has been uploaded successfully','Ok',{
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
           duration: 3000,
           panelClass: 'app-notification-success'
         })
@@ -397,5 +400,19 @@ get downloadTemplate() {
       this.registeredValuerQualifications.setValue(data.registeredValuerQualifications);
     }
 
+  }
+  patchSpecificRiskPremiumDetails(data:any){
+    if(data?.liquidityFactor){
+      this.liquidityFactor.setValue(data.liquidityFactor);
+    }
+    if(data?.companySize){
+      this.companySize.setValue(data.companySize);
+    }
+    if(data?.marketPosition){
+      this.marketPosition.setValue(data.marketPosition);
+    }
+    if(data?.competition){
+      this.competition.setValue(data.competition);
+    }
   }
 }

@@ -40,7 +40,7 @@
                     <mat-label class="label" >Appointment Details</mat-label>
                     <span class="mat-bullet"><mat-icon>fiber_manual_record</mat-icon></span>
                 </div> -->
-                <div class="col-md-12" style="padding-top: 2%;padding-bottom: 1%;">
+                <div class="col-md-12" style="padding-top: 1%;padding-bottom: 1%;">
                     <div class='c-decorated-header'>
                         <h3><span style="padding-left: 2%;">Appointment Details</span></h3>
                         <div class='c-decorated-header_link-view-more'>
@@ -110,18 +110,18 @@
                         <span class="icon"><mat-icon> email</mat-icon></span>
                         <span class="text"><span class="valuer-i-label">Email:</span> {{registeredValuerDetails.controls['registeredValuerEmailId'].value }}</span>
                       </div>
-                      <div class="detail">
+                      <!-- <div class="detail">
                         <span class="icon"><mat-icon>school</mat-icon></span>
                         <span class="text"><span class="valuer-i-label">Qualifications:</span> {{registeredValuerDetails.controls['registeredValuerQualifications'].value }}</span>
-                      </div>
+                      </div> -->
                       <div class="detail">
                         <span class="icon">	<mat-icon>portrait</mat-icon></span>
                         <span class="text"><span class="valuer-i-label">IBBI-ID:</span> {{registeredValuerDetails.controls['registeredValuerIbbiId'].value }}</span>
                       </div>
-                      <div class="detail">
+                      <!-- <div class="detail">
                         <span class="icon"><mat-icon>domain</mat-icon></span>
                         <span class="text"><span class="valuer-i-label">Address:</span> {{registeredValuerDetails.controls['registeredValuerGeneralAddress'].value }}</span>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                 </div>
@@ -245,7 +245,10 @@
           </button>
         <button (click)="previewReport()" class="button-save-mat" style="padding-right: 3%;margin-right: 1%;" mat-raised-button>
             Preview
-            <span class="button-save"><mat-icon>send</mat-icon></span>
+            <span class="button-save">
+              <!-- <mat-icon>send</mat-icon> -->
+              <mat-icon>drafts</mat-icon>
+            </span>
         </button>
         <button (click)="generateReport()" class="button-save-mat" style="padding-right: 3%;" mat-raised-button>
             Submit
