@@ -139,7 +139,7 @@
     </div>
   </mat-tab>
 </mat-tab-group>
-<p class="currency-unit">Amount in {{transferStepperthree?.formOneAndTwoData?.currencyUnit}} ({{transferStepperthree?.formOneAndTwoData?.reportingUnit}})</p>
+<p class="currency-unit" *ngIf="transferStepperthree?.formOneAndTwoData?.excelSheetId">Amount in {{transferStepperthree?.formOneAndTwoData?.currencyUnit}} ({{transferStepperthree?.formOneAndTwoData?.reportingUnit}})</p>
 </div>
 <div class="loader-overlay" *ngIf="isLoader">
   <div class="loader">

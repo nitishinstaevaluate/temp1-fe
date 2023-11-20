@@ -31,7 +31,7 @@
         <!-- Comparable Industries slider -->
         <div class="row" *ngIf="checkModel('CTM')">
             <div class="col-md-6 text-left mt-4" style="border-bottom:1px  solid #d6d0d0;">
-                <p class="slider-label">Comparable Industries</p>
+                <p class="slider-label">Comparable Transaction</p>
             </div>
             <div class="col-md-6 t-right" style="text-align: right;border-bottom:1px  solid #d6d0d0;">
                 <div class="row">
@@ -76,7 +76,7 @@
                         [step]="'1'"
                         [discrete]="'false'"
                         [showTickMarks]="'false'"
-                        style="width: 50%;"
+                        style="width: 63%;"
                         (input)="modelWeightageSlider($event,'Excess_Earnings',excessEarnMaxValue,excessEarnSlider)">
                         <input [(ngModel)]="excessEarnSlider" matSliderThumb>
                     </mat-slider>
@@ -107,7 +107,7 @@
                         [discrete]="'false'"
                         [disableRipple]="true"
                         [showTickMarks]="'false'"
-                        style="width: 50%;"
+                        style="width: 63%;"
                         (input)="modelWeightageSlider($event,'FCFE',fcfeMaxValue,fcfeSlider)">
                         <input [(ngModel)]="fcfeSlider" matSliderThumb>
                     </mat-slider>
@@ -136,7 +136,7 @@
                             [step]="'1'"
                             [discrete]="'false'"
                             [showTickMarks]="'false'"
-                            style="width: 50%;"
+                            style="width: 63%;"
                             (input)="modelWeightageSlider($event,'FCFF',fcffMaxValue,fcffSlider)">
                             <input [(ngModel)]="fcffSlider" matSliderThumb>
                         </mat-slider>
@@ -165,7 +165,7 @@
                         [discrete]="'false'"
                         [disableRipple]="true"
                         [showTickMarks]="'false'"
-                        style="width: 50%;"
+                        style="width: 63%;"
                         (input)="modelWeightageSlider($event,'NAV',navMaxValue,navSlider)">
                         <input [(ngModel)]="navSlider" matSliderThumb>
                     </mat-slider>
@@ -182,9 +182,9 @@
             <div class="row" *ngIf="checkModel('Relative_Valuation')">
                 <hr class="weight-hr">
             <div class="col-md-6 text-left mt-4" style="border-bottom:1px  solid #d6d0d0;">
-                <p style="font-weight: 500;font-size: 17px;margin-bottom: 0px;">Comparable Companies</p>
+                <p class="slider-label">Comparable Companies</p>
             </div>
-            <div class="col-md-6" style="text-align: right;border-bottom:1px  solid #d6d0d0;">
+            <div class="col-md-6 t-right" style="text-align: right;border-bottom:1px  solid #d6d0d0;">
                 <div class="row">
                     <div class="col-md-10">
                         <mat-slider
@@ -195,7 +195,7 @@
                             [step]="'1'"
                             [discrete]="'false'"
                             [showTickMarks]="'false'"
-                            style="width: 50%;"
+                            style="width: 63%;"
                             (input)="modelWeightageSlider($event,'Relative_Valuation',relativeValMaxValue,relativeValSlider)">
                             <input [(ngModel)]="relativeValSlider" matSliderThumb>
                         </mat-slider>

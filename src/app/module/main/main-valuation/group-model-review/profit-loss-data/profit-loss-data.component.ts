@@ -302,7 +302,7 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
     this.displayColumns = Object.keys(this.dataSource[0]);
     
     this.displayColumns.splice(this.displayColumns.indexOf('lineEntry'),1,'Particulars')
-    if(this.isRelativeValuation('Relative_Valuation')){
+    if(this.isRelativeValuation('Relative_Valuation') || this.isRelativeValuation('NAV') || this.isRelativeValuation('CTM')){
       this.displayColumns = this.displayColumns.splice(0,2)
     }
     this.profitAndLossDataSource = this.dataSource.map((result:any)=>{
