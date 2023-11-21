@@ -216,7 +216,7 @@ export class GroupModelControlsComponent implements OnInit {
         }
         else{
           this.subIndustries = [];
-          this.modelValuation.controls['subIndustry'].reset();
+          this.modelValuation.controls['subIndustry'].setValue('');
         }
       });
       this._dataReferencesService.getIndustriesRatio(indst._id).subscribe((resp: any) => {

@@ -233,7 +233,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of data" class="content">
-            <td class="make-bold">{{ item.model === 'Relative_Valuation' ? 'Comparable Companies' : item.model === 'CTM' ? 'Comparable Industries'  : item.model }}</td>
+            <td class="make-bold">{{ item.model === 'Relative_Valuation' ? 'Comparable Companies' : item.model === 'CTM' ? 'Comparable Transaction'  : item.model }}</td>
             <td class="make-light">{{ item.indicatedValue | currency:'INR':'symbol':'1.0-2' }}</td>
             <td class="make-light">{{ item.weight | percent:'1.0-2' }}</td>
             <td class="make-light">{{ item.weightedValue | currency:'INR':'symbol':'1.0-2' }}</td>
@@ -248,15 +248,16 @@
 <!-- Model Weigtage Result ends -->
 
 <div class="col-md-12 btn-prop">
-    <button (click)="previous()" mat-raised-button class="prev-button">
+    <button (click)="previous()" mat-raised-button class="button-back-mat">
+      <span class="button-back"><mat-icon>send</mat-icon></span>
         Back
-        <mat-icon>arrow_left</mat-icon>
+        <!-- <mat-icon>arrow_left</mat-icon> -->
+
     </button>
 
 <button (click)="saveAndNext()" class="button-save-mat" mat-raised-button>
     Next
     <span class="button-save"><mat-icon>send</mat-icon></span>
-        <!-- <a [href]="'https://localhost:3000/upload/generate/' + (transferStepperthree?.formThreeData?.appData?.reportId || 'null') +'/null/' + 'false'" download style="color:#228822;">Submit</a> -->
  </button>
 </div>
 </div>

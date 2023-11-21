@@ -89,6 +89,7 @@
     color: #219476;
     font-size: 10px;
     font-weight: 500;
+    padding-left: 2%;
   }
 
   ::ng-deep .mat-select-value .mat-mdc-select-trigger .mat-mdc-select-value .mat-mdc-select-value-text{    
@@ -327,6 +328,19 @@
   font-weight: 500;
   width: 10%;
 }
+.button-back-mat{
+  box-shadow: 1px 2px 15px #d1d1d1;
+  margin-right: 1%;
+  color:#ffffff !important;
+  background-color: #fe6060 !important;
+  // background-color: #0cd18f !important;
+  border-radius: 8px;
+  position: relative;
+  font-family: 'AR One Sans', sans-serif;
+  font-weight: 500;
+  width: 10%;
+  padding-left: 4%;
+}
 .button-save{
   position: absolute;
     left: 112%;
@@ -337,6 +351,19 @@
       color: #ffffff;
     }
 }
+
+.button-back{
+  position: absolute;
+    right: 112%;
+    transform: scale(0.7);
+    top: -8%;
+    mat-icon{
+      font-weight: bold;
+      color: #ffffff;
+      transform: rotate(180deg);
+    }
+}
+
 .prev-button{
   box-shadow: 1px 2px 15px #d1d1d1;
   color:#ffffff !important;

@@ -42,6 +42,7 @@ export class GroupModelResultComponent implements OnChanges {
   comparableIndustryMaxValue: number=100;
   navMaxValue: number=100;
   maxModelValue: any;
+  totalModelWeightageValue: any
   
   constructor(private calculationsService:CalculationsService,private snackbar:MatSnackBar){
     
@@ -191,7 +192,7 @@ export class GroupModelResultComponent implements OnChanges {
     // })
 
     localStorage.setItem('stepFourStats','true');
-    this.resultData.emit({...this.transferStepperthree});
+    this.resultData.emit({...this.transferStepperthree,formFourData:this.totalModelWeightageValue});
   }
   previous(){
       this.previousPage.emit(true)
@@ -215,7 +216,6 @@ export class GroupModelResultComponent implements OnChanges {
        .slice(0, modelIndexToRemove)
        .concat(this.transferStepperthree?.formOneAndTwoData.model.slice(modelIndexToRemove + 1));
       const remainingEle = modelIndexToRemove !== -1 ? modelIndexToRemove - sortedModelArray.length : sortedModelArray.length; 
-      console.log(sortedModelArray,"sorted array","modelIndexToRemove",modelIndexToRemove,"remaining elements",remainingEle)
       if(sortedModelArray.length == 1){
         for (let i = 0 ; i <= sortedModelArray.length;i++){
           this.setModelSliderValue(sortedModelArray[i],Math.abs(sliderValue-maxValue),Math.abs(sliderValue-maxValue));
@@ -237,6 +237,7 @@ export class GroupModelResultComponent implements OnChanges {
 
       this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
         if(response.status){
+          this.totalModelWeightageValue = response.result;
           this.data = response?.result?.modelValue;
           this.finalWeightedValue = response?.result?.weightedVal ?? 0;
         }

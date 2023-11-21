@@ -797,17 +797,19 @@
             </div>
 
             
-        <div class="col-md-12 btn-prop">
-          <button (click)="previous()" mat-raised-button class="prev-button">
-              Back
-              <mat-icon>arrow_left</mat-icon>
-          </button>
+            <div class="col-md-12 btn-prop">
+              <button (click)="previous()" mat-raised-button class="button-back-mat">
+                <span class="button-back"><mat-icon>send</mat-icon></span>
+                  Back
+                  <!-- <mat-icon>arrow_left</mat-icon> -->
 
-      <button (click)="saveAndNext()" class="button-save-mat" mat-raised-button>
-          Next
-          <span class="button-save"><mat-icon>send</mat-icon></span>
-       </button>
-  </div>
+              </button>
+
+          <button (click)="saveAndNext()" class="button-save-mat" mat-raised-button>
+              Next
+              <span class="button-save"><mat-icon>send</mat-icon></span>
+           </button>
+      </div>
         </div>
       </form>  
 </div>

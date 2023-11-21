@@ -104,7 +104,8 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       ...this.reportForm.value,
       ...this.registeredValuerDetails.value,
       reportId:this.transferStepperFour?.formThreeData?.appData?.reportId,
-      reportDate:this.reportForm.controls['reportDate'].value
+      reportDate:this.reportForm.controls['reportDate'].value,
+      finalWeightedAverage:this.transferStepperFour?.formFourData
     }
     const approach = this.transferStepperFour?.formOneAndTwoData?.model.includes('NAV') ? 'NAV' : this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFE') ? 'DCF' : '';
    if(approach !== ''){
