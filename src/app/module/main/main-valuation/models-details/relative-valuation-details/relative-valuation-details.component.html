@@ -25,7 +25,7 @@
 
                 <div class="material-textfield">
                   <select id="company" class="new-inp" [formControlName]="i">
-                    <option [disabled]="item.company === 'No company Found'" [value]="item" *ngFor="let item of formOneData?.preferenceCompanies">{{item.company}}</option>
+                    <option [disabled]="item.company === 'No company Found'" [ngValue]="item" *ngFor="let item of formOneData?.preferenceCompanies">{{item.company}}</option>
                   </select>
                   <label for="company">Company Name</label>
                 </div>
@@ -72,12 +72,14 @@
     </div> -->
 
     <div class="col-md-12 btn-prop">
-      <button (click)="previous()" mat-raised-button class="prev-button">
+      <button (click)="previous()" mat-raised-button class="button-back-mat">
+        <span class="button-back"><mat-icon>send</mat-icon></span>
           Back
-          <mat-icon>arrow_left</mat-icon>
+          <!-- <mat-icon>arrow_left</mat-icon> -->
+
       </button>
 
-  <button (click)="saveAndNext()" [disabled]="formOneData?.preferenceCompanies.length === 0" class="button-save-mat" mat-raised-button>
+  <button (click)="saveAndNext()" class="button-save-mat" mat-raised-button>
       Next
       <span class="button-save"><mat-icon>send</mat-icon></span>
    </button>

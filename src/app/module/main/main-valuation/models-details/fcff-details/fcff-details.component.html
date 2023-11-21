@@ -119,7 +119,7 @@
                       <option [disabled]="!formOneData?.industry" *ngFor="let doc of modelControl.fcff.options.betaType.options"  [ngValue]="doc.value">{{doc.name}}</option>
                     </select>
                     <label for="betaType">Beta</label>
-                  <mat-hint *ngIf="fcffForm.controls['expMarketReturn'].value" class="taxrate-hint">Beta is {{fcffForm.controls['beta'].value.toFixed(2)}}</mat-hint>
+                  <mat-hint *ngIf="fcffForm.controls['beta'].value" class="taxrate-hint">Beta is {{fcffForm.controls['beta'].value.toFixed(2)}}</mat-hint>
                   </div>
             </div>
 
@@ -281,9 +281,11 @@
               </div>
 
               <div class="col-md-12 btn-prop">
-                <button (click)="previous()" mat-raised-button class="prev-button">
+                <button (click)="previous()" mat-raised-button class="button-back-mat">
+                  <span class="button-back"><mat-icon>send</mat-icon></span>
                     Back
-                    <mat-icon>arrow_left</mat-icon>
+                    <!-- <mat-icon>arrow_left</mat-icon> -->
+
                 </button>
 
             <button (click)="saveAndNext()" class="button-save-mat" mat-raised-button>

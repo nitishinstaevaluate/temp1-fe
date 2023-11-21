@@ -14,7 +14,7 @@
                     <app-assessment-details [transferStepperTwo]="transferStepperTwo" (assessmentSheetData)="assessmentSheetData($event)"></app-assessment-details>
                 </mat-tab>
             </mat-tab-group>
-            <p class="currency-unit" *ngIf="transferStepperTwo?.excelSheetId">Amount in INR (Lakhs)</p>
+            <p class="currency-unit" *ngIf="transferStepperTwo?.excelSheetId">Amount in {{transferStepperTwo.currencyUnit}} ({{transferStepperTwo.reportingUnit}})</p>
         </div>
         <div *ngIf="!transferStepperTwo?.excelSheetId" style="margin-top: auto;margin-bottom: auto;">
             <p style="padding: 2% !important;
@@ -130,9 +130,11 @@
 </div> -->
 
 <div class="col-md-12 btn-prop">
-    <button (click)="previous()" mat-raised-button class="prev-button">
+    <button (click)="previous()" mat-raised-button class="button-back-mat">
+      <span class="button-back"><mat-icon>send</mat-icon></span>
         Back
-        <mat-icon>arrow_left</mat-icon>
+        <!-- <mat-icon>arrow_left</mat-icon> -->
+
     </button>
 
 <button (click)="saveAndNext()" class="button-save-mat" mat-raised-button>
