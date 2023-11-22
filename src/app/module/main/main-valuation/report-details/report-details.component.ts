@@ -159,7 +159,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
   }
   }
   previewReport(){
-  
+//uncomment this starts
       this.isLoading=true;
     const payload = {
       ...this.reportForm.value,
@@ -177,7 +177,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
 
             const dataSet={
               value: 'previewDoc',
-              dataBlob:reportData.html
+              dataBlob:reportData
             }
              const dialogRef =  this.dialog.open(GenericModalBoxComponent, {data:dataSet,height:'90%',width:'65%'});
               dialogRef.afterClosed().subscribe((result)=>{
@@ -231,6 +231,8 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       panelClass: 'app-notification-error',
     });
   }
+
+  //uncomment this ends
   }
   
   onSlideToggleChange(event?: any) {

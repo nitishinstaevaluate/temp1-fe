@@ -278,14 +278,13 @@
     
   </div> -->
 
-  <div class="container-fluid" *ngIf="data?.value === appValues.PREVIEW_DOC.value">
-    <div class="row" >
+  <div class="container-fluid" style="padding-right: 0px;padding-left: 0px;" *ngIf="data?.value === appValues.PREVIEW_DOC.value">
+    <!-- <div class="row" >
       <div class="col-md-12 revalmodel" style="padding-bottom: 1%;">
         <mat-label class="label" >Report Preview</mat-label>
         <span class="mat-bullet-report"><mat-icon>fiber_manual_record</mat-icon></span>
         <span><mat-icon class="close-modal-valuer" (click)="modalData()">close</mat-icon></span>
       </div>
-      <!-- discount rate -->
     <div style="border-top: 1px solid #ccdfe3">
       <quill-editor
       [(ngModel)]="htmlContent"
@@ -295,7 +294,11 @@
   </div>
   <div mat-dialog-actions style="display: flex;align-items: center;justify-content: center;">
     <button mat-raised-button><mat-icon>keyboard_arrow_right</mat-icon>Save Report</button>
+  </div> -->
+  <div>
+    <button (click)="onSave()" class="btn btn-success submit-bt" ejs-button>Update</button>
   </div>
+  <ejs-documenteditorcontainer  height="590" (created)="onCreate()" enableWordExport="'true'" serviceUrl="https://ej2services.syncfusion.com/production/web-services/api/documenteditor/" #documentEditor></ejs-documenteditorcontainer>
   </div>
 
   <!-- valuation model -->

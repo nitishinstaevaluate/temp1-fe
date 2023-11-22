@@ -9,16 +9,19 @@ import { GET_TEMPLATE } from '../../enums/functions';
 import { ValuationService } from '../../service/valuation.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormControl } from '@angular/forms';
-// import {PDFnet,core} from '@pdftron/webviewer/public/core/pdf/PDFNet.js';
-// C:\Ifinworth\ifinworth-ui\src\assets\lib\core\pdf\PDFNet.js
+import { DocumentEditorContainerComponent, WordExportService, SfdtExportService, SelectionService, EditorService } from '@syncfusion/ej2-angular-documenteditor';
+import { CalculationsService } from '../../service/calculations.service';
+import saveAs from 'file-saver';
 
 @Component({
   selector: 'app-generic-modal-box',
   templateUrl: './generic-modal-box.component.html',
-  styleUrls: ['./generic-modal-box.component.scss']
+  styleUrls: ['./generic-modal-box.component.scss'],
+  providers:[EditorService, SelectionService, SfdtExportService, WordExportService]
 })
 export class GenericModalBoxComponent implements OnInit {
   @ViewChild('viewer') viewerRef!: ElementRef;
+  @ViewChild('documentEditor') docEdit!: DocumentEditorContainerComponent;
 
   terminalGrowthRateControl: FormControl = new FormControl('');
   analystConsensusEstimates: FormControl = new FormControl('');
@@ -67,6 +70,7 @@ files:any=[];
 excelSheetId:any;
 fileName:any;
 companyMaxValue:any=0;
+editDoc:any=''
 
   // Quill toolbar options
   quillModules = {
@@ -82,7 +86,8 @@ companyMaxValue:any=0;
 constructor(@Inject(MAT_DIALOG_DATA) public data: any,
 private dialogRef:MatDialogRef<GenericModalBoxComponent>,
 private valuationService:ValuationService,
-private snackBar:MatSnackBar){
+private snackBar:MatSnackBar,
+private calculationService:CalculationsService){
 this.loadModel(data);
 if(data?.value === this.appValues.PREVIEW_DOC.value){
 this.showWebViewer = true;
@@ -92,14 +97,21 @@ this.showWebViewer = true;
 ngOnInit() {
 }
    ngAfterViewInit() {
-    this.webViewer()
+    // setTimeout(() => {
+    //   this.webViewer();
+    // }, 2000);
+    
+  }
+  async webViewer(){
 }
-async webViewer(){
-  this.htmlContent = this.data?.dataBlob;
+
+onCreate(){
+  if ( this.data.dataBlob ) {
+    (this.docEdit as DocumentEditorContainerComponent ).documentEditor.open(this.data.dataBlob);
+  }
 }
 
 loadModel(data:any){
-  console.log(data,"modal daat")
   if( data === this.appValues.Normal_Tax_Rate.value) return this.label = this.appValues.Normal_Tax_Rate.name;
   if( data === this.appValues.MAT_Rate.value) return this.label = this.appValues.MAT_Rate.name;
   if( data === this.appValues.ANALYST_CONSENSUS_ESTIMATES.value) return this.label = this.appValues.ANALYST_CONSENSUS_ESTIMATES.name;
@@ -119,6 +131,35 @@ loadModel(data:any){
     return this.label = this.appValues.VALUATION_METHOD.name;
   }
   return '';
+}
+
+onSave(){
+  (this.docEdit as DocumentEditorContainerComponent).documentEditor.saveAsBlob('Docx').then((blob: Blob) => {
+    this.convertDocxToPdf(blob);
+  });
+}
+
+convertDocxToPdf(blob:any){
+  this.calculationService.docxToPdf(blob).subscribe((response:any)=>{
+    if(response.status){
+      this.snackBar.open('Doc Update Success','ok',{
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+        duration: 3000,
+        panelClass: 'app-notification-success'
+      })
+      saveAs(response.blob, 'Ifinworth-Report.pdf');
+    }
+    else{
+      this.snackBar.open('Doc Update Failed','ok',{
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+        duration: 3000,
+        panelClass: 'app-notification-success'
+      })
+      
+    }
+  })
 }
 
 modalData(data?:any,knownAs?:string) {

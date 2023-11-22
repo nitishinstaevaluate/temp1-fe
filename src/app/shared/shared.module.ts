@@ -14,6 +14,8 @@ import { GenericModalBoxComponent } from './modal box/generic-modal-box/generic-
 import { CustomDatePipe } from './pipe/date.pipe';
 import { QuillModule } from 'ngx-quill';
 import { StringModificationPipe } from './pipe/string-modification.pipe';
+import { DocumentEditorModule, DocumentEditorContainerModule,ToolbarService, } from '@syncfusion/ej2-angular-documenteditor';
+import { ButtonModule, CheckBoxModule, RadioButtonModule, SwitchModule, ChipListModule, FabModule, SpeedDialModule } from '@syncfusion/ej2-angular-buttons';
 
 
 
@@ -22,9 +24,9 @@ const MODULES = [NgbModule, ReactiveFormsModule, FormsModule,MaterialModuleModul
 
 @NgModule({
   declarations: [ToggleThemeDirective, FullscreenDirective, SidemenuToggleDirective,UserInputComponent,RelativeComponent,GenericModalBoxComponent],
-  imports: [CommonModule,NgxSliderModule,...MODULES,QuillModule.forRoot()],
+  imports: [CommonModule,NgxSliderModule,...MODULES,QuillModule.forRoot(),DocumentEditorModule,DocumentEditorContainerModule, ButtonModule, CheckBoxModule, RadioButtonModule, SwitchModule, ChipListModule, FabModule, SpeedDialModule,],
   exports: [RelativeComponent,UserInputComponent,...MODULES,GenericModalBoxComponent],
   entryComponents:[GenericModalBoxComponent],
-  providers:[CustomDatePipe,StringModificationPipe]
+  providers:[CustomDatePipe,StringModificationPipe,ToolbarService]
 })
 export class SharedModule {}
