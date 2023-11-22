@@ -15,6 +15,7 @@ export class NavbarDetailsComponent implements OnInit{
   stepStatusOfThree:any='';
   stepStatusOfFour:any='';
   stepStatusOfFive:any='';
+  currentStep:any=''
   constructor(private router:Router,private calculationService:CalculationsService){}
 
   ngOnInit(): void {
@@ -27,29 +28,30 @@ export class NavbarDetailsComponent implements OnInit{
     localStorage.removeItem('pendingStat')
     this.calculationService.checkStepStatus.subscribe((response)=>{
       // console.log(response,"response stepper")
-      const currentStep:any = localStorage.getItem('step');
-      if(parseInt(currentStep) === 1){
-        this.bindStatusToNavbar(currentStep);
+       this.currentStep = localStorage.getItem('step');
+      if(parseInt(this.currentStep) === 1){
+        this.bindStatusToNavbar(this.currentStep);
       }
 
-      if(parseInt(currentStep) === 2){
-        this.bindStatusToNavbar(currentStep);
+      if(parseInt(this.currentStep) === 2){
+        this.bindStatusToNavbar(this.currentStep);
       }
 
-      if(parseInt(currentStep) === 3){
-        this.bindStatusToNavbar(currentStep);
+      if(parseInt(this.currentStep) === 3){
+        this.bindStatusToNavbar(this.currentStep);
       }
-      if(parseInt(currentStep) === 4){
-        this.bindStatusToNavbar(currentStep);
+      if(parseInt(this.currentStep) === 4){
+        this.bindStatusToNavbar(this.currentStep);
       }
-      if(parseInt(currentStep) === 5){
-        this.bindStatusToNavbar(currentStep);
+      if(parseInt(this.currentStep) === 5){
+        this.bindStatusToNavbar(this.currentStep);
       }
     })
   }
   selectMenuItem(route: string): void {
     this.selectedMenuItem = route;
     localStorage.setItem('step',route);
+    this.currentStep = route
     this.calculationService.steps.next(parseInt(route));
   }
 
