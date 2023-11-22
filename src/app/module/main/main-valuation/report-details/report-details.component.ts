@@ -167,8 +167,8 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       reportId:this.transferStepperFour?.formThreeData?.appData?.reportId,
       reportDate:this.reportForm.controls['reportDate'].value,
     }
-    const approach = this.transferStepperFour?.formOneAndTwoData?.model.includes('NAV') ? 'NAV' : this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFE') ? 'DCF' : '';
-   if(approach !== ''){
+    const approach = (this.transferStepperFour?.formOneAndTwoData?.model.includes('NAV')) && this.transferStepperFour.formOneAndTwoData.model.length === 1? 'NAV' : (this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFE')) && this.transferStepperFour.formOneAndTwoData.model.length === 1 ? 'DCF' : 'MULTI_MODEL';
+  //  if(approach !== ''){
     this.calculationService.postReportData(payload).subscribe((response:any)=>{
       if(response){
         this.calculationService.previewReport(response,approach).subscribe((reportData:any)=>{
@@ -221,16 +221,16 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
         panelClass: 'app-notification-error',
       });
     })
-  }
-  else{
-    this.isLoading=false;
-    this.snackBar.open('We are working on report for that model ', 'OK', {
-      horizontalPosition: 'right',
-      verticalPosition: 'top',
-      duration: 2000,
-      panelClass: 'app-notification-error',
-    });
-  }
+  // }
+  // else{
+  //   this.isLoading=false;
+  //   this.snackBar.open('We are working on report for that model ', 'OK', {
+  //     horizontalPosition: 'right',
+  //     verticalPosition: 'top',
+  //     duration: 2000,
+  //     panelClass: 'app-notification-error',
+  //   });
+  // }
 
   //uncomment this ends
   }
