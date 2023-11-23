@@ -18,13 +18,11 @@ import { DocumentEditorModule, DocumentEditorContainerModule,ToolbarService, } f
 import { ButtonModule, CheckBoxModule, RadioButtonModule, SwitchModule, ChipListModule, FabModule, SpeedDialModule } from '@syncfusion/ej2-angular-buttons';
 
 
-
-
 const MODULES = [NgbModule, ReactiveFormsModule, FormsModule,MaterialModuleModule,NgSelectModule];
 
 @NgModule({
   declarations: [ToggleThemeDirective, FullscreenDirective, SidemenuToggleDirective,UserInputComponent,RelativeComponent,GenericModalBoxComponent],
-  imports: [CommonModule,NgxSliderModule,...MODULES,QuillModule.forRoot(),DocumentEditorModule,DocumentEditorContainerModule, ButtonModule, CheckBoxModule, RadioButtonModule, SwitchModule, ChipListModule, FabModule, SpeedDialModule,],
+  imports: [CommonModule,NgxSliderModule,...MODULES,QuillModule.forRoot(),DocumentEditorModule,DocumentEditorContainerModule, ButtonModule, CheckBoxModule, RadioButtonModule, SwitchModule, ChipListModule, FabModule, SpeedDialModule],
   exports: [RelativeComponent,UserInputComponent,...MODULES,GenericModalBoxComponent],
   entryComponents:[GenericModalBoxComponent],
   providers:[CustomDatePipe,StringModificationPipe,ToolbarService]

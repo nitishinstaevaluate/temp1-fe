@@ -15,7 +15,6 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { HttpInterceptorService } from './interceptors/http-interceptor.service';
 
 
-
 @NgModule({
   declarations: [AppComponent],
   imports: [

@@ -167,7 +167,7 @@ export const ALL_MODELS = {
       }
     },
     PREVIEW_DOC:{
-      name:'Document Preview',
+      name:'Valuation Report Preview',
       value:'previewDoc'
     },
     VALUATION_METHOD:{

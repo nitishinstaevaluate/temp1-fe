@@ -21,7 +21,7 @@ import saveAs from 'file-saver';
 })
 export class GenericModalBoxComponent implements OnInit {
   @ViewChild('viewer') viewerRef!: ElementRef;
-  @ViewChild('documentEditor') docEdit!: DocumentEditorContainerComponent;
+  @ViewChild('documentEditor') docEdit!: any;
 
   terminalGrowthRateControl: FormControl = new FormControl('');
   analystConsensusEstimates: FormControl = new FormControl('');
@@ -96,17 +96,12 @@ this.showWebViewer = true;
 
 ngOnInit() {
 }
-   ngAfterViewInit() {
-    // setTimeout(() => {
-    //   this.webViewer();
-    // }, 2000);
-    
-  }
-  async webViewer(){
-}
+   ngAfterViewInit() {}
 
 onCreate(){
   if ( this.data.dataBlob ) {
+    // let container: DocumentEditorContainer = new DocumentEditorContainer({ enableToolbar: true, height: '590px', showPropertiesPane:false });
+    (this.docEdit as DocumentEditorContainerComponent).showPropertiesPane = false;
     (this.docEdit as DocumentEditorContainerComponent ).documentEditor.open(this.data.dataBlob);
   }
 }
@@ -133,22 +128,28 @@ loadModel(data:any){
   return '';
 }
 
-onSave(){
-  (this.docEdit as DocumentEditorContainerComponent).documentEditor.saveAsBlob('Docx').then((blob: Blob) => {
-    this.convertDocxToPdf(blob);
-  });
+async onSave(){
+  // (this.docEdit as DocumentEditorContainerComponent).documentEditor.save('sample', 'Docx');
+  const docBlob = await (this.docEdit as DocumentEditorContainerComponent).documentEditor.saveAsBlob('Docx')
+  const payload = {
+    docxBuffer: docBlob,
+    reportId: this.data.reportId
+  };
+
+  this.convertDocxToPdf(payload);
 }
 
-convertDocxToPdf(blob:any){
-  this.calculationService.docxToPdf(blob).subscribe((response:any)=>{
-    if(response.status){
+convertDocxToPdf(payload:any){
+  const formData = new FormData();
+formData.append('file', payload.docxBuffer, `Ifinworth Valuation-${payload.reportId}.docx`);
+  this.calculationService.updateReportDocxBuffer(payload.reportId,formData).subscribe((response:any)=>{
+    if(response){
       this.snackBar.open('Doc Update Success','ok',{
         horizontalPosition: 'center',
         verticalPosition: 'bottom',
         duration: 3000,
         panelClass: 'app-notification-success'
       })
-      saveAs(response.blob, 'Ifinworth-Report.pdf');
     }
     else{
       this.snackBar.open('Doc Update Failed','ok',{

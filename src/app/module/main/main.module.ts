@@ -25,9 +25,11 @@ import { ReportDetailsComponent } from './main-valuation/report-details/report-d
 import { AssessmentDetailsComponent } from './main-valuation/group-model-review/assessment-details/assessment-details.component';
 import { QuillModule } from 'ngx-quill';
 import { NavbarDetailsComponent } from 'src/app/layout/main-layout/navbar-details/navbar-details.component';
+import { NgxUiLoaderModule } from 'ngx-ui-loader';
+
 
 @NgModule({
   declarations: [ValuationComponent, ActivityComponent, MainValuationComponent, GroupModelControlsComponent, GroupModelReviewComponent, GroupModelResultComponent, ProfitLossDataComponent, BalanceSheetDetailsComponent, RelativeValuationsTableComponent,ValuationResultTableComponent, ModelRelativeValuationResultTableComponent,FcfeDetailsComponent,FcffDetailsComponent,RelativeValuationDetailsComponent, ExcessEarningDetailsComponent, ComparableIndustriesDetailsComponent, NetAssetValueDetailsComponent, ReportDetailsComponent, AssessmentDetailsComponent,NavbarDetailsComponent],
-  imports: [CommonModule, MainRoutingModule, NgxDropzoneModule, SharedModule,QuillModule.forRoot()],
+  imports: [CommonModule, MainRoutingModule, NgxDropzoneModule, SharedModule,QuillModule.forRoot(),NgxUiLoaderModule],
 })
 export class MainModule {}

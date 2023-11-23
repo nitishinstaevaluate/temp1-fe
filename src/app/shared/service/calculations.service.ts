@@ -55,8 +55,8 @@ export class CalculationsService {
 
   }
 
-  docxToPdf(blob:any){
-    return this.http.post(`${HOST}report/convertDocxToPdf`,blob)
+  updateReportDocxBuffer(id:any,formData:any){
+    return this.http.put(`${HOST}report/updateReportDoc/${id}`,formData)
 
   }
 }

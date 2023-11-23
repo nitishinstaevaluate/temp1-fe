@@ -10,6 +10,7 @@ import { DataReferencesService } from 'src/app/shared/service/data-references.se
 import { REPORT_OBJECTIVE } from 'src/app/shared/enums/constant';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { StringModificationPipe } from 'src/app/shared/pipe/string-modification.pipe';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 
 @Component({
@@ -43,7 +44,8 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     private dialog:MatDialog,
     private snackBar:MatSnackBar,
     private dataReferenceService:DataReferencesService,
-    private truncateStringPipe: StringModificationPipe){}
+    private truncateStringPipe: StringModificationPipe,
+    private ngxLoaderService:NgxUiLoaderService){}
   ngOnInit(): void {
     this.loadForm();
     this.onValueChangeControl()
@@ -99,7 +101,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
 
 
   generateReport(){
-    this.isLoading=true;
+    this.ngxLoaderService.start();
     const payload = {
       ...this.reportForm.value,
       ...this.registeredValuerDetails.value,
@@ -107,13 +109,16 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       reportDate:this.reportForm.controls['reportDate'].value,
       finalWeightedAverage:this.transferStepperFour?.formFourData
     }
-    const approach = this.transferStepperFour?.formOneAndTwoData?.model.includes('NAV') ? 'NAV' : this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFE') ? 'DCF' : '';
-   if(approach !== ''){
+    // const approach = this.transferStepperFour?.formOneAndTwoData?.model.includes('NAV') ? 'NAV' : this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFE') ? 'DCF' : '';
+    const approach = (this.transferStepperFour?.formOneAndTwoData?.model.includes('NAV')) && this.transferStepperFour.formOneAndTwoData.model.length === 1? 'NAV' : (this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFE')) && this.transferStepperFour.formOneAndTwoData.model.length === 1 ? 'DCF' : 'MULTI_MODEL';
+    
+  //  if(approach){
     this.calculationService.postReportData(payload).subscribe((response:any)=>{
       if(response){
         this.calculationService.generateReport(response,approach).subscribe((reportData:any)=>{
           if (reportData instanceof Blob) {
             this.isLoading=false;
+            this.ngxLoaderService.stop();
             this.snackBar.open('Report generated successfully', 'OK', {
               horizontalPosition: 'right',
               verticalPosition: 'top',
@@ -127,6 +132,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
         },
         (error)=>{
           this.isLoading=false;
+          this.ngxLoaderService.stop();
           this.snackBar.open('Something went wrong', 'OK', {
             horizontalPosition: 'right',
             verticalPosition: 'top',
@@ -138,6 +144,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     },
     (error)=>{
       this.isLoading = false;
+      this.ngxLoaderService.stop();
       this.snackBar.open('Something went wrong', 'OK', {
         horizontalPosition: 'right',
         verticalPosition: 'top',
@@ -145,22 +152,24 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
         panelClass: 'app-notification-error',
       });
     })
-  }
-  else{
-    localStorage.setItem('stepFiveStats','false');
-    this.calculationService.checkStepStatus.next({status:true});
-    this.isLoading=false;
-    this.snackBar.open('We are working on report for that model ', 'OK', {
-      horizontalPosition: 'right',
-      verticalPosition: 'top',
-      duration: 2000,
-      panelClass: 'app-notification-error',
-    });
-  }
+  // }
+  // else{
+  //   localStorage.setItem('stepFiveStats','false');
+  //   this.calculationService.checkStepStatus.next({status:true});
+  //   this.isLoading=false;
+  //   this.ngxLoaderService.stop();
+  //   this.snackBar.open('We are working on report for that model ', 'OK', {
+  //     horizontalPosition: 'right',
+  //     verticalPosition: 'top',
+  //     duration: 2000,
+  //     panelClass: 'app-notification-error',
+  //   });
+  // }
   }
   previewReport(){
 //uncomment this starts
       this.isLoading=true;
+      this.ngxLoaderService.start();
     const payload = {
       ...this.reportForm.value,
       ...this.registeredValuerDetails.value,
@@ -174,35 +183,19 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
         this.calculationService.previewReport(response,approach).subscribe((reportData:any)=>{
           if (reportData) {
             this.isLoading=false;
+            this.ngxLoaderService.stop();
 
             const dataSet={
               value: 'previewDoc',
-              dataBlob:reportData
+              dataBlob:reportData,
+              reportId: response
             }
-             const dialogRef =  this.dialog.open(GenericModalBoxComponent, {data:dataSet,height:'90%',width:'65%'});
-              dialogRef.afterClosed().subscribe((result)=>{
-                // if (result) {
-                //   this.fcfeForm.controls['expMarketReturn'].patchValue(parseInt(result?.analystConsensusEstimates))
-                //   this.snackBar.open('Analyst Estimation Added','OK',{
-                //     horizontalPosition: 'center',
-                //     verticalPosition: 'top',
-                //     duration: 3000,
-                //     panelClass: 'app-notification-success'
-                //   })
-                // } else {
-                //   this.fcfeForm.controls['expMarketReturnType'].reset();
-                //   this.snackBar.open('Expected Market Return Not Saved','OK',{
-                //     horizontalPosition: 'center',
-                //     verticalPosition: 'top',
-                //     duration: 3000,
-                //     panelClass: 'app-notification-error'
-                //   })
-                // }
-              })
+             const dialogRef =  this.dialog.open(GenericModalBoxComponent, {data:dataSet,height:'92%',width:'80%',disableClose: true});
         }
         },
         (error)=>{
           this.isLoading=false;
+          this.ngxLoaderService.stop();
           this.snackBar.open('Something went wrong', 'OK', {
             horizontalPosition: 'right',
             verticalPosition: 'top',
@@ -214,6 +207,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     },
     (error)=>{
       this.isLoading = false;
+      this.ngxLoaderService.stop();
       this.snackBar.open('Something went wrong', 'OK', {
         horizontalPosition: 'right',
         verticalPosition: 'top',
@@ -233,6 +227,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
   // }
 
   //uncomment this ends
+
   }
   
   onSlideToggleChange(event?: any) {
