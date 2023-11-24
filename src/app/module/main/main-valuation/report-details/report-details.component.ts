@@ -11,6 +11,7 @@ import { REPORT_OBJECTIVE } from 'src/app/shared/enums/constant';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { StringModificationPipe } from 'src/app/shared/pipe/string-modification.pipe';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { hasError } from 'src/app/shared/enums/errorMethods';
 
 
 @Component({
@@ -30,11 +31,13 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
   @ViewChild('purposeInput') purposeInput!: ElementRef<any>;
    viewer:any;
 
+   hasError = hasError;
   shouldShowReportPurpose=false;
   reportPurposeData:any=[];
   reportObjectives:any= REPORT_OBJECTIVE
 
   isLoading=false;
+  regulationPrefSelectionStatus=true;
   reportObjective='';
   reportPurposeDataChips:any=[];
   separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -101,6 +104,17 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
 
 
   generateReport(){
+    const controls = {...this.reportForm.controls}
+    delete controls.clientName;
+    const validatedReportForm = this.validateControls(controls);
+    if(!validatedReportForm){
+        this.reportForm.markAllAsTouched();
+        return;
+    }
+    if(this.reportPurposeDataChips.length === 0){
+      this.regulationPrefSelectionStatus = false;
+      return;
+    }
     this.ngxLoaderService.start();
     const payload = {
       ...this.reportForm.value,
@@ -112,7 +126,6 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     // const approach = this.transferStepperFour?.formOneAndTwoData?.model.includes('NAV') ? 'NAV' : this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFE') ? 'DCF' : '';
     const approach = (this.transferStepperFour?.formOneAndTwoData?.model.includes('NAV')) && this.transferStepperFour.formOneAndTwoData.model.length === 1? 'NAV' : (this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFE')) && this.transferStepperFour.formOneAndTwoData.model.length === 1 ? 'DCF' : 'MULTI_MODEL';
     
-  //  if(approach){
     this.calculationService.postReportData(payload).subscribe((response:any)=>{
       if(response){
         this.calculationService.generateReport(response,approach).subscribe((reportData:any)=>{
@@ -152,24 +165,22 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
         panelClass: 'app-notification-error',
       });
     })
-  // }
-  // else{
-  //   localStorage.setItem('stepFiveStats','false');
-  //   this.calculationService.checkStepStatus.next({status:true});
-  //   this.isLoading=false;
-  //   this.ngxLoaderService.stop();
-  //   this.snackBar.open('We are working on report for that model ', 'OK', {
-  //     horizontalPosition: 'right',
-  //     verticalPosition: 'top',
-  //     duration: 2000,
-  //     panelClass: 'app-notification-error',
-  //   });
-  // }
   }
+
   previewReport(){
-//uncomment this starts
-      this.isLoading=true;
-      this.ngxLoaderService.start();
+const controls = {...this.reportForm.controls}
+delete controls.clientName;
+const validatedReportForm = this.validateControls(controls);
+if(!validatedReportForm){
+    this.reportForm.markAllAsTouched();
+    return;
+}
+if(this.reportPurposeDataChips.length === 0){
+  this.regulationPrefSelectionStatus = false;
+  return;
+}
+    this.isLoading=true;
+    this.ngxLoaderService.start();
     const payload = {
       ...this.reportForm.value,
       ...this.registeredValuerDetails.value,
@@ -216,19 +227,6 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
         panelClass: 'app-notification-error',
       });
     })
-  // }
-  // else{
-  //   this.isLoading=false;
-  //   this.snackBar.open('We are working on report for that model ', 'OK', {
-  //     horizontalPosition: 'right',
-  //     verticalPosition: 'top',
-  //     duration: 2000,
-  //     panelClass: 'app-notification-error',
-  //   });
-  // }
-
-  //uncomment this ends
-
   }
   
   onSlideToggleChange(event?: any) {
@@ -304,6 +302,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     if (value) {
       const truncatedString = this.truncateStringPipe.transform(value,30);
       this.reportPurposeDataChips.push(truncatedString);
+      this.regulationPrefSelectionStatus = true;
       const reportSectionValue:any = this.reportForm.controls['reportSection'].value;
       emptySection.push(value);
       this.reportForm.controls['reportSection'].setValue([...this.reportForm.controls['reportSection'].value,...emptySection]);
@@ -329,8 +328,25 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     }
 
     this.reportPurposeDataChips.push(truncatedString !== '' ? truncatedString : event.option.viewValue);
+    this.regulationPrefSelectionStatus = true;
     this.purposeInput.nativeElement.value = '';
     emptySection.push(event.option.viewValue);
     this.reportForm.controls['reportSection'].setValue([...this.reportForm.controls['reportSection'].value,...emptySection]);
   }
+
+  validateControls(controlArray: { [key: string]: FormControl }){
+    let allControlsFilled = true;
+      for (const controlName in controlArray) {
+        if (controlArray.hasOwnProperty(controlName)) {
+          const control = controlArray[controlName];
+          if (control.value === null || control.value === '' ) {
+            allControlsFilled = false;
+            break;
+          }
+         
+        }
+      }
+      console.log(allControlsFilled,"final report truthy")
+      return allControlsFilled
+    }
 }

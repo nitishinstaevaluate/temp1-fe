@@ -26,6 +26,9 @@
                         </select>
                         <label for="discountRate">Discount Rate</label>
                       </div>
+                      <span *ngIf="fcfeForm.controls['discountRate'].touched && fcfeForm.controls['discountRate'].errors">
+                        <span *ngIf="hasError('discountRate','required',fcfeForm)" class="error-text">Please select discount rate</span>
+                      </span>
                 </div>
 
                 <!-- discount period -->
@@ -44,6 +47,9 @@
                         </select>
                         <label for="discountingPeriod">Discount Period</label>
                       </div>
+                      <span *ngIf="fcfeForm.controls['discountingPeriod'].touched && fcfeForm.controls['discountingPeriod'].errors">
+                        <span *ngIf="hasError('discountingPeriod','required',fcfeForm)" class="error-text">Please select discounting period</span>
+                      </span>
                 </div>
 
                  <!-- cost of equity -->
@@ -62,6 +68,9 @@
                         </select>
                         <label for="coeMethod">Cost Of Equity</label>
                       </div>
+                      <span *ngIf="fcfeForm.controls['coeMethod'].touched && fcfeForm.controls['coeMethod'].errors">
+                        <span *ngIf="hasError('coeMethod','required',fcfeForm)" class="error-text">Please select cost of equity</span>
+                      </span>
                 </div>
 
                 <!-- risk free rate -->
@@ -82,6 +91,9 @@
                         <label for="riskFreeRate">Risk Free Rate</label>
                       <mat-hint *ngIf="fcfeForm.controls['riskFreeRate'].value" class="taxrate-hint">Risk-Free rate is {{fcfeForm.controls['riskFreeRate'].value}}%</mat-hint>
                       </div>
+                      <span *ngIf="fcfeForm.controls['riskFreeRate'].touched && fcfeForm.controls['riskFreeRate'].errors">
+                        <span *ngIf="hasError('riskFreeRate','required',fcfeForm)" class="error-text">Please select risk free rate</span>
+                      </span>
                 </div>
 
                 <!-- expected market return -->
@@ -102,6 +114,9 @@
                         <label for="expMarketReturnType">Expected Market Return</label>
                       <mat-hint *ngIf="fcfeForm.controls['expMarketReturn'].value" class="taxrate-hint">Expected Market Return is {{fcfeForm.controls['expMarketReturn'].value?.toFixed(2)}}%</mat-hint>
                       </div>
+                      <span *ngIf="fcfeForm.controls['expMarketReturnType'].touched && fcfeForm.controls['expMarketReturnType'].errors">
+                        <span *ngIf="hasError('expMarketReturnType','required',fcfeForm)" class="error-text">Please select expected market return</span>
+                      </span>
                 </div>
 
                 <!-- beta -->
@@ -122,6 +137,9 @@
                         <label for="betaType">Beta</label>
                       <mat-hint *ngIf="fcfeForm.controls['beta'].value" class="taxrate-hint">Beta is {{fcfeForm.controls['beta'].value?.toFixed(2)}}</mat-hint>
                       </div>
+                      <span *ngIf="fcfeForm.controls['betaType'].touched && fcfeForm.controls['betaType'].errors">
+                        <span *ngIf="hasError('betaType','required',fcfeForm)" class="error-text">Please select beta</span>
+                      </span>
                 </div>
 
                 <!-- risk premium -->
@@ -144,6 +162,9 @@
                       <input class="new-inp" (click)="onSlideToggleChange($event)" formControlName="riskPremium" [type]="modelControl.fcfe.options.riskPremium.type" placeholder="Enter risk premium"/>
                       <label>Specific Risk Premium</label>
                 </div>
+                <span *ngIf="fcfeForm.controls['riskPremium'].touched && fcfeForm.controls['riskPremium'].errors">
+                  <span *ngIf="hasError('riskPremium','required',fcfeForm)" class="error-text">Please add specific risk premium</span>
+                </span>
                     </div>
 
                 <div class="col-md-12" *ngIf="(adjCoe !== null && adjCoe !== 0)   && (coe !== null && coe !== 0)">

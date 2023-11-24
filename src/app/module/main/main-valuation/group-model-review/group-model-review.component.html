@@ -107,6 +107,9 @@
                   <input class="new-inp" formControlName="otherAdj" [type]="modelControl.fcfe.options.otherAdj.type" [placeholder]="modelControl.fcfe.options.otherAdj.placeholder"/>
                   <label>Add other adjustments</label>
                 </div>
+                <span *ngIf="reviewForm.controls['otherAdj'].errors && reviewForm.controls['otherAdj'].touched">
+                    <span *ngIf="hasError('otherAdj','required',reviewForm)" class="error-text">Please add other adjustments</span>
+                </span>
             </div>
         <!-- </div> -->
        <!-- </div> -->

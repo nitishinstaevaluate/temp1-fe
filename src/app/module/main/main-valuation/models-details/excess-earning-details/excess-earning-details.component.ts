@@ -11,6 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AnimationBuilder, animate, style } from '@angular/animations';
 import { MatStepper } from '@angular/material/stepper';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
+import { hasError } from 'src/app/shared/enums/errorMethods';
 
 @Component({
   selector: 'app-excess-earning-details',
@@ -26,6 +27,7 @@ export class ExcessEarningDetailsComponent {
   @Input() formOneData:any;
   excessEarningForm:any;
   specificRiskPremiumModalForm:any;
+  hasError = hasError;
   floatLabelType:any = 'never';
   discountR: any=[];
   equityM: any=[];
@@ -53,11 +55,11 @@ ngOnChanges(changes:SimpleChanges): void {
     const current = changes['formOneData'].currentValue;
     const previous = changes['formOneData'].previousValue;
     if((current && previous) && current.industry !== previous.industry){
-      this.excessEarningForm.controls['betaType'].reset();
+      this.excessEarningForm.controls['betaType'].setValue('');
       this.excessEarningForm.controls['beta'].reset();
     }
     if((current && previous) && current.valuationDate !== previous.valuationDate){
-      this.excessEarningForm.controls['expMarketReturnType'].reset();
+      this.excessEarningForm.controls['expMarketReturnType'].setValue('');
       this.excessEarningForm.controls['expMarketReturn'].reset();
     }
   }
@@ -302,6 +304,7 @@ validateControls(controlArray: { [key: string]: FormControl },payload:any){
     }
 
     if(!allControlsFilled){
+      this.excessEarningForm.markAllAsTouched();
       const formStat = localStorage.getItem('pendingStat');
       if(formStat !== null && !formStat.includes('4')){
         localStorage.setItem('pendingStat',`${[...formStat,'4']}`)
