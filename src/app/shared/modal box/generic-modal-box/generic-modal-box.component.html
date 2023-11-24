@@ -298,7 +298,7 @@
   <div class="row">
     <div class="col-md-12 revalmodel" style="text-align: center;">
       <mat-label class="label" >{{label}}</mat-label>
-      <span><mat-icon class="close-modal-valuer" (click)="modalData()">close</mat-icon></span>
+      <span class="close-modal-update"><mat-icon style="color: #807a7b" (click)="modalData()">close</mat-icon></span>
     </div>
       <button (click)="onSave()" class="btn btn-success update-doc-bt" >Update</button>
     <ejs-documenteditorcontainer  height="593" (created)="onCreate()" class="syncfusion" enableWordExport="'true'" showPropertiesPane="'false'" serviceUrl="https://ej2services.syncfusion.com/production/web-services/api/documenteditor/" #documentEditor></ejs-documenteditorcontainer>
@@ -369,13 +369,21 @@
               </label>
             </div>
         </div>
+        <div class="col-xl-4">
+          <span *ngIf="!projectionYearSelect">
+            <span class="error-text">Please select an option.</span>
+          </span>
+        </div>
         <div class="col-xl-12" style="padding-top: 2%;" *ngIf="projectionYearSelect === 'Going_Concern'">
           <div class="row">
               <div class="col-xl-6">
                 <div class="material-textfield">
-                  <input class="new-inp" type="text" #projectionyear (blur)="projectionYear(projectionyear.value)" [value]="projectionYears ? projectionYears : '' " placeholder="Enter Projection Year"/>
+                  <input class="new-inp" type="text" #projectionyear [formControl]="yearOfProjection" (blur)="projectionYear(projectionyear.value)" placeholder="Enter Projection Year"/>
                   <label class="going-concern-label">Projection Years</label>
                </div>
+               <span *ngIf="yearOfProjection.errors && yearOfProjection.touched">
+                <span class="error-text" *ngIf="hasError(yearOfProjection,'required')">Projection Years is required.</span>
+              </span>
               </div>
               <div class="col-xl-6">
                 <div class="material-textfield">
@@ -385,6 +393,9 @@
                   </select>
                   <label for="terminalGrowthRate" class="going-concern-label">Terminal Growth Rate</label>
                 </div>
+                <span *ngIf="terminalGrowthRateControl.errors && terminalGrowthRateControl.touched">
+                <span class="error-text" *ngIf="hasError(terminalGrowthRateControl,'required')">Terminal Growth Rate is required.</span>
+              </span>
               </div>
           </div>
         </div>
@@ -474,6 +485,7 @@
           </span>
           Upload file</button>
         <span class="file-name" *ngIf="fileName">{{fileName}}</span>
+        <span *ngIf="!fileUploadStatus" class="error-text">Please upload file</span>
       </div>
       <div class="col-xl-3" style="text-align: right;padding-right: 2%;">
         <button type="button" class="btn btn-success submit-bt" (click)="submitModelValuation()">

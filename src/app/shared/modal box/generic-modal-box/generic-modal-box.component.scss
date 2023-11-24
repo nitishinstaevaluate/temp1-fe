@@ -749,9 +749,9 @@ input.form-check-input[type="radio"] {
   width: 10%;
   padding-right: 1%;
   transition:  -webkit-box-reflect 0.4s;
-  bottom: 10%;
-  left: 45%;
+  left: 84%;
   z-index: 1;
+  top: 2%;
 }
 
 .update-doc-bt:hover{
@@ -767,4 +767,17 @@ input.form-check-input[type="radio"] {
 }
 ::ng-deep ejs-documenteditorcontainer .e-de-ctn .e-de-ctnr-toolbar .e-de-tlbr-wrapper .e-de-toolbar .e-toolbar-items .e-de-toolbar-btn-last {
   display: none !important;
+}
+
+.close-modal-update{
+  position: absolute;
+  right: 2%;
+  top: 30%;
+}
+
+.error-text{
+  padding-left: 3%;
+  color: red;
+  font-size: 10px;
+  font-family: 'AR One Sans';
 }
