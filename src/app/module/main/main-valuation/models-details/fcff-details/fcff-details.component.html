@@ -25,6 +25,9 @@
                     </select>
                     <label for="discountRate">Discount Rate</label>
                   </div>
+                  <span *ngIf="fcffForm.controls['discountRate'].touched && fcffForm.controls['discountRate'].errors">
+                    <span *ngIf="hasError('discountRate','required',fcffForm)" class="error-text">Please select discount rate</span>
+                  </span>
             </div>
 
             <!-- discount period -->
@@ -43,6 +46,9 @@
                     </select>
                     <label for="discountingPeriod">Discount Period</label>
                   </div>
+                  <span *ngIf="fcffForm.controls['discountingPeriod'].touched && fcffForm.controls['discountingPeriod'].errors">
+                    <span *ngIf="hasError('discountingPeriod','required',fcffForm)" class="error-text">Please select discounting period</span>
+                  </span>
             </div>
 
             <!-- cost of equity -->
@@ -61,6 +67,9 @@
                     </select>
                     <label for="coeMethod">Cost Of Equity</label>
                   </div>
+                  <span *ngIf="fcffForm.controls['coeMethod'].touched && fcffForm.controls['coeMethod'].errors">
+                    <span *ngIf="hasError('coeMethod','required',fcffForm)" class="error-text">Please select cost of equity</span>
+                  </span>
             </div>
 
             <!-- risk free rate -->
@@ -81,6 +90,9 @@
                     <label for="riskFreeRate">Risk Free Rate</label>
                   <mat-hint *ngIf="fcffForm.controls['riskFreeRate'].value" class="taxrate-hint">Risk-Free rate is {{fcffForm.controls['riskFreeRate'].value}}%</mat-hint>
                   </div>
+                  <span *ngIf="fcffForm.controls['riskFreeRate'].touched && fcffForm.controls['riskFreeRate'].errors">
+                    <span *ngIf="hasError('riskFreeRate','required',fcffForm)" class="error-text">Please select risk free rate</span>
+                  </span>
             </div>
 
             <!-- expected market return -->
@@ -101,6 +113,9 @@
                     <label for="expMarketReturnType">Expected Market Return</label>
                   <mat-hint *ngIf="fcffForm.controls['expMarketReturn'].value" class="taxrate-hint">Expected Market Return is {{fcffForm.controls['expMarketReturn'].value.toFixed(2)}}%</mat-hint>
                   </div>
+                  <span *ngIf="fcffForm.controls['expMarketReturnType'].touched && fcffForm.controls['expMarketReturnType'].errors">
+                    <span *ngIf="hasError('expMarketReturnType','required',fcffForm)" class="error-text">Please select expected market return</span>
+                  </span>
             </div>
 
             <!-- beta -->
@@ -121,6 +136,9 @@
                     <label for="betaType">Beta</label>
                   <mat-hint *ngIf="fcffForm.controls['beta'].value" class="taxrate-hint">Beta is {{fcffForm.controls['beta'].value.toFixed(2)}}</mat-hint>
                   </div>
+                  <span *ngIf="fcffForm.controls['betaType'].touched && fcffForm.controls['betaType'].errors">
+                    <span *ngIf="hasError('betaType','required',fcffForm)" class="error-text">Please select beta</span>
+                  </span>
             </div>
 
             <!-- <div class="col-md-4 field">
@@ -142,6 +160,9 @@
                   <input class="new-inp" (click)="onSlideToggleChange($event)" formControlName="riskPremium" [type]="modelControl.fcff.options.riskPremium.type" placeholder="Enter risk premium"/>
                   <label>Specific Risk Premium</label>
             </div>
+            <span *ngIf="fcffForm.controls['riskPremium'].touched && fcffForm.controls['riskPremium'].errors">
+              <span *ngIf="hasError('riskPremium','required',fcffForm)" class="error-text">Please add specific risk premium</span>
+            </span>
                 </div>
 
             <!--cost of debt  -->
@@ -155,6 +176,9 @@
                   <input class="new-inp" formControlName="costOfDebt" [type]="modelControl.fcff.options.riskPremium.type" placeholder="Enter cost of debt"/>
                   <label>Cost Of Debt</label>
             </div>
+            <span *ngIf="fcffForm.controls['costOfDebt'].touched && fcffForm.controls['costOfDebt'].errors">
+              <span *ngIf="hasError('costOfDebt','required',fcffForm)" class="error-text">Please enter cost of debt</span>
+            </span>
                 </div>
 
             <!-- capital structure -->
@@ -175,6 +199,9 @@
                     <label for="capitalStructureType">Capital Structure</label>
                   <mat-hint *ngIf="totalCapital" class="taxrate-hint">Target Capital Structure is {{totalCapital}}%</mat-hint>
                   </div>
+                  <span *ngIf="fcffForm.controls['capitalStructureType'].touched && fcffForm.controls['capitalStructureType'].errors">
+                    <span *ngIf="hasError('capitalStructureType','required',fcffForm)" class="error-text">Please select capital structure</span>
+                  </span>
             </div>
 
             <!-- cop share capital -->
@@ -188,6 +215,9 @@
                   <input class="new-inp" formControlName="copShareCapital" [type]="modelControl.fcff.options.copShareCapital.type" placeholder="Enter cost of preference"/>
                   <label>Cost Of Preference</label>
             </div>
+            <span *ngIf="fcffForm.controls['copShareCapital'].touched && fcffForm.controls['copShareCapital'].errors">
+              <span *ngIf="hasError('copShareCapital','required',fcffForm)" class="error-text">Please enter cost of preference</span>
+            </span>
             </div>
             
 

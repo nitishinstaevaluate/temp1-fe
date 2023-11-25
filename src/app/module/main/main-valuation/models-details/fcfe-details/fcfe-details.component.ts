@@ -10,6 +10,7 @@ import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatStepper } from '@angular/material/stepper';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
+import { hasError } from 'src/app/shared/enums/errorMethods';
 
 @Component({
   selector: 'app-fcfe-details',
@@ -23,6 +24,8 @@ export class FcfeDetailsComponent implements OnChanges,OnInit{
   @Output() fcfeDetails=new EventEmitter<any>();
   @Output() fcfeDetailsPrev=new EventEmitter<any>();
   @Input() formOneData:any;
+
+  hasError=hasError
   fcfeForm:any;
   specificRiskPremiumModalForm:any;
   floatLabelType:any = 'never';
@@ -54,11 +57,11 @@ ngOnChanges(changes:SimpleChanges): void {
     const current = changes['formOneData'].currentValue;
     const previous = changes['formOneData'].previousValue;
     if((current && previous) && current.industry !== previous.industry){
-      this.fcfeForm.controls['betaType'].reset();
+      this.fcfeForm.controls['betaType'].setValue('');
       this.fcfeForm.controls['beta'].reset();
     }
     if((current && previous) && current.valuationDate !== previous.valuationDate){
-      this.fcfeForm.controls['expMarketReturnType'].reset();
+      this.fcfeForm.controls['expMarketReturnType'].setValue('');
       this.fcfeForm.controls['expMarketReturn'].reset();
     }
   }
@@ -302,6 +305,7 @@ validateControls(controlArray: { [key: string]: FormControl },payload:any){
       }
     }
     if(!allControlsFilled){
+      this.fcfeForm.markAllAsTouched();
       const formStat = localStorage.getItem('pendingStat');
       if(formStat !== null && !formStat.includes('1')){
         localStorage.setItem('pendingStat',`${[...formStat,'1']}`)

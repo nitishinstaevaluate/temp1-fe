@@ -10,6 +10,8 @@ import { DataReferencesService } from 'src/app/shared/service/data-references.se
 import { REPORT_OBJECTIVE } from 'src/app/shared/enums/constant';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { StringModificationPipe } from 'src/app/shared/pipe/string-modification.pipe';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { hasError } from 'src/app/shared/enums/errorMethods';
 
 
 @Component({
@@ -29,11 +31,13 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
   @ViewChild('purposeInput') purposeInput!: ElementRef<any>;
    viewer:any;
 
+   hasError = hasError;
   shouldShowReportPurpose=false;
   reportPurposeData:any=[];
   reportObjectives:any= REPORT_OBJECTIVE
 
   isLoading=false;
+  regulationPrefSelectionStatus=true;
   reportObjective='';
   reportPurposeDataChips:any=[];
   separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -43,7 +47,8 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     private dialog:MatDialog,
     private snackBar:MatSnackBar,
     private dataReferenceService:DataReferencesService,
-    private truncateStringPipe: StringModificationPipe){}
+    private truncateStringPipe: StringModificationPipe,
+    private ngxLoaderService:NgxUiLoaderService){}
   ngOnInit(): void {
     this.loadForm();
     this.onValueChangeControl()
@@ -99,7 +104,18 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
 
 
   generateReport(){
-    this.isLoading=true;
+    const controls = {...this.reportForm.controls}
+    delete controls.clientName;
+    const validatedReportForm = this.validateControls(controls);
+    if(!validatedReportForm){
+        this.reportForm.markAllAsTouched();
+        return;
+    }
+    if(this.reportPurposeDataChips.length === 0){
+      this.regulationPrefSelectionStatus = false;
+      return;
+    }
+    this.ngxLoaderService.start();
     const payload = {
       ...this.reportForm.value,
       ...this.registeredValuerDetails.value,
@@ -107,13 +123,15 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       reportDate:this.reportForm.controls['reportDate'].value,
       finalWeightedAverage:this.transferStepperFour?.formFourData
     }
-    const approach = this.transferStepperFour?.formOneAndTwoData?.model.includes('NAV') ? 'NAV' : this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFE') ? 'DCF' : '';
-   if(approach !== ''){
+    // const approach = this.transferStepperFour?.formOneAndTwoData?.model.includes('NAV') ? 'NAV' : this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFE') ? 'DCF' : '';
+    const approach = (this.transferStepperFour?.formOneAndTwoData?.model.includes('NAV')) && this.transferStepperFour.formOneAndTwoData.model.length === 1? 'NAV' : (this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFE')) && this.transferStepperFour.formOneAndTwoData.model.length === 1 ? 'DCF' : 'MULTI_MODEL';
+    
     this.calculationService.postReportData(payload).subscribe((response:any)=>{
       if(response){
         this.calculationService.generateReport(response,approach).subscribe((reportData:any)=>{
           if (reportData instanceof Blob) {
             this.isLoading=false;
+            this.ngxLoaderService.stop();
             this.snackBar.open('Report generated successfully', 'OK', {
               horizontalPosition: 'right',
               verticalPosition: 'top',
@@ -127,6 +145,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
         },
         (error)=>{
           this.isLoading=false;
+          this.ngxLoaderService.stop();
           this.snackBar.open('Something went wrong', 'OK', {
             horizontalPosition: 'right',
             verticalPosition: 'top',
@@ -138,6 +157,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     },
     (error)=>{
       this.isLoading = false;
+      this.ngxLoaderService.stop();
       this.snackBar.open('Something went wrong', 'OK', {
         horizontalPosition: 'right',
         verticalPosition: 'top',
@@ -146,63 +166,48 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       });
     })
   }
-  else{
-    localStorage.setItem('stepFiveStats','false');
-    this.calculationService.checkStepStatus.next({status:true});
-    this.isLoading=false;
-    this.snackBar.open('We are working on report for that model ', 'OK', {
-      horizontalPosition: 'right',
-      verticalPosition: 'top',
-      duration: 2000,
-      panelClass: 'app-notification-error',
-    });
-  }
-  }
+
   previewReport(){
-  
-      this.isLoading=true;
+const controls = {...this.reportForm.controls}
+delete controls.clientName;
+const validatedReportForm = this.validateControls(controls);
+if(!validatedReportForm){
+    this.reportForm.markAllAsTouched();
+    return;
+}
+if(this.reportPurposeDataChips.length === 0){
+  this.regulationPrefSelectionStatus = false;
+  return;
+}
+    this.isLoading=true;
+    this.ngxLoaderService.start();
     const payload = {
       ...this.reportForm.value,
       ...this.registeredValuerDetails.value,
       reportId:this.transferStepperFour?.formThreeData?.appData?.reportId,
       reportDate:this.reportForm.controls['reportDate'].value,
+      finalWeightedAverage:this.transferStepperFour?.formFourData
     }
-    const approach = this.transferStepperFour?.formOneAndTwoData?.model.includes('NAV') ? 'NAV' : this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFE') ? 'DCF' : '';
-   if(approach !== ''){
+    const approach = (this.transferStepperFour?.formOneAndTwoData?.model.includes('NAV')) && this.transferStepperFour.formOneAndTwoData.model.length === 1? 'NAV' : (this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFE')) && this.transferStepperFour.formOneAndTwoData.model.length === 1 ? 'DCF' : 'MULTI_MODEL';
+  //  if(approach !== ''){
     this.calculationService.postReportData(payload).subscribe((response:any)=>{
       if(response){
         this.calculationService.previewReport(response,approach).subscribe((reportData:any)=>{
           if (reportData) {
             this.isLoading=false;
+            this.ngxLoaderService.stop();
 
             const dataSet={
               value: 'previewDoc',
-              dataBlob:reportData.html
+              dataBlob:reportData,
+              reportId: response
             }
-             const dialogRef =  this.dialog.open(GenericModalBoxComponent, {data:dataSet,height:'90%',width:'65%'});
-              dialogRef.afterClosed().subscribe((result)=>{
-                // if (result) {
-                //   this.fcfeForm.controls['expMarketReturn'].patchValue(parseInt(result?.analystConsensusEstimates))
-                //   this.snackBar.open('Analyst Estimation Added','OK',{
-                //     horizontalPosition: 'center',
-                //     verticalPosition: 'top',
-                //     duration: 3000,
-                //     panelClass: 'app-notification-success'
-                //   })
-                // } else {
-                //   this.fcfeForm.controls['expMarketReturnType'].reset();
-                //   this.snackBar.open('Expected Market Return Not Saved','OK',{
-                //     horizontalPosition: 'center',
-                //     verticalPosition: 'top',
-                //     duration: 3000,
-                //     panelClass: 'app-notification-error'
-                //   })
-                // }
-              })
+             const dialogRef =  this.dialog.open(GenericModalBoxComponent, {data:dataSet,height:'92%',width:'80%',disableClose: true});
         }
         },
         (error)=>{
           this.isLoading=false;
+          this.ngxLoaderService.stop();
           this.snackBar.open('Something went wrong', 'OK', {
             horizontalPosition: 'right',
             verticalPosition: 'top',
@@ -214,6 +219,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     },
     (error)=>{
       this.isLoading = false;
+      this.ngxLoaderService.stop();
       this.snackBar.open('Something went wrong', 'OK', {
         horizontalPosition: 'right',
         verticalPosition: 'top',
@@ -221,16 +227,6 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
         panelClass: 'app-notification-error',
       });
     })
-  }
-  else{
-    this.isLoading=false;
-    this.snackBar.open('We are working on report for that model ', 'OK', {
-      horizontalPosition: 'right',
-      verticalPosition: 'top',
-      duration: 2000,
-      panelClass: 'app-notification-error',
-    });
-  }
   }
   
   onSlideToggleChange(event?: any) {
@@ -306,6 +302,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     if (value) {
       const truncatedString = this.truncateStringPipe.transform(value,30);
       this.reportPurposeDataChips.push(truncatedString);
+      this.regulationPrefSelectionStatus = true;
       const reportSectionValue:any = this.reportForm.controls['reportSection'].value;
       emptySection.push(value);
       this.reportForm.controls['reportSection'].setValue([...this.reportForm.controls['reportSection'].value,...emptySection]);
@@ -331,8 +328,25 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     }
 
     this.reportPurposeDataChips.push(truncatedString !== '' ? truncatedString : event.option.viewValue);
+    this.regulationPrefSelectionStatus = true;
     this.purposeInput.nativeElement.value = '';
     emptySection.push(event.option.viewValue);
     this.reportForm.controls['reportSection'].setValue([...this.reportForm.controls['reportSection'].value,...emptySection]);
   }
+
+  validateControls(controlArray: { [key: string]: FormControl }){
+    let allControlsFilled = true;
+      for (const controlName in controlArray) {
+        if (controlArray.hasOwnProperty(controlName)) {
+          const control = controlArray[controlName];
+          if (control.value === null || control.value === '' ) {
+            allControlsFilled = false;
+            break;
+          }
+         
+        }
+      }
+      console.log(allControlsFilled,"final report truthy")
+      return allControlsFilled
+    }
 }

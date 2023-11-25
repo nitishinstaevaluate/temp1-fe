@@ -9,6 +9,7 @@ import { DataReferencesService } from 'src/app/shared/service/data-references.se
 import { ValuationService } from 'src/app/shared/service/valuation.service';
 import groupModelControl from '../../../../../shared/enums/group-model-controls.json';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
+import { hasError } from 'src/app/shared/enums/errorMethods';
 
 @Component({
   selector: 'app-fcff-details',
@@ -23,11 +24,12 @@ export class FcffDetailsComponent implements OnInit{
   @Output() fcffDetails=new EventEmitter<any>();
   @Output() fcffDetailsPrev=new EventEmitter<any>();
   
-
   fcffForm:any=FormGroup;
   specificRiskPremiumModalForm:any=FormGroup;
-  floatLabelType:any = 'never';
   targetCapitalStructureForm:any=FormGroup;
+
+  hasError = hasError;
+  floatLabelType:any = 'never';
   discountR: any=[];
   equityM: any=[];
   indianTreasuryY: any=[];
@@ -60,11 +62,11 @@ ngOnChanges(changes:SimpleChanges): void {
     const current = changes['formOneData'].currentValue;
     const previous = changes['formOneData'].previousValue;
     if((current && previous) && current.industry !== previous.industry){
-      this.fcffForm.controls['betaType'].reset();
+      this.fcffForm.controls['betaType'].setValue('');
       this.fcffForm.controls['beta'].reset();
     }
     if((current && previous) && current.valuationDate !== previous.valuationDate){
-      this.fcffForm.controls['expMarketReturnType'].reset();
+      this.fcffForm.controls['expMarketReturnType'].setValue('');
       this.fcffForm.controls['expMarketReturn'].reset();
     }
   }
@@ -386,9 +388,9 @@ saveAndNext(): void {
   payload['expMarketReturnType']=this.fcffForm.controls['expMarketReturnType']?.value?.value;
 
   const controls = {...this.fcffForm.controls};
-  delete controls.capitalStructureType;
-  delete controls.costOfDebt;
-  delete controls.copShareCapital;
+  // delete controls.capitalStructureType;
+  // delete controls.costOfDebt;
+  // delete controls.copShareCapital;
   this.validateControls(controls,payload);
 }
 
@@ -410,6 +412,7 @@ validateControls(controlArray: { [key: string]: FormControl },payload:any){
     }
 
     if(!allControlsFilled){
+      this.fcffForm.markAllAsTouched();
       const formStat = localStorage.getItem('pendingStat');
       if(formStat !== null && !formStat.includes('2')){
         localStorage.setItem('pendingStat',`${[...formStat,'2']}`)

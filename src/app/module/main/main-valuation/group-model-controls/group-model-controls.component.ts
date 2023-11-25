@@ -90,6 +90,7 @@ export class GroupModelControlsComponent implements OnInit {
   betaIndustries: any;
   isExcelReupload=false;
   fileName:any='';
+  modelSelectStatus:boolean= true
 
   constructor(private formBuilder: FormBuilder,
     private valuationService: ValuationService,
@@ -360,6 +361,11 @@ isSelectedpreferenceRatio(value:any){
 }
 
   saveAndNext(): void {
+    if(!this.modelValuation.controls['model'].value || this.modelValuation.controls['model'].value?.length === 0){
+      this.modelSelectStatus = false;
+      return;
+    }
+
     // this.modelValuation.controls['model'].setValue(this.checkedItems);
     if(!this.isRelativeValuation(this.MODEL.RELATIVE_VALUATION)){
       this.relativeValuation.controls['preferenceRatioSelect'].setValue('');
@@ -406,9 +412,6 @@ isSelectedpreferenceRatio(value:any){
       payload['isExcelModified']= false;
       localStorage.setItem('excelStat','false')
     }
-
-
-    
     
     // validate form controls
     let control:any;
@@ -433,8 +436,8 @@ isSelectedpreferenceRatio(value:any){
 
     this.isExcelReupload = false; // reset it once payload has modified excel sheet id
 
-        // submit final payload
-        this.groupModelControls.emit(payload);
+      // submit final payload
+      this.groupModelControls.emit(payload);
   }
 
   validateControls(controlArray: { [key: string]: FormControl },models:any){
@@ -448,6 +451,10 @@ isSelectedpreferenceRatio(value:any){
           }
          
         }
+      }
+
+      if(!allControlsFilled){
+        this.modelValuation.markAllAsTouched();
       }
 
     localStorage.setItem('stepOneStats',`${allControlsFilled}`)
@@ -572,12 +579,15 @@ isSelectedpreferenceRatio(value:any){
         fileName:this.fileName,
         value:'valuationMethod'
       }
-     const dialogRef = this.dialog.open(GenericModalBoxComponent,{data:data,width:'50%'});
+     const dialogRef = this.dialog.open(GenericModalBoxComponent,{data:data,width:'50%',disableClose:true});
   
      dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         if(result?.excelSheetId !== this.modelValuation.controls['excelSheetId']){
           this.isExcelReupload=true
+        }
+        if(result.model.length > 0){
+          this.modelSelectStatus = true
         }
         this.modelValuation.controls['model'].setValue(result?.model);
         this.modelValuation.controls['projectionYearSelect'].setValue(result?.projectionYearSelect);

@@ -4,6 +4,7 @@ import groupModelControl from '../../../../shared/enums/group-model-controls.jso
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { isSelected } from 'src/app/shared/enums/functions';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
+import { hasError } from 'src/app/shared/enums/errorMethods';
 @Component({
   selector: 'app-group-model-review',
   templateUrl: './group-model-review.component.html',
@@ -23,6 +24,7 @@ export class GroupModelReviewComponent implements OnChanges {
 
   reviewForm:FormGroup;
 
+  hasError = hasError;
   floatLabelType:any='never';
   profitLoss:any;
   balanceSheet:any;
@@ -86,12 +88,13 @@ export class GroupModelReviewComponent implements OnChanges {
 
     if(this.isRelativeValuation('FCFE') || this.isFcff('FCFF')){
 
-      if(this.reviewForm.controls['otherAdj'].value !== ''){
+      if(this.reviewForm.controls['otherAdj'].valid){
         this.calculationService.checkStepStatus.next({stepStatus:true,step:this.step})
         localStorage.setItem('step',`4`);
         localStorage.setItem('stepThreeStats','true');
       }
       else{
+        this.reviewForm.markAllAsTouched();
         this.calculationService.checkStepStatus.next({stepStatus:false,step:this.step})
         localStorage.setItem('step',`4`);
         localStorage.setItem('stepThreeStats','false');

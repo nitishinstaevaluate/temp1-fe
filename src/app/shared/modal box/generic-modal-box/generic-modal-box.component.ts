@@ -8,19 +8,24 @@ import { environment } from 'src/environments/environment';
 import { GET_TEMPLATE } from '../../enums/functions';
 import { ValuationService } from '../../service/valuation.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { FormControl } from '@angular/forms';
-// import {PDFnet,core} from '@pdftron/webviewer/public/core/pdf/PDFNet.js';
-// C:\Ifinworth\ifinworth-ui\src\assets\lib\core\pdf\PDFNet.js
+import { FormControl, Validators } from '@angular/forms';
+import { DocumentEditorContainerComponent, WordExportService, SfdtExportService, SelectionService, EditorService } from '@syncfusion/ej2-angular-documenteditor';
+import { CalculationsService } from '../../service/calculations.service';
+import saveAs from 'file-saver';
+import { hasError } from '../../enums/errorMethods';
 
 @Component({
   selector: 'app-generic-modal-box',
   templateUrl: './generic-modal-box.component.html',
-  styleUrls: ['./generic-modal-box.component.scss']
+  styleUrls: ['./generic-modal-box.component.scss'],
+  providers:[EditorService, SelectionService, SfdtExportService, WordExportService]
 })
 export class GenericModalBoxComponent implements OnInit {
   @ViewChild('viewer') viewerRef!: ElementRef;
+  @ViewChild('documentEditor') docEdit!: any;
 
-  terminalGrowthRateControl: FormControl = new FormControl('');
+  terminalGrowthRateControl: FormControl = new FormControl('',[Validators.required]); 
+  yearOfProjection: FormControl = new FormControl('',[Validators.required]); 
   analystConsensusEstimates: FormControl = new FormControl('');
   liquidityFactor: FormControl = new FormControl('');
   companySize: FormControl = new FormControl('');
@@ -67,6 +72,9 @@ files:any=[];
 excelSheetId:any;
 fileName:any;
 companyMaxValue:any=0;
+editDoc:any='';
+fileUploadStatus:boolean=true;
+hasError=hasError
 
   // Quill toolbar options
   quillModules = {
@@ -82,7 +90,8 @@ companyMaxValue:any=0;
 constructor(@Inject(MAT_DIALOG_DATA) public data: any,
 private dialogRef:MatDialogRef<GenericModalBoxComponent>,
 private valuationService:ValuationService,
-private snackBar:MatSnackBar){
+private snackBar:MatSnackBar,
+private calculationService:CalculationsService){
 this.loadModel(data);
 if(data?.value === this.appValues.PREVIEW_DOC.value){
 this.showWebViewer = true;
@@ -91,15 +100,17 @@ this.showWebViewer = true;
 
 ngOnInit() {
 }
-   ngAfterViewInit() {
-    this.webViewer()
-}
-async webViewer(){
-  this.htmlContent = this.data?.dataBlob;
+   ngAfterViewInit() {}
+
+onCreate(){
+  if ( this.data.dataBlob ) {
+    // let container: DocumentEditorContainer = new DocumentEditorContainer({ enableToolbar: true, height: '590px', showPropertiesPane:false });
+    (this.docEdit as DocumentEditorContainerComponent).showPropertiesPane = false;
+    (this.docEdit as DocumentEditorContainerComponent ).documentEditor.open(this.data.dataBlob);
+  }
 }
 
 loadModel(data:any){
-  console.log(data,"modal daat")
   if( data === this.appValues.Normal_Tax_Rate.value) return this.label = this.appValues.Normal_Tax_Rate.name;
   if( data === this.appValues.MAT_Rate.value) return this.label = this.appValues.MAT_Rate.name;
   if( data === this.appValues.ANALYST_CONSENSUS_ESTIMATES.value) return this.label = this.appValues.ANALYST_CONSENSUS_ESTIMATES.name;
@@ -119,6 +130,42 @@ loadModel(data:any){
     return this.label = this.appValues.VALUATION_METHOD.name;
   }
   return '';
+}
+
+async onSave(){
+  // (this.docEdit as DocumentEditorContainerComponent).documentEditor.save('sample', 'Docx');
+  const docBlob = await (this.docEdit as DocumentEditorContainerComponent).documentEditor.saveAsBlob('Docx')
+  const payload = {
+    docxBuffer: docBlob,
+    reportId: this.data.reportId
+  };
+
+  await this.convertDocxToPdf(payload);
+}
+
+async convertDocxToPdf(payload:any){
+  const formData = new FormData();
+formData.append('file', payload.docxBuffer, `Ifinworth Valuation-${payload.reportId}.docx`);
+  this.calculationService.updateReportDocxBuffer(payload.reportId,formData).subscribe((response:any)=>{
+    if(response){
+      console.log("updated success")
+      this.snackBar.open('Doc Update Success','ok',{
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+        duration: 3000,
+        panelClass: 'app-notification-success'
+      })
+    }
+    else{
+      this.snackBar.open('Doc Update Failed','ok',{
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+        duration: 3000,
+        panelClass: 'app-notification-success'
+      })
+      
+    }
+  })
 }
 
 modalData(data?:any,knownAs?:string) {
@@ -189,6 +236,10 @@ createModelControl(modelName:string,approach:string){
       if(!this.incomeApproachmodels.includes(modelName)){
         this.incomeApproachmodels=[];
         this.incomeApproachmodels.push(modelName);
+        const modelInput = {
+          model:[...this.incomeApproachmodels]
+        }
+        this.patchExistingValue(modelInput,true)
       }
       else{
         this.incomeApproachmodels=[];
@@ -236,16 +287,63 @@ projectionYear(value:any){
 }
 
 submitModelValuation(){
-  this.models=[...this.incomeApproachmodels,...this.netAssetApproachmodels,...this.marketApproachmodels];
+  if(this.incomeApproachmodels.length === 0 && this.netAssetApproachmodels.length === 0 && this.marketApproachmodels.length === 0){
+    this.snackBar.open('Please select valuation models','Ok',{
+      horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+          duration: 3000,
+          panelClass: 'app-notification-error'
+    })
+    return;
+  }
+  if(this.fcfeSelectedModel || this.fcffSelectedModel || this.excessEarningSelectedModel){
+    if(this.projectionYearSelect === 'Going_Concern'){
 
-  this.dialogRef.close({
-    model:this.models,
-    projectionYearSelect:this.projectionYearSelect ?? '',
-    terminalGrowthRate:this.terminalGrowthRateControl.value ?? '',
-    projectionYears:this.projectionYears ?? '',
-    excelSheetId:this.excelSheetId ?? '',
-    fileName:this.fileName ?? ''
-  })
+      if(this.yearOfProjection.invalid || this.terminalGrowthRateControl.invalid){
+        this.yearOfProjection.markAsTouched();
+        this.terminalGrowthRateControl.markAsTouched();
+        this.snackBar.open('Please fill the required fields','Ok',{
+          horizontalPosition: 'center',
+              verticalPosition: 'bottom',
+              duration: 3000,
+              panelClass: 'app-notification-error'
+        })
+        return;
+      }
+    }
+    if(!this.projectionYearSelect){
+        this.snackBar.open('Please Select the projections','Ok',{
+          horizontalPosition: 'center',
+              verticalPosition: 'bottom',
+              duration: 3000,
+              panelClass: 'app-notification-error'
+        })
+        return;
+    }
+  }
+
+  if(!this.excelSheetId){
+    this.fileUploadStatus = false;
+    this.snackBar.open('Please upload excel sheet','Ok',{
+      horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+          duration: 3000,
+          panelClass: 'app-notification-error'
+    })
+    return;
+  }
+  
+
+    this.models=[...this.incomeApproachmodels,...this.netAssetApproachmodels,...this.marketApproachmodels];
+  
+    this.dialogRef.close({
+      model:this.models,
+      projectionYearSelect:this.projectionYearSelect ?? '',
+      terminalGrowthRate:this.terminalGrowthRateControl.value ?? '',
+      projectionYears:this.yearOfProjection.value ?? '',
+      excelSheetId:this.excelSheetId ?? '',
+      fileName:this.fileName ?? ''
+    })
 }
 
 clearModelRadioButton(modelName:string){
@@ -299,11 +397,10 @@ get downloadTemplate() {
   
     const formData = new FormData();
     formData.append('file', this.files[0]);
-    // console.log(formData,"all fiels")
     this.valuationService.fileUpload(formData).subscribe((res: any) => {
       this.excelSheetId = res.excelSheetId;
+      this.fileUploadStatus = true;
       if(res.excelSheetId){
-        // this.isExcelReupload = true;
         this.snackBar.open('File has been uploaded successfully','Ok',{
           horizontalPosition: 'center',
           verticalPosition: 'bottom',
@@ -312,12 +409,11 @@ get downloadTemplate() {
         })
       }
       
-      // Clear the input element value to allow selecting the same file again
       event.target.value = '';
     });
   }
 
-  patchExistingValue(data:any){
+  patchExistingValue(data:any,validator?:boolean){
     if(data?.model.length>0){
       for(const ele of data.model){
         switch(ele){
@@ -344,6 +440,7 @@ get downloadTemplate() {
             break;
         }
 
+       if(!validator){
         for(const incApproachMethods of INCOME_APPROACH){
           if(ele === incApproachMethods){
             this.incomeApproachmodels.push(ele);
@@ -359,6 +456,7 @@ get downloadTemplate() {
             this.marketApproachmodels.push(ele);
           }
         }
+       }
       }
       this.models =  this.data?.model
     }
@@ -369,8 +467,7 @@ get downloadTemplate() {
       this.terminalGrowthRateControl.setValue(parseInt(data?.terminalGrowthRate));
     }
     if(data.projectionYears){
-      console.log(data?.projectionYears,"projection year")
-      this.projectionYears = data.projectionYears;
+      this.yearOfProjection.setValue(data.projectionYears);
     }
     if(data?.fileName){
       this.fileName = data?.fileName;

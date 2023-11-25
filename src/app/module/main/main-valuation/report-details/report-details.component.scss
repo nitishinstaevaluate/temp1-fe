@@ -479,4 +479,23 @@ opacity: 0;
 }
 // card css ends
 
+.error-text{
+    padding-left: 3%;
+    color: red;
+    font-size: 10px;
+    font-family: 'AR One Sans';
+}
+.error-text-regulation{
+  padding-left: 3%;
+  color: red;
+  font-size: 10px;
+  font-family: 'AR One Sans';
+  left: -5%;
+  bottom: -37%;
+  position: absolute;
+}
+
+.mat-relative-val{
+  position: relative;
+}
 // new scss ends

@@ -54,4 +54,9 @@ export class CalculationsService {
     return this.http.get(`${HOST}coe/industryOrCompanyBasedWacc?adjCoe=${payload.adjCoe}&costOfDebt=${payload.costOfDebt}&copShareCapital=${payload.copShareCapital}&deRatio=${payload.deRatio}&type=${payload.type}&taxRate=${payload.taxRate}&excelSheetId=${payload.excelSheetId}`)
 
   }
+
+  updateReportDocxBuffer(id:any,formData:any){
+    return this.http.put(`${HOST}report/updateReportDoc/${id}`,formData)
+
+  }
 }
