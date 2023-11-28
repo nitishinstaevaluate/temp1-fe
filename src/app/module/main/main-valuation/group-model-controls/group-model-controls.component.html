@@ -14,10 +14,24 @@
           </div> -->
 
             <!-- company -->
+         
               <div class="col-md-6 field" style="padding-top: 1%;">
                 <div class="material-textfield">
                   <input class="new-inp" placeholder="Add company" type="text" formControlName="company" />
-                  <label> Company Name</label>
+                  <label>Company Name</label>
+                  <span class="tool-class">
+                    <!-- <svg matTooltip="This are the company details" matTooltipPosition="above" style="color: blue" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 512 512"><title>ionicons-v5-e</title>
+                      <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" style="fill:none;stroke:#6200ee;stroke-miterlimit:10;stroke-width:32px" 
+                      fill="#ff0000"></path><polyline points="220 220 252 220 252 336" style="fill:none;stroke:#6200ee;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px">
+                      </polyline><line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#6200ee;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px">
+
+                    </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg> -->
+
+                    <svg matTooltip="This are the company details" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
+                      <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
+                      <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
+                      <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
+                  </span>
                 </div>
                 <span *ngIf="modelValuation.controls['company'].touched && modelValuation.controls['company'].errors">
                   <span *ngIf="hasError('company','required',modelValuation)" class="error-text">Please enter company name</span>
@@ -42,7 +56,7 @@
                       <option value="" disabled selected>Select reporting unit</option>
                       <option *ngFor="let doc of modelControl.reportDetails.options.reportingUnit"  [value]="doc.value">{{ doc.name }}</option>
                     </select>
-                    <label for="reportingUnit">Reporting Unit</label>
+                    <label for="reportingUnit">Units</label>
                   </div>
                   <span *ngIf="modelValuation.controls['reportingUnit'].touched && modelValuation.controls['reportingUnit'].errors">
                     <span *ngIf="hasError('reportingUnit','required',modelValuation)" class="error-text">Please select reporting unit</span>
@@ -388,33 +402,34 @@
            <span *ngIf="!modelSelectStatus" class="error-text">Please select valuation model</span>
           </div>
       </div>
-      <div class="col-xl-6">
-        <div style="padding-right: 4%;text-align: right;" class="container">
-          <button (click)="saveAndNext()" class="button-save-mat" mat-raised-button>
+      <div class="col-xl-12" style="padding-left: 2%;padding-right: 3%;padding-top: 1%;" *ngIf="modelValuation.controls['model'].value.length > 0">
+        <div class="chip-container">
+          <div class="chip" *ngFor="let indModel of modelValuation.controls['model'].value" style="padding-left: 2%;padding-right: 7%;padding-top: 2%;padding-bottom: 2%;">
+            {{ allModels[indModel] }}
+            <span class="icon-container">
+              <!-- <mat-icon class="check-icon">beenhere</mat-icon> -->
+              <!-- <mat-icon>offline_pin</mat-icon> -->
+              <mat-icon>done_all</mat-icon>
+              <!-- <mat-icon>done_outline</mat-icon> -->
+            </span>
+            <!-- <span style="position: absolute;top: 0%;left: 12%;top: 18%;"><mat-icon style="color: green;"> beenhere</mat-icon> </span> -->
+            <span class="close-btn" (click)="removeTag(indModel)">&times;</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-12" *ngIf="fileName" style="padding-top: 1%;">
+        <div class="filename-container" >
+          <div class="title">Uploaded filename:</div>
+          <span class="filename">{{fileName}}</span>
+        </div>
+      </div>
+      <div [ngClass]="fileName || modelValuation.controls['model'].value.length > 0 ? 'col-xl-12' : 'col-xl-6'">
+        <div [ngStyle]="(fileName || modelValuation.controls['model'].value.length > 0) ? { 'padding-right': '2%', 'text-align': 'right' } : { 'padding-right': '4%', 'text-align': 'right' }" class="container">
+          <button (click)="saveAndNext()" [ngClass]="fileName || modelValuation.controls['model'].value.length > 0 ? 'button-resave-mat' : 'button-save-mat'" mat-raised-button>
               Next
               <span class="button-save"><mat-icon style="font-weight: bold;color: #ffffff;">send</mat-icon></span>
            </button>
           </div>
       </div>
-    </div>
-
-    <div class="row" style="padding-left: 3%;padding-right: 3%;" *ngIf="modelValuation.controls['model'].value.length > 0">
-      <div class="chip-container">
-        <div class="chip" *ngFor="let indModel of modelValuation.controls['model'].value" style="padding-left: 2%;padding-right: 7%;padding-top: 2%;padding-bottom: 2%;">
-          {{ allModels[indModel] }}
-          <span class="icon-container">
-            <!-- <mat-icon class="check-icon">beenhere</mat-icon> -->
-            <!-- <mat-icon>offline_pin</mat-icon> -->
-            <mat-icon>done_all</mat-icon>
-            <!-- <mat-icon>done_outline</mat-icon> -->
-          </span>
-          <!-- <span style="position: absolute;top: 0%;left: 12%;top: 18%;"><mat-icon style="color: green;"> beenhere</mat-icon> </span> -->
-          <span class="close-btn" (click)="removeTag(indModel)">&times;</span>
-        </div>
-      </div>
-    </div>
-    <div class="filename-container" *ngIf="fileName">
-      <div class="title">Filename:</div>
-      <span class="filename">{{fileName}}</span>
     </div>
 </div>

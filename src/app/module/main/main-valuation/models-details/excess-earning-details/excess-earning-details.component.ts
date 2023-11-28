@@ -39,6 +39,7 @@ export class ExcessEarningDetailsComponent {
   isLoader = false;
   isDialogOpen = false;
   bse500Value:number=0;
+  customRiskFreeRate = 0;
 
   @ViewChild(MatStepper, { static: false }) stepper!: MatStepper;
   
@@ -170,10 +171,35 @@ loadOnChangeValue(){
     
   });
 
-  this.excessEarningForm.controls['riskFreeRate'].valueChanges.subscribe((value:any)=>{
-    if(!value) return;
-    this.calculateCoeAndAdjustedCoe();
+  this.excessEarningForm.controls['riskFreeRate'].valueChanges.subscribe((val:any)=>{
+    if(!val) return;
+    if(val === "customRiskFreeRate"){
+      const data={
+        value: 'customRiskFreeRate',
+        riskFreeRate: this.customRiskFreeRate
+      }
+      const dialogRef = this.dialog.open(GenericModalBoxComponent,{data:data,width:'30%'});
+      dialogRef.afterClosed().subscribe((result)=>{
+        if (result) {
+          this.customRiskFreeRate = parseFloat(result?.riskFreeRate)
+          
+          this.snackBar.open('Risk Free Rate Added','OK',{
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 3000,
+            panelClass: 'app-notification-success'
+          })
+        } else {
+          this.excessEarningForm.controls['riskFreeRate'].setValue('');
+        }
+        this.calculateCoeAndAdjustedCoe();
+      })
+    }
+    else{
+      this.calculateCoeAndAdjustedCoe();
+    }
   })
+
   this.excessEarningForm.controls['coeMethod'].valueChanges.subscribe((value:any)=>{
     if(!value) return;
     this.calculateCoeAndAdjustedCoe();
@@ -239,7 +265,7 @@ onSlideToggleChange(event:any){
       },
      
     };
-   const dialogRef = this.dialog.open(GenericModalBoxComponent,{data:data,height:'64%',width:'30%'});
+   const dialogRef = this.dialog.open(GenericModalBoxComponent,{data:data,width:'30%'});
 
    dialogRef.afterClosed().subscribe((result) => {
     this.isDialogOpen = false; // Reset the flag
@@ -286,6 +312,10 @@ saveAndNext(): void {
   payload['costOfEquity']=this.coe;
   payload['bse500Value']=this.bse500Value;
   
+  if(this.excessEarningForm.controls['riskFreeRate'].value  === 'customRiskFreeRate'){
+    payload['riskFreeRate'] = this.customRiskFreeRate
+  }
+
   this.validateControls(this.excessEarningForm.controls,payload);
   
 }
@@ -346,7 +376,7 @@ previous(){
 calculateCoeAndAdjustedCoe() {
   this.isLoader=true
   const coePayload = {
-    riskFreeRate: this.excessEarningForm.controls['riskFreeRate'].value,
+    riskFreeRate: this.excessEarningForm.controls['riskFreeRate'].value === 'customRiskFreeRate' ? this.customRiskFreeRate : this.excessEarningForm.controls['riskFreeRate'].value,
     expMarketReturn: this.excessEarningForm.controls['expMarketReturn'].value,
     beta: this.excessEarningForm.controls['beta']?.value ? this.excessEarningForm.controls['beta'].value : 0,
     riskPremium: this.excessEarningForm.controls['riskPremium'].value,

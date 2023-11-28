@@ -86,10 +86,11 @@
                 <div class="material-textfield">
                   <select id="riskFreeRate" class="new-inp" formControlName="riskFreeRate">
                     <option value="" disabled selected>Select risk free rate</option>
+                    <option value="customRiskFreeRate">Custom</option>
                     <option *ngFor="let doc of indianTreasuryY"  [ngValue]="doc.latest">Yield on {{ doc.maturityInYrs }} Years Indian Treasury Bond</option>
                   </select>
                   <label for="riskFreeRate">Risk Free Rate</label>
-                <mat-hint *ngIf="excessEarningForm.controls['riskFreeRate'].value" class="taxrate-hint">Risk-Free rate is {{excessEarningForm.controls['riskFreeRate'].value}}%</mat-hint>
+                <mat-hint *ngIf="excessEarningForm.controls['riskFreeRate'].value" class="taxrate-hint">Risk-Free rate is {{excessEarningForm.controls['riskFreeRate'].value === 'customRiskFreeRate' ? customRiskFreeRate : excessEarningForm.controls['riskFreeRate'].value}}%</mat-hint>
                 </div>
                 <span *ngIf="excessEarningForm.controls['riskFreeRate'].touched && excessEarningForm.controls['riskFreeRate'].errors">
                   <span *ngIf="hasError('riskFreeRate','required',excessEarningForm)" class="error-text">Please select risk free rate</span>

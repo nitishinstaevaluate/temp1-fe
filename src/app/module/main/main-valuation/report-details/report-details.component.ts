@@ -123,8 +123,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       reportDate:this.reportForm.controls['reportDate'].value,
       finalWeightedAverage:this.transferStepperFour?.formFourData
     }
-    // const approach = this.transferStepperFour?.formOneAndTwoData?.model.includes('NAV') ? 'NAV' : this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFE') ? 'DCF' : '';
-    const approach = (this.transferStepperFour?.formOneAndTwoData?.model.includes('NAV')) && this.transferStepperFour.formOneAndTwoData.model.length === 1? 'NAV' : (this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFE')) && this.transferStepperFour.formOneAndTwoData.model.length === 1 ? 'DCF' : 'MULTI_MODEL';
+    const approach = (this.transferStepperFour?.formOneAndTwoData?.model.includes('NAV')) && this.transferStepperFour.formOneAndTwoData.model.length === 1? 'NAV' : (this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFE')) && this.transferStepperFour.formOneAndTwoData.model.length === 1 ? 'DCF' : ((this.transferStepperFour?.formOneAndTwoData?.model.includes('Relative_Valuation') || this.transferStepperFour?.formOneAndTwoData?.model.includes('CTM')) && this.transferStepperFour.formOneAndTwoData.model.length === 1) ? 'CCM' : 'MULTI_MODEL';
     
     this.calculationService.postReportData(payload).subscribe((response:any)=>{
       if(response){
@@ -188,8 +187,7 @@ if(this.reportPurposeDataChips.length === 0){
       reportDate:this.reportForm.controls['reportDate'].value,
       finalWeightedAverage:this.transferStepperFour?.formFourData
     }
-    const approach = (this.transferStepperFour?.formOneAndTwoData?.model.includes('NAV')) && this.transferStepperFour.formOneAndTwoData.model.length === 1? 'NAV' : (this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFE')) && this.transferStepperFour.formOneAndTwoData.model.length === 1 ? 'DCF' : 'MULTI_MODEL';
-  //  if(approach !== ''){
+    const approach = (this.transferStepperFour?.formOneAndTwoData?.model.includes('NAV')) && this.transferStepperFour.formOneAndTwoData.model.length === 1? 'NAV' : (this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFE')) && this.transferStepperFour.formOneAndTwoData.model.length === 1 ? 'DCF' : ((this.transferStepperFour?.formOneAndTwoData?.model.includes('Relative_Valuation') || this.transferStepperFour?.formOneAndTwoData?.model.includes('CTM')) && this.transferStepperFour.formOneAndTwoData.model.length === 1) ? 'CCM' : 'MULTI_MODEL';
     this.calculationService.postReportData(payload).subscribe((response:any)=>{
       if(response){
         this.calculationService.previewReport(response,approach).subscribe((reportData:any)=>{
@@ -202,7 +200,7 @@ if(this.reportPurposeDataChips.length === 0){
               dataBlob:reportData,
               reportId: response
             }
-             const dialogRef =  this.dialog.open(GenericModalBoxComponent, {data:dataSet,height:'92%',width:'80%',disableClose: true});
+             const dialogRef =  this.dialog.open(GenericModalBoxComponent, {data:dataSet,width:'80%',disableClose: true});
         }
         },
         (error)=>{
