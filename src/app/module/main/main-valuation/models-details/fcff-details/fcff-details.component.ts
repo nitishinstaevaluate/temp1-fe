@@ -48,6 +48,7 @@ export class FcffDetailsComponent implements OnInit{
   isLoader = false;
   isDialogOpen = false; 
   bse500Value:number=0;
+  customRiskFreeRate = 0;
   
 constructor(private valuationService:ValuationService,
   private dataReferenceService: DataReferencesService,
@@ -238,13 +239,39 @@ loadOnChangeValue(){
     this.calculateCoeAndAdjustedCoe()
     
   });
+  
   this.fcffForm.controls['copShareCapital'].valueChanges.subscribe((val:any)=>{
     if(!val) return;
     this.calculateCoeAndAdjustedCoe();
   })
+
   this.fcffForm.controls['riskFreeRate'].valueChanges.subscribe((val:any)=>{
     if(!val) return;
-    this.calculateCoeAndAdjustedCoe();
+    if(val === "customRiskFreeRate"){
+      const data={
+        value: 'customRiskFreeRate',
+        riskFreeRate: this.customRiskFreeRate
+      }
+      const dialogRef = this.dialog.open(GenericModalBoxComponent,{data:data,width:'30%'});
+      dialogRef.afterClosed().subscribe((result)=>{
+        if (result) {
+          this.customRiskFreeRate = parseFloat(result?.riskFreeRate)
+          
+          this.snackBar.open('Risk Free Rate Added','OK',{
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 3000,
+            panelClass: 'app-notification-success'
+          })
+        } else {
+          this.fcffForm.controls['riskFreeRate'].setValue('');
+        }
+        this.calculateCoeAndAdjustedCoe()
+      })
+    }
+    else{
+      this.calculateCoeAndAdjustedCoe()
+    }
   })
   this.fcffForm.controls['costOfDebt'].valueChanges.subscribe((val:any)=>{
     if(!val) return;
@@ -255,24 +282,6 @@ loadOnChangeValue(){
     this.calculateCoeAndAdjustedCoe();
   })
 
-  this.subscribeToFormChanges();
-}
-
-subscribeToFormChanges() {
-  const controlsToWatch = [
-    'riskFreeRate',
-    'beta',
-    'riskPremium',
-    'coeMethod',
-    'copShareCapital',
-    'costOfDebt'
-  ];
-
-  for (const controlName of controlsToWatch) {
-    this.fcffForm.get(controlName).valueChanges.subscribe(() => {
-      this.apiCallMade = false;
-    });
-  }
 }
 
 loadFormControl(){
@@ -328,7 +337,7 @@ onSlideToggleChange(event:any){
       }
     };
     
-   const dialogRef = this.dialog.open(GenericModalBoxComponent,{data:data,height:'64%',width:'30%'});
+   const dialogRef = this.dialog.open(GenericModalBoxComponent,{data:data,width:'30%'});
 
    dialogRef.afterClosed().subscribe((result) => {
     this.isDialogOpen = false; // Reset the flag
@@ -386,11 +395,12 @@ saveAndNext(): void {
   // check if expected market return  is empty or not
  
   payload['expMarketReturnType']=this.fcffForm.controls['expMarketReturnType']?.value?.value;
+    
+  if(this.fcffForm.controls['riskFreeRate'].value  === 'customRiskFreeRate'){
+    payload['riskFreeRate'] = this.customRiskFreeRate
+  }
 
   const controls = {...this.fcffForm.controls};
-  // delete controls.capitalStructureType;
-  // delete controls.costOfDebt;
-  // delete controls.copShareCapital;
   this.validateControls(controls,payload);
 }
 
@@ -451,7 +461,7 @@ validateControls(controlArray: { [key: string]: FormControl },payload:any){
 calculateCoeAndAdjustedCoe() {
   this.isLoader=true
   const coePayload = {
-    riskFreeRate: this.fcffForm.controls['riskFreeRate'].value,
+    riskFreeRate: this.fcffForm.controls['riskFreeRate'].value === 'customRiskFreeRate' ? this.customRiskFreeRate : this.fcffForm.controls['riskFreeRate'].value,
     expMarketReturn: this.fcffForm.controls['expMarketReturn'].value,
     beta: this.fcffForm.controls['beta']?.value ? this.fcffForm.controls['beta'].value : 0,
     riskPremium: this.fcffForm.controls['riskPremium'].value,

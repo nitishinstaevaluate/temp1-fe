@@ -49,12 +49,17 @@
 }
 .modal-subtitle{
     text-align: left;
-    padding-left: 4%;
+    padding-left: 6%;
     font-size: 14px;
     font-family: revert;
     font-weight: 500;
-    color: #539e53;
+    color: #3253d8;
     padding-bottom: 1%;
+    font-family: 'AR One Sans', sans-serif;
+    background-image: linear-gradient(to right, #3253d8, #162d8b ,#26b645 );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: wave 120s linear infinite;
 }
 
 
@@ -712,7 +717,7 @@ input.form-check-input[type="radio"] {
 .button-save{
   position: absolute;
     left: 112%;
-    transform: scale(0.7);
+    transform: scale(0.6);
     top: -8%;
     mat-icon{
       font-weight: bold;
@@ -751,14 +756,19 @@ input.form-check-input[type="radio"] {
   transition:  -webkit-box-reflect 0.4s;
   left: 84%;
   z-index: 1;
-  top: 1%;
+  top: 1.5%;
+  font-size: 11px;
+  padding-top: 0.3%;
+  padding-bottom: 0.3%;
+  padding-left: 2%;
+  padding-right: 0%;
 }
 
 .update-doc-bt:hover{
   background: #4b6df3;
   color: #ffffff;
   box-shadow: 2px 0 8px #bababa;
-  -webkit-box-reflect: below 1px linear-gradient(transparent, #0003);
+  // -webkit-box-reflect: below 1px linear-gradient(transparent, #0003);
   transition: 0.4s;
 }
 
@@ -772,7 +782,12 @@ input.form-check-input[type="radio"] {
 .close-modal-update{
   position: absolute;
   right: 2%;
-  top: 30%;
+  top: 4%;
+  mat-icon{
+    transform: scale(.9);
+    color: #ff032d !important;
+    cursor: pointer;
+  }
 }
 
 .error-text{
@@ -780,4 +795,29 @@ input.form-check-input[type="radio"] {
   color: red;
   font-size: 10px;
   font-family: 'AR One Sans';
+}
+
+.qualitative-factors-tick{
+  position: absolute;
+  left: 4%;
+  top: 57%;
+  mat-icon{
+    transform: scale(0.6);
+    color: #0cd18f;
+  }
+}
+
+@keyframes wave {
+  to {
+    background-position: 4500vh;
+}
+}
+
+.update-doc-icon{
+  position: absolute;
+  left: 24%;
+  top: 2%;
+  mat-icon{
+    transform: scale(0.7);
+  }
 }

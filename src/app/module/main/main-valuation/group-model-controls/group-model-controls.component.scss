@@ -386,6 +386,26 @@ label {
   transform: translateY(-50%) scale(0.8) !important;
 }
 
+.new-inp:focus + label + .tool-class {
+  display: block;
+  position: absolute;
+  left: 20%;
+  top: 3%;
+  transform: translateY(-50%) scale(0.6) !important;
+  background: white;
+  padding-right: .5%;
+  mat-icon{
+    color: #6200ee;
+  }
+}
+.tool-class{
+  display: none;
+}
+
+.tool-class mat-icon {
+  color: #6d6d6d;
+}
+
 .new-inp:not(:placeholder-shown)+label {
   top: 3%;
   transform: translateY(-50%) scale(0.8) !important;
@@ -411,6 +431,18 @@ label {
   width: 20%;
   font-family: 'AR One Sans', sans-serif;
   font-weight: 500;
+  padding-right: 6%;
+}
+.button-resave-mat{
+  box-shadow: 1px 2px 15px #d1d1d1;
+  color:#ffffff !important;
+  background-color: #0cd18f !important;
+  border-radius: 8px;
+  position: relative;
+  font-family: 'AR One Sans', sans-serif;
+  font-weight: 500;
+  width: 10%;
+  padding-right: 3%;
 }
 
 .model-button{

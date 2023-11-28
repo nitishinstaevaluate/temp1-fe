@@ -236,13 +236,11 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
   }
   onInputChange(value: any, column: string,originalValue:any) {
     this.editedValues=[];
-
     const cellData = this.getCellAddress(originalValue,column);
-
       const cellStructure={
         cellData,
         oldValue:originalValue[`${column}`],
-        newValue:+value.value,
+        newValue:value.value.includes(',') ? +(value.value.replace(/,/g, '')) : +(value.value),
         particulars:originalValue.Particulars
       }
       this.editedValues.push(cellStructure);
@@ -252,29 +250,31 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
         excelSheetId:localStorage.getItem('excelStat')==='true' ? `edited-${this.transferStepperTwo.excelSheetId}` : this.transferStepperTwo.excelSheetId,
         ...this.editedValues[0] 
       }
-
-      this.calculationService.modifyExcel(payload).subscribe(
-        (response:any)=>{
-        if(response.status){
-          this.isExcelModified = true;
-          this.createprofitAndLossDataSource(response);
-        }
-        else{
-           this.snackBar.open(response.error,'Ok',{
+      
+      if(payload.newValue){
+        this.calculationService.modifyExcel(payload).subscribe(
+          (response:any)=>{
+          if(response.status){
+            this.isExcelModified = true;
+            this.createprofitAndLossDataSource(response);
+          }
+          else{
+             this.snackBar.open(response.error,'Ok',{
+              horizontalPosition: 'right',
+              verticalPosition: 'top',
+              duration: 3000,
+              panelClass: 'app-notification-error'
+            })
+          }
+        },(error)=>{
+          this.snackBar.open(error.message,'Ok',{
             horizontalPosition: 'right',
-            verticalPosition: 'top',
-            duration: 3000,
-            panelClass: 'app-notification-error'
+              verticalPosition: 'top',
+              duration: 3000,
+              panelClass: 'app-notification-error'
           })
-        }
-      },(error)=>{
-        this.snackBar.open(error.message,'Ok',{
-          horizontalPosition: 'right',
-            verticalPosition: 'top',
-            duration: 3000,
-            panelClass: 'app-notification-error'
         })
-      })
+      }
 }
 
   getCellAddress(data:any,changedColumn:any){

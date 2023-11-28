@@ -5,8 +5,9 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 
 import {registerLicense} from '@syncfusion/ej2-base';
+import { environment } from './environments/environment';
 
-registerLicense('ORg4AjUWIQA/Gnt2VlhhQlJCfV5AQmJKYVF2R2BJflRwfF9GZkwgOX1dQl9gSH9RdEViWnlfd3dXQWk=')
+registerLicense(environment.synfusionLicenseKey)
 
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.error(err));

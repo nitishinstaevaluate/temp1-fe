@@ -210,6 +210,10 @@ export const ALL_MODELS = {
           info:'This is Market Price model'
         }
       }
+    },
+    RISK_FREE_RATE:{
+      name:"Risk Free Rate",
+      value:"customRiskFreeRate"
     }
   }
 

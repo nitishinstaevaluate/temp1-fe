@@ -40,6 +40,7 @@ export class FcfeDetailsComponent implements OnChanges,OnInit{
   riskRate:any;
   isDialogOpen = false;
   bse500Value:number=0;
+  customRiskFreeRate = 0;
 
   @ViewChild('countElement', { static: false }) countElement!: ElementRef;
   @ViewChild(MatStepper, { static: false }) stepper!: MatStepper;
@@ -171,31 +172,40 @@ loadOnChangeValue(){
     this.calculateCoeAndAdjustedCoe();
     
   });
-  this.fcfeForm.controls['riskFreeRate'].valueChanges.subscribe((value:any)=>{
-    if(!value) return;
-    this.calculateCoeAndAdjustedCoe();
+
+  this.fcfeForm.controls['riskFreeRate'].valueChanges.subscribe((val:any)=>{
+    if(!val) return;
+    if(val === "customRiskFreeRate"){
+      const data={
+        value: 'customRiskFreeRate',
+        riskFreeRate: this.customRiskFreeRate
+      }
+      const dialogRef = this.dialog.open(GenericModalBoxComponent,{data:data,width:'30%'});
+      dialogRef.afterClosed().subscribe((result)=>{
+        if (result) {
+          this.customRiskFreeRate = parseFloat(result?.riskFreeRate)
+          
+          this.snackBar.open('Risk Free Rate Added','OK',{
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 3000,
+            panelClass: 'app-notification-success'
+          })
+        } else {
+          this.fcfeForm.controls['riskFreeRate'].setValue('');
+        }
+        this.calculateCoeAndAdjustedCoe();
+      })
+    }
+    else{
+      this.calculateCoeAndAdjustedCoe();
+    }
   })
+
   this.fcfeForm.controls['coeMethod'].valueChanges.subscribe((value:any)=>{
     if(!value) return;
     this.calculateCoeAndAdjustedCoe();
-  })
-
-  this.subscribeToFormChanges();
-  
-}
-subscribeToFormChanges() {
-  const controlsToWatch = [
-    'riskFreeRate',
-    'beta',
-    'riskPremium',
-    'coeMethod',
-  ];
-
-  for (const controlName of controlsToWatch) {
-    this.fcfeForm.get(controlName).valueChanges.subscribe(() => {
-      this.apiCallMade = false;
-    });
-  }
+  })  
 }
 
 loadFormControl(){
@@ -242,7 +252,7 @@ onSlideToggleChange(event: any) {
      
     };
 
-    const dialogRef = this.dialog.open(GenericModalBoxComponent, {data:data,height:'64%',width:'30%'});
+    const dialogRef = this.dialog.open(GenericModalBoxComponent, {data:data,width:'30%'});
 
     dialogRef.afterClosed().subscribe((result) => {
       this.isDialogOpen = false; // Reset the flag
@@ -287,6 +297,9 @@ saveAndNext(): void {
   payload['costOfEquity']=this.coe;
   payload['bse500Value']=this.bse500Value;
 
+  if(this.fcfeForm.controls['riskFreeRate'].value  === 'customRiskFreeRate'){
+    payload['riskFreeRate'] = this.customRiskFreeRate
+  }
   // validate formcontrols
   this.validateControls(this.fcfeForm.controls,payload);
 }
@@ -349,7 +362,7 @@ calculateCoeAndAdjustedCoe() {
     
   this.isLoader=true
   const coePayload = {
-    riskFreeRate: this.fcfeForm.controls['riskFreeRate'].value,
+    riskFreeRate: this.fcfeForm.controls['riskFreeRate'].value === 'customRiskFreeRate' ? this.customRiskFreeRate : this.fcfeForm.controls['riskFreeRate'].value,
     expMarketReturn: this.fcfeForm.controls['expMarketReturn'].value,
     beta: this.fcfeForm.controls['beta']?.value ? this.fcfeForm.controls['beta'].value : 0,
     riskPremium: this.fcfeForm.controls['riskPremium'].value,

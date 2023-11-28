@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
 import { GET_TEMPLATE } from '../../enums/functions';
 import { ValuationService } from '../../service/valuation.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { FormControl, Validators } from '@angular/forms';
+import { Form, FormControl, Validators } from '@angular/forms';
 import { DocumentEditorContainerComponent, WordExportService, SfdtExportService, SelectionService, EditorService } from '@syncfusion/ej2-angular-documenteditor';
 import { CalculationsService } from '../../service/calculations.service';
 import saveAs from 'file-saver';
@@ -26,6 +26,7 @@ export class GenericModalBoxComponent implements OnInit {
 
   terminalGrowthRateControl: FormControl = new FormControl('',[Validators.required]); 
   yearOfProjection: FormControl = new FormControl('',[Validators.required]); 
+
   analystConsensusEstimates: FormControl = new FormControl('');
   liquidityFactor: FormControl = new FormControl('');
   companySize: FormControl = new FormControl('');
@@ -34,6 +35,7 @@ export class GenericModalBoxComponent implements OnInit {
 
   taxRate: FormControl = new FormControl('');
 
+  riskFreeRate: FormControl = new FormControl('');
 
   registeredValuerName: FormControl = new FormControl('');
   registeredValuerMobileNumber: FormControl = new FormControl('');
@@ -74,6 +76,7 @@ fileName:any;
 companyMaxValue:any=0;
 editDoc:any='';
 fileUploadStatus:boolean=true;
+projectionSelectionStatus:boolean=true;
 hasError=hasError
 
   // Quill toolbar options
@@ -128,6 +131,9 @@ loadModel(data:any){
   if( data?.value === this.appValues.VALUATION_METHOD.value) {
     this.patchExistingValue(data);
     return this.label = this.appValues.VALUATION_METHOD.name;
+  }
+  if(data?.value == this.appValues.RISK_FREE_RATE.value){
+    this.patchExistingRiskFreeRateDetails(data);
   }
   return '';
 }
@@ -220,6 +226,12 @@ modalData(data?:any,knownAs?:string) {
       });
       break;    
   
+    case 'riskFreeRate':
+      this.dialogRef.close({
+        riskFreeRate:data?.riskFreeRate
+      })
+      break;
+      
     default:
       this.dialogRef.close();
       break;
@@ -276,7 +288,8 @@ selectProjections(projectionName:string,approach:string){
     }
     else{
 
-      this.projectionYearSelect = projectionName
+      this.projectionYearSelect = projectionName;
+      this.projectionSelectionStatus = true;
     }
   }
   
@@ -312,6 +325,7 @@ submitModelValuation(){
       }
     }
     if(!this.projectionYearSelect){
+      this.projectionSelectionStatus = false;
         this.snackBar.open('Please Select the projections','Ok',{
           horizontalPosition: 'center',
               verticalPosition: 'bottom',
@@ -510,6 +524,11 @@ get downloadTemplate() {
     }
     if(data?.competition){
       this.competition.setValue(data.competition);
+    }
+  }
+  patchExistingRiskFreeRateDetails(data:any){
+    if(data?.riskFreeRate){
+      this.riskFreeRate.setValue(data.riskFreeRate)
     }
   }
 }

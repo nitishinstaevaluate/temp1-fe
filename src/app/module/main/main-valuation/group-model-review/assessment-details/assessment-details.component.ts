@@ -112,7 +112,7 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
           const cellStructure={
             cellData,
             oldValue:originalValue[`${column}`],
-            newValue:+value.value,
+            newValue:value?.value.includes(',') ? +(value.value.replace(/,/g, '')) : +(value.value),
             particulars:originalValue.Particulars
           }
           this.editedValues.push(cellStructure);

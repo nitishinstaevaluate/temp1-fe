@@ -69,65 +69,46 @@
   </div>
 
   <!-- Specific Risk Premium Details -->
-  <div class="container-fluid" *ngIf="data?.data?.value === appValues.SPECIFIC_RISK_PREMIUM.value">
-    <div class="row">
-      <div class="col-md-12 revalmodel" style="text-align: left;padding-top: 4%;">
-        <mat-label class="label" >{{label}}</mat-label>
-        <span><mat-icon class="close-modal-valuer" (click)="modalData()">close</mat-icon></span>
-        <h4 class="modal-subtitle"><span>-</span>Qualitative Factors</h4>
-      </div>
-
-      <div class="col-md-12 field" style="padding-bottom: 5%;padding-top: 4%;">
-        <div class="material-textfield">
-          <input class="new-inp" type="text" placeholder="Enter company size" [formControl]="companySize"/>
-          <label class="going-concern-label">Company Size</label>
+  <div class="container" *ngIf="data?.data?.value === appValues.SPECIFIC_RISK_PREMIUM.value" style="padding: 4%;">
+      <div class="row" >
+        <div class="col-md-12 revalmodel" style="text-align: left;padding-top: 2%;">
+          <mat-label class="label" >{{label}}</mat-label>
+          <span><mat-icon class="close-modal-valuer" (click)="modalData()">close</mat-icon></span>
+          <span class="qualitative-factors-tick"><mat-icon>check_circle</mat-icon></span>
+          <h4 class="modal-subtitle">Qualitative Factors</h4>
         </div>
-      </div>
 
-      <div class="col-md-12 field" style="padding-bottom: 5%;">
-        <div class="material-textfield">
-          <input class="new-inp" type="text" placeholder="Enter market position" [formControl]="marketPosition"/>
-          <label class="going-concern-label">Market Positioning</label>
-        </div>
-      </div>
-
-      <div class="col-md-12 field" style="padding-bottom: 5%;">
-        <div class="material-textfield">
-            <input class="new-inp" type="text" placeholder="Enter liquidity proportion" [formControl]="liquidityFactor"/>
-            <label class="going-concern-label">Liquidity Factor</label>
+        <div class="col-md-12 field" style="padding-bottom: 5%;padding-top: 3%;">
+          <div class="material-textfield">
+            <input class="new-inp" type="text" placeholder="Enter company size" [formControl]="companySize"/>
+            <label class="going-concern-label">Company Size</label>
           </div>
-      </div>
+        </div>
 
-      <!-- <div class="col-md-12 field" style="padding-top: 3%;padding-bottom: 3%;">
-        <mat-label style="font-size: 15px;">Company Size</mat-label>
-       <div>
-        <mat-slider
-        class="example-margin "
-        [ngClass]="companyMaxValue <= 20 ? 'progress-1' : companyMaxValue > 20 && companyMaxValue <=60 ? 'progress-2' : 'progress-3'"
-        [disabled]="'false'"
-        [max]="'100'"
-        [min]="'0'"
-        [step]="'1'"
-        [discrete]="'false'"
-        [showTickMarks]="'false'"
-        style="width: 50%;"
-        (input)="updateSliderColor($event,companyMaxValue)">
-        <input [(ngModel)]="companyMaxValue" matSliderThumb>
-    </mat-slider>
-       </div>
-    </div> -->
- 
-
-    <div class="col-md-12 field" style="padding-bottom: 5%;">
-      <div class="material-textfield">
-        <input class="new-inp" type="text" placeholder="Enter competitive value" [formControl]="competition"/>
-        <label class="going-concern-label">Competition</label>
+        <div class="col-md-12 field" style="padding-bottom: 5%;">
+          <div class="material-textfield">
+            <input class="new-inp" type="text" placeholder="Enter market position" [formControl]="marketPosition"/>
+            <label class="going-concern-label">Market Positioning</label>
+          </div>
+        </div>
+  
+        <div class="col-md-12 field" style="padding-bottom: 5%;">
+          <div class="material-textfield">
+              <input class="new-inp" type="text" placeholder="Enter liquidity proportion" [formControl]="liquidityFactor"/>
+              <label class="going-concern-label">Liquidity Factor</label>
+            </div>
+        </div>
+  
+      <div class="col-md-12 field" style="padding-bottom: 5%;">
+        <div class="material-textfield">
+          <input class="new-inp" type="text" placeholder="Enter competitive value" [formControl]="competition"/>
+          <label class="going-concern-label">Competition</label>
+        </div>
       </div>
-    </div>
-   </div>
-    
+      </div>
+      
     <div class="col-md-12 btn-prop" style="text-align: center !important;">
-      <button style=" width: 20%;padding-right: 6%;" [disabled]="!companySize.value || !marketPosition.value || !liquidityFactor.value || !competition.value" [ngClass]="!companySize.value || !marketPosition.value || !liquidityFactor.value || !competition.value  ? 'valuer-button-disable' : 'button-save-mat'" (click)="modalData({companySize:companySize.value,marketPosition:marketPosition.value,liquidityFactor:liquidityFactor.value,competition:competition.value},'specificRiskPremium')" mat-raised-button>
+      <button style=" width: 30%;padding-right: 8%;" [disabled]="!companySize.value || !marketPosition.value || !liquidityFactor.value || !competition.value" [ngClass]="!companySize.value || !marketPosition.value || !liquidityFactor.value || !competition.value  ? 'valuer-button-disable' : 'button-save-mat'" (click)="modalData({companySize:companySize.value,marketPosition:marketPosition.value,liquidityFactor:liquidityFactor.value,competition:competition.value},'specificRiskPremium')" mat-raised-button>
           Save
           <span class="button-save"><mat-icon>send</mat-icon></span>
        </button>
@@ -137,25 +118,13 @@
   <!-- Registered Valuer Details -->
   <div class="container-fluid" *ngIf="data?.data?.value === appValues.REGISTERED_VALUER_DETAILS.value">
     <div class="row" style="padding-bottom: 4%;">
-      <!-- <div class="col-md-12 revalmodel">
-        <mat-label class="label" >Register Valuer</mat-label>
-        <span class="mat-bullet"><mat-icon>fiber_manual_record</mat-icon></span>
-        <span><mat-icon class="close-modal-valuer" (click)="modalData()">close</mat-icon></span>
-      </div> -->
-
       <div class="col-md-12 revalmodel" style="text-align: center;padding-top: 2%;">
         <mat-label class="label" >Registered Valuer Detail</mat-label>
-        <!-- <span class="mat-target-capital-structure"><mat-icon>fiber_manual_record</mat-icon></span> -->
         <span><mat-icon class="close-modal-valuer" (click)="modalData()">close</mat-icon></span>
       </div>
 
-
       <!-- valuer name -->
-      <div class="col-md-6 field valuer-details" >
-          <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
-              <mat-label>{{appValues.REGISTERED_VALUER_DETAILS.data.registeredValuerName}}</mat-label>
-              <input #registeredValuerName matInput>
-          </mat-form-field> -->
+      <div class="col-md-6 field valuer-details">
           <div class="material-textfield">
             <input class="new-inp" [formControl]="registeredValuerName" [placeholder]="'Enter name'" type="text"/>
             <label class="going-concern-label">{{appValues.REGISTERED_VALUER_DETAILS.data.registeredValuerName}}</label>
@@ -163,11 +132,7 @@
       </div>
 
       <!-- valuer phone number -->
-      <div class="col-md-6 field valuer-details" >
-          <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
-              <mat-label>{{appValues.REGISTERED_VALUER_DETAILS.data.registeredValuerMobileNumber}}</mat-label>
-              <input #registeredValuerMobileNumber matInput>
-          </mat-form-field> -->
+      <div class="col-md-6 field valuer-details">
           <div class="material-textfield">
             <input class="new-inp" [formControl]="registeredValuerMobileNumber" [placeholder]="'Enter phone number'" type="text"/>
             <label class="going-concern-label">{{appValues.REGISTERED_VALUER_DETAILS.data.registeredValuerMobileNumber}}</label>
@@ -176,10 +141,6 @@
 
       <!-- valuer email-id -->
       <div class="col-md-6 field valuer-details">
-          <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
-              <mat-label>{{appValues.REGISTERED_VALUER_DETAILS.data.registeredValuerEmailId}}</mat-label>
-              <input #registeredValuerEmailId matInput>
-          </mat-form-field> -->
           <div class="material-textfield">
             <input class="new-inp" [formControl]="registeredValuerEmailId" [placeholder]="'Enter email-id'" type="text"/>
             <label class="going-concern-label">{{appValues.REGISTERED_VALUER_DETAILS.data.registeredValuerEmailId}}</label>
@@ -188,10 +149,6 @@
 
       <!-- valuer ibbi-id -->
       <div class="col-md-6 field valuer-details">
-          <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
-              <mat-label>{{appValues.REGISTERED_VALUER_DETAILS.data.registeredValuerIbbiId}}</mat-label>
-              <input #registeredValuerIbbiId matInput>
-          </mat-form-field> -->
           <div class="material-textfield">
             <input class="new-inp" [formControl]="registeredValuerIbbiId" [placeholder]="'Enter email-id'" type="text"/>
             <label class="going-concern-label">{{appValues.REGISTERED_VALUER_DETAILS.data.registeredValuerIbbiId}}</label>
@@ -200,10 +157,6 @@
 
       <!-- valuer address -->
       <div class="col-md-6 field valuer-details">
-          <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
-              <mat-label>{{appValues.REGISTERED_VALUER_DETAILS.data.registeredValuerGeneralAddress}}</mat-label>
-              <input #registeredValuerGeneralAddress matInput>
-          </mat-form-field> -->
           <div class="material-textfield">
             <input class="new-inp" [formControl]="registeredValuerGeneralAddress" [placeholder]="'Enter address'" type="text"/>
             <label class="going-concern-label">{{appValues.REGISTERED_VALUER_DETAILS.data.registeredValuerGeneralAddress}}</label>
@@ -212,10 +165,6 @@
 
       <!-- valuer qualifications -->
       <div class="col-md-6 field valuer-details">
-          <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
-              <mat-label>{{appValues.REGISTERED_VALUER_DETAILS.data.registeredValuerQualifications}}</mat-label>
-              <input #registeredValuerQualifications matInput>
-          </mat-form-field> -->
           <div class="material-textfield">
             <input class="new-inp" [formControl]="registeredValuerQualifications" [placeholder]="'Enter qualifications'" type="text"/>
             <label class="going-concern-label">{{appValues.REGISTERED_VALUER_DETAILS.data.registeredValuerQualifications}}</label>
@@ -223,10 +172,6 @@
       </div>
 
   </div>
-  <!-- <div mat-dialog-actions style="display: flex;align-items: center;justify-content: center;">
-    <button mat-raised-button [disabled]="!registeredValuerMobileNumber.value || !registeredValuerEmailId.value || !registeredValuerName.value || !registeredValuerIbbiId.value || !registeredValuerGeneralAddress.value || !registeredValuerQualifications.value" [ngClass]="!registeredValuerMobileNumber.value || !registeredValuerEmailId.value || !registeredValuerName.value || !registeredValuerIbbiId.value || !registeredValuerGeneralAddress.value || !registeredValuerQualifications.value ? 'modal-button-disable' : 'modal-button-enable'" (click)="modalData({registeredValuerName:registeredValuerName.value,registeredValuerMobileNumber:registeredValuerMobileNumber.value,registeredValuerEmailId:registeredValuerEmailId.value,registeredValuerGeneralAddress:registeredValuerGeneralAddress.value,registeredValuerQualifications:registeredValuerQualifications.value,registeredValuerIbbiId:registeredValuerIbbiId.value},'registeredValuer')"><mat-icon>keyboard_arrow_right</mat-icon>Register</button>
-  </div> -->
-
   <div class="col-md-12 btn-prop" style="text-align: center !important;">
 <button style=" width: 20%;padding-right: 6%;" [disabled]="!registeredValuerMobileNumber.value || !registeredValuerEmailId.value || !registeredValuerName.value || !registeredValuerIbbiId.value || !registeredValuerGeneralAddress.value || !registeredValuerQualifications.value" [ngClass]="!registeredValuerMobileNumber.value || !registeredValuerEmailId.value || !registeredValuerName.value || !registeredValuerIbbiId.value || !registeredValuerGeneralAddress.value || !registeredValuerQualifications.value ? 'valuer-button-disable' : 'button-save-mat'" (click)="modalData({registeredValuerName:registeredValuerName.value,registeredValuerMobileNumber:registeredValuerMobileNumber.value,registeredValuerEmailId:registeredValuerEmailId.value,registeredValuerGeneralAddress:registeredValuerGeneralAddress.value,registeredValuerQualifications:registeredValuerQualifications.value,registeredValuerIbbiId:registeredValuerIbbiId.value},'registeredValuer')" mat-raised-button>
     Register
@@ -274,34 +219,14 @@
   </div>
   </div>
 
-  <!-- <div class="container webviewer" *ngIf="data?.value === appValues.PREVIEW_DOC.value">
-    
-  </div> -->
-
-  <div class="container-fluid" style="position: relative;padding-left: 0.6rem;padding-right: 0.6rem;" *ngIf="data?.value === appValues.PREVIEW_DOC.value">
-    <!-- <div class="row" >
-      <div class="col-md-12 revalmodel" style="padding-bottom: 1%;">
-        <mat-label class="label" >Report Preview</mat-label>
-        <span class="mat-bullet-report"><mat-icon>fiber_manual_record</mat-icon></span>
-        <span><mat-icon class="close-modal-valuer" (click)="modalData()">close</mat-icon></span>
-      </div>
-    <div style="border-top: 1px solid #ccdfe3">
-      <quill-editor
-      [(ngModel)]="htmlContent"
-      [modules]="quillModules"></quill-editor>
-    </div>
-
-  </div>
-  <div mat-dialog-actions style="display: flex;align-items: center;justify-content: center;">
-    <button mat-raised-button><mat-icon>keyboard_arrow_right</mat-icon>Save Report</button>
-  </div> -->
+  <div class="container-fluid" style="position: relative;padding:.8%" *ngIf="data?.value === appValues.PREVIEW_DOC.value">
   <div class="row">
-    <div class="col-md-12 revalmodel" style="text-align: center;padding-top: 1% !important;">
+    <div class="col-md-12 revalmodel" style="text-align: center;padding-top: 0% !important;">
       <mat-label class="label" >{{label}}</mat-label>
       <span class="close-modal-update"><mat-icon style="color: #807a7b" (click)="modalData()">close</mat-icon></span>
     </div>
-      <button (click)="onSave()" class="btn btn-success update-doc-bt" >Update</button>
-    <ejs-documenteditorcontainer  height="604" (created)="onCreate()" class="syncfusion" enableWordExport="'true'" showPropertiesPane="'false'" serviceUrl="https://ej2services.syncfusion.com/production/web-services/api/documenteditor/" #documentEditor></ejs-documenteditorcontainer>
+      <button (click)="onSave()" class="btn btn-success update-doc-bt" ><span class="update-doc-icon"><mat-icon>photo_filter</mat-icon></span>Update</button>
+    <ejs-documenteditorcontainer height="590"  (created)="onCreate()" class="syncfusion" enableWordExport="'true'" showPropertiesPane="'false'" serviceUrl="https://ej2services.syncfusion.com/production/web-services/api/documenteditor/" #documentEditor></ejs-documenteditorcontainer>
   </div>
   </div>
 
@@ -369,8 +294,8 @@
               </label>
             </div>
         </div>
-        <div class="col-xl-4">
-          <span *ngIf="!projectionYearSelect">
+        <div class="col-xl-4" *ngIf="!projectionSelectionStatus">
+          <span>
             <span class="error-text">Please select an option.</span>
           </span>
         </div>
@@ -492,5 +417,24 @@
           Submit
         </button>
       </div>
+    </div>
+  </div>
+
+  <!-- Risk free rate -->
+  <div *ngIf="data?.value === appValues.RISK_FREE_RATE.value">
+    <div class="col-md-12 revalmodel" style="text-align: center;padding-top: 4%;">
+      <mat-label class="label" >Risk Free Rate</mat-label>
+      <span><mat-icon class="close-modal-valuer" (click)="modalData()" style="padding-right: 8%;">close</mat-icon></span>
+    </div>
+    <div class="container" style="padding-top: 4%;padding-bottom: 4%;">
+      <div class="material-textfield">
+        <input class="new-inp" [formControl]="riskFreeRate" [placeholder]="'Enter risk free rate'" type="text"/>
+        <label class="going-concern-label">Risk Free Rate</label>
+      </div>
+    </div>
+    <div mat-dialog-actions> 
+      <button mat-raised-button style="margin-left: auto;" [disabled]="!riskFreeRate.value" [ngClass]="!riskFreeRate.value ? 'submit-bt-disable' : 'submit-bt'" (click)="modalData({riskFreeRate:riskFreeRate.value},'riskFreeRate')">
+        Save
+      </button>
     </div>
   </div>
