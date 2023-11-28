@@ -236,11 +236,20 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
   }
   onInputChange(value: any, column: string,originalValue:any) {
     this.editedValues=[];
+    let newValue;
     const cellData = this.getCellAddress(originalValue,column);
+    if (value.value.includes(',') || (value.value.includes('(') && value.value.includes(')'))) {
+      newValue = parseFloat(value.value.replace(/,|\(|\)/g, ''));
+      if (value.value.includes('(') && value.value.includes(')')) {
+        newValue = -newValue;
+      }
+    } else{
+      newValue = +value.value;
+    }
       const cellStructure={
         cellData,
         oldValue:originalValue[`${column}`],
-        newValue:value.value.includes(',') ? +(value.value.replace(/,/g, '')) : +(value.value),
+        newValue:newValue,
         particulars:originalValue.Particulars
       }
       this.editedValues.push(cellStructure);
@@ -250,8 +259,7 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
         excelSheetId:localStorage.getItem('excelStat')==='true' ? `edited-${this.transferStepperTwo.excelSheetId}` : this.transferStepperTwo.excelSheetId,
         ...this.editedValues[0] 
       }
-      
-      if(payload.newValue){
+      if(payload.newValue !== null && payload.newValue !== undefined){
         this.calculationService.modifyExcel(payload).subscribe(
           (response:any)=>{
           if(response.status){
@@ -330,5 +338,24 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
       this.profitAndLossSheetData.emit({modifiedExcelSheetId:this.modifiedExcelSheetId,isModified:true});
       localStorage.setItem('excelStat','true')
     }
+  }
+
+  formatNegativeAndPositiveValues(value:any){
+    if(value && `${value}`.includes('-')){
+      let formattedNumber = value.toLocaleString(undefined, {
+        minimumIntegerDigits: 1,
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+      return `(${`${formattedNumber}`.replace(/-/g,'')})`;
+    }
+    else if(value){
+      return value.toLocaleString(undefined, {
+        minimumIntegerDigits: 1,
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })
+    }
+    return  null
   }
 }
