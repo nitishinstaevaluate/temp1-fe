@@ -13,6 +13,7 @@ import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
+import { AuthService } from 'src/app/shared/service/auth.service';
 
 
 @Component({
@@ -100,7 +101,8 @@ export class GroupModelControlsComponent implements OnInit {
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
     private calculationService:CalculationsService,
-    private processStatusManagerService:ProcessStatusManagerService) {
+    private processStatusManagerService:ProcessStatusManagerService,
+    private authService:AuthService) {
     this.form=this.formBuilder.group({});
     this.inputs.forEach((_, i) => {
       this.form.addControl('select' + i, new FormControl(''));
@@ -202,7 +204,7 @@ export class GroupModelControlsComponent implements OnInit {
    this.modelValuation.controls['taxRate'].setValue(data?.taxRate?? '');
    this.modelValuation.controls['terminalGrowthRate'].setValue(data?.terminalGrowthRate?? '');
    this.modelValuation.controls['type'].setValue(data?.type?? 'industry');
-   this.modelValuation.controls['userId'].setValue( !data?.userId || data?.userId === "" ?  '641d654fa83ed4a5f0293a52' : data?.userId);
+   this.modelValuation.controls['userId'].setValue( !data?.userId || data?.userId === "" ? '640a4783337b1b37d6fd04c7' : data?.userId);
    this.modelValuation.controls['excelSheetId'].setValue(data?.excelSheetId?? '');
    this.fileName = data?.fileName;
    
@@ -403,6 +405,11 @@ isSelectedpreferenceRatio(value:any){
       delete control.projectionYears
     }
   
+    this.authService.extractUser().subscribe((extraction:any)=>{
+      if(extraction.status){
+        this.modelValuation.controls['userId'].setValue(extraction.userId)
+      }
+    })
     
     this.isExcelReupload = false; // reset it once payload has modified excel sheet id
     

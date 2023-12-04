@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ValuationService } from '../../../shared/service/valuation.service';
 import { environment } from 'src/environments/environment';
 import { PAGINATION_VAL } from 'src/app/shared/enums/constant';
+import { AuthService } from 'src/app/shared/service/auth.service';
 
 @Component({
   selector: 'app-activity',
@@ -21,7 +22,8 @@ export class ActivityComponent {
     'Get Report',
   ];
 
-  constructor(private _valuationService: ValuationService) {
+  constructor(private _valuationService: ValuationService,
+    private authService:AuthService) {
     this.inItData();
   }
 
@@ -34,11 +36,15 @@ export class ActivityComponent {
   }
 
   fetchData(page:number=1,pageSize:number=10): void {
-    this._valuationService.getPaginatedValuations('', page, pageSize)
-      .subscribe((data:any) => {
-        this.length = data.pagination.totalElements;
-        this.activity = data.response;
-    });
+    this.authService.extractUser().subscribe((extraction:any)=>{
+      if(extraction.status){
+        this._valuationService.getPaginatedValuations(extraction.userId, page, pageSize)
+          .subscribe((data:any) => {
+            this.length = data.pagination.totalElements;
+            this.activity = data.response;
+        });
+      }
+    })
   }
 
   onPageChange(event: any): void {
