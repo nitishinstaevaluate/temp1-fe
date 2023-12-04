@@ -12,6 +12,7 @@ import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { StringModificationPipe } from 'src/app/shared/pipe/string-modification.pipe';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { hasError } from 'src/app/shared/enums/errorMethods';
+import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 
 
 @Component({
@@ -27,6 +28,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
   appointeeDetails:any=FormGroup;
 
   @Input() transferStepperFour:any;
+  @Input() fifthStageInput:any;
   @Output() previousPage=new EventEmitter<any>();
   @ViewChild('purposeInput') purposeInput!: ElementRef<any>;
    viewer:any;
@@ -48,14 +50,51 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     private snackBar:MatSnackBar,
     private dataReferenceService:DataReferencesService,
     private truncateStringPipe: StringModificationPipe,
-    private ngxLoaderService:NgxUiLoaderService){}
+    private ngxLoaderService:NgxUiLoaderService,
+    private processStatusManagerService:ProcessStatusManagerService){}
   ngOnInit(): void {
     this.loadForm();
+    this.checkProcessExist()
     this.onValueChangeControl()
   }
   
   ngOnChanges(changes:SimpleChanges){
     this.transferStepperFour;
+  }
+  checkProcessExist(){
+    if(!this.transferStepperFour){
+      if(this.fifthStageInput?.formFiveData){
+        this.reportForm.controls['clientName'].setValue(this.fifthStageInput?.formFiveData?.clientName);
+        this.reportForm.controls['reportDate'].setValue(this.fifthStageInput?.formFiveData?.reportDate);
+        this.reportForm.controls['useExistingValuer'].setValue(this.fifthStageInput?.formFiveData?.useExistingValuer);
+        this.reportForm.controls['appointingAuthorityName'].setValue(this.fifthStageInput?.formFiveData?.appointingAuthorityName);
+        this.reportForm.controls['dateOfAppointment'].setValue(this.fifthStageInput?.formFiveData?.dateOfAppointment);
+        this.reportForm.controls['appointingAuthorityName'].setValue(this.fifthStageInput?.formFiveData?.appointingAuthorityName);
+        this.reportForm.controls['natureOfInstrument'].setValue(this.fifthStageInput?.formFiveData?.natureOfInstrument);
+        if(this.fifthStageInput?.formFiveData?.reportPurpose){
+          this.reportForm.controls['reportPurpose'].setValue(this.fifthStageInput?.formFiveData?.reportPurpose);
+          this.dataReferenceService.getReportPurpose(this.fifthStageInput?.formFiveData?.reportPurpose).subscribe((reportPurposeData:any)=>{
+            this.reportPurposeData = reportPurposeData?.reportPurpose;
+            this.reportObjective = this.reportObjectives[`${this.fifthStageInput?.formFiveData?.reportPurpose}`];
+            if(this.reportPurposeData.length>0){
+              this.shouldShowReportPurpose=true;
+            }
+            else{
+              this.shouldShowReportPurpose=false;
+            }
+          },
+          (error)=>{
+            this.shouldShowReportPurpose=false;
+          })
+        }
+        if(this.fifthStageInput?.formFiveData?.reportSection){
+          this.reportPurposeDataChips = this.fifthStageInput?.formFiveData?.reportSection
+          this.reportForm.controls['reportSection'].setValue(this.fifthStageInput?.formFiveData?.reportSection);
+        }
+        
+      }
+      this.transferStepperFour = this.fifthStageInput;
+    }
   }
   ngAfterViewInit(): void {}
 
@@ -121,7 +160,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       ...this.registeredValuerDetails.value,
       reportId:this.transferStepperFour?.formThreeData?.appData?.reportId,
       reportDate:this.reportForm.controls['reportDate'].value,
-      finalWeightedAverage:this.transferStepperFour?.formFourData
+      finalWeightedAverage:this.transferStepperFour?.formFourData || this.transferStepperFour?.totalWeightageModel 
     }
     const approach = (this.transferStepperFour?.formOneAndTwoData?.model.includes('NAV')) && this.transferStepperFour.formOneAndTwoData.model.length === 1? 'NAV' : (this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFE')) && this.transferStepperFour.formOneAndTwoData.model.length === 1 ? 'DCF' : ((this.transferStepperFour?.formOneAndTwoData?.model.includes('Relative_Valuation') || this.transferStepperFour?.formOneAndTwoData?.model.includes('CTM')) && this.transferStepperFour.formOneAndTwoData.model.length === 1) ? 'CCM' : 'MULTI_MODEL';
     
@@ -140,6 +179,11 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
             saveAs(reportData, 'Ifinworth-Report.pdf');
             localStorage.setItem('stepFiveStats','true')
             this.calculationService.checkStepStatus.next({status:true})
+            const processStateModel ={
+              fifthStageInput:{...payload,formFillingStatus:true},
+              step:4
+            }
+            this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
         }
         },
         (error)=>{
@@ -185,7 +229,7 @@ if(this.reportPurposeDataChips.length === 0){
       ...this.registeredValuerDetails.value,
       reportId:this.transferStepperFour?.formThreeData?.appData?.reportId,
       reportDate:this.reportForm.controls['reportDate'].value,
-      finalWeightedAverage:this.transferStepperFour?.formFourData
+      finalWeightedAverage:this.transferStepperFour?.formFourData || this.transferStepperFour?.totalWeightageModel
     }
     const approach = (this.transferStepperFour?.formOneAndTwoData?.model.includes('NAV')) && this.transferStepperFour.formOneAndTwoData.model.length === 1? 'NAV' : (this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFE')) && this.transferStepperFour.formOneAndTwoData.model.length === 1 ? 'DCF' : ((this.transferStepperFour?.formOneAndTwoData?.model.includes('Relative_Valuation') || this.transferStepperFour?.formOneAndTwoData?.model.includes('CTM')) && this.transferStepperFour.formOneAndTwoData.model.length === 1) ? 'CCM' : 'MULTI_MODEL';
     this.calculationService.postReportData(payload).subscribe((response:any)=>{
@@ -347,4 +391,23 @@ if(this.reportPurposeDataChips.length === 0){
       console.log(allControlsFilled,"final report truthy")
       return allControlsFilled
     }
+
+    processStateManager(process:any, processId:any){
+      this.processStatusManagerService.instantiateProcess(process, processId).subscribe(
+        (processStatusDetails: any) => {
+          if (processStatusDetails.status) {
+            localStorage.setItem('processStateId', processStatusDetails.processId);
+          }
+        },
+        (error) => {
+          this.snackBar.open(`${error.message}`, 'OK', {
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+            duration: 3000,
+            panelClass: 'app-notification-error',
+          });
+        }
+      );
+    }
+
 }

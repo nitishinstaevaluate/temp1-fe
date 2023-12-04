@@ -46,6 +46,5 @@ export class ValuationService {
     const url = `${HOST}valuations/paginate/640a4783337b1b37d6fd04c7?page=${page}&pageSize=${pageSize}`;
     return this.http.get<any[]>(url);
   }
-
   }
 

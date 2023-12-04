@@ -13,6 +13,7 @@ import { DocumentEditorContainerComponent, WordExportService, SfdtExportService,
 import { CalculationsService } from '../../service/calculations.service';
 import saveAs from 'file-saver';
 import { hasError } from '../../enums/errorMethods';
+import { ProcessStatusManagerService } from '../../service/process-status-manager.service';
 
 @Component({
   selector: 'app-generic-modal-box',
@@ -94,7 +95,8 @@ constructor(@Inject(MAT_DIALOG_DATA) public data: any,
 private dialogRef:MatDialogRef<GenericModalBoxComponent>,
 private valuationService:ValuationService,
 private snackBar:MatSnackBar,
-private calculationService:CalculationsService){
+private calculationService:CalculationsService,
+private processStatusManagerService:ProcessStatusManagerService){
 this.loadModel(data);
 if(data?.value === this.appValues.PREVIEW_DOC.value){
 this.showWebViewer = true;
@@ -231,6 +233,12 @@ modalData(data?:any,knownAs?:string) {
         riskFreeRate:data?.riskFreeRate
       })
       break;
+
+    case 'restoreSession':
+      this.dialogRef.close({
+        sessionRestoreFlag:data?.restoreSession
+      })
+      break;
       
     default:
       this.dialogRef.close();
@@ -347,17 +355,30 @@ submitModelValuation(){
     return;
   }
   
+  this.models=[...this.incomeApproachmodels,...this.netAssetApproachmodels,...this.marketApproachmodels];
 
-    this.models=[...this.incomeApproachmodels,...this.netAssetApproachmodels,...this.marketApproachmodels];
-  
-    this.dialogRef.close({
+  const processStateModel ={
+    firstStageInput:{
       model:this.models,
       projectionYearSelect:this.projectionYearSelect ?? '',
       terminalGrowthRate:this.terminalGrowthRateControl.value ?? '',
       projectionYears:this.yearOfProjection.value ?? '',
       excelSheetId:this.excelSheetId ?? '',
       fileName:this.fileName ?? ''
-    })
+    },
+    step:0
+  }
+  
+  this.processStateManager(processStateModel,localStorage.getItem('processStateId'));
+  
+  this.dialogRef.close({
+    model:this.models,
+    projectionYearSelect:this.projectionYearSelect ?? '',
+    terminalGrowthRate:this.terminalGrowthRateControl.value ?? '',
+    projectionYears:this.yearOfProjection.value ?? '',
+    excelSheetId:this.excelSheetId ?? '',
+    fileName:this.fileName ?? ''
+  })
 }
 
 clearModelRadioButton(modelName:string){
@@ -530,5 +551,22 @@ get downloadTemplate() {
     if(data?.riskFreeRate){
       this.riskFreeRate.setValue(data.riskFreeRate)
     }
+  }
+  processStateManager(process:any, processId:any){
+    this.processStatusManagerService.instantiateProcess(process, processId).subscribe(
+      (processStatusDetails: any) => {
+        if (processStatusDetails.status) {
+          localStorage.setItem('processStateId', processStatusDetails.processId);
+        }
+      },
+      (error) => {
+        this.snackBar.open(`${error.message}`, 'OK', {
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+          duration: 3000,
+          panelClass: 'app-notification-error',
+        });
+      }
+    );
   }
 }

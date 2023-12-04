@@ -438,3 +438,21 @@
       </button>
     </div>
   </div>
+
+  <div *ngIf="data?.value === appValues.RESTORE_SESSION.value" style="padding: 2%;background: linear-gradient(to bottom, #e6e6e6, #f8f8f8);">
+    <div class="col-md-12 revalmodel" style="text-align: center;padding-top: 4%;">
+      <mat-label class="label" style="color: #3253d8;font-size: 22px;" >Session Found</mat-label>
+      <!-- <span><mat-icon class="close-modal-valuer" (click)="modalData()" style="padding-right: 8%;">close</mat-icon></span> -->
+    </div>
+    <div class="container" style="padding-top: 4%;padding-bottom: 4%;">
+      <p style="font-size: 15px;font-weight: 500;font-family: 'AR One Sans';text-align: center;color:#382771;">Do you want to restore previous session</p>
+    </div>
+    <div mat-dialog-actions style="padding-left: 6%;padding-right: 6%;"> 
+      <button mat-raised-button  class="button-save-mat" style="width: 35%;background-color: #d12c0c !important;" (click)="modalData({restoreSession:false},'restoreSession')">
+        No
+      </button>
+      <button mat-raised-button  class="button-save-mat" style="width: 35%;margin-left: auto;" (click)="modalData({restoreSession:true},'restoreSession')">
+        Yes
+      </button>
+    </div>
+  </div>

@@ -1,9 +1,14 @@
 import { Component, ViewChild, OnChanges, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatStepper } from '@angular/material/stepper';
 import { Router } from '@angular/router';
+import { MODELS } from 'src/app/shared/enums/constant';
 import { IS_ARRAY_EMPTY_OR_NULL, isSelected } from 'src/app/shared/enums/functions';
+import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal-box/generic-modal-box.component';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
+import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 
 @Component({
   selector: 'app-main-valuation',
@@ -19,6 +24,10 @@ export class MainValuationComponent implements OnInit{
   transferStepperthree:any;    
   transferStepperFour:any;    
   formOneData: any;
+  formTwoData:any;
+  formThreeData:any;
+  formFourData:any;
+  formFiveData:any;
   fcfeData:any;
   fcffData:any;
   relativeData:any;
@@ -37,12 +46,104 @@ export class MainValuationComponent implements OnInit{
 
   step:any=0;  
   next=0;
+  isProcessExistLoader = true;
   
-  constructor(private _formBuilder : FormBuilder,private router:Router,private calculationService:CalculationsService){    }
+  constructor(private _formBuilder : FormBuilder,
+    private calculationService:CalculationsService,
+    private processStatusManagerService: ProcessStatusManagerService,
+    private dialog :MatDialog,
+    private snackBar: MatSnackBar){    }
   ngOnInit(): void {
     this.calculationService.steps.subscribe((response:number)=>{
-      this.step=response
+      if(response  === 0){
+        this.step = 1
+        localStorage.setItem('step',`${this.step}`)
+      }else{
+
+        this.step=response
+      }
     })
+  
+    const processStateId = localStorage.getItem('processStateId');
+    if(processStateId){
+      const data={
+        value: 'restoreSession',
+      }
+      const dialogRef = this.dialog.open(GenericModalBoxComponent,{data:data,width:'30%',disableClose:true});
+      dialogRef.afterClosed().subscribe((result)=>{
+        if (result.sessionRestoreFlag) {
+          this.processStatusManagerService.retrieveProcess(processStateId).subscribe((processInfo:any)=>{
+            if(processInfo.status){
+              const processStateDetails = processInfo.stateInfo;
+              this.step = localStorage.setItem('step',`${processStateDetails.step}`)
+              if(processStateDetails?.firstStageInput){
+                localStorage.setItem('stepOneStats',`${processStateDetails.firstStageInput.formFillingStatus}`)
+                this.groupModelControls(processStateDetails.firstStageInput,true)
+              }
+
+              if(processStateDetails?.secondStageInput){
+                this.formTwoData = processStateDetails.secondStageInput;
+              }
+
+              if(processStateDetails?.secondStageInput && processStateDetails?.firstStageInput){
+                this.formThreeData = {formOneData:processStateDetails.firstStageInput,formTwoData: this.formTwoData,formThreeData:processStateDetails?.thirdStageInput};
+              }
+
+              if(processStateDetails?.thirdStageInput || processStateDetails?.secondStageInput){
+                let updatedPayload:any;
+                this.formTwoData.map((formTwoDetails:any)=>{
+                  if(formTwoDetails.model === MODELS.FCFE && processStateDetails?.firstStageInput.model.includes(MODELS.FCFE)){
+                    const {model , ...rest} = formTwoDetails;
+                    updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
+                  }
+                  if(formTwoDetails.model === MODELS.FCFF && processStateDetails?.firstStageInput.model.includes(MODELS.FCFF)){
+                    const {model , ...rest} = formTwoDetails;
+                    updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
+                  }
+                  if(formTwoDetails.model === MODELS.EXCESS_EARNINGS && processStateDetails?.firstStageInput.model.includes(MODELS.EXCESS_EARNINGS)){
+                    const {model , ...rest} = formTwoDetails;
+                    updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
+                  }
+                  if(formTwoDetails.model === MODELS.RELATIVE_VALUATION && processStateDetails?.firstStageInput.model.includes(MODELS.RELATIVE_VALUATION)){
+                    const {model , ...rest} = formTwoDetails;
+                    updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
+                  }
+                  if(formTwoDetails.model === MODELS.COMPARABLE_INDUSTRIES && processStateDetails?.firstStageInput.model.includes(MODELS.COMPARABLE_INDUSTRIES)){
+                    const {model , ...rest} = formTwoDetails;
+                    updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
+                  }
+                  if(formTwoDetails.model === MODELS.NAV && processStateDetails?.firstStageInput.model.includes(MODELS.NAV)){
+                    const {model , ...rest} = formTwoDetails;
+                    updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
+                  }
+                }) 
+                this.formFourData = {formOneAndTwoData : updatedPayload,formThreeData:processStateDetails.thirdStageInput};
+              }
+              if(processStateDetails?.fourthStageInput){
+                this.formFiveData = {...this.formFourData,formFourData : processStateDetails.fourthStageInput?.totalModelWeightageValue,formFiveData:processStateDetails?.fifthStageInput}
+              }
+
+              this.isProcessExistLoader = false;
+            }
+          })
+          this.snackBar.open('Session Restored Successfully','OK',{
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 3000,
+            panelClass: 'app-notification-success'
+          })
+        } else {
+          localStorage.removeItem('processStateId')
+          this.isProcessExistLoader = false;
+        }
+      })
+     
+    }
+    else{
+      this.isProcessExistLoader = false;
+     
+    }
+
   }
   @ViewChild('stepper') stepper!: MatStepper;
 
@@ -73,22 +174,21 @@ export class MainValuationComponent implements OnInit{
         ...(this.formOneData?.model.includes('CTM') ? this.comparableIndustriesData : {}),
         ...(this.formOneData?.model.includes('NAV') ? this.navData : {}),
       };
-    // if(this.step == 1) return this.headerLabel = '';
-    // if(this.step == 2) return this.headerLabel = 'Model Inputs';
-    // if(this.step == 3) return this.headerLabel = 'Review Form';
-    // if(this.step == 4) return this.headerLabel = 'Evaluate Result';
-    // if(this.step == 5) return this.headerLabel = '';
-    return '';
+    // return '';
   }
 
-  groupModelControls(data:any){
+  groupModelControls(data:any,incrementStep?:boolean){
     this.transferSteppertwo = data;
     this.formOneData = data;
     this.modelArray=this.formOneData?.model;
     // this.stepper.next();
     const currentStep:any = localStorage.getItem('step')
-
-  this.step = parseInt(currentStep) + 1;
+    if(incrementStep){
+      this.step = parseInt(currentStep);
+    }
+    else{
+      this.step = parseInt(currentStep) + 1;
+    }
 
   localStorage.setItem('step',`${this.step}`);
   this.calculationService.checkStepStatus.next({status:true,step:this.step})
@@ -99,12 +199,16 @@ export class MainValuationComponent implements OnInit{
     // this.stepper.previous();
     const currentStep:any = localStorage.getItem('step')
     this.step = parseInt(currentStep) - 1;
-    localStorage.setItem('step',`${this.step}`)
+    localStorage.setItem('step',`${this.step}`);
     this.calculationService.checkStepStatus.next({stepStatus:false,step:this.step,prev:true})
+    if(this.step === 2){
+      this.previousModelSelection(this.formOneData,true)
+    }
   }
 
   groupReviewControls(data:any){
-    this.transferStepperthree= {formOneAndTwoData:this.formOneAndTwoData,formThreeData:data};
+    this.transferStepperthree= {formOneAndTwoData:this.formOneAndTwoData ? this.formOneAndTwoData :  this.formFourData?.formOneAndTwoData,formThreeData:data};
+    console.log(this.transferStepperthree,"from review component details",this.formFourData,"form one and two data")
     // this.stepper.next();
     const currentStep:any = localStorage.getItem('step')
     this.step=parseInt(currentStep)
@@ -158,7 +262,6 @@ export class MainValuationComponent implements OnInit{
     const model = this.formOneData.model;
 
     const currentModel =this.formOneData?.model[model.indexOf(data)+1];
- 
       switch (currentModel) {
         case 'FCFE':
           this.next = 1;
@@ -188,9 +291,14 @@ export class MainValuationComponent implements OnInit{
     }
   }
   
-  previousModelSelection(modelName?:string){
-     // Determine the 'next' property based on the current model
-     const currentModel = this.formOneData?.model[this.formOneData?.model.indexOf(modelName)-1];
+  previousModelSelection(modelName?:string,isProcessState?:boolean){
+    let currentModel;
+    // Determine the 'next' property based on the current model
+    currentModel = this.formOneData?.model[this.formOneData?.model.indexOf(modelName)-1];
+
+    if(isProcessState){
+      currentModel = this.formOneData?.model[this.formOneData.model.length-1]
+    }
   
      switch (currentModel) {
        case 'FCFE':

@@ -109,7 +109,7 @@
                   <div class="material-textfield">
                     <select id="expMarketReturnType" class="new-inp" formControlName="expMarketReturnType">
                       <option value="" disabled selected>Select expected market return</option>
-                      <option *ngFor="let doc of modelControl.fcff.options.expMarketReturnType.options" [ngValue]="doc">{{doc.name}}</option>
+                      <option *ngFor="let doc of modelControl.fcff.options.expMarketReturnType.options" [ngValue]="doc.name">{{doc.name}}</option>
                     </select>
                     <label for="expMarketReturnType">Expected Market Return</label>
                   <mat-hint *ngIf="fcffForm.controls['expMarketReturn'].value" class="taxrate-hint">Expected Market Return is {{fcffForm.controls['expMarketReturn'].value.toFixed(2)}}%</mat-hint>

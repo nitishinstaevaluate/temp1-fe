@@ -10,6 +10,8 @@ import { ValuationService } from 'src/app/shared/service/valuation.service';
 import groupModelControl from '../../../../../shared/enums/group-model-controls.json';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { hasError } from 'src/app/shared/enums/errorMethods';
+import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
+import { MODELS } from 'src/app/shared/enums/constant';
 
 @Component({
   selector: 'app-fcff-details',
@@ -23,6 +25,8 @@ export class FcffDetailsComponent implements OnInit{
   @Input() formOneData:any;
   @Output() fcffDetails=new EventEmitter<any>();
   @Output() fcffDetailsPrev=new EventEmitter<any>();
+  @Input() secondStageInput:any;
+
   
   fcffForm:any=FormGroup;
   specificRiskPremiumModalForm:any=FormGroup;
@@ -55,7 +59,8 @@ constructor(private valuationService:ValuationService,
   private formBuilder:FormBuilder,
   private dialog:MatDialog,
   private snackBar:MatSnackBar,
-  private calculationsService:CalculationsService){}
+  private calculationsService:CalculationsService,
+  private processStatusManagerService:ProcessStatusManagerService){}
   
 ngOnChanges(changes:SimpleChanges): void {
   this.formOneData;
@@ -78,9 +83,43 @@ ngOnChanges(changes:SimpleChanges): void {
 
 ngOnInit(): void {
   this.loadFormControl();
+  this.checkProcessExist();
   this.loadValues();
   this.loadOnChangeValue();
 }
+
+checkProcessExist(){
+  if(this.secondStageInput){
+    this.secondStageInput.map((stateTwoDetails:any)=>{
+      if(stateTwoDetails.model === MODELS.FCFF && this.formOneData.model.includes(MODELS.FCFF)){
+        this.fcffForm.controls['discountRate'].setValue(stateTwoDetails?.discountRate) 
+        this.fcffForm.controls['discountingPeriod'].setValue(stateTwoDetails?.discountingPeriod) 
+        this.fcffForm.controls['betaType'].setValue(stateTwoDetails?.betaType) 
+        this.fcffForm.controls['coeMethod'].setValue(stateTwoDetails?.coeMethod); 
+        this.fcffForm.controls['riskFreeRate'].setValue(stateTwoDetails?.riskFreeRate); 
+        let expectedMarketReturnData:any;
+        this.modelControl.fcfe.options.expMarketReturnType.options.map((response:any)=>{
+          if(response.value ===  stateTwoDetails?.expMarketReturnType){
+            expectedMarketReturnData = response
+          }
+        })
+        this.fcffForm.controls['expMarketReturnType'].setValue(expectedMarketReturnData.name);
+        this.fcffForm.controls['expMarketReturn'].setValue(stateTwoDetails?.expMarketReturn);
+        this.fcffForm.controls['specificRiskPremium'].setValue(stateTwoDetails?.specificRiskPremium); 
+        this.fcffForm.controls['riskPremium'].setValue(stateTwoDetails?.riskPremium); 
+        this.fcffForm.controls['beta'].setValue(stateTwoDetails?.beta);
+        this.fcffForm.controls['costOfDebt'].setValue(stateTwoDetails?.costOfDebt);
+        this.fcffForm.controls['capitalStructureType'].setValue(stateTwoDetails?.capitalStructureType);
+        this.fcffForm.controls['copShareCapital'].setValue(stateTwoDetails?.copShareCapital);
+        this.specificRiskPremiumModalForm.controls['companySize'].setValue(stateTwoDetails?.alpha.companySize)
+        this.specificRiskPremiumModalForm.controls['marketPosition'].setValue(stateTwoDetails?.alpha.marketPosition)
+        this.specificRiskPremiumModalForm.controls['liquidityFactor'].setValue(stateTwoDetails?.alpha.liquidityFactor)
+        this.specificRiskPremiumModalForm.controls['competition'].setValue(stateTwoDetails?.alpha.competition);
+        this.calculateCoeAndAdjustedCoe()
+      }
+    })
+  }
+  }
 
 loadValues(){
   forkJoin([this.valuationService.getValuationDropdown(),this.dataReferenceService.getIndianTreasuryYields(),
@@ -101,7 +140,15 @@ loadOnChangeValue(){
   this.fcffForm.controls['expMarketReturnType'].valueChanges.subscribe(
     (val:any) => {
       if(!val) return;
-      if(val.value === "Analyst_Consensus_Estimates"){
+
+      let expectedMarketReturnData:any;
+      this.modelControl.fcfe.options.expMarketReturnType.options.map((response:any)=>{
+        if(response.name ===  val){
+          expectedMarketReturnData = response
+        }
+      })
+
+      if(expectedMarketReturnData.value === "Analyst_Consensus_Estimates"){
         const data={
           data: 'ACE',
           width:'30%',
@@ -118,30 +165,19 @@ loadOnChangeValue(){
             })
           } else {
             this.fcffForm.controls['expMarketReturnType'].setValue('');
-            // this.snackBar.open('Expected Market Return Not Saved','OK',{
-            //   horizontalPosition: 'right',
-            //   verticalPosition: 'top',
-            //   duration: 3000,
-            //   panelClass: 'app-notification-error'
-            // })
           }
         })
+        this.calculateCoeAndAdjustedCoe();
       }
       else{
-        this.dataReferenceService
-        .getBSE500(
-          val?.years,
-          this.formOneData?.valuationDate
-        )
-        .subscribe(
+        this.dataReferenceService.getBSE500(expectedMarketReturnData?.years,this.formOneData?.valuationDate).subscribe(
           (response) => {
             if (response.status) {
               this.fcffForm.controls['expMarketReturn'].value = response?.result;
               this.bse500Value=response?.close?.Close.toFixed(2);
               
             }
-            else{
-            }
+            this.calculateCoeAndAdjustedCoe();
           },
           (error) => {
             console.error(error);
@@ -149,8 +185,7 @@ loadOnChangeValue(){
           }
           );
       }
-      this.calculateCoeAndAdjustedCoe()
-      
+      this.calculateCoeAndAdjustedCoe();
     }
   );
   this.fcffForm.controls['capitalStructureType'].valueChanges.subscribe(
@@ -377,7 +412,12 @@ onSlideToggleChange(event:any){
 }
 
 saveAndNext(): void {
-  
+  let expectedMarketReturnData:any;
+  this.modelControl.fcfe.options.expMarketReturnType.options.map((response:any)=>{
+    if(response.name ===  this.fcffForm.controls['expMarketReturnType'].value){
+      expectedMarketReturnData = response
+    }
+  })
   const payload = {...this.fcffForm.value,alpha:this.specificRiskPremiumModalForm.value,status:'FCFF'}
 
     let capitalStructure = {
@@ -394,7 +434,7 @@ saveAndNext(): void {
   payload['bse500Value']=this.bse500Value;
   // check if expected market return  is empty or not
  
-  payload['expMarketReturnType']=this.fcffForm.controls['expMarketReturnType']?.value?.value;
+  payload['expMarketReturnType']=expectedMarketReturnData.value;
     
   if(this.fcffForm.controls['riskFreeRate'].value  === 'customRiskFreeRate'){
     payload['riskFreeRate'] = this.customRiskFreeRate
@@ -451,9 +491,22 @@ validateControls(controlArray: { [key: string]: FormControl },payload:any){
       }
       else{
         localStorage.setItem('stepTwoStats',`true`);
-        
     }
     }
+
+    let processStateStep;
+    if(allControlsFilled){
+      processStateStep = 2
+    }
+    else{
+      processStateStep = 1
+    }
+    const processStateModel ={
+      secondStageInput:[{model:MODELS.FCFF,...payload,formFillingStatus:allControlsFilled}],
+      step:processStateStep
+    }
+    this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
+
     this.fcffDetails.emit(payload);
 }
 
@@ -469,10 +522,7 @@ calculateCoeAndAdjustedCoe() {
   };
 
   this.calculationsService.getCostOfEquity(coePayload).subscribe((response: any) => {
-    console.log(response,"response")
     if (response.status) {
-      console.log(this.deRatio,"de ratio",this.equityProp,"equity prop",this.debtRatio,"deb rattio",this.prefProp,"pref prop",this.totalCapital,"toal cap")
-
      this.adjCoe=response.result.adjCOE;
      this.coe=response.result.coe;
       this.getWaccIndustryOrCompanyBased();
@@ -523,6 +573,23 @@ getWaccIndustryOrCompanyBased(){
       }
     })
   }
- 
+}
+
+processStateManager(process:any, processId:any){
+  this.processStatusManagerService.instantiateProcess(process, processId).subscribe(
+    (processStatusDetails: any) => {
+      if (processStatusDetails.status) {
+        localStorage.setItem('processStateId', processStatusDetails.processId);
+      }
+    },
+    (error) => {
+      this.snackBar.open(`${error.message}`, 'OK', {
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+        duration: 3000,
+        panelClass: 'app-notification-error',
+      });
+    }
+  );
 }
 }

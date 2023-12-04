@@ -1,4 +1,4 @@
-  <mat-table [dataSource]="profitAndLossDataSource" class="mat-p" *ngIf="transferStepperTwo?.excelSheetId && (!isRelativeValuation('Relative_Valuation') && !isRelativeValuation('CTM') && !isRelativeValuation('NAV'))">
+  <mat-table [dataSource]="profitAndLossDataSource" class="mat-p" *ngIf="excelSheetId && (!isRelativeValuation('Relative_Valuation') && !isRelativeValuation('CTM') && !isRelativeValuation('NAV'))">
     <ng-container *ngFor="let column of displayColumns;let columnIndex = index" [matColumnDef]="column">
       <mat-header-cell *matHeaderCellDef [ngClass]="column === 'Particulars' ? 'inc-width' : ''">{{ column }}</mat-header-cell>
       <mat-cell *matCellDef="let element" [ngClass]="checkHeader(element,columnIndex) ? 'highlight-header' :  checkSubHeader(element,columnIndex) ? 'label-highlight' : checkType(element[column]) && !isNumberOrEmpty(element[column]) ? 'label-c' : '' ">
@@ -15,7 +15,7 @@
     <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
   </mat-table>
 
-<mat-table [dataSource]="profitAndLossDataSource" class="mat-p" *ngIf="transferStepperTwo?.excelSheetId && (isRelativeValuation('Relative_Valuation') || isRelativeValuation('CTM') || isRelativeValuation('NAV'))">
+<mat-table [dataSource]="profitAndLossDataSource" class="mat-p" *ngIf="excelSheetId && (isRelativeValuation('Relative_Valuation') || isRelativeValuation('CTM') || isRelativeValuation('NAV'))">
   <ng-container *ngFor="let column of displayColumns;let columnIndex = index" [matColumnDef]="column">
     <mat-header-cell *matHeaderCellDef [ngClass]="column === 'Particulars' ? 'inc-width' : ''">{{ column }}</mat-header-cell>
     <mat-cell *matCellDef="let element" [ngClass]="checkHeader(element,columnIndex) ? 'highlight-header' :  checkSubHeader(element,columnIndex) ? 'label-highlight' : checkType(element[column]) && !isNumberOrEmpty(element[column]) ? 'label-c' : '' ">

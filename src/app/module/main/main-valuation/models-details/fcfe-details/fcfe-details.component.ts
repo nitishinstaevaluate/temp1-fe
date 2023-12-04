@@ -11,6 +11,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatStepper } from '@angular/material/stepper';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { hasError } from 'src/app/shared/enums/errorMethods';
+import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
+import { MODELS } from 'src/app/shared/enums/constant';
 
 @Component({
   selector: 'app-fcfe-details',
@@ -24,6 +26,7 @@ export class FcfeDetailsComponent implements OnChanges,OnInit{
   @Output() fcfeDetails=new EventEmitter<any>();
   @Output() fcfeDetailsPrev=new EventEmitter<any>();
   @Input() formOneData:any;
+  @Input() secondStageInput:any;
 
   hasError=hasError
   fcfeForm:any;
@@ -50,7 +53,8 @@ constructor(private valuationService:ValuationService,
   private formBuilder:FormBuilder,
   private dialog:MatDialog,
   private snackBar:MatSnackBar,
-  private calculationsService:CalculationsService){}
+  private calculationsService:CalculationsService,
+  private processStatusManagerService:ProcessStatusManagerService){}
   
 ngOnChanges(changes:SimpleChanges): void {
   this.formOneData;
@@ -73,8 +77,38 @@ ngOnChanges(changes:SimpleChanges): void {
 
 ngOnInit(): void {
   this.loadFormControl();
+  this.checkProcessExist();
   this.loadValues();
   this.loadOnChangeValue();
+}
+checkProcessExist(){
+if(this.secondStageInput){
+  this.secondStageInput.map((stateTwoDetails:any)=>{
+    if(stateTwoDetails.model === MODELS.FCFE && this.formOneData.model.includes(MODELS.FCFE)){
+      this.fcfeForm.controls['discountRate'].setValue(stateTwoDetails?.discountRate) 
+      this.fcfeForm.controls['discountingPeriod'].setValue(stateTwoDetails?.discountingPeriod) 
+      this.fcfeForm.controls['betaType'].setValue(stateTwoDetails?.betaType) 
+      this.fcfeForm.controls['coeMethod'].setValue(stateTwoDetails?.coeMethod); 
+      this.fcfeForm.controls['riskFreeRate'].setValue(stateTwoDetails?.riskFreeRate); 
+      let expectedMarketReturnData:any;
+      this.modelControl.fcfe.options.expMarketReturnType.options.map((response:any)=>{
+        if(response.value ===  stateTwoDetails?.expMarketReturnType){
+          expectedMarketReturnData = response
+        }
+      })
+      this.fcfeForm.controls['expMarketReturnType'].setValue(expectedMarketReturnData.name);
+      this.fcfeForm.controls['expMarketReturn'].setValue(stateTwoDetails?.expMarketReturn);
+      this.fcfeForm.controls['specificRiskPremium'].setValue(stateTwoDetails?.specificRiskPremium); 
+      this.fcfeForm.controls['beta'].setValue(stateTwoDetails?.beta);
+      this.fcfeForm.controls['riskPremium'].setValue(stateTwoDetails?.riskPremium); 
+      this.specificRiskPremiumModalForm.controls['companySize'].setValue(stateTwoDetails?.alpha.companySize)
+      this.specificRiskPremiumModalForm.controls['marketPosition'].setValue(stateTwoDetails?.alpha.marketPosition)
+      this.specificRiskPremiumModalForm.controls['liquidityFactor'].setValue(stateTwoDetails?.alpha.liquidityFactor)
+      this.specificRiskPremiumModalForm.controls['competition'].setValue(stateTwoDetails?.alpha.competition);
+      this.calculateCoeAndAdjustedCoe()
+    }
+  })
+}
 }
 
 loadValues(){
@@ -94,7 +128,15 @@ loadOnChangeValue(){
   this.fcfeForm.controls['expMarketReturnType'].valueChanges.subscribe(
     (val:any) => {
       if(!val) return;
-      if(val.value === "Analyst_Consensus_Estimates"){
+
+      let expectedMarketReturnData:any;
+      this.modelControl.fcfe.options.expMarketReturnType.options.map((response:any)=>{
+        if(response.name ===  val){
+          expectedMarketReturnData = response
+        }
+      })
+
+      if(expectedMarketReturnData.value === "Analyst_Consensus_Estimates"){
         const data={
           data: 'ACE',
           width:'30%',
@@ -111,39 +153,25 @@ loadOnChangeValue(){
             })
           } else {
             this.fcfeForm.controls['expMarketReturnType'].setValue('');
-            // this.snackBar.open('Expected Market Return Not Saved','OK',{
-            //   horizontalPosition: 'right',
-            //   verticalPosition: 'top',
-            //   duration: 3000,
-            //   panelClass: 'app-notification-error'
-            // })
           }
         })
+        this.calculateCoeAndAdjustedCoe();
       }
       else{
-        this.dataReferenceService
-        .getBSE500(
-          val?.years,
-          this.formOneData?.valuationDate
-        )
-        .subscribe(
+        this.dataReferenceService.getBSE500(expectedMarketReturnData.years,this.formOneData?.valuationDate).subscribe(
           (response) => {
             if (response.status) {
               this.fcfeForm.controls['expMarketReturn'].value = response?.result;
               this.apiCallMade=false;
               this.bse500Value=response?.close?.Close.toFixed(2);
             }
-            else{
-            
-            }
+            this.calculateCoeAndAdjustedCoe();
           },
           (error) => {
             console.error(error);
-            
           }
           );
       }
-      this.calculateCoeAndAdjustedCoe()
     }
   );
 
@@ -277,13 +305,6 @@ onSlideToggleChange(event: any) {
         });
         this.calculateCoeAndAdjustedCoe();
       } else {
-        // this.specificRiskPremiumModalForm.reset();
-        // this.snackBar.open('Specific Risk Premium not saved', 'OK', {
-        //   horizontalPosition: 'right',
-        //   verticalPosition: 'top',
-        //   duration: 3000,
-        //   panelClass: 'app-notification-error',
-        // });
         this.calculateCoeAndAdjustedCoe();
       }
     });
@@ -291,8 +312,15 @@ onSlideToggleChange(event: any) {
 }
 
 saveAndNext(): void {
+  let expectedMarketReturnData:any;
+      this.modelControl.fcfe.options.expMarketReturnType.options.map((response:any)=>{
+        if(response.name ===  this.fcfeForm.controls['expMarketReturnType'].value){
+          expectedMarketReturnData = response
+        }
+      })
+
   const payload = {...this.fcfeForm.value,alpha:this.specificRiskPremiumModalForm.value,status:'FCFE'};
-  payload['expMarketReturnType']=this.fcfeForm.controls['expMarketReturnType']?.value?.value;
+  payload['expMarketReturnType']=expectedMarketReturnData.value;
   payload['adjustedCostOfEquity']=this.adjCoe;
   payload['costOfEquity']=this.coe;
   payload['bse500Value']=this.bse500Value;
@@ -346,10 +374,22 @@ validateControls(controlArray: { [key: string]: FormControl },payload:any){
         localStorage.setItem('stepTwoStats',`false`);
       }
       else{
-        localStorage.setItem('stepTwoStats',`true`);
-        
+        localStorage.setItem('stepTwoStats',`true`);  
+      }
     }
+
+    let processStateStep;
+    if(allControlsFilled){
+      processStateStep = 2
     }
+    else{
+      processStateStep = 1
+    }
+    const processStateModel ={
+      secondStageInput:[{model:'FCFE',...payload,formFillingStatus:allControlsFilled}],
+      step:processStateStep
+    }
+    this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
 
     this.fcfeDetails.emit(payload);
 }
@@ -379,5 +419,23 @@ calculateCoeAndAdjustedCoe() {
   });
   this.isLoader=false;
   return false;
+}
+
+processStateManager(process:any, processId:any){
+  this.processStatusManagerService.instantiateProcess(process, processId).subscribe(
+    (processStatusDetails: any) => {
+      if (processStatusDetails.status) {
+        localStorage.setItem('processStateId', processStatusDetails.processId);
+      }
+    },
+    (error) => {
+      this.snackBar.open(`${error.message}`, 'OK', {
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+        duration: 3000,
+        panelClass: 'app-notification-error',
+      });
+    }
+  );
 }
 }

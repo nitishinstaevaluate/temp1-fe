@@ -12,6 +12,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal-box/generic-modal-box.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
+import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 
 
 @Component({
@@ -25,6 +26,7 @@ export class GroupModelControlsComponent implements OnInit {
   @Output() groupModelControls = new EventEmitter<any>();
   @Output() previousPage = new EventEmitter<any>();
   @Input() step: any;
+  @Input() firstStageInput: any;
 
   // form declaration
   modelControl:any = groupModelControl;
@@ -97,7 +99,8 @@ export class GroupModelControlsComponent implements OnInit {
     private _dataReferencesService: DataReferencesService,
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private calculationService:CalculationsService) {
+    private calculationService:CalculationsService,
+    private processStatusManagerService:ProcessStatusManagerService) {
     this.form=this.formBuilder.group({});
     this.inputs.forEach((_, i) => {
       this.form.addControl('select' + i, new FormControl(''));
@@ -170,11 +173,43 @@ export class GroupModelControlsComponent implements OnInit {
   }
 
   ngOnInit(){
-    console.log(this.step,"first stepper")
+    this.checkProcessExist(this.firstStageInput)
     this.formLoad();
     this.loadValues();
     this.addInput();
     this.addInputIndustry();
+  }
+
+  checkProcessExist(data:any){
+   if(data){
+    this.betaIndustries = data?.betaIndustries;
+   this.modelValuation.controls['company'].setValue(data?.company ?? '');
+   this.modelValuation.controls['currencyUnit'].setValue(data?.currencyUnit ?? 'INR');
+   this.modelValuation.controls['discountRateType'].setValue(data?.discountRateType === ""  ?  'WACC' : data?.discountRateType);
+   this.modelValuation.controls['discountRateValue'].setValue(data?.discountRateValue === "" ? 20 : data?.discountRateValue);
+   this.industriesRatio = data.industriesRatio ?? '';
+   this.preferenceCompanies = data.preferenceCompanies ?? [];
+  //  localStorage.setItem('excelStat',`${data.isExcelModified ?? ''}`);
+   this.modelValuation.controls['industry'].setValue(data?.industry?? '');
+   this.modelValuation.controls['location'].setValue(data?.location?? 'India');
+   this.modelValuation.controls['model'].setValue(data?.model?? false);
+   this.modelValuation.controls['outstandingShares'].setValue(data?.outstandingShares?? '');
+   this.modelValuation.controls['projectionYearSelect'].setValue(data?.projectionYearSelect?? '');
+   this.modelValuation.controls['projectionYears'].setValue(data?.projectionYears?? '');
+   this.modelValuation.controls['reportingUnit'].setValue(data?.reportingUnit?? '');
+   this.modelValuation.controls['subIndustry'].setValue(data?.subIndustry?? '');
+   this.modelValuation.controls['taxRateType'].setValue(data?.taxRate?.split('%')[0]?? '25.17');
+   this.modelValuation.controls['taxRate'].setValue(data?.taxRate?? '');
+   this.modelValuation.controls['terminalGrowthRate'].setValue(data?.terminalGrowthRate?? '');
+   this.modelValuation.controls['type'].setValue(data?.type?? 'industry');
+   this.modelValuation.controls['userId'].setValue( !data?.userId || data?.userId === "" ?  '641d654fa83ed4a5f0293a52' : data?.userId);
+   this.modelValuation.controls['excelSheetId'].setValue(data?.excelSheetId?? '');
+   this.fileName = data?.fileName;
+   
+  const dateToSet = data?.valuationDate ? new Date(data?.valuationDate) : null;
+  const formattedDate = dateToSet ? `${dateToSet.getFullYear()}-${(dateToSet.getMonth() + 1).toString().padStart(2, '0')}-${dateToSet.getDate().toString().padStart(2, '0')}` : '';
+  this.modelValuation.controls['valuationDate'].patchValue(formattedDate);
+   }
   }
   loadValues(){
     forkJoin([this.valuationService.getValuationDropdown(),this._dataReferencesService.getIndianTreasuryYields(),
@@ -276,69 +311,6 @@ export class GroupModelControlsComponent implements OnInit {
         this.modelValuation.controls['projectionYears'].reset();
       }
     });
-    
-    // this.modelSpecificCalculation.controls['expMarketReturnType'].valueChanges.subscribe(
-    //   (val) => {
-    //     if(val.value === "Analyst_Consensus_Estimates"){
-    //       const data={
-    //         data: 'ACE',
-    //         width:'30%',
-    //       }
-    //       const dialogRef = this.dialog.open(GenericModalBoxComponent,data);
-    //       dialogRef.afterClosed().subscribe((result)=>{
-    //         if (result) {
-    //           this.modelSpecificCalculation.controls['expMarketReturn'].patchValue(result)
-    //           this.snackBar.open('Analyst Estimation Added','OK',{
-    //             horizontalPosition: 'center',
-    //             verticalPosition: 'top',
-    //             duration: 3000,
-    //             panelClass: 'app-notification-success'
-    //           })
-    //         } else {
-    //           this.modelSpecificCalculation.controls['expMarketReturnType'].reset();
-    //           this.snackBar.open('Tax Rate Not Saved','OK',{
-    //             horizontalPosition: 'center',
-    //             verticalPosition: 'top',
-    //             duration: 3000,
-    //             panelClass: 'app-notification-error'
-    //           })
-    //         }
-    //       })
-    //     }
-        
-    //   }
-    // );
-
-    // this.modelValuation.controls['projectionYearSelect'].valueChanges.subscribe((val) => {
-    //   if(!val) return;
-    //   if(val=== "Going_Concern"){
-    //     const data={
-    //       data: 'Going_Concern',
-    //       width:'30%',
-    //     }
-    //     const dialogRef = this.dialog.open(GenericModalBoxComponent,data);
-    //     dialogRef.afterClosed().subscribe((result)=>{
-    //       if (result) {
-    //         this.modelValuation.controls['projectionYears'].patchValue(result?.projectionYear)
-    //         this.modelValuation.controls['terminalGrowthRate'].patchValue(result?.terminalGrowthYear)
-    //         this.snackBar.open('Going Concern Added','OK',{
-    //           horizontalPosition: 'center',
-    //           verticalPosition: 'top',
-    //           duration: 3000,
-    //           panelClass: 'app-notification-success'
-    //         })
-    //       } else {
-    //         this.modelValuation.controls['projectionYearSelect'].reset();
-    //         this.snackBar.open('Going Concern not added','OK',{
-    //           horizontalPosition: 'center',
-    //           verticalPosition: 'top',
-    //           duration: 3000,
-    //           panelClass: 'app-notification-error'
-    //         })
-    //       }
-    //     })
-    //   }
-    // })
 
   }
   
@@ -389,7 +361,6 @@ isSelectedpreferenceRatio(value:any){
       };
 
       this.newDate = new Date(myDate.year, myDate.month - 1, myDate.day);
-      // this.modelValuation.controls['valuationDate'].setValue(this.newDate.getTime());
       payload['valuationDate'] = this.newDate.getTime();
     }
     if(this.isRelativeValuation('NAV') &&  this.modelValuation.controls['model'].value.length=== 1){
@@ -408,7 +379,7 @@ isSelectedpreferenceRatio(value:any){
       payload['isExcelModified']= true;
     }
     else{
-      payload['modifiedExcelSheetId']=  this.modelValuation.controls['excelSheetId'].value;
+      payload['modifiedExcelSheetId']=  '';
       payload['isExcelModified']= false;
       localStorage.setItem('excelStat','false')
     }
@@ -432,15 +403,14 @@ isSelectedpreferenceRatio(value:any){
       delete control.projectionYears
     }
   
-    this.validateControls(control,this.modelValuation.controls['model'].value);
-
+    
     this.isExcelReupload = false; // reset it once payload has modified excel sheet id
-
-      // submit final payload
-      this.groupModelControls.emit(payload);
+    
+    this.validateControls(control,payload);
+   
   }
 
-  validateControls(controlArray: { [key: string]: FormControl },models:any){
+  validateControls(controlArray: { [key: string]: FormControl },payload:any){
     let allControlsFilled = true;
       for (const controlName in controlArray) {
         if (controlArray.hasOwnProperty(controlName)) {
@@ -453,12 +423,23 @@ isSelectedpreferenceRatio(value:any){
         }
       }
 
+      let processStep=1;
       if(!allControlsFilled){
         this.modelValuation.markAllAsTouched();
+        processStep = 0
       }
 
     localStorage.setItem('stepOneStats',`${allControlsFilled}`)
     this.calculationService.checkStepStatus.next({stepStatus:allControlsFilled,step:this.step})
+
+    const processStateModel ={
+      firstStageInput:{...payload,fileName:this.fileName,formFillingStatus:allControlsFilled},
+      step:processStep
+    }
+    
+    this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
+      // submit final payload
+      this.groupModelControls.emit(payload);
   }
   
   get isDownload() {
@@ -579,7 +560,7 @@ isSelectedpreferenceRatio(value:any){
         fileName:this.fileName,
         value:'valuationMethod'
       }
-     const dialogRef = this.dialog.open(GenericModalBoxComponent,{data:data,width:'50%',disableClose:true});
+     const dialogRef = this.dialog.open(GenericModalBoxComponent,{data:data,width:'50%'});
   
      dialogRef.afterClosed().subscribe((result) => {
       if (result) {
@@ -603,12 +584,12 @@ isSelectedpreferenceRatio(value:any){
           panelClass: 'app-notification-success'
         })
       } else {
-        this.snackBar.open('Something went wrong','OK',{
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-          duration: 3000,
-          panelClass: 'app-notification-error'
-        })
+        // this.snackBar.open('Valuation models not added','OK',{
+        //   horizontalPosition: 'right',
+        //   verticalPosition: 'top',
+        //   duration: 3000,
+        //   panelClass: 'app-notification-error'
+        // })
       }
     });
    
@@ -618,5 +599,22 @@ isSelectedpreferenceRatio(value:any){
     const values = this.modelValuation.controls['model'].value;
     values.splice(values.indexOf(modelName),1);
     this.modelValuation.controls['model'].setValue(values)
+  }
+  processStateManager(process:any, processId:any){
+    this.processStatusManagerService.instantiateProcess(process, processId).subscribe(
+      (processStatusDetails: any) => {
+        if (processStatusDetails.status) {
+          localStorage.setItem('processStateId', processStatusDetails.processId);
+        }
+      },
+      (error) => {
+        this.snackBar.open(`${error.message}`, 'OK', {
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+          duration: 3000,
+          panelClass: 'app-notification-error',
+        });
+      }
+    );
   }
 }

@@ -14,6 +14,7 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
     private snackbar:MatSnackBar){}
 
   @Input() transferStepperTwo:any;
+  @Input() thirdStageInput:any;
   @Output() assessmentSheetData=new EventEmitter<any>();
 
   displayColumns:any;
@@ -24,16 +25,31 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
   editedValues:any=[];
   isExcelModified=false;
   modifiedExcelSheetId:string='';
+  excelSheetId:any='';
 
   ngOnInit(): void {
-    // this.fetchExcelData();
+    this.checkProcessState()
+
   }
   ngOnChanges(): void {
-    this.fetchExcelData();
+    // this.fetchExcelData();
+    if(this.transferStepperTwo){
+      this.excelSheetId = this.transferStepperTwo.excelSheetId;
+      this.fetchExcelData();
+    }
   }
 
-  fetchExcelData(){
-    this.valuationService.getProfitLossSheet(localStorage.getItem('excelStat') === 'true' ? `edited-${this.transferStepperTwo?.excelSheetId}` :  this.transferStepperTwo?.excelSheetId,'Assessment of Working Capital').subscribe((response:any)=>{
+  checkProcessState(){
+    if(this.thirdStageInput){
+      const excelSheetId = this.thirdStageInput?.formThreeData?.isExcelModified ?this.thirdStageInput?.formThreeData.modifiedExcelSheetId :  this.thirdStageInput.formOneData.excelSheetId;
+      this.excelSheetId = excelSheetId;
+      this.fetchExcelData(excelSheetId)
+    }
+  }
+  fetchExcelData(alreadyProcessedSheetId?:any){
+    const assessmentExcelId = alreadyProcessedSheetId ? alreadyProcessedSheetId : localStorage.getItem('excelStat') === 'true' ? `edited-${this.transferStepperTwo?.excelSheetId}` :  this.transferStepperTwo?.excelSheetId
+
+    this.valuationService.getProfitLossSheet(assessmentExcelId,'Assessment of Working Capital').subscribe((response:any)=>{
      if(response.status){
       this.createAssessmentDataSource(response)
      }
@@ -117,9 +133,11 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
           }
           this.editedValues.push(cellStructure);
 
+          const excelSheetId = this.thirdStageInput?.formThreeData?.isExcelModified ?this.thirdStageInput?.formThreeData.modifiedExcelSheetId :  this.thirdStageInput?.formOneData.excelSheetId;
+
           const payload = {
             excelSheet:'Assessment of Working Capital',
-            excelSheetId:localStorage.getItem('excelStat')==='true' ? `edited-${this.transferStepperTwo.excelSheetId}` : this.transferStepperTwo.excelSheetId,
+            excelSheetId:excelSheetId ? excelSheetId :localStorage.getItem('excelStat')==='true' ? `edited-${this.transferStepperTwo.excelSheetId}` : this.transferStepperTwo.excelSheetId,
             ...this.editedValues[0] 
           }
 
