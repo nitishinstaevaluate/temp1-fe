@@ -152,3 +152,42 @@ margin:0px;
   background: #fcf8fe;;
   padding: 5px;
 }
+
+.completed-doc-bt,.pending-doc-bt,.draft-doc-bt{
+  box-shadow: 1px 2px 15px #d1d1d1;
+  color:#0cce8d;
+  background-color: #B6F1DD ;
+  border-radius: 8px;
+  font-family: 'AR One Sans', sans-serif;
+  font-weight: 500;
+  width: 95%;
+  padding-right: 1%;
+  transition:  -webkit-box-reflect 0.4s;
+  
+  font-size: 12px;
+  padding-top: 2.3%;
+  padding-bottom: 2.3%;
+  padding-left: 3%;
+  padding-right: 9%;
+  position: relative;
+  border:1px solid #6cefc1;
+}
+
+.pending-doc-bt{
+  background-color: #4b6df3;
+  color: #fff;
+  border:1px solid #6b88fb;
+}
+.draft-doc-bt{
+  background-color: #a4a4a4;
+  color: #fff;
+  border:1px solid rgb(184, 184, 184);
+}
+.completed-doc-icon{
+  position: absolute;
+  // left: 24%;
+  top: 5%;
+  mat-icon{
+    transform: scale(0.6);
+  }
+}

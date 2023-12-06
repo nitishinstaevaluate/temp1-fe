@@ -204,7 +204,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
       }
     );
 
-    if(changes['transferStepperthree'].currentValue && changes['transferStepperthree'].previousValue ){
+    if(changes['transferStepperthree']?.currentValue && changes['transferStepperthree']?.previousValue ){
         const currentModel:any=[];
         const previousModel:any=[];
         this.data=null;

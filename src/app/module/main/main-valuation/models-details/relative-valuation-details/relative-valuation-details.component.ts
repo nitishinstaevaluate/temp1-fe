@@ -40,7 +40,7 @@ export class RelativeValuationDetailsComponent implements OnInit,OnChanges {
         this.Companies.controls[1]?.patchValue(this.formOneData?.preferenceCompanies[1]);
         this.Companies.controls[2]?.patchValue(this.formOneData?.preferenceCompanies[2]);
       }
-      this.formOneData?.preferenceCompanies.map((prefCompany:any,prefCompanyIndex:number)=>{
+      this.formOneData?.preferenceCompanies?.map((prefCompany:any,prefCompanyIndex:number)=>{
           this.addInput();
           this.Companies.controls[prefCompanyIndex]?.setValue(this.formOneData?.preferenceCompanies[prefCompanyIndex]);
       })

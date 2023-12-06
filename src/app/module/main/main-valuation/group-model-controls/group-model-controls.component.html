@@ -93,7 +93,7 @@
                     <div class="material-textfield">
                       <select id="industry" class="new-inp" formControlName="industry">
                         <option value="" disabled selected>{{ modelControl.modelValuation.options.industry.placeholder }}</option>
-                        <option *ngFor="let doc of industries" [value]="doc.industry">{{ doc.industry }}</option>
+                        <option *ngFor="let doc of industries" [ngValue]="doc.industry">{{ doc.industry }}</option>
                       </select>
                       <label for="industry">Industry</label>
                     </div>

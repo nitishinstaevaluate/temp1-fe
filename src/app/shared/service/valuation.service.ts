@@ -43,7 +43,7 @@ export class ValuationService {
   }
  
   getPaginatedValuations(userId: string, page: number, pageSize: number): Observable<any[]> {
-    const url = `${HOST}valuations/paginate/${userId}?page=${page}&pageSize=${pageSize}`;
+    const url = `${HOST}process-status-manager/paginate/${userId}?page=${page}&pageSize=${pageSize}`;
     return this.http.get<any[]>(url);
   }
   }

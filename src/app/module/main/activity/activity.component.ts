@@ -3,6 +3,8 @@ import { ValuationService } from '../../../shared/service/valuation.service';
 import { environment } from 'src/environments/environment';
 import { PAGINATION_VAL } from 'src/app/shared/enums/constant';
 import { AuthService } from 'src/app/shared/service/auth.service';
+import { Router } from '@angular/router';
+import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 
 @Component({
   selector: 'app-activity',
@@ -19,11 +21,14 @@ export class ActivityComponent {
     'Company Name',
     'Model Name',
     'Valuation',
-    'Get Report',
+    'Status',
+    'Report',
   ];
 
   constructor(private _valuationService: ValuationService,
-    private authService:AuthService) {
+    private authService:AuthService,
+    private route:Router,
+    private processStateManagerService:ProcessStatusManagerService) {
     this.inItData();
   }
 
@@ -50,5 +55,13 @@ export class ActivityComponent {
   onPageChange(event: any): void {
     const { pageIndex, pageSize } = event;
     this.fetchData(pageIndex + 1, pageSize);
+  }
+
+  loadProcess(processId:string){
+    if(processId){
+      localStorage.setItem('processStateId',`${processId}`)
+      localStorage.setItem('execProcess',`true`)
+      this.route.navigate(['/dashboard']);
+    }
   }
 }

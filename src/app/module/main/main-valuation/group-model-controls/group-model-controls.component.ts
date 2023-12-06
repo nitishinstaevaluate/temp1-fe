@@ -248,7 +248,7 @@ export class GroupModelControlsComponent implements OnInit {
         return;
       }
       const indst = this.industries.find((e:any) => e.industry == val);
-      this.valuationService.getIndustries(indst._id).subscribe((resp: any) => {
+      this.valuationService.getIndustries(indst?._id).subscribe((resp: any) => {
         if(resp.length !== 0){
           this.subIndustries = resp;
         }
@@ -257,10 +257,10 @@ export class GroupModelControlsComponent implements OnInit {
           this.modelValuation.controls['subIndustry'].setValue('');
         }
       });
-      this._dataReferencesService.getIndustriesRatio(indst._id).subscribe((resp: any) => {
+      this._dataReferencesService.getIndustriesRatio(indst?._id).subscribe((resp: any) => {
         this.industriesRatio = resp[0];
       });
-      this._dataReferencesService.getBetaIndustriesById(indst._id).subscribe((resp: any) => {
+      this._dataReferencesService.getBetaIndustriesById(indst?._id).subscribe((resp: any) => {
         this.betaIndustriesId = resp;
       });
   
@@ -439,8 +439,9 @@ isSelectedpreferenceRatio(value:any){
     localStorage.setItem('stepOneStats',`${allControlsFilled}`)
     this.calculationService.checkStepStatus.next({stepStatus:allControlsFilled,step:this.step})
 
+    const {userId , ...rest } = payload;
     const processStateModel ={
-      firstStageInput:{...payload,fileName:this.fileName,formFillingStatus:allControlsFilled},
+      firstStageInput:{...rest,fileName:this.fileName,formFillingStatus:allControlsFilled},
       step:processStep
     }
     

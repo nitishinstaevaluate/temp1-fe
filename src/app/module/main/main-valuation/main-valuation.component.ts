@@ -1,11 +1,11 @@
-import { Component, ViewChild, OnChanges, OnInit } from '@angular/core';
+import { Component, ViewChild, OnChanges, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatStepper } from '@angular/material/stepper';
-import { Router } from '@angular/router';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { MODELS } from 'src/app/shared/enums/constant';
-import { IS_ARRAY_EMPTY_OR_NULL, isSelected } from 'src/app/shared/enums/functions';
+import { isSelected } from 'src/app/shared/enums/functions';
 import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal-box/generic-modal-box.component';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
@@ -52,96 +52,43 @@ export class MainValuationComponent implements OnInit{
     private calculationService:CalculationsService,
     private processStatusManagerService: ProcessStatusManagerService,
     private dialog :MatDialog,
-    private snackBar: MatSnackBar){    }
+    private snackBar: MatSnackBar,
+    private ngxLoaderService:NgxUiLoaderService,
+    ){    }
   ngOnInit(): void {
     this.calculationService.steps.subscribe((response:number)=>{
       if(response  === 0){
         this.step = 1
         localStorage.setItem('step',`${this.step}`)
       }else{
-
         this.step=response
       }
     })
   
     const processStateId = localStorage.getItem('processStateId');
-    if(processStateId){
+    const processExec = localStorage.getItem('execProcess');
+    if(processStateId && processExec === 'true'){
+      this.loadStateByProcessId(processStateId)
+    }
+    else if(processStateId && processExec === 'false'){
       const data={
         value: 'restoreSession',
       }
       const dialogRef = this.dialog.open(GenericModalBoxComponent,{data:data,width:'30%',disableClose:true});
       dialogRef.afterClosed().subscribe((result)=>{
         if (result.sessionRestoreFlag) {
-          this.processStatusManagerService.retrieveProcess(processStateId).subscribe((processInfo:any)=>{
-            if(processInfo.status){
-              const processStateDetails = processInfo.stateInfo;
-              this.step = localStorage.setItem('step',`${processStateDetails.step}`)
-              if(processStateDetails?.firstStageInput){
-                localStorage.setItem('stepOneStats',`${processStateDetails.firstStageInput.formFillingStatus}`)
-                this.groupModelControls(processStateDetails.firstStageInput,true)
-              }
-
-              if(processStateDetails?.secondStageInput){
-                this.formTwoData = processStateDetails.secondStageInput;
-              }
-
-              if(processStateDetails?.secondStageInput && processStateDetails?.firstStageInput){
-                this.formThreeData = {formOneData:processStateDetails.firstStageInput,formTwoData: this.formTwoData,formThreeData:processStateDetails?.thirdStageInput};
-              }
-
-              if(processStateDetails?.thirdStageInput || processStateDetails?.secondStageInput){
-                let updatedPayload:any;
-                this.formTwoData.map((formTwoDetails:any)=>{
-                  if(formTwoDetails.model === MODELS.FCFE && processStateDetails?.firstStageInput.model.includes(MODELS.FCFE)){
-                    const {model , ...rest} = formTwoDetails;
-                    updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
-                  }
-                  if(formTwoDetails.model === MODELS.FCFF && processStateDetails?.firstStageInput.model.includes(MODELS.FCFF)){
-                    const {model , ...rest} = formTwoDetails;
-                    updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
-                  }
-                  if(formTwoDetails.model === MODELS.EXCESS_EARNINGS && processStateDetails?.firstStageInput.model.includes(MODELS.EXCESS_EARNINGS)){
-                    const {model , ...rest} = formTwoDetails;
-                    updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
-                  }
-                  if(formTwoDetails.model === MODELS.RELATIVE_VALUATION && processStateDetails?.firstStageInput.model.includes(MODELS.RELATIVE_VALUATION)){
-                    const {model , ...rest} = formTwoDetails;
-                    updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
-                  }
-                  if(formTwoDetails.model === MODELS.COMPARABLE_INDUSTRIES && processStateDetails?.firstStageInput.model.includes(MODELS.COMPARABLE_INDUSTRIES)){
-                    const {model , ...rest} = formTwoDetails;
-                    updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
-                  }
-                  if(formTwoDetails.model === MODELS.NAV && processStateDetails?.firstStageInput.model.includes(MODELS.NAV)){
-                    const {model , ...rest} = formTwoDetails;
-                    updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
-                  }
-                }) 
-                this.formFourData = {formOneAndTwoData : updatedPayload,formThreeData:processStateDetails.thirdStageInput};
-              }
-              if(processStateDetails?.fourthStageInput){
-                this.formFiveData = {...this.formFourData,formFourData : processStateDetails.fourthStageInput?.totalModelWeightageValue,formFiveData:processStateDetails?.fifthStageInput}
-              }
-
-              this.isProcessExistLoader = false;
-            }
-          })
-          this.snackBar.open('Session Restored Successfully','OK',{
-            horizontalPosition: 'right',
-            verticalPosition: 'top',
-            duration: 3000,
-            panelClass: 'app-notification-success'
-          })
+          this.loadStateByProcessId(processStateId);
         } else {
           localStorage.removeItem('processStateId')
           this.isProcessExistLoader = false;
+          this.ngxLoaderService.stop();
         }
       })
      
     }
     else{
       this.isProcessExistLoader = false;
-     
+      this.ngxLoaderService.stop();
     }
 
   }
@@ -466,5 +413,73 @@ export class MainValuationComponent implements OnInit{
       default:
         // Handle other cases or invalid items
     }
+  }
+
+  loadStateByProcessId(processStateId:string){
+    this.ngxLoaderService.start();
+    this.processStatusManagerService.retrieveProcess(processStateId).subscribe((processInfo:any)=>{
+      if(processInfo.status){
+        const processStateDetails = processInfo.stateInfo;
+        this.step = localStorage.setItem('step',`${processStateDetails.step}`)
+        if(processStateDetails?.firstStageInput){
+          localStorage.setItem('stepOneStats',`${processStateDetails.firstStageInput.formFillingStatus}`)
+          this.groupModelControls(processStateDetails.firstStageInput,true)
+        }
+        console.log(processStateDetails?.firstStageInput)
+
+        if(processStateDetails?.secondStageInput){
+          this.formTwoData = processStateDetails.secondStageInput;
+        }
+
+        if(processStateDetails?.secondStageInput && processStateDetails?.firstStageInput){
+          this.formThreeData = {formOneData:processStateDetails.firstStageInput,formTwoData: this.formTwoData,formThreeData:processStateDetails?.thirdStageInput};
+        }
+
+        if(processStateDetails?.thirdStageInput || processStateDetails?.secondStageInput){
+          let updatedPayload:any;
+          this.formTwoData.map((formTwoDetails:any)=>{
+            if(formTwoDetails.model === MODELS.FCFE && processStateDetails?.firstStageInput.model.includes(MODELS.FCFE)){
+              const {model , ...rest} = formTwoDetails;
+              updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
+            }
+            if(formTwoDetails.model === MODELS.FCFF && processStateDetails?.firstStageInput.model.includes(MODELS.FCFF)){
+              const {model , ...rest} = formTwoDetails;
+              updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
+            }
+            if(formTwoDetails.model === MODELS.EXCESS_EARNINGS && processStateDetails?.firstStageInput.model.includes(MODELS.EXCESS_EARNINGS)){
+              const {model , ...rest} = formTwoDetails;
+              updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
+            }
+            if(formTwoDetails.model === MODELS.RELATIVE_VALUATION && processStateDetails?.firstStageInput.model.includes(MODELS.RELATIVE_VALUATION)){
+              const {model , ...rest} = formTwoDetails;
+              updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
+            }
+            if(formTwoDetails.model === MODELS.COMPARABLE_INDUSTRIES && processStateDetails?.firstStageInput.model.includes(MODELS.COMPARABLE_INDUSTRIES)){
+              const {model , ...rest} = formTwoDetails;
+              updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
+            }
+            if(formTwoDetails.model === MODELS.NAV && processStateDetails?.firstStageInput.model.includes(MODELS.NAV)){
+              const {model , ...rest} = formTwoDetails;
+              updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
+            }
+          }) 
+          this.formFourData = {formOneAndTwoData : updatedPayload,formThreeData:processStateDetails.thirdStageInput};
+        }
+        if(processStateDetails?.fourthStageInput){
+          this.formFiveData = {...this.formFourData,formFourData : processStateDetails.fourthStageInput?.totalModelWeightageValue,formFiveData:processStateDetails?.fifthStageInput}
+        }
+
+        this.isProcessExistLoader = false;
+        this.ngxLoaderService.stop();
+        localStorage.setItem('execProcess','false')
+
+        this.snackBar.open('Session Restored Successfully','OK',{
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 3000,
+          panelClass: 'app-notification-success'
+        })
+      }
+    })
   }
 }
