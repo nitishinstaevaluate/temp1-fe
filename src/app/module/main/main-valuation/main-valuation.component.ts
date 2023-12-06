@@ -425,7 +425,6 @@ export class MainValuationComponent implements OnInit{
           localStorage.setItem('stepOneStats',`${processStateDetails.firstStageInput.formFillingStatus}`)
           this.groupModelControls(processStateDetails.firstStageInput,true)
         }
-        console.log(processStateDetails?.firstStageInput)
 
         if(processStateDetails?.secondStageInput){
           this.formTwoData = processStateDetails.secondStageInput;

@@ -17,10 +17,10 @@
                 <tr *ngFor="let item of activity">
                   <td>{{ item.createdOn | date :"medium" }} </td>
                   <td>{{ item?.firstStageInput?.company ? item?.firstStageInput?.company : '-'  }}</td>
-                  <td>{{ item?.firstStageInput?.model }}</td>
-                  <td>{{ item?.firstStageInput?.model.length > 1 ?  item?.fourthStageInput?.totalWeightageModel?.weightedVal?.toFixed(2) : item?.thirdStageInput?.appData?.valuationResult[0].valuation ? item?.thirdStageInput?.appData?.valuationResult[0]?.valuation.toFixed(2) : '-' }}</td>
+                  <td style="padding-left: 4%;padding-right: 4%;width: 30%;">{{ getModel(item?.firstStageInput?.model) }}</td>
+                  <td>{{ item?.fourthStageInput?.totalWeightageModel?.weightedVal > 1 ?  item?.fourthStageInput?.totalWeightageModel?.weightedVal?.toFixed(2) : (item?.thirdStageInput?.appData?.valuationResult[0].valuation ? item?.thirdStageInput?.appData?.valuationResult[0]?.valuation.toFixed(2) : '-') }}</td>
                   <td>
-                    <button [ngClass]="item.step >= 4 ? 'btn btn-success completed-doc-bt' : item.step === 3 || item.step === 2 ? 'btn btn-success pending-doc-bt' : item.step === 1 ? 'btn btn-success draft-doc-bt' : 'btn btn-success pending-doc-bt'" >{{ item.step >= 4 ? 'Completed' : item.step === 3 || item.step === 2 ? 'Pending' : item.step === 1 ? 'Draft' : 'Pending' }}
+                    <button [ngClass]="item?.thirdStageInput?.appData?.valuationResult[0]?.valuation || item?.fourthStageInput?.totalWeightageModel?.weightedVal ? 'btn btn-success completed-doc-bt' : item.step === 3 || item.step === 2 ? 'btn btn-success pending-doc-bt' : item.step === 1 ? 'btn btn-success draft-doc-bt' : 'btn btn-success pending-doc-bt'" >{{ item?.thirdStageInput?.appData?.valuationResult[0]?.valuation || item?.fourthStageInput?.totalWeightageModel?.weightedVal ? 'Completed' : item.step === 3 || item.step === 2 ? 'Pending' : item.step === 1 ? 'Draft' : 'Pending' }}
                       <span class="completed-doc-icon" *ngIf="item.step >= 3"><mat-icon>check_circle_outline</mat-icon></span>
                       <span class="completed-doc-icon" *ngIf="item.step === 3 || item.step === 2"><mat-icon>query_builder</mat-icon></span>
                       <span class="completed-doc-icon" *ngIf="item.step === 1"><mat-icon>photo_filter</mat-icon></span>

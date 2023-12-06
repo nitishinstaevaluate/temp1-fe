@@ -156,7 +156,7 @@ async convertDocxToPdf(payload:any){
 formData.append('file', payload.docxBuffer, `Ifinworth Valuation-${payload.reportId}.docx`);
   this.calculationService.updateReportDocxBuffer(payload.reportId,formData).subscribe((response:any)=>{
     if(response){
-      console.log("updated success")
+      // console.log("updated success")
       this.snackBar.open('Doc Update Success','ok',{
         horizontalPosition: 'center',
         verticalPosition: 'bottom',
@@ -419,7 +419,7 @@ get downloadTemplate() {
   }
 
   onFileSelected(event: any) {
-    console.log(event,"file event")
+    // console.log(event,"file event")
     if (event && event.target.files && event.target.files.length > 0) {
       this.files = event.target.files;
       this.fileName = this.files[0].name;

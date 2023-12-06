@@ -388,7 +388,6 @@ if(this.reportPurposeDataChips.length === 0){
          
         }
       }
-      console.log(allControlsFilled,"final report truthy")
       return allControlsFilled
     }
 

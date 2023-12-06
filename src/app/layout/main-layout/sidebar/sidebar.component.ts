@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
 import { NavService } from 'src/app/shared/service/nav.service';
 
 interface MENU{
@@ -12,7 +13,7 @@ interface MENU{
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit {
   selectedMenuItem: string = '';
   
   constructor(
@@ -39,6 +40,19 @@ menues :MENU[] =[
     icon:"fa fa-clock-o",
   }
 ];
+
+ngOnInit(): void {
+  this.route.events.pipe(
+    filter(event => event instanceof NavigationEnd)
+  ).subscribe((event: any) => {
+    if(event.url === '/dashboard'){
+      this.selectedMenuItem = '/dashboard'
+    }
+    else{
+      this.selectedMenuItem = '/dashboard/activity'
+    }
+  });
+}
 sidebarClose(){
   if ((this.navServices.collapseSidebar = true)) {
     document.querySelector('.app')?.classList.remove('sidenav-toggled');

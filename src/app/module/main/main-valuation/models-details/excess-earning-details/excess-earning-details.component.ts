@@ -82,7 +82,6 @@ ngOnInit(): void {
 }
 
 checkProcessExist(){
-  console.log(this.secondStageInput,"excess earnings")
   if(this.secondStageInput){
     this.secondStageInput.map((stateTwoDetails:any)=>{
       if(stateTwoDetails.model === MODELS.EXCESS_EARNINGS && this.formOneData.model.includes(MODELS.EXCESS_EARNINGS)){

@@ -47,7 +47,6 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
     if(this.thirdStageInput){
       const excelSheetId = this.thirdStageInput?.formThreeData?.isExcelModified ?this.thirdStageInput?.formThreeData.modifiedExcelSheetId :  this.thirdStageInput.formOneData.excelSheetId;
       this.excelSheetId = excelSheetId;
-      console.log(this.excelSheetId,"p&l sheet")
       this.fetchExcelData(excelSheetId)
     }
   }
