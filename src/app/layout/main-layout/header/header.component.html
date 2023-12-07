@@ -135,10 +135,24 @@
            >
             <div class="d-flex order-lg-2">
               <div class="dropdown profile-dropdown">
-                <a href="javascript:void(0)" class="nav-link icon px-1">
+                <a href="javascript:void(0)" class="nav-link icon px-1" (mouseover)="toggleDropdown(true)" (mouseleave)="toggleDropdown(false)">
                   <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="img"
                     class="avatar brround" />
                 </a>
+                <div class="dropdown-content" [ngClass]="{ 'show': isDropdownOpen }">
+                  <ul class="side-menu">
+                    <li class="slide drop-d">
+                      <span style="padding-right: 12%;">
+                        <img src="../../../../assets/images/icons/user.png" style="height: 17px;width: 17px;" alt="">
+                      </span>Profile
+                    </li>
+                    <li class="slide drop-d" (click)="checkStatus('signOut')">
+                      <span style="padding-right: 12%;">
+                        <img src="../../../../assets/images/icons/sign-out.png" style="height: 17px;width: 17px;" alt="">
+                      </span>Sign Out
+                    </li>
+                  </ul>
+                </div>
               </div>
 
               <div class="dropdown header-sidebar">

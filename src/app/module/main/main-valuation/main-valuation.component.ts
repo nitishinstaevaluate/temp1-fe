@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatStepper } from '@angular/material/stepper';
+import { Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { MODELS } from 'src/app/shared/enums/constant';
 import { isSelected } from 'src/app/shared/enums/functions';
@@ -54,8 +55,22 @@ export class MainValuationComponent implements OnInit{
     private dialog :MatDialog,
     private snackBar: MatSnackBar,
     private ngxLoaderService:NgxUiLoaderService,
+    private route:Router
     ){    }
-  ngOnInit(): void {
+  ngOnInit() {
+    if(!localStorage.getItem('access_token')){
+      this.snackBar.open('Unauthorised Signatory','Sign-in',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 3000,
+        panelClass: 'app-notification-error'
+      })
+      setTimeout(() => {
+        this.route.navigate(['./'])
+      }, 3000);
+      return;
+    }
+      
     this.calculationService.steps.subscribe((response:number)=>{
       if(response  === 0){
         this.step = 1
@@ -90,7 +105,6 @@ export class MainValuationComponent implements OnInit{
       this.isProcessExistLoader = false;
       this.ngxLoaderService.stop();
     }
-
   }
   @ViewChild('stepper') stepper!: MatStepper;
 

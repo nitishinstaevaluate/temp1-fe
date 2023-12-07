@@ -107,7 +107,7 @@ export class ActivityComponent {
           duration: 2000,
           panelClass: 'app-notification-success',
         });
-        saveAs(reportData, 'Ifinworth-Report.pdf');
+        saveAs(reportData, 'Valuation Report.pdf');
         this.ngxLoaderService.stop();
     }
     },
