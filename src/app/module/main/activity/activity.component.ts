@@ -26,7 +26,7 @@ export class ActivityComponent {
     'Model',
     'Valuation',
     'Status',
-    'Report',
+    'Action',
   ];
   getModelName:any = ALL_MODELS;
 
