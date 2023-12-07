@@ -4,7 +4,10 @@ import { environment } from 'src/environments/environment';
 import { ALL_MODELS, PAGINATION_VAL } from 'src/app/shared/enums/constant';
 import { AuthService } from 'src/app/shared/service/auth.service';
 import { Router } from '@angular/router';
-import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
+import { CalculationsService } from 'src/app/shared/service/calculations.service';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-activity',
@@ -17,9 +20,10 @@ export class ActivityComponent {
   length: number =0;
   pageSizeOptions = PAGINATION_VAL;
   columnName: String[] = [
+    'Reference Id',
     'Date',
     'Company Name',
-    'Model Name',
+    'Model',
     'Valuation',
     'Status',
     'Report',
@@ -27,9 +31,11 @@ export class ActivityComponent {
   getModelName:any = ALL_MODELS;
 
   constructor(private _valuationService: ValuationService,
-    private authService:AuthService,
-    private route:Router,
-    private processStateManagerService:ProcessStatusManagerService) {
+    private authService: AuthService,
+    private route: Router,
+    private calculationService: CalculationsService,
+    private ngxLoaderService: NgxUiLoaderService,
+    private snackBar: MatSnackBar) {
     this.inItData();
   }
 
@@ -80,5 +86,40 @@ export class ActivityComponent {
       }
     })
     return str;
+  }
+
+  downloadReport(valuationReportId:string,model:any){
+    if(!valuationReportId)
+      return this.snackBar.open('Please complete all the details', 'OK', {
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 2000,
+        panelClass: 'app-notification-error',
+      })
+    this.ngxLoaderService.start();
+    const approach = (model.includes('NAV')) && model.length === 1? 'NAV' : (model.includes('FCFF') || model.includes('FCFE')) && length === 1 ? 'DCF' : ((model.includes('Relative_Valuation') || model.includes('CTM')) && model.length === 1) ? 'CCM' : 'MULTI_MODEL';
+
+    this.calculationService.generateReport(valuationReportId,approach).subscribe((reportData:any)=>{
+      if (reportData instanceof Blob) {
+        this.snackBar.open('Report generated successfully', 'OK', {
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+          duration: 2000,
+          panelClass: 'app-notification-success',
+        });
+        saveAs(reportData, 'Ifinworth-Report.pdf');
+        this.ngxLoaderService.stop();
+    }
+    },
+    (error)=>{
+      this.ngxLoaderService.stop();
+      this.snackBar.open('Something went wrong', 'OK', {
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 2000,
+        panelClass: 'app-notification-error',
+      });
+    })
+    return;
   }
 }

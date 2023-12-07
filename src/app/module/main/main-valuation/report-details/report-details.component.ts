@@ -179,8 +179,9 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
             saveAs(reportData, 'Ifinworth-Report.pdf');
             localStorage.setItem('stepFiveStats','true')
             this.calculationService.checkStepStatus.next({status:true})
+            const {reportId,...rest} = payload;
             const processStateModel ={
-              fifthStageInput:{...payload,formFillingStatus:true},
+              fifthStageInput:{...rest,formFillingStatus:true,valuationReportId:response,valuationResultId:reportId},
               step:4
             }
             this.processStateManager(processStateModel,localStorage.getItem('processStateId'))

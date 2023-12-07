@@ -12,16 +12,18 @@
           <div class="col" style="box-shadow: 1px 4px 8px #e2e2e2;padding-left: 0px;padding-right: 0px;">
               <table class="table">
                 <tr class="header">
-                  <th *ngFor="let item of columnName">{{item}}</th>       
+                  <th *ngFor="let item of columnName" [ngStyle]="(item === 'Reference Id') ? { 'width': '10%'} : (item === 'Date') ? { 'width':'15%' } : (item === 'Status') ? { 'width':'12%' } : { 'width':'auto' }">{{item}}</th>       
                 </tr>
                 <tr *ngFor="let item of activity">
-                  <td>{{ item.createdOn | date :"medium" }} </td>
+                  <td>{{ item?.processIdentifierId ? item?.processIdentifierId : '-'  }}</td>
+                  <td>{{ item.createdOn | date :'MMM d, yyyy h:mm a' }} </td>
                   <td>{{ item?.firstStageInput?.company ? item?.firstStageInput?.company : '-'  }}</td>
-                  <td style="padding-left: 4%;padding-right: 4%;width: 30%;">{{ getModel(item?.firstStageInput?.model) }}</td>
-                  <td>{{ item?.fourthStageInput?.totalWeightageModel?.weightedVal > 1 ?  item?.fourthStageInput?.totalWeightageModel?.weightedVal?.toFixed(2) : (item?.thirdStageInput?.appData?.valuationResult[0].valuation ? item?.thirdStageInput?.appData?.valuationResult[0]?.valuation.toFixed(2) : '-') }}</td>
+                  <td style="width: 30%;" class="modelC">{{ getModel(item?.firstStageInput?.model) }}</td>
+                  <td> {{item?.fourthStageInput?.totalWeightageModel?.weightedVal || item?.thirdStageInput?.appData?.valuationResult[0].valuation ? item?.firstStageInput?.currencyUnit : ''}} {{ item?.fourthStageInput?.totalWeightageModel?.weightedVal ?  (item?.fourthStageInput?.totalWeightageModel?.weightedVal?.toFixed(2) | number : '1.2-2') : (item?.thirdStageInput?.appData?.valuationResult[0].valuation ? (item?.thirdStageInput?.appData?.valuationResult[0]?.valuation.toFixed(2) |  number : '1.2-2') : '-') }}</td>
                   <td>
-                    <button [ngClass]="item?.thirdStageInput?.appData?.valuationResult[0]?.valuation || item?.fourthStageInput?.totalWeightageModel?.weightedVal ? 'btn btn-success completed-doc-bt' : item.step === 3 || item.step === 2 ? 'btn btn-success pending-doc-bt' : item.step === 1 ? 'btn btn-success draft-doc-bt' : 'btn btn-success pending-doc-bt'" >{{ item?.thirdStageInput?.appData?.valuationResult[0]?.valuation || item?.fourthStageInput?.totalWeightageModel?.weightedVal ? 'Completed' : item.step === 3 || item.step === 2 ? 'Pending' : item.step === 1 ? 'Draft' : 'Pending' }}
-                      <span class="completed-doc-icon" *ngIf="item.step >= 3"><mat-icon>check_circle_outline</mat-icon></span>
+                    <button [ngClass]="item?.fifthStageInput ? 'btn btn-success completed-doc-bt' :  item?.thirdStageInput?.appData?.valuationResult[0]?.valuation || item?.fourthStageInput?.totalWeightageModel?.weightedVal ? 'btn btn-success report-pending-bt' : item.step === 3 || item.step === 2 ? 'btn btn-success pending-doc-bt' : item.step === 1 ? 'btn btn-success draft-doc-bt' : 'btn btn-success pending-doc-bt'" >{{ item?.fifthStageInput ? 'Completed' : item?.thirdStageInput?.appData?.valuationResult[0]?.valuation || item?.fourthStageInput?.totalWeightageModel?.weightedVal ? 'Report Pending' : item.step === 3 || item.step === 2 ? 'Pending' : item.step === 1 ? 'Draft' : 'Pending' }}
+                      <span class="completed-doc-icon" *ngIf="item?.fifthStageInput"><mat-icon>check_circle_outline</mat-icon></span>
+                      <span class="completed-doc-icon" *ngIf="(item?.thirdStageInput?.appData?.valuationResult[0]?.valuation || item?.fourthStageInput?.totalWeightageModel?.weightedVal) && !item?.fifthStageInput"><mat-icon>hourglass_empty</mat-icon></span>
                       <span class="completed-doc-icon" *ngIf="item.step === 3 || item.step === 2"><mat-icon>query_builder</mat-icon></span>
                       <span class="completed-doc-icon" *ngIf="item.step === 1"><mat-icon>photo_filter</mat-icon></span>
                     </button>
@@ -40,7 +42,7 @@
                     </span> -->
 
                     <span (click)="loadProcess(item._id)"><img style="height: 20px;width: 20px;cursor: pointer;" src="../../../../assets/images/icons/report-edit.png" alt=""></span>
-                    <span style="padding-left: 15%;"><img style="height: 20px;width: 20px;cursor: pointer;" src="../../../../assets/images/icons/down-arrow.png" alt=""></span>
+                    <span (click)="downloadReport(item?.fifthStageInput?.valuationReportId,item?.firstStageInput?.model)" style="padding-left: 15%;"><img style="height: 20px;width: 20px;cursor: pointer;" src="../../../../assets/images/icons/down-arrow.png" alt=""></span>
                   </td>
                 </tr>
               </table>
@@ -59,3 +61,5 @@
     </div>
   </div>
 </div>
+
+<ngx-ui-loader [fgsSize]="75" [fgsType]="'rectangle-bounce'" fastFadeOut="true" [fgsColor]= "'#0cd18f'"></ngx-ui-loader>

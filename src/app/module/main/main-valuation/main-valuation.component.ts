@@ -473,8 +473,8 @@ export class MainValuationComponent implements OnInit{
         localStorage.setItem('execProcess','false')
 
         this.snackBar.open('Session Restored Successfully','OK',{
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
           duration: 3000,
           panelClass: 'app-notification-success'
         })
