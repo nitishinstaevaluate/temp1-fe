@@ -191,7 +191,7 @@
                                 <mat-label>Section/Regulation Reference</mat-label>
                                 <mat-chip-grid #chipGrid>
                                   <mat-chip-row *ngFor="let purpose of reportPurposeDataChips;let sectionIndex= index" (removed)="remove(sectionIndex)">
-                                    {{purpose }}
+                                    {{purpose}}
                                     <button matChipRemove [attr.aria-label]="'remove ' + purpose">
                                       <mat-icon>cancel</mat-icon>
                                     </button>

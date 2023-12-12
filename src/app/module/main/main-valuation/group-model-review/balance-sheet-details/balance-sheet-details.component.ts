@@ -31,13 +31,17 @@ export class BalanceSheetDetailsComponent implements OnChanges {
 
   ngOnChanges(){
   //  this.fetchExcelData();
-  if(this.transferStepperTwo){
+  if(this.thirdStageInput?.formThreeData?.isExcelModified){
+    this.excelSheetId = this.thirdStageInput?.formThreeData.modifiedExcelSheetId;
+    this.fetchExcelData(this.excelSheetId);
+  }
+  else if(this.transferStepperTwo){
     this.excelSheetId = this.transferStepperTwo.excelSheetId;
     this.fetchExcelData();
   }
   }
   ngOnInit(): void {
-    this.checkProcessState()
+    // this.checkProcessState()
   }
 
   checkProcessState(){

@@ -176,7 +176,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
               duration: 2000,
               panelClass: 'app-notification-success',
             });
-            saveAs(reportData, 'Ifinworth-Report.pdf');
+            saveAs(reportData, `${this.transferStepperFour?.formOneAndTwoData?.company}.pdf`);
             localStorage.setItem('stepFiveStats','true')
             this.calculationService.checkStepStatus.next({status:true})
             const {reportId,...rest} = payload;
@@ -243,7 +243,8 @@ if(this.reportPurposeDataChips.length === 0){
             const dataSet={
               value: 'previewDoc',
               dataBlob:reportData,
-              reportId: response
+              reportId: response,
+              companyName:this.transferStepperFour?.formOneAndTwoData?.company
             }
              const dialogRef =  this.dialog.open(GenericModalBoxComponent, {data:dataSet,width:'80%',disableClose: true});
         }

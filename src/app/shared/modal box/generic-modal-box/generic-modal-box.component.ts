@@ -145,7 +145,8 @@ async onSave(){
   const docBlob = await (this.docEdit as DocumentEditorContainerComponent).documentEditor.saveAsBlob('Docx')
   const payload = {
     docxBuffer: docBlob,
-    reportId: this.data.reportId
+    reportId: this.data.reportId,
+    companyName: this.data.companyName
   };
 
   await this.convertDocxToPdf(payload);
@@ -153,7 +154,7 @@ async onSave(){
 
 async convertDocxToPdf(payload:any){
   const formData = new FormData();
-formData.append('file', payload.docxBuffer, `Ifinworth Valuation-${payload.reportId}.docx`);
+formData.append('file', payload.docxBuffer, `${payload.companyName}-${payload.reportId}.docx`);
   this.calculationService.updateReportDocxBuffer(payload.reportId,formData).subscribe((response:any)=>{
     if(response){
       // console.log("updated success")
