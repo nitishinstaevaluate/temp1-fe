@@ -101,4 +101,6 @@
     </div>
   </div>
 
-<ngx-ui-loader [fgsSize]="75" [fgsType]="'rectangle-bounce'" fastFadeOut="true" [fgsColor]= "'#0cd18f'" *ngIf="isProcessExistLoader"></ngx-ui-loader>
+<div *ngIf="isProcessExistLoader">
+  <app-ngx-ui-loader [loader]="'mainForm'" *ngIf="processLoader"></app-ngx-ui-loader>
+</div>

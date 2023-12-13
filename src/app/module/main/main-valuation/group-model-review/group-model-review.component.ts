@@ -34,6 +34,7 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
   balanceSheet:any;
   isLoadingBalanceSheet=true;
   isLoadingProfitLoss=true;
+  isLoadingAssessmentSheet=true;
   betaValue:any ;
   taxRateValue:any;
   debtValue:any
@@ -50,7 +51,7 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
     private formBuilder:FormBuilder,
     private calculationService:CalculationsService,
     private processStatusManagerService:ProcessStatusManagerService,
-    private snackBar:MatSnackBar){
+  private snackBar:MatSnackBar){
     this.reviewForm=this.formBuilder.group({
       otherAdj:['',[Validators.required]],
     })
@@ -59,8 +60,11 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
   ngOnInit(): void {
     this.checkProcessExist();
   }
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(): void {
     if(this.transferStepperTwo){
+      this.isLoadingBalanceSheet=true;
+      this.isLoadingProfitLoss=true;
+      this.isLoadingAssessmentSheet=true;
       this.betaValue=this.transferStepperTwo?.beta ? parseFloat(this.transferStepperTwo?.beta).toFixed(2) : 0;
       this.debtValue=this.transferStepperTwo?.costOfDebt ? parseFloat(this.transferStepperTwo?.costOfDebt).toFixed(2): 0;
       this.taxRateValue= this.transferStepperTwo?.taxRate ? parseFloat(this.transferStepperTwo?.taxRate).toFixed(2) : 0;
@@ -176,23 +180,56 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
 
   profitLossData(data:any){
     if(data){
-      this.profitLoss = data.result;
-      this.isLoadingProfitLoss=false;
-      this.isExcelModified = data.isExcelModified;
+      this.isLoadingProfitLoss=false; 
+      if(data?.error){
+        this.snackBar.open('Profit and loss Sheet fetch fail','Ok',{
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+          duration: 3000,
+          panelClass: 'app-notification-error',
+        })
+      }
+      else{
+        this.profitLoss = data.result;
+        this.isExcelModified = data.isExcelModified;
+      }
     }
   }
 
   balanceSheetData(data:any){
     if(data){
       this.isLoadingBalanceSheet=false;
-      this.balanceSheet = data.result;
-      this.isExcelModified = data.isExcelModified;
+      if(data?.error){
+        this.snackBar.open('Balance Sheet fetch fail','Ok',{
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+          duration: 3000,
+          panelClass: 'app-notification-error',
+        })
+      }
+      else{
+        this.balanceSheet = data.result;
+        this.isExcelModified = data.isExcelModified;
+      }
     }
   }
 
   assessmentSheetData(data:any){
-    this.isExcelModified = data.isModified;
-    this.modifiedExcelSheetId = data.modifiedExcelSheetId;
+    if(data){
+      this.isLoadingAssessmentSheet=false;
+      if(data?.error){
+        this.snackBar.open('Assessment Sheet fetch fail','Ok',{
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+          duration: 3000,
+          panelClass: 'app-notification-error',
+        })
+      }
+      else{
+        this.isExcelModified = data.isModified;
+        this.modifiedExcelSheetId = data.modifiedExcelSheetId;
+      }
+    }
   }
 
   isRelativeValuation(value:string){

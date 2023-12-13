@@ -277,5 +277,7 @@
       </form>  
 </div>
 
-<ngx-ui-loader [fgsSize]="75" [fgsType]="'rectangle-bounce'" fastFadeOut="true" [fgsColor]= "'#0cd18f'"></ngx-ui-loader>
+<div *ngIf="reportGenerate">
+  <app-ngx-ui-loader [loader]="'reportForm'"></app-ngx-ui-loader>
+</div>
 

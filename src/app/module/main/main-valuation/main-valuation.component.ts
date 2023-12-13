@@ -48,13 +48,13 @@ export class MainValuationComponent implements OnInit{
   step:any=0;  
   next=0;
   isProcessExistLoader = true;
+  processLoader=false;
   
   constructor(private _formBuilder : FormBuilder,
     private calculationService:CalculationsService,
     private processStatusManagerService: ProcessStatusManagerService,
     private dialog :MatDialog,
     private snackBar: MatSnackBar,
-    private ngxLoaderService:NgxUiLoaderService,
     private route:Router
     ){    }
   ngOnInit() {
@@ -96,14 +96,12 @@ export class MainValuationComponent implements OnInit{
         } else {
           localStorage.removeItem('processStateId')
           this.isProcessExistLoader = false;
-          this.ngxLoaderService.stop();
         }
       })
      
     }
     else{
       this.isProcessExistLoader = false;
-      this.ngxLoaderService.stop();
     }
   }
   @ViewChild('stepper') stepper!: MatStepper;
@@ -135,7 +133,6 @@ export class MainValuationComponent implements OnInit{
         ...(this.formOneData?.model.includes('CTM') ? this.comparableIndustriesData : {}),
         ...(this.formOneData?.model.includes('NAV') ? this.navData : {}),
       };
-    // return '';
   }
 
   groupModelControls(data:any,incrementStep?:boolean){
@@ -169,7 +166,6 @@ export class MainValuationComponent implements OnInit{
 
   groupReviewControls(data:any){
     this.transferStepperthree= {formOneAndTwoData:this.formOneAndTwoData ? this.formOneAndTwoData :  this.formFourData?.formOneAndTwoData,formThreeData:data};
-    console.log(this.transferStepperthree,"from review component details",this.formFourData,"form one and two data")
     // this.stepper.next();
     const currentStep:any = localStorage.getItem('step')
     this.step=parseInt(currentStep)
@@ -315,122 +311,9 @@ export class MainValuationComponent implements OnInit{
     return false;
   }
 
-  updateSelectedItems(item: string) {
-    const index = this.modelArray.indexOf(item);
-    if (index === -1) {
-      this.modelArray.push(item);
-    } else {
-      this.modelArray.splice(index, 1);
-    }
-  }
-
-
-  loadBreadcrumb(item: string) {
-    switch (item) {
-      case 'FCFE':
-        this.next = 1;
-        break;
-      case 'FCFF':
-        this.next = 2;
-        break;
-      case 'Relative_Valuation':
-        this.next = 3;
-        break;
-      case 'Excess Earning':
-        this.next = 4;
-        break;
-      default:
-        // Handle other cases or invalid items
-    }
-
-    // while (this.modelArray.length > 0 && this.modelArray[this.modelArray.length - 1] !== item) {
-    //   this.modelArray.pop();
-    //   this.removeLastBreadcrumb();
-    // }
-    // this.addBreadcrumb(item);
-    // this.modelArray.push(item);
-  }
-
-  // onBreadcrumbClicked(item: string) {
-  //   // Remove all breadcrumbs after the clicked one
-    
-  // }
-
-  addBreadcrumb(item: string) {
-    this.modelArray.push(item);
-  }
-
-  removeLastBreadcrumb() {
-    this.modelArray.pop();
-  }
-
-  getBreadcrumbHistory() {
-    return this.modelArray;
-  }
-
-
-  checkArrayForBreadcrumb(){
-    const element = this.modelArray[0];
-    this.loadBreadcrumb(element);
-  }
-
-  createBreadcrumb(modelName:string){
-    console.log(this.modelArray)
-    const valueRmv=this.modelArray[this.modelArray.indexOf(modelName) + 1 ]
-    const indexSplice=this.modelArray.indexOf(modelName) + 1 
-    
-    switch (modelName) {
-      case 'FCFE':
-        this.removeBreadcrumb(valueRmv);
-        this.next = 1;
-        return true;
-        break;
-      case 'FCFF':
-        this.removeBreadcrumb(valueRmv);
-        this.next = 2;
-        return true;
-        break;
-      case 'Relative_Valuation':
-        this.removeBreadcrumb(valueRmv);
-        this.next = 3;
-        return true;
-        break;
-        case 'Excess_Earnings':
-          this.removeBreadcrumb(valueRmv);
-          this.next = 4;
-          return true;
-        break;
-      default:
-        // Handle other cases or invalid items
-    }
-    if (indexSplice !== -1) {
-      this.modelArray.splice(indexSplice, 1);
-      // this.modelArray.push(indexSplice);
-    } 
-    return false;
-  }
-
-  removeBreadcrumb(modelName:string){
-    switch (modelName) {
-      case 'FCFE':
-       this.fcfePrev=true;
-        break;
-      case 'FCFF':
-       this.fcffPrev=true;
-        break;
-      case 'Relative_Valuation':
-       this.relativePrev=true;
-        break;
-      case 'Excess_Earnings':
-       this.excessPrev=true;
-        break;
-      default:
-        // Handle other cases or invalid items
-    }
-  }
-
   loadStateByProcessId(processStateId:string){
-    this.ngxLoaderService.start();
+    this.isProcessExistLoader = true;
+    this.processLoader = true;
     this.processStatusManagerService.retrieveProcess(processStateId).subscribe((processInfo:any)=>{
       if(processInfo.status){
         const processStateDetails = processInfo.stateInfo;
@@ -483,7 +366,7 @@ export class MainValuationComponent implements OnInit{
         }
 
         this.isProcessExistLoader = false;
-        this.ngxLoaderService.stop();
+        this.processLoader = false;
         localStorage.setItem('execProcess','false')
 
         this.snackBar.open('Session Restored Successfully','OK',{

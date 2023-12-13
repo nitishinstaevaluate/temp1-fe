@@ -147,10 +147,7 @@
 </div>
 </div>
 
-<!-- <div class="loader-overlay">
-    <div class="loader">
-      <div class="loader-spinner"></div>
-      <div class="loader-message">Please wait...</div>
-    </div>
-  </div> -->
+  <div *ngIf="isLoadingBalanceSheet || isLoadingProfitLoss || isLoadingAssessmentSheet">
+    <app-ngx-ui-loader [loader]="'reviewForm'"></app-ngx-ui-loader>
+  </div>
 </div>

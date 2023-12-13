@@ -1,5 +1,6 @@
 import { Component,EventEmitter,Input,OnChanges,OnInit, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { MODELS } from 'src/app/shared/enums/constant';
 import { isSelected } from 'src/app/shared/enums/functions';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
@@ -28,9 +29,11 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
   isExcelModified=false;
   modifiedExcelSheetId:string='';
   excelSheetId:any='';
+  financialSheetLoader = true;
 
   constructor(private valuationService:ValuationService,
-    private snackBar: MatSnackBar,private calculationService:CalculationsService){
+    private snackBar: MatSnackBar,
+    private calculationService:CalculationsService){
 
   }
   ngOnChanges(){
@@ -39,12 +42,13 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
       this.excelSheetId = this.thirdStageInput?.formThreeData.modifiedExcelSheetId;
       this.fetchExcelData(this.excelSheetId);
     }
-    else if(this.transferStepperTwo){
-      this.excelSheetId = this.transferStepperTwo.excelSheetId;
+    else{
+      this.excelSheetId = this.transferStepperTwo?.excelSheetId;
       this.fetchExcelData();
     }
   }
   ngOnInit(): void {
+
     // this.checkProcessState()
   }
   checkProcessState(){
@@ -62,14 +66,17 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
   }
 
   fetchExcelData(alreadyProcessedSheetId?:any){
-    const pAndLExcelId = alreadyProcessedSheetId ? alreadyProcessedSheetId : localStorage.getItem('excelStat') === 'true' ? `edited-${this.transferStepperTwo?.excelSheetId}` :  this.transferStepperTwo?.excelSheetId
+    const pAndLExcelId = alreadyProcessedSheetId ? alreadyProcessedSheetId : localStorage.getItem('excelStat') === 'true' ? `edited-${this.transferStepperTwo?.excelSheetId ? this.transferStepperTwo?.excelSheetId : this.thirdStageInput.formOneData.excelSheetId}` :  (this.transferStepperTwo?.excelSheetId ? this.transferStepperTwo?.excelSheetId : this.thirdStageInput.formOneData.excelSheetId);
+    this.excelSheetId = pAndLExcelId;
     this.valuationService.getProfitLossSheet(pAndLExcelId,'P&L').subscribe((response:any)=>{
      if(response.status){
       this.createprofitAndLossDataSource(response)
       this.profitLossData.emit({status:true,result:response,isExcelModified:this.isExcelModified});
+      this.profitAndLossSheetData.emit({status:true, result:response})
     }
   }
   ,(error)=>{
+    this.profitAndLossSheetData.emit({status:true, error:error})
       this.profitLossData.emit({status:false,error:error});
     })
   }
@@ -170,8 +177,10 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
           if(response.status){
             this.isExcelModified = true;
             this.createprofitAndLossDataSource(response);
+            this.profitAndLossSheetData.emit({status:true,result:response});
           }
           else{
+             this.profitAndLossSheetData.emit({status:false,error:response.error});
              this.snackBar.open(response.error,'Ok',{
               horizontalPosition: 'right',
               verticalPosition: 'top',
@@ -180,6 +189,7 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
             })
           }
         },(error)=>{
+          this.profitAndLossSheetData.emit({status:false,error:error.message});
           this.snackBar.open(error.message,'Ok',{
             horizontalPosition: 'right',
               verticalPosition: 'top',

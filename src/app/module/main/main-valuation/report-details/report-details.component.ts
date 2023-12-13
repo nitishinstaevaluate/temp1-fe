@@ -43,6 +43,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
   reportObjective='';
   reportPurposeDataChips:any=[];
   separatorKeysCodes: number[] = [ENTER, COMMA];
+  reportGenerate = false;
   
   constructor(private fb : FormBuilder,
     private calculationService:CalculationsService,
@@ -154,7 +155,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       this.regulationPrefSelectionStatus = false;
       return;
     }
-    this.ngxLoaderService.start();
+    this.reportGenerate = true;
     const payload = {
       ...this.reportForm.value,
       ...this.registeredValuerDetails.value,
@@ -168,8 +169,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       if(response){
         this.calculationService.generateReport(response,approach).subscribe((reportData:any)=>{
           if (reportData instanceof Blob) {
-            this.isLoading=false;
-            this.ngxLoaderService.stop();
+            this.reportGenerate = false;
             this.snackBar.open('Report generated successfully', 'OK', {
               horizontalPosition: 'right',
               verticalPosition: 'top',
@@ -188,8 +188,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
         }
         },
         (error)=>{
-          this.isLoading=false;
-          this.ngxLoaderService.stop();
+          this.reportGenerate = false;
           this.snackBar.open('Something went wrong', 'OK', {
             horizontalPosition: 'right',
             verticalPosition: 'top',
@@ -200,8 +199,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       }
     },
     (error)=>{
-      this.isLoading = false;
-      this.ngxLoaderService.stop();
+      this.reportGenerate = false;
       this.snackBar.open('Something went wrong', 'OK', {
         horizontalPosition: 'right',
         verticalPosition: 'top',
@@ -212,19 +210,19 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
   }
 
   previewReport(){
-const controls = {...this.reportForm.controls}
-delete controls.clientName;
-const validatedReportForm = this.validateControls(controls);
-if(!validatedReportForm){
-    this.reportForm.markAllAsTouched();
-    return;
-}
-if(this.reportPurposeDataChips.length === 0){
-  this.regulationPrefSelectionStatus = false;
-  return;
-}
-    this.isLoading=true;
-    this.ngxLoaderService.start();
+    const controls = {...this.reportForm.controls}
+    delete controls.clientName;
+    const validatedReportForm = this.validateControls(controls);
+    if(!validatedReportForm){
+        this.reportForm.markAllAsTouched();
+        return;
+    }
+    if(this.reportPurposeDataChips.length === 0){
+      this.regulationPrefSelectionStatus = false;
+      return;
+    }
+    
+    this.reportGenerate = true;
     const payload = {
       ...this.reportForm.value,
       ...this.registeredValuerDetails.value,
@@ -237,21 +235,18 @@ if(this.reportPurposeDataChips.length === 0){
       if(response){
         this.calculationService.previewReport(response,approach).subscribe((reportData:any)=>{
           if (reportData) {
-            this.isLoading=false;
-            this.ngxLoaderService.stop();
-
             const dataSet={
               value: 'previewDoc',
               dataBlob:reportData,
               reportId: response,
               companyName:this.transferStepperFour?.formOneAndTwoData?.company
             }
-             const dialogRef =  this.dialog.open(GenericModalBoxComponent, {data:dataSet,width:'80%',disableClose: true});
+            const dialogRef =  this.dialog.open(GenericModalBoxComponent, {data:dataSet,width:'80%',disableClose: true});
+            this.reportGenerate = false;
         }
         },
         (error)=>{
-          this.isLoading=false;
-          this.ngxLoaderService.stop();
+          this.reportGenerate = false;
           this.snackBar.open('Something went wrong', 'OK', {
             horizontalPosition: 'right',
             verticalPosition: 'top',
@@ -262,8 +257,7 @@ if(this.reportPurposeDataChips.length === 0){
       }
     },
     (error)=>{
-      this.isLoading = false;
-      this.ngxLoaderService.stop();
+      this.reportGenerate = false;
       this.snackBar.open('Something went wrong', 'OK', {
         horizontalPosition: 'right',
         verticalPosition: 'top',
@@ -318,7 +312,7 @@ if(this.reportPurposeDataChips.length === 0){
         },
        
       };
-      const dialogRef = this.dialog.open(GenericModalBoxComponent, {data:data,width: '50%',height:'55%'});
+      const dialogRef = this.dialog.open(GenericModalBoxComponent, {data:data,width: '50%'});
   
       dialogRef.afterClosed().subscribe((result:any) => {
   

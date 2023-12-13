@@ -16,15 +16,17 @@ import { QuillModule } from 'ngx-quill';
 import { StringModificationPipe } from './pipe/string-modification.pipe';
 import { DocumentEditorModule, DocumentEditorContainerModule,ToolbarService, } from '@syncfusion/ej2-angular-documenteditor';
 import { ButtonModule, CheckBoxModule, RadioButtonModule, SwitchModule, ChipListModule, FabModule, SpeedDialModule } from '@syncfusion/ej2-angular-buttons';
+import { NgxUiLoaderComponent } from './ngx-loader/ngx-ui-loader/ngx-ui-loader.component';
+import { NgxUiLoaderModule } from 'ngx-ui-loader';
 
 
-const MODULES = [NgbModule, ReactiveFormsModule, FormsModule,MaterialModuleModule,NgSelectModule];
+const MODULES = [NgbModule, ReactiveFormsModule, FormsModule,MaterialModuleModule,NgSelectModule,NgxUiLoaderModule];
 
 @NgModule({
-  declarations: [ToggleThemeDirective, FullscreenDirective, SidemenuToggleDirective,UserInputComponent,RelativeComponent,GenericModalBoxComponent],
+  declarations: [ToggleThemeDirective, FullscreenDirective, SidemenuToggleDirective,UserInputComponent,RelativeComponent,GenericModalBoxComponent,NgxUiLoaderComponent],
   imports: [CommonModule,NgxSliderModule,...MODULES,QuillModule.forRoot(),DocumentEditorModule,DocumentEditorContainerModule, ButtonModule, CheckBoxModule, RadioButtonModule, SwitchModule, ChipListModule, FabModule, SpeedDialModule],
-  exports: [RelativeComponent,UserInputComponent,...MODULES,GenericModalBoxComponent],
-  entryComponents:[GenericModalBoxComponent],
+  exports: [RelativeComponent,UserInputComponent,...MODULES,GenericModalBoxComponent,NgxUiLoaderComponent],
+  entryComponents:[GenericModalBoxComponent,NgxUiLoaderComponent],
   providers:[CustomDatePipe,StringModificationPipe,ToolbarService]
 })
 export class SharedModule {}

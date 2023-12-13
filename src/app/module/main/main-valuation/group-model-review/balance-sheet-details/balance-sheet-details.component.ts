@@ -35,8 +35,8 @@ export class BalanceSheetDetailsComponent implements OnChanges {
     this.excelSheetId = this.thirdStageInput?.formThreeData.modifiedExcelSheetId;
     this.fetchExcelData(this.excelSheetId);
   }
-  else if(this.transferStepperTwo){
-    this.excelSheetId = this.transferStepperTwo.excelSheetId;
+  else{
+    this.excelSheetId = this.transferStepperTwo?.excelSheetId;
     this.fetchExcelData();
   }
   }
@@ -164,11 +164,16 @@ export class BalanceSheetDetailsComponent implements OnChanges {
   // }
 
   fetchExcelData(alreadyProcessedSheetId?:any){
-    const balanceSheetExcelId = alreadyProcessedSheetId ? alreadyProcessedSheetId : localStorage.getItem('excelStat') === 'true' ? `edited-${this.transferStepperTwo?.excelSheetId}` :  this.transferStepperTwo?.excelSheetId
+    const balanceSheetExcelId = alreadyProcessedSheetId ? alreadyProcessedSheetId : localStorage.getItem('excelStat') === 'true' ? `edited-${this.transferStepperTwo?.excelSheetId ? this.transferStepperTwo?.excelSheetId : this.thirdStageInput.formOneData.excelSheetId}` :  (this.transferStepperTwo?.excelSheetId ? this.transferStepperTwo?.excelSheetId : this.thirdStageInput.formOneData.excelSheetId)
+    this.excelSheetId = balanceSheetExcelId;
     this.valuationService.getProfitLossSheet(balanceSheetExcelId,'BS').subscribe((response:any)=>{
      if(response.status){
-      this.createbalanceSheetDataSource(response)
+      this.createbalanceSheetDataSource(response);
+      this.balanceSheetData.emit({status:true, result:response})
      }
+    },
+    (error)=>{
+      this.balanceSheetData.emit({status:false, error:error})
     })
   }
 
@@ -271,8 +276,10 @@ export class BalanceSheetDetailsComponent implements OnChanges {
           if(response.status){
             this.isExcelModified = true;
             this.createbalanceSheetDataSource(response);
+            this.balanceSheetData.emit({status:true,result:response});
           }
           else{
+            this.balanceSheetData.emit({status:false,error:response.error});
               this.snackBar.open(response.error,'Ok',{
               horizontalPosition: 'right',
               verticalPosition: 'top',
@@ -281,6 +288,7 @@ export class BalanceSheetDetailsComponent implements OnChanges {
             })
           }
         },(error)=>{
+          this.balanceSheetData.emit({status:false,error:error.message});
           this.snackBar.open(error.message,'Ok',{
             horizontalPosition: 'right',
               verticalPosition: 'top',

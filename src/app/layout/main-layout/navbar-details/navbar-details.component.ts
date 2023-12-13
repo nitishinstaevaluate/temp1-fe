@@ -49,7 +49,6 @@ export class NavbarDetailsComponent implements OnInit{
             if(modelInputStages.length){
 
                formTwoFillingStatus = modelInputStages.every((stateTwoDetails:any)=>{return stateTwoDetails.formFillingStatus});
-               console.log(formTwoFillingStatus)
                if(formTwoFillingStatus){
                  localStorage.setItem('stepTwoStats','true')
                }
