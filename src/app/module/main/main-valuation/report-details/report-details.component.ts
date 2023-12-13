@@ -12,6 +12,7 @@ import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { StringModificationPipe } from 'src/app/shared/pipe/string-modification.pipe';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { hasError } from 'src/app/shared/enums/errorMethods';
+import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 
 
 @Component({
@@ -27,6 +28,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
   appointeeDetails:any=FormGroup;
 
   @Input() transferStepperFour:any;
+  @Input() fifthStageInput:any;
   @Output() previousPage=new EventEmitter<any>();
   @ViewChild('purposeInput') purposeInput!: ElementRef<any>;
    viewer:any;
@@ -41,6 +43,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
   reportObjective='';
   reportPurposeDataChips:any=[];
   separatorKeysCodes: number[] = [ENTER, COMMA];
+  reportGenerate = false;
   
   constructor(private fb : FormBuilder,
     private calculationService:CalculationsService,
@@ -48,14 +51,51 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     private snackBar:MatSnackBar,
     private dataReferenceService:DataReferencesService,
     private truncateStringPipe: StringModificationPipe,
-    private ngxLoaderService:NgxUiLoaderService){}
+    private ngxLoaderService:NgxUiLoaderService,
+    private processStatusManagerService:ProcessStatusManagerService){}
   ngOnInit(): void {
     this.loadForm();
+    this.checkProcessExist()
     this.onValueChangeControl()
   }
   
   ngOnChanges(changes:SimpleChanges){
     this.transferStepperFour;
+  }
+  checkProcessExist(){
+    if(!this.transferStepperFour){
+      if(this.fifthStageInput?.formFiveData){
+        this.reportForm.controls['clientName'].setValue(this.fifthStageInput?.formFiveData?.clientName);
+        this.reportForm.controls['reportDate'].setValue(this.fifthStageInput?.formFiveData?.reportDate);
+        this.reportForm.controls['useExistingValuer'].setValue(this.fifthStageInput?.formFiveData?.useExistingValuer);
+        this.reportForm.controls['appointingAuthorityName'].setValue(this.fifthStageInput?.formFiveData?.appointingAuthorityName);
+        this.reportForm.controls['dateOfAppointment'].setValue(this.fifthStageInput?.formFiveData?.dateOfAppointment);
+        this.reportForm.controls['appointingAuthorityName'].setValue(this.fifthStageInput?.formFiveData?.appointingAuthorityName);
+        this.reportForm.controls['natureOfInstrument'].setValue(this.fifthStageInput?.formFiveData?.natureOfInstrument);
+        if(this.fifthStageInput?.formFiveData?.reportPurpose){
+          this.reportForm.controls['reportPurpose'].setValue(this.fifthStageInput?.formFiveData?.reportPurpose);
+          this.dataReferenceService.getReportPurpose(this.fifthStageInput?.formFiveData?.reportPurpose).subscribe((reportPurposeData:any)=>{
+            this.reportPurposeData = reportPurposeData?.reportPurpose;
+            this.reportObjective = this.reportObjectives[`${this.fifthStageInput?.formFiveData?.reportPurpose}`];
+            if(this.reportPurposeData.length>0){
+              this.shouldShowReportPurpose=true;
+            }
+            else{
+              this.shouldShowReportPurpose=false;
+            }
+          },
+          (error)=>{
+            this.shouldShowReportPurpose=false;
+          })
+        }
+        if(this.fifthStageInput?.formFiveData?.reportSection){
+          this.reportPurposeDataChips = this.fifthStageInput?.formFiveData?.reportSection
+          this.reportForm.controls['reportSection'].setValue(this.fifthStageInput?.formFiveData?.reportSection);
+        }
+        
+      }
+      this.transferStepperFour = this.fifthStageInput;
+    }
   }
   ngAfterViewInit(): void {}
 
@@ -115,13 +155,13 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       this.regulationPrefSelectionStatus = false;
       return;
     }
-    this.ngxLoaderService.start();
+    this.reportGenerate = true;
     const payload = {
       ...this.reportForm.value,
       ...this.registeredValuerDetails.value,
       reportId:this.transferStepperFour?.formThreeData?.appData?.reportId,
       reportDate:this.reportForm.controls['reportDate'].value,
-      finalWeightedAverage:this.transferStepperFour?.formFourData
+      finalWeightedAverage:this.transferStepperFour?.formFourData || this.transferStepperFour?.totalWeightageModel 
     }
     const approach = (this.transferStepperFour?.formOneAndTwoData?.model.includes('NAV')) && this.transferStepperFour.formOneAndTwoData.model.length === 1? 'NAV' : (this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFE')) && this.transferStepperFour.formOneAndTwoData.model.length === 1 ? 'DCF' : ((this.transferStepperFour?.formOneAndTwoData?.model.includes('Relative_Valuation') || this.transferStepperFour?.formOneAndTwoData?.model.includes('CTM')) && this.transferStepperFour.formOneAndTwoData.model.length === 1) ? 'CCM' : 'MULTI_MODEL';
     
@@ -129,22 +169,26 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       if(response){
         this.calculationService.generateReport(response,approach).subscribe((reportData:any)=>{
           if (reportData instanceof Blob) {
-            this.isLoading=false;
-            this.ngxLoaderService.stop();
+            this.reportGenerate = false;
             this.snackBar.open('Report generated successfully', 'OK', {
               horizontalPosition: 'right',
               verticalPosition: 'top',
               duration: 2000,
               panelClass: 'app-notification-success',
             });
-            saveAs(reportData, 'Ifinworth-Report.pdf');
+            saveAs(reportData, `${this.transferStepperFour?.formOneAndTwoData?.company}.pdf`);
             localStorage.setItem('stepFiveStats','true')
             this.calculationService.checkStepStatus.next({status:true})
+            const {reportId,...rest} = payload;
+            const processStateModel ={
+              fifthStageInput:{...rest,formFillingStatus:true,valuationReportId:response,valuationResultId:reportId},
+              step:4
+            }
+            this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
         }
         },
         (error)=>{
-          this.isLoading=false;
-          this.ngxLoaderService.stop();
+          this.reportGenerate = false;
           this.snackBar.open('Something went wrong', 'OK', {
             horizontalPosition: 'right',
             verticalPosition: 'top',
@@ -155,8 +199,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       }
     },
     (error)=>{
-      this.isLoading = false;
-      this.ngxLoaderService.stop();
+      this.reportGenerate = false;
       this.snackBar.open('Something went wrong', 'OK', {
         horizontalPosition: 'right',
         verticalPosition: 'top',
@@ -167,45 +210,43 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
   }
 
   previewReport(){
-const controls = {...this.reportForm.controls}
-delete controls.clientName;
-const validatedReportForm = this.validateControls(controls);
-if(!validatedReportForm){
-    this.reportForm.markAllAsTouched();
-    return;
-}
-if(this.reportPurposeDataChips.length === 0){
-  this.regulationPrefSelectionStatus = false;
-  return;
-}
-    this.isLoading=true;
-    this.ngxLoaderService.start();
+    const controls = {...this.reportForm.controls}
+    delete controls.clientName;
+    const validatedReportForm = this.validateControls(controls);
+    if(!validatedReportForm){
+        this.reportForm.markAllAsTouched();
+        return;
+    }
+    if(this.reportPurposeDataChips.length === 0){
+      this.regulationPrefSelectionStatus = false;
+      return;
+    }
+    
+    this.reportGenerate = true;
     const payload = {
       ...this.reportForm.value,
       ...this.registeredValuerDetails.value,
       reportId:this.transferStepperFour?.formThreeData?.appData?.reportId,
       reportDate:this.reportForm.controls['reportDate'].value,
-      finalWeightedAverage:this.transferStepperFour?.formFourData
+      finalWeightedAverage:this.transferStepperFour?.formFourData || this.transferStepperFour?.totalWeightageModel
     }
     const approach = (this.transferStepperFour?.formOneAndTwoData?.model.includes('NAV')) && this.transferStepperFour.formOneAndTwoData.model.length === 1? 'NAV' : (this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFE')) && this.transferStepperFour.formOneAndTwoData.model.length === 1 ? 'DCF' : ((this.transferStepperFour?.formOneAndTwoData?.model.includes('Relative_Valuation') || this.transferStepperFour?.formOneAndTwoData?.model.includes('CTM')) && this.transferStepperFour.formOneAndTwoData.model.length === 1) ? 'CCM' : 'MULTI_MODEL';
     this.calculationService.postReportData(payload).subscribe((response:any)=>{
       if(response){
         this.calculationService.previewReport(response,approach).subscribe((reportData:any)=>{
           if (reportData) {
-            this.isLoading=false;
-            this.ngxLoaderService.stop();
-
             const dataSet={
               value: 'previewDoc',
               dataBlob:reportData,
-              reportId: response
+              reportId: response,
+              companyName:this.transferStepperFour?.formOneAndTwoData?.company
             }
-             const dialogRef =  this.dialog.open(GenericModalBoxComponent, {data:dataSet,width:'80%',disableClose: true});
+            const dialogRef =  this.dialog.open(GenericModalBoxComponent, {data:dataSet,width:'80%',disableClose: true});
+            this.reportGenerate = false;
         }
         },
         (error)=>{
-          this.isLoading=false;
-          this.ngxLoaderService.stop();
+          this.reportGenerate = false;
           this.snackBar.open('Something went wrong', 'OK', {
             horizontalPosition: 'right',
             verticalPosition: 'top',
@@ -216,8 +257,7 @@ if(this.reportPurposeDataChips.length === 0){
       }
     },
     (error)=>{
-      this.isLoading = false;
-      this.ngxLoaderService.stop();
+      this.reportGenerate = false;
       this.snackBar.open('Something went wrong', 'OK', {
         horizontalPosition: 'right',
         verticalPosition: 'top',
@@ -272,7 +312,7 @@ if(this.reportPurposeDataChips.length === 0){
         },
        
       };
-      const dialogRef = this.dialog.open(GenericModalBoxComponent, {data:data,width: '50%',height:'55%'});
+      const dialogRef = this.dialog.open(GenericModalBoxComponent, {data:data,width: '50%'});
   
       dialogRef.afterClosed().subscribe((result:any) => {
   
@@ -344,7 +384,25 @@ if(this.reportPurposeDataChips.length === 0){
          
         }
       }
-      console.log(allControlsFilled,"final report truthy")
       return allControlsFilled
     }
+
+    processStateManager(process:any, processId:any){
+      this.processStatusManagerService.instantiateProcess(process, processId).subscribe(
+        (processStatusDetails: any) => {
+          if (processStatusDetails.status) {
+            localStorage.setItem('processStateId', processStatusDetails.processId);
+          }
+        },
+        (error) => {
+          this.snackBar.open(`${error.message}`, 'OK', {
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+            duration: 3000,
+            panelClass: 'app-notification-error',
+          });
+        }
+      );
+    }
+
 }

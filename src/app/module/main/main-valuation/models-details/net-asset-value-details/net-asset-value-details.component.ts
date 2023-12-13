@@ -3,6 +3,9 @@ import groupModelControl from '../../../../../shared/enums/group-model-controls.
 import { isSelected } from 'src/app/shared/enums/functions';
 import { MatSelect } from '@angular/material/select';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MODELS } from 'src/app/shared/enums/constant';
 
 @Component({
   selector: 'app-net-asset-value-details',
@@ -13,6 +16,7 @@ export class NetAssetValueDetailsComponent implements OnInit{
 @Input() formOneData:any;
 @Output() navDetailsPrev=new EventEmitter<any>();
 @Output() navDetails=new EventEmitter<any>();
+@Input() secondStageInput:any;
 
 controls=groupModelControl;
 navForm:any;
@@ -20,10 +24,36 @@ floatLabelType:any='never';
 appearance:any='fill';
 editedValues:any=[];
 
-constructor(private fb:FormBuilder){}
+constructor(private fb:FormBuilder,
+  private processStatusManagerService:ProcessStatusManagerService,
+  private snackBar:MatSnackBar){}
 ngOnInit(): void {
   this.loadForm();
+  this.checkProcessExist();
 }
+
+checkProcessExist(){
+  if(this.secondStageInput){
+    this.secondStageInput.map((stateTwoDetails:any)=>{
+      if(stateTwoDetails.model === MODELS.NAV && this.formOneData.model.includes(MODELS.NAV)){
+        const navStateDetails = stateTwoDetails.navInputs;
+        navStateDetails.map((navDetails:any)=>{
+          for(let control in this.navForm.controls){
+            if(control === navDetails.fieldName){
+              if(navDetails?.type === 'market_value'){
+                this.navForm.controls[control].setValue(navDetails?.value ? navDetails?.value : '');
+              }
+              else{
+                this.navForm.controls[control].setValue(navDetails?.type);
+              }
+            }
+          }
+        })
+      }
+    })
+  }
+  }
+
 loadForm(){
   this.navForm=this.fb.group({
     fixedAsset:['book_value',[Validators.required]],
@@ -221,7 +251,7 @@ resetBookValue(value:any,controlName:any){
   }
 }
 previous(){
-  this.navDetailsPrev.emit({status:'NAV'})
+  this.navDetailsPrev.emit({status:MODELS.NAV})
 }
 saveAndNext(){
   let navArray:any=[]
@@ -236,7 +266,8 @@ saveAndNext(){
       navArray.push(navObj);
     }
   }
-  const payload = {navInputs:navArray,status:'NAV'}
+  const payload = {navInputs:navArray,status:MODELS.NAV}
+
   this.validateControls(this.navForm.controls,payload);
 
 
@@ -287,6 +318,38 @@ validateControls(controlArray: { [key: string]: FormControl },payload:any){
       }
     }
 
-  this.navDetails.emit(payload)
+    let processStateStep;
+    if(allControlsFilled){
+      processStateStep = 2
+    }
+    else{
+      processStateStep = 1
+    }
+
+    const processStateModel ={
+      secondStageInput:[{model:MODELS.NAV,...payload,formFillingStatus:allControlsFilled}],
+      step:processStateStep
+    }
+    this.processStateManager(processStateModel,localStorage.getItem('processStateId'));
+
+    this.navDetails.emit(payload)
+}
+
+processStateManager(process:any, processId:any){
+  this.processStatusManagerService.instantiateProcess(process, processId).subscribe(
+    (processStatusDetails: any) => {
+      if (processStatusDetails.status) {
+        localStorage.setItem('processStateId', processStatusDetails.processId);
+      }
+    },
+    (error) => {
+      this.snackBar.open(`${error.message}`, 'OK', {
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+        duration: 3000,
+        panelClass: 'app-notification-error',
+      });
+    }
+  );
 }
 }

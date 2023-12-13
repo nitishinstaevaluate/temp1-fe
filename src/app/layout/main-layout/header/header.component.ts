@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NavService } from 'src/app/shared/service/nav.service';
 
 @Component({
@@ -16,7 +17,7 @@ export class HeaderComponent implements OnInit {
     public navServices: NavService,
     // private modalService: NgbModal,
     // public SwitcherService : SwitcherService,
-    // private router: Router,
+    private router: Router,
     // public ShopService: ShopService,
     // private store: Store<any>,
     // private auth : AuthService
@@ -29,7 +30,8 @@ export class HeaderComponent implements OnInit {
   totalMoney:any = 0
   totalLength = 1
   delectFunction = false
-  getdelectData:any
+  getdelectData:any;
+  isDropdownOpen: boolean = false;
 
   price(){
     // this.data$.forEach((item) =>{
@@ -155,6 +157,15 @@ export class HeaderComponent implements OnInit {
     this.SearchResultEmpty = false;
     return this.text, this.menuItems
   }
-  
 
+  toggleDropdown(open: boolean): void {
+    this.isDropdownOpen = open;
+  }
+
+  checkStatus(status:string){
+    if(status === 'signOut'){
+      localStorage.clear();
+      this.router.navigate(['./']);
+    }
+  }
 }

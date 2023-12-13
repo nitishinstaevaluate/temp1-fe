@@ -99,18 +99,10 @@
 
             <!-- expected market return -->
             <div class="col-md-4 field">
-                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
-                    <mat-label>Expected Market Return</mat-label>
-                    <mat-select class="mat-select-value" formControlName="expMarketReturnType">
-                    <mat-option *ngFor="let doc of modelControl.excessEarning.options.expMarketReturnType.options"  [value]="doc">{{doc.name}}</mat-option>
-                </mat-select>
-                <mat-hint *ngIf="excessEarningForm.controls['expMarketReturn'].value" class="taxrate-hint">Expected Market Return is {{excessEarningForm.controls['expMarketReturn'].value.toFixed(2)}}%</mat-hint>
-                  </mat-form-field> -->
-
                   <div class="material-textfield">
                     <select id="expMarketReturnType" class="new-inp" formControlName="expMarketReturnType">
                       <option value="" disabled selected>Select expected market return</option>
-                      <option *ngFor="let doc of modelControl.excessEarning.options.expMarketReturnType.options" [ngValue]="doc">{{doc.name}}</option>
+                      <option *ngFor="let doc of modelControl.excessEarning.options.expMarketReturnType.options" [ngValue]="doc.name">{{doc.name}}</option>
                     </select>
                     <label for="expMarketReturnType">Expected Market Return</label>
                   <mat-hint *ngIf="excessEarningForm.controls['expMarketReturn'].value" class="taxrate-hint">Expected Market Return is {{excessEarningForm.controls['expMarketReturn'].value.toFixed(2)}}%</mat-hint>
@@ -122,14 +114,6 @@
 
             <!-- beta -->
             <div class="col-md-4 field">
-                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
-                    <mat-label>Beta</mat-label>
-                    <mat-select class="mat-select-value" formControlName="betaType">
-                    <mat-option [disabled]="!formOneData?.industry" *ngFor="let doc of modelControl.excessEarning.options.betaType.options"  [value]="doc.value" >{{doc.name}}</mat-option>
-                </mat-select>
-                <mat-hint *ngIf="excessEarningForm.controls['beta'].value" class="taxrate-hint">Beta is {{excessEarningForm.controls['beta'].value.toFixed(2)}}</mat-hint>
-                  </mat-form-field> -->
-
                   <div class="material-textfield">
                     <select id="betaType" class="new-inp" formControlName="betaType">
                       <option value="" disabled selected>Select beta</option>
@@ -142,37 +126,18 @@
                     <span *ngIf="hasError('betaType','required',excessEarningForm)" class="error-text">Please select beta</span>
                   </span>
             </div>
-
-            <!-- risk premium -->
-            <!-- <div class="col-md-4 field">
-                <mat-form-field class="full-width-input" [floatLabel]="floatLabelType" >
-                    <mat-select formControlName="riskPremium" [placeholder]="modelControl.excessEarning.options.riskPremium.placeholder">
-                        <mat-option *ngFor="let doc of rPremium"  [value]="doc.riskPremium">{{doc.riskPremium}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div> -->
             
             <!-- risk premium -->
             <div class="col-md-4 field">
-                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
-                    <mat-label>Specific Risk Premium</mat-label>
-                    <input (mousedown)="onSlideToggleChange($event)" formControlName="riskPremium" [type]="modelControl.excessEarning.options.riskPremium.type" matInput  [placeholder]="modelControl.excessEarning.options.riskPremium.placeholder">
-                </mat-form-field> -->
-
                 <div class="material-textfield">
                   <input class="new-inp" (click)="onSlideToggleChange($event)" formControlName="riskPremium" [type]="modelControl.excessEarning.options.riskPremium.type" placeholder="Enter risk premium"/>
                   <label>Specific Risk Premium</label>
-            </div>
-            <span *ngIf="excessEarningForm.controls['riskPremium'].touched && excessEarningForm.controls['riskPremium'].errors">
-              <span *ngIf="hasError('riskPremium','required',excessEarningForm)" class="error-text">Please add specific risk premium</span>
-            </span>
                 </div>
+              <span *ngIf="excessEarningForm.controls['riskPremium'].touched && excessEarningForm.controls['riskPremium'].errors">
+                <span *ngIf="hasError('riskPremium','required',excessEarningForm)" class="error-text">Please add specific risk premium</span>
+              </span>
+              </div>
             
-            <!-- <div class="col-md-4 field">
-            <mat-form-field class="full-width-input" [floatLabel]="floatLabelType">
-                <input formControlName="otherAdj" [type]="modelControl.excessEarning.options.otherAdj.type" matInput  [placeholder]="modelControl.excessEarning.options.otherAdj.placeholder">
-            </mat-form-field>
-            </div> -->
 
             <div class="col-md-12" *ngIf="(adjCoe !== null && adjCoe !== 0)   && (coe !== null && coe !== 0)">
                    

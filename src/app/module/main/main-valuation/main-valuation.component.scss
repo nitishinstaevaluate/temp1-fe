@@ -450,3 +450,34 @@ a:hover {
 }
 
 // tab scss ends
+
+::ng-deep .app-notification-error .mdc-snackbar__surface,::ng-deep .app-notification-success .mdc-snackbar__surface{
+  border-radius: 12px !important;
+  background-color: #ffffff !important;
+ }
+ 
+ ::ng-deep .app-notification-error .mdc-snackbar__surface .mat-mdc-snack-bar-label,::ng-deep .app-notification-success .mdc-snackbar__surface .mat-mdc-snack-bar-label {
+  font-weight: 400;
+    font-size: 16px !important;
+    /* color: #666666; */
+    font-family: 'AR One Sans' !important;
+ }
+ ::ng-deep .app-notification-error .mdc-snackbar__surface .mat-mdc-snack-bar-label .mat-mdc-simple-snack-bar .mat-mdc-snack-bar-actions .mat-mdc-snack-bar-action .mdc-button__label,::ng-deep .app-notification-success .mdc-snackbar__surface .mat-mdc-snack-bar-label .mat-mdc-simple-snack-bar .mat-mdc-snack-bar-actions .mat-mdc-snack-bar-action .mdc-button__label{
+  font-family: 'AR One Sans';
+    font-weight: 500;
+    font-size: 16px;
+    color: #007bff !important;
+  }
+  ::ng-deep .app-notification-error .mdc-snackbar__surface .mat-mdc-snack-bar-label{
+  color: rgb(225, 29, 29) !important;
+
+}
+::ng-deep .app-notification-success .mdc-snackbar__surface .mat-mdc-snack-bar-label{
+  color: #0cd184 !important;
+}
+::ng-deep .app-notification-success .mdc-snackbar__surface{
+  box-shadow: -2px 3px 5px 12px #4bf3e70a, -2px 2px 10px 6px #0cd18f17, 0px 0px 6px 11px #5ec8c50d !important;
+}
+::ng-deep .app-notification-error .mdc-snackbar__surface{
+  box-shadow: -2px 3px 5px 12px #f34b4b0a, -2px 2px 10px 6px #d10c0c17, 0px 0px 6px 11px #c85ea80d !important;
+}

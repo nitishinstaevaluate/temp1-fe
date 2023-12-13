@@ -5,18 +5,18 @@
         <div class="mat-tab-g">
             <mat-tab-group mat-stretch-tabs="false" class="tab-group" mat-align-tabs="start" style="background-color: #ffffff;border-radius: 20px;">
                 <mat-tab label="Profit & Loss">
-                    <app-profit-loss-data [transferStepperTwo]="transferStepperTwo" (profitLossData)="profitLossData($event)" [currentStepIndex]="step"></app-profit-loss-data>
+                    <app-profit-loss-data [transferStepperTwo]="transferStepperTwo" (profitLossData)="profitLossData($event)" [currentStepIndex]="step" [thirdStageInput]="thirdStageInput"></app-profit-loss-data>
                 </mat-tab>
                 <mat-tab label="Balance Sheet">
-                    <app-balance-sheet-details [transferStepperTwo]="transferStepperTwo" (balanceSheetData)="balanceSheetData($event)"></app-balance-sheet-details>
+                    <app-balance-sheet-details [transferStepperTwo]="transferStepperTwo" (balanceSheetData)="balanceSheetData($event)" [thirdStageInput]="thirdStageInput"></app-balance-sheet-details>
                 </mat-tab>
                 <mat-tab label="Assessment of Working Capital" *ngIf="!hasSingleModel('NAV')">
-                    <app-assessment-details [transferStepperTwo]="transferStepperTwo" (assessmentSheetData)="assessmentSheetData($event)"></app-assessment-details>
+                    <app-assessment-details [transferStepperTwo]="transferStepperTwo" (assessmentSheetData)="assessmentSheetData($event)" [thirdStageInput]="thirdStageInput"></app-assessment-details>
                 </mat-tab>
             </mat-tab-group>
-            <p class="currency-unit" *ngIf="transferStepperTwo?.excelSheetId">Amount in {{transferStepperTwo.currencyUnit}} ({{transferStepperTwo.reportingUnit}})</p>
+            <p class="currency-unit" *ngIf="thirdStageInput?.formOneData ? thirdStageInput?.formOneData?.excelSheetId : transferStepperTwo?.excelSheetId">Amount in {{thirdStageInput?.formOneData ? thirdStageInput?.formOneData?.currencyUnit : transferStepperTwo.currencyUnit}} ({{thirdStageInput?.formOneData ? thirdStageInput?.formOneData?.reportingUnit : transferStepperTwo.reportingUnit}})</p>
         </div>
-        <div *ngIf="!transferStepperTwo?.excelSheetId" style="margin-top: auto;margin-bottom: auto;">
+        <div *ngIf="thirdStageInput?.formOneData ? !thirdStageInput?.formOneData?.excelSheetId :  !transferStepperTwo?.excelSheetId" style="margin-top: auto;margin-bottom: auto;">
             <p style="padding: 2% !important;
             color: #c91919;
             font-size: 19px;font-family: 'AR One Sans', sans-serif;">No Records Found</p>
@@ -95,7 +95,7 @@
         </div>
        </div> -->
        <!-- other adjustments -->
-       <div class="container-fluid" *ngIf="isRelativeValuation('FCFE') || isFcff('FCFF')" style="padding-top: 2%;">
+       <div class="container-fluid" *ngIf="isRelativeValuation('FCFE') || isRelativeValuation('FCFF')" style="padding-top: 2%;">
         <!-- <div class="row"> -->
             <!-- <div class="col-md-6 field">
                 <mat-form-field class="full-width-input" [floatLabel]="floatLabelType">
@@ -147,10 +147,7 @@
 </div>
 </div>
 
-<!-- <div class="loader-overlay">
-    <div class="loader">
-      <div class="loader-spinner"></div>
-      <div class="loader-message">Please wait...</div>
-    </div>
-  </div> -->
+  <div *ngIf="isLoadingBalanceSheet || isLoadingProfitLoss || isLoadingAssessmentSheet">
+    <app-ngx-ui-loader [loader]="'reviewForm'"></app-ngx-ui-loader>
+  </div>
 </div>

@@ -38,4 +38,8 @@ export class AuthService {
     // this.afu.signOut();
     // this.router.navigate(['/login']);
   }
+
+  extractUser(){
+    return this.http.get(`${environment.baseUrl}authentication/extractUser`)
+  }
 }

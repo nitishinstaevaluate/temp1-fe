@@ -1,5 +1,7 @@
 import { Component,EventEmitter,Input,OnChanges,OnInit, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { MODELS } from 'src/app/shared/enums/constant';
 import { isSelected } from 'src/app/shared/enums/functions';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
@@ -14,20 +16,9 @@ import { ValuationService } from 'src/app/shared/service/valuation.service';
 export class ProfitLossDataComponent implements OnInit,OnChanges {
   @Input() transferStepperTwo :any;
   @Input() currentStepIndex :any;
+  @Input() thirdStageInput :any;
   @Output() profitLossData :any = new EventEmitter();
   @Output() profitAndLossSheetData=new EventEmitter<any>();
-
-
-  // data:any=[];
-  // displayedColumns:any=[]
-  // displayedRelativeColumns:any=[];
-  // floatLabelType:any='never';
-  // appearance:any='fill';
-  // editedValues:any = [];
-  // isExcelModified=false;
-
-
-
 
   displayColumns:any;
   profitAndLossDataSource:any;
@@ -37,136 +28,56 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
   editedValues:any=[];
   isExcelModified=false;
   modifiedExcelSheetId:string='';
+  excelSheetId:any='';
+  financialSheetLoader = true;
 
   constructor(private valuationService:ValuationService,
-    private snackBar: MatSnackBar,private calculationService:CalculationsService){
+    private snackBar: MatSnackBar,
+    private calculationService:CalculationsService){
 
   }
   ngOnChanges(){
     // this.fetchExcelData();
-    this.fetchExcelData();
+    if(this.thirdStageInput?.formThreeData?.isExcelModified){
+      this.excelSheetId = this.thirdStageInput?.formThreeData.modifiedExcelSheetId;
+      this.fetchExcelData(this.excelSheetId);
+    }
+    else{
+      this.excelSheetId = this.transferStepperTwo?.excelSheetId;
+      this.fetchExcelData();
+    }
   }
   ngOnInit(): void {
+
+    // this.checkProcessState()
+  }
+  checkProcessState(){
+    if(this.thirdStageInput){
+      const excelSheetId = this.thirdStageInput?.formThreeData?.isExcelModified ?this.thirdStageInput?.formThreeData.modifiedExcelSheetId :  this.thirdStageInput.formOneData.excelSheetId;
+      this.excelSheetId = excelSheetId;
+      this.fetchExcelData(excelSheetId)
+    }
   }
   isRelativeValuation(modelName:string){
+    if(!this.transferStepperTwo){
+      return (isSelected(modelName,this.thirdStageInput?.formOneData.model) && this.thirdStageInput?.formOneData.model.length <= 1)
+    }
     return (isSelected(modelName,this.transferStepperTwo?.model) && this.transferStepperTwo.model.length <= 1)
   }
-  
-  // fetchExcelData(){
-  //   if(this.transferStepperTwo?.excelSheetId){
-  //     this.valuationService.getProfitLossSheet(this.transferStepperTwo?.excelSheetId,'P&L').subscribe(
-  //       (response:any)=>{
-  //         this.displayedColumns= response[0];
-  //        this.displayedColumns.map((val:any,index:any)=>{
-  //         if(index <=1){
-  //           this.displayedRelativeColumns.push(val);
-  //         }
-  //        })
-  //         response.splice(0,1)
-  //         if(this.isRelativeValuation('Relative_Valuation')){
-            
-  //           const firstKey = this.displayedColumns[0];
-  //           const secondKey = this.displayedColumns[1];
-  //           response = response.map((value:any)=>{
-  //             return {
-  //               [firstKey]:value[firstKey],
-  //               [secondKey]:value[secondKey]
-  //             }
-  //           })
-  //       }
-  //         this.data = response
-  //         this.profitLossData.emit({status:true,result:response,isExcelModified:this.isExcelModified});
-  //       },
-  //       (err)=>{
-  //         this.profitLossData.emit({status:false,error:err})
-  //       })
-  //     }
-  //     else{
-  //     this.profitLossData.emit({status:false})
-  //     this.snackBar.open('Data Retrieval Failed','Ok',{
-  //       horizontalPosition: 'center',
-  //       verticalPosition: 'bottom',
-  //       duration: 4000,
-  //       panelClass: 'app-notification-error'
-  //     })
-  //   }
-  // }
 
-  // checkType(ele:any){
-  //   if(typeof ele === 'string' && isNaN(parseFloat(ele)))
-  //    return true;
-  //   return false
-  // }
-
-  // isNumberOrEmpty(value: any): boolean {
-  //   return (typeof value === 'number' || value === '' || typeof value === 'string' || value === null || value === undefined) && !isNaN(value) ? true : false;
-  // }
-
-  // convertIntoNumber(value:any){
-  //   return parseFloat(value)?.toFixed(2);
-  // }
-  // onInputChange(value: any, column: string,originalValue:any) {
-  //   // const spanContent = (value as HTMLInputElement).closest('mat-row').querySelector('span').textContent;
-  
-  //   const inputElement = value;
-  //   const closestRow = inputElement.closest('mat-row');
-    
-  //   if (closestRow) {
-  //     const spanElement = closestRow.querySelector('span');
-  //     const spanContent = spanElement ? spanElement.textContent : null;
-  //     if(value?.value !== originalValue || (originalValue === null && value.value === '')){
-  //       if(this.editedValues.some((item:any)=>item.subHeader == spanContent && item.columnName === column)){
-  //         this.editedValues.map((val:any)=>{
-  //           if(val.subHeader == spanContent && val.columnName === column){
-  //             val.newValue = value.value;
-  //           }
-  //         })
-  //       }
-  //       else{
-  //         let payload={
-  //           subHeader:spanContent,
-  //           originalValue,
-  //           newValue:value.value,
-  //           columnName:column
-  //         }
-  //         this.editedValues.push(payload)
-  //       }
-  //     }
-  //     this.updateExcel();
-  //   }
-  //   // this.excelData.emit({ excelSheet:'P&L',editedValues: this.editedValues });
-  // }
-  
-  // updateExcel(){
-  //   const payload = {
-  //     excelSheet:'P&L',
-  //     excelSheetId:`${this.transferStepperTwo.excelSheetId}`,
-  //     editedValues: this.editedValues 
-  //   }
-  //   this.calculationService.modifyExcel(payload).subscribe((response:any)=>{
-  //     console.log(response)
-  //     if(response.status){
-  //       this.isExcelModified = true;
-  //       this.snackBar.open('Successfully updated excel','Ok',{
-  //         horizontalPosition: 'right',
-  //         verticalPosition: 'top',
-  //         duration: 3000,
-  //         panelClass: 'app-notification-success'
-  //       })
-  //     }
-  //   })
-  // }
-
-  fetchExcelData(){
-    this.valuationService.getProfitLossSheet(localStorage.getItem('excelStat') === 'true' ? `edited-${this.transferStepperTwo?.excelSheetId}` :  this.transferStepperTwo?.excelSheetId,'P&L').subscribe((response:any)=>{
+  fetchExcelData(alreadyProcessedSheetId?:any){
+    const pAndLExcelId = alreadyProcessedSheetId ? alreadyProcessedSheetId : localStorage.getItem('excelStat') === 'true' ? `edited-${this.transferStepperTwo?.excelSheetId ? this.transferStepperTwo?.excelSheetId : this.thirdStageInput.formOneData.excelSheetId}` :  (this.transferStepperTwo?.excelSheetId ? this.transferStepperTwo?.excelSheetId : this.thirdStageInput.formOneData.excelSheetId);
+    this.excelSheetId = pAndLExcelId;
+    this.valuationService.getProfitLossSheet(pAndLExcelId,'P&L').subscribe((response:any)=>{
      if(response.status){
       this.createprofitAndLossDataSource(response)
       this.profitLossData.emit({status:true,result:response,isExcelModified:this.isExcelModified});
+      this.profitAndLossSheetData.emit({status:true, result:response})
     }
   }
   ,(error)=>{
+    this.profitAndLossSheetData.emit({status:true, error:error})
       this.profitLossData.emit({status:false,error:error});
-
     })
   }
 
@@ -193,7 +104,6 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
   }
 
   ifOnlyNumber(value:any){
-    // return (Object.values(value).some(value => typeof value === 'number' && !isNaN(value)) && value.Particulars !== 'Other Operating Assets' && value.Particulars !== 'Other Operating Liabilities');
     if(value?.Particulars && this.dataSource){
       return this.dataSource.some((data:any)=>{
         if(data.lineEntry.particulars === value?.Particulars && data.lineEntry?.sysCode !== 3009 && data.lineEntry?.sysCode !== 3018){
@@ -254,9 +164,11 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
       }
       this.editedValues.push(cellStructure);
 
+      const excelSheetId = this.thirdStageInput?.formThreeData?.isExcelModified ?this.thirdStageInput?.formThreeData.modifiedExcelSheetId :  this.thirdStageInput?.formOneData.excelSheetId;
+      
       const payload = {
         excelSheet:'P&L',
-        excelSheetId:localStorage.getItem('excelStat')==='true' ? `edited-${this.transferStepperTwo.excelSheetId}` : this.transferStepperTwo.excelSheetId,
+        excelSheetId:excelSheetId ? excelSheetId :localStorage.getItem('excelStat')==='true' ? `edited-${this.transferStepperTwo.excelSheetId}` : this.transferStepperTwo.excelSheetId,
         ...this.editedValues[0] 
       }
       if(payload.newValue !== null && payload.newValue !== undefined){
@@ -265,8 +177,10 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
           if(response.status){
             this.isExcelModified = true;
             this.createprofitAndLossDataSource(response);
+            this.profitAndLossSheetData.emit({status:true,result:response});
           }
           else{
+             this.profitAndLossSheetData.emit({status:false,error:response.error});
              this.snackBar.open(response.error,'Ok',{
               horizontalPosition: 'right',
               verticalPosition: 'top',
@@ -275,6 +189,7 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
             })
           }
         },(error)=>{
+          this.profitAndLossSheetData.emit({status:false,error:error.message});
           this.snackBar.open(error.message,'Ok',{
             horizontalPosition: 'right',
               verticalPosition: 'top',
@@ -291,7 +206,6 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
     this.displayColumns.forEach((column:any, columnIndex:any) => {
       this.dataSource.forEach((row:any, rowIndex:any) => {
         if (row.lineEntry.particulars === data.Particulars && column === changedColumn) {
-          // console.log(column,"changedColumn",changedColumn,"column reference",data.Particulars,"from changed values",row.lineEntry.particulars)
           cellAddresses.push({
             cellAddress: `${String.fromCharCode(columnIndex + 65)}${row.lineEntry?.rowNumber}`, // add one since we are looping inside for loop
             columnCell: String.fromCharCode(columnIndex + 65), // add one since we are looping inside for loop
@@ -335,7 +249,7 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
     // this.profitAndLossDataSource.splice(this.profitAndLossDataSource.findIndex((item:any) => item.Particulars.includes('Profit / (Loss) for the year')),0,{Particulars:"  "}) //push empty object for line break      
     if(response?.modifiedFileName){
       this.modifiedExcelSheetId=response.modifiedFileName;
-      this.profitAndLossSheetData.emit({modifiedExcelSheetId:this.modifiedExcelSheetId,isModified:true});
+      // this.profitAndLossSheetData.emit({modifiedExcelSheetId:this.modifiedExcelSheetId,isModified:true});
       localStorage.setItem('excelStat','true')
     }
   }
@@ -356,6 +270,6 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
         maximumFractionDigits: 2,
       })
     }
-    return  null
+    return  null;
   }
 }

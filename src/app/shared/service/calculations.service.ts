@@ -11,7 +11,7 @@ export class CalculationsService {
 
   constructor(private http:HttpClient) { }
 
-  steps: BehaviorSubject<number> = new BehaviorSubject(1);
+  steps: BehaviorSubject<number> = new BehaviorSubject(0);
   checkStepStatus: BehaviorSubject<any> = new BehaviorSubject({status:false});
   getCostOfEquity(payload:any){
     return this.http.get(`${HOST}coe/adjcoe/?riskFreeRate=${payload.riskFreeRate}&expMarketReturn=${payload.expMarketReturn}&beta=${payload.beta}&riskPremium=${payload.riskPremium}&coeMethod=${payload.coeMethod}`)
@@ -57,6 +57,5 @@ export class CalculationsService {
 
   updateReportDocxBuffer(id:any,formData:any){
     return this.http.put(`${HOST}report/updateReportDoc/${id}`,formData)
-
   }
 }

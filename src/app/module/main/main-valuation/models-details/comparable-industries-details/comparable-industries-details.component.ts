@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angu
 import groupModelControl from '../../../../../shared/enums/group-model-controls.json';
 import { MODELS } from 'src/app/shared/enums/constant';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -13,6 +15,7 @@ export class ComparableIndustriesDetailsComponent implements OnChanges,OnInit {
 
   modelControl = groupModelControl;
   @Input() formOneData:any;
+  @Input() secondStageInput:any;
   @Output() comparableIndustriesDetailsPrev = new EventEmitter<any>();
   @Output() comparableIndustriesDetails = new EventEmitter<any>();
   
@@ -20,8 +23,11 @@ export class ComparableIndustriesDetailsComponent implements OnChanges,OnInit {
   floatLabelType:any='never';
 
   comparableIndustries:any;
+  industries:any=[];
 
-  constructor(private formBuilder:FormBuilder){}
+  constructor(private formBuilder:FormBuilder,
+    private processStatusManagerService:ProcessStatusManagerService,
+    private snackBar:MatSnackBar){}
 
   loadFormControl(){
     this.comparableIndustries=this.formBuilder.group({
@@ -38,17 +44,47 @@ export class ComparableIndustriesDetailsComponent implements OnChanges,OnInit {
   }
   ngOnInit(): void {
     this.loadFormControl();
+    this.checkProcessExist();
   }
-
+  checkProcessExist(){
+    if(this.secondStageInput){
+      this.secondStageInput.map((stateTwoDetails:any)=>{
+        if(stateTwoDetails.model === MODELS.COMPARABLE_INDUSTRIES && this.formOneData.model.includes(MODELS.COMPARABLE_INDUSTRIES)){
+          this.industries = stateTwoDetails.industries;
+        }
+      })
+    }
+  }
   previous(){
-    this.comparableIndustriesDetailsPrev.emit({status:'CTM'})
+    this.comparableIndustriesDetailsPrev.emit({status:MODELS.COMPARABLE_INDUSTRIES})
   }
 
   saveAndNext(){
-    let industries;
-      industries = this.formOneData?.industriesRatio;
-      console.log(this.formOneData?.industriesRatio,"indutries ratio ")
-    console.log(industries,"industries")
-    this.comparableIndustriesDetails.emit({...this.comparableIndustries.value,status:'CTM',industries})
+      this.industries = this.formOneData?.industriesRatio;
+      const processStateModel ={
+        secondStageInput:[{model:MODELS.COMPARABLE_INDUSTRIES,...this.comparableIndustries.value,industries:this.industries,formFillingStatus:true}],
+        step:localStorage.getItem('step')
+      }
+      this.processStateManager(processStateModel,localStorage.getItem('processStateId'));
+
+      this.comparableIndustriesDetails.emit({...this.comparableIndustries.value,status:MODELS.COMPARABLE_INDUSTRIES,industries:this.industries})
+  }
+
+  processStateManager(process:any, processId:any){
+    this.processStatusManagerService.instantiateProcess(process, processId).subscribe(
+      (processStatusDetails: any) => {
+        if (processStatusDetails.status) {
+          localStorage.setItem('processStateId', processStatusDetails.processId);
+        }
+      },
+      (error) => {
+        this.snackBar.open(`${error.message}`, 'OK', {
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+          duration: 3000,
+          panelClass: 'app-notification-error',
+        });
+      }
+    );
   }
 }

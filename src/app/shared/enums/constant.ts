@@ -189,7 +189,7 @@ export const ALL_MODELS = {
         },
       },
       assetApproach:{
-        label:'Net Asset Approach',
+        label:'Asset Approach',
         nav:{
           name:'Net Asset Value (NAV) Method',
           info:'This is NAV model'
@@ -214,6 +214,10 @@ export const ALL_MODELS = {
     RISK_FREE_RATE:{
       name:"Risk Free Rate",
       value:"customRiskFreeRate"
+    },
+    RESTORE_SESSION:{
+      name:"Session Found",
+      value:"restoreSession"
     }
   }
 

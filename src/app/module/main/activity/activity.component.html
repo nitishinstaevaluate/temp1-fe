@@ -10,16 +10,40 @@
       <div class="card-body">
         <div class="row">
           <div class="col" style="box-shadow: 1px 4px 8px #e2e2e2;padding-left: 0px;padding-right: 0px;">
-              <table class="table" >
+              <table class="table">
                 <tr class="header">
-                  <th *ngFor="let item of columnName">{{item}}</th>       
+                  <th *ngFor="let item of columnName" [ngStyle]="(item === 'Reference Id') ? { 'width': '10%'} : (item === 'Date') ? { 'width':'15%' } : (item === 'Status') ? { 'width':'12%' } : (item === 'Action') ? { 'width':'8%' } : { 'width':'auto' }">{{item}}</th>       
                 </tr>
                 <tr *ngFor="let item of activity">
-                  <td>{{ item.createdAt | date :"medium" }} </td>
-                  <td>{{ item.company }}</td>
-                  <td>{{ item.model }}</td>
-                  <td>{{item.valuation}}</td>
-                  <td><a target="_blank" [href]="getReport(item._id)">Get Report</a></td>
+                  <td>{{ item?.processIdentifierId ? item?.processIdentifierId : '-'  }}</td>
+                  <td>{{ item.createdOn | date :'MMM d, yyyy h:mm a' }} </td>
+                  <td>{{ item?.firstStageInput?.company ? item?.firstStageInput?.company : '-'  }}</td>
+                  <td style="width: 30%;" class="modelC">{{ getModel(item?.firstStageInput?.model) }}</td>
+                  <td> {{item?.fourthStageInput?.totalWeightageModel?.weightedVal || item?.thirdStageInput?.appData?.valuationResult[0].valuation ? item?.firstStageInput?.currencyUnit : ''}} {{ item?.fourthStageInput?.totalWeightageModel?.weightedVal ?  (item?.fourthStageInput?.totalWeightageModel?.weightedVal?.toFixed(2) | number : '1.2-2') : (item?.thirdStageInput?.appData?.valuationResult[0].valuation ? (item?.thirdStageInput?.appData?.valuationResult[0]?.valuation.toFixed(2) |  number : '1.2-2') : '-') }}</td>
+                  <td>
+                    <button [ngClass]="item?.fifthStageInput ? 'btn btn-success completed-doc-bt' :  item?.thirdStageInput?.appData?.valuationResult[0]?.valuation || item?.fourthStageInput?.totalWeightageModel?.weightedVal ? 'btn btn-success report-pending-bt' : item.step === 3 || item.step === 2 ? 'btn btn-success pending-doc-bt' : item.step === 1 ? 'btn btn-success draft-doc-bt' : 'btn btn-success pending-doc-bt'" >{{ item?.fifthStageInput ? 'Completed' : item?.thirdStageInput?.appData?.valuationResult[0]?.valuation || item?.fourthStageInput?.totalWeightageModel?.weightedVal ? 'Report Pending' : item.step === 3 || item.step === 2 ? 'Pending' : item.step === 1 ? 'Draft' : 'Pending' }}
+                      <span class="completed-doc-icon" *ngIf="item?.fifthStageInput"><mat-icon>check_circle_outline</mat-icon></span>
+                      <span class="completed-doc-icon" *ngIf="(item?.thirdStageInput?.appData?.valuationResult[0]?.valuation || item?.fourthStageInput?.totalWeightageModel?.weightedVal) && !item?.fifthStageInput"><mat-icon>hourglass_empty</mat-icon></span>
+                      <span class="completed-doc-icon" *ngIf="item.step === 3 || item.step === 2"><mat-icon>query_builder</mat-icon></span>
+                      <span class="completed-doc-icon" *ngIf="item.step === 1"><mat-icon>photo_filter</mat-icon></span>
+                    </button>
+                  </td>
+                  <td>
+                   
+                    <!-- <span>
+                      <button class="btn btn-success completed-doc-bt" style="padding-top: 0.3%;padding-bottom: 0.3%;font-size: 11px;width: 38%;border-radius: 5px;background-color: #2f97d7;color: #ffffff;">Edit
+                        <span class="completed-doc-icon" style="top: -6%;left: 60%;"><mat-icon>edit</mat-icon></span>
+                      </button>
+                    </span>
+                    <span style="padding-left: 3%;">
+                      <button class="btn btn-success completed-doc-bt" style="padding-top: 0.3%;padding-bottom: 0.3%;font-size: 11px;width:55%;border-radius: 5px;background-color: #2fd769;color: #ffffff;">Download
+                        <span class="completed-doc-icon" style="top: -6%;left: 72%;"><mat-icon> vertical_align_bottom</mat-icon></span>
+                      </button>
+                    </span> -->
+
+                    <span matTooltip="Resume valuation" matTooltipPosition="above" (click)="loadProcess(item._id)"><img style="height: 20px;width: 20px;cursor: pointer;" src="../../../../assets/images/icons/report-edit.png" alt=""></span>
+                    <span matTooltip="Download valuation report" matTooltipPosition="above" (click)="downloadReport(item?.fifthStageInput?.valuationReportId,item?.firstStageInput?.model)" style="padding-left: 30%;"><img style="height: 20px;width: 20px;cursor: pointer;" src="../../../../assets/images/icons/down-arrow.png" alt=""></span>
+                  </td>
                 </tr>
               </table>
               <!-- paginator section starts -->
@@ -37,3 +61,5 @@
     </div>
   </div>
 </div>
+
+<ngx-ui-loader [fgsSize]="75" [fgsType]="'rectangle-bounce'" fastFadeOut="true" [fgsColor]= "'#0cd18f'"></ngx-ui-loader>

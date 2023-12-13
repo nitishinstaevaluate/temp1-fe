@@ -43,7 +43,7 @@
 
 
 
-  <div class="row" style="background-color: #ffffff;">
+  <div class="row" style="background-color: #ffffff;" *ngIf="!isProcessExistLoader">
     <div class="col">
       <div class="card mt-4" style="background-color: #fcf8fe;padding-bottom: 4%;">       
         <div class='c-decorated-header'>
@@ -62,7 +62,7 @@
             <!-- Right Side Content -->
             <div class="col-md-10">
               <!-- <router-outlet></router-outlet> -->
-              <app-group-model-controls [step]="step" (groupModelControls)="groupModelControls($event)" [hidden]="step !== 1"></app-group-model-controls>
+              <app-group-model-controls [step]="step" (groupModelControls)="groupModelControls($event)" [hidden]="step !== 1" [firstStageInput]="formOneData"></app-group-model-controls>
 
               <div [hidden]="step !== 2">
                 <!-- tab trial starts -->
@@ -80,19 +80,19 @@
 
 
 
-                <app-fcfe-details (fcfeDetailsPrev)="fcfeDetailsPrev($event)" [hidden]="next !== 1" (fcfeDetails)="fcfeDetails($event)" [formOneData]="formOneData"></app-fcfe-details>
-                <app-fcff-details (fcffDetailsPrev)="fcffDetailsPrev($event)" (fcffDetails)="fcffDetails($event)" [hidden]="next !== 2" [formOneData]="formOneData"></app-fcff-details>
-                <app-relative-valuation-details (relativeValDetailsPrev)="relativeValDetailsPrev($event)" (relativeValDetails)="relativeValDetails($event)" [hidden]="next !== 3" [formOneData]="formOneData"></app-relative-valuation-details>
-                <app-excess-earning-details (excessEarnDetailsPrev)="excessEarnDetailsPrev($event)" (excessEarnDetails)="excessEarnDetails($event)" [hidden]="next !== 4" [formOneData]="formOneData"></app-excess-earning-details>
-                <app-comparable-industries-details (comparableIndustriesDetailsPrev)="comparableIndustriesDetailsPrev($event)" (comparableIndustriesDetails)="comparableIndustriesDetails($event)" [hidden]="next !== 5" [formOneData]="formOneData"></app-comparable-industries-details>
-                <app-net-asset-value-details (navDetailsPrev)="navDetailsPrev($event)" (navDetails)="navDetails($event)" [hidden]="next !== 6" [formOneData]="formOneData"></app-net-asset-value-details>
+                <app-fcfe-details (fcfeDetailsPrev)="fcfeDetailsPrev($event)" [hidden]="next !== 1" (fcfeDetails)="fcfeDetails($event)" [formOneData]="formOneData" [secondStageInput]="formTwoData"></app-fcfe-details>
+                <app-fcff-details (fcffDetailsPrev)="fcffDetailsPrev($event)" (fcffDetails)="fcffDetails($event)" [hidden]="next !== 2" [formOneData]="formOneData" [secondStageInput]="formTwoData"></app-fcff-details>
+                <app-relative-valuation-details (relativeValDetailsPrev)="relativeValDetailsPrev($event)" (relativeValDetails)="relativeValDetails($event)" [hidden]="next !== 3" [formOneData]="formOneData" [secondStageInput]="formTwoData"></app-relative-valuation-details>
+                <app-excess-earning-details (excessEarnDetailsPrev)="excessEarnDetailsPrev($event)" (excessEarnDetails)="excessEarnDetails($event)" [hidden]="next !== 4" [formOneData]="formOneData" [secondStageInput]="formTwoData"></app-excess-earning-details>
+                <app-comparable-industries-details (comparableIndustriesDetailsPrev)="comparableIndustriesDetailsPrev($event)" (comparableIndustriesDetails)="comparableIndustriesDetails($event)" [hidden]="next !== 5" [formOneData]="formOneData" [secondStageInput]="formTwoData"></app-comparable-industries-details>
+                <app-net-asset-value-details (navDetailsPrev)="navDetailsPrev($event)" (navDetails)="navDetails($event)" [hidden]="next !== 6" [formOneData]="formOneData" [secondStageInput]="formTwoData"></app-net-asset-value-details>
               </div>
 
-              <app-group-model-review (groupReviewControls)="groupReviewControls($event)" [step]="step" (previousPage)="previous($event)" [transferStepperTwo]="formOneAndTwoData" [hidden]="step !== 3"></app-group-model-review>
+              <app-group-model-review (groupReviewControls)="groupReviewControls($event)" [step]="step" (previousPage)="previous($event)" [transferStepperTwo]="formOneAndTwoData" [hidden]="step !== 3" [thirdStageInput]="formThreeData"></app-group-model-review>
               
-              <app-group-model-result [transferStepperthree]="transferStepperthree"  (previousPage)="previous($event)" (resultData)="resultData($event)" [hidden]="step !== 4"></app-group-model-result>
+              <app-group-model-result [transferStepperthree]="transferStepperthree"  (previousPage)="previous($event)" (resultData)="resultData($event)" [hidden]="step !== 4" [fourthStageInput]="formFourData"></app-group-model-result>
               
-              <app-report-details [transferStepperFour]="transferStepperFour" (previousPage)="previous($event)" [hidden]="step !== 5"></app-report-details>
+              <app-report-details [transferStepperFour]="transferStepperFour" (previousPage)="previous($event)" [hidden]="step !== 5" [fifthStageInput]="formFiveData"></app-report-details>
             </div>
           </div>
   
@@ -100,3 +100,7 @@
       </div>
     </div>
   </div>
+
+<div *ngIf="isProcessExistLoader">
+  <app-ngx-ui-loader [loader]="'mainForm'" *ngIf="processLoader"></app-ngx-ui-loader>
+</div>
