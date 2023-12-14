@@ -132,7 +132,7 @@ export class ActivityComponent {
       else if(modelArray.length === 1 && (modelArray.includes(MODELS.COMPARABLE_INDUSTRIES) || modelArray.includes(MODELS.RELATIVE_VALUATION))){
         return processData.thirdStageInput.appData.valuationResult[0].valuation?.finalPriceAvg;
       }
-      else if(processData.fourthStageInput.totalWeightageModel){
+      else if(processData.fourthStageInput?.totalWeightageModel){
         return processData.fourthStageInput.totalWeightageModel?.weightedVal;
       }
       else{
