@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ActivityComponent } from './activity/activity.component';
 import { ValuationComponent } from './valuation/valuation.component';
 import { MainValuationComponent } from './main-valuation/main-valuation.component';
+import { DashboardPanelComponent } from './dashboard-panel/dashboard-panel.component';
 
 const routes: Routes = [
   // {
@@ -11,12 +12,19 @@ const routes: Routes = [
   // },
   
   {
-    path : "",
+    path : "valuation",
     component : MainValuationComponent
+  },
+  {
+    path : "panel",
+    component : DashboardPanelComponent
   },
   {
     path : "activity",
     component : ActivityComponent
+  },
+  {
+    path: '**', redirectTo: '/dashboard/panel'
   }
 ];
 

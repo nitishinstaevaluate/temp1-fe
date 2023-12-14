@@ -30,10 +30,8 @@ export class RelativeValuationDetailsComponent implements OnInit,OnChanges {
 
   ngOnChanges(){
     this.loadFormControl();
-    if(this.formOneData){
-      // this.addInput()
-      // this.addInput()
-      // this.addInput()
+    
+     if(this.formOneData){
       if(this.formOneData?.preferenceCompanies && this.formOneData.model.includes('Relative_Valuation')){
        
         this.Companies.controls[0]?.patchValue(this.formOneData?.preferenceCompanies[0]);
@@ -45,14 +43,31 @@ export class RelativeValuationDetailsComponent implements OnInit,OnChanges {
           this.Companies.controls[prefCompanyIndex]?.setValue(this.formOneData?.preferenceCompanies[prefCompanyIndex]);
       })
     }
+   else if(this.secondStageInput){
+      const checkRelativeValuation = this.secondStageInput.some((data:any)=>data.model === MODELS.RELATIVE_VALUATION);
+      if(checkRelativeValuation){
+        this.secondStageInput.map((stateTwoDetails:any)=>{
+          if(stateTwoDetails.model === MODELS.RELATIVE_VALUATION && this.formOneData.model.includes(MODELS.RELATIVE_VALUATION)){
+            stateTwoDetails?.companies.map((companyDetails:any,i:number)=>{
+              this.formOneData?.preferenceCompanies.map((prefCompany:any,prefCompanyIndex:number)=>{
+                if(prefCompany.company === companyDetails.company){
+                  this.addInput();
+                  this.Companies.controls[i]?.setValue(this.formOneData?.preferenceCompanies[prefCompanyIndex]);
+                }
+              })
+            })
+          }
+        })
+      }
+    }
   }
 
   isRelativeValuation(value:string){
     return this.formOneData?.model.includes(value) ? true :false;
   }
   ngOnInit(): void {
-    this.loadFormControl();
-    this.checkProcessExist();
+    // this.loadFormControl();
+    // this.checkProcessExist();
   }
 
   checkProcessExist(){

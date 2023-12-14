@@ -46,8 +46,28 @@
     <div class="main-sidemenu" style="margin-top:40px">
       <ul class="side-menu">
         <li class="slide">
-         <div  class="new-menu" [class.selected]="selectedMenuItem === '/dashboard'" (click)="selectMenuItem('/dashboard')">
-          <p class="icon-c"><i class="side-menu__icon bx bx-grid-alt"><i class="fa fa-usd mx-2"></i></i></p>
+         <div  class="new-menu" [class.selected]="selectedMenuItem === '/dashboard/panel'" (click)="selectMenuItem('/dashboard/panel')">
+          <p class="icon-c">
+            <i class="side-menu__icon bx bx-grid-alt">
+              <i>
+                <mat-icon style="transform: scale(1.2);padding-top: 8%;">view_module</mat-icon>
+              </i>
+            </i>
+          </p>
+          <p class="label-c">
+            <a>
+              Dashboard
+            </a>
+            </p>
+         </div>
+         <div  class="new-menu" [class.selected]="selectedMenuItem === '/dashboard/valuation'" (click)="selectMenuItem('/dashboard/valuation')">
+          <p class="icon-c">
+            <i class="side-menu__icon bx bx-grid-alt">
+              <i class="fa fa-usd mx-2">
+
+              </i>
+            </i>
+          </p>
           <p class="label-c">
             <a>
               Valuation

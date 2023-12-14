@@ -24,6 +24,12 @@ export class SidebarComponent implements OnInit {
     if(url.includes('activity')){
       this.selectedMenuItem = '/dashboard/activity';
     }
+    else if(url.includes('valuation')){
+      this.selectedMenuItem = '/dashboard/valuation';
+    }
+    else if(url.includes('panel')){
+      this.selectedMenuItem = '/dashboard/panel';
+    }
     else{
       this.selectedMenuItem = '/dashboard';
     }
@@ -45,11 +51,17 @@ ngOnInit(): void {
   this.route.events.pipe(
     filter(event => event instanceof NavigationEnd)
   ).subscribe((event: any) => {
-    if(event.url === '/dashboard'){
-      this.selectedMenuItem = '/dashboard'
+    if(event.url === '/dashboard/valuation'){
+      this.selectedMenuItem = '/dashboard/valuation'
+    }
+    else if(event.url === '/dashboard/activity'){
+      this.selectedMenuItem = '/dashboard/activity'
+    }
+    else if(event.url === '/dashboard/panel'){
+      this.selectedMenuItem = '/dashboard/panel'
     }
     else{
-      this.selectedMenuItem = '/dashboard/activity'
+      this.selectedMenuItem = '/dashboard'
     }
   });
 }

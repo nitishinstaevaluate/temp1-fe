@@ -1,0 +1,546 @@
+<div class="task-manager" style="background-color: #fcf8fe;">
+  <div class="page-content">
+    <!-- <div class="header">Hey, Sanket</div> -->
+    <div><p class="header">Hey, <span id="dynamicName">Sanket</span></p></div>
+    <div class="content-categories">
+      <div class="label-wrapper">
+        <input class="nav-item" name="nav" type="radio" id="opt-1">
+        <label class="category" for="opt-1">All</label>
+      </div>
+      <div class="label-wrapper">
+        <input class="nav-item" name="nav" type="radio" id="opt-2" checked>
+        <label class="category" for="opt-2">Important</label>
+      </div>
+      <div class="label-wrapper">
+        <input class="nav-item" name="nav" type="radio" id="opt-3">
+        <label class="category" for="opt-3">Notes</label>
+      </div>
+      <div class="label-wrapper">
+        <input class="nav-item" name="nav" type="radio" id="opt-4">
+        <label class="category" for="opt-4">Links</label>
+      </div>
+    </div>
+    <div class="tasks-wrapper">
+      <div class="task">
+        <input class="task-item" name="task" type="checkbox" id="item-1" checked>
+        <label for="item-1">
+          <span class="label-text">Dashboard Design Implementation</span>
+        </label>
+        <span class="tag approved">Approved</span>
+      </div>
+      <div class="task">
+        <input class="task-item" name="task" type="checkbox" id="item-2" checked>
+        <label for="item-2">
+          <span class="label-text">Create a userflow</span>
+        </label>
+        <span class="tag progress">In Progress</span>
+      </div>
+      <div class="task">
+        <input class="task-item" name="task" type="checkbox" id="item-3">
+        <label for="item-3">
+          <span class="label-text">Application Implementation</span>
+        </label>
+        <span class="tag review">In Review</span>
+      </div>
+      <div class="task">
+        <input class="task-item" name="task" type="checkbox" id="item-4">
+        <label for="item-4">
+          <span class="label-text">Create a Dashboard Design</span>
+        </label>
+        <span class="tag progress">In Progress</span>
+      </div>
+      <div class="task">
+        <input class="task-item" name="task" type="checkbox" id="item-5">
+        <label for="item-5">
+          <span class="label-text">Create a Web Application Design</span>
+        </label>
+        <span class="tag approved">Approved</span>
+      </div>
+      <div class="task">
+        <input class="task-item" name="task" type="checkbox" id="item-6">
+        <label for="item-6">
+          <span class="label-text">Interactive Design</span>
+        </label>
+        <span class="tag review">In Review</span>
+      </div>
+      <div class="header upcoming">Upcoming Tasks</div>
+      <div class="task">
+        <input class="task-item" name="task" type="checkbox" id="item-7">
+        <label for="item-7">
+          <span class="label-text">Dashboard Design Implementation</span>
+        </label>
+        <span class="tag waiting">Waiting</span>
+      </div>
+      <div class="task">
+        <input class="task-item" name="task" type="checkbox" id="item-8">
+        <label for="item-8">
+          <span class="label-text">Create a userflow</span>
+        </label>
+        <span class="tag waiting">Waiting</span>
+      </div>
+      <div class="task">
+        <input class="task-item" name="task" type="checkbox" id="item-9">
+        <label for="item-9">
+          <span class="label-text">Application Implementation</span>
+        </label>
+        <span class="tag waiting">Waiting</span>
+      </div>
+      <div class="task">
+        <input class="task-item" name="task" type="checkbox" id="item-10">
+        <label for="item-10">
+          <span class="label-text">Create a Dashboard Design</span>
+        </label>
+        <span class="tag waiting">Waiting</span>
+      </div>
+    </div>
+  </div>
+  <div class="right-bar">
+    <!-- <div class="top-part">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="feather feather-users">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+        <path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+      <div class="count">6</div>
+    </div> -->
+    <div class="header" style="padding-top: 30px;">Valuation Stats</div>
+    <div class="right-content">
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 13, 2023 5:30 PM</div>
+          <div class="task-name">Ifinworth</div>
+          <div class="ref-id">#100022</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result">- Completed</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 13, 2023 5:20 PM</div>
+          <div class="task-name">Kodak</div>
+          <div class="ref-id">#100021</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result" style="color: #3253d8;">- Pending</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 12, 2023 6:01 PM</div>
+          <div class="task-name">ABC Pvt</div>
+          <div class="ref-id">#100020</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result" style="color: #007989">- Report Pending</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 13, 2023 2:07 PM</div>
+          <div class="task-name">DUB</div>
+          <div class="ref-id">#100019</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result" style="color: #a4a4a4">- Draft</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 13, 2023 2:07 PM</div>
+          <div class="task-name">SPAR</div>
+          <div class="ref-id">#100018</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result" style="color: #a4a4a4">- Draft</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 13, 2023 5:30 PM</div>
+          <div class="task-name">Ifinworth</div>
+          <div class="ref-id">#100022</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result">- Completed</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 13, 2023 5:20 PM</div>
+          <div class="task-name">Kodak</div>
+          <div class="ref-id">#100021</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result" style="color: #3253d8;">- Pending</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 12, 2023 6:01 PM</div>
+          <div class="task-name">ABC Pvt</div>
+          <div class="ref-id">#100020</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result" style="color: #007989">- Report Pending</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 13, 2023 2:07 PM</div>
+          <div class="task-name">DUB</div>
+          <div class="ref-id">#100019</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result" style="color: #a4a4a4">- Draft</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 13, 2023 2:07 PM</div>
+          <div class="task-name">SPAR</div>
+          <div class="ref-id">#100018</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result" style="color: #a4a4a4">- Draft</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 13, 2023 5:30 PM</div>
+          <div class="task-name">Ifinworth</div>
+          <div class="ref-id">#100022</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result">- Completed</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 13, 2023 5:20 PM</div>
+          <div class="task-name">Kodak</div>
+          <div class="ref-id">#100021</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result" style="color: #3253d8;">- Pending</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 12, 2023 6:01 PM</div>
+          <div class="task-name">ABC Pvt</div>
+          <div class="ref-id">#100020</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result" style="color: #007989">- Report Pending</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 13, 2023 2:07 PM</div>
+          <div class="task-name">DUB</div>
+          <div class="ref-id">#100019</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result" style="color: #a4a4a4">- Draft</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 13, 2023 2:07 PM</div>
+          <div class="task-name">SPAR</div>
+          <div class="ref-id">#100018</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result" style="color: #a4a4a4">- Draft</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 13, 2023 5:30 PM</div>
+          <div class="task-name">Ifinworth</div>
+          <div class="ref-id">#100022</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result">- Completed</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 13, 2023 5:20 PM</div>
+          <div class="task-name">Kodak</div>
+          <div class="ref-id">#100021</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result" style="color: #3253d8;">- Pending</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 12, 2023 6:01 PM</div>
+          <div class="task-name">ABC Pvt</div>
+          <div class="ref-id">#100020</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result" style="color: #007989">- Report Pending</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 13, 2023 2:07 PM</div>
+          <div class="task-name">DUB</div>
+          <div class="ref-id">#100019</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result" style="color: #a4a4a4">- Draft</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 13, 2023 2:07 PM</div>
+          <div class="task-name">SPAR</div>
+          <div class="ref-id">#100018</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result" style="color: #a4a4a4">- Draft</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 13, 2023 5:30 PM</div>
+          <div class="task-name">Ifinworth</div>
+          <div class="ref-id">#100022</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result">- Completed</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 13, 2023 5:20 PM</div>
+          <div class="task-name">Kodak</div>
+          <div class="ref-id">#100021</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result" style="color: #3253d8;">- Pending</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 12, 2023 6:01 PM</div>
+          <div class="task-name">ABC Pvt</div>
+          <div class="ref-id">#100020</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result" style="color: #007989">- Report Pending</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 13, 2023 2:07 PM</div>
+          <div class="task-name">DUB</div>
+          <div class="ref-id">#100019</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result" style="color: #a4a4a4">- Draft</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 13, 2023 2:07 PM</div>
+          <div class="task-name">SPAR</div>
+          <div class="ref-id">#100018</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result" style="color: #a4a4a4">- Draft</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 13, 2023 5:30 PM</div>
+          <div class="task-name">Ifinworth</div>
+          <div class="ref-id">#100022</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result">- Completed</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 13, 2023 5:20 PM</div>
+          <div class="task-name">Kodak</div>
+          <div class="ref-id">#100021</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result" style="color: #3253d8;">- Pending</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 12, 2023 6:01 PM</div>
+          <div class="task-name">ABC Pvt</div>
+          <div class="ref-id">#100020</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result" style="color: #007989">- Report Pending</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 13, 2023 2:07 PM</div>
+          <div class="task-name">DUB</div>
+          <div class="ref-id">#100019</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result" style="color: #a4a4a4">- Draft</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 13, 2023 2:07 PM</div>
+          <div class="task-name">SPAR</div>
+          <div class="ref-id">#100018</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result" style="color: #a4a4a4">- Draft</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 13, 2023 5:30 PM</div>
+          <div class="task-name">Ifinworth</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result">- Completed</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+</div>
