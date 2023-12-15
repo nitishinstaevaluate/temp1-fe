@@ -19,7 +19,10 @@
                   <td>{{ item.createdOn | date :'MMM d, yyyy h:mm a' }} </td>
                   <td>{{ item?.firstStageInput?.company ? item?.firstStageInput?.company : '-'  }}</td>
                   <td style="width: 30%;" class="modelC">{{ getModel(item?.firstStageInput?.model) }}</td>
-                  <td> {{item?.fourthStageInput?.totalWeightageModel?.weightedVal || item?.thirdStageInput?.appData?.valuationResult[0].valuation ? item?.firstStageInput?.currencyUnit : ''}} {{ item?.fourthStageInput?.totalWeightageModel?.weightedVal ?  (item?.fourthStageInput?.totalWeightageModel?.weightedVal?.toFixed(2) | number : '1.2-2') : (item?.thirdStageInput?.appData?.valuationResult[0].valuation ? (item?.thirdStageInput?.appData?.valuationResult[0]?.valuation.toFixed(2) |  number : '1.2-2') : '-') }}</td>
+                  <!-- <td> {{item?.fourthStageInput?.totalWeightageModel?.weightedVal || item?.thirdStageInput?.appData?.valuationResult[0].valuation ? item?.firstStageInput?.currencyUnit : ''}} {{ item?.fourthStageInput?.totalWeightageModel?.weightedVal ?  (item?.fourthStageInput?.totalWeightageModel?.weightedVal?.toFixed(2) | number : '1.2-2') : (item?.thirdStageInput?.appData?.valuationResult[0].valuation?.finalPriceAvg ? (item?.thirdStageInput?.appData?.valuationResult[0].valuation?.finalPriceAvg?.toFixed(2) | number : '1.2-2') :   item?.thirdStageInput?.appData?.valuationResult[0].valuation ? (item?.thirdStageInput?.appData?.valuationResult[0]?.valuation.toFixed(2) |  number : '1.2-2') : '-') }}</td> -->
+                  <td>
+                    {{getValuation(item.firstStageInput?.model, item)}}
+                  </td>
                   <td>
                     <button [ngClass]="item?.fifthStageInput ? 'btn btn-success completed-doc-bt' :  item?.thirdStageInput?.appData?.valuationResult[0]?.valuation || item?.fourthStageInput?.totalWeightageModel?.weightedVal ? 'btn btn-success report-pending-bt' : item.step === 3 || item.step === 2 ? 'btn btn-success pending-doc-bt' : item.step === 1 ? 'btn btn-success draft-doc-bt' : 'btn btn-success pending-doc-bt'" >{{ item?.fifthStageInput ? 'Completed' : item?.thirdStageInput?.appData?.valuationResult[0]?.valuation || item?.fourthStageInput?.totalWeightageModel?.weightedVal ? 'Report Pending' : item.step === 3 || item.step === 2 ? 'Pending' : item.step === 1 ? 'Draft' : 'Pending' }}
                       <span class="completed-doc-icon" *ngIf="item?.fifthStageInput"><mat-icon>check_circle_outline</mat-icon></span>
@@ -42,7 +45,7 @@
                     </span> -->
 
                     <span matTooltip="Resume valuation" matTooltipPosition="above" (click)="loadProcess(item._id)"><img style="height: 20px;width: 20px;cursor: pointer;" src="../../../../assets/images/icons/report-edit.png" alt=""></span>
-                    <span matTooltip="Download valuation report" matTooltipPosition="above" (click)="downloadReport(item?.fifthStageInput?.valuationReportId,item?.firstStageInput?.model)" style="padding-left: 30%;"><img style="height: 20px;width: 20px;cursor: pointer;" src="../../../../assets/images/icons/down-arrow.png" alt=""></span>
+                    <span matTooltip="Download valuation report" matTooltipPosition="above" (click)="downloadReport(item?.fifthStageInput?.valuationReportId,item?.firstStageInput?.model, item?.firstStageInput?.company)" style="padding-left: 30%;"><img style="height: 20px;width: 20px;cursor: pointer;" src="../../../../assets/images/icons/down-arrow.png" alt=""></span>
                   </td>
                 </tr>
               </table>

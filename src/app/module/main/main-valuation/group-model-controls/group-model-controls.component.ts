@@ -46,7 +46,7 @@ export class GroupModelControlsComponent implements OnInit {
   selectedPreferenceItems:any=[];
   files: any = [];
   industries:any=[];
-  subIndustries: any[] = [];
+  subIndustries: any=[];
   preferenceCompanies:any=[];
   prefrerenceIndustries:any=[
     {
@@ -93,7 +93,8 @@ export class GroupModelControlsComponent implements OnInit {
   betaIndustries: any;
   isExcelReupload=false;
   fileName:any='';
-  modelSelectStatus:boolean= true
+  modelSelectStatus:boolean= true;
+  selectedIndustry:any;
 
   constructor(private formBuilder: FormBuilder,
     private valuationService: ValuationService,
@@ -175,14 +176,14 @@ export class GroupModelControlsComponent implements OnInit {
   }
 
   ngOnInit(){
+    this.loadValues();
     this.checkProcessExist(this.firstStageInput)
     this.formLoad();
-    this.loadValues();
     this.addInput();
     this.addInputIndustry();
   }
 
-  checkProcessExist(data:any){
+  async checkProcessExist(data:any){
    if(data){
     this.betaIndustries = data?.betaIndustries;
    this.modelValuation.controls['company'].setValue(data?.company ?? '');
@@ -206,11 +207,31 @@ export class GroupModelControlsComponent implements OnInit {
    this.modelValuation.controls['type'].setValue(data?.type?? 'industry');
    this.modelValuation.controls['userId'].setValue( !data?.userId || data?.userId === "" ? '640a4783337b1b37d6fd04c7' : data?.userId);
    this.modelValuation.controls['excelSheetId'].setValue(data?.excelSheetId?? '');
+   this.selectedIndustry = data?.selectedIndustry;
    this.fileName = data?.fileName;
    
   const dateToSet = data?.valuationDate ? new Date(data?.valuationDate) : null;
   const formattedDate = dateToSet ? `${dateToSet.getFullYear()}-${(dateToSet.getMonth() + 1).toString().padStart(2, '0')}-${dateToSet.getDate().toString().padStart(2, '0')}` : '';
   this.modelValuation.controls['valuationDate'].patchValue(formattedDate);
+  if(this.modelValuation.controls['industry'].value && this.selectedIndustry){
+    const indst = this.selectedIndustry;
+    this.valuationService.getIndustries(indst?._id).subscribe((resp: any) => {
+      if(resp.length !== 0){
+        this.subIndustries = resp;
+      }
+      else{
+        console.log("emptying sub-industry")
+        this.subIndustries = [];
+        this.modelValuation.controls['subIndustry'].setValue('');
+      }
+    });
+    this._dataReferencesService.getIndustriesRatio(indst?._id).subscribe((resp: any) => {
+      this.industriesRatio = resp[0];
+    });
+    this._dataReferencesService.getBetaIndustriesById(indst?._id).subscribe((resp: any) => {
+      this.betaIndustriesId = resp;
+    });
+  }
    }
   }
   loadValues(){
@@ -251,6 +272,7 @@ export class GroupModelControlsComponent implements OnInit {
       this.valuationService.getIndustries(indst?._id).subscribe((resp: any) => {
         if(resp.length !== 0){
           this.subIndustries = resp;
+          this.selectedIndustry = indst;
         }
         else{
           this.subIndustries = [];
@@ -389,8 +411,11 @@ isSelectedpreferenceRatio(value:any){
     // validate form controls
     let control:any;
     control = { ...this.modelValuation.controls };
-    if(this.subIndustries.length <= 0){
+    if(this.subIndustries?.length <= 0){
       delete control.subIndustry;
+    }
+    else if(this.selectedIndustry){
+      payload['selectedIndustry'] = this.selectedIndustry;
     }
     const modelsNotRequireProjection = isSelected('NAV', this.modelValuation.controls['model'].value) || isSelected('CTM', this.modelValuation.controls['model'].value) || isSelected('Relative_Valuation', this.modelValuation.controls['model'].value)
     const mmodelsRequireProjection = isSelected('FCFE', this.modelValuation.controls['model'].value) || isSelected('FCFF', this.modelValuation.controls['model'].value) || isSelected('Excess_Earnings', this.modelValuation.controls['model'].value)
@@ -492,7 +517,9 @@ isSelectedpreferenceRatio(value:any){
 
   subIndustryChange(val:any){
     if(val){
-      this.valuationService.getCompanies(val).subscribe((resp: any) => {
+      const parts = val.split(': ');
+      const id = parts[1]; 
+      this.valuationService.getCompanies(id).subscribe((resp: any) => {
         if(resp.length>0){
           this.preferenceCompanies = resp;
         }

@@ -66,6 +66,10 @@ export class NavbarDetailsComponent implements OnInit{
           if(stateFourDetails){
             localStorage.setItem('stepFourStats',`${stateFourDetails}`)
           }
+          const stateFiveDetails  = processStateDetails?.fifthStageInput?.formFillingStatus;
+          if(stateFiveDetails){
+            localStorage.setItem('stepFiveStats',`${stateFiveDetails}`)
+          }
           this.checkstepStat()
           this.selectedMenuItem = step
         }
@@ -78,7 +82,7 @@ export class NavbarDetailsComponent implements OnInit{
   }
   selectMenuItem(route: string): void {
     this.selectedMenuItem = route;
-    this.currentStep = route
+    this.currentStep = route;
     localStorage.setItem('step',route);
     this.calculationService.steps.next(parseInt(route));
   }

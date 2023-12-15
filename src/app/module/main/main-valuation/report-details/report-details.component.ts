@@ -243,6 +243,12 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
             }
             const dialogRef =  this.dialog.open(GenericModalBoxComponent, {data:dataSet,width:'80%',disableClose: true});
             this.reportGenerate = false;
+            const {reportId,...rest} = payload;
+            const processStateModel ={
+              fifthStageInput:{...rest,formFillingStatus:false,valuationReportId:response,valuationResultId:reportId},
+              step:4
+            }
+            this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
         }
         },
         (error)=>{

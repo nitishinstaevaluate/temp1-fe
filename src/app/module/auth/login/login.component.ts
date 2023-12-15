@@ -46,7 +46,7 @@ export class LoginComponent  implements OnInit {
           duration: 4000,
           panelClass: 'app-notification-success'
         })
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/dashboard/panel']);
         this.disabled='';
       },
       (error:any)=>{

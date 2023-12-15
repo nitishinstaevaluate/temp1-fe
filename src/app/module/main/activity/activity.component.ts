@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ValuationService } from '../../../shared/service/valuation.service';
 import { environment } from 'src/environments/environment';
-import { ALL_MODELS, PAGINATION_VAL } from 'src/app/shared/enums/constant';
+import { ALL_MODELS, MODELS, PAGINATION_VAL } from 'src/app/shared/enums/constant';
 import { AuthService } from 'src/app/shared/service/auth.service';
 import { Router } from '@angular/router';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
@@ -68,7 +68,7 @@ export class ActivityComponent {
     if(processId){
       localStorage.setItem('processStateId',`${processId}`)
       localStorage.setItem('execProcess',`true`)
-      this.route.navigate(['/dashboard']);
+      this.route.navigate(['/dashboard/valuation']);
     }
   }
 
@@ -88,7 +88,7 @@ export class ActivityComponent {
     return str;
   }
 
-  downloadReport(valuationReportId:string,model:any){
+  downloadReport(valuationReportId:string,model:any,company:string){
     if(!valuationReportId)
       return this.snackBar.open('Please complete all the details', 'OK', {
         horizontalPosition: 'right',
@@ -107,7 +107,7 @@ export class ActivityComponent {
           duration: 2000,
           panelClass: 'app-notification-success',
         });
-        saveAs(reportData, 'Valuation Report.pdf');
+        saveAs(reportData, `${company}.pdf`);
         this.ngxLoaderService.stop();
     }
     },
@@ -121,5 +121,26 @@ export class ActivityComponent {
       });
     })
     return;
+  }
+
+  getValuation(modelArray:string,processData:any){
+    if(processData.thirdStageInput || processData.fourthStageInput){
+
+      if(modelArray.length === 1 && (modelArray.includes(MODELS.FCFE) || modelArray.includes(MODELS.FCFF) || modelArray.includes(MODELS.EXCESS_EARNINGS) || modelArray.includes(MODELS.NAV))){
+        return processData.thirdStageInput.appData.valuationResult[0].valuation;
+      }
+      else if(modelArray.length === 1 && (modelArray.includes(MODELS.COMPARABLE_INDUSTRIES) || modelArray.includes(MODELS.RELATIVE_VALUATION))){
+        return processData.thirdStageInput.appData.valuationResult[0].valuation?.finalPriceAvg;
+      }
+      else if(processData.fourthStageInput?.totalWeightageModel){
+        return processData.fourthStageInput.totalWeightageModel?.weightedVal;
+      }
+      else{
+        return ''
+      }
+    }
+    else{
+      return ' '
+    }
   }
 }

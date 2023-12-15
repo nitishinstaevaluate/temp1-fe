@@ -114,11 +114,11 @@
               </div>
 
               <!-- sub-industry -->
-                <div class="col-md-6 field"  *ngIf="modelValuation.controls['industry'].value && subIndustries.length > 0">
+                <div class="col-md-6 field"  *ngIf="modelValuation.controls['industry'].value && selectedIndustry?.industry &&  subIndustries.length > 0">
                       <div class="material-textfield">
                         <select id="subIndustry" class="new-inp" #subIndustryVal (change)="subIndustryChange(subIndustryVal.value)" formControlName="subIndustry">
                           <option value="" disabled selected>Select sub-industry</option>
-                          <option *ngFor="let doc of subIndustries"  [value]="doc._id">{{doc.subIndustry}}</option>
+                          <option *ngFor="let doc of subIndustries"  [ngValue]="doc._id">{{doc.subIndustry}}</option>
                         </select>
                         <label for="subIndustry">Sub-Industry</label>
                       </div>

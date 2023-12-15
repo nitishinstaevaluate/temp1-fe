@@ -10,7 +10,7 @@
                 <mat-tab label="Balance Sheet">
                     <app-balance-sheet-details [transferStepperTwo]="transferStepperTwo" (balanceSheetData)="balanceSheetData($event)" [thirdStageInput]="thirdStageInput"></app-balance-sheet-details>
                 </mat-tab>
-                <mat-tab label="Assessment of Working Capital" *ngIf="!hasSingleModel('NAV')">
+                <mat-tab label="Assessment of Working Capital" *ngIf="hasSingleModel('NAV') || hasSingleModel('Relative_Valuation') || hasSingleModel('CTM') ">
                     <app-assessment-details [transferStepperTwo]="transferStepperTwo" (assessmentSheetData)="assessmentSheetData($event)" [thirdStageInput]="thirdStageInput"></app-assessment-details>
                 </mat-tab>
             </mat-tab-group>
@@ -147,7 +147,7 @@
 </div>
 </div>
 
-  <div *ngIf="isLoadingBalanceSheet || isLoadingProfitLoss || isLoadingAssessmentSheet">
+  <div *ngIf="isLoadingBalanceSheet || isLoadingProfitLoss">
     <app-ngx-ui-loader [loader]="'reviewForm'"></app-ngx-ui-loader>
   </div>
 </div>
