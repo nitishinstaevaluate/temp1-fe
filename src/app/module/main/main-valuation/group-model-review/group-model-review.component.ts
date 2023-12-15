@@ -242,8 +242,36 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
     return this.transferStepperTwo?.model.includes(value) ? true :false;
   }
   hasSingleModel(modelName:string){
-    if(this.step === 3 && this.transferStepperTwo?.excelSheetId){
-      return (isSelected(modelName,this.transferStepperTwo?.model) && this.transferStepperTwo.model.length <= 1)
+    if(!this.transferStepperTwo){
+      if(this.thirdStageInput?.formOneData?.model.includes(modelName) && this.thirdStageInput.formOneData.model.length > 1){
+        const assetApproach = this.thirdStageInput.formOneData.model.includes(MODELS.NAV)
+        const marketApproach = this.thirdStageInput.formOneData.model.includes(MODELS.RELATIVE_VALUATION) || this.thirdStageInput.formOneData.model.includes(MODELS.COMPARABLE_INDUSTRIES)
+        if(assetApproach && marketApproach){
+          return false;
+        }
+        else{
+          return true
+        }
+      }
+      else if (this.thirdStageInput?.formOneData?.model.includes(modelName) && this.thirdStageInput.formOneData.model.length <= 1){
+        return false;
+      }
+    }
+    else if(this.transferStepperTwo){
+      if(this.transferStepperTwo?.model?.includes(modelName) && this.transferStepperTwo?.model.length > 1){
+        const assetApproach = this.transferStepperTwo.model.includes(MODELS.NAV)
+        const marketApproach = this.transferStepperTwo.model.includes(MODELS.RELATIVE_VALUATION) || this.transferStepperTwo.model.includes(MODELS.COMPARABLE_INDUSTRIES);
+        if(assetApproach && marketApproach){
+          return false
+        }
+        else{
+          return true
+        }
+
+      }
+      else if (this.transferStepperTwo?.model.includes(modelName) && this.transferStepperTwo?.model.length <= 1){
+        return false;
+      }
     }
     return false;
   }
