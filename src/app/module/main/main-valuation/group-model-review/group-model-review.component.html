@@ -10,7 +10,7 @@
                 <mat-tab label="Balance Sheet">
                     <app-balance-sheet-details [transferStepperTwo]="transferStepperTwo" (balanceSheetData)="balanceSheetData($event)" [thirdStageInput]="thirdStageInput"></app-balance-sheet-details>
                 </mat-tab>
-                <mat-tab label="Assessment of Working Capital" *ngIf="hasSingleModel('NAV') || hasSingleModel('Relative_Valuation') || hasSingleModel('CTM') ">
+                <mat-tab label="Assessment of Working Capital" *ngIf="hasSingleModel('FCFE') || hasSingleModel('FCFF') || hasSingleModel('Excess_Earnings') ">
                     <app-assessment-details [transferStepperTwo]="transferStepperTwo" (assessmentSheetData)="assessmentSheetData($event)" [thirdStageInput]="thirdStageInput"></app-assessment-details>
                 </mat-tab>
             </mat-tab-group>
