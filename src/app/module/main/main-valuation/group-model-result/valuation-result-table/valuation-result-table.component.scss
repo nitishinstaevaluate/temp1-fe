@@ -69,7 +69,7 @@
   }
   .table-container {
     overflow-x: auto;
-    max-width: 100%; /* Optional: Set a maximum width if needed */
+    max-width: 100%;
   }
   
   table {
@@ -106,59 +106,40 @@
   /* Style table data cells on hover */
   tr:hover td {
     background-color: #f5f5f5;
+    .line-item-even:hover{
+      background-color: #f5f5f5 !important;
+    }
+  }
+  tr:hover {
+    background-color: #f5f5f5;
+    .line-item-even{
+      background-color: #f5f5f5 !important;
+    }
   }
   .nav-tr:hover td {
     background-color: rgb(168 242 241 / 26%);
   }
   .nav-style-header{
-    // font-weight: 600;
-    // text-transform: capitalize;
-    // border-color:  1px solid #ddd !important;
-    // font-size: 15px;
-    // color: #004e67 !important;
-    // font-family: 'AR One Sans';
-    // text-align: center;
     color: #666666 !important;
     font-size: 15px !important;
     font-weight: 500 !important;
-    // min-width:30% ;
-    // font-family: 'Raleway', sans-serif !important;
     font-family: 'AR One Sans', sans-serif !important;
-    // background: linear-gradient(90deg, #c7ece4, #dbffff);
-    // justify-content: left;
     padding-left: 3% !important;
     text-align: left;
   }
   .nav-style-sub-header{
-    // font-weight: 600;
-    // text-transform: capitalize;
-    // border-color:  1px solid #ddd !important;
-    // font-size: 14px;
-    // font-family: 'Open Sans', sans-serif;
-    // color: #1c6e8f;
-    // text-align: left;
-    // padding-left: 3% !important;
 
     color: #666666 !important;
     font-size: 13px !important;
     font-weight: 500;
-    // font-family: 'Raleway', sans-serif !important;
     font-family: 'AR One Sans', sans-serif !important;
     text-align: left;
     padding-left: 4% !important;
   }
   .nav-style-sub-text{
-    // font-weight: 600;
-    // text-transform: capitalize;
-    // border-color:  1px solid #ddd !important;
-    // font-size: 14px;
-    // font-family: 'Titillium Web', sans-serif;
-    // color: #1c6e8f;
-    // text-align: center;
     color: #666666 !important;
     font-size: 13px !important;
     font-weight: 500;
-    // font-family: 'Raleway', sans-serif !important;
     font-family: 'AR One Sans', sans-serif !important;
     text-align: left;
     padding-left: 4% !important;
@@ -365,5 +346,39 @@
     top:1%;
     right: 2%;
     font-family: 'AR One Sans', sans-serif;
+  }
+
+  .scroll-container{
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .increase-table-width {
+    width: 1500px;
+  }
+
+  .line-item-even{
+    width: 20%;
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background-color: #ffffff !important;
+  }
+  .line-item-even:hover{
+    background-color: #f5f5f5 !important;
+  }
+  .line-item-odd{
+    width: 20%;
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background-color: #f5f5f5;
+  }
+  .sticky-header{
+    background-color:#e7faf4;
+    position: sticky;
+    left: 0;
+    z-index: 1;
   }
   // new scss ends

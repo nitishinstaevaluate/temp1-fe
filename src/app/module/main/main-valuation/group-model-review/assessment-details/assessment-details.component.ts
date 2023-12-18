@@ -238,6 +238,25 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
     }
   }
 
+  formatNegativeAndPositiveValues(value:any){
+    if(value && `${value}`.includes('-')){
+      let formattedNumber = value.toLocaleString(undefined, {
+        minimumIntegerDigits: 1,
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+      return `(${`${formattedNumber}`.replace(/-/g,'')})`;
+    }
+    else if(value){
+      return value.toLocaleString(undefined, {
+        minimumIntegerDigits: 1,
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })
+    }
+    return  null;
+  }
+  
   contentIsBig(data:any){
     if(data && Object.keys(data[0]).length > 6){
       return true;

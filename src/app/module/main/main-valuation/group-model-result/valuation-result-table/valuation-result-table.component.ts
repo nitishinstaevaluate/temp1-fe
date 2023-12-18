@@ -325,12 +325,32 @@ checkIndustryOrCompany(){
   return this.transferStepperthree.formOneAndTwoData?.preferenceRatioSelect === 'Company Based' ? true :false;
 }
 
-formatNumber(value: any): string {
+formatNumber(value: any) {
   if (!isNaN(value)  && typeof value === 'number') {
-    return value?.toFixed(2);
-  } else {
-    return value;
+    if(value && `${value}`.includes('-')){
+      let formattedNumber = value.toLocaleString(undefined, {
+        minimumIntegerDigits: 1,
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+      return `(${`${formattedNumber}`.replace(/-/g,'')})`;
+    }
+    else if(value){
+     const formatValue =  value.toLocaleString(undefined, {
+        minimumIntegerDigits: 1,
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })
+      return formatValue;
+    }
+    else{
+     return value.toFixed(2);
+    }
   }
+    else{
+      return  value;
+    }
+  
 }
 
 checkVal(value:string,model:any){
@@ -416,6 +436,12 @@ exportPdf(modelName:string){
       // Handle the error here
     }
   );
+}
+
+contentIsBig(data:any){
+  if(data && data[0].length > 7)
+    return true;
+  return false
 }
 }
 
