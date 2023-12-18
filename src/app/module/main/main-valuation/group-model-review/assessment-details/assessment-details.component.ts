@@ -143,9 +143,30 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
 
           const excelSheetId = this.thirdStageInput?.formThreeData?.isExcelModified ?this.thirdStageInput?.formThreeData.modifiedExcelSheetId :  this.thirdStageInput?.formOneData.excelSheetId;
 
+          let excelId;
+          if(this.thirdStageInput){
+            if(localStorage.getItem('excelStat')==='true'){
+              excelId = `edited-${this.thirdStageInput?.formOneData?.excelSheetId}`
+            }
+            else if(this.thirdStageInput?.formThreeData?.isExcelModified){
+              excelId = this.thirdStageInput?.formThreeData.modifiedExcelSheetId
+            }
+            else {
+              excelId = this.thirdStageInput.formOneData?.excelSheetId 
+            }
+          } 
+          else{
+            if(localStorage.getItem('excelStat')==='true'){
+              excelId = `edited-${this.transferStepperTwo?.excelSheetId}`
+            }
+            else {
+              excelId = this.transferStepperTwo?.excelSheetId
+            }
+          }
+
           const payload = {
             excelSheet:'Assessment of Working Capital',
-            excelSheetId:excelSheetId ? excelSheetId :localStorage.getItem('excelStat')==='true' ? `edited-${this.transferStepperTwo.excelSheetId}` : this.transferStepperTwo.excelSheetId,
+            excelSheetId: excelId,
             ...this.editedValues[0] 
           }
 
@@ -215,5 +236,12 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
       this.modifiedExcelSheetId=response.modifiedFileName;
       localStorage.setItem('excelStat','true')
     }
+  }
+
+  contentIsBig(data:any){
+    if(data && Object.keys(data[0]).length > 6){
+      return true;
+    }
+    return false;
   }
 }

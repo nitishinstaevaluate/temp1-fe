@@ -1,4 +1,4 @@
-<mat-table [dataSource]="assessmentDataSource" *ngIf="excelSheetId" class="mat-t">
+<mat-table [dataSource]="assessmentDataSource" [ngClass]="contentIsBig(assessmentDataSource) ? 'increase-table-width mat-t scroll-content' : 'mat-t scroll-content'" *ngIf="excelSheetId">
     <ng-container *ngFor="let column of displayColumns;let columnIndex = index" [matColumnDef]="column">
       <mat-header-cell *matHeaderCellDef [ngClass]="column === 'Particulars' ? 'inc-width' : ''">{{ column }}</mat-header-cell>
       <mat-cell *matCellDef="let element" [ngClass]="checkHeader(element,columnIndex) ? 'highlight-header' :  checkSubHeader(element,columnIndex) ? 'label-highlight' : checkType(element[column]) && !isNumberOrEmpty(element[column]) ? 'label-c' : '' ">
