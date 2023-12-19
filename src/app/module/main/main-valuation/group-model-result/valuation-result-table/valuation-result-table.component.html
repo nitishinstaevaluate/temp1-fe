@@ -79,7 +79,7 @@
       </div>
   </div>
   </mat-tab> 
-  <mat-tab [label]="checkIndustryOrCompany() ? 'Comparable Companies' : 'Comparable Industries'" *ngIf="relativeVal">
+  <mat-tab [label]="checkIndustryOrCompany() ? 'Comparable Companies' : 'Comparable Transaction'" *ngIf="relativeVal">
     <div class="btn" style="text-align: right;width: 100%;">
       <button mat-stroked-button class="exp">
         <a class="exp-a" [href]="HOST + 'upload/generate/' + (transferStepperthree?.formThreeData?.appData?.reportId || 'null') + (checkIndustryOrCompany() ? '/Relative_Valuation/' : '/CTM/') + 'true'" download>Export</a>
