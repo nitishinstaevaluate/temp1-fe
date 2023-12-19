@@ -184,13 +184,13 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
   }
   checkModelWeightageData(){
     const resultData:any = this.transferStepperthree?.formThreeData?.appData?.valuationResult
-    const inputData = this.transferStepperthree.formOneAndTwoData.model;
-    if(this.data?.length !== inputData?.length){
+    const inputData = this.transferStepperthree?.formOneAndTwoData?.model;
+    if(this.data && inputData && this.data?.length !== inputData?.length){
       this.calculateModelWeigtagePayload.results = [];
       this.loadWeightageSlider();
     }
     let bool=true;
-    if(resultData?.length === inputData?.length){
+    if(resultData && inputData &&  resultData?.length === inputData?.length){
       for (const oldModels of resultData){
         const modelExist = inputData.includes(oldModels.model);
         if(!modelExist){
