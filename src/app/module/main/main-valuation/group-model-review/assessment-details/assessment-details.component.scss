@@ -139,3 +139,21 @@ mat-header-row{
     opacity: 1; 
   }
   //input scss ends
+
+  .scroll-container{
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .scroll-content{
+    display: inline-block;
+  }
+
+  .mat-column-Particulars {
+    position: sticky;
+    left: 0;
+    min-width: 20%;
+  }
+  .increase-table-width {
+    width: 1500px;
+  }

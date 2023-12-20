@@ -58,81 +58,59 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
     if(!this.transferStepperthree){
       this.transferStepperthree= this.fourthStageInput;
 
-      this.transferStepperthree?.formThreeData?.appData?.valuationResult.map(
-        (response: any) => {
-          if(response.model === 'FCFE'){
-            this.fcfeValuation =  response.valuation;
-            const fcfeIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "FCFE")
-            if(fcfeIndex === -1)
-            {
-              this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.fcfeValuation,weightage:0});
-            }
-            else{
-              this.calculateModelWeigtagePayload.results.splice(fcfeIndex,1,{model:response.model,value:this.fcfeValuation,weightage:0})
-            }
+      this.loadWeightageSlider();
+
+      if(this.transferStepperthree?.formFourData?.modelValue){
+        this.transferStepperthree.formFourData.modelValue.map((modelWeightage:any)=>{
+          this.setModelSliderValue(modelWeightage.model,(modelWeightage.weight).toFixed(2)*100,(modelWeightage.weight).toFixed(2)*100 - 100)
+        })
+        this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
+          if(response.status){
+            this.totalModelWeightageValue = response.result;
+            this.data = response?.result?.modelValue;
+            this.finalWeightedValue = response?.result?.weightedVal ?? 0;
           }
-          else if(response.model === 'FCFF'){
-            this.fcffValuation = response.valuation;
-            const fcffIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "FCFF");
-            if(fcffIndex === -1)
-            {
-              this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.fcffValuation,weightage:0});
-            }
-            else{
-              this.calculateModelWeigtagePayload.results.splice(fcffIndex,1,{model:response.model,value:this.fcffValuation,weightage:0});
-            }
-          }
-          else if(response.model === 'Relative_Valuation'){
-            this.relativeValuation = response.valuation?.finalPriceMed;
-            const relativeValuationIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "Relative_Valuation");
-            if(relativeValuationIndex === -1)
-            {
-              this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.relativeValuation,weightage:0});
-            }
-            else{
-              this.calculateModelWeigtagePayload.results.splice(relativeValuationIndex,1,{model:response.model,value:this.relativeValuation,weightage:0});
-            }
-          }
-          else if(response.model === 'CTM'){
-            this.comparableIndustryValuation = response.valuation?.finalPriceMed;
-            const comparableIndustriesIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "CTM");
-            if(comparableIndustriesIndex === -1)
-            {
-              this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.comparableIndustryValuation,weightage:0});
-            }
-            else{
-              this.calculateModelWeigtagePayload.results.splice(comparableIndustriesIndex,1,{model:response.model,value:this.comparableIndustryValuation,weightage:0});
-            }
-          }
-          else if(response.model === 'Excess_Earnings'){
-            this.excessEarnValuation = response.valuation;
-            const excessEarningIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "Excess_Earnings");
-            if(excessEarningIndex === -1)
-            {
-              this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.excessEarnValuation,weightage:0});
-            }
-            else{
-              this.calculateModelWeigtagePayload.results.splice(excessEarningIndex,1,{model:response.model,value:this.excessEarnValuation,weightage:0});
-            }
-          }
-          else if(response.model === 'NAV'){
-            this.navValuation = response.valuation;
-            const navIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "NAV");
-            if(navIndex === -1)
-            {
-              this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.navValuation,weightage:0});
-            }
-            else{
-              this.calculateModelWeigtagePayload.results.splice(navIndex,1,{model:response.model,value:this.navValuation,weightage:0});
-            }
-          }
-        }
-      );
+        })
+      }
     }
   }
+
   ngOnChanges(changes:SimpleChanges){
-    // this.checkProcessExist();
-    this.transferStepperthree;
+   
+    this.loadWeightageSlider()
+    if(changes['transferStepperthree']?.currentValue && changes['transferStepperthree']?.previousValue ){
+        const currentModel:any=[];
+        const previousModel:any=[];
+        this.data=null;
+        // this.fcfeSlider=0;
+        // this.fcffSlider=0;
+        // this.navSlider=0;
+        // this.comparableIndustrySlider=0;
+        // this.relativeValSlider=0;
+        // this.excessEarnSlider=0;
+        // console.log(changes['transferStepperthree']?.currentValue?.formThreeData?.appData,"current final")
+        // console.log(changes['transferStepperthree']?.previousValue?.formThreeData?.appData,"previous final")
+        changes['transferStepperthree']?.currentValue?.formThreeData?.appData?.valuationResult.map((val:any)=>{
+          currentModel.push(val.model); 
+        })
+        changes['transferStepperthree']?.previousValue?.formThreeData?.appData?.valuationResult.map((val:any)=>{
+          previousModel.push(val.model);
+        })
+        const elementsNotInArray = previousModel.filter((item:any) => !currentModel.includes(item));
+        if(elementsNotInArray){
+          for (let ele of elementsNotInArray){
+            // console.log(ele,"for loop ele along with the payload:", this.calculateModelWeigtagePayload.results)
+            const findIndex=this.calculateModelWeigtagePayload.results.findIndex((res:any)=>res.model === ele);
+            // console.log(findIndex,"index to remove")
+            // console.log(this.calculateModelWeigtagePayload.results,"before payload")
+            this.calculateModelWeigtagePayload.results.splice(findIndex,1);
+            // console.log(this.calculateModelWeigtagePayload.results,"after payload");
+          }
+        }
+    }
+  }
+
+  loadWeightageSlider(){
     this.transferStepperthree?.formThreeData?.appData?.valuationResult.map(
       (response: any) => {
         if(response.model === 'FCFE'){
@@ -203,39 +181,27 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
         }
       }
     );
-
-    if(changes['transferStepperthree']?.currentValue && changes['transferStepperthree']?.previousValue ){
-        const currentModel:any=[];
-        const previousModel:any=[];
-        this.data=null;
-        this.fcfeSlider=0;
-        this.fcffSlider=0;
-        this.navSlider=0;
-        this.comparableIndustrySlider=0;
-        this.relativeValSlider=0;
-        this.excessEarnSlider=0;
-        // console.log(changes['transferStepperthree']?.currentValue?.formThreeData?.appData,"current final")
-        // console.log(changes['transferStepperthree']?.previousValue?.formThreeData?.appData,"previous final")
-        changes['transferStepperthree']?.currentValue?.formThreeData?.appData?.valuationResult.map((val:any)=>{
-          currentModel.push(val.model); 
-        })
-        changes['transferStepperthree']?.previousValue?.formThreeData?.appData?.valuationResult.map((val:any)=>{
-          previousModel.push(val.model);
-        })
-        // console.log(currentModel,"current array",previousModel,"previous array")
-        const elementsNotInArray = previousModel.filter((item:any) => !currentModel.includes(item));
-        if(elementsNotInArray){
-          for (let ele of elementsNotInArray){
-            // console.log(ele,"for loop ele along with the payload:", this.calculateModelWeigtagePayload.results)
-            const findIndex=this.calculateModelWeigtagePayload.results.findIndex((res:any)=>res.model === ele);
-            // console.log(findIndex,"index to remove")
-            // console.log(this.calculateModelWeigtagePayload.results,"before payload")
-            this.calculateModelWeigtagePayload.results.splice(findIndex,1);
-            // console.log(this.calculateModelWeigtagePayload.results,"after payload");
-          }
-        }
+  }
+  checkModelWeightageData(){
+    const resultData:any = this.transferStepperthree?.formThreeData?.appData?.valuationResult
+    const inputData = this.transferStepperthree?.formOneAndTwoData?.model;
+    if(this.data && inputData && this.data?.length !== inputData?.length){
+      this.calculateModelWeigtagePayload.results = [];
+      this.loadWeightageSlider();
     }
-  
+    let bool=true;
+    if(resultData && inputData &&  resultData?.length === inputData?.length){
+      for (const oldModels of resultData){
+        const modelExist = inputData.includes(oldModels.model);
+        if(!modelExist){
+          bool = false
+        }
+      }
+    return bool;
+    }
+    else{
+      return false
+    }
   }
   
   saveAndNext(){
@@ -411,13 +377,11 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
 
         case MODELS.COMPARABLE_INDUSTRIES:
           this.comparableIndustryMaxValue = maxValue;
-          console.log(maxValue,"available maxValue CTM");
           return maxValue;
           break;
 
         case MODELS.NAV:
           this.navMaxValue = maxValue;
-          console.log(maxValue,"available maxValue NAV");
           return maxValue;
           break;
           

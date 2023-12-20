@@ -1,4 +1,4 @@
-<mat-table [dataSource]="assessmentDataSource" *ngIf="excelSheetId" class="mat-t">
+<mat-table [dataSource]="assessmentDataSource" [ngClass]="contentIsBig(assessmentDataSource) ? 'increase-table-width mat-t scroll-content' : 'mat-t scroll-content'" *ngIf="excelSheetId">
     <ng-container *ngFor="let column of displayColumns;let columnIndex = index" [matColumnDef]="column">
       <mat-header-cell *matHeaderCellDef [ngClass]="column === 'Particulars' ? 'inc-width' : ''">{{ column }}</mat-header-cell>
       <mat-cell *matCellDef="let element" [ngClass]="checkHeader(element,columnIndex) ? 'highlight-header' :  checkSubHeader(element,columnIndex) ? 'label-highlight' : checkType(element[column]) && !isNumberOrEmpty(element[column]) ? 'label-c' : '' ">
@@ -6,11 +6,11 @@
           <span>{{ element[column] }}</span>
         </ng-container>
         <ng-container *ngIf="ifOnlyNumber(element) && columnIndex !== 0">
-          <span style="font-size: 13px;font-weight: 500;color: #666666;">{{ element[column] | number : '1.2-2'}}</span>
+          <span style="font-size: 13px;font-weight: 500;color: #666666;">{{ formatNegativeAndPositiveValues(element[column])}}</span>
         </ng-container>
         <!-- <mat-form-field class="assessment-field" [appearance]="appearance" style="margin-bottom: -9%;width: 100%;" *ngIf="checkIfEditable(element) && columnIndex !== 0" [floatLabel]="floatLabelType"> -->
           <!-- <input class="input-pl"  [value]="element[column]"  matInput placeholder="---" (blur)="onInputChange($event.target, column,element)"> -->
-          <input class="new-inp" style="text-align: center;color: #666666 !important;font-weight: 500;" (blur)="onInputChange($event.target, column,element)" placeholder="-" type="text" [value]="element[column] | number : '1.2-2'" *ngIf="checkIfEditable(element) && columnIndex !== 0"/>
+          <input class="new-inp" style="text-align: center;color: #666666 !important;font-weight: 500;" (blur)="onInputChange($event.target, column,element)" placeholder="-" type="text" [value]="formatNegativeAndPositiveValues(element[column])" *ngIf="checkIfEditable(element) && columnIndex !== 0"/>
           
         <!-- </mat-form-field> -->
     

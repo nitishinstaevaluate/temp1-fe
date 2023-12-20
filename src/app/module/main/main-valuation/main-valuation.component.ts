@@ -359,10 +359,10 @@ export class MainValuationComponent implements OnInit{
               updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
             }
           }) 
-          this.formFourData = {formOneAndTwoData : updatedPayload,formThreeData:processStateDetails.thirdStageInput};
+          this.formFourData = {formOneAndTwoData : updatedPayload,formThreeData:processStateDetails.thirdStageInput,formFourData:processStateDetails?.fourthStageInput?.totalWeightageModel};
         }
         if(processStateDetails?.fourthStageInput){
-          this.formFiveData = {...this.formFourData,formFourData : processStateDetails.fourthStageInput?.totalModelWeightageValue,formFiveData:processStateDetails?.fifthStageInput}
+          this.formFiveData = {...this.formFourData,formFourData : processStateDetails.fourthStageInput?.totalWeightageModel,formFiveData:processStateDetails?.fifthStageInput}
         }
 
         this.isProcessExistLoader = false;

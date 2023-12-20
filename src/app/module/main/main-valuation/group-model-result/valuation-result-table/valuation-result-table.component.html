@@ -7,24 +7,22 @@
       </button>
     </div>
     <div>
-      <!-- <h5 class="company-head-fcfe">FCFE Result</h5> -->
       <div class="table-container">
         <!-- fcfe table starts -->
-      <table>
-        <thead>
-          <!-- <tr style="border: 1px solid #d1d1d1;font-size: 15px;text-align: center;" >
-            <th colspan="7" style="text-align: right;padding-right: 2%;">Amount in {{transferStepperthree?.formOneAndTwoData?.currencyUnit}} ({{transferStepperthree?.formOneAndTwoData?.reportingUnit}})</th>
-          </tr> -->
-          <tr style="text-transform: capitalize;" class="header">
-            <th *ngFor="let columnName of fcfeColumn">{{ columnName }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let row of dataSourceFcfe" class="content">
-            <td style="text-align: center;font-size: 14px;text-transform: capitalize;" [ngClass]="checkVal(cellValue,'fcfe') ? 'make-bold' : 'make-light'" *ngFor="let cellValue of row">{{ formatNumber(cellValue) }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="scroll-container">
+        <table [ngClass]="contentIsBig(dataSourceFcfe) ? 'increase-table-width' : ''" >
+          <thead>
+            <tr style="text-transform: capitalize;" class="header">
+              <th *ngFor="let columnName of fcfeColumn" [ngClass]="columnName === 'particulars' ?  contentIsBig(dataSourceFcfe) ? 'sticky-header' : '' : ''">{{ columnName }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of dataSourceFcfe;let i = index" class="content">
+              <td style="text-align: center;font-size: 14px;text-transform: capitalize;" [ngClass]="checkVal(cellValue,'fcfe') ? contentIsBig(dataSourceFcfe) ?  (i % 2 === 0  ? 'make-bold line-item-even' : 'make-light line-item-odd')  : 'make-light': 'make-light'" *ngFor="let cellValue of row">{{ formatNumber(cellValue) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <!-- fcfe table ends -->
       </div>
   </div>
@@ -39,18 +37,15 @@
       <!-- <h5 class="company-head-fcff">FCFF Result</h5> -->
       <div class="table-container">
         <!-- table fcff  starts -->
-        <table>
+        <table [ngClass]="contentIsBig(dataSourceFcff) ? 'increase-table-width' : ''">
           <thead>
-            <!-- <tr style="border: 1px solid #d1d1d1;font-size: 15px;text-align: center;" >
-              <th colspan="7" style="text-align: right;padding-right: 2%;">Amount in {{transferStepperthree?.formOneAndTwoData?.currencyUnit}} ({{transferStepperthree?.formOneAndTwoData?.reportingUnit}})</th></tr>
-            <tr> -->
             <tr style="text-transform: capitalize;" class="header">
-              <th *ngFor="let columnName of fcffColumn">{{ columnName }}</th>
+              <th *ngFor="let columnName of fcffColumn" [ngClass]="columnName === 'particulars' ?  contentIsBig(dataSourceFcff) ? 'sticky-header' : '' : ''">{{ columnName }}</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let row of dataSourceFcff" class="content">
-              <td style="text-align: center;font-size: 14px;text-transform: capitalize;" [ngClass]="checkVal(cellValue,'fcff') ? 'make-bold' : 'make-light'" *ngFor="let cellValue of row">{{ formatNumber(cellValue) }}</td>
+            <tr *ngFor="let row of dataSourceFcff;let i = index" class="content">
+              <td style="text-align: center;font-size: 14px;text-transform: capitalize;" [ngClass]="checkVal(cellValue,'fcff') ? contentIsBig(dataSourceFcff) ?  (i % 2 === 0  ? 'make-bold line-item-even' : 'make-light line-item-odd')  : 'make-light' : 'make-light'" *ngFor="let cellValue of row">{{ formatNumber(cellValue) }}</td>
             </tr>
           </tbody>
         </table>
@@ -70,9 +65,6 @@
         <!-- excess earning table starts -->
       <table>
         <thead>
-          <!-- <tr style="border: 1px solid #d1d1d1;font-size: 15px;text-align: center;" >
-            <th colspan="7" style="text-align: right;padding-right: 2%;">Amount in {{transferStepperthree?.formOneAndTwoData?.currencyUnit}} ({{transferStepperthree?.formOneAndTwoData?.reportingUnit}})</th></tr>
-          <tr> -->
           <tr style="text-transform: capitalize;" class="header">
             <th *ngFor="let columnName of excessEarnColumn">{{ columnName }}</th>
           </tr>
@@ -87,7 +79,7 @@
       </div>
   </div>
   </mat-tab> 
-  <mat-tab [label]="checkIndustryOrCompany() ? 'Comparable Companies' : 'Comparable Industries'" *ngIf="relativeVal">
+  <mat-tab [label]="checkIndustryOrCompany() ? 'Comparable Companies' : 'Comparable Transaction'" *ngIf="relativeVal">
     <div class="btn" style="text-align: right;width: 100%;">
       <button mat-stroked-button class="exp">
         <a class="exp-a" [href]="HOST + 'upload/generate/' + (transferStepperthree?.formThreeData?.appData?.reportId || 'null') + (checkIndustryOrCompany() ? '/Relative_Valuation/' : '/CTM/') + 'true'" download>Export</a>
@@ -113,11 +105,6 @@
       <!-- <h5 class="head-nav">NAV Result</h5> -->
       <div class="table-container">
         <table>
-          <!-- <thead>
-            <tr class="nav-th">
-              <th colspan="4" style="text-align: right;padding-right: 1%;">Amount in {{transferStepperthree?.formOneAndTwoData?.currencyUnit}} ({{transferStepperthree?.formOneAndTwoData?.reportingUnit}})</th>
-            </tr>
-          </thead> -->
           <thead>
             <tr class="header">
               <th>Particulars</th>
