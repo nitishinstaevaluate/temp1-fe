@@ -72,6 +72,9 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
         this.reportForm.controls['dateOfAppointment'].setValue(this.fifthStageInput?.formFiveData?.dateOfAppointment);
         this.reportForm.controls['appointingAuthorityName'].setValue(this.fifthStageInput?.formFiveData?.appointingAuthorityName);
         this.reportForm.controls['natureOfInstrument'].setValue(this.fifthStageInput?.formFiveData?.natureOfInstrument);
+        this.reportForm.controls['cinNumber'].setValue(this.fifthStageInput?.formFiveData?.cinNumber);
+        this.reportForm.controls['dateOfIncorporation'].setValue(this.fifthStageInput?.formFiveData?.dateOfIncorporation);
+        this.reportForm.controls['companyAddress'].setValue(this.fifthStageInput?.formFiveData?.companyAddress);
         if(this.fifthStageInput?.formFiveData?.reportPurpose){
           this.reportForm.controls['reportPurpose'].setValue(this.fifthStageInput?.formFiveData?.reportPurpose);
           this.dataReferenceService.getReportPurpose(this.fifthStageInput?.formFiveData?.reportPurpose).subscribe((reportPurposeData:any)=>{
@@ -114,6 +117,9 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       reportPurpose:['',[Validators.required]],
       natureOfInstrument:['',[Validators.required]],
       reportSection:[[],[Validators.required]],
+      cinNumber:['',[Validators.required]],
+      dateOfIncorporation:['',[Validators.required]],
+      companyAddress:['',[Validators.required]],
     })
     this.registeredValuerDetails=this.fb.group({
       registeredValuerName:['',[Validators.required]],
@@ -151,6 +157,9 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
   generateReport(){
     const controls = {...this.reportForm.controls}
     delete controls.clientName;
+    delete controls.dateOfIncorporation;
+    delete controls.companyAddress;
+    delete controls.cinNumber;
     const validatedReportForm = this.validateControls(controls);
     if(!validatedReportForm){
         this.reportForm.markAllAsTouched();

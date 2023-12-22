@@ -119,31 +119,49 @@
                         <span class="icon"><mat-icon> email</mat-icon></span>
                         <span class="text"><span class="valuer-i-label">Email:</span> {{registeredValuerDetails.controls['registeredValuerEmailId'].value }}</span>
                       </div>
-                      <!-- <div class="detail">
-                        <span class="icon"><mat-icon>school</mat-icon></span>
-                        <span class="text"><span class="valuer-i-label">Qualifications:</span> {{registeredValuerDetails.controls['registeredValuerQualifications'].value }}</span>
-                      </div> -->
                       <div class="detail">
                         <span class="icon">	<mat-icon>portrait</mat-icon></span>
                         <span class="text"><span class="valuer-i-label">IBBI-ID:</span> {{registeredValuerDetails.controls['registeredValuerIbbiId'].value }}</span>
                       </div>
-                      <!-- <div class="detail">
-                        <span class="icon"><mat-icon>domain</mat-icon></span>
-                        <span class="text"><span class="valuer-i-label">Address:</span> {{registeredValuerDetails.controls['registeredValuerGeneralAddress'].value }}</span>
-                      </div> -->
                     </div>
                   </div>
                 </div>
 
-
+                <!-- Cin number  -->
                 <div class="col-md-6 field" style="padding-top: 3%;">
-                  <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
-                      <mat-label>Nature Of Instrument</mat-label>
-                      <mat-select class="mat-select-value" formControlName="natureOfInstrument">
-                      <mat-option *ngFor="let doc of modelControl.reportDetails.options.natureOfInstrument"  [value]="doc.value">{{doc.name}}</mat-option>
-                  </mat-select>
-                    </mat-form-field> -->
+                  <div class="material-textfield">
+                      <input class="new-inp" formControlName="cinNumber" placeholder="Enter CIN number" type="text" />
+                      <label>CIN Number</label>
+                    </div>
+                    <!-- <span *ngIf="reportForm.controls['cinNumber'].touched && reportForm.controls['cinNumber'].errors">
+                      <span *ngIf="hasError('cinNumber','required',reportForm)" class="error-text">Please enter CIN number</span>
+                    </span> -->
+              </div>
 
+              <!-- Date of incorporation  -->
+              <div class="col-md-6 field" style="padding-top: 3%;">
+                <div class="material-textfield">
+                    <input class="new-inp" formControlName="dateOfIncorporation" placeholder="Select date of incorporation" type="date" />
+                    <label>Date Of Incorporation</label>
+                  </div>
+                  <!-- <span *ngIf="reportForm.controls['dateOfIncorporation'].touched && reportForm.controls['dateOfIncorporation'].errors">
+                    <span *ngIf="hasError('dateOfIncorporation','required',reportForm)" class="error-text">Please enter date of incorporation</span>
+                  </span>  -->
+            </div>
+
+              <!-- company Address -->
+                <div class="col-md-6 field" style="padding-top: 3%;">
+                  <div class="material-textfield">
+                      <input class="new-inp" formControlName="companyAddress" placeholder="Enter company address" type="textarea" />
+                      <label>Company's Address</label>
+                    </div>
+                    <!-- <span *ngIf="reportForm.controls['companyAddress'].touched && reportForm.controls['companyAddress'].errors">
+                      <span *ngIf="hasError('companyAddress','required',reportForm)" class="error-text">Please enter company address</span>
+                    </span> -->
+              </div>
+
+              <!-- nature of instrument -->
+                <div class="col-md-6 field" style="padding-top: 3%;">
                     <div class="material-textfield">
                       <select id="natureOfInstrument" class="new-inp" formControlName="natureOfInstrument">
                         <option value="" disabled selected>Select nature of instrument</option>
