@@ -92,7 +92,12 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
           this.reportPurposeDataChips = this.fifthStageInput?.formFiveData?.reportSection
           this.reportForm.controls['reportSection'].setValue(this.fifthStageInput?.formFiveData?.reportSection);
         }
-        
+        this.registeredValuerDetails.controls['registeredValuerName'].setValue(this.fifthStageInput?.formFiveData?.registeredValuerName)
+        this.registeredValuerDetails.controls['registeredValuerEmailId'].setValue(this.fifthStageInput?.formFiveData?.registeredValuerEmailId)
+        this.registeredValuerDetails.controls['registeredValuerIbbiId'].setValue(this.fifthStageInput?.formFiveData?.registeredValuerIbbiId)
+        this.registeredValuerDetails.controls['registeredValuerMobileNumber'].setValue(this.fifthStageInput?.formFiveData?.registeredValuerMobileNumber)
+        this.registeredValuerDetails.controls['registeredValuerQualifications'].setValue(this.fifthStageInput?.formFiveData?.registeredValuerQualifications)
+        this.registeredValuerDetails.controls['registeredValuerGeneralAddress'].setValue(this.fifthStageInput?.formFiveData?.registeredValuerGeneralAddress)
       }
       this.transferStepperFour = this.fifthStageInput;
     }
