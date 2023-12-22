@@ -156,7 +156,7 @@ loadOnChangeValue(){
         const dialogRef = this.dialog.open(GenericModalBoxComponent,data);
         dialogRef.afterClosed().subscribe((result)=>{
           if (result) {
-            this.fcffForm.controls['expMarketReturn'].patchValue(parseInt(result?.analystConsensusEstimates))
+            this.fcffForm.controls['expMarketReturn'].patchValue(parseFloat(result?.analystConsensusEstimates))
             this.snackBar.open('Analyst Estimation Added','OK',{
               horizontalPosition: 'right',
               verticalPosition: 'top',
