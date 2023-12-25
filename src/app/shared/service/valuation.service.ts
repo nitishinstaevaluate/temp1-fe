@@ -42,8 +42,8 @@ export class ValuationService {
     return this.http.get(`${HOST}upload/sheet/${filename}/${sheetName}`)
   }
  
-  getPaginatedValuations(userId: string, page: number, pageSize: number): Observable<any[]> {
-    const url = `${HOST}process-status-manager/paginate/${userId}?page=${page}&pageSize=${pageSize}`;
+  getPaginatedValuations(page: number, pageSize: number, query?: string): Observable<any[]> {
+    const url = `${HOST}process-status-manager/paginate?page=${page}&pageSize=${pageSize}&query=${query}`;
     return this.http.get<any[]>(url);
   }
   }

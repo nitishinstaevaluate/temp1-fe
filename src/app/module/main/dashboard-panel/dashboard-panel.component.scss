@@ -203,11 +203,11 @@
     font-size: 28px;
     font-weight: normal;
     font-family: 'Open Sans', sans-serif;
-    background: linear-gradient(to right, #27d69b, #4b6df3);
-    -webkit-background-clip: text;
+    // background: linear-gradient(to right, #27d69b, #4b6df3);
+    // -webkit-background-clip: text;
     color: transparent;
     display: inline-block;
-    text-shadow: 1px 1px 2px rgb(126 126 126 / 30%);
+    // text-shadow: 1px 1px 2px rgb(126 126 126 / 30%);
     padding-left: 3%;
   }
 
@@ -256,10 +256,6 @@
     color: #3253d8;
     // padding-bottom: 1%;
     font-family: 'AR One Sans', sans-serif;
-    background-image: linear-gradient(to right, #3253d8, #162d8b ,#26b645 );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: wave 120s linear infinite;
 }
 
 .stat-valuation{

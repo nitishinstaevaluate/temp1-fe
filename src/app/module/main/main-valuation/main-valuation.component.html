@@ -80,10 +80,10 @@
 
 
 
-                <app-fcfe-details (fcfeDetailsPrev)="fcfeDetailsPrev($event)" [hidden]="next !== 1" (fcfeDetails)="fcfeDetails($event)" [formOneData]="formOneData" [secondStageInput]="formTwoData"></app-fcfe-details>
-                <app-fcff-details (fcffDetailsPrev)="fcffDetailsPrev($event)" (fcffDetails)="fcffDetails($event)" [hidden]="next !== 2" [formOneData]="formOneData" [secondStageInput]="formTwoData"></app-fcff-details>
+                <app-fcfe-details (fcfeDetailsPrev)="fcfeDetailsPrev($event)" [hidden]="next !== 1" (fcfeDetails)="fcfeDetails($event)" [formOneData]="formOneData" [secondStageInput]="formTwoData" [next]="next"></app-fcfe-details>
+                <app-fcff-details (fcffDetailsPrev)="fcffDetailsPrev($event)" (fcffDetails)="fcffDetails($event)" [hidden]="next !== 2" [formOneData]="formOneData" [secondStageInput]="formTwoData" [next]="next"></app-fcff-details>
                 <app-relative-valuation-details (relativeValDetailsPrev)="relativeValDetailsPrev($event)" (relativeValDetails)="relativeValDetails($event)" [hidden]="next !== 3" [formOneData]="formOneData" [secondStageInput]="formTwoData"></app-relative-valuation-details>
-                <app-excess-earning-details (excessEarnDetailsPrev)="excessEarnDetailsPrev($event)" (excessEarnDetails)="excessEarnDetails($event)" [hidden]="next !== 4" [formOneData]="formOneData" [secondStageInput]="formTwoData"></app-excess-earning-details>
+                <app-excess-earning-details (excessEarnDetailsPrev)="excessEarnDetailsPrev($event)" (excessEarnDetails)="excessEarnDetails($event)" [hidden]="next !== 4" [formOneData]="formOneData" [secondStageInput]="formTwoData" [next]="next"></app-excess-earning-details>
                 <app-comparable-industries-details (comparableIndustriesDetailsPrev)="comparableIndustriesDetailsPrev($event)" (comparableIndustriesDetails)="comparableIndustriesDetails($event)" [hidden]="next !== 5" [formOneData]="formOneData" [secondStageInput]="formTwoData"></app-comparable-industries-details>
                 <app-net-asset-value-details (navDetailsPrev)="navDetailsPrev($event)" (navDetails)="navDetails($event)" [hidden]="next !== 6" [formOneData]="formOneData" [secondStageInput]="formTwoData"></app-net-asset-value-details>
               </div>

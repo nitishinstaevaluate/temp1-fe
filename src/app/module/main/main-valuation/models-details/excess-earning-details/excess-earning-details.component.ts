@@ -28,6 +28,7 @@ export class ExcessEarningDetailsComponent {
   @Output() excessEarnDetailsPrev=new EventEmitter<any>();
   @Input() formOneData:any;
   @Input() secondStageInput:any;
+  @Input() next:any;
 
   excessEarningForm:any;
   specificRiskPremiumModalForm:any;
@@ -56,29 +57,36 @@ constructor(private valuationService:ValuationService,
   private processStatusManagerService:ProcessStatusManagerService){}
   
 ngOnChanges(changes:SimpleChanges): void {
-  this.formOneData;
-  if (changes['formOneData']) {
-    const current = changes['formOneData'].currentValue;
-    const previous = changes['formOneData'].previousValue;
-    if((current && previous) && current.industry !== previous.industry){
-      this.excessEarningForm.controls['betaType'].setValue('');
-      this.excessEarningForm.controls['beta'].reset();
+  if(this.next === 4){
+    this.loadFormControl();
+    this.checkProcessExist();
+    this.loadValues();
+    this.loadOnChangeValue();
+    if (changes['formOneData']) {
+      const current = changes['formOneData'].currentValue;
+      const previous = changes['formOneData'].previousValue;
+      if((current && previous) && current.industry !== previous.industry){
+        this.excessEarningForm.controls['betaType'].setValue('');
+        this.excessEarningForm.controls['beta'].reset();
+      }
+      if((current && previous) && current.valuationDate !== previous.valuationDate){
+        this.excessEarningForm.controls['expMarketReturnType'].setValue('');
+        this.excessEarningForm.controls['expMarketReturn'].reset();
+      }
     }
-    if((current && previous) && current.valuationDate !== previous.valuationDate){
-      this.excessEarningForm.controls['expMarketReturnType'].setValue('');
-      this.excessEarningForm.controls['expMarketReturn'].reset();
+    if(this.equityM?.length > 0){
+      this.excessEarningForm.controls['coeMethod'].setValue(this.equityM[0].type);
     }
-  }
-  if(this.equityM?.length > 0){
-    this.excessEarningForm.controls['coeMethod'].setValue(this.equityM[0].type);
   }
 }
 
 ngOnInit(): void {
-  this.loadFormControl();
-  this.checkProcessExist();
-  this.loadValues();
-  this.loadOnChangeValue();
+  // if(this.next === 4){
+  //   this.loadFormControl();
+  //   this.checkProcessExist();
+  //   this.loadValues();
+  //   this.loadOnChangeValue();
+  // }
 }
 
 checkProcessExist(){

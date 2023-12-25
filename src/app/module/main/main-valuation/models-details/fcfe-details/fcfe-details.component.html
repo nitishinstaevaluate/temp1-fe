@@ -1,4 +1,4 @@
-<div  *ngIf="modelControl.fcfe.type === 'FCFE' && formOneData">
+<div  *ngIf="modelControl.fcfe.type === 'FCFE' && formOneData && next === 1">
         <h4 class="card-header">{{modelControl.fcfe.header}}</h4>
         <form [formGroup]="fcfeForm" class="outer-wrapper">
             <div class="row" >

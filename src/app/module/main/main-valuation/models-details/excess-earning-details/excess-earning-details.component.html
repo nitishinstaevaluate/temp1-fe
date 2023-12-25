@@ -1,4 +1,4 @@
-<div *ngIf="modelControl.excessEarning.type === 'Excess_Earnings' && formOneData">
+<div *ngIf="modelControl.excessEarning.type === 'Excess_Earnings' && formOneData && next === 4">
     <h4 class="card-header">{{modelControl.excessEarning.header}}</h4>
     <form [formGroup]="excessEarningForm" class="outer-wrapper">
         <div class="row" >

@@ -24,5 +24,10 @@ export class NgxUiLoaderComponent implements OnInit{
       this.loader = this.ngxUiLoaderService.getLoader('reportForm');
       this.ngxUiLoaderService.start('reportForm');
     }
+    else if(this.loader === 'activityTab') {
+      this.ngxUiLoaderService.stop();
+      this.loader = this.ngxUiLoaderService.getLoader('activityTab');
+      this.ngxUiLoaderService.start('activityTab');
+    }
   }
 }
