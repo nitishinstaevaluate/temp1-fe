@@ -178,20 +178,20 @@ export class ActivityComponent {
     if(processData.thirdStageInput || processData.fourthStageInput){
 
       if(modelArray.length === 1 && (modelArray.includes(MODELS.FCFE) || modelArray.includes(MODELS.FCFF) || modelArray.includes(MODELS.EXCESS_EARNINGS) || modelArray.includes(MODELS.NAV))){
-        return this.formatNumber(processData.thirdStageInput.appData.valuationResult[0].valuation);
+        return `${processData.firstStageInput.currencyUnit} ${this.formatNumber(processData.thirdStageInput.appData.valuationResult[0].valuation)}`;
       }
       else if(modelArray.length === 1 && (modelArray.includes(MODELS.COMPARABLE_INDUSTRIES) || modelArray.includes(MODELS.RELATIVE_VALUATION))){
-        return this.formatNumber(processData.thirdStageInput.appData.valuationResult[0].valuation?.finalPriceAvg);
+        return `${processData.firstStageInput.currencyUnit} ${this.formatNumber(processData.thirdStageInput.appData.valuationResult[0].valuation?.finalPriceAvg)}`;
       }
       else if(processData.fourthStageInput?.totalWeightageModel){
-        return this.formatNumber(processData.fourthStageInput.totalWeightageModel?.weightedVal);
+        return `${processData.firstStageInput.currencyUnit} ${this.formatNumber(processData.fourthStageInput.totalWeightageModel?.weightedVal)}`;
       }
       else{
-        return '';
+        return '-';
       }
     }
     else{
-      return '';
+      return '-';
     }
   }
 
@@ -228,7 +228,6 @@ export class ActivityComponent {
       this.searchTerms.next(this.query);
     }
   }
-  
   resetPaginator(): void {
     if (this.paginator) {
       this.paginator.firstPage();
