@@ -107,18 +107,18 @@
         <table>
           <thead>
             <tr class="header">
-              <th>Particulars</th>
+              <th style="padding-left: 4%;">Particulars</th>
               <!-- <th>Type</th> -->
-              <th>Book Value</th>
-              <th>Fair Value</th>
+              <th style="padding-left: 4%;">Book Value</th>
+              <th style="padding-left: 4%;">Fair Value</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let item of dataSourceNav" class="content">
               <td [ngClass]="item.fieldName === 'Non Current Assets' || item.fieldName === 'Total Non Current Assets' || item.fieldName === 'Net Current Assets' || item.fieldName === 'Firm Value' || item.fieldName === 'Equity Value' || item.fieldName === 'Value per share' ? 'nav-style-header' : 'nav-style-sub-header'">{{ item.fieldName }}</td>
               <!-- <td class="nav-style-sub-text">{{ item.type }}</td> -->
-              <td class="nav-style-sub-text">{{ item.bookValue  }}</td>
-              <td class="nav-style-sub-text">{{ item.fairValue  }}</td>
+              <td class="nav-style-sub-text">{{ formatNumber(item.bookValue)  }}</td>
+              <td class="nav-style-sub-text">{{ formatNumber(item.fairValue)  }}</td>
             </tr>
           </tbody>
         </table>

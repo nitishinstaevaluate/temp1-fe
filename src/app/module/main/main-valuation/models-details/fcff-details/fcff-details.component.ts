@@ -26,6 +26,7 @@ export class FcffDetailsComponent implements OnInit{
   @Output() fcffDetails=new EventEmitter<any>();
   @Output() fcffDetailsPrev=new EventEmitter<any>();
   @Input() secondStageInput:any;
+  @Input() next:any;
 
   
   fcffForm:any=FormGroup;
@@ -63,29 +64,36 @@ constructor(private valuationService:ValuationService,
   private processStatusManagerService:ProcessStatusManagerService){}
   
 ngOnChanges(changes:SimpleChanges): void {
-  this.formOneData;
-  if (changes['formOneData']) {
-    const current = changes['formOneData'].currentValue;
-    const previous = changes['formOneData'].previousValue;
-    if((current && previous) && current.industry !== previous.industry){
-      this.fcffForm.controls['betaType'].setValue('');
-      this.fcffForm.controls['beta'].reset();
-    }
-    if((current && previous) && current.valuationDate !== previous.valuationDate){
-      this.fcffForm.controls['expMarketReturnType'].setValue('');
-      this.fcffForm.controls['expMarketReturn'].reset();
-    }
-  }
-  if(this.equityM?.length > 0){
-    this.fcffForm.controls['coeMethod'].setValue(this.equityM[0].type);
+  if(this.next === 2){
+    this.loadFormControl();
+    this.checkProcessExist();
+    this.loadValues();
+    this.loadOnChangeValue();
+      if (changes['formOneData']) {
+        const current = changes['formOneData'].currentValue;
+        const previous = changes['formOneData'].previousValue;
+        if((current && previous) && current.industry !== previous.industry){
+          this.fcffForm.controls['betaType'].setValue('');
+          this.fcffForm.controls['beta'].reset();
+        }
+        if((current && previous) && current.valuationDate !== previous.valuationDate){
+          this.fcffForm.controls['expMarketReturnType'].setValue('');
+          this.fcffForm.controls['expMarketReturn'].reset();
+        }
+      }
+      if(this.equityM?.length > 0){
+        this.fcffForm.controls['coeMethod'].setValue(this.equityM[0].type);
+      }
   }
 }
 
 ngOnInit(): void {
-  this.loadFormControl();
-  this.checkProcessExist();
-  this.loadValues();
-  this.loadOnChangeValue();
+  // if(this.next === 2){
+  // this.loadFormControl();
+  // this.checkProcessExist();
+  // this.loadValues();
+  // this.loadOnChangeValue();
+  // }
 }
 
 checkProcessExist(){

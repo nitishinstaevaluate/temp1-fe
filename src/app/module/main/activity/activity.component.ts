@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ValuationService } from '../../../shared/service/valuation.service';
 import { environment } from 'src/environments/environment';
 import { ALL_MODELS, MODELS, PAGINATION_VAL } from 'src/app/shared/enums/constant';
@@ -8,6 +8,8 @@ import { CalculationsService } from 'src/app/shared/service/calculations.service
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { saveAs } from 'file-saver';
+import { Subject, debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-activity',
@@ -15,6 +17,7 @@ import { saveAs } from 'file-saver';
   styleUrls: ['./activity.component.scss'],
 })
 export class ActivityComponent {
+  @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
   activity: any[] = [];
   pageSize: number = 10;
   length: number =0;
@@ -29,6 +32,9 @@ export class ActivityComponent {
     'Action',
   ];
   getModelName:any = ALL_MODELS;
+  query = '';
+  searchTerms = new Subject<string>();
+  processLoader = false;
 
   constructor(private _valuationService: ValuationService,
     private authService: AuthService,
@@ -37,6 +43,44 @@ export class ActivityComponent {
     private ngxLoaderService: NgxUiLoaderService,
     private snackBar: MatSnackBar) {
     this.inItData();
+    this.searchTerms
+      .pipe(
+        debounceTime(700),
+        tap(() => {
+          if(this.query){
+            this.processLoader = true;
+          }
+        }),
+        distinctUntilChanged(),
+        switchMap((query: string) => 
+        this._valuationService.getPaginatedValuations(1, 10,query))
+      )
+      .subscribe(
+        (filteredData: any) => {
+          this.processLoader = false;
+          if(filteredData.response.length === 0){
+            this.snackBar.open('No records found','Ok',{
+              horizontalPosition: 'right',
+              verticalPosition: 'top',
+              duration: 3000,
+              panelClass: 'app-notification-error'
+            })
+            return 
+          }
+          this.length = filteredData.pagination.totalElements;
+          this.activity = filteredData.response;
+          this.resetPaginator();
+        },
+        error => {
+          this.processLoader = false;
+          this.snackBar.open('Search Failed','Ok',{
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 3000,
+            panelClass: 'app-notification-error'
+          })
+        }
+      );
   }
 
   inItData() {
@@ -47,21 +91,28 @@ export class ActivityComponent {
     return environment.baseUrl + 'export/' + id;
   }
 
-  fetchData(page:number=1,pageSize:number=10): void {
-    this.authService.extractUser().subscribe((extraction:any)=>{
-      if(extraction.status){
-        this._valuationService.getPaginatedValuations(extraction.userId, page, pageSize)
-          .subscribe((data:any) => {
-            this.length = data.pagination.totalElements;
-            this.activity = data.response;
-        });
-      }
-    })
+  fetchData(page:number=1,pageSize:number=10,query?:string): void {
+    this.processLoader = true;
+    this._valuationService.getPaginatedValuations(page, pageSize,query)
+      .subscribe((data:any) => {
+        this.processLoader = false;
+        this.length = data.pagination.totalElements;
+        this.activity = data.response;
+    },
+    (error)=>{
+      this.processLoader = false;
+      this.snackBar.open('Record not available','Ok',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 3000,
+        panelClass: 'app-notification-error'
+      })
+    });
   }
 
   onPageChange(event: any): void {
     const { pageIndex, pageSize } = event;
-    this.fetchData(pageIndex + 1, pageSize);
+    this.fetchData(pageIndex + 1, pageSize, this.query);
   }
 
   loadProcess(processId:string){
@@ -127,20 +178,59 @@ export class ActivityComponent {
     if(processData.thirdStageInput || processData.fourthStageInput){
 
       if(modelArray.length === 1 && (modelArray.includes(MODELS.FCFE) || modelArray.includes(MODELS.FCFF) || modelArray.includes(MODELS.EXCESS_EARNINGS) || modelArray.includes(MODELS.NAV))){
-        return processData.thirdStageInput.appData.valuationResult[0].valuation;
+        return `${processData.firstStageInput.currencyUnit} ${this.formatNumber(processData.thirdStageInput.appData.valuationResult[0].valuation)}`;
       }
       else if(modelArray.length === 1 && (modelArray.includes(MODELS.COMPARABLE_INDUSTRIES) || modelArray.includes(MODELS.RELATIVE_VALUATION))){
-        return processData.thirdStageInput.appData.valuationResult[0].valuation?.finalPriceAvg;
+        return `${processData.firstStageInput.currencyUnit} ${this.formatNumber(processData.thirdStageInput.appData.valuationResult[0].valuation?.finalPriceAvg)}`;
       }
       else if(processData.fourthStageInput?.totalWeightageModel){
-        return processData.fourthStageInput.totalWeightageModel?.weightedVal;
+        return `${processData.firstStageInput.currencyUnit} ${this.formatNumber(processData.fourthStageInput.totalWeightageModel?.weightedVal)}`;
       }
       else{
-        return ''
+        return '-';
       }
     }
     else{
-      return ' '
+      return '-';
+    }
+  }
+
+  formatNumber(value: any) {
+    if (!isNaN(value)  && typeof value === 'number') {
+      if(value && `${value}`.includes('-')){
+        let formattedNumber = value.toLocaleString(undefined, {
+          minimumIntegerDigits: 1,
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
+        return `(${`${formattedNumber}`.replace(/-/g,'')})`;
+      }
+      else if(value){
+       const formatValue =  value.toLocaleString(undefined, {
+          minimumIntegerDigits: 1,
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })
+        return formatValue;
+      }
+      else{
+       return value.toFixed(2);
+      }
+    }
+      else{
+        return  value;
+      }
+  }
+
+  filterByCompany(event:any){
+    if(this.query !== event.target.value){
+      this.query = event.target.value;
+      this.searchTerms.next(this.query);
+    }
+  }
+  resetPaginator(): void {
+    if (this.paginator) {
+      this.paginator.firstPage();
     }
   }
 }

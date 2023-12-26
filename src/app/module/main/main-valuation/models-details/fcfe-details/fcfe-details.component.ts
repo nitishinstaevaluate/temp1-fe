@@ -27,6 +27,7 @@ export class FcfeDetailsComponent implements OnChanges,OnInit{
   @Output() fcfeDetailsPrev=new EventEmitter<any>();
   @Input() formOneData:any;
   @Input() secondStageInput:any;
+  @Input() next:any;
 
   hasError=hasError
   fcfeForm:any;
@@ -57,29 +58,37 @@ constructor(private valuationService:ValuationService,
   private processStatusManagerService:ProcessStatusManagerService){}
   
 ngOnChanges(changes:SimpleChanges): void {
-  this.formOneData;
-  if (changes['formOneData']) {
-    const current = changes['formOneData'].currentValue;
-    const previous = changes['formOneData'].previousValue;
-    if((current && previous) && current.industry !== previous.industry){
-      this.fcfeForm.controls['betaType'].setValue('');
-      this.fcfeForm.controls['beta'].reset();
+  if(this.next === 1){
+    this.loadFormControl();
+    this.checkProcessExist();
+    this.loadOnChangeValue();
+    this.loadValues();
+
+      if (changes['formOneData']) {
+        const current = changes['formOneData'].currentValue;
+        const previous = changes['formOneData'].previousValue;
+        if((current && previous) && current.industry !== previous.industry){
+          this.fcfeForm.controls['betaType'].setValue('');
+          this.fcfeForm.controls['beta'].reset();
+        }
+        if((current && previous) && current.valuationDate !== previous.valuationDate){
+          this.fcfeForm.controls['expMarketReturnType'].setValue('');
+          this.fcfeForm.controls['expMarketReturn'].reset();
+        }
+      }
+      if(this.equityM?.length > 0){
+        this.fcfeForm.controls['coeMethod'].setValue(this.equityM[0].type);
+      }
     }
-    if((current && previous) && current.valuationDate !== previous.valuationDate){
-      this.fcfeForm.controls['expMarketReturnType'].setValue('');
-      this.fcfeForm.controls['expMarketReturn'].reset();
-    }
-  }
-  if(this.equityM?.length > 0){
-    this.fcfeForm.controls['coeMethod'].setValue(this.equityM[0].type);
-  }
 }
 
 ngOnInit(): void {
-  this.loadFormControl();
-  this.checkProcessExist();
-  this.loadValues();
-  this.loadOnChangeValue();
+  // if(this.next === 1){
+  //   this.loadFormControl();
+  //   this.checkProcessExist();
+  //   this.loadValues();
+  //   this.loadOnChangeValue();
+  // }
 }
 checkProcessExist(){
 if(this.secondStageInput){

@@ -7,12 +7,20 @@
         <div class='c-decorated-header_link-view-more'>
         </div>
       </div>
+      <div class="row">
+        <div class="col-md-5 field">
+          <div class="material-textfield">
+            <input class="new-inp" type="text" (keyup)="filterByCompany($event)" placeholder="Enter Company Name or ref-id"/>
+            <label>Search by company/Reference Id</label>
+          </div>
+      </div>
+      </div>
       <div class="card-body">
         <div class="row">
           <div class="col" style="box-shadow: 1px 4px 8px #e2e2e2;padding-left: 0px;padding-right: 0px;">
               <table class="table">
                 <tr class="header">
-                  <th *ngFor="let item of columnName" [ngStyle]="(item === 'Reference Id') ? { 'width': '10%'} : (item === 'Date') ? { 'width':'15%' } : (item === 'Status') ? { 'width':'12%' } : (item === 'Action') ? { 'width':'8%' } : { 'width':'auto' }">{{item}}</th>       
+                  <th *ngFor="let item of columnName" [ngStyle]="(item === 'Reference Id') ? { 'width': '10%'} : (item === 'Date') ? { 'width':'15%' } : (item === 'Status') ? { 'width':'12%' } : (item === 'Action') ? { 'width':'8%' } : (item === 'Valuation') ? { 'width' : '15%' } : { 'width':'auto' }">{{item}}</th>       
                 </tr>
                 <tr *ngFor="let item of activity">
                   <td>{{ item?.processIdentifierId ? item?.processIdentifierId : '-'  }}</td>
@@ -55,7 +63,8 @@
               [pageSizeOptions]="pageSizeOptions"
               (page)="onPageChange($event)"
               aria-label="Select page"
-              class="table-paginator">
+              class="table-paginator"
+              #paginatorRef>
               </mat-paginator>
               <!-- paginator section ends -->
           </div>
@@ -65,4 +74,4 @@
   </div>
 </div>
 
-<ngx-ui-loader [fgsSize]="75" [fgsType]="'rectangle-bounce'" fastFadeOut="true" [fgsColor]= "'#0cd18f'"></ngx-ui-loader>
+<app-ngx-ui-loader [loader]="'activityTab'" *ngIf="processLoader"></app-ngx-ui-loader>
