@@ -1,4 +1,5 @@
 import { Component,OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
@@ -19,7 +20,8 @@ export class NavbarDetailsComponent implements OnInit{
   currentStep:any=''
   constructor(
     private calculationService:CalculationsService,
-    private processStatusManagerService:ProcessStatusManagerService){}
+    private processStatusManagerService:ProcessStatusManagerService,
+    private snackBar:MatSnackBar){}
 
   ngOnInit(): void {
     // localStorage.setItem('step','1')
@@ -33,7 +35,7 @@ export class NavbarDetailsComponent implements OnInit{
      this.checkProcessState();
   }
 
- checkProcessState(){
+async checkProcessState(){
     
     if(localStorage.getItem('processStateId')){
 
@@ -77,19 +79,23 @@ export class NavbarDetailsComponent implements OnInit{
     }
     else{
     localStorage.setItem('step','1');
+    // await this.updateProcessActiveStage(localStorage.getItem('processStateId'),1)
       this.checkstepStat();
     }
   }
-  selectMenuItem(route: string): void {
+  async selectMenuItem(route: string) {
     this.selectedMenuItem = route;
     this.currentStep = route;
     localStorage.setItem('step',route);
+    // await this.updateProcessActiveStage(localStorage.getItem('processStateId'),route)
     this.calculationService.steps.next(parseInt(route));
   }
 
   checkstepStat(){
-    this.calculationService.checkStepStatus.subscribe((response)=>{
+    this.calculationService.checkStepStatus.subscribe(async (response)=>{
       this.currentStep = localStorage.getItem('step');
+      // this.currentStep = await this.fetchProcessActiveStage(localStorage.getItem('processStateId'));
+      // console.log(this.currentStep," navbar step")
       if(parseInt(this.currentStep) === 1){
         this.bindStatusToNavbar(this.currentStep);
       }
@@ -125,4 +131,62 @@ export class NavbarDetailsComponent implements OnInit{
   }
 
 
+  // async fetchProcessActiveStage(processId: any) {
+  //   try {
+  //     const response: any = await this.processStatusManagerService.retrieveActiveStage(processId).toPromise();
+  
+  //     if (response.status) {
+  //       const processStageData = response?.data;
+  //       const step = processStageData.step;
+  //       return step;
+  
+  //       // Do more processing with the step here if needed
+  //     } else {
+  //       this.snackBar.open('Stage retrieve failed', 'ok', {
+  //         horizontalPosition: 'right',
+  //         verticalPosition: 'top',
+  //         duration: 3000,
+  //         panelClass: 'app-notification-error'
+  //       });
+  //     }
+  //   } catch (error) {
+  //     this.snackBar.open(`${error}`, 'ok', {
+  //       horizontalPosition: 'right',
+  //       verticalPosition: 'top',
+  //       duration: 3000,
+  //       panelClass: 'app-notification-error'
+  //     });
+  //   }
+  // }
+
+  // async updateProcessActiveStage(processId: any, step: any) {
+  //   try {
+  //     const data = {
+  //       processId: processId,
+  //       step: step
+  //     };
+  
+  //     const response: any = await this.processStatusManagerService.updateActiveStage(data).toPromise();
+  
+  //     if (response.status) {
+  //       const processStageData = response?.data;
+  //       // console.log(processStageData, "updated stage data");
+  //       return processStageData.step;
+  //     } else {
+  //       this.snackBar.open('Stage update failed', 'ok', {
+  //         horizontalPosition: 'right',
+  //         verticalPosition: 'top',
+  //         duration: 3000,
+  //         panelClass: 'app-notification-error'
+  //       });
+  //     }
+  //   } catch (error) {
+  //     this.snackBar.open(`${error}`, 'ok', {
+  //       horizontalPosition: 'right',
+  //       verticalPosition: 'top',
+  //       duration: 3000,
+  //       panelClass: 'app-notification-error'
+  //     });
+  //   }
+  // }
 }
