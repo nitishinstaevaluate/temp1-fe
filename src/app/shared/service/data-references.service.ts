@@ -65,5 +65,9 @@ export class DataReferencesService {
  getReportPurpose(reportObjective:string){
   return this.http.get(`${HOST}reportPurpose/get?reportObjective=${reportObjective}`);
  }
+
+//  getSPIndustryList(){
+//   return this.http.get(`${HOST}betaindustries/v1`)
+//  }
 }
 
