@@ -417,7 +417,7 @@ isSelectedpreferenceRatio(value:any){
     else if(this.selectedIndustry){
       payload['selectedIndustry'] = this.selectedIndustry;
     }
-    const modelsNotRequireProjection = isSelected('NAV', this.modelValuation.controls['model'].value) || isSelected('CTM', this.modelValuation.controls['model'].value) || isSelected('Relative_Valuation', this.modelValuation.controls['model'].value)
+    const modelsNotRequireProjection = isSelected('NAV', this.modelValuation.controls['model'].value) || isSelected('CTM', this.modelValuation.controls['model'].value) || isSelected('Relative_Valuation', this.modelValuation.controls['model'].value) || isSelected('ruleElevenUa', this.modelValuation.controls['model'].value)
     const mmodelsRequireProjection = isSelected('FCFE', this.modelValuation.controls['model'].value) || isSelected('FCFF', this.modelValuation.controls['model'].value) || isSelected('Excess_Earnings', this.modelValuation.controls['model'].value)
     if (modelsNotRequireProjection && this.modelValuation.controls['model'].value.length === 1) {
       delete control.projectionYearSelect
@@ -479,9 +479,9 @@ isSelectedpreferenceRatio(value:any){
     return this.modelValuation.controls['projectionYears'].value ? true : false;
   }
 
-  get downloadTemplate() {
-  return GET_TEMPLATE(this.modelValuation.controls['projectionYears'].value);
-  }
+  // get downloadTemplate() {
+  // return GET_TEMPLATE(this.modelValuation.controls['projectionYears'].value);
+  // }
 
   onFileSelected(event: any) {
     if (event && event.target.files && event.target.files.length > 0) {
@@ -600,7 +600,10 @@ isSelectedpreferenceRatio(value:any){
      dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         if(result?.excelSheetId !== this.modelValuation.controls['excelSheetId']){
-          this.isExcelReupload=true
+          this.isExcelReupload = true;
+        }
+        else{
+          this.isExcelReupload = false;
         }
         if(result.model.length > 0){
           this.modelSelectStatus = true

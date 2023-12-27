@@ -823,5 +823,53 @@
                 }
             ]
         }
+    },
+    "ruleElevenUa":{
+        "type":"ruleElevenUa",
+        "header":"Rule 11 UA",
+        "columns":{
+            "fairValueImmovableProp":{
+                "name":"fairValueImmovableProp",
+                "placeholder":"Fair value of Immovable Property",
+                "type":"text",
+                "toolTip":"Please enter fair value of immovable property"
+            },
+            "fairValueJewellery":{
+                "name":"fairValueJewellery",
+                "placeholder":"Fair value of Jwellery",
+                "type":"text",
+                "toolTip":"Please enter fair value for jwellery"
+            },
+            "fairValueArtistic":{
+                "name":"fairValueArtistic",
+                "placeholder":"Fair value of Artistic",
+                "type":"text",
+                "toolTip":"Please enter fair value of Artistic"
+            },
+            "fairValueSharesSecurity":{
+                "name":"fairValueSharesSecurity",
+                "placeholder":"Fair value of shares and securities",
+                "type":"text",
+                "toolTip":"Please enter fair shares and securities"
+            },
+            "fairValueOthrTangibleAsset":{
+                "name":"fairValueOthrTangibleAsset",
+                "placeholder":"Fair value of other tangible assets",
+                "type":"text",
+                "toolTip":"Please enter fair value of other tangible assets"
+            },
+            "fairValueinvstShareSec":{
+                "name":"fairValueinvstShareSec",
+                "placeholder":"Fair value of Investments in Share & Securities",
+                "type":"text",
+                "toolTip":"Please enter fair value of investments in Share & Securities"
+            },
+            "fairValueOthrInvstment":{
+                "name":"fairValueOthrInvstment",
+                "placeholder":"Fair value of Other Investments",
+                "type":"text",
+                "toolTip":"Please enter fair value of other investments"
+            }
+        }
     }
 }

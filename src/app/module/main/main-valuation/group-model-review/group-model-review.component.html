@@ -4,14 +4,17 @@
     <div>
         <div class="mat-tab-g">
             <mat-tab-group mat-stretch-tabs="false" class="tab-group" mat-align-tabs="start" style="background-color: #ffffff;border-radius: 20px;">
-                <mat-tab label="Profit & Loss">
+                <mat-tab label="Profit & Loss" *ngIf="hasSingleModel('FCFE') || hasSingleModel('FCFF') || hasSingleModel('Excess_Earnings') ">
                     <app-profit-loss-data [transferStepperTwo]="transferStepperTwo" (profitLossData)="profitLossData($event)" [currentStepIndex]="step" [thirdStageInput]="thirdStageInput"></app-profit-loss-data>
                 </mat-tab>
-                <mat-tab label="Balance Sheet">
+                <mat-tab label="Balance Sheet" *ngIf="hasSingleModel('FCFE') || hasSingleModel('FCFF') || hasSingleModel('Excess_Earnings') ">
                     <app-balance-sheet-details [transferStepperTwo]="transferStepperTwo" (balanceSheetData)="balanceSheetData($event)" [thirdStageInput]="thirdStageInput"></app-balance-sheet-details>
                 </mat-tab>
                 <mat-tab label="Assessment of Working Capital" *ngIf="hasSingleModel('FCFE') || hasSingleModel('FCFF') || hasSingleModel('Excess_Earnings') ">
                     <app-assessment-details [transferStepperTwo]="transferStepperTwo" (assessmentSheetData)="assessmentSheetData($event)" [thirdStageInput]="thirdStageInput"></app-assessment-details>
+                </mat-tab>
+                <mat-tab label="Rule 11 UA" *ngIf="hasSingleModel('ruleElevenUa')">
+                    <app-eleven-ua-details [transferStepperTwo]="transferStepperTwo" [thirdStageInput]="thirdStageInput"></app-eleven-ua-details>
                 </mat-tab>
             </mat-tab-group>
             <p class="currency-unit" *ngIf="thirdStageInput?.formOneData ? thirdStageInput?.formOneData?.excelSheetId : transferStepperTwo?.excelSheetId">Amount in {{thirdStageInput?.formOneData ? thirdStageInput?.formOneData?.currencyUnit : transferStepperTwo.currencyUnit}} ({{thirdStageInput?.formOneData ? thirdStageInput?.formOneData?.reportingUnit : transferStepperTwo.reportingUnit}})</p>
@@ -147,7 +150,7 @@
 </div>
 </div>
 
-  <div *ngIf="isLoadingBalanceSheet || isLoadingProfitLoss">
-    <app-ngx-ui-loader [loader]="'reviewForm'"></app-ngx-ui-loader>
-  </div>
+  <!-- <div *ngIf="isLoadingBalanceSheet || isLoadingProfitLoss"> -->
+    <!-- <app-ngx-ui-loader [loader]="'reviewForm'"></app-ngx-ui-loader> -->
+  <!-- </div> -->
 </div>

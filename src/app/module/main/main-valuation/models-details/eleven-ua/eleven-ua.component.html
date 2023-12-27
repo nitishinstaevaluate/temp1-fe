@@ -1,0 +1,70 @@
+<div  *ngIf="modelControl.ruleElevenUa.type === 'ruleElevenUa'">
+    <h4 class="card-header">{{modelControl.ruleElevenUa.header}}</h4>
+    <form [formGroup]="ruleElevenUaForm" class="outer-wrapper">
+        <div class="row" >
+            <div class="col-md-12">
+                <div class='c-decorated-header'>
+                    <h3><span style="padding-left: 2%;">Tangible Assets</span></h3>
+                    <div class='c-decorated-header_link-view-more'>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jewellery -->
+            <div class="col-md-4 field" style="padding-top: 1%;">
+                <div class="material-textfield">
+                  <input class="new-inp" [type]="modelControl.ruleElevenUa.columns.fairValueJewellery.type" [placeholder]="modelControl.ruleElevenUa.columns.fairValueJewellery.placeholder"/>
+                  <label>Jwellery</label>
+                </div>
+                <span *ngIf="ruleElevenUaForm.controls['fairValueJewellery'].touched && ruleElevenUaForm.controls['fairValueJewellery'].errors">
+                <span *ngIf="hasError('fairValueJewellery','required',ruleElevenUaForm)" class="error-text">Please add jewellery</span>
+                </span>
+            </div>
+
+            <!-- Aristic Work -->
+            <div class="col-md-4 field" style="padding-top: 1%;">
+                <div class="material-textfield">
+                  <input class="new-inp" [type]="modelControl.ruleElevenUa.columns.fairValueArtistic.type" [placeholder]="modelControl.ruleElevenUa.columns.fairValueArtistic.placeholder"/>
+                  <label>Artistic Work</label>
+                </div>
+                <span *ngIf="ruleElevenUaForm.controls['fairValueArtistic'].touched && ruleElevenUaForm.controls['fairValueArtistic'].errors">
+                <span *ngIf="hasError('fairValueArtistic','required',ruleElevenUaForm)" class="error-text">Please enter artistic work</span>
+                </span>
+            </div>
+
+            <!-- Shares and Securities -->
+            <div class="col-md-4 field" style="padding-top: 1%;">
+                <div class="material-textfield">
+                  <input class="new-inp" [type]="modelControl.ruleElevenUa.columns.fairValueSharesSecurity.type" [placeholder]="modelControl.ruleElevenUa.columns.fairValueSharesSecurity.placeholder"/>
+                  <label>Investment in Shares And Securities</label>
+                </div>
+                <span *ngIf="ruleElevenUaForm.controls['fairValueSharesSecurity'].touched && ruleElevenUaForm.controls['fairValueSharesSecurity'].errors">
+                <span *ngIf="hasError('fairValueImmovableProp','required',ruleElevenUaForm)" class="error-text">Please enter shares and securities</span>
+                </span>
+            </div>
+
+            <!-- Immovable Property -->
+            <div class="col-md-4 field">
+                <div class="material-textfield">
+                  <input class="new-inp" [type]="modelControl.ruleElevenUa.columns.fairValueImmovableProp.type" [placeholder]="modelControl.ruleElevenUa.columns.fairValueImmovableProp.placeholder"/>
+                  <label>Immovable Property</label>
+                </div>
+                <span *ngIf="ruleElevenUaForm.controls['fairValueImmovableProp'].touched && ruleElevenUaForm.controls['fairValueImmovableProp'].errors">
+                <span *ngIf="hasError('fairValueImmovableProp','required',ruleElevenUaForm)" class="error-text">Please enter Immovable Property</span>
+                </span>
+            </div>
+
+            <div class="col-md-12 btn-prop">
+                <button (click)="previous()" mat-raised-button class="button-back-mat">
+                  <span class="button-back"><mat-icon>send</mat-icon></span>
+                    Back
+                </button>
+
+                <button (click)="saveAndNext()" class="button-save-mat" mat-raised-button>
+                    Next
+                    <span class="button-save"><mat-icon>send</mat-icon></span>
+                </button>
+            </div>
+        </div>
+      </form>  
+</div>

@@ -263,7 +263,7 @@ export class BalanceSheetDetailsComponent implements OnChanges {
       this.editedValues.push(cellStructure);
 
       let excelId;
-      if(this.thirdStageInput){
+      if(!this.transferStepperTwo){
         if(localStorage.getItem('excelStat')==='true'){
           excelId = `edited-${this.thirdStageInput?.formOneData?.excelSheetId}`
         }

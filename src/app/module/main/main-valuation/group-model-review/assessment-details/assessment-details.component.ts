@@ -144,7 +144,7 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
           const excelSheetId = this.thirdStageInput?.formThreeData?.isExcelModified ?this.thirdStageInput?.formThreeData.modifiedExcelSheetId :  this.thirdStageInput?.formOneData.excelSheetId;
 
           let excelId;
-          if(this.thirdStageInput){
+          if(!this.transferStepperTwo){
             if(localStorage.getItem('excelStat')==='true'){
               excelId = `edited-${this.thirdStageInput?.formOneData?.excelSheetId}`
             }

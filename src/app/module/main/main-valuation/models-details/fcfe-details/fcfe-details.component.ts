@@ -58,13 +58,15 @@ constructor(private valuationService:ValuationService,
   private processStatusManagerService:ProcessStatusManagerService){}
   
 ngOnChanges(changes:SimpleChanges): void {
-  if(this.next === 1){
-    this.loadFormControl();
-    this.checkProcessExist();
-    this.loadOnChangeValue();
-    this.loadValues();
-
-      if (changes['formOneData']) {
+  // if(this.next === 1){
+  //   this.loadFormControl();
+  //   // this.patchFcfeDetails()
+  //   this.checkProcessExist()
+  //   this.loadValues();
+  //   this.loadOnChangeValue();
+    this.formOneData;
+    // if(){
+      if (this.formOneData && changes['formOneData'] ) {
         const current = changes['formOneData'].currentValue;
         const previous = changes['formOneData'].previousValue;
         if((current && previous) && current.industry !== previous.industry){
@@ -79,15 +81,16 @@ ngOnChanges(changes:SimpleChanges): void {
       if(this.equityM?.length > 0){
         this.fcfeForm.controls['coeMethod'].setValue(this.equityM[0].type);
       }
-    }
+    // }
+  // }
 }
 
 ngOnInit(): void {
   // if(this.next === 1){
-  //   this.loadFormControl();
-  //   this.checkProcessExist();
-  //   this.loadValues();
-  //   this.loadOnChangeValue();
+    this.loadFormControl();
+    this.checkProcessExist();
+    this.loadValues();
+    this.loadOnChangeValue();
   // }
 }
 checkProcessExist(){
@@ -395,7 +398,7 @@ validateControls(controlArray: { [key: string]: FormControl },payload:any){
       processStateStep = 1
     }
     const processStateModel ={
-      secondStageInput:[{model:'FCFE',...payload,formFillingStatus:allControlsFilled}],
+      secondStageInput:[{model:MODELS.FCFE,...payload,formFillingStatus:allControlsFilled}],
       step:processStateStep
     }
     this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
@@ -447,4 +450,47 @@ processStateManager(process:any, processId:any){
     }
   );
 }
+
+// patchFcfeDetails(){
+//   const processStateId = localStorage.getItem('processStateId');
+//   if(processStateId){
+//     this.processStatusManagerService.retrieveProcess(processStateId).subscribe(
+//       (response:any)=>{
+//         if(response.status){
+//           if(response.stateInfo){
+//             const processStateDetails = response.stateInfo;
+//             if(processStateDetails?.secondStageInput){
+//               this.formFilledData = processStateDetails.secondStageInput;
+//               this.formFilledData.map((stateTwoDetails:any)=>{
+//                 if(stateTwoDetails.model === MODELS.FCFE && this.formOneData.model.includes(MODELS.FCFE)){
+//                   this.fcfeForm.controls['discountRate'].setValue(stateTwoDetails?.discountRate) 
+//                   this.fcfeForm.controls['discountingPeriod'].setValue(stateTwoDetails?.discountingPeriod) 
+//                   this.fcfeForm.controls['betaType'].setValue(stateTwoDetails?.betaType) 
+//                   this.fcfeForm.controls['coeMethod'].setValue(stateTwoDetails?.coeMethod); 
+//                   this.fcfeForm.controls['riskFreeRate'].setValue(stateTwoDetails?.riskFreeRate); 
+//                   let expectedMarketReturnData:any;
+//                   this.modelControl.fcfe.options.expMarketReturnType.options.map((response:any)=>{
+//                     if(response.value ===  stateTwoDetails?.expMarketReturnType){
+//                       expectedMarketReturnData = response
+//                     }
+//                   })
+//                   this.fcfeForm.controls['expMarketReturnType'].setValue(expectedMarketReturnData.name);
+//                   this.fcfeForm.controls['expMarketReturn'].setValue(stateTwoDetails?.expMarketReturn);
+//                   this.fcfeForm.controls['specificRiskPremium'].setValue(stateTwoDetails?.specificRiskPremium); 
+//                   this.fcfeForm.controls['beta'].setValue(stateTwoDetails?.beta);
+//                   this.fcfeForm.controls['riskPremium'].setValue(stateTwoDetails?.riskPremium); 
+//                   this.specificRiskPremiumModalForm.controls['companySize'].setValue(stateTwoDetails?.alpha.companySize)
+//                   this.specificRiskPremiumModalForm.controls['marketPosition'].setValue(stateTwoDetails?.alpha.marketPosition)
+//                   this.specificRiskPremiumModalForm.controls['liquidityFactor'].setValue(stateTwoDetails?.alpha.liquidityFactor)
+//                   this.specificRiskPremiumModalForm.controls['competition'].setValue(stateTwoDetails?.alpha.competition);
+//                   this.calculateCoeAndAdjustedCoe()
+//                 }
+//               })
+//             }
+//           }
+//         }
+//       }
+//     )
+//   }
+// }
 }

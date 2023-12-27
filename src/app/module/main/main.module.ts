@@ -27,10 +27,12 @@ import { QuillModule } from 'ngx-quill';
 import { NavbarDetailsComponent } from 'src/app/layout/main-layout/navbar-details/navbar-details.component';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { DashboardPanelComponent } from './dashboard-panel/dashboard-panel.component';
+import { ElevenUAComponent } from './main-valuation/models-details/eleven-ua/eleven-ua.component';
+import { ElevenUaDetailsComponent } from './main-valuation/group-model-review/eleven-ua-details/eleven-ua-details.component';
 
 
 @NgModule({
-  declarations: [ValuationComponent, ActivityComponent, MainValuationComponent, GroupModelControlsComponent, GroupModelReviewComponent, GroupModelResultComponent, ProfitLossDataComponent, BalanceSheetDetailsComponent, RelativeValuationsTableComponent,ValuationResultTableComponent, ModelRelativeValuationResultTableComponent,FcfeDetailsComponent,FcffDetailsComponent,RelativeValuationDetailsComponent, ExcessEarningDetailsComponent, ComparableIndustriesDetailsComponent, NetAssetValueDetailsComponent, ReportDetailsComponent, AssessmentDetailsComponent,NavbarDetailsComponent, DashboardPanelComponent],
+  declarations: [ValuationComponent, ActivityComponent, MainValuationComponent, GroupModelControlsComponent, GroupModelReviewComponent, GroupModelResultComponent, ProfitLossDataComponent, BalanceSheetDetailsComponent, RelativeValuationsTableComponent,ValuationResultTableComponent, ModelRelativeValuationResultTableComponent,FcfeDetailsComponent,FcffDetailsComponent,RelativeValuationDetailsComponent, ExcessEarningDetailsComponent, ComparableIndustriesDetailsComponent, NetAssetValueDetailsComponent, ReportDetailsComponent, AssessmentDetailsComponent,NavbarDetailsComponent, DashboardPanelComponent, ElevenUAComponent, ElevenUaDetailsComponent],
   imports: [CommonModule, MainRoutingModule, NgxDropzoneModule, SharedModule,QuillModule.forRoot(),NgxUiLoaderModule],
 })
 export class MainModule {}
