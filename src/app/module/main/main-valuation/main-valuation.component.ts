@@ -163,7 +163,7 @@ export class MainValuationComponent implements OnInit{
     localStorage.setItem('step',`${this.step}`);
     // await this.updateProcessActiveStage(localStorage.getItem('processStateId'),this.step);
     this.calculationService.checkStepStatus.next({stepStatus:false,step:this.step,prev:true})
-    if(this.step === 2){
+    if(this.step === 3){
       this.previousModelSelection(this.formOneData,true)
     }
   }
@@ -450,4 +450,11 @@ export class MainValuationComponent implements OnInit{
   //     });
   //   }
   // }
+
+  getTotalSteps(){
+    if(this.formOneData?.model?.includes(MODELS.FCFE) || this.formOneData?.model?.includes(MODELS.FCFF) || this.formOneData?.model?.includes(MODELS.EXCESS_EARNINGS) || this.formOneData?.model?.includes(MODELS.COMPARABLE_INDUSTRIES) || this.formOneData?.model?.includes(MODELS.RELATIVE_VALUATION)){
+      return '6'
+    }
+    return '5'
+  }
 }

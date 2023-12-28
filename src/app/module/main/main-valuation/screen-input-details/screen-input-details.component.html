@@ -1,0 +1,103 @@
+<div class="outer-section" *ngIf="step === 2">
+    <div class="outer-wrapper" *ngIf="modelControl.inputScreen.type === 'inputScreen'">
+    <div class='c-decorated-header'>
+      <h3><span style="padding-left: 2%;">Input Screening</span></h3>
+      <div class='c-decorated-header_link-view-more'>
+      </div>
+    </div>
+    <form [formGroup]="inputScreenForm" class="inputscrn">
+        <div class="row">
+
+            <!-- industry Name level-1 -->
+              <div class="col-md-6 field" style="padding-top: 1%;">
+                <div class="material-textfield">
+                  <input class="new-inp" placeholder="Add level 1 industry" type="text" formControlName="industryL1" />
+                  <label>Industry Name (Level-1)</label>
+                  <span class="tool-class">
+
+                    <svg [matTooltip]="modelControl.inputScreen.columns.industryL1.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
+                      <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
+                      <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
+                      <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
+                  </span>
+                </div>
+              </div>
+
+              <!-- industry Name level-2  -->
+              <div class="col-md-6 field" style="padding-top: 1%;">
+                <div class="material-textfield">
+                  <input class="new-inp" placeholder="Add level 2 industry" type="text" formControlName="industryL2" />
+                  <label>Industry Name (Level-2)</label>
+                  <span class="tool-class">
+
+                    <svg [matTooltip]="modelControl.inputScreen.columns.industryL2.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
+                      <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
+                      <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
+                      <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
+                  </span>
+                </div>
+              </div>
+
+              <!-- industry Name level-3 -->
+              <div class="col-md-6 field" >
+                <div class="material-textfield">
+                  <input class="new-inp" placeholder="Add level 3 industry" type="text" formControlName="industryL3" />
+                  <label>Industry Name (Level-3)</label>
+                  <span class="tool-class">
+
+                    <svg [matTooltip]="modelControl.inputScreen.columns.industryL3.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
+                      <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
+                      <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
+                      <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
+                  </span>
+                </div>
+              </div>
+
+              <!-- industry Name Level-4 -->
+              <div class="col-md-6 field" >
+                <div class="material-textfield">
+                  <input class="new-inp" placeholder="Add level 4 industry" type="text" formControlName="industryL4" />
+                  <label>Industry Name (Level-4)</label>
+                  <span class="tool-class">
+
+                    <svg [matTooltip]="modelControl.inputScreen.columns.industryL4.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
+                      <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
+                      <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
+                      <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+      </form>   
+      <table class="table-industry-based-company">
+        <thead>
+          <tr style="text-transform: capitalize;" class="header">
+            <th></th>
+            <th *ngFor="let columnName of ciqIndustryHead" class="make-bold">{{ columnName }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of ciqIndustryData; let i = index" class="content">
+            <td style="text-align: left;font-size: 14px;text-transform: capitalize;" class="make-light">
+              <input type="checkbox" [id]="'checkbox_' + i" />
+            </td>
+            <td style="text-align: left;font-size: 14px;text-transform: capitalize;" class="make-light" *ngFor="let key of mapIndustryBasedCompany">
+              {{ row[key] }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-md-12 btn-prop">
+        <button (click)="previous()" mat-raised-button class="button-back-mat">
+          <span class="button-back"><mat-icon>send</mat-icon></span>
+            Back
+        </button>
+
+    <button (click)="saveAndNext()" class="button-save-mat" mat-raised-button>
+        Next
+        <span class="button-save"><mat-icon>send</mat-icon></span>
+     </button>
+</div>
+</div>

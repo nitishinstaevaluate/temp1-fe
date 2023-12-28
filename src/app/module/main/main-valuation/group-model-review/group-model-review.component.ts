@@ -154,6 +154,9 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
         processStat = 3;
         processStatStep = true;
     }
+    // if(payload.model.length === 1 && payload.model.includes(MODELS.RULE_ELEVEN_UA)){
+    //   // this.npm
+    // }
     this.valuationService.submitForm(payload).subscribe((response)=>{
       if(response?.valuationResult){
         this.valuationData= response; 
@@ -249,19 +252,6 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
       else{
         return false;
       }
-      // if(this.thirdStageInput?.formOneData?.model.includes(modelName) && this.thirdStageInput.formOneData.model.length > 1){
-      //   const assetApproach = this.thirdStageInput.formOneData.model.includes(MODELS.NAV)
-      //   const marketApproach = this.thirdStageInput.formOneData.model.includes(MODELS.RELATIVE_VALUATION) || this.thirdStageInput.formOneData.model.includes(MODELS.COMPARABLE_INDUSTRIES)
-      //   if(assetApproach && marketApproach){
-      //     return false;
-      //   }
-      //   else{
-      //     return true
-      //   }
-      // }
-      // else if (this.thirdStageInput?.formOneData?.model.includes(modelName) && this.thirdStageInput.formOneData.model.length <= 1){
-      //   return false;
-      // }
     }
     else if(this.transferStepperTwo){
       if(this.transferStepperTwo.model.includes(modelName)){
@@ -270,20 +260,6 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
       else{
         return false;
       }
-      // if(this.transferStepperTwo?.model?.includes(modelName) && this.transferStepperTwo?.model.length > 1){
-      //   const assetApproach = this.transferStepperTwo.model.includes(MODELS.NAV)
-      //   const marketApproach = this.transferStepperTwo.model.includes(MODELS.RELATIVE_VALUATION) || this.transferStepperTwo.model.includes(MODELS.COMPARABLE_INDUSTRIES);
-      //   if(assetApproach && marketApproach && this.transferStepperTwo?.model.length <= 1){
-      //     return false
-      //   }
-      //   else{
-      //     return true
-      //   }
-
-      // }
-      // else if (this.transferStepperTwo?.model.includes(modelName) && this.transferStepperTwo?.model.length <= 1){
-      //   return false;
-      // }
     }
     return false;
   }

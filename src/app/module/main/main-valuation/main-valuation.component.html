@@ -49,7 +49,7 @@
         <div class='c-decorated-header'>
           <h3><span style="padding-left: 2%;">Valuation of Company</span></h3>
           <div class='c-decorated-header_link-view-more'>
-            <a ><span style="border: #2dd79e;color: #2dd79e;"> Step {{step}} </span>of 5</a>
+            <a ><span style="border: #2dd79e;color: #2dd79e;"> Step {{step}} </span>of {{getTotalSteps()}}</a>
           </div>
         </div>
         <h4 style="text-align: center;padding-top: 1.5%;font-weight: 400;color:#858985;margin-bottom: 0px !important;">{{headerLabel}}</h4>
@@ -63,8 +63,9 @@
             <div class="col-md-10">
               <!-- <router-outlet></router-outlet> -->
               <app-group-model-controls [step]="step" (groupModelControls)="groupModelControls($event)" [hidden]="step !== 1" [firstStageInput]="formOneData"></app-group-model-controls>
+              <app-screen-input-details [hidden]="step !== 2" [step]="step"></app-screen-input-details>
 
-              <div [hidden]="step !== 2">
+              <div [hidden]="step !== 3">
                 <!-- tab trial starts -->
                 <div class="tab-container">
                   <div class="tab-element" [ngClass]="{ 'active': next === 1 }" *ngIf="ifModelExist('FCFE',formOneData?.model)">Free Cash Flow To Equity</div>
@@ -88,11 +89,11 @@
                 <app-net-asset-value-details (navDetailsPrev)="navDetailsPrev($event)" (navDetails)="navDetails($event)" [hidden]="next !== 6" [formOneData]="formOneData" [secondStageInput]="formTwoData"></app-net-asset-value-details>
               </div>
 
-              <app-group-model-review (groupReviewControls)="groupReviewControls($event)" [step]="step" (previousPage)="previous($event)" [transferStepperTwo]="formOneAndTwoData" [hidden]="step !== 3" [thirdStageInput]="formThreeData"></app-group-model-review>
+              <app-group-model-review (groupReviewControls)="groupReviewControls($event)" [step]="step" (previousPage)="previous($event)" [transferStepperTwo]="formOneAndTwoData" [hidden]="step !== 4" [thirdStageInput]="formThreeData"></app-group-model-review>
               
-              <app-group-model-result [transferStepperthree]="transferStepperthree"  (previousPage)="previous($event)" (resultData)="resultData($event)" [hidden]="step !== 4" [fourthStageInput]="formFourData"></app-group-model-result>
+              <app-group-model-result [transferStepperthree]="transferStepperthree"  (previousPage)="previous($event)" (resultData)="resultData($event)" [hidden]="step !== 5" [fourthStageInput]="formFourData"></app-group-model-result>
               
-              <app-report-details [transferStepperFour]="transferStepperFour" (previousPage)="previous($event)" [hidden]="step !== 5" [fifthStageInput]="formFiveData"></app-report-details>
+              <app-report-details [transferStepperFour]="transferStepperFour" (previousPage)="previous($event)" [hidden]="step !== 6" [fifthStageInput]="formFiveData"></app-report-details>
             </div>
           </div>
   

@@ -260,6 +260,12 @@ export class GroupModelControlsComponent implements OnInit {
         // this.industriesRatio = resp[DROPDOWN.INDUSTRIESRATIO]; //Set as array element 4
       });
 
+      // this._dataReferencesService.getSPIndustryList().subscribe((ciqIndustryData:any)=>{
+      //   if(ciqIndustryData.status){
+      //     this.industries = ciqIndustryData.data;
+      //   }
+      // })
+
   }
   formLoad(){
 // Initiate form change detectors

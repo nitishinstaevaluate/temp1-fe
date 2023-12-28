@@ -349,3 +349,5 @@ export const REPORT_OBJECTIVE = {
   fema:"Fema",
   sebiRegulations:"SEBI Regulations",
 }
+
+export const INDUSTRY_BASED_COMPANY = ['COMPANYID', 'COMPANYNAME', 'SIMPLEINDUSTRYID', 'SIMPLEINDUSTRYDESCRIPTION']

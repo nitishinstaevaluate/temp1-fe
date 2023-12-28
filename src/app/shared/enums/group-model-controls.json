@@ -823,5 +823,35 @@
                 }
             ]
         }
+    },
+    "inputScreen":{
+        "type":"inputScreen",
+        "header":"Input Screening",
+        "columns":{
+            "industryL1":{
+                "name":"industryL1",
+                "placeholder":"Enter level 1 industry",
+                "type":"text",
+                "tooltip":"Global Industries"
+            },
+            "industryL2":{
+                "name":"industryL2",
+                "placeholder":"Enter level 2 industry",
+                "type":"text",
+                "tooltip":"Level 2 Industries"
+            },
+            "industryL3":{
+                "name":"industryL3",
+                "placeholder":"Enter level 3 industry",
+                "type":"text",
+                "tooltip":"Level 3 Industries"
+            },
+            "industryL4":{
+                "name":"industryL4",
+                "placeholder":"Enter level 4 industry",
+                "type":"text",
+                "tooltip":"Level 4 Industries"
+            }
+        }
     }
 }
