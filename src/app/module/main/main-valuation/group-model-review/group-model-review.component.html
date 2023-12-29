@@ -4,10 +4,10 @@
     <div>
         <div class="mat-tab-g">
             <mat-tab-group mat-stretch-tabs="false" class="tab-group" mat-align-tabs="start" style="background-color: #ffffff;border-radius: 20px;">
-                <mat-tab label="Profit & Loss" *ngIf="hasSingleModel('FCFE') || hasSingleModel('FCFF') || hasSingleModel('Excess_Earnings') ">
+                <mat-tab label="Profit & Loss" *ngIf="!hasSingleModel('ruleElevenUa') ">
                     <app-profit-loss-data [transferStepperTwo]="transferStepperTwo" (profitLossData)="profitLossData($event)" [currentStepIndex]="step" [thirdStageInput]="thirdStageInput"></app-profit-loss-data>
                 </mat-tab>
-                <mat-tab label="Balance Sheet" *ngIf="hasSingleModel('FCFE') || hasSingleModel('FCFF') || hasSingleModel('Excess_Earnings') ">
+                <mat-tab label="Balance Sheet" *ngIf="!hasSingleModel('ruleElevenUa') ">
                     <app-balance-sheet-details [transferStepperTwo]="transferStepperTwo" (balanceSheetData)="balanceSheetData($event)" [thirdStageInput]="thirdStageInput"></app-balance-sheet-details>
                 </mat-tab>
                 <mat-tab label="Assessment of Working Capital" *ngIf="hasSingleModel('FCFE') || hasSingleModel('FCFF') || hasSingleModel('Excess_Earnings') ">

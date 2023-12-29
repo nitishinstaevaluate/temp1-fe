@@ -1,0 +1,208 @@
+<table class="relval-table">
+    <thead>
+      <tr class="header">
+        <th  colspan="5" style="border-right: none;text-align: left;padding-top:1%;padding-bottom: 1%;">Name Of Company:
+            <span style="border-right: none;text-transform: uppercase;padding-left: 10%;">{{formData?.formOneAndTwoData?.company}}</span>
+        </th>
+      </tr>
+      <tr class="header">
+        <th  colspan="5" style="border-right: none;text-align: left;padding-top:1%;padding-bottom: 1%;"> Valuation Basis:
+            <span style="border-right: none;text-transform:capitalize;padding-left: 12%;">Audited/Management Certified Financials as on {{formData?.formOneAndTwoData?.valuationDate | date:'MMM d, yyyy'}}</span>
+        </th>
+      </tr>
+      <tr style="background-color: #ffffff;">
+        <td colspan="5">
+            All Figures in {{formData?.formOneAndTwoData?.currencyUnit}} {{formData?.formOneAndTwoData?.reportingUnit}}
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">Particulars</td>
+        <td style="width: 50%;">Description</td>
+        <td>Amounts</td>
+        <td>Total</td>
+      </tr>
+    </thead>
+    <tbody>
+        <tr style="background-color: #f5f5f5;">
+            <td colspan="2">A</td>
+            <td colspan="1" style="text-align: left;">Book Value of all the assets (other than jewellery, artisitic work, shares, securities and immovable property) in the balance sheet as reduced by the following:</td>
+            <td colspan="1"></td>
+            <td colspan="1" style="text-align: center;">{{formData?.formThreeData?.appData?.bookValueOfAllAssets}}</td>
+        </tr>
+        <tr style="background-color: #ffffff;">
+            <td colspan="1">Less:</td>
+            <td colspan="4">
+                <tr>
+                    <td colspan="1" style="width: 5%;text-align: left;padding-left: 1%;">i.</td>
+                    <td colspan="1" style="text-align: left;width: 40%;">Any amount of income-tax is paid, if any, less the amount of income-tax refund claimed, if any:</td>
+                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 10%;">{{formData?.formThreeData?.appData?.totalIncomeTaxPaid}}</td>
+                    <td colspan="1" style="width: 10%;"></td>
+                </tr>
+                <tr style="background-color: #ffffff;">
+                    <td colspan="1" style="width: 5%;text-align: left;padding-left: 1%;">ii.</td>
+                    <td colspan="1" style="text-align: left;width: 40%;">Any amount shown as asset including the unamortised amount of deferred expenditure which does not represent the value of any asset:</td>
+                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 10%;">{{formData?.formThreeData?.appData?.unamortisedAmountOfDeferredExpenditure}}</td>
+                    <td colspan="1" style="width: 10%;"></td>
+                </tr>
+            </td>
+        </tr>        
+        <tr class="total" style="background-color: #f5f5f5;">
+            <td colspan="4">Total (A)</td>
+            <td colspan="1">-</td>
+        </tr>
+        <tr style="background-color: #f5f5f5;">
+            <td colspan="2">B.</td>
+            <td colspan="1" style="text-align: left;">The price which the jewellery and artistic work would fetch if sold in the open:</td>
+            <td colspan="1"></td>
+            <td colspan="1"></td>
+        </tr>
+        <tr>
+            <td colspan="1"></td>
+            <td colspan="4">
+                <tr>
+                    <td colspan="1" style="width: 5%;">i.</td>
+                    <td colspan="1" style="text-align: left;width: 73%;">Jewellery:</td>
+                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 13%;">{{formData?.formThreeData?.appData?.totalIncomeTaxPaid}}</td>
+                    <td colspan="1" style="width: 10%;"></td>
+                </tr>
+                <tr style="background-color: #ffffff;">
+                    <td colspan="1" style="width: 5%;">ii.</td>
+                    <td colspan="1" style="text-align: left;width: 73%;">Artistic Work:</td>
+                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 13%;">{{formData?.formThreeData?.appData?.unamortisedAmountOfDeferredExpenditure}}</td>
+                    <td colspan="1" style="width: 10%;"></td>
+                </tr>
+            </td>
+        </tr>
+        <tr class="total">
+            <td colspan="4">Total (B)</td>
+            <td colspan="1">-</td>
+        </tr>
+        <tr style="background-color: #f5f5f5;">
+            <td colspan="2">C</td>
+            <td colspan="1" style="text-align: left;">Fair Market Value of shares and securities as determined in the manner provided:</td>
+            <td colspan="2"></td>
+        </tr>
+        <tr style="background-color: #ffffff;">
+            <td colspan="1"></td>
+            <td colspan="4">
+                <tr>
+                    <td colspan="1" style="width: 5%;">i.</td>
+                    <td colspan="1" style="text-align: left;width: 73%;">Investments</td>
+                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 13%;">23.32</td>
+                    <td colspan="1" style="width: 10%;"></td>
+                </tr>
+            </td>
+        </tr>
+        <tr class="total" style="background-color: #f5f5f5;">
+            <td colspan="4">Total (C)</td>
+            <td colspan="1">-</td>
+        </tr>
+        <tr>
+            <td colspan="2">D</td>
+            <td colspan="1" style="text-align: left;">The value adopted or assessed by any authority of the Government for the purpose of payment of stamp duty in respect of the immovable property:</td>
+            <td colspan="2"></td>
+        </tr>
+        <tr >
+            <td colspan="1"></td>
+            <td colspan="4">
+                <tr>
+                    <td colspan="1" style="width: 5%;">i.</td>
+                    <td colspan="1" style="text-align: left;width: 73%;">Immovable Property</td>
+                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 13%;">32.3</td>
+                    <td colspan="1" style="width: 10%;"></td>
+                </tr>
+            </td>
+        </tr>
+        <tr class="total">
+            <td colspan="4">Total (D)</td>
+            <td colspan="1">-</td>
+        </tr>
+        <tr style="background-color: #f5f5f5;">
+            <td colspan="2">L</td>
+            <td colspan="1" style="text-align: left;">Book Value of liabilities shown in the balance sheet, but not including in the following:</td>
+            <td colspan="1"></td>
+            <td colspan="1">{{formData?.formThreeData?.appData?.bookValueOfLiabilities}}</td>
+        </tr>
+        <tr style="background-color: #ffffff;">
+            <td colspan="1">Less:</td>
+            <td colspan="4">
+                <tr>
+                    <td  colspan="1" style="width: 5%;">i.</td>
+                    <td colspan="1" style="text-align: left;width: 40%;">The paid-up capital in respect of equity shares.</td>
+                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 11%;">{{formData?.formThreeData?.appData?.paidUpCapital}}</td>
+                    <td colspan="1" style="width: 10%;"></td>
+                </tr>
+                <tr style="background-color: #ffffff;">
+                    <td  colspan="1" style="width: 5%;">ii.</td>
+                    <td colspan="1" style="text-align: left;width: 40%;">
+                        The amount set apart for payment of dividends on preference shares and
+                        equity shares where such dividends have not been declared before the date of
+                        transfer at a general body meeting of the company.
+                    </td>
+                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 11%;">{{formData?.formThreeData?.appData?.paymentDividends}}</td>
+                    <td colspan="1" style="width: 10%;"></td>
+                </tr>
+                <tr>
+                    <td  colspan="1" style="width: 5%;">iii.</td>
+                    <td colspan="1" style="text-align: left;width: 40%;">
+                        Reserves and surplus, by whatever name called, even if the resulting figure is
+                        negative, other than those set apart towards depreciation.</td>
+                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 11%;">{{formData?.formThreeData?.appData?.reserveAndSurplus}}</td>
+                    <td colspan="1" style="width: 10%;"></td>
+                </tr>
+                <tr style="background-color: #ffffff;">
+                    <td  colspan="1" style="width: 5%;">iv.</td>
+                    <td colspan="1" style="text-align: left;width: 40%;">
+                        Any amount representing provision for taxation, other than amount of income tax
+                        paid, if any, less the amount of income-tax claimed as refund, if any, to the
+                        extent of the excess over the tax payable with reference to the book profits in
+                        accordance with the law applicable thereto.</td>
+                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 11%;">{{formData?.formThreeData?.appData?.provisionForTaxation}}</td>
+                    <td colspan="1" style="width: 10%;"></td>
+                </tr>
+                <tr>
+                    <td  colspan="1" style="width: 5%;">v.</td>
+                    <td colspan="1" style="text-align: left;width: 40%;">
+                        Any amount representing provisions made for meeting liabilities, 
+                        other than ascertained liabilities.</td>
+                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 11%;">20</td>
+                    <td colspan="1" style="width: 10%;"></td>
+                </tr>
+                <tr style="background-color: #ffffff;">
+                    <td  colspan="1" style="width: 5%;">vi.</td>
+                    <td colspan="1" style="text-align: left;width: 40%;">
+                        Any amount representing contingent liabilities other than arrears of dividends
+                        payable in respect of cumulative preference shares.</td>
+                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 11%;">30</td>
+                    <td colspan="1" style="width: 10%;"></td>
+                </tr>
+            </td>
+        </tr>
+        <tr class="total" style="background-color: #f5f5f5;">
+            <td colspan="4">Total (L)</td>
+            <td colspan="1">-</td>
+        </tr>
+        <tr class="alltotal">
+            <td colspan="4">A + B + C + D + L</td>
+            <td colspan="1">50</td>
+        </tr>
+        <tr>
+            <td colspan="2">PV</td>
+            <td colspan="1" style="text-align: left;padding-left: 4%;">The paid up value of such equity shares.</td>
+            <td colspan="1" style="padding-left: 14%;text-align: left;">20</td>
+            <td colspan="1"></td>
+        </tr>
+        <tr style="background-color: #ffffff;">
+            <td colspan="2">PE</td>
+            <td colspan="1" style="text-align: left;padding-left: 4%;">The total amount of paid up share capital as shown in the balance sheet.</td>
+            <td colspan="1" style="padding-left: 14%;text-align: left;">30</td>
+            <td colspan="1"></td>
+        </tr>
+        <tr class="total" style="background-color: #f5f5f5;">
+            <td colspan="4" style="text-align: left;padding-left: 13.5%;">
+                Fair market value of unquoted equity shares = (A + B + C + D - L) X (PV) / (PE) (&#8377;)
+            </td>
+            <td colspan="1">100</td>
+        </tr>
+    </tbody>
+  </table>

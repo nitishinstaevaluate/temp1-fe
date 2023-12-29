@@ -374,6 +374,10 @@ export class MainValuationComponent implements OnInit{
               const {model , ...rest} = formTwoDetails;
               updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
             }
+            if(formTwoDetails.model === MODELS.RULE_ELEVEN_UA && processStateDetails?.firstStageInput.model.includes(MODELS.RULE_ELEVEN_UA)){
+              const {model , ...rest} = formTwoDetails;
+              updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
+            }
           }) 
           this.formFourData = {formOneAndTwoData : updatedPayload,formThreeData:processStateDetails.thirdStageInput,formFourData:processStateDetails?.fourthStageInput?.totalWeightageModel};
         }

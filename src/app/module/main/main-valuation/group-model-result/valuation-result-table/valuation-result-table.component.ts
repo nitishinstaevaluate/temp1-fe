@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {  MatTableDataSource } from '@angular/material/table';
-import { COMMON_COLUMN, EXCESS_EARNING_COLUMN, FCFE_COLUMN, FCFF_COLUMN} from 'src/app/shared/enums/constant';
+import { COMMON_COLUMN, EXCESS_EARNING_COLUMN, FCFE_COLUMN, FCFF_COLUMN, MODELS} from 'src/app/shared/enums/constant';
 import { CustomDatePipe } from 'src/app/shared/pipe/date.pipe';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { environment } from 'src/environments/environment';
@@ -21,6 +21,7 @@ fcff=false;
 relativeVal = false;
 excessEarn = false;
 nav=false;
+ruleElevenUa=false;
 tableData:any;
 valuationDataReport:any=[];
 columnName = COMMON_COLUMN;
@@ -28,6 +29,7 @@ dataSourceFcfe:any;
 dataSourceFcff:any;
 dataSourceExcessEarn:any;
 dataSourceNav:any;
+dataSourceElevenUa:any;
 companyData :any;
 formData :any;
 industryData:any = new MatTableDataSource();
@@ -65,7 +67,8 @@ constructor(private calculationService:CalculationsService,
 ngOnChanges(changes:SimpleChanges): void {
   let equityValuationDate:any;
   this.formData = this.transferStepperthree;
-  this.transferStepperthree?.formThreeData?.appData?.valuationResult.map((response:any)=>{
+  if(!this.transferStepperthree.formOneAndTwoData?.model?.includes(MODELS.RULE_ELEVEN_UA)){
+    this.transferStepperthree?.formThreeData?.appData?.valuationResult.map((response:any)=>{
     if(response.model === 'FCFE'){
       this.fcfeColumn = response?.columnHeader;
       this.dataSourceFcfe = (this.transposeData(response.valuationData))?.slice(1);
@@ -309,11 +312,13 @@ ngOnChanges(changes:SimpleChanges): void {
       this.getKeys(response.valuationData);
     }
   })
-  this.dataSourceFcff && this.transferStepperthree?.formOneAndTwoData?.model.includes('FCFF') ? this.fcff = true : this.fcff = false;
-  this.dataSourceFcfe && this.transferStepperthree?.formOneAndTwoData?.model.includes('FCFE') ? this.fcfe = true : this.fcfe = false;
-  this.valuationDataReport && (this.transferStepperthree?.formOneAndTwoData?.model.includes('Relative_Valuation') || this.transferStepperthree?.formOneAndTwoData?.model.includes('CTM')) ? this.relativeVal = true : this.relativeVal = false;
-  this.dataSourceExcessEarn && this.transferStepperthree?.formOneAndTwoData?.model.includes('Excess_Earnings') ? this.excessEarn = true : this.excessEarn = false;
-  this.dataSourceNav && this.transferStepperthree?.formOneAndTwoData?.model.includes('NAV') ? this.nav = true : this.nav = false;
+}
+this.dataSourceFcff && this.transferStepperthree?.formOneAndTwoData?.model.includes('FCFF') ? this.fcff = true : this.fcff = false;
+this.dataSourceFcfe && this.transferStepperthree?.formOneAndTwoData?.model.includes('FCFE') ? this.fcfe = true : this.fcfe = false;
+this.valuationDataReport && (this.transferStepperthree?.formOneAndTwoData?.model.includes('Relative_Valuation') || this.transferStepperthree?.formOneAndTwoData?.model.includes('CTM')) ? this.relativeVal = true : this.relativeVal = false;
+this.dataSourceExcessEarn && this.transferStepperthree?.formOneAndTwoData?.model.includes('Excess_Earnings') ? this.excessEarn = true : this.excessEarn = false;
+this.dataSourceNav && this.transferStepperthree?.formOneAndTwoData?.model.includes('NAV') ? this.nav = true : this.nav = false;
+this.transferStepperthree.formThreeData.appData && this.transferStepperthree?.formOneAndTwoData?.model.includes(MODELS.RULE_ELEVEN_UA) ? this.ruleElevenUa = true : this.ruleElevenUa = false;
   this.onTabSelectionChange();
 }
   

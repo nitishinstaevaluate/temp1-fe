@@ -13,45 +13,41 @@
             <!-- Jewellery -->
             <div class="col-md-4 field" style="padding-top: 1%;">
                 <div class="material-textfield">
-                  <input class="new-inp" [type]="modelControl.ruleElevenUa.columns.fairValueJewellery.type" [placeholder]="modelControl.ruleElevenUa.columns.fairValueJewellery.placeholder"/>
-                  <label>Jwellery</label>
+                  <input class="new-inp" [type]="modelControl.ruleElevenUa.columns.fairValueJewellery.type" [placeholder]="modelControl.ruleElevenUa.columns.fairValueJewellery.placeholder" formControlName="fairValueJewellery"/>
+                  <label>{{modelControl.ruleElevenUa.columns.fairValueJewellery.label}}</label>
                 </div>
-                <span *ngIf="ruleElevenUaForm.controls['fairValueJewellery'].touched && ruleElevenUaForm.controls['fairValueJewellery'].errors">
-                <span *ngIf="hasError('fairValueJewellery','required',ruleElevenUaForm)" class="error-text">Please add jewellery</span>
-                </span>
             </div>
 
             <!-- Aristic Work -->
             <div class="col-md-4 field" style="padding-top: 1%;">
                 <div class="material-textfield">
-                  <input class="new-inp" [type]="modelControl.ruleElevenUa.columns.fairValueArtistic.type" [placeholder]="modelControl.ruleElevenUa.columns.fairValueArtistic.placeholder"/>
-                  <label>Artistic Work</label>
+                  <input class="new-inp" [type]="modelControl.ruleElevenUa.columns.fairValueArtistic.type" [placeholder]="modelControl.ruleElevenUa.columns.fairValueArtistic.placeholder" formControlName="fairValueArtistic"/>
+                  <label>{{modelControl.ruleElevenUa.columns.fairValueArtistic.label}}</label>
                 </div>
-                <span *ngIf="ruleElevenUaForm.controls['fairValueArtistic'].touched && ruleElevenUaForm.controls['fairValueArtistic'].errors">
-                <span *ngIf="hasError('fairValueArtistic','required',ruleElevenUaForm)" class="error-text">Please enter artistic work</span>
-                </span>
             </div>
 
             <!-- Shares and Securities -->
             <div class="col-md-4 field" style="padding-top: 1%;">
                 <div class="material-textfield">
-                  <input class="new-inp" [type]="modelControl.ruleElevenUa.columns.fairValueSharesSecurity.type" [placeholder]="modelControl.ruleElevenUa.columns.fairValueSharesSecurity.placeholder"/>
-                  <label>Investment in Shares And Securities</label>
+                  <input class="new-inp" [type]="modelControl.ruleElevenUa.columns.fairValueinvstShareSec.type" [placeholder]="modelControl.ruleElevenUa.columns.fairValueinvstShareSec.placeholder" formControlName="fairValueinvstShareSec"/>
+                  <label>{{modelControl.ruleElevenUa.columns.fairValueinvstShareSec.label}}</label>
                 </div>
-                <span *ngIf="ruleElevenUaForm.controls['fairValueSharesSecurity'].touched && ruleElevenUaForm.controls['fairValueSharesSecurity'].errors">
-                <span *ngIf="hasError('fairValueImmovableProp','required',ruleElevenUaForm)" class="error-text">Please enter shares and securities</span>
-                </span>
             </div>
 
             <!-- Immovable Property -->
             <div class="col-md-4 field">
                 <div class="material-textfield">
-                  <input class="new-inp" [type]="modelControl.ruleElevenUa.columns.fairValueImmovableProp.type" [placeholder]="modelControl.ruleElevenUa.columns.fairValueImmovableProp.placeholder"/>
-                  <label>Immovable Property</label>
+                  <input class="new-inp" [type]="modelControl.ruleElevenUa.columns.fairValueImmovableProp.type" [placeholder]="modelControl.ruleElevenUa.columns.fairValueImmovableProp.placeholder" formControlName="fairValueImmovableProp"/>
+                  <label>{{modelControl.ruleElevenUa.columns.fairValueImmovableProp.label}}</label>
                 </div>
-                <span *ngIf="ruleElevenUaForm.controls['fairValueImmovableProp'].touched && ruleElevenUaForm.controls['fairValueImmovableProp'].errors">
-                <span *ngIf="hasError('fairValueImmovableProp','required',ruleElevenUaForm)" class="error-text">Please enter Immovable Property</span>
-                </span>
+            </div>
+
+            <!-- contingent liability -->
+            <div class="col-md-4 field">
+                <div class="material-textfield">
+                  <input class="new-inp" [type]="modelControl.ruleElevenUa.columns.contingentLiability.type" [placeholder]="modelControl.ruleElevenUa.columns.contingentLiability.placeholder" formControlName="contingentLiability"/>
+                  <label>{{modelControl.ruleElevenUa.columns.contingentLiability.label}}</label>
+                </div>
             </div>
 
             <div class="col-md-12 btn-prop">

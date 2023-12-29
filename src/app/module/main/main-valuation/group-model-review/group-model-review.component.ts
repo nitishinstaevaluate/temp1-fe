@@ -40,6 +40,7 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
   debtValue:any
   tableData:any
   valuationData: any;
+  ruleElevenUaId: any;
   updateExcel=false;
   editedExcel:any=[];
   isPAndLExcelModified=false;
@@ -154,6 +155,25 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
         processStat = 3;
         processStatStep = true;
     }
+    if(payload.model.includes(MODELS.RULE_ELEVEN_UA) && payload.model.length === 1){
+      this.valuationService.ruleElevenValuation(payload,this.ruleElevenUaId).subscribe((elevenUaData:any)=>{
+        if(elevenUaData.status){
+          this.ruleElevenUaId = elevenUaData.data._id;
+          this.groupReviewControls.emit({appData:elevenUaData.data,valuationId:this.ruleElevenUaId});
+          const processStateModel ={
+            thirdStageInput:{
+              appData:elevenUaData.data,
+              isExcelModified: localStorage.getItem('excelStat') === 'true' ? true: false,
+              modifiedExcelSheetId:localStorage.getItem('excelStat') === 'true' ? `edited-${(!this.transferStepperTwo ? thirdStageData :  this.transferStepperTwo).excelSheetId}` : '',
+              formFillingStatus:processStatStep
+            },
+            step:processStat
+          }
+          this.processStateManager(processStateModel,localStorage.getItem('processStateId'));
+        }
+      })
+    }
+    else{
     this.valuationService.submitForm(payload).subscribe((response)=>{
       if(response?.valuationResult){
         this.valuationData= response; 
@@ -171,6 +191,7 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
         this.processStateManager(processStateModel,localStorage.getItem('processStateId'));
       }
     })
+    }
   }
 
 
