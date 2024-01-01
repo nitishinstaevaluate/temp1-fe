@@ -48,7 +48,7 @@
         </tr>        
         <tr class="total" style="background-color: #f5f5f5;">
             <td colspan="4">Total (A)</td>
-            <td colspan="1">-</td>
+            <td colspan="1">{{calculateTotalA()}}</td>
         </tr>
         <tr style="background-color: #f5f5f5;">
             <td colspan="2">B.</td>
@@ -58,24 +58,18 @@
         </tr>
         <tr>
             <td colspan="1"></td>
-            <td colspan="4">
-                <tr>
-                    <td colspan="1" style="width: 5%;">i.</td>
-                    <td colspan="1" style="text-align: left;width: 73%;">Jewellery:</td>
-                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 13%;">{{formData?.formThreeData?.appData?.totalIncomeTaxPaid}}</td>
-                    <td colspan="1" style="width: 10%;"></td>
-                </tr>
-                <tr style="background-color: #ffffff;">
-                    <td colspan="1" style="width: 5%;">ii.</td>
-                    <td colspan="1" style="text-align: left;width: 73%;">Artistic Work:</td>
-                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 13%;">{{formData?.formThreeData?.appData?.unamortisedAmountOfDeferredExpenditure}}</td>
+            <td colspan="4" *ngIf="jewelleryOrArtisticWork">
+                <tr *ngFor="let data of jewelleryOrArtisticWork" style="background-color: #ffffff;">
+                    <td colspan="1" style="width: 5%;">{{data.index}}</td>
+                    <td colspan="1" style="text-align: left;width: 73%;">{{data.label}}</td>
+                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 13%;">{{data.value}}</td>
                     <td colspan="1" style="width: 10%;"></td>
                 </tr>
             </td>
         </tr>
         <tr class="total">
             <td colspan="4">Total (B)</td>
-            <td colspan="1">-</td>
+            <td colspan="1">{{calculateTotalB()}}</td>
         </tr>
         <tr style="background-color: #f5f5f5;">
             <td colspan="2">C</td>
@@ -88,14 +82,14 @@
                 <tr>
                     <td colspan="1" style="width: 5%;">i.</td>
                     <td colspan="1" style="text-align: left;width: 73%;">Investments</td>
-                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 13%;">23.32</td>
+                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 13%;">{{formData?.formThreeData?.appData?.inputData?.fairValueinvstShareSec ? formData.formThreeData.appData.inputData.fairValueinvstShareSec : '-' }}</td>
                     <td colspan="1" style="width: 10%;"></td>
                 </tr>
             </td>
         </tr>
         <tr class="total" style="background-color: #f5f5f5;">
             <td colspan="4">Total (C)</td>
-            <td colspan="1">-</td>
+            <td colspan="1">{{calculateTotalC()}}</td>
         </tr>
         <tr>
             <td colspan="2">D</td>
@@ -108,14 +102,14 @@
                 <tr>
                     <td colspan="1" style="width: 5%;">i.</td>
                     <td colspan="1" style="text-align: left;width: 73%;">Immovable Property</td>
-                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 13%;">32.3</td>
+                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 13%;">{{formData?.formThreeData?.appData?.inputData?.fairValueImmovableProp ? formData.formThreeData.appData.inputData.fairValueImmovableProp : '-'}}</td>
                     <td colspan="1" style="width: 10%;"></td>
                 </tr>
             </td>
         </tr>
         <tr class="total">
             <td colspan="4">Total (D)</td>
-            <td colspan="1">-</td>
+            <td colspan="1">{{calculateTotalD()}}</td>
         </tr>
         <tr style="background-color: #f5f5f5;">
             <td colspan="2">L</td>
@@ -129,7 +123,7 @@
                 <tr>
                     <td  colspan="1" style="width: 5%;">i.</td>
                     <td colspan="1" style="text-align: left;width: 40%;">The paid-up capital in respect of equity shares.</td>
-                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 11%;">{{formData?.formThreeData?.appData?.paidUpCapital}}</td>
+                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 11%;">{{formData?.formThreeData?.appData?.paidUpCapital ? formData?.formThreeData?.appData?.paidUpCapital : '-'  }}</td>
                     <td colspan="1" style="width: 10%;"></td>
                 </tr>
                 <tr style="background-color: #ffffff;">
@@ -139,7 +133,7 @@
                         equity shares where such dividends have not been declared before the date of
                         transfer at a general body meeting of the company.
                     </td>
-                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 11%;">{{formData?.formThreeData?.appData?.paymentDividends}}</td>
+                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 11%;">{{formData?.formThreeData?.appData?.paymentDividends ? formData?.formThreeData?.appData?.paymentDividends : '-' }}</td>
                     <td colspan="1" style="width: 10%;"></td>
                 </tr>
                 <tr>
@@ -147,7 +141,7 @@
                     <td colspan="1" style="text-align: left;width: 40%;">
                         Reserves and surplus, by whatever name called, even if the resulting figure is
                         negative, other than those set apart towards depreciation.</td>
-                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 11%;">{{formData?.formThreeData?.appData?.reserveAndSurplus}}</td>
+                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 11%;">{{formData?.formThreeData?.appData?.reserveAndSurplus ? formData?.formThreeData?.appData?.reserveAndSurplus : '-' }}</td>
                     <td colspan="1" style="width: 10%;"></td>
                 </tr>
                 <tr style="background-color: #ffffff;">
@@ -157,7 +151,7 @@
                         paid, if any, less the amount of income-tax claimed as refund, if any, to the
                         extent of the excess over the tax payable with reference to the book profits in
                         accordance with the law applicable thereto.</td>
-                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 11%;">{{formData?.formThreeData?.appData?.provisionForTaxation}}</td>
+                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 11%;">{{formData?.formThreeData?.appData?.provisionForTaxation ? formData?.formThreeData?.appData?.provisionForTaxation : '-' }}</td>
                     <td colspan="1" style="width: 10%;"></td>
                 </tr>
                 <tr>
@@ -165,7 +159,7 @@
                     <td colspan="1" style="text-align: left;width: 40%;">
                         Any amount representing provisions made for meeting liabilities, 
                         other than ascertained liabilities.</td>
-                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 11%;">20</td>
+                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 11%;">{{formData?.formThreeData?.appData?.inputData?.otherThanAscertainLiability ? formData?.formThreeData?.appData?.inputData?.otherThanAscertainLiability : '-' }}</td>
                     <td colspan="1" style="width: 10%;"></td>
                 </tr>
                 <tr style="background-color: #ffffff;">
@@ -173,18 +167,18 @@
                     <td colspan="1" style="text-align: left;width: 40%;">
                         Any amount representing contingent liabilities other than arrears of dividends
                         payable in respect of cumulative preference shares.</td>
-                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 11%;">30</td>
+                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 11%;">{{formData?.formThreeData?.appData?.inputData?.contingentLiability}}</td>
                     <td colspan="1" style="width: 10%;"></td>
                 </tr>
             </td>
         </tr>
         <tr class="total" style="background-color: #f5f5f5;">
             <td colspan="4">Total (L)</td>
-            <td colspan="1">-</td>
+            <td colspan="1">{{calculateTotalL()}}</td>
         </tr>
         <tr class="alltotal">
             <td colspan="4">A + B + C + D + L</td>
-            <td colspan="1">50</td>
+            <td colspan="1">{{calculateAll()}}</td>
         </tr>
         <tr>
             <td colspan="2">PV</td>
@@ -195,7 +189,7 @@
         <tr style="background-color: #ffffff;">
             <td colspan="2">PE</td>
             <td colspan="1" style="text-align: left;padding-left: 4%;">The total amount of paid up share capital as shown in the balance sheet.</td>
-            <td colspan="1" style="padding-left: 14%;text-align: left;">30</td>
+            <td colspan="1" style="padding-left: 14%;text-align: left;">{{formData?.formThreeData?.appData?.paidUpCapital ? formData?.formThreeData?.appData?.paidUpCapital : '-'}}</td>
             <td colspan="1"></td>
         </tr>
         <tr class="total" style="background-color: #f5f5f5;">

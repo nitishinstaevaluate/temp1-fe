@@ -4,6 +4,7 @@ import {  MatTableDataSource } from '@angular/material/table';
 import { COMMON_COLUMN, EXCESS_EARNING_COLUMN, FCFE_COLUMN, FCFF_COLUMN, MODELS} from 'src/app/shared/enums/constant';
 import { CustomDatePipe } from 'src/app/shared/pipe/date.pipe';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
+import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -60,14 +61,14 @@ this.dataSourceNav.splice(this.dataSourceNav.findIndex((item:any) => item?.field
 }
 ngOnInit(): void {}
 
-constructor(private calculationService:CalculationsService,
+constructor(private excelAndReportService:ExcelAndReportService,
   private snackbar:MatSnackBar,
   private customDatePipe:CustomDatePipe){}
 
 ngOnChanges(changes:SimpleChanges): void {
   let equityValuationDate:any;
   this.formData = this.transferStepperthree;
-  if(!this.transferStepperthree.formOneAndTwoData?.model?.includes(MODELS.RULE_ELEVEN_UA)){
+  if(!this.transferStepperthree?.formOneAndTwoData?.model?.includes(MODELS.RULE_ELEVEN_UA)){
     this.transferStepperthree?.formThreeData?.appData?.valuationResult.map((response:any)=>{
     if(response.model === 'FCFE'){
       this.fcfeColumn = response?.columnHeader;
@@ -318,7 +319,7 @@ this.dataSourceFcfe && this.transferStepperthree?.formOneAndTwoData?.model.inclu
 this.valuationDataReport && (this.transferStepperthree?.formOneAndTwoData?.model.includes('Relative_Valuation') || this.transferStepperthree?.formOneAndTwoData?.model.includes('CTM')) ? this.relativeVal = true : this.relativeVal = false;
 this.dataSourceExcessEarn && this.transferStepperthree?.formOneAndTwoData?.model.includes('Excess_Earnings') ? this.excessEarn = true : this.excessEarn = false;
 this.dataSourceNav && this.transferStepperthree?.formOneAndTwoData?.model.includes('NAV') ? this.nav = true : this.nav = false;
-this.transferStepperthree.formThreeData.appData && this.transferStepperthree?.formOneAndTwoData?.model.includes(MODELS.RULE_ELEVEN_UA) ? this.ruleElevenUa = true : this.ruleElevenUa = false;
+this.transferStepperthree?.formThreeData?.appData && this.transferStepperthree?.formOneAndTwoData?.model.includes(MODELS.RULE_ELEVEN_UA) ? this.ruleElevenUa = true : this.ruleElevenUa = false;
   this.onTabSelectionChange();
 }
   
@@ -409,7 +410,7 @@ exportPdf(modelName:string){
     model,
     reportId:this.transferStepperthree?.formThreeData?.appData?.reportId,
   }
-   this.calculationService.generatePdf(payload, true).subscribe(
+   this.excelAndReportService.generatePdf(payload, true).subscribe(
     (data:any) => {
       this.isLoader = false;
       if(data.status){

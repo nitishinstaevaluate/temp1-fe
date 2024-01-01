@@ -24,38 +24,9 @@ export class CalculationsService {
   getWeightedValuation(payload:any){
     return this.http.post(`${HOST}calculation/weightedvaluation`,payload);
   }
-  
-  generatePdf(payload: any,specificity:boolean = false) {
-    return this.http.get(`${HOST}upload/generate/${payload?.reportId}/${payload?.model}/${specificity}`);
-  }
-
-  modifyExcel(payload:any){
-    return this.http.post(`${HOST}upload/modifyExcel`,payload)
-  }
-
-  postReportData(payload:any){
-    return this.http.post(`${HOST}report/generateReport`,payload);
-  }
-  generateReport(reportId:string,approach:string){
-    return this.http.get(`${HOST}report/getReport/${approach}/${reportId}`,{
-    responseType: 'blob'
-});
-  }
-
-  previewReport(reportId:string,approach:string){
-    return this.http.get(`${HOST}report/previewReport/${approach}/${reportId}`
-    // ,{
-    // responseType: 'blob'
-// }
-);
-  }
 
   getWaccIndustryOrCompanyBased(payload:any){
     return this.http.get(`${HOST}coe/industryOrCompanyBasedWacc?adjCoe=${payload.adjCoe}&costOfDebt=${payload.costOfDebt}&copShareCapital=${payload.copShareCapital}&deRatio=${payload.deRatio}&type=${payload.type}&taxRate=${payload.taxRate}&excelSheetId=${payload.excelSheetId}`)
 
-  }
-
-  updateReportDocxBuffer(id:any,formData:any){
-    return this.http.put(`${HOST}report/updateReportDoc/${id}`,formData)
   }
 }

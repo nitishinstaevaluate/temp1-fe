@@ -27,7 +27,8 @@ export class ElevenUAComponent implements OnInit{
     ){}
 
   ngOnInit() {
-    this.loadForm()
+    this.loadForm();
+    this.checkProcessExist();
   }
   loadForm(){
     this.ruleElevenUaForm = this.fb.group({
@@ -35,8 +36,24 @@ export class ElevenUAComponent implements OnInit{
       fairValueArtistic: ['',[Validators.required]],
       fairValueImmovableProp: ['',[Validators.required]],
       fairValueinvstShareSec: ['',[Validators.required]],
-      contingentLiability: ['',[Validators.required]]
+      contingentLiability: ['',[Validators.required]],
+      otherThanAscertainLiability: ['',[Validators.required]],
     })
+  }
+
+  checkProcessExist(){
+    if(this.secondStageInput){
+      this.secondStageInput.map((stateTwoDetails:any)=>{
+        if(stateTwoDetails.model === MODELS.RULE_ELEVEN_UA && this.formOneData.model.includes(MODELS.RULE_ELEVEN_UA)){
+          this.ruleElevenUaForm.controls['fairValueJewellery'].setValue(stateTwoDetails?.fairValueJewellery) 
+          this.ruleElevenUaForm.controls['fairValueArtistic'].setValue(stateTwoDetails?.fairValueArtistic) 
+          this.ruleElevenUaForm.controls['fairValueImmovableProp'].setValue(stateTwoDetails?.fairValueImmovableProp) 
+          this.ruleElevenUaForm.controls['fairValueinvstShareSec'].setValue(stateTwoDetails?.fairValueinvstShareSec); 
+          this.ruleElevenUaForm.controls['contingentLiability'].setValue(stateTwoDetails?.contingentLiability);
+          this.ruleElevenUaForm.controls['otherThanAscertainLiability'].setValue(stateTwoDetails?.otherThanAscertainLiability);
+        }
+      })
+    }
   }
 
   previous(){
@@ -46,11 +63,11 @@ export class ElevenUAComponent implements OnInit{
   saveAndNext(){
     localStorage.setItem('stepTwoStats','true')
     const processStateModel ={
-      secondStageInput:[{model:MODELS.RULE_ELEVEN_UA,...this.ruleElevenUaForm.value,formFillingStatus:true}],
+      secondStageInput:[{model:MODELS.RULE_ELEVEN_UA,...this.ruleElevenUaForm.value,formFillingStatus:true,status:MODELS.RULE_ELEVEN_UA}],
       step:2
     }
     this.processStateManager(processStateModel,localStorage.getItem('processStateId'));
-    this.ruleElevenUaDetails.emit( {...this.ruleElevenUaForm.value,status:'ruleElevenUa'} );
+    this.ruleElevenUaDetails.emit( {...this.ruleElevenUaForm.value,status:MODELS.RULE_ELEVEN_UA} );
   }
 
   processStateManager(process:any, processId:any){

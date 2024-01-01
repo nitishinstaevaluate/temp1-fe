@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { isSelected } from 'src/app/shared/enums/functions';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
+import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.service';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
 
 @Component({
@@ -30,7 +31,7 @@ export class ElevenUaDetailsComponent {
 
   constructor(private valuationService:ValuationService,
     private snackBar: MatSnackBar,
-    private calculationService:CalculationsService){
+    private excelAndReportService:ExcelAndReportService){
 
   }
   ngOnChanges(){
@@ -195,7 +196,7 @@ export class ElevenUaDetailsComponent {
         ...this.editedValues[0] 
       }
       if(payload.newValue !== null && payload.newValue !== undefined){
-        this.calculationService.modifyExcel(payload).subscribe(
+        this.excelAndReportService.modifyExcel(payload).subscribe(
           (response:any)=>{
           if(response?.status){
             this.isExcelModified = true;

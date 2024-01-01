@@ -14,6 +14,7 @@ import { CalculationsService } from '../../service/calculations.service';
 import saveAs from 'file-saver';
 import { hasError } from '../../enums/errorMethods';
 import { ProcessStatusManagerService } from '../../service/process-status-manager.service';
+import { ExcelAndReportService } from '../../service/excel-and-report.service';
 
 @Component({
   selector: 'app-generic-modal-box',
@@ -97,7 +98,7 @@ constructor(@Inject(MAT_DIALOG_DATA) public data: any,
 private dialogRef:MatDialogRef<GenericModalBoxComponent>,
 private valuationService:ValuationService,
 private snackBar:MatSnackBar,
-private calculationService:CalculationsService,
+private excelAndReportService:ExcelAndReportService,
 private processStatusManagerService:ProcessStatusManagerService){
 this.loadModel(data);
 if(data?.value === this.appValues.PREVIEW_DOC.value){
@@ -157,7 +158,7 @@ async onSave(){
 async convertDocxToPdf(payload:any){
   const formData = new FormData();
 formData.append('file', payload.docxBuffer, `${payload.companyName}-${payload.reportId}.docx`);
-  this.calculationService.updateReportDocxBuffer(payload.reportId,formData).subscribe((response:any)=>{
+  this.excelAndReportService.updateReportDocxBuffer(payload.reportId,formData).subscribe((response:any)=>{
     if(response){
       // console.log("updated success")
       this.snackBar.open('Doc Update Success','ok',{

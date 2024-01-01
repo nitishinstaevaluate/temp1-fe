@@ -840,7 +840,7 @@
                 "placeholder":"Fair value of Jwellery",
                 "type":"text",
                 "toolTip":"Enter fair value for jwellery",
-                "label":"Jwellery"
+                "label":"Fair value of Jewellery"
             },
             "fairValueArtistic":{
                 "name":"fairValueArtistic",
@@ -883,6 +883,13 @@
                 "type":"text",
                 "tooltip":"Enter contingent liability",
                 "label":"Contingent Liability"
+            },
+            "otherThanAscertainLiability":{
+                "name":"otherThanAscertainLiability",
+                "placeholder":"Enter other ascertained liability",
+                "type":"text",
+                "tooltip":"Other Ascertained Liability",
+                "label":"Other Ascertained Liability"
             }
         }
     }

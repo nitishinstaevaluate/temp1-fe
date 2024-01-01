@@ -115,7 +115,11 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
           const {model , formFillingStatus, ...rest} = formTwoDetails;
           updatedPayload = {...formOneData,...rest,...updatedPayload}
         }
-      })  
+        if(formTwoDetails.model === MODELS.RULE_ELEVEN_UA && formOneData.model.includes(MODELS.RULE_ELEVEN_UA)){
+          const {model , formFillingStatus, ...rest} = formTwoDetails;
+          updatedPayload = {...formOneData,...rest,...updatedPayload}
+        }
+      })
        const {status, industriesRatio, betaIndustry, preferenceCompanies,...rest} = updatedPayload;
        thirdStageData = rest;
     }

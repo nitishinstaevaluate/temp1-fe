@@ -50,6 +50,14 @@
                 </div>
             </div>
 
+            <!-- Other ascertained liability -->
+            <div class="col-md-4 field">
+                <div class="material-textfield">
+                  <input class="new-inp" [type]="modelControl.ruleElevenUa.columns.otherThanAscertainLiability.type" [placeholder]="modelControl.ruleElevenUa.columns.otherThanAscertainLiability.placeholder" formControlName="otherThanAscertainLiability"/>
+                  <label>{{modelControl.ruleElevenUa.columns.otherThanAscertainLiability.label}}</label>
+                </div>
+            </div>
+
             <div class="col-md-12 btn-prop">
                 <button (click)="previous()" mat-raised-button class="button-back-mat">
                   <span class="button-back"><mat-icon>send</mat-icon></span>

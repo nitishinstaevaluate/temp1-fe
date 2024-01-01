@@ -339,7 +339,7 @@ export class GroupModelControlsComponent implements OnInit {
   }
   
   isRelativeValuation(value:string){
-    return !!this.checkedItems.includes(value);
+    return this.checkedItems.includes(value);
   }
 
   isSelected(value: any): boolean {
@@ -387,7 +387,7 @@ isSelectedpreferenceRatio(value:any){
       this.newDate = new Date(myDate.year, myDate.month - 1, myDate.day);
       payload['valuationDate'] = this.newDate.getTime();
     }
-    if(this.isRelativeValuation('NAV') &&  this.modelValuation.controls['model'].value.length=== 1){
+    if(this.isRelativeValuation(MODELS.NAV)  &&  this.modelValuation.controls['model'].value.length=== 1){
       const keysToRemove = ['taxRate', 'taxRateType', 'terminalGrowthRate', 'preferenceCompanies','projectionYears','projectionYearSelect','location'];
 
     payload = Object.keys(payload).reduce((result:any, key) => {
@@ -429,12 +429,18 @@ isSelectedpreferenceRatio(value:any){
       delete control.terminalGrowthRate
       delete control.projectionYears
     }
-  
-    this.authService.extractUser().subscribe((extraction:any)=>{
-      if(extraction.status){
-        this.modelValuation.controls['userId'].setValue(extraction.userId)
-      }
-    })
+
+    if(payload.model.includes(MODELS.RULE_ELEVEN_UA)){
+      delete control.taxRate;
+      delete control.taxRateType;
+      delete control.terminalGrowthRate;
+      delete control.preferenceCompanies;
+      delete control.projectionYears;
+      delete control.projectionYearSelect;
+      delete control.industry;
+      delete control.discountRateType;
+      delete control.discountRateValue;
+    }
     
     this.isExcelReupload = false; // reset it once payload has modified excel sheet id
     
