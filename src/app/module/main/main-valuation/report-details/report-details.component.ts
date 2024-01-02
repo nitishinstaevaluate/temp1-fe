@@ -274,6 +274,9 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
   previewReport(){
     const controls = {...this.reportForm.controls}
     delete controls.clientName;
+    delete controls.dateOfIncorporation;
+    delete controls.companyAddress;
+    delete controls.cinNumber;
     const validatedReportForm = this.validateControls(controls);
     if(!validatedReportForm){
         this.reportForm.markAllAsTouched();

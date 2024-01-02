@@ -890,6 +890,13 @@
                 "type":"text",
                 "tooltip":"Other Ascertained Liability",
                 "label":"Other Ascertained Liability"
+            },
+            "phaseValue":{
+                "name":"phaseValue",
+                "placeholder":"Enter phase value",
+                "type":"text",
+                "tooltip":"Phase value",
+                "label":"Phase Value"
             }
         }
     }

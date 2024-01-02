@@ -387,16 +387,14 @@ isSelectedpreferenceRatio(value:any){
       this.newDate = new Date(myDate.year, myDate.month - 1, myDate.day);
       payload['valuationDate'] = this.newDate.getTime();
     }
-    if(this.isRelativeValuation(MODELS.NAV)  &&  this.modelValuation.controls['model'].value.length=== 1){
-      const keysToRemove = ['taxRate', 'taxRateType', 'terminalGrowthRate', 'preferenceCompanies','projectionYears','projectionYearSelect','location'];
-
-    payload = Object.keys(payload).reduce((result:any, key) => {
-        if (!keysToRemove.includes(key)) {
-            result[key] = payload[key];
-        }
-        return result;
-    }, {});
-  }
+    if(this.modelValuation.controls['model'].value.includes(MODELS.NAV) && this.modelValuation.controls['model'].value.length=== 1){
+      const keysToRemove = ['taxRate', 'taxRateType', 'terminalGrowthRate', 'preferenceCompanies','projectionYears','projectionYearSelect','industriesRatio'];
+      payload = this.recalculateFields(payload,keysToRemove)
+    }
+    else if(this.modelValuation.controls['model'].value.includes(MODELS.RULE_ELEVEN_UA) && this.modelValuation.controls['model'].value.length=== 1){
+      const keysToRemove = ['taxRate', 'taxRateType', 'terminalGrowthRate', 'preferenceCompanies','projectionYears','projectionYearSelect','industriesRatio','industry','discountRateType','discountRateValue'];
+      payload = this.recalculateFields(payload,keysToRemove)
+    }
     // check if modified excel sheet id exist or not
     if(localStorage.getItem('excelStat') === 'true' && !this.isExcelReupload){
       payload['modifiedExcelSheetId']=  `edited-${this.modelValuation.controls['excelSheetId'].value}`;
@@ -660,5 +658,15 @@ isSelectedpreferenceRatio(value:any){
         });
       }
     );
+  }
+
+  recalculateFields(payload:any,keysToRemove:any){
+    const result: any = {};
+      for (const key in payload) {
+        if (!keysToRemove.includes(key)) {
+          result[key] = payload[key];
+        }
+      }
+      return result;
   }
 }

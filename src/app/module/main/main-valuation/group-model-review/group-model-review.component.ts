@@ -35,6 +35,7 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
   isLoadingBalanceSheet=true;
   isLoadingProfitLoss=true;
   isLoadingAssessmentSheet=true;
+  isLoadingRuleElevenSheet=true;
   betaValue:any ;
   taxRateValue:any;
   debtValue:any
@@ -159,7 +160,7 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
         processStat = 3;
         processStatStep = true;
     }
-    if(payload.model.includes(MODELS.RULE_ELEVEN_UA) && payload.model.length === 1){
+    if(payload.model.includes(MODELS.RULE_ELEVEN_UA)){
       this.valuationService.ruleElevenValuation(payload,this.ruleElevenUaId).subscribe((elevenUaData:any)=>{
         if(elevenUaData.status){
           this.ruleElevenUaId = elevenUaData.data._id;
@@ -257,6 +258,43 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
     }
   }
 
+  ruleElevenSheetData(data:any){
+    if(data){
+      this.isLoadingRuleElevenSheet=false;
+      if(data?.error){
+        this.snackBar.open('Rule Eleven UA Sheet fetch fail','Ok',{
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+          duration: 3000,
+          panelClass: 'app-notification-error',
+        })
+      }
+      else{
+        this.isExcelModified = data.isModified;
+        this.modifiedExcelSheetId = data.modifiedExcelSheetId;
+      }
+    }
+  }
+
+  loadEditTable(){
+    if(!this.transferStepperTwo){
+      if(!this.thirdStageInput?.formOneData?.model.includes(MODELS.RULE_ELEVEN_UA)){
+        return this.isLoadingProfitLoss && this.isLoadingBalanceSheet && this.isLoadingAssessmentSheet; 
+      }
+      else{
+        return this.isLoadingRuleElevenSheet;
+      }
+    }
+    else{
+      if(!this.transferStepperTwo?.model.includes(MODELS.RULE_ELEVEN_UA)){
+        return this.isLoadingProfitLoss && this.isLoadingBalanceSheet && this.isLoadingAssessmentSheet; 
+      }
+      else{
+        return this.isLoadingRuleElevenSheet;
+      }
+    }
+    // return this.transferStepperTwo?.model.includes(value) ? true :false;
+  }
   isRelativeValuation(value:string){
     if(!this.transferStepperTwo){
       return this.thirdStageInput?.formOneData?.model.includes(value)

@@ -107,4 +107,21 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
   calculateAll() {
       return  this.totalCalculationA+ this.totalCalculationB + this.totalCalculationC + this.totalCalculationD + this.totalCalculationL;
   }
+  
+  calculateFairMarketValue(){
+    const phaseValue = !isNaN(parseFloat(this.formData?.formThreeData?.appData?.inputData?.phaseValue)) ? parseFloat(this.formData?.formThreeData?.appData?.inputData?.phaseValue) : 1;
+    const paidUpCapital = !isNaN(parseFloat(this.formData?.formThreeData?.appData?.paidUpCapital)) ? parseFloat(this.formData?.formThreeData?.appData?.paidUpCapital) : 1;
+
+    const totalSum = this.totalCalculationA + this.totalCalculationB + this.totalCalculationC + this.totalCalculationD + this.totalCalculationL;
+
+    let result;
+
+    if (!isNaN(totalSum) && !isNaN(paidUpCapital) && totalSum > 0 && paidUpCapital > 0) {
+        result = (totalSum * phaseValue) / paidUpCapital;
+    } else {
+        result = 0;
+    }
+
+    return result;
+  }
 }
