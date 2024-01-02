@@ -599,7 +599,7 @@ isSelectedpreferenceRatio(value:any){
         fileName:this.fileName,
         value:'valuationMethod'
       }
-     const dialogRef = this.dialog.open(GenericModalBoxComponent,{data:data,width:'50%'});
+     const dialogRef = this.dialog.open(GenericModalBoxComponent,{data:data,width:'50%',height:'95%'});
   
      dialogRef.afterClosed().subscribe((result) => {
       if (result) {
@@ -668,5 +668,11 @@ isSelectedpreferenceRatio(value:any){
         }
       }
       return result;
+  }
+
+  isNotRuleElevenUa(){
+    if(this.modelValuation.controls['model'].value?.length && !this.modelValuation.controls['model'].value?.includes(MODELS.RULE_ELEVEN_UA))
+      return true;
+    return false
   }
 }
