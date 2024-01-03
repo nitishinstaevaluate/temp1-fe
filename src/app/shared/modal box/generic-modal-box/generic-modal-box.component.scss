@@ -338,7 +338,7 @@ input.form-check-input[type="radio"] {
   color: #979797;
   font-family: 'AR One Sans', sans-serif;
 }
-.hp-text-nav{
+.hp-text-nav,.hp-text-r11a{
   text-align: center;
   font-size: 14px;
   font-weight: 400;
@@ -486,8 +486,25 @@ input.form-check-input[type="radio"] {
     cursor: pointer;
   }
 }
+.r11ua-hover:hover{
+  .n-models-r11ua label{
+    color: #27d69b;
+    transition: ease-out 0.3s;
+    cursor: pointer;
+  }
+  .n-models-r11ua input{
+    color: #27d69b;
+    transition: ease-out 0.3s;
+    cursor: pointer;
+  }
+  .hp-text-r11ua p{
+    color: #27d69b;
+    transition: ease-out 0.3s;
+    cursor: pointer;
+  }
+}
 
-.incomeApproach,.navApproach,.marketApproach{
+.incomeApproach,.navApproach,.marketApproach,.ruleElevenUaApproach{
   border-radius: 10px;
   border: 1px solid #cfcfcf;
   box-shadow: 1px 2px 10px #cccccc;
@@ -496,10 +513,10 @@ input.form-check-input[type="radio"] {
   padding-bottom: 2.5%;
   position: relative;
 }
-.navApproach,.marketApproach{
+.navApproach,.marketApproach,.ruleElevenUaApproach{
   margin-top: 4%;
 }
-.navApproach,.marketApproach{
+.navApproach,.marketApproach,.ruleElevenUaApproach{
   padding-bottom: 1%;
 }
 .pos-absolute{
@@ -527,6 +544,14 @@ input.form-check-input[type="radio"] {
   color: #666666;
 }
 .pos-absolute-nav{
+  position: absolute;
+  top: -19%;
+  background: white;
+  font-size: 17px;
+  font-family: 'AR One Sans', sans-serif;
+  color: #666666;
+}
+.pos-absolute-r11ua{
   position: absolute;
   top: -19%;
   background: white;

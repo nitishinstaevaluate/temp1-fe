@@ -35,11 +35,13 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
   isLoadingBalanceSheet=true;
   isLoadingProfitLoss=true;
   isLoadingAssessmentSheet=true;
+  isLoadingRuleElevenSheet=true;
   betaValue:any ;
   taxRateValue:any;
   debtValue:any
   tableData:any
   valuationData: any;
+  ruleElevenUaId: any;
   updateExcel=false;
   editedExcel:any=[];
   isPAndLExcelModified=false;
@@ -114,7 +116,11 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
           const {model , formFillingStatus, ...rest} = formTwoDetails;
           updatedPayload = {...formOneData,...rest,...updatedPayload}
         }
-      })  
+        if(formTwoDetails.model === MODELS.RULE_ELEVEN_UA && formOneData.model.includes(MODELS.RULE_ELEVEN_UA)){
+          const {model , formFillingStatus, ...rest} = formTwoDetails;
+          updatedPayload = {...formOneData,...rest,...updatedPayload}
+        }
+      })
        const {status, industriesRatio, betaIndustry, preferenceCompanies,...rest} = updatedPayload;
        thirdStageData = rest;
     }
@@ -154,6 +160,25 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
         processStat = 3;
         processStatStep = true;
     }
+    if(payload.model.includes(MODELS.RULE_ELEVEN_UA)){
+      this.valuationService.ruleElevenValuation(payload,this.ruleElevenUaId).subscribe((elevenUaData:any)=>{
+        if(elevenUaData.status){
+          this.ruleElevenUaId = elevenUaData.data._id;
+          this.groupReviewControls.emit({appData:elevenUaData.data,valuationId:this.ruleElevenUaId});
+          const processStateModel ={
+            thirdStageInput:{
+              appData:elevenUaData.data,
+              isExcelModified: localStorage.getItem('excelStat') === 'true' ? true: false,
+              modifiedExcelSheetId:localStorage.getItem('excelStat') === 'true' ? `edited-${(!this.transferStepperTwo ? thirdStageData :  this.transferStepperTwo).excelSheetId}` : '',
+              formFillingStatus:processStatStep
+            },
+            step:processStat
+          }
+          this.processStateManager(processStateModel,localStorage.getItem('processStateId'));
+        }
+      })
+    }
+    else{
     this.valuationService.submitForm(payload).subscribe((response)=>{
       if(response?.valuationResult){
         this.valuationData= response; 
@@ -171,6 +196,7 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
         this.processStateManager(processStateModel,localStorage.getItem('processStateId'));
       }
     })
+    }
   }
 
 
@@ -232,6 +258,43 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
     }
   }
 
+  ruleElevenSheetData(data:any){
+    if(data){
+      this.isLoadingRuleElevenSheet=false;
+      if(data?.error){
+        this.snackBar.open('Rule Eleven UA Sheet fetch fail','Ok',{
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+          duration: 3000,
+          panelClass: 'app-notification-error',
+        })
+      }
+      else{
+        this.isExcelModified = data.isModified;
+        this.modifiedExcelSheetId = data.modifiedExcelSheetId;
+      }
+    }
+  }
+
+  loadEditTable(){
+    if(!this.transferStepperTwo){
+      if(!this.thirdStageInput?.formOneData?.model.includes(MODELS.RULE_ELEVEN_UA)){
+        return this.isLoadingProfitLoss && this.isLoadingBalanceSheet && this.isLoadingAssessmentSheet; 
+      }
+      else{
+        return this.isLoadingRuleElevenSheet;
+      }
+    }
+    else{
+      if(!this.transferStepperTwo?.model.includes(MODELS.RULE_ELEVEN_UA)){
+        return this.isLoadingProfitLoss && this.isLoadingBalanceSheet && this.isLoadingAssessmentSheet; 
+      }
+      else{
+        return this.isLoadingRuleElevenSheet;
+      }
+    }
+    // return this.transferStepperTwo?.model.includes(value) ? true :false;
+  }
   isRelativeValuation(value:string){
     if(!this.transferStepperTwo){
       return this.thirdStageInput?.formOneData?.model.includes(value)

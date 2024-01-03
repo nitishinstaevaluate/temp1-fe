@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
+import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.service';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
 
 @Component({
@@ -10,7 +11,7 @@ import { ValuationService } from 'src/app/shared/service/valuation.service';
 })
 export class AssessmentDetailsComponent implements OnInit,OnChanges {
   constructor(private valuationService:ValuationService,
-    private calculationService:CalculationsService,
+    private excelAndReportService:ExcelAndReportService,
     private snackbar:MatSnackBar){}
 
   @Input() transferStepperTwo:any;
@@ -144,7 +145,7 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
           const excelSheetId = this.thirdStageInput?.formThreeData?.isExcelModified ?this.thirdStageInput?.formThreeData.modifiedExcelSheetId :  this.thirdStageInput?.formOneData.excelSheetId;
 
           let excelId;
-          if(this.thirdStageInput){
+          if(!this.transferStepperTwo){
             if(localStorage.getItem('excelStat')==='true'){
               excelId = `edited-${this.thirdStageInput?.formOneData?.excelSheetId}`
             }
@@ -170,7 +171,7 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
             ...this.editedValues[0] 
           }
 
-          this.calculationService.modifyExcel(payload).subscribe(
+          this.excelAndReportService.modifyExcel(payload).subscribe(
             (response:any)=>{
             if(response.status){
               this.isExcelModified = true;

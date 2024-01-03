@@ -13,7 +13,7 @@
                 </div>
           </div>
             
-          <div formArrayName="companies" class="col-md-12 field" style="padding-top: 0.5% !important;" *ngIf="relativeValuation.controls['preferenceRatioSelect'].value ==='Company Based' && formOneData?.preferenceCompanies.length > 0">
+          <div formArrayName="companies" class="col-md-12 field" style="padding-top: 0.5% !important;" *ngIf="relativeValuation.controls['preferenceRatioSelect'].value ==='Company Based' && formOneData?.preferenceCompanies?.length > 0">
             <div class="row">
               <div style="padding-top: 2% !important;position: relative;padding-bottom: 3%;" class="col-md-4 field" *ngFor="let c of Companies.controls; let i = index; let last = last">
                 <!-- <mat-form-field style="width: 71%;"  [floatLabel]="floatLabelType" class="mat-relative-val">
@@ -42,7 +42,7 @@
             </div>
           </div>
 
-          <div *ngIf="formOneData?.preferenceCompanies.length === 0 && formOneData?.industry" class="message-container col-md-12">
+          <div *ngIf="formOneData?.preferenceCompanies?.length === 0 && formOneData?.industry" class="message-container col-md-12">
             <div class="message-icon">
                 <i class="fas fa-exclamation-circle"></i>
             </div>
@@ -50,7 +50,7 @@
               The selected industry does not have associated companies. Kindly select another industry to proceed or contact support.
             </div>
         </div>
-          <div *ngIf="formOneData?.preferenceCompanies.length === 0 && !formOneData?.industry" class="message-container col-md-12">
+          <div *ngIf="formOneData?.preferenceCompanies?.length === 0 && !formOneData?.industry" class="message-container col-md-12">
             <div class="message-icon">
                 <i class="fas fa-exclamation-circle"></i>
             </div>

@@ -7,12 +7,13 @@ import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { DataReferencesService } from 'src/app/shared/service/data-references.service';
-import { REPORT_OBJECTIVE } from 'src/app/shared/enums/constant';
+import { MODELS, REPORT_OBJECTIVE } from 'src/app/shared/enums/constant';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { StringModificationPipe } from 'src/app/shared/pipe/string-modification.pipe';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { hasError } from 'src/app/shared/enums/errorMethods';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
+import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.service';
 
 
 @Component({
@@ -52,6 +53,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     private dataReferenceService:DataReferencesService,
     private truncateStringPipe: StringModificationPipe,
     private ngxLoaderService:NgxUiLoaderService,
+    private excelAdnReportService:ExcelAndReportService,
     private processStatusManagerService:ProcessStatusManagerService){}
   ngOnInit(): void {
     this.loadForm();
@@ -173,15 +175,16 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     const payload = {
       ...this.reportForm.value,
       ...this.registeredValuerDetails.value,
-      reportId:this.transferStepperFour?.formThreeData?.appData?.reportId,
+      reportId:this.transferStepperFour?.formThreeData?.appData?.reportId || this.transferStepperFour?.formThreeData?.appData?._id,
       reportDate:this.reportForm.controls['reportDate'].value,
       finalWeightedAverage:this.transferStepperFour?.formFourData || this.transferStepperFour?.totalWeightageModel 
     }
     const approach = (this.transferStepperFour?.formOneAndTwoData?.model.includes('NAV')) && this.transferStepperFour.formOneAndTwoData.model.length === 1? 'NAV' : (this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFE')) && this.transferStepperFour.formOneAndTwoData.model.length === 1 ? 'DCF' : ((this.transferStepperFour?.formOneAndTwoData?.model.includes('Relative_Valuation') || this.transferStepperFour?.formOneAndTwoData?.model.includes('CTM')) && this.transferStepperFour.formOneAndTwoData.model.length === 1) ? 'CCM' : 'MULTI_MODEL';
-    
-    this.calculationService.postReportData(payload).subscribe((response:any)=>{
+    if(!this.transferStepperFour?.formOneAndTwoData?.model.includes(MODELS.RULE_ELEVEN_UA)){
+      
+    this.excelAdnReportService.postReportData(payload).subscribe((response:any)=>{
       if(response){
-        this.calculationService.generateReport(response,approach).subscribe((reportData:any)=>{
+        this.excelAdnReportService.generateReport(response,approach).subscribe((reportData:any)=>{
           if (reportData instanceof Blob) {
             this.reportGenerate = false;
             this.snackBar.open('Report generated successfully', 'OK', {
@@ -221,11 +224,59 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
         panelClass: 'app-notification-error',
       });
     })
+    }
+    else{
+      this.excelAdnReportService.postReportData(payload).subscribe((response:any)=>{
+        if(response){
+          this.excelAdnReportService.generateElevenUaReport(response).subscribe((reportData:any)=>{
+            if (reportData instanceof Blob) {
+              this.reportGenerate = false;
+              this.snackBar.open('Report generated successfully', 'OK', {
+                horizontalPosition: 'right',
+                verticalPosition: 'top',
+                duration: 2000,
+                panelClass: 'app-notification-success',
+              });
+              saveAs(reportData, `${this.transferStepperFour?.formOneAndTwoData?.company}.pdf`);
+              localStorage.setItem('stepFiveStats','true')
+              this.calculationService.checkStepStatus.next({status:true})
+              const {reportId,...rest} = payload;
+              const processStateModel ={
+                fifthStageInput:{...rest,formFillingStatus:true,valuationReportId:response,valuationResultId:reportId},
+                step:4
+              }
+              this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
+          }
+          },
+          (error)=>{
+            this.reportGenerate = false;
+            this.snackBar.open('Something went wrong', 'OK', {
+              horizontalPosition: 'right',
+              verticalPosition: 'top',
+              duration: 2000,
+              panelClass: 'app-notification-error',
+            });
+          })
+        }
+      },
+      (error)=>{
+        this.reportGenerate = false;
+        this.snackBar.open('Something went wrong', 'OK', {
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 2000,
+          panelClass: 'app-notification-error',
+        });
+      })
+    }
   }
 
   previewReport(){
     const controls = {...this.reportForm.controls}
     delete controls.clientName;
+    delete controls.dateOfIncorporation;
+    delete controls.companyAddress;
+    delete controls.cinNumber;
     const validatedReportForm = this.validateControls(controls);
     if(!validatedReportForm){
         this.reportForm.markAllAsTouched();
@@ -240,14 +291,15 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     const payload = {
       ...this.reportForm.value,
       ...this.registeredValuerDetails.value,
-      reportId:this.transferStepperFour?.formThreeData?.appData?.reportId,
+      reportId:this.transferStepperFour?.formThreeData?.appData?.reportId || this.transferStepperFour?.formThreeData?.appData?._id,
       reportDate:this.reportForm.controls['reportDate'].value,
       finalWeightedAverage:this.transferStepperFour?.formFourData || this.transferStepperFour?.totalWeightageModel
     }
-    const approach = (this.transferStepperFour?.formOneAndTwoData?.model.includes('NAV')) && this.transferStepperFour.formOneAndTwoData.model.length === 1? 'NAV' : (this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFE')) && this.transferStepperFour.formOneAndTwoData.model.length === 1 ? 'DCF' : ((this.transferStepperFour?.formOneAndTwoData?.model.includes('Relative_Valuation') || this.transferStepperFour?.formOneAndTwoData?.model.includes('CTM')) && this.transferStepperFour.formOneAndTwoData.model.length === 1) ? 'CCM' : 'MULTI_MODEL';
-    this.calculationService.postReportData(payload).subscribe((response:any)=>{
+    if(!this.transferStepperFour?.formOneAndTwoData?.model.includes(MODELS.RULE_ELEVEN_UA)){
+      const approach = (this.transferStepperFour?.formOneAndTwoData?.model.includes('NAV')) && this.transferStepperFour.formOneAndTwoData.model.length === 1? 'NAV' : (this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFE')) && this.transferStepperFour.formOneAndTwoData.model.length === 1 ? 'DCF' : ((this.transferStepperFour?.formOneAndTwoData?.model.includes('Relative_Valuation') || this.transferStepperFour?.formOneAndTwoData?.model.includes('CTM')) && this.transferStepperFour.formOneAndTwoData.model.length === 1) ? 'CCM' : 'MULTI_MODEL';
+    this.excelAdnReportService.postReportData(payload).subscribe((response:any)=>{
       if(response){
-        this.calculationService.previewReport(response,approach).subscribe((reportData:any)=>{
+        this.excelAdnReportService.previewReport(response,approach).subscribe((reportData:any)=>{
           if (reportData) {
             const dataSet={
               value: 'previewDoc',
@@ -285,6 +337,49 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
         panelClass: 'app-notification-error',
       });
     })
+    }
+    else{
+    this.excelAdnReportService.postReportData(payload).subscribe((response:any)=>{
+      if(response){
+        this.excelAdnReportService.previewElevenUaReport(response).subscribe((reportData:any)=>{
+          if (reportData) {
+            const dataSet={
+              value: 'previewDoc',
+              dataBlob:reportData,
+              reportId: response,
+              companyName:this.transferStepperFour?.formOneAndTwoData?.company
+            }
+            const dialogRef =  this.dialog.open(GenericModalBoxComponent, {data:dataSet,width:'80%',disableClose: true});
+            this.reportGenerate = false;
+            const {reportId,...rest} = payload;
+            const processStateModel ={
+              fifthStageInput:{...rest,formFillingStatus:false,valuationReportId:response,valuationResultId:reportId},
+              step:4
+            }
+            this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
+        }
+        },
+        (error)=>{
+          this.reportGenerate = false;
+          this.snackBar.open('Something went wrong', 'OK', {
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 2000,
+            panelClass: 'app-notification-error',
+          });
+        })
+      }
+    },
+    (error)=>{
+      this.reportGenerate = false;
+      this.snackBar.open('Something went wrong', 'OK', {
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 2000,
+        panelClass: 'app-notification-error',
+      });
+    })
+    }
   }
   
   onSlideToggleChange(event?: any) {

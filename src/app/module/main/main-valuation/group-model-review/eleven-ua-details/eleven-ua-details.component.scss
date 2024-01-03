@@ -1,0 +1,175 @@
+@import url('https://fonts.googleapis.com/css2?family=AR+One+Sans:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+mat-header-cell{
+    font-size: 13px;
+    font-weight: 500;
+    // font-family: 'Karla', sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 0px !important;
+    background-color: #e7faf4 !important;
+    color: #0f8a76 ;
+    border: 0px !important;
+}
+// mat-header-row{
+//     min-height: 49px !important;
+// }
+::ng-deep mat-row mat-cell{
+    display: flex;
+    justify-content: center;
+    padding: 0px !important;
+    font-size: 11px !important;
+    // text-align: center !important;
+    // font-family: 'Space Grotesk', sans-serif;
+    text-transform: capitalize !important;
+    border: 0px !important;
+}
+
+::ng-deep .mat-p mat-row{
+    height: 44px ;
+    min-height: 32px;
+}
+
+::ng-deep mat-row:nth-child(odd) {
+    background-color: #f2f2f2 !important;
+}
+::ng-deep mat-row:nth-child(odd) mat-cell mat-form-field .input-pl{
+    color: #666666 !important;
+}
+// ::ng-deep mat-row:nth-child(even) mat-cell mat-form-field .input-pl{
+//     color: #055357 !important
+// }
+::ng-deep .assessment-field .mdc-text-field--filled:not(.mdc-text-field--disabled){
+    // background: radial-gradient(#a3fd97, transparent);
+  }
+
+::ng-deep mat-row mat-cell mat-form-field .mdc-text-field--filled{
+    background-color: red !important;
+}
+::ng-deep mat-row:hover mat-cell {
+    // background-color: rgb(36 69 208 / 16%) !important;
+    background-color: rgb(180 185 236 / 61%) !important;
+  }
+
+.label-c{
+    color: #666666 !important;
+    font-size: 13px !important;
+    font-weight: 500;
+    min-width:45% ;
+    // font-family: 'Raleway', sans-serif !important;
+    font-family: 'AR One Sans', sans-serif !important;
+    justify-content: left;
+    padding-left: 4% !important;
+    text-transform: capitalize;
+    
+}
+.label-highlight{
+    color: #0fc26b  !important;
+    font-size: 13px !important;
+    font-weight: 500;
+    min-width:30% ;
+    // font-family: 'Raleway', sans-serif !important;
+    font-family: 'AR One Sans', sans-serif !important;
+    // background: radial-gradient(#a3fd97, transparent);
+    justify-content: left;
+    padding-left: 5% !important;
+}
+.highlight-header{
+    color: #454545 !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    min-width:45% ;
+    // font-family: 'Raleway', sans-serif !important;
+    font-family: 'AR One Sans', sans-serif !important;
+    // background: linear-gradient(90deg, #c7ece4, #dbffff);
+    justify-content: left;
+    padding-left: 3% !important;
+    text-transform: capitalize;
+}
+
+.hover-cell:hover {
+    background-color: #e5e5e5;
+}
+
+.inc-width{
+    min-width: 45%;
+    justify-content: left;
+    padding-left: 3% !important;
+    font-size: 16px;
+    text-transform: capitalize;
+}
+
+.btn-update{
+    text-align: right;
+    padding: 2%;
+}
+.btn-up{
+    background-color: rgb(255 255 255);
+    transition: color 0.2s, box-shadow 0.2s;
+    color: #268f8f;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Roboto';
+    transition: color .2s;
+}
+.btn-up:hover{
+    color:rgb(226, 29, 29);
+}
+
+// input scss starts
+.new-inp {
+    font-size: 13px;
+    outline: none;
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    color: #6d6d6d;
+    transition: 0.1s ease-out;
+    font-family: 'AR One Sans', sans-serif;
+    // padding-top: 1%;
+    // padding-bottom: 1%;
+    width: 30%;
+    padding-left: 2%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    // box-shadow: 1px 2px 10px #f0ebeb;
+  }
+.new-inp-auto {
+    width: 20%;
+    height: 75%;
+    // box-shadow: 1px 2px 10px #f0ebeb;
+  }
+  
+  .new-inp:focus {
+    border-color: #6200ee;
+  }
+  .new-inp::placeholder {
+    color: #666666;
+    font-weight: 500;
+    opacity: 1; 
+  }
+  //input scss ends
+
+  .scroll-container{
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .scroll-content{
+    display: inline-block;
+  }
+
+  .mat-column-Particulars {
+    position: sticky;
+    left: 0;
+    min-width: 35%;
+  }
+  .increase-table-width {
+    width: 1500px;
+  }
+
+  .add-divider{
+    // border-bottom: 1px solid #6d6d6d;
+    font-weight: bold !important;
+    color : #454545 !important
+  }

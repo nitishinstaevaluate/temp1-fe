@@ -1,0 +1,35 @@
+<div class="scroll-container">
+    <mat-table [dataSource]="ruleElevenUaDataSource" [ngClass]="contentIsBig(ruleElevenUaDataSource) ? 'increase-table-width mat-p scroll-content' : 'mat-p scroll-content'">
+      <ng-container *ngFor="let column of displayColumns;let columnIndex = index" [matColumnDef]="column">
+        <mat-header-cell *matHeaderCellDef [ngClass]="column === 'Particulars' ? 'inc-width mat-column-Particulars' : ''">{{ column }}</mat-header-cell>
+        <mat-cell *matCellDef="let element" [ngClass]="checkHeader(element,columnIndex) ? (addDivider(element[column]) ? 'add-divider highlight-header' : 'highlight-header') :  checkSubHeader(element,columnIndex) ? (addDivider(element[column]) ? 'add-divider label-highlight' : 'label-highlight') : checkType(element[column]) && !isNumberOrEmpty(element[column]) ? 'label-c' : '' ">
+          <ng-container *ngIf="checkType(element[column]) && columnIndex === 0">
+            <span>{{ element[column] }}</span>
+          </ng-container>
+          <ng-container *ngIf="ifOnlyNumber(element) && columnIndex !== 0 && !checkIfEditable(element)">
+            <span class="num-width-adj" style="font-size: 13px;font-weight: 500;color: #666666;padding-left: 4%;">{{ formatNegativeAndPositiveValues(element[column])  }}</span>
+          </ng-container>
+            <input class="new-inp" style="text-align: center;color: #666666 !important;font-weight: 500;" (blur)="onInputChange($event.target, column,element)" placeholder="-" type="text" [value]="formatNegativeAndPositiveValues(element[column])" *ngIf="checkIfEditable(element) && columnIndex !== 0"/>
+        </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
+    </mat-table>
+  </div>
+  
+<!-- <mat-table [dataSource]="profitAndLossDataSource" class="mat-p" *ngIf="excelSheetId && (isRelativeValuation('Relative_Valuation') || isRelativeValuation('CTM') || isRelativeValuation('NAV'))">
+  <ng-container *ngFor="let column of displayColumns;let columnIndex = index" [matColumnDef]="column">
+    <mat-header-cell *matHeaderCellDef [ngClass]="column === 'Particulars' ? 'inc-width' : ''">{{ column }}</mat-header-cell>
+    <mat-cell *matCellDef="let element" [ngClass]="checkHeader(element,columnIndex) ? 'highlight-header' :  checkSubHeader(element,columnIndex) ? 'label-highlight' : checkType(element[column]) && !isNumberOrEmpty(element[column]) ? 'label-c' : '' ">
+      <ng-container *ngIf="checkType(element[column]) && columnIndex === 0">
+        <span>{{ element[column] }}</span>
+      </ng-container>
+      <ng-container *ngIf="ifOnlyNumber(element) && columnIndex !== 0 && !checkIfEditable(element)">
+        <span style="font-size: 13px;font-weight: 500;color: #666666;">{{ formatNegativeAndPositiveValues(element[column])}}</span>
+      </ng-container>
+        <input class="new-inp new-inp-auto" style="text-align: center;color: #666666 !important;font-weight: 500;" (blur)="onInputChange($event.target, column,element)" placeholder="-" type="text" [value]="formatNegativeAndPositiveValues(element[column])" *ngIf="checkIfEditable(element) && columnIndex !== 0"/>
+    </mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
+</mat-table> -->

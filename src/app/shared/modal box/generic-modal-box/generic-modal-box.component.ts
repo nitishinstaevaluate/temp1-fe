@@ -1,6 +1,6 @@
 import { Component , ElementRef, Inject, Renderer2, OnInit, ViewChild,AfterViewInit, Input} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { GLOBAL_VALUES, INCOME_APPROACH, MARKET_APPROACH, NET_ASSET_APPROACH } from '../../enums/constant';
+import { GLOBAL_VALUES, INCOME_APPROACH, MARKET_APPROACH, NET_ASSET_APPROACH, RULE_ELEVEN_UA_APPROACH } from '../../enums/constant';
 import groupModelControl from '../../enums/group-model-controls.json'
 import WebViewer, { Core } from '@pdftron/webviewer';
 import PDFNet  from '@pdftron/webviewer';
@@ -14,6 +14,7 @@ import { CalculationsService } from '../../service/calculations.service';
 import saveAs from 'file-saver';
 import { hasError } from '../../enums/errorMethods';
 import { ProcessStatusManagerService } from '../../service/process-status-manager.service';
+import { ExcelAndReportService } from '../../service/excel-and-report.service';
 
 @Component({
   selector: 'app-generic-modal-box',
@@ -65,12 +66,14 @@ navSelectedModel:any='';
 ctmSelectedModel:any='';
 relativeValuationSelectedModel:any='';
 marketPriceSelectedModel:any = '';
+ruleElevenUaSelectedModel:any = '';
 projectionYearSelect:any='';
 terminalGrowthRates:any='';
 projectionYears:any;
 incomeApproachmodels:any=[];
 netAssetApproachmodels:any=[];
 marketApproachmodels:any=[];
+ruleElevenApproachModels:any=[];
 files:any=[];
 excelSheetId:any;
 fileName:any;
@@ -95,7 +98,7 @@ constructor(@Inject(MAT_DIALOG_DATA) public data: any,
 private dialogRef:MatDialogRef<GenericModalBoxComponent>,
 private valuationService:ValuationService,
 private snackBar:MatSnackBar,
-private calculationService:CalculationsService,
+private excelAndReportService:ExcelAndReportService,
 private processStatusManagerService:ProcessStatusManagerService){
 this.loadModel(data);
 if(data?.value === this.appValues.PREVIEW_DOC.value){
@@ -155,7 +158,7 @@ async onSave(){
 async convertDocxToPdf(payload:any){
   const formData = new FormData();
 formData.append('file', payload.docxBuffer, `${payload.companyName}-${payload.reportId}.docx`);
-  this.calculationService.updateReportDocxBuffer(payload.reportId,formData).subscribe((response:any)=>{
+  this.excelAndReportService.updateReportDocxBuffer(payload.reportId,formData).subscribe((response:any)=>{
     if(response){
       // console.log("updated success")
       this.snackBar.open('Doc Update Success','ok',{
@@ -253,23 +256,23 @@ onTargetCapitalChange(control:string,value:string){
 }
 
 createModelControl(modelName:string,approach:string){
-    if(approach === 'incomeApproach'){
-      if(!this.incomeApproachmodels.includes(modelName)){
-        this.incomeApproachmodels=[];
-        this.incomeApproachmodels.push(modelName);
-        const modelInput = {
-          model:[...this.incomeApproachmodels]
-        }
-        this.patchExistingValue(modelInput,true)
+  if(approach === 'incomeApproach'){
+    if(!this.incomeApproachmodels.includes(modelName)){
+      this.incomeApproachmodels=[];
+      this.incomeApproachmodels.push(modelName);
+      const modelInput = {
+        model:[...this.incomeApproachmodels]
       }
-      else{
-        this.incomeApproachmodels=[];
-        this.clearModelRadioButton(modelName);
-      }
+      this.patchExistingValue(modelInput,true)
     }
+    else{
+      this.incomeApproachmodels=[];
+      this.clearModelRadioButton(modelName);
+    }
+  }
 
-    if(approach === 'netAssetValueApproach'){
-     if(!this.netAssetApproachmodels.includes(modelName)){
+  if(approach === 'netAssetValueApproach'){
+    if(!this.netAssetApproachmodels.includes(modelName)){
       this.netAssetApproachmodels=[];
       this.netAssetApproachmodels.push(modelName);
     }
@@ -285,6 +288,16 @@ createModelControl(modelName:string,approach:string){
     }
     else{
       this.marketApproachmodels=[];
+      this.clearModelRadioButton(modelName)
+    }
+  }
+  if(approach === 'ruleElevenUaApproach'){
+    if(!this.ruleElevenApproachModels.includes(modelName)){
+      this.ruleElevenApproachModels=[];
+      this.ruleElevenApproachModels.push(modelName);
+    }
+    else{
+      this.ruleElevenApproachModels=[];
       this.clearModelRadioButton(modelName)
     }
   }
@@ -309,7 +322,7 @@ projectionYear(value:any){
 }
 
 submitModelValuation(){
-  if(this.incomeApproachmodels.length === 0 && this.netAssetApproachmodels.length === 0 && this.marketApproachmodels.length === 0){
+  if(this.incomeApproachmodels.length === 0 && this.netAssetApproachmodels.length === 0 && this.marketApproachmodels.length === 0 && this.ruleElevenApproachModels.length === 0){
     this.snackBar.open('Please select valuation models','Ok',{
       horizontalPosition: 'center',
           verticalPosition: 'bottom',
@@ -356,7 +369,7 @@ submitModelValuation(){
     return;
   }
   
-  this.models=[...this.incomeApproachmodels,...this.netAssetApproachmodels,...this.marketApproachmodels];
+  this.models=[...this.incomeApproachmodels,...this.netAssetApproachmodels,...this.marketApproachmodels,...this.ruleElevenApproachModels];
 
   const processStateModel ={
     firstStageInput:{
@@ -412,11 +425,15 @@ clearModelRadioButton(modelName:string){
       this.marketPriceSelectedModel = null;
       break;
 
+    case 'ruleElevenUa':
+      this.ruleElevenUaSelectedModel = null;
+      break;
+
   }
 }
 
 get downloadTemplate() {
-  return GET_TEMPLATE(this.projectionYears);
+  return GET_TEMPLATE(this.projectionYears,this.ruleElevenApproachModels.length ? 'ruleElevenUa' : '');
   }
 
   onFileSelected(event: any) {
@@ -474,6 +491,9 @@ get downloadTemplate() {
           case 'Market_Price':
             this.marketPriceSelectedModel = true;
             break;
+          case 'ruleElevenUa':
+            this.ruleElevenUaSelectedModel = true;
+            break;
         }
 
        if(!validator){
@@ -490,6 +510,11 @@ get downloadTemplate() {
         for(const marketApproachMethods of MARKET_APPROACH){
           if(ele === marketApproachMethods){
             this.marketApproachmodels.push(ele);
+          }
+        }
+        for(const ruleElevenUaMethods of RULE_ELEVEN_UA_APPROACH){
+          if(ele === ruleElevenUaMethods){
+            this.ruleElevenApproachModels.push(ele);
           }
         }
        }
