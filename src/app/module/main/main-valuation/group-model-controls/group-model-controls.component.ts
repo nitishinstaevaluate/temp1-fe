@@ -599,7 +599,7 @@ isSelectedpreferenceRatio(value:any){
         fileName:this.fileName,
         value:'valuationMethod'
       }
-     const dialogRef = this.dialog.open(GenericModalBoxComponent,{data:data,width:'50%',height:'95%'});
+     const dialogRef = this.dialog.open(GenericModalBoxComponent,{data:data,width:'50%'});
   
      dialogRef.afterClosed().subscribe((result) => {
       if (result) {
