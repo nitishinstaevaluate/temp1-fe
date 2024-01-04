@@ -21,7 +21,7 @@ export class AuthService {
   }
   
   private loginStatus = new BehaviorSubject<boolean>(this.checkLoginStatus());
-  
+
   loginWithEmail(email: string, password: string) {
     const payload = {
       username:email,
@@ -46,10 +46,12 @@ export class AuthService {
 
   checkLoginStatus(): boolean {
     var loginCookie = localStorage.getItem('loginStatus');
-    if (loginCookie == '1') {
+    // console.log('login cookie ', loginCookie);
+    if (loginCookie === '1') {
       return true;
-    } 
+    } else {
     return false;
+    }
   }
 
   extractUser(){
