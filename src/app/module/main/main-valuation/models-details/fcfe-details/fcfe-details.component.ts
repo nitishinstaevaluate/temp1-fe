@@ -26,7 +26,7 @@ export class FcfeDetailsComponent implements OnChanges,OnInit{
   @Output() fcfeDetails=new EventEmitter<any>();
   @Output() fcfeDetailsPrev=new EventEmitter<any>();
   @Input() formOneData:any;
-  @Input() secondStageInput:any;
+  @Input() thirdStageInput:any;
   @Input() next:any;
 
   hasError=hasError
@@ -94,8 +94,8 @@ ngOnInit(): void {
   // }
 }
 checkProcessExist(){
-if(this.secondStageInput){
-  this.secondStageInput.map((stateTwoDetails:any)=>{
+if(this.thirdStageInput){
+  this.thirdStageInput.map((stateTwoDetails:any)=>{
     if(stateTwoDetails.model === MODELS.FCFE && this.formOneData.model.includes(MODELS.FCFE)){
       this.fcfeForm.controls['discountRate'].setValue(stateTwoDetails?.discountRate) 
       this.fcfeForm.controls['discountingPeriod'].setValue(stateTwoDetails?.discountingPeriod) 
@@ -366,7 +366,7 @@ validateControls(controlArray: { [key: string]: FormControl },payload:any){
       else{
         localStorage.setItem('pendingStat',`1`)
       }
-      localStorage.setItem('stepTwoStats',`false`);
+      localStorage.setItem('stepThreeStats',`false`);
     }
     else{
       const formStat = localStorage.getItem('pendingStat');
@@ -375,30 +375,30 @@ validateControls(controlArray: { [key: string]: FormControl },payload:any){
         splitFormStatus.splice(splitFormStatus.indexOf('1'),1);
         localStorage.setItem('pendingStat',`${splitFormStatus}`);
         if(splitFormStatus.length>1){
-          localStorage.setItem('stepTwoStats',`false`);
+          localStorage.setItem('stepThreeStats',`false`);
           
         }else{
-        localStorage.setItem('stepTwoStats',`true`);
+        localStorage.setItem('stepThreeStats',`true`);
         localStorage.removeItem('pendingStat');
         }
       }
       else if (formStat !== null && !formStat.includes('1')){
-        localStorage.setItem('stepTwoStats',`false`);
+        localStorage.setItem('stepThreeStats',`false`);
       }
       else{
-        localStorage.setItem('stepTwoStats',`true`);  
+        localStorage.setItem('stepThreeStats',`true`);  
       }
     }
 
     let processStateStep;
     if(allControlsFilled){
-      processStateStep = 2
+      processStateStep = 3
     }
     else{
-      processStateStep = 1
+      processStateStep = 2
     }
     const processStateModel ={
-      secondStageInput:[{model:MODELS.FCFE,...payload,formFillingStatus:allControlsFilled}],
+      thirdStageInput:[{model:MODELS.FCFE,...payload,formFillingStatus:allControlsFilled}],
       step:processStateStep
     }
     this.processStateManager(processStateModel,localStorage.getItem('processStateId'))

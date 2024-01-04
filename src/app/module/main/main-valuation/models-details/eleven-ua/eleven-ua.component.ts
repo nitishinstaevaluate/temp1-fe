@@ -18,7 +18,7 @@ export class ElevenUAComponent implements OnInit{
   @Output() ruleElevenUaDetails=new EventEmitter<any>();
   @Output() ruleElevenUaDetailsPrev=new EventEmitter<any>();
   @Input() formOneData:any;
-  @Input() secondStageInput:any;
+  @Input() thirdStageInput:any;
   
   constructor(
     private fb: FormBuilder,
@@ -43,16 +43,16 @@ export class ElevenUAComponent implements OnInit{
   }
 
   checkProcessExist(){
-    if(this.secondStageInput){
-      this.secondStageInput.map((stateTwoDetails:any)=>{
-        if(stateTwoDetails.model === MODELS.RULE_ELEVEN_UA && this.formOneData.model.includes(MODELS.RULE_ELEVEN_UA)){
-          this.ruleElevenUaForm.controls['fairValueJewellery'].setValue(stateTwoDetails?.fairValueJewellery) 
-          this.ruleElevenUaForm.controls['fairValueArtistic'].setValue(stateTwoDetails?.fairValueArtistic) 
-          this.ruleElevenUaForm.controls['fairValueImmovableProp'].setValue(stateTwoDetails?.fairValueImmovableProp) 
-          this.ruleElevenUaForm.controls['fairValueinvstShareSec'].setValue(stateTwoDetails?.fairValueinvstShareSec); 
-          this.ruleElevenUaForm.controls['contingentLiability'].setValue(stateTwoDetails?.contingentLiability);
-          this.ruleElevenUaForm.controls['otherThanAscertainLiability'].setValue(stateTwoDetails?.otherThanAscertainLiability);
-          this.ruleElevenUaForm.controls['phaseValue'].setValue(stateTwoDetails?.phaseValue);
+    if(this.thirdStageInput){
+      this.thirdStageInput.map((stateThreeDetails:any)=>{
+        if(stateThreeDetails.model === MODELS.RULE_ELEVEN_UA && this.formOneData.model.includes(MODELS.RULE_ELEVEN_UA)){
+          this.ruleElevenUaForm.controls['fairValueJewellery'].setValue(stateThreeDetails?.fairValueJewellery) 
+          this.ruleElevenUaForm.controls['fairValueArtistic'].setValue(stateThreeDetails?.fairValueArtistic) 
+          this.ruleElevenUaForm.controls['fairValueImmovableProp'].setValue(stateThreeDetails?.fairValueImmovableProp) 
+          this.ruleElevenUaForm.controls['fairValueinvstShareSec'].setValue(stateThreeDetails?.fairValueinvstShareSec); 
+          this.ruleElevenUaForm.controls['contingentLiability'].setValue(stateThreeDetails?.contingentLiability);
+          this.ruleElevenUaForm.controls['otherThanAscertainLiability'].setValue(stateThreeDetails?.otherThanAscertainLiability);
+          this.ruleElevenUaForm.controls['phaseValue'].setValue(stateThreeDetails?.phaseValue);
         }
       })
     }

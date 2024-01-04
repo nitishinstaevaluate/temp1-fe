@@ -14,6 +14,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { AuthService } from 'src/app/shared/service/auth.service';
+import { CiqSPService } from 'src/app/shared/service/ciq-sp.service';
 
 
 @Component({
@@ -103,11 +104,9 @@ export class GroupModelControlsComponent implements OnInit {
     private snackBar: MatSnackBar,
     private calculationService:CalculationsService,
     private processStatusManagerService:ProcessStatusManagerService,
-    private authService:AuthService) {
+    private authService:AuthService,
+    private ciqSpService:CiqSPService) {
     this.form=this.formBuilder.group({});
-    this.inputs.forEach((_, i) => {
-      this.form.addControl('select' + i, new FormControl(''));
-    });
 
     this.modelValuation=this.formBuilder.group({
       company:['',[Validators.required]],
@@ -154,33 +153,12 @@ export class GroupModelControlsComponent implements OnInit {
 
     })
   }
-  // Initiate form data 
-  get Companies() {
-    return this.relativeValuation.controls['companies'] as FormArray;
-  }
-  get Industries() {
-    return this.relativeValuation.controls['industries'] as FormArray;
-  }
-  removeField(i: any) {
-    this.Companies.controls.splice(i, 1);
-    this.relativeValuation.controls['companies'].value.splice(i,1)
-  }
-  addInput() {
-    this.Companies.push(new FormControl(null));
-  }
-  removeFieldIndustry(i: any) {
-   this.Industries.controls.splice(i,1)
-  }
-  addInputIndustry() {
-    this.Industries.push(new FormControl(null));
-  }
 
   ngOnInit(){
     this.loadValues();
     this.checkProcessExist(this.firstStageInput)
     this.formLoad();
-    this.addInput();
-    this.addInputIndustry();
+    this.loadCiqIndustryList()
   }
 
   async checkProcessExist(data:any){
@@ -205,6 +183,7 @@ export class GroupModelControlsComponent implements OnInit {
    this.modelValuation.controls['taxRate'].setValue(data?.taxRate?? '');
    this.modelValuation.controls['terminalGrowthRate'].setValue(data?.terminalGrowthRate?? '');
    this.modelValuation.controls['type'].setValue(data?.type?? 'industry');
+   this.modelValuation.controls['industry'].setValue(data?.industry ?? '');
    this.modelValuation.controls['userId'].setValue( !data?.userId || data?.userId === "" ? '640a4783337b1b37d6fd04c7' : data?.userId);
    this.modelValuation.controls['excelSheetId'].setValue(data?.excelSheetId?? '');
    this.selectedIndustry = data?.selectedIndustry;
@@ -213,134 +192,152 @@ export class GroupModelControlsComponent implements OnInit {
   const dateToSet = data?.valuationDate ? new Date(data?.valuationDate) : null;
   const formattedDate = dateToSet ? `${dateToSet.getFullYear()}-${(dateToSet.getMonth() + 1).toString().padStart(2, '0')}-${dateToSet.getDate().toString().padStart(2, '0')}` : '';
   this.modelValuation.controls['valuationDate'].patchValue(formattedDate);
-  if(this.modelValuation.controls['industry'].value && this.selectedIndustry){
-    const indst = this.selectedIndustry;
-    this.valuationService.getIndustries(indst?._id).subscribe((resp: any) => {
-      if(resp.length !== 0){
-        this.subIndustries = resp;
-      }
-      else{
-        console.log("emptying sub-industry")
-        this.subIndustries = [];
-        this.modelValuation.controls['subIndustry'].setValue('');
-      }
-    });
-    this._dataReferencesService.getIndustriesRatio(indst?._id).subscribe((resp: any) => {
-      this.industriesRatio = resp[0];
-    });
-    this._dataReferencesService.getBetaIndustriesById(indst?._id).subscribe((resp: any) => {
-      this.betaIndustriesId = resp;
-    });
-  }
+  // if(this.modelValuation.controls['industry'].value && this.selectedIndustry){
+  //   const indst = this.selectedIndustry;
+  //   this.valuationService.getIndustries(indst?._id).subscribe((resp: any) => {
+  //     if(resp.length !== 0){
+  //       this.subIndustries = resp;
+  //     }
+  //     else{
+  //       console.log("emptying sub-industry")
+  //       this.subIndustries = [];
+  //       this.modelValuation.controls['subIndustry'].setValue('');
+  //     }
+  //   });
+  //   this._dataReferencesService.getIndustriesRatio(indst?._id).subscribe((resp: any) => {
+  //     this.industriesRatio = resp[0];
+  //   });
+  //   this._dataReferencesService.getBetaIndustriesById(indst?._id).subscribe((resp: any) => {
+  //     this.betaIndustriesId = resp;
+  //   });
+  // }
    }
   }
   loadValues(){
-    forkJoin([this.valuationService.getValuationDropdown(),this._dataReferencesService.getIndianTreasuryYields(),
-      this._dataReferencesService.getHistoricalReturns(),
-      this._dataReferencesService.getBetaIndustries()
-    ])
-      .subscribe((resp: any) => {
-        this.industries = resp[0][DROPDOWN.INDUSTRIES];
-        this.valuationM = resp[0][DROPDOWN.MODAL];
-        this.taxRate = resp[0][DROPDOWN.TAX];
-        this.discountR = resp[0][DROPDOWN.DISCOUNT];
-        this.terminalgrowthRate = resp[0][DROPDOWN.GROWTH];
-        this.equityM = resp[0][DROPDOWN.EQUITY];
-        this.riskF = resp[0][DROPDOWN.RISK];
-        this.marketE = resp[0][DROPDOWN.EMARKET];
-        this.betaS = resp[0][DROPDOWN.BETA];
-        this.rPremium = resp[0][DROPDOWN.PREMIUM];
-        this.preShaCap = resp[0][DROPDOWN.PREFERANCE_SHARE_CAPITAL];
-        this.debt = resp[0][DROPDOWN.DEBT];
-        this.cStructure = resp[0][DROPDOWN.CAPTIAL_STRUCTURE];
-        this.pppShareCaptial = resp[0][DROPDOWN.P_P_SHARE_CAPTIAL]; // Spell Error
-        this.indianTreasuryY = resp[DROPDOWN.INDIANTREASURYYIELDS]; // Set as array element 1
-        this.historicalReturns = resp[DROPDOWN.HISTORICALRETURNS]; // Set as array element 2
-        this.betaIndustries = resp[DROPDOWN.BETAINDUSTRIES]; // Set as array element 3
-        // this.industriesRatio = resp[DROPDOWN.INDUSTRIESRATIO]; //Set as array element 4
-      });
+    // forkJoin([this.valuationService.getValuationDropdown(),this._dataReferencesService.getIndianTreasuryYields(),
+    //   this._dataReferencesService.getHistoricalReturns(),
+    //   this._dataReferencesService.getBetaIndustries()
+    // ])
+    //   .subscribe((resp: any) => {
+    //     this.industries = resp[0][DROPDOWN.INDUSTRIES];
+    //     this.valuationM = resp[0][DROPDOWN.MODAL];
+    //     this.taxRate = resp[0][DROPDOWN.TAX];
+    //     this.discountR = resp[0][DROPDOWN.DISCOUNT];
+    //     this.terminalgrowthRate = resp[0][DROPDOWN.GROWTH];
+    //     this.equityM = resp[0][DROPDOWN.EQUITY];
+    //     this.riskF = resp[0][DROPDOWN.RISK];
+    //     this.marketE = resp[0][DROPDOWN.EMARKET];
+    //     this.betaS = resp[0][DROPDOWN.BETA];
+    //     this.rPremium = resp[0][DROPDOWN.PREMIUM];
+    //     this.preShaCap = resp[0][DROPDOWN.PREFERANCE_SHARE_CAPITAL];
+    //     this.debt = resp[0][DROPDOWN.DEBT];
+    //     this.cStructure = resp[0][DROPDOWN.CAPTIAL_STRUCTURE];
+    //     this.pppShareCaptial = resp[0][DROPDOWN.P_P_SHARE_CAPTIAL]; // Spell Error
+    //     this.indianTreasuryY = resp[DROPDOWN.INDIANTREASURYYIELDS]; // Set as array element 1
+    //     this.historicalReturns = resp[DROPDOWN.HISTORICALRETURNS]; // Set as array element 2
+    //     this.betaIndustries = resp[DROPDOWN.BETAINDUSTRIES]; // Set as array element 3
+    //     // this.industriesRatio = resp[DROPDOWN.INDUSTRIESRATIO]; //Set as array element 4
+    //   });
 
-      // this._dataReferencesService.getSPIndustryList().subscribe((ciqIndustryData:any)=>{
-      //   if(ciqIndustryData.status){
-      //     this.industries = ciqIndustryData.data;
-      //   }
-      // })
+  }
 
+  loadCiqIndustryList(){
+    this.ciqSpService.fetchSPHierarchyBasedIndustry().subscribe((industryList:any)=>{
+      if(industryList.status){
+        this.industries = industryList.data;
+      }
+      else{
+       this.snackBar.open('CIQ Industry list not found','OK',{
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 3000,
+          panelClass: 'app-notification-error'
+        })
+      }
+    },
+    (error)=>{
+      this.snackBar.open(`${error}`,'OK',{
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 3000,
+          panelClass: 'app-notification-error'
+        })
+    })
   }
   formLoad(){
 // Initiate form change detectors
-    this.modelValuation.controls['industry'].valueChanges.subscribe((val) => {
-      if (!val) {
-        this.subIndustries = [];
-        return;
-      }
-      const indst = this.industries.find((e:any) => e.industry == val);
-      this.valuationService.getIndustries(indst?._id).subscribe((resp: any) => {
-        if(resp.length !== 0){
-          this.subIndustries = resp;
-          this.selectedIndustry = indst;
-        }
-        else{
-          this.subIndustries = [];
-          this.modelValuation.controls['subIndustry'].setValue('');
-        }
-      });
-      this._dataReferencesService.getIndustriesRatio(indst?._id).subscribe((resp: any) => {
-        this.industriesRatio = resp[0];
-      });
-      this._dataReferencesService.getBetaIndustriesById(indst?._id).subscribe((resp: any) => {
-        this.betaIndustriesId = resp;
-      });
+    // this.modelValuation.controls['industry'].valueChanges.subscribe((val) => {
+    //   if (!val) {
+    //     this.subIndustries = [];
+    //     return;
+    //   }
+    //   const indst = this.industries.find((e:any) => e.industry == val);
+    //   this.valuationService.getIndustries(indst?._id).subscribe((resp: any) => {
+    //     if(resp.length !== 0){
+    //       this.subIndustries = resp;
+    //       this.selectedIndustry = indst;
+    //     }
+    //     else{
+    //       this.subIndustries = [];
+    //       this.modelValuation.controls['subIndustry'].setValue('');
+    //     }
+    //   });
+    //   this._dataReferencesService.getIndustriesRatio(indst?._id).subscribe((resp: any) => {
+    //     this.industriesRatio = resp[0];
+    //   });
+    //   this._dataReferencesService.getBetaIndustriesById(indst?._id).subscribe((resp: any) => {
+    //     this.betaIndustriesId = resp;
+    //   });
   
-    });
+    // });
 
-    this.waccCalculation.controls['capitalStructureType'].valueChanges.subscribe(
-      (val) => {
-        if(!val) return
-        if (val == 'Industry_Based') {
-          this.debtRatio = parseFloat(this.betaIndustriesId?.deRatio)/100;
-          this.totalCapital = 1 + this.debtRatio;
-          this.debtProp = this.debtRatio/this.totalCapital;
-          this.equityProp = 1 - this.debtProp;
-          // });
-        } else {
-          // this.anaConEst = null;
-        }
-      }
-    );
+    // this.waccCalculation.controls['capitalStructureType'].valueChanges.subscribe(
+    //   (val) => {
+    //     if(!val) return
+    //     if (val == 'Industry_Based') {
+    //       this.debtRatio = parseFloat(this.betaIndustriesId?.deRatio)/100;
+    //       this.totalCapital = 1 + this.debtRatio;
+    //       this.debtProp = this.debtRatio/this.totalCapital;
+    //       this.equityProp = 1 - this.debtProp;
+    //       // });
+    //     } else {
+    //       // this.anaConEst = null;
+    //     }
+    //   }
+    // );
 
-    this.modelSpecificCalculation.controls['betaType'].valueChanges.subscribe((val) => {
-      if(!val) return;
-      const beta = parseFloat(this.betaIndustriesId?.beta);
-      if (val == 'levered'){
-        this.modelSpecificCalculation.controls['beta'].setValue(
-          beta
-          );
-        }
-        else if (val == 'unlevered') {
-        const deRatio = parseFloat(this.betaIndustriesId?.deRatio)/100
-        const effectiveTaxRate = parseFloat(this.betaIndustriesId?.effectiveTaxRate)/100;        
-        const unleveredBeta = beta / (1 + (1-effectiveTaxRate) * deRatio);
-        this.modelSpecificCalculation.controls['beta'].setValue(
-          unleveredBeta
-        );
-      }
-      else if (val == 'market_beta') {
-        this.modelSpecificCalculation.controls['beta'].setValue(1);
-      }
-      else {
-        // Do nothing for now
-      }
+    // this.modelSpecificCalculation.controls['betaType'].valueChanges.subscribe((val) => {
+    //   if(!val) return;
+    //   const beta = parseFloat(this.betaIndustriesId?.beta);
+    //   if (val == 'levered'){
+    //     this.modelSpecificCalculation.controls['beta'].setValue(
+    //       beta
+    //       );
+    //     }
+    //     else if (val == 'unlevered') {
+    //     const deRatio = parseFloat(this.betaIndustriesId?.deRatio)/100
+    //     const effectiveTaxRate = parseFloat(this.betaIndustriesId?.effectiveTaxRate)/100;        
+    //     const unleveredBeta = beta / (1 + (1-effectiveTaxRate) * deRatio);
+    //     this.modelSpecificCalculation.controls['beta'].setValue(
+    //       unleveredBeta
+    //     );
+    //   }
+    //   else if (val == 'market_beta') {
+    //     this.modelSpecificCalculation.controls['beta'].setValue(1);
+    //   }
+    //   else {
+    //     // Do nothing for now
+    //   }
       
-    });
-    this.modelValuation.controls['model'].valueChanges.subscribe((val) => {
-      if(!val) return;
-      if (val == 'Relative_Valuation' || val == 'CTM'){
-        this.modelValuation.controls['projectionYearSelect'].reset();
-        this.modelValuation.controls['terminalGrowthRate'].reset();
-        this.modelValuation.controls['projectionYears'].reset();
-      }
-    });
+    // });
+    // this.modelValuation.controls['model'].valueChanges.subscribe((val) => {
+    //   if(!val) return;
+    //   if (val == 'Relative_Valuation' || val == 'CTM'){
+    //     this.modelValuation.controls['projectionYearSelect'].reset();
+    //     this.modelValuation.controls['terminalGrowthRate'].reset();
+    //     this.modelValuation.controls['projectionYears'].reset();
+    //   }
+    // });
 
   }
   
@@ -348,15 +345,15 @@ export class GroupModelControlsComponent implements OnInit {
     return this.checkedItems.includes(value);
   }
 
-  isSelected(value: any): boolean {
-    var value:any= isSelected(value,this.checkedItems);
-    this.modelValuation.controls['model'].setValue(value);
-    return value;
-  }
+  // isSelected(value: any): boolean {
+  //   var value:any= isSelected(value,this.checkedItems);
+  //   this.modelValuation.controls['model'].setValue(value);
+  //   return value;
+  // }
 
-  toggleCheckbox(option:any) {
-   this.checkedItems=toggleCheckbox(option['value'],this.checkedItems);
-}
+//   toggleCheckbox(option:any) {
+//    this.checkedItems=toggleCheckbox(option['value'],this.checkedItems);
+// }
 isSelectedpreferenceRatio(value:any){
   return isSelected(value,this.selectedPreferenceItems)
  
@@ -484,67 +481,25 @@ isSelectedpreferenceRatio(value:any){
       // submit final payload
       this.groupModelControls.emit(payload);
   }
-  
-  get isDownload() {
-    return this.modelValuation.controls['projectionYears'].value ? true : false;
-  }
 
-  // get downloadTemplate() {
-  // return GET_TEMPLATE(this.modelValuation.controls['projectionYears'].value);
+  // subIndustryChange(val:any){
+  //   if(val){
+  //     const parts = val.split(': ');
+  //     const id = parts[1]; 
+  //     this.valuationService.getCompanies(id).subscribe((resp: any) => {
+  //       if(resp.length>0){
+  //         this.preferenceCompanies = resp;
+  //       }
+  //       else{
+  //         this.preferenceCompanies=[{company:'No company Found',_id:0}];
+  //       }
+  //     });
+  //   }
+  //   else{
+  //     this.preferenceCompanies=[];
+  //   }
   // }
-
-  onFileSelected(event: any) {
-    if (event && event.target.files && event.target.files.length > 0) {
-      this.files = event.target.files;
-    }
   
-    if (this.files.length === 0) {
-      return;
-    }
-  
-    const formData = new FormData();
-    formData.append('file', this.files[0]);
-    this.valuationService.fileUpload(formData).subscribe((res: any) => {
-      this.modelValuation.get('excelSheetId')?.setValue(res.excelSheetId);
-      if(res.excelSheetId){
-        this.isExcelReupload = true;
-        this.snackBar.open('File has been uploaded successfully','Ok',{
-          horizontalPosition: 'center',
-          verticalPosition: 'bottom',
-          duration: 3000,
-          panelClass: 'app-notification-success'
-        })
-      }
-      
-      // Clear the input element value to allow selecting the same file again
-      event.target.value = '';
-    });
-  }
- 
-  onRemove(event: any) {
-    this.files.splice(this.files.indexOf(event), 1);
-  }
-
-  subIndustryChange(val:any){
-    if(val){
-      const parts = val.split(': ');
-      const id = parts[1]; 
-      this.valuationService.getCompanies(id).subscribe((resp: any) => {
-        if(resp.length>0){
-          this.preferenceCompanies = resp;
-        }
-        else{
-          this.preferenceCompanies=[{company:'No company Found',_id:0}];
-        }
-      });
-    }
-    else{
-      this.preferenceCompanies=[];
-    }
-  }
-  checkPreferenceCompany(){
-    return this.Companies.controls.length === this.preferenceCompanies.length  ? false :true
-  }
 
  
   previous(){
@@ -623,7 +578,9 @@ isSelectedpreferenceRatio(value:any){
         this.modelValuation.controls['projectionYears'].setValue(result?.projectionYears);
         this.modelValuation.controls['terminalGrowthRate'].setValue(result?.terminalGrowthRate);
         this.modelValuation.controls['excelSheetId'].setValue(result?.excelSheetId); 
-        this.fileName = result?.fileName; 
+        this.fileName = result?.fileName;
+        this.evaluateNumberOfSteps()
+        this.isNotRuleElevenUaAndNav()
         
         this.snackBar.open('Valuation models are added successfully','OK',{
           horizontalPosition: 'center',
@@ -646,7 +603,9 @@ isSelectedpreferenceRatio(value:any){
   removeTag(modelName:string){
     const values = this.modelValuation.controls['model'].value;
     values.splice(values.indexOf(modelName),1);
-    this.modelValuation.controls['model'].setValue(values)
+    this.modelValuation.controls['model'].setValue(values);
+    this.isNotRuleElevenUaAndNav();
+    this.evaluateNumberOfSteps()
   }
   processStateManager(process:any, processId:any){
     this.processStatusManagerService.instantiateProcess(process, processId).subscribe(
@@ -676,9 +635,58 @@ isSelectedpreferenceRatio(value:any){
       return result;
   }
 
-  isNotRuleElevenUa(){
-    if(this.modelValuation.controls['model'].value?.length && !this.modelValuation.controls['model'].value?.includes(MODELS.RULE_ELEVEN_UA))
-      return true;
-    return false
+  isNotRuleElevenUaAndNav(){
+    if (this.modelValuation.controls['model'].value?.length === 1 &&
+      (
+        this.modelValuation.controls['model'].value?.includes(MODELS.RULE_ELEVEN_UA) ||
+        this.modelValuation.controls['model'].value?.includes(MODELS.NAV)
+      ))
+      {
+      return false;
+      }
+      else if(this.modelValuation.controls['model'].value?.length === 2 && (
+        this.modelValuation.controls['model'].value?.includes(MODELS.RULE_ELEVEN_UA) &&
+        this.modelValuation.controls['model'].value?.includes(MODELS.NAV)
+      )){
+        return false;
+      }
+      else if(this.modelValuation.controls['model'].value?.length  > 1 && (
+        this.modelValuation.controls['model'].value?.includes(MODELS.RULE_ELEVEN_UA) ||
+        this.modelValuation.controls['model'].value?.includes(MODELS.NAV)
+      )){
+        return true;
+      }
+      else{
+        return true;
+      }
+  }
+
+  evaluateNumberOfSteps(){
+    if (this.modelValuation.controls['model'].value?.length === 1 &&
+    (
+      this.modelValuation.controls['model'].value?.includes(MODELS.RULE_ELEVEN_UA) ||
+      this.modelValuation.controls['model'].value?.includes(MODELS.NAV)
+    ))
+    {
+      this.calculationService.checkModel.next({status:true})
+    }
+    else if(this.modelValuation.controls['model'].value?.length === 2 && (
+      this.modelValuation.controls['model'].value?.includes(MODELS.RULE_ELEVEN_UA) &&
+      this.modelValuation.controls['model'].value?.includes(MODELS.NAV)
+    )){
+      this.calculationService.checkModel.next({status:true})
+    }
+    else if(this.modelValuation.controls['model'].value?.length  > 1 && (
+      this.modelValuation.controls['model'].value?.includes(MODELS.RULE_ELEVEN_UA) ||
+      this.modelValuation.controls['model'].value?.includes(MODELS.NAV)
+    )){
+      this.calculationService.checkModel.next({status:false})
+    }
+    else if(this.modelValuation.controls['model']?.value?.length){
+      this.calculationService.checkModel.next({status:false})
+    }
+    else{
+      this.calculationService.checkModel.next({status:true})
+    }
   }
 }

@@ -1,6 +1,7 @@
 import { Component,OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { MODELS } from 'src/app/shared/enums/constant';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 
@@ -17,7 +18,9 @@ export class NavbarDetailsComponent implements OnInit{
   stepStatusOfThree:any='';
   stepStatusOfFour:any='';
   stepStatusOfFive:any='';
-  currentStep:any=''
+  stepStatusOfSix:any='';
+  currentStep:any='';
+  showBlackBox=false;
   constructor(
     private calculationService:CalculationsService,
     private processStatusManagerService:ProcessStatusManagerService,
@@ -30,9 +33,11 @@ export class NavbarDetailsComponent implements OnInit{
     localStorage.removeItem('stepThreeStats')
     localStorage.removeItem('stepFourStats')
     localStorage.removeItem('stepFiveStats')
+    localStorage.removeItem('stepSixStats')
     localStorage.removeItem('pendingStat')
 
      this.checkProcessState();
+     this.evaluateTabs()
   }
 
 async checkProcessState(){
@@ -46,31 +51,51 @@ async checkProcessState(){
           const modelsSelected = processStateDetails.firstStageInput.model;
           // localStorage.setItem('stepOneStats',`${processStateDetails.firstStageInput.formFillingStatus}`)
           if(modelsSelected.length){
-            const modelInputStages = processStateDetails.secondStageInput;
+            const modelInputStages = processStateDetails?.thirdStageInput;
             let formTwoFillingStatus = false;
             if(modelInputStages.length){
 
-               formTwoFillingStatus = modelInputStages.every((stateTwoDetails:any)=>{return stateTwoDetails.formFillingStatus});
+               formTwoFillingStatus = modelInputStages.every((stateThreeDetails:any)=>{return stateThreeDetails.formFillingStatus});
                if(formTwoFillingStatus){
-                 localStorage.setItem('stepTwoStats','true')
+                 localStorage.setItem('stepThreeStats','true')
                }
                else{
-                 localStorage.setItem('stepTwoStats','false')
+                 localStorage.setItem('stepThreeStats','false')
                }
-            }
+              }
+              const modelsForInputScreen = modelsSelected.some((stateThreeDetails: any) => {
+               return (
+                 stateThreeDetails === MODELS.FCFE ||
+                 stateThreeDetails === MODELS.FCFF ||
+                 stateThreeDetails === MODELS.RELATIVE_VALUATION ||
+                 stateThreeDetails === MODELS.EXCESS_EARNINGS ||
+                 stateThreeDetails === MODELS.COMPARABLE_INDUSTRIES
+               );
+             });
+              if(modelsForInputScreen){
+               this.showBlackBox = false;
+              }
+              else{
+               this.showBlackBox = true
+              }
           }
-          const stateThreeDetails  = processStateDetails?.thirdStageInput?.formFillingStatus;
-          if(stateThreeDetails){
-            localStorage.setItem('stepThreeStats',`${stateThreeDetails}`)
+          const stageTwoDetails = processStateDetails?.secondStageInput?.formFillingStatus;
+          if(stageTwoDetails){
+            localStorage.setItem('stepTwoStats',`${stageTwoDetails}`);
           }
 
           const stateFourDetails  = processStateDetails?.fourthStageInput?.formFillingStatus;
           if(stateFourDetails){
             localStorage.setItem('stepFourStats',`${stateFourDetails}`)
           }
+
           const stateFiveDetails  = processStateDetails?.fifthStageInput?.formFillingStatus;
           if(stateFiveDetails){
             localStorage.setItem('stepFiveStats',`${stateFiveDetails}`)
+          }
+          const stateSixDetails  = processStateDetails?.sixthStageInput?.formFillingStatus;
+          if(stateSixDetails){
+            localStorage.setItem('stepSixStats',`${stateSixDetails}`)
           }
           this.checkstepStat()
           this.selectedMenuItem = step
@@ -84,6 +109,15 @@ async checkProcessState(){
     }
   }
   async selectMenuItem(route: string) {
+    if(this.showBlackBox){
+      this.snackBar.open('Cannot select this tab','Ok',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 3000,
+        panelClass: 'app-notification-error'
+      })
+      return;
+    }
     this.selectedMenuItem = route;
     this.currentStep = route;
     localStorage.setItem('step',route);
@@ -113,6 +147,9 @@ async checkProcessState(){
       if(parseInt(this.currentStep) === 5){
         this.bindStatusToNavbar(this.currentStep);
       }
+      if(parseInt(this.currentStep) === 6){
+        this.bindStatusToNavbar(this.currentStep);
+      }
     })
   }
 
@@ -123,11 +160,13 @@ async checkProcessState(){
         const stepThreeStat = localStorage.getItem('stepThreeStats');
         const stepFourStat = localStorage.getItem('stepFourStats');
         const stepFiveStat = localStorage.getItem('stepFiveStats');
+        const stepSixStat = localStorage.getItem('stepSixStats');
         this.stepStatusOfOne = stepOneStat;
         this.stepStatusOfTwo = stepTwoStat;
         this.stepStatusOfThree = stepThreeStat;
         this.stepStatusOfFour = stepFourStat;
         this.stepStatusOfFive = stepFiveStat;
+        this.stepStatusOfSix = stepSixStat;
   }
 
 
@@ -189,4 +228,14 @@ async checkProcessState(){
   //     });
   //   }
   // }
+
+ async evaluateTabs(){
+    this.calculationService.checkModel.subscribe((data)=>{
+      if(data.status){
+        this.showBlackBox = true;
+      }else{
+        this.showBlackBox = false;
+      }
+    })
+  }
 }

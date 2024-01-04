@@ -24,7 +24,7 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
 
   @Input() transferStepperTwo :any;
   @Input() step :any;
-  @Input() thirdStageInput :any;
+  @Input() fourthStageInput :any;
 
   reviewForm:FormGroup;
 
@@ -78,59 +78,59 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
   }
 
   checkProcessExist(){
-    if(this.thirdStageInput){
-      const formThreeData = this.thirdStageInput.formThreeData;
-      if(formThreeData){
-        this.reviewForm.controls['otherAdj'].setValue(formThreeData.otherAdj);
+    if(this.fourthStageInput){
+      const formFourData = this.fourthStageInput.formFourData;
+      if(formFourData){
+        this.reviewForm.controls['otherAdj'].setValue(formFourData.otherAdj);
       }
     }
   }
   saveAndNext() {
     let updatedPayload:any;
-    let thirdStageData:any;
+    let fourthStageData:any;
     if(!this.transferStepperTwo){
-      const formOneData = this.thirdStageInput?.formOneData;
-      const formTwoData = this.thirdStageInput?.formTwoData;
-      formTwoData.map((formTwoDetails:any)=>{
-        if(formTwoDetails.model === MODELS.FCFE && formOneData.model.includes(MODELS.FCFE)){
-          const {model ,formFillingStatus, ...rest} = formTwoDetails;
+      const formOneData = this.fourthStageInput?.formOneData;
+      const formThreeData = this.fourthStageInput?.formFourData;
+      formThreeData.map((formThreeDetails:any)=>{
+        if(formThreeDetails.model === MODELS.FCFE && formOneData.model.includes(MODELS.FCFE)){
+          const {model ,formFillingStatus, ...rest} = formThreeDetails;
           updatedPayload = {...formOneData,...rest,...updatedPayload}
         }
-        if(formTwoDetails.model === MODELS.FCFF && formOneData.model.includes(MODELS.FCFF)){
-          const {model ,formFillingStatus, ...rest} = formTwoDetails;
+        if(formThreeDetails.model === MODELS.FCFF && formOneData.model.includes(MODELS.FCFF)){
+          const {model ,formFillingStatus, ...rest} = formThreeDetails;
           updatedPayload = {...formOneData,...rest,...updatedPayload}
         }
-        if(formTwoDetails.model === MODELS.EXCESS_EARNINGS && formOneData.model.includes(MODELS.EXCESS_EARNINGS)){
-          const {model ,formFillingStatus, ...rest} = formTwoDetails;
+        if(formThreeDetails.model === MODELS.EXCESS_EARNINGS && formOneData.model.includes(MODELS.EXCESS_EARNINGS)){
+          const {model ,formFillingStatus, ...rest} = formThreeDetails;
           updatedPayload = {...formOneData,...rest,...updatedPayload}
         }
-        if(formTwoDetails.model === MODELS.RELATIVE_VALUATION && formOneData.model.includes(MODELS.RELATIVE_VALUATION)){
-          const {model , formFillingStatus, ...rest} = formTwoDetails;
+        if(formThreeDetails.model === MODELS.RELATIVE_VALUATION && formOneData.model.includes(MODELS.RELATIVE_VALUATION)){
+          const {model , formFillingStatus, ...rest} = formThreeDetails;
           updatedPayload = {...formOneData,...rest,...updatedPayload}
         }
-        if(formTwoDetails.model === MODELS.COMPARABLE_INDUSTRIES && formOneData.model.includes(MODELS.COMPARABLE_INDUSTRIES)){
-          const {model , formFillingStatus, ...rest} = formTwoDetails;
+        if(formThreeDetails.model === MODELS.COMPARABLE_INDUSTRIES && formOneData.model.includes(MODELS.COMPARABLE_INDUSTRIES)){
+          const {model , formFillingStatus, ...rest} = formThreeDetails;
           updatedPayload = {...formOneData,...rest,...updatedPayload}
         }
-        if(formTwoDetails.model === MODELS.NAV && formOneData.model.includes(MODELS.NAV)){
-          const {model , formFillingStatus, ...rest} = formTwoDetails;
+        if(formThreeDetails.model === MODELS.NAV && formOneData.model.includes(MODELS.NAV)){
+          const {model , formFillingStatus, ...rest} = formThreeDetails;
           updatedPayload = {...formOneData,...rest,...updatedPayload}
         }
-        if(formTwoDetails.model === MODELS.RULE_ELEVEN_UA && formOneData.model.includes(MODELS.RULE_ELEVEN_UA)){
-          const {model , formFillingStatus, ...rest} = formTwoDetails;
+        if(formThreeDetails.model === MODELS.RULE_ELEVEN_UA && formOneData.model.includes(MODELS.RULE_ELEVEN_UA)){
+          const {model , formFillingStatus, ...rest} = formThreeDetails;
           updatedPayload = {...formOneData,...rest,...updatedPayload}
         }
       })
        const {status, industriesRatio, betaIndustry, preferenceCompanies,...rest} = updatedPayload;
-       thirdStageData = rest;
+       fourthStageData = rest;
     }
 
 
     const payload = {
-      ...(!this.transferStepperTwo ? thirdStageData : this.transferStepperTwo ),
+      ...(!this.transferStepperTwo ? fourthStageData : this.transferStepperTwo ),
       otherAdj:this.reviewForm.controls['otherAdj'].value && (this.isRelativeValuation('FCFE') || this.isRelativeValuation('FCFF')) ? this.reviewForm.controls['otherAdj'].value : null,
       isExcelModified: localStorage.getItem('excelStat') === 'true' ? true: false,
-      modifiedExcelSheetId:localStorage.getItem('excelStat') === 'true' ? `edited-${(!this.transferStepperTwo ? thirdStageData :  this.transferStepperTwo).excelSheetId}` : '' 
+      modifiedExcelSheetId:localStorage.getItem('excelStat') === 'true' ? `edited-${(!this.transferStepperTwo ? fourthStageData :  this.transferStepperTwo).excelSheetId}` : '' 
     }
    
 
@@ -139,25 +139,25 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
 
       if(this.reviewForm.controls['otherAdj'].valid){
         this.calculationService.checkStepStatus.next({stepStatus:true,step:this.step})
-        localStorage.setItem('step',`4`);
-        localStorage.setItem('stepThreeStats','true');
-        processStat = 3;
+        localStorage.setItem('step',`5`);
+        localStorage.setItem('stepFourStats','true');
+        processStat = 4;
         processStatStep = true;
       }
       else{
         this.reviewForm.markAllAsTouched();
         this.calculationService.checkStepStatus.next({stepStatus:false,step:this.step})
-        localStorage.setItem('step',`4`);
-        localStorage.setItem('stepThreeStats','false');
-        processStat = 2;
+        localStorage.setItem('step',`5`);
+        localStorage.setItem('stepFourStats','false');
+        processStat = 3;
         processStatStep = false;
       }
     }
     else{
       this.calculationService.checkStepStatus.next({stepStatus:true,step:this.step})
-        localStorage.setItem('step',`4`);
-        localStorage.setItem('stepThreeStats','true');
-        processStat = 3;
+        localStorage.setItem('step',`5`);
+        localStorage.setItem('stepFourStats','true');
+        processStat = 4;
         processStatStep = true;
     }
     if(payload.model.includes(MODELS.RULE_ELEVEN_UA)){
@@ -166,10 +166,10 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
           this.ruleElevenUaId = elevenUaData.data._id;
           this.groupReviewControls.emit({appData:elevenUaData.data,valuationId:this.ruleElevenUaId});
           const processStateModel ={
-            thirdStageInput:{
+            fourthStageInput:{
               appData:elevenUaData.data,
               isExcelModified: localStorage.getItem('excelStat') === 'true' ? true: false,
-              modifiedExcelSheetId:localStorage.getItem('excelStat') === 'true' ? `edited-${(!this.transferStepperTwo ? thirdStageData :  this.transferStepperTwo).excelSheetId}` : '',
+              modifiedExcelSheetId:localStorage.getItem('excelStat') === 'true' ? `edited-${(!this.transferStepperTwo ? fourthStageData :  this.transferStepperTwo).excelSheetId}` : '',
               formFillingStatus:processStatStep
             },
             step:processStat
@@ -184,11 +184,11 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
         this.valuationData= response; 
         this.groupReviewControls.emit({appData:this.valuationData,valuationId:response.reportId});
         const processStateModel ={
-          thirdStageInput:{
+          fourthStageInput:{
             appData:this.valuationData,
             otherAdj:this.reviewForm.controls['otherAdj'].value && (this.isRelativeValuation('FCFE') || this.isRelativeValuation('FCFF')) ? this.reviewForm.controls['otherAdj'].value : null,
             isExcelModified: localStorage.getItem('excelStat') === 'true' ? true: false,
-            modifiedExcelSheetId:localStorage.getItem('excelStat') === 'true' ? `edited-${(!this.transferStepperTwo ? thirdStageData :  this.transferStepperTwo).excelSheetId}` : '',
+            modifiedExcelSheetId:localStorage.getItem('excelStat') === 'true' ? `edited-${(!this.transferStepperTwo ? fourthStageData :  this.transferStepperTwo).excelSheetId}` : '',
             formFillingStatus:processStatStep
           },
           step:processStat
@@ -278,7 +278,7 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
 
   loadEditTable(){
     if(!this.transferStepperTwo){
-      if(!this.thirdStageInput?.formOneData?.model.includes(MODELS.RULE_ELEVEN_UA)){
+      if(!this.fourthStageInput?.formOneData?.model.includes(MODELS.RULE_ELEVEN_UA)){
         return this.isLoadingProfitLoss && this.isLoadingBalanceSheet && this.isLoadingAssessmentSheet; 
       }
       else{
@@ -297,7 +297,7 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
   }
   isRelativeValuation(value:string){
     if(!this.transferStepperTwo){
-      return this.thirdStageInput?.formOneData?.model.includes(value)
+      return this.fourthStageInput?.formOneData?.model.includes(value)
     }
     return this.transferStepperTwo?.model.includes(value) ? true :false;
   }
@@ -306,7 +306,7 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
   }
   hasSingleModel(modelName:string){
     if(!this.transferStepperTwo){
-      if(this.thirdStageInput?.formOneData?.model.includes(modelName)){
+      if(this.fourthStageInput?.formOneData?.model.includes(modelName)){
         return true;
       }
       else{

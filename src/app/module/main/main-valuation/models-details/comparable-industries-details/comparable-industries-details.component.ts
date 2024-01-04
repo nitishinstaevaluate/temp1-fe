@@ -15,7 +15,7 @@ export class ComparableIndustriesDetailsComponent implements OnChanges,OnInit {
 
   modelControl = groupModelControl;
   @Input() formOneData:any;
-  @Input() secondStageInput:any;
+  @Input() thirdStageInput:any;
   @Output() comparableIndustriesDetailsPrev = new EventEmitter<any>();
   @Output() comparableIndustriesDetails = new EventEmitter<any>();
   
@@ -47,10 +47,10 @@ export class ComparableIndustriesDetailsComponent implements OnChanges,OnInit {
     this.checkProcessExist();
   }
   checkProcessExist(){
-    if(this.secondStageInput){
-      this.secondStageInput.map((stateTwoDetails:any)=>{
-        if(stateTwoDetails.model === MODELS.COMPARABLE_INDUSTRIES && this.formOneData.model.includes(MODELS.COMPARABLE_INDUSTRIES)){
-          this.industries = stateTwoDetails.industries;
+    if(this.thirdStageInput){
+      this.thirdStageInput.map((stateThreeDetails:any)=>{
+        if(stateThreeDetails.model === MODELS.COMPARABLE_INDUSTRIES && this.formOneData.model.includes(MODELS.COMPARABLE_INDUSTRIES)){
+          this.industries = stateThreeDetails.industries;
         }
       })
     }
@@ -62,7 +62,7 @@ export class ComparableIndustriesDetailsComponent implements OnChanges,OnInit {
   saveAndNext(){
       this.industries = this.formOneData?.industriesRatio;
       const processStateModel ={
-        secondStageInput:[{model:MODELS.COMPARABLE_INDUSTRIES,...this.comparableIndustries.value,industries:this.industries,formFillingStatus:true}],
+        thirdStageInput:[{model:MODELS.COMPARABLE_INDUSTRIES,...this.comparableIndustries.value,industries:this.industries,formFillingStatus:true}],
         step:localStorage.getItem('step')
       }
       this.processStateManager(processStateModel,localStorage.getItem('processStateId'));

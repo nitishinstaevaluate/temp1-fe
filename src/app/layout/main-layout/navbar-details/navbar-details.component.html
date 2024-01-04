@@ -21,59 +21,59 @@
         </div>
 
         
-        <div [class.selected]="selectedMenuItem === '2'" (click)="selectMenuItem('2')" [ngClass]="selectedMenuItem === 2 ? 'container navbars-inprogress navbar-h' : stepStatusOfThree === 'true' ?  'container navbars navbar-h' :  'container navbars-pending navbar-h'" style="margin-top: 10%;">
-          <p [ngClass]="selectedMenuItem === 2 ? 'new-company-det-inprogress new-company-h' : stepStatusOfThree === 'true'? 'new-company-det new-company-h' :  'new-company-det new-company-h'">Input Screening</p>
+        <div  [class.selected]="selectedMenuItem === '2'" (click)="selectMenuItem('2')" [ngClass]="showBlackBox ? 'blackbox container' : selectedMenuItem === 2 ? 'container navbars-inprogress navbar-h' : stepStatusOfTwo === 'true' ?  'container navbars navbar-h' :  'container navbars-pending navbar-h'" style="margin-top: 10%;">
+          <p [ngClass]="selectedMenuItem === 2 ? 'new-company-det-inprogress new-company-h' : stepStatusOfTwo === 'true'? 'new-company-det new-company-h' :  'new-company-det new-company-h'">Input Screening</p>
           <div class="row" style="padding-bottom: 7%;">
             <div class="col-xl-2" style="position: relative;">
-              <span [ngClass]="selectedMenuItem === 2 ? 'mat-bullet-inprogress mat-bullet-h' : stepStatusOfThree === 'true'? 'mat-bullet mat-bullet-h' :  'mat-bullet-pending mat-bullet-h'"><mat-icon>list_alt</mat-icon></span>
+              <span [ngClass]="selectedMenuItem === 2 ? 'mat-bullet-inprogress mat-bullet-h' : stepStatusOfTwo === 'true'? 'mat-bullet mat-bullet-h' :  'mat-bullet-pending mat-bullet-h'"><mat-icon>list_alt</mat-icon></span>
             </div>
-            <div class="col-xl-6">
-              <p [ngClass]="selectedMenuItem === 2 ? 'status-inprogress status-h' : stepStatusOfThree === 'true'? 'status-completed status-h' :  'status-pending status-h'">{{ selectedMenuItem === 2 ? 'In-progress' : stepStatusOfThree === 'true'? 'Completed' : 'Pending'}}</p>
+            <div class="col-xl-8">
+              <p [ngClass]="showBlackBox ? 'status-not-allowed status-h' : selectedMenuItem === 2 ? 'status-inprogress status-h' : stepStatusOfTwo === 'true'? 'status-completed status-h' :  'status-pending status-h'">{{ showBlackBox ? 'Disabled' : selectedMenuItem === 2 ? 'In-progress' : stepStatusOfTwo === 'true'? 'Completed' : 'Pending'}}</p>
             </div>
           </div>
       </div>
 
-           <div [class.selected]="selectedMenuItem === '3'" (click)="selectMenuItem('3')" [ngClass]="selectedMenuItem === 3 ? 'container navbars-inprogress navbar-h' : stepStatusOfTwo  === 'true' ?  'container navbars navbar-h' : 'container navbars-pending navbar-h'" style="margin-top: 10%;">
-            <p [ngClass]="selectedMenuItem === 3 ? 'new-company-det-inprogress new-company-h' : stepStatusOfTwo === 'true' ? 'new-company-det new-company-h' : 'new-company-det new-company-h'">Model Inputs</p>
+           <div [class.selected]="selectedMenuItem === '3'" (click)="selectMenuItem('3')" [ngClass]="selectedMenuItem === 3 ? 'container navbars-inprogress navbar-h' : stepStatusOfThree  === 'true' ?  'container navbars navbar-h' : 'container navbars-pending navbar-h'" style="margin-top: 10%;">
+            <p [ngClass]="selectedMenuItem === 3 ? 'new-company-det-inprogress new-company-h' : stepStatusOfThree === 'true' ? 'new-company-det new-company-h' : 'new-company-det new-company-h'">Model Inputs</p>
             <div class="row" style="padding-bottom: 7%;">
             <div class="col-xl-2" style="position: relative;">
-              <span [ngClass]=" selectedMenuItem === 3 ? 'mat-bullet-inprogress mat-bullet-h' : stepStatusOfTwo ? 'mat-bullet mat-bullet-h' : 'mat-bullet-pending mat-bullet-h'"><mat-icon>input</mat-icon></span>
+              <span [ngClass]=" selectedMenuItem === 3 ? 'mat-bullet-inprogress mat-bullet-h' : stepStatusOfThree ? 'mat-bullet mat-bullet-h' : 'mat-bullet-pending mat-bullet-h'"><mat-icon>input</mat-icon></span>
             </div>
-            <div class="col-xl-6">
-              <p [ngClass]="selectedMenuItem === 3 ? 'status-inprogress status-h' : stepStatusOfTwo ? 'status-completed status-h' :  'status-pending status-h'">{{selectedMenuItem === 3 ? 'In-progress' : stepStatusOfTwo === 'true' ? 'Completed' :  'Pending'}}</p>
+            <div class="col-xl-8">
+              <p [ngClass]="selectedMenuItem === 3 ? 'status-inprogress status-h' : stepStatusOfThree ? 'status-completed status-h' :  'status-pending status-h'">{{selectedMenuItem === 3 ? 'In-progress' : stepStatusOfThree === 'true' ? 'Completed' :  'Pending'}}</p>
             </div>
-            </div>
-          </div>
-        <div [class.selected]="selectedMenuItem === '4'" (click)="selectMenuItem('4')" [ngClass]="selectedMenuItem === 4 ? 'container navbars-inprogress navbar-h' : stepStatusOfThree === 'true' ?  'container navbars navbar-h' :  'container navbars-pending navbar-h'" style="margin-top: 10%;">
-            <p [ngClass]="selectedMenuItem === 4 ? 'new-company-det-inprogress new-company-h' : stepStatusOfThree === 'true'? 'new-company-det new-company-h' :  'new-company-det new-company-h'">Review Form</p>
-          <div class="row" style="padding-bottom: 7%;">
-            <div class="col-xl-2" style="position: relative;">
-              <span [ngClass]="selectedMenuItem === 4 ? 'mat-bullet-inprogress mat-bullet-h' : stepStatusOfThree === 'true'? 'mat-bullet mat-bullet-h' :  'mat-bullet-pending mat-bullet-h'"><mat-icon>list_alt</mat-icon></span>
-            </div>
-            <div class="col-xl-6">
-              <p [ngClass]="selectedMenuItem === 4 ? 'status-inprogress status-h' : stepStatusOfThree === 'true'? 'status-completed status-h' :  'status-pending status-h'">{{ selectedMenuItem === 4 ? 'In-progress' : stepStatusOfThree === 'true'? 'Completed' : 'Pending'}}</p>
             </div>
           </div>
-       </div>
-           <div [class.selected]="selectedMenuItem === '5'" (click)="selectMenuItem('5')" [ngClass]="selectedMenuItem === 4 ? 'container navbars-inprogress navbar-h' : stepStatusOfFour === 'true'?  'container navbars navbar-h' : 'container navbars-pending navbar-h'" style="margin-top: 10%;">
-            <p [ngClass]=" selectedMenuItem === 5 ? 'new-company-det-inprogress new-company-h' : stepStatusOfFour ? 'new-company-det new-company-h' : 'new-company-det new-company-h'">Evaluate Results</p>
+        <div [class.selected]="selectedMenuItem === '4'" (click)="selectMenuItem('4')" [ngClass]="selectedMenuItem === 4 ? 'container navbars-inprogress navbar-h' : stepStatusOfFour === 'true' ?  'container navbars navbar-h' :  'container navbars-pending navbar-h'" style="margin-top: 10%;">
+            <p [ngClass]="selectedMenuItem === 4 ? 'new-company-det-inprogress new-company-h' : stepStatusOfFour === 'true'? 'new-company-det new-company-h' :  'new-company-det new-company-h'">Review Form</p>
           <div class="row" style="padding-bottom: 7%;">
             <div class="col-xl-2" style="position: relative;">
-              <span [ngClass]="selectedMenuItem === 5 ? 'mat-bullet-inprogress mat-bullet-h' :  stepStatusOfFour === 'true'? 'mat-bullet mat-bullet-h' : 'mat-bullet-pending mat-bullet-h'"><mat-icon>view_comfy</mat-icon></span>
+              <span [ngClass]="selectedMenuItem === 4 ? 'mat-bullet-inprogress mat-bullet-h' : stepStatusOfFour === 'true'? 'mat-bullet mat-bullet-h' :  'mat-bullet-pending mat-bullet-h'"><mat-icon>list_alt</mat-icon></span>
             </div>
             <div class="col-xl-6">
-              <p [ngClass]="selectedMenuItem === 5 ? 'status-inprogress status-h' : stepStatusOfFour === 'true'? 'status-completed status-h' : 'status-pending status-h'">{{selectedMenuItem === 5 ? 'In-progress' : stepStatusOfFour === 'true' ? 'Completed' :  'Pending'}}</p>
+              <p [ngClass]="selectedMenuItem === 4 ? 'status-inprogress status-h' : stepStatusOfFour === 'true'? 'status-completed status-h' :  'status-pending status-h'">{{ selectedMenuItem === 4 ? 'In-progress' : stepStatusOfFour === 'true'? 'Completed' : 'Pending'}}</p>
             </div>
           </div>
        </div>
-           <div [class.selected]="selectedMenuItem === '6'" (click)="selectMenuItem('6')" [ngClass]="selectedMenuItem === 6 ? 'container navbars-inprogress navbar-h' : stepStatusOfFive === 'true' ?  'container navbars navbar-h' :  'container navbars-pending navbar-h'" style="margin-top: 10%;">
-            <p [ngClass]=" selectedMenuItem === 6 ? 'new-company-det-inprogress new-company-h' : stepStatusOfFive === 'true'? 'new-company-det new-company-h' : 'new-company-det new-company-h'">Report Details</p>
+           <div [class.selected]="selectedMenuItem === '5'" (click)="selectMenuItem('5')" [ngClass]="selectedMenuItem === 5 ? 'container navbars-inprogress navbar-h' : stepStatusOfFive === 'true'?  'container navbars navbar-h' : 'container navbars-pending navbar-h'" style="margin-top: 10%;">
+            <p [ngClass]=" selectedMenuItem === 5 ? 'new-company-det-inprogress new-company-h' : stepStatusOfFive ? 'new-company-det new-company-h' : 'new-company-det new-company-h'">Evaluate Results</p>
           <div class="row" style="padding-bottom: 7%;">
             <div class="col-xl-2" style="position: relative;">
-              <span [ngClass]="selectedMenuItem === 6 ? 'mat-bullet-inprogress mat-bullet-h' : stepStatusOfFive === 'true'? 'mat-bullet mat-bullet-h' : 'mat-bullet-pending mat-bullet-h'"><mat-icon>report</mat-icon></span>
+              <span [ngClass]="selectedMenuItem === 5 ? 'mat-bullet-inprogress mat-bullet-h' :  stepStatusOfFive === 'true'? 'mat-bullet mat-bullet-h' : 'mat-bullet-pending mat-bullet-h'"><mat-icon>view_comfy</mat-icon></span>
             </div>
             <div class="col-xl-6">
-              <p [ngClass]=" selectedMenuItem === 6 ? 'status-inprogress status-h' : stepStatusOfFive === 'true'? 'status-completed status-h' : 'status-pending status-h'">{{ selectedMenuItem === 6 ? 'In-progress' : stepStatusOfFive === 'true' ? 'Completed' : 'Pending'}}</p>
+              <p [ngClass]="selectedMenuItem === 5 ? 'status-inprogress status-h' : stepStatusOfFive === 'true'? 'status-completed status-h' : 'status-pending status-h'">{{selectedMenuItem === 5 ? 'In-progress' : stepStatusOfFive === 'true' ? 'Completed' :  'Pending'}}</p>
+            </div>
+          </div>
+       </div>
+           <div [class.selected]="selectedMenuItem === '6'" (click)="selectMenuItem('6')" [ngClass]="selectedMenuItem === 6 ? 'container navbars-inprogress navbar-h' : stepStatusOfSix === 'true' ?  'container navbars navbar-h' :  'container navbars-pending navbar-h'" style="margin-top: 10%;">
+            <p [ngClass]=" selectedMenuItem === 6 ? 'new-company-det-inprogress new-company-h' : stepStatusOfSix === 'true'? 'new-company-det new-company-h' : 'new-company-det new-company-h'">Report Details</p>
+          <div class="row" style="padding-bottom: 7%;">
+            <div class="col-xl-2" style="position: relative;">
+              <span [ngClass]="selectedMenuItem === 6 ? 'mat-bullet-inprogress mat-bullet-h' : stepStatusOfSix === 'true'? 'mat-bullet mat-bullet-h' : 'mat-bullet-pending mat-bullet-h'"><mat-icon>report</mat-icon></span>
+            </div>
+            <div class="col-xl-6">
+              <p [ngClass]=" selectedMenuItem === 6 ? 'status-inprogress status-h' : stepStatusOfSix === 'true'? 'status-completed status-h' : 'status-pending status-h'">{{ selectedMenuItem === 6 ? 'In-progress' : stepStatusOfSix === 'true' ? 'Completed' : 'Pending'}}</p>
             </div>
           </div>
        </div>

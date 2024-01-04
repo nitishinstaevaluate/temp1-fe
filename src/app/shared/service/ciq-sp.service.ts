@@ -11,11 +11,15 @@ export class CiqSPService {
   
   HOST = environment.baseUrl;
 
-  getSPIndustryList(){
-    return this.http.get(`${this.HOST}ciq-sp/industry`)
+  fetchSPHierarchyBasedIndustry(){
+    return this.http.get(`${this.HOST}ciq-sp/hierarchy-based-industry-list`);
    }
 
-   getSPIndustryBasedCompany(){
-     return this.http.get(`${this.HOST}ciq-sp/industry-based-company`)
+   fetchAllSPIndustry(){
+     return this.http.get(`${this.HOST}ciq-sp/sp-industry-list`);
+   }
+
+   getSPCompanyBasedIndustry(industry:string,location:string){
+    return this.http.get(`${this.HOST}ciq-sp/sp-industry-list/search?industry=${industry}&location=${location}`);
    }
 }

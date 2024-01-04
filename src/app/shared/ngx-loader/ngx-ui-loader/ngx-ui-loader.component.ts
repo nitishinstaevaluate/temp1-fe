@@ -29,5 +29,10 @@ export class NgxUiLoaderComponent implements OnInit{
       this.loader = this.ngxUiLoaderService.getLoader('activityTab');
       this.ngxUiLoaderService.start('activityTab');
     }
+    else if(this.loader === 'inputScreen') {
+      this.ngxUiLoaderService.stop();
+      this.loader = this.ngxUiLoaderService.getLoader('inputScreen');
+      this.ngxUiLoaderService.start('inputScreen');
+    }
   }
 }

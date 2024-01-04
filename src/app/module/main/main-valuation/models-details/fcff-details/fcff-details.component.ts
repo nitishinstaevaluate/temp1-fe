@@ -25,7 +25,7 @@ export class FcffDetailsComponent implements OnInit{
   @Input() formOneData:any;
   @Output() fcffDetails=new EventEmitter<any>();
   @Output() fcffDetailsPrev=new EventEmitter<any>();
-  @Input() secondStageInput:any;
+  @Input() thirdStageInput:any;
   @Input() next:any;
 
   
@@ -98,32 +98,32 @@ ngOnInit(): void {
 }
 
 checkProcessExist(){
-  if(this.secondStageInput){
-    this.secondStageInput.map((stateTwoDetails:any)=>{
-      if(stateTwoDetails.model === MODELS.FCFF && this.formOneData.model.includes(MODELS.FCFF)){
-        this.fcffForm.controls['discountRate'].setValue(stateTwoDetails?.discountRate) 
-        this.fcffForm.controls['discountingPeriod'].setValue(stateTwoDetails?.discountingPeriod) 
-        this.fcffForm.controls['betaType'].setValue(stateTwoDetails?.betaType) 
-        this.fcffForm.controls['coeMethod'].setValue(stateTwoDetails?.coeMethod); 
-        this.fcffForm.controls['riskFreeRate'].setValue(stateTwoDetails?.riskFreeRate); 
+  if(this.thirdStageInput){
+    this.thirdStageInput.map((stateThreeDetails:any)=>{
+      if(stateThreeDetails.model === MODELS.FCFF && this.formOneData.model.includes(MODELS.FCFF)){
+        this.fcffForm.controls['discountRate'].setValue(stateThreeDetails?.discountRate) 
+        this.fcffForm.controls['discountingPeriod'].setValue(stateThreeDetails?.discountingPeriod) 
+        this.fcffForm.controls['betaType'].setValue(stateThreeDetails?.betaType) 
+        this.fcffForm.controls['coeMethod'].setValue(stateThreeDetails?.coeMethod); 
+        this.fcffForm.controls['riskFreeRate'].setValue(stateThreeDetails?.riskFreeRate); 
         let expectedMarketReturnData:any;
         this.modelControl.fcfe.options.expMarketReturnType.options.map((response:any)=>{
-          if(response.value ===  stateTwoDetails?.expMarketReturnType){
+          if(response.value ===  stateThreeDetails?.expMarketReturnType){
             expectedMarketReturnData = response
           }
         })
         this.fcffForm.controls['expMarketReturnType'].setValue(expectedMarketReturnData.name);
-        this.fcffForm.controls['expMarketReturn'].setValue(stateTwoDetails?.expMarketReturn);
-        this.fcffForm.controls['specificRiskPremium'].setValue(stateTwoDetails?.specificRiskPremium); 
-        this.fcffForm.controls['riskPremium'].setValue(stateTwoDetails?.riskPremium); 
-        this.fcffForm.controls['beta'].setValue(stateTwoDetails?.beta);
-        this.fcffForm.controls['costOfDebt'].setValue(stateTwoDetails?.costOfDebt);
-        this.fcffForm.controls['capitalStructureType'].setValue(stateTwoDetails?.capitalStructureType);
-        this.fcffForm.controls['copShareCapital'].setValue(stateTwoDetails?.copShareCapital);
-        this.specificRiskPremiumModalForm.controls['companySize'].setValue(stateTwoDetails?.alpha.companySize)
-        this.specificRiskPremiumModalForm.controls['marketPosition'].setValue(stateTwoDetails?.alpha.marketPosition)
-        this.specificRiskPremiumModalForm.controls['liquidityFactor'].setValue(stateTwoDetails?.alpha.liquidityFactor)
-        this.specificRiskPremiumModalForm.controls['competition'].setValue(stateTwoDetails?.alpha.competition);
+        this.fcffForm.controls['expMarketReturn'].setValue(stateThreeDetails?.expMarketReturn);
+        this.fcffForm.controls['specificRiskPremium'].setValue(stateThreeDetails?.specificRiskPremium); 
+        this.fcffForm.controls['riskPremium'].setValue(stateThreeDetails?.riskPremium); 
+        this.fcffForm.controls['beta'].setValue(stateThreeDetails?.beta);
+        this.fcffForm.controls['costOfDebt'].setValue(stateThreeDetails?.costOfDebt);
+        this.fcffForm.controls['capitalStructureType'].setValue(stateThreeDetails?.capitalStructureType);
+        this.fcffForm.controls['copShareCapital'].setValue(stateThreeDetails?.copShareCapital);
+        this.specificRiskPremiumModalForm.controls['companySize'].setValue(stateThreeDetails?.alpha.companySize)
+        this.specificRiskPremiumModalForm.controls['marketPosition'].setValue(stateThreeDetails?.alpha.marketPosition)
+        this.specificRiskPremiumModalForm.controls['liquidityFactor'].setValue(stateThreeDetails?.alpha.liquidityFactor)
+        this.specificRiskPremiumModalForm.controls['competition'].setValue(stateThreeDetails?.alpha.competition);
         this.calculateCoeAndAdjustedCoe()
       }
     })
@@ -479,7 +479,7 @@ validateControls(controlArray: { [key: string]: FormControl },payload:any){
       else{
         localStorage.setItem('pendingStat',`2`)
       }
-      localStorage.setItem('stepTwoStats',`false`);
+      localStorage.setItem('stepThreeStats',`false`);
     }
     else{
       const formStat = localStorage.getItem('pendingStat');
@@ -488,30 +488,30 @@ validateControls(controlArray: { [key: string]: FormControl },payload:any){
         splitFormStatus.splice(splitFormStatus.indexOf('2'),1);
         localStorage.setItem('pendingStat',`${splitFormStatus}`);
         if(splitFormStatus.length>1){
-          localStorage.setItem('stepTwoStats',`false`);
+          localStorage.setItem('stepThreeStats',`false`);
           
         }else{
-        localStorage.setItem('stepTwoStats',`true`);
+        localStorage.setItem('stepThreeStats',`true`);
         localStorage.removeItem('pendingStat');
         }
       }
       else if (formStat !== null && !formStat.includes('2')){
-        localStorage.setItem('stepTwoStats',`false`);
+        localStorage.setItem('stepThreeStats',`false`);
       }
       else{
-        localStorage.setItem('stepTwoStats',`true`);
+        localStorage.setItem('stepThreeStats',`true`);
     }
     }
 
     let processStateStep;
     if(allControlsFilled){
-      processStateStep = 2
+      processStateStep = 3
     }
     else{
-      processStateStep = 1
+      processStateStep = 2
     }
     const processStateModel ={
-      secondStageInput:[{model:MODELS.FCFF,...payload,formFillingStatus:allControlsFilled}],
+      thirdStageInput:[{model:MODELS.FCFF,...payload,formFillingStatus:allControlsFilled}],
       step:processStateStep
     }
     this.processStateManager(processStateModel,localStorage.getItem('processStateId'))

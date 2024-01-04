@@ -11,8 +11,8 @@
             <!-- industry Name level-1 -->
               <div class="col-md-6 field" style="padding-top: 1%;">
                 <div class="material-textfield">
-                  <input class="new-inp" placeholder="Add level 1 industry" type="text" formControlName="industryL1" />
-                  <label>Industry Name (Level-1)</label>
+                  <input class="new-inp" placeholder="Add company status" type="text" formControlName="companyStatus" />
+                  <label>Company Status</label>
                   <span class="tool-class">
 
                     <svg [matTooltip]="modelControl.inputScreen.columns.industryL1.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
@@ -26,8 +26,8 @@
               <!-- industry Name level-2  -->
               <div class="col-md-6 field" style="padding-top: 1%;">
                 <div class="material-textfield">
-                  <input class="new-inp" placeholder="Add level 2 industry" type="text" formControlName="industryL2" />
-                  <label>Industry Name (Level-2)</label>
+                  <input class="new-inp" placeholder="Add industry descriptor" type="text" formControlName="descriptor" />
+                  <label>Industry Desriptor</label>
                   <span class="tool-class">
 
                     <svg [matTooltip]="modelControl.inputScreen.columns.industryL2.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
@@ -72,8 +72,8 @@
       <table class="table-industry-based-company">
         <thead>
           <tr style="text-transform: capitalize;" class="header">
-            <th></th>
-            <th *ngFor="let columnName of ciqIndustryHead" class="make-bold">{{ columnName }}</th>
+            <th style="width: 5%;"></th>
+            <th *ngFor="let columnName of ciqIndustryHead" class="make-bold" [ngStyle]="(columnName === 'Company Name') ? { 'width': '40%'} : (columnName === 'Industry Id') ? { 'width':'5%' } : (columnName === 'Company Id') ? {'width':'15%'} : (columnName === 'Industry Description') ? { 'width':'25%' } : { 'width':'auto' }">{{ columnName }}</th>
           </tr>
         </thead>
         <tbody>
@@ -81,9 +81,10 @@
             <td style="text-align: left;font-size: 14px;text-transform: capitalize;" class="make-light">
               <input type="checkbox" [id]="'checkbox_' + i" />
             </td>
-            <td style="text-align: left;font-size: 14px;text-transform: capitalize;" class="make-light" *ngFor="let key of mapIndustryBasedCompany">
-              {{ row[key] }}
-            </td>
+            <td style="text-align: left;font-size: 14px;text-transform: capitalize;" class="make-light">{{row.COMPANYID}}</td>
+            <td style="text-align: left;font-size: 14px;text-transform: capitalize;" class="make-light">{{row.COMPANYNAME}}</td>
+            <td style="text-align: left;font-size: 14px;text-transform: capitalize;" class="make-light" >{{row.SIMPLEINDUSTRYID}}</td>
+            <td style="text-align: left;font-size: 14px;text-transform: capitalize;" class="make-light">{{row.SIMPLEINDUSTRYDESCRIPTION}}</td>
           </tr>
         </tbody>
       </table>
@@ -100,4 +101,8 @@
         <span class="button-save"><mat-icon>send</mat-icon></span>
      </button>
 </div>
+</div>
+
+<div *ngIf="loader">
+  <app-ngx-ui-loader [loader]="'inputScreen'"></app-ngx-ui-loader>
 </div>

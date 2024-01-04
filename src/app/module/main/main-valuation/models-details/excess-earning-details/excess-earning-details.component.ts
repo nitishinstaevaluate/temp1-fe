@@ -27,7 +27,7 @@ export class ExcessEarningDetailsComponent {
   @Output() excessEarnDetails=new EventEmitter<any>();
   @Output() excessEarnDetailsPrev=new EventEmitter<any>();
   @Input() formOneData:any;
-  @Input() secondStageInput:any;
+  @Input() thirdStageInput:any;
   @Input() next:any;
 
   excessEarningForm:any;
@@ -91,8 +91,8 @@ ngOnInit(): void {
 }
 
 checkProcessExist(){
-  if(this.secondStageInput){
-    this.secondStageInput.map((stateTwoDetails:any)=>{
+  if(this.thirdStageInput){
+    this.thirdStageInput.map((stateTwoDetails:any)=>{
       if(stateTwoDetails.model === MODELS.EXCESS_EARNINGS && this.formOneData.model.includes(MODELS.EXCESS_EARNINGS)){
         this.excessEarningForm.controls['discountRate'].setValue(stateTwoDetails?.discountRate);
         this.excessEarningForm.controls['discountingPeriod'].setValue(stateTwoDetails?.discountingPeriod);
@@ -372,7 +372,7 @@ validateControls(controlArray: { [key: string]: FormControl },payload:any){
       else{
         localStorage.setItem('pendingStat',`4`)
       }
-      localStorage.setItem('stepTwoStats',`false`);
+      localStorage.setItem('stepThreeStats',`false`);
     }
     else{
       const formStat = localStorage.getItem('pendingStat');
@@ -381,31 +381,31 @@ validateControls(controlArray: { [key: string]: FormControl },payload:any){
         splitFormStatus.splice(splitFormStatus.indexOf('4'),1);
         localStorage.setItem('pendingStat',`${splitFormStatus}`);
         if(splitFormStatus.length>1){
-          localStorage.setItem('stepTwoStats',`false`);
+          localStorage.setItem('stepThreeStats',`false`);
           
         }else{
-        localStorage.setItem('stepTwoStats',`true`);
+        localStorage.setItem('stepThreeStats',`true`);
         localStorage.removeItem('pendingStat');
         }
       }
       else if (formStat !== null && !formStat.includes('4')){
-        localStorage.setItem('stepTwoStats',`false`);
+        localStorage.setItem('stepThreeStats',`false`);
       }
       else{
-        localStorage.setItem('stepTwoStats',`true`);
+        localStorage.setItem('stepThreeStats',`true`);
     }
     }
 
     let processStateStep;
     if(allControlsFilled){
-      processStateStep = 2
+      processStateStep = 3
     }
     else{
-      processStateStep = 1
+      processStateStep = 2
     }
 
     const processStateModel ={
-      secondStageInput:[{model:MODELS.EXCESS_EARNINGS,...payload,formFillingStatus:allControlsFilled}],
+      thirdStageInput:[{model:MODELS.EXCESS_EARNINGS,...payload,formFillingStatus:allControlsFilled}],
       step:processStateStep
     }
     this.processStateManager(processStateModel,localStorage.getItem('processStateId'));

@@ -138,6 +138,13 @@
         color: #ffffff;
     }
 
+    .status-not-allowed{
+        background-color: #ff6e6e;
+        border-radius: 6px;
+        text-align: center;
+        color: #ffffff;
+    }
+
     .navbars{
         border: 1px solid;
         border-radius: 10px;
@@ -283,5 +290,11 @@
         background-size: 2px 100%, 17px 106.7px;
         top: 8%;
     }
-    
+    .blackbox{
+        background-color: #d0d3d0;
+        opacity: .8;
+        cursor: not-allowed;
+        border-radius: 10px;
+        box-shadow: 1px 2px 15px #e2e2e2
+    }
       

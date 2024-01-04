@@ -15,7 +15,7 @@ export class RelativeValuationDetailsComponent implements OnInit,OnChanges {
 
   modelControl = groupModelControl;
   @Input() formOneData:any;
-  @Input() secondStageInput:any;
+  @Input() thirdStageInput:any;
   @Output() relativeValDetailsPrev = new EventEmitter<any>();
   @Output() relativeValDetails = new EventEmitter<any>();
 
@@ -43,12 +43,12 @@ export class RelativeValuationDetailsComponent implements OnInit,OnChanges {
           this.Companies.controls[prefCompanyIndex]?.setValue(this.formOneData?.preferenceCompanies[prefCompanyIndex]);
       })
     }
-   else if(this.secondStageInput){
-      const checkRelativeValuation = this.secondStageInput.some((data:any)=>data.model === MODELS.RELATIVE_VALUATION);
+   else if(this.thirdStageInput){
+      const checkRelativeValuation = this.thirdStageInput.some((data:any)=>data.model === MODELS.RELATIVE_VALUATION);
       if(checkRelativeValuation){
-        this.secondStageInput.map((stateTwoDetails:any)=>{
-          if(stateTwoDetails.model === MODELS.RELATIVE_VALUATION && this.formOneData.model.includes(MODELS.RELATIVE_VALUATION)){
-            stateTwoDetails?.companies.map((companyDetails:any,i:number)=>{
+        this.thirdStageInput.map((stateThreeDetails:any)=>{
+          if(stateThreeDetails.model === MODELS.RELATIVE_VALUATION && this.formOneData.model.includes(MODELS.RELATIVE_VALUATION)){
+            stateThreeDetails?.companies.map((companyDetails:any,i:number)=>{
               this.formOneData?.preferenceCompanies.map((prefCompany:any,prefCompanyIndex:number)=>{
                 if(prefCompany.company === companyDetails.company){
                   this.addInput();
@@ -71,10 +71,10 @@ export class RelativeValuationDetailsComponent implements OnInit,OnChanges {
   }
 
   checkProcessExist(){
-    if(this.secondStageInput){
-      this.secondStageInput.map((stateTwoDetails:any)=>{
-        if(stateTwoDetails.model === MODELS.RELATIVE_VALUATION && this.formOneData.model.includes(MODELS.RELATIVE_VALUATION)){
-          stateTwoDetails?.companies.map((companyDetails:any,i:number)=>{
+    if(this.thirdStageInput){
+      this.thirdStageInput.map((stateThreeDetails:any)=>{
+        if(stateThreeDetails.model === MODELS.RELATIVE_VALUATION && this.formOneData.model.includes(MODELS.RELATIVE_VALUATION)){
+          stateThreeDetails?.companies.map((companyDetails:any,i:number)=>{
             this.formOneData?.preferenceCompanies.map((prefCompany:any,prefCompanyIndex:number)=>{
               if(prefCompany.company === companyDetails.company){
                 this.addInput();
@@ -124,10 +124,10 @@ loadFormControl(){
     if (this.isRelativeValuation(this.MODEL.RELATIVE_VALUATION)) {
       this.industries = this.formOneData?.industriesRatio;
     }
-    localStorage.setItem('stepTwoStats','true')
+    localStorage.setItem('stepThreeStats','true')
 
     const processStateModel ={
-      secondStageInput:[{model:MODELS.RELATIVE_VALUATION,...this.relativeValuation.value,industries:this.industries,formFillingStatus:true}],
+      thirdStageInput:[{model:MODELS.RELATIVE_VALUATION,...this.relativeValuation.value,industries:this.industries,formFillingStatus:true}],
       step:localStorage.getItem('step')
     }
 

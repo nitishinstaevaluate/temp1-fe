@@ -23,17 +23,18 @@ export class MainValuationComponent implements OnInit{
   currentStepIndex:any=0;    
   transferSteppertwo:any;
   transferStepperthree:any;    
-  transferStepperFour:any;    
+  transferStepperFour:any;
   formOneData: any;
   formTwoData:any;
   formThreeData:any;
   formFourData:any;
   formFiveData:any;
+  formSixData:any;
   fcfeData:any;
   fcffData:any;
   relativeData:any;
   excessEarnData:any;
-  formOneAndTwoData:any;
+  formOneAndThreeData:any;
   comparableIndustriesData:any;
   navData:any;
   ruleElevenData:any;
@@ -125,7 +126,7 @@ export class MainValuationComponent implements OnInit{
 
   
   onStepChange() {  
-      this.formOneAndTwoData = {
+      this.formOneAndThreeData = {
         ...this.formOneData,
         ...(this.formOneData?.model.includes('FCFF') ? this.fcffData : {}),
         ...(this.formOneData?.model.includes('FCFE') ? this.fcfeData : {}),
@@ -170,8 +171,17 @@ export class MainValuationComponent implements OnInit{
     }
   }
 
+  async screenInputDetails(data:any){
+    this.formTwoData = {formOneData: this.formOneData, formTwoData: data};
+    const currentStep:any = localStorage.getItem('step')
+    this.step = parseInt(currentStep) + 1;
+    localStorage.setItem('step',`${this.step}`);
+    this.calculationService.checkStepStatus.next({status:true,step:this.step})
+    this.nextModelSelection();
+  }
+
   async groupReviewControls(data:any){
-    this.transferStepperthree= {formOneAndTwoData:this.formOneAndTwoData ? this.formOneAndTwoData :  this.formFourData?.formOneAndTwoData,formThreeData:data};
+    this.transferStepperthree= {formOneAndThreeData:this.formOneAndThreeData ? this.formOneAndThreeData :  this.formFiveData?.formOneAndThreeData,formFourData:data,formTwoData:this.formTwoData};
     // this.stepper.next();
     const currentStep:any = localStorage.getItem('step')
     // const currentStep:any = await this.fetchProcessActiveStage(localStorage.getItem('processStateId'));
@@ -352,17 +362,20 @@ export class MainValuationComponent implements OnInit{
           this.groupModelControls(processStateDetails.firstStageInput,true)
         }
 
-        if(processStateDetails?.secondStageInput){
-          this.formTwoData = processStateDetails.secondStageInput;
+        if(processStateDetails?.firstStageInput || processStateDetails?.secondStageInput){
+          this.formTwoData = {formOneData :this.formOneData, formTwoData: processStateDetails.secondStageInput};
+        }
+        if(processStateDetails?.thirdStageInput){
+          this.formThreeData = processStateDetails.thirdStageInput;
         }
 
-        if(processStateDetails?.secondStageInput && processStateDetails?.firstStageInput){
-          this.formThreeData = {formOneData:processStateDetails.firstStageInput,formTwoData: this.formTwoData,formThreeData:processStateDetails?.thirdStageInput};
+        if(processStateDetails?.thirdStageInput && processStateDetails?.firstStageInput){
+          this.formFourData = {formOneData:processStateDetails.firstStageInput,formThreeData: this.formThreeData,formFourData:processStateDetails?.fourthStageInput};
         }
 
-        if(processStateDetails?.thirdStageInput || processStateDetails?.secondStageInput){
+        if(processStateDetails?.fourthtageInput || processStateDetails?.thirdStageInput){
           let updatedPayload:any;
-          this.formTwoData.map((formTwoDetails:any)=>{
+          this.formThreeData.map((formTwoDetails:any)=>{
             if(formTwoDetails.model === MODELS.FCFE && processStateDetails?.firstStageInput.model.includes(MODELS.FCFE)){
               const {model , ...rest} = formTwoDetails;
               updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
@@ -392,10 +405,10 @@ export class MainValuationComponent implements OnInit{
               updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
             }
           }) 
-          this.formFourData = {formOneAndTwoData : updatedPayload,formThreeData:processStateDetails.thirdStageInput,formFourData:processStateDetails?.fourthStageInput?.totalWeightageModel};
+          this.formFiveData = {formOneAndThreeData : updatedPayload,formFourData:processStateDetails.fourthStageInput,formFiveData:processStateDetails?.fifthStageInput?.totalWeightageModel};
         }
-        if(processStateDetails?.fourthStageInput){
-          this.formFiveData = {...this.formFourData,formFourData : processStateDetails.fourthStageInput?.totalWeightageModel,formFiveData:processStateDetails?.fifthStageInput}
+        if(processStateDetails?.fifthStageInput){
+          this.formSixData = {...this.formFiveData,formFiveData : processStateDetails.fifthStageInput?.totalWeightageModel,formSixData:processStateDetails?.sixthStageInput}
         }
 
         this.isProcessExistLoader = false;

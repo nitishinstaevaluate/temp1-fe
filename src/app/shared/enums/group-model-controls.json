@@ -852,7 +852,8 @@
                 "type":"text",
                 "tooltip":"Level 4 Industries"
             }
-        },
+        }
+    },
     "ruleElevenUa":{
         "type":"ruleElevenUa",
         "header":"Rule 11 UA",

@@ -29,7 +29,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
   appointeeDetails:any=FormGroup;
 
   @Input() transferStepperFour:any;
-  @Input() fifthStageInput:any;
+  @Input() sixthStageInput:any;
   @Output() previousPage=new EventEmitter<any>();
   @ViewChild('purposeInput') purposeInput!: ElementRef<any>;
    viewer:any;
@@ -66,22 +66,22 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
   }
   checkProcessExist(){
     if(!this.transferStepperFour){
-      if(this.fifthStageInput?.formFiveData){
-        this.reportForm.controls['clientName'].setValue(this.fifthStageInput?.formFiveData?.clientName);
-        this.reportForm.controls['reportDate'].setValue(this.fifthStageInput?.formFiveData?.reportDate);
-        this.reportForm.controls['useExistingValuer'].setValue(this.fifthStageInput?.formFiveData?.useExistingValuer);
-        this.reportForm.controls['appointingAuthorityName'].setValue(this.fifthStageInput?.formFiveData?.appointingAuthorityName);
-        this.reportForm.controls['dateOfAppointment'].setValue(this.fifthStageInput?.formFiveData?.dateOfAppointment);
-        this.reportForm.controls['appointingAuthorityName'].setValue(this.fifthStageInput?.formFiveData?.appointingAuthorityName);
-        this.reportForm.controls['natureOfInstrument'].setValue(this.fifthStageInput?.formFiveData?.natureOfInstrument);
-        this.reportForm.controls['cinNumber'].setValue(this.fifthStageInput?.formFiveData?.cinNumber);
-        this.reportForm.controls['dateOfIncorporation'].setValue(this.fifthStageInput?.formFiveData?.dateOfIncorporation);
-        this.reportForm.controls['companyAddress'].setValue(this.fifthStageInput?.formFiveData?.companyAddress);
-        if(this.fifthStageInput?.formFiveData?.reportPurpose){
-          this.reportForm.controls['reportPurpose'].setValue(this.fifthStageInput?.formFiveData?.reportPurpose);
-          this.dataReferenceService.getReportPurpose(this.fifthStageInput?.formFiveData?.reportPurpose).subscribe((reportPurposeData:any)=>{
+      if(this.sixthStageInput?.formSixData){
+        this.reportForm.controls['clientName'].setValue(this.sixthStageInput?.formSixData?.clientName);
+        this.reportForm.controls['reportDate'].setValue(this.sixthStageInput?.formSixData?.reportDate);
+        this.reportForm.controls['useExistingValuer'].setValue(this.sixthStageInput?.formSixData?.useExistingValuer);
+        this.reportForm.controls['appointingAuthorityName'].setValue(this.sixthStageInput?.formSixData?.appointingAuthorityName);
+        this.reportForm.controls['dateOfAppointment'].setValue(this.sixthStageInput?.formSixData?.dateOfAppointment);
+        this.reportForm.controls['appointingAuthorityName'].setValue(this.sixthStageInput?.formSixData?.appointingAuthorityName);
+        this.reportForm.controls['natureOfInstrument'].setValue(this.sixthStageInput?.formSixData?.natureOfInstrument);
+        this.reportForm.controls['cinNumber'].setValue(this.sixthStageInput?.formSixData?.cinNumber);
+        this.reportForm.controls['dateOfIncorporation'].setValue(this.sixthStageInput?.formSixData?.dateOfIncorporation);
+        this.reportForm.controls['companyAddress'].setValue(this.sixthStageInput?.formSixData?.companyAddress);
+        if(this.sixthStageInput?.formSixData?.reportPurpose){
+          this.reportForm.controls['reportPurpose'].setValue(this.sixthStageInput?.formSixData?.reportPurpose);
+          this.dataReferenceService.getReportPurpose(this.sixthStageInput?.formSixData?.reportPurpose).subscribe((reportPurposeData:any)=>{
             this.reportPurposeData = reportPurposeData?.reportPurpose;
-            this.reportObjective = this.reportObjectives[`${this.fifthStageInput?.formFiveData?.reportPurpose}`];
+            this.reportObjective = this.reportObjectives[`${this.sixthStageInput?.formSixData?.reportPurpose}`];
             if(this.reportPurposeData.length>0){
               this.shouldShowReportPurpose=true;
             }
@@ -93,18 +93,18 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
             this.shouldShowReportPurpose=false;
           })
         }
-        if(this.fifthStageInput?.formFiveData?.reportSection){
-          this.reportPurposeDataChips = this.fifthStageInput?.formFiveData?.reportSection
-          this.reportForm.controls['reportSection'].setValue(this.fifthStageInput?.formFiveData?.reportSection);
+        if(this.sixthStageInput?.formSixData?.reportSection){
+          this.reportPurposeDataChips = this.sixthStageInput?.formSixData?.reportSection
+          this.reportForm.controls['reportSection'].setValue(this.sixthStageInput?.formSixData?.reportSection);
         }
-        this.registeredValuerDetails.controls['registeredValuerName'].setValue(this.fifthStageInput?.formFiveData?.registeredValuerName)
-        this.registeredValuerDetails.controls['registeredValuerEmailId'].setValue(this.fifthStageInput?.formFiveData?.registeredValuerEmailId)
-        this.registeredValuerDetails.controls['registeredValuerIbbiId'].setValue(this.fifthStageInput?.formFiveData?.registeredValuerIbbiId)
-        this.registeredValuerDetails.controls['registeredValuerMobileNumber'].setValue(this.fifthStageInput?.formFiveData?.registeredValuerMobileNumber)
-        this.registeredValuerDetails.controls['registeredValuerQualifications'].setValue(this.fifthStageInput?.formFiveData?.registeredValuerQualifications)
-        this.registeredValuerDetails.controls['registeredValuerGeneralAddress'].setValue(this.fifthStageInput?.formFiveData?.registeredValuerGeneralAddress)
+        this.registeredValuerDetails.controls['registeredValuerName'].setValue(this.sixthStageInput?.formSixData?.registeredValuerName)
+        this.registeredValuerDetails.controls['registeredValuerEmailId'].setValue(this.sixthStageInput?.formSixData?.registeredValuerEmailId)
+        this.registeredValuerDetails.controls['registeredValuerIbbiId'].setValue(this.sixthStageInput?.formSixData?.registeredValuerIbbiId)
+        this.registeredValuerDetails.controls['registeredValuerMobileNumber'].setValue(this.sixthStageInput?.formSixData?.registeredValuerMobileNumber)
+        this.registeredValuerDetails.controls['registeredValuerQualifications'].setValue(this.sixthStageInput?.formSixData?.registeredValuerQualifications)
+        this.registeredValuerDetails.controls['registeredValuerGeneralAddress'].setValue(this.sixthStageInput?.formSixData?.registeredValuerGeneralAddress)
       }
-      this.transferStepperFour = this.fifthStageInput;
+      this.transferStepperFour = this.sixthStageInput;
     }
   }
   ngAfterViewInit(): void {}
@@ -175,12 +175,12 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     const payload = {
       ...this.reportForm.value,
       ...this.registeredValuerDetails.value,
-      reportId:this.transferStepperFour?.formThreeData?.appData?.reportId || this.transferStepperFour?.formThreeData?.appData?._id,
+      reportId:this.transferStepperFour?.formFourData?.appData?.reportId || this.transferStepperFour?.formFourData?.appData?._id,
       reportDate:this.reportForm.controls['reportDate'].value,
-      finalWeightedAverage:this.transferStepperFour?.formFourData || this.transferStepperFour?.totalWeightageModel 
+      finalWeightedAverage:this.transferStepperFour?.formFiveData || this.transferStepperFour?.totalWeightageModel 
     }
-    const approach = (this.transferStepperFour?.formOneAndTwoData?.model.includes('NAV')) && this.transferStepperFour.formOneAndTwoData.model.length === 1? 'NAV' : (this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFE')) && this.transferStepperFour.formOneAndTwoData.model.length === 1 ? 'DCF' : ((this.transferStepperFour?.formOneAndTwoData?.model.includes('Relative_Valuation') || this.transferStepperFour?.formOneAndTwoData?.model.includes('CTM')) && this.transferStepperFour.formOneAndTwoData.model.length === 1) ? 'CCM' : 'MULTI_MODEL';
-    if(!this.transferStepperFour?.formOneAndTwoData?.model.includes(MODELS.RULE_ELEVEN_UA)){
+    const approach = (this.transferStepperFour?.formOneAndThreeData?.model.includes('NAV')) && this.transferStepperFour.formOneAndThreeData.model.length === 1? 'NAV' : (this.transferStepperFour?.formOneAndThreeData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndThreeData?.model.includes('FCFE')) && this.transferStepperFour.formOneAndThreeData.model.length === 1 ? 'DCF' : ((this.transferStepperFour?.formOneAndThreeData?.model.includes('Relative_Valuation') || this.transferStepperFour?.formOneAndThreeData?.model.includes('CTM')) && this.transferStepperFour.formOneAndThreeData.model.length === 1) ? 'CCM' : 'MULTI_MODEL';
+    if(!this.transferStepperFour?.formOneAndThreeData?.model.includes(MODELS.RULE_ELEVEN_UA)){
       
     this.excelAdnReportService.postReportData(payload).subscribe((response:any)=>{
       if(response){
@@ -193,13 +193,13 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
               duration: 2000,
               panelClass: 'app-notification-success',
             });
-            saveAs(reportData, `${this.transferStepperFour?.formOneAndTwoData?.company}.pdf`);
-            localStorage.setItem('stepFiveStats','true')
+            saveAs(reportData, `${this.transferStepperFour?.formOneAndThreeData?.company}.pdf`);
+            localStorage.setItem('stepSixStats','true')
             this.calculationService.checkStepStatus.next({status:true})
             const {reportId,...rest} = payload;
             const processStateModel ={
-              fifthStageInput:{...rest,formFillingStatus:true,valuationReportId:response,valuationResultId:reportId},
-              step:4
+              sixthStageInput:{...rest,formFillingStatus:true,valuationReportId:response,valuationResultId:reportId},
+              step:5
             }
             this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
         }
@@ -237,13 +237,13 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
                 duration: 2000,
                 panelClass: 'app-notification-success',
               });
-              saveAs(reportData, `${this.transferStepperFour?.formOneAndTwoData?.company}.pdf`);
-              localStorage.setItem('stepFiveStats','true')
+              saveAs(reportData, `${this.transferStepperFour?.formOneAndThreeData?.company}.pdf`);
+              localStorage.setItem('stepSixStats','true')
               this.calculationService.checkStepStatus.next({status:true})
               const {reportId,...rest} = payload;
               const processStateModel ={
-                fifthStageInput:{...rest,formFillingStatus:true,valuationReportId:response,valuationResultId:reportId},
-                step:4
+                sixthStageInput:{...rest,formFillingStatus:true,valuationReportId:response,valuationResultId:reportId},
+                step:5
               }
               this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
           }
@@ -291,12 +291,12 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     const payload = {
       ...this.reportForm.value,
       ...this.registeredValuerDetails.value,
-      reportId:this.transferStepperFour?.formThreeData?.appData?.reportId || this.transferStepperFour?.formThreeData?.appData?._id,
+      reportId:this.transferStepperFour?.formFourData?.appData?.reportId || this.transferStepperFour?.formFourData?.appData?._id,
       reportDate:this.reportForm.controls['reportDate'].value,
-      finalWeightedAverage:this.transferStepperFour?.formFourData || this.transferStepperFour?.totalWeightageModel
+      finalWeightedAverage:this.transferStepperFour?.formFiveData || this.transferStepperFour?.totalWeightageModel
     }
-    if(!this.transferStepperFour?.formOneAndTwoData?.model.includes(MODELS.RULE_ELEVEN_UA)){
-      const approach = (this.transferStepperFour?.formOneAndTwoData?.model.includes('NAV')) && this.transferStepperFour.formOneAndTwoData.model.length === 1? 'NAV' : (this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndTwoData?.model.includes('FCFE')) && this.transferStepperFour.formOneAndTwoData.model.length === 1 ? 'DCF' : ((this.transferStepperFour?.formOneAndTwoData?.model.includes('Relative_Valuation') || this.transferStepperFour?.formOneAndTwoData?.model.includes('CTM')) && this.transferStepperFour.formOneAndTwoData.model.length === 1) ? 'CCM' : 'MULTI_MODEL';
+    if(!this.transferStepperFour?.formOneAndThreeData?.model.includes(MODELS.RULE_ELEVEN_UA)){
+      const approach = (this.transferStepperFour?.formOneAndThreeData?.model.includes('NAV')) && this.transferStepperFour.formOneAndThreeData.model.length === 1? 'NAV' : (this.transferStepperFour?.formOneAndThreeData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndThreeData?.model.includes('FCFE')) && this.transferStepperFour.formOneAndThreeData.model.length === 1 ? 'DCF' : ((this.transferStepperFour?.formOneAndThreeData?.model.includes('Relative_Valuation') || this.transferStepperFour?.formOneAndThreeData?.model.includes('CTM')) && this.transferStepperFour.formOneAndThreeData.model.length === 1) ? 'CCM' : 'MULTI_MODEL';
     this.excelAdnReportService.postReportData(payload).subscribe((response:any)=>{
       if(response){
         this.excelAdnReportService.previewReport(response,approach).subscribe((reportData:any)=>{
@@ -305,14 +305,14 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
               value: 'previewDoc',
               dataBlob:reportData,
               reportId: response,
-              companyName:this.transferStepperFour?.formOneAndTwoData?.company
+              companyName:this.transferStepperFour?.formOneAndThreeData?.company
             }
             const dialogRef =  this.dialog.open(GenericModalBoxComponent, {data:dataSet,width:'80%',disableClose: true});
             this.reportGenerate = false;
             const {reportId,...rest} = payload;
             const processStateModel ={
-              fifthStageInput:{...rest,formFillingStatus:false,valuationReportId:response,valuationResultId:reportId},
-              step:4
+              sixthStageInput:{...rest,formFillingStatus:false,valuationReportId:response,valuationResultId:reportId},
+              step:5
             }
             this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
         }
@@ -347,14 +347,14 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
               value: 'previewDoc',
               dataBlob:reportData,
               reportId: response,
-              companyName:this.transferStepperFour?.formOneAndTwoData?.company
+              companyName:this.transferStepperFour?.formOneAndThreeData?.company
             }
             const dialogRef =  this.dialog.open(GenericModalBoxComponent, {data:dataSet,width:'80%',disableClose: true});
             this.reportGenerate = false;
             const {reportId,...rest} = payload;
             const processStateModel ={
-              fifthStageInput:{...rest,formFillingStatus:false,valuationReportId:response,valuationResultId:reportId},
-              step:4
+              sixthStageInput:{...rest,formFillingStatus:false,valuationReportId:response,valuationResultId:reportId},
+              step:5
             }
             this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
         }
