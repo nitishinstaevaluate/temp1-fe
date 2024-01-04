@@ -64,11 +64,12 @@ constructor(private valuationService:ValuationService,
   private processStatusManagerService:ProcessStatusManagerService){}
   
 ngOnChanges(changes:SimpleChanges): void {
-  if(this.next === 2){
-    this.loadFormControl();
-    this.checkProcessExist();
-    this.loadValues();
-    this.loadOnChangeValue();
+  // if(this.next === 2){
+    // this.loadFormControl();
+    // this.checkProcessExist();
+    // this.loadValues();
+    // this.loadOnChangeValue();
+    this.formOneData;
       if (changes['formOneData']) {
         const current = changes['formOneData'].currentValue;
         const previous = changes['formOneData'].previousValue;
@@ -84,15 +85,15 @@ ngOnChanges(changes:SimpleChanges): void {
       if(this.equityM?.length > 0){
         this.fcffForm.controls['coeMethod'].setValue(this.equityM[0].type);
       }
-  }
+  // }
 }
 
 ngOnInit(): void {
   // if(this.next === 2){
-  // this.loadFormControl();
-  // this.checkProcessExist();
-  // this.loadValues();
-  // this.loadOnChangeValue();
+  this.loadFormControl();
+  this.checkProcessExist();
+  this.loadValues();
+  this.loadOnChangeValue();
   // }
 }
 

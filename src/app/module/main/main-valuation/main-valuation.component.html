@@ -74,6 +74,7 @@
                   <div class="tab-element" [ngClass]="{ 'active': next === 6 }" *ngIf="ifModelExist('NAV',formOneData?.model)">Net Asset Value</div>
                   <div class="tab-element" [ngClass]="{ 'active': next === 3 }" *ngIf="ifModelExist('Relative_Valuation',formOneData?.model)">Comparable Companies</div>
                   <div class="tab-element" [ngClass]="{ 'active': next === 5 }" *ngIf="ifModelExist('CTM',formOneData?.model)">Comparable Transaction</div>
+                  <div class="tab-element" [ngClass]="{ 'active': next === 7 }" *ngIf="ifModelExist('ruleElevenUa',formOneData?.model)">Rule 11 UA</div>
                   <!-- Add more tab elements as needed -->
                 </div>
                 
@@ -87,6 +88,7 @@
                 <app-excess-earning-details (excessEarnDetailsPrev)="excessEarnDetailsPrev($event)" (excessEarnDetails)="excessEarnDetails($event)" [hidden]="next !== 4" [formOneData]="formOneData" [secondStageInput]="formTwoData" [next]="next"></app-excess-earning-details>
                 <app-comparable-industries-details (comparableIndustriesDetailsPrev)="comparableIndustriesDetailsPrev($event)" (comparableIndustriesDetails)="comparableIndustriesDetails($event)" [hidden]="next !== 5" [formOneData]="formOneData" [secondStageInput]="formTwoData"></app-comparable-industries-details>
                 <app-net-asset-value-details (navDetailsPrev)="navDetailsPrev($event)" (navDetails)="navDetails($event)" [hidden]="next !== 6" [formOneData]="formOneData" [secondStageInput]="formTwoData"></app-net-asset-value-details>
+                <app-eleven-ua (ruleElevenUaDetailsPrev)="ruleElevenUaDetailsPrev($event)" (ruleElevenUaDetails)="ruleElevenUaDetails($event)" [hidden]="next !== 7" [formOneData]="formOneData" [secondStageInput]="formTwoData"></app-eleven-ua>
               </div>
 
               <app-group-model-review (groupReviewControls)="groupReviewControls($event)" [step]="step" (previousPage)="previous($event)" [transferStepperTwo]="formOneAndTwoData" [hidden]="step !== 4" [thirdStageInput]="formThreeData"></app-group-model-review>

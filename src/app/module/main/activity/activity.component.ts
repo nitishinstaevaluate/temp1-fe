@@ -10,6 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { saveAs } from 'file-saver';
 import { Subject, debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
+import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.service';
 
 @Component({
   selector: 'app-activity',
@@ -39,7 +40,7 @@ export class ActivityComponent {
   constructor(private _valuationService: ValuationService,
     private authService: AuthService,
     private route: Router,
-    private calculationService: CalculationsService,
+    private excelAndReportService: ExcelAndReportService,
     private ngxLoaderService: NgxUiLoaderService,
     private snackBar: MatSnackBar) {
     this.inItData();
@@ -150,7 +151,7 @@ export class ActivityComponent {
     this.ngxLoaderService.start();
     const approach = (model.includes('NAV')) && model.length === 1? 'NAV' : (model.includes('FCFF') || model.includes('FCFE')) && length === 1 ? 'DCF' : ((model.includes('Relative_Valuation') || model.includes('CTM')) && model.length === 1) ? 'CCM' : 'MULTI_MODEL';
 
-    this.calculationService.generateReport(valuationReportId,approach).subscribe((reportData:any)=>{
+    this.excelAndReportService.generateReport(valuationReportId,approach).subscribe((reportData:any)=>{
       if (reportData instanceof Blob) {
         this.snackBar.open('Report generated successfully', 'OK', {
           horizontalPosition: 'center',

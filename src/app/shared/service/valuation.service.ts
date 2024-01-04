@@ -46,5 +46,9 @@ export class ValuationService {
     const url = `${HOST}process-status-manager/paginate?page=${page}&pageSize=${pageSize}&query=${query}`;
     return this.http.get<any[]>(url);
   }
+
+  ruleElevenValuation(payload:any,ruleElevenUaId?:string){
+    return this.http.put(`${HOST}eleven-ua/init-elevenUa-valuation?ruleElevenUaId=${ruleElevenUaId}`,payload)
+  }
   }
 

@@ -395,7 +395,26 @@
         </div>
       </div>
     </div>
-   
+
+  <!-- Rule Eleven (11) UA -->
+    <div class="ruleElevenUaApproach">
+      <div class="pos-absolute-r11ua">
+        <span>{{appValues.VALUATION_METHOD.ruleElevenUaApproach.label}}</span>
+      </div>
+      <div class="row r11ua-hover" >
+        <div class="col-xl-4 n-models-r11ua">
+          <div class="form-check">
+            <input class="form-check-input" [checked]="ruleElevenUaSelectedModel" (click)="createModelControl('ruleElevenUa','ruleElevenUaApproach')" type="radio" name="flexRadioDefault5" id="flexRadioDefault5">
+            <label class="form-check-label" for="flexRadioDefault5">
+              Rule 11 UA Method
+            </label>
+          </div>
+        </div>
+        <div class="col-xl-8 hp-text-r11a">
+          <p>Helper Text details about this model in 1-2 line</p>
+        </div>
+      </div>
+    </div>
     <!-- template download and upload -->
     <div class="row" style="margin-top: 3%;padding-left: 1%;">
       <div class="col-xl-9">

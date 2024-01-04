@@ -89,7 +89,7 @@
                 </div>
     
                 <!--industry  -->
-                <div class="col-md-6 field">
+                <div class="col-md-6 field" *ngIf="isNotRuleElevenUa()">
                     <div class="material-textfield">
                       <select id="industry" class="new-inp" formControlName="industry">
                         <option value="" disabled selected>{{ modelControl.modelValuation.options.industry.placeholder }}</option>
@@ -128,7 +128,7 @@
               </div>
 
               <!-- sub-industry -->
-                <div class="col-md-6 field"  *ngIf="modelValuation.controls['industry'].value && selectedIndustry?.industry &&  subIndustries.length > 0">
+                <div class="col-md-6 field"  *ngIf="modelValuation.controls['industry'].value && selectedIndustry?.industry &&  subIndustries.length > 0 && isNotRuleElevenUa()">
                       <div class="material-textfield">
                         <select id="subIndustry" class="new-inp" #subIndustryVal (change)="subIndustryChange(subIndustryVal.value)" formControlName="subIndustry">
                           <option value="" disabled selected>Select sub-industry</option>
@@ -142,7 +142,7 @@
                 </div>
 
                 <!-- tax rate -->
-                <div class="col-md-6 field">
+                <div class="col-md-6 field" *ngIf="isNotRuleElevenUa()">
                     <div class="material-textfield">
                       <select id="subIndustry" class="new-inp"formControlName="taxRateType" (change)="onTaxRateChange($event)">
                         <option value="25.17" selected>Default</option>
@@ -156,7 +156,7 @@
       </form>   
     </div>
 
-    <div class="row" style="padding-bottom: 1%;padding-top: 1%;">
+    <div class="row" style="padding-bottom: 1%;padding-top: 2%;">
       <div class="col-xl-6">
         <div style="padding-left: 4%;text-align: left;" class="container">
           <button (click)="selectValuation()" [ngClass]="modelSelectStatus ? 'model-button' : 'show-button-grad'" mat-raised-button>
@@ -183,7 +183,7 @@
         </div>
       </div>
       <div [ngClass]="fileName || modelValuation.controls['model'].value.length > 0 ? 'col-xl-12' : 'col-xl-6'">
-        <div [ngStyle]="(fileName || modelValuation.controls['model'].value.length > 0) ? { 'padding-right': '2%', 'text-align': 'right' } : { 'padding-right': '4%', 'text-align': 'right' }" class="container">
+        <div style="padding-bottom: 2%;" [ngStyle]="(fileName || modelValuation.controls['model'].value.length > 0) ? { 'padding-right': '2%', 'text-align': 'right' } : { 'padding-right': '4%', 'text-align': 'right' }" class="container">
           <button (click)="saveAndNext()" [ngClass]="fileName || modelValuation.controls['model'].value.length > 0 ? 'button-resave-mat' : 'button-save-mat'" mat-raised-button>
               Next
               <span class="button-save"><mat-icon style="font-weight: bold;color: #ffffff;">send</mat-icon></span>

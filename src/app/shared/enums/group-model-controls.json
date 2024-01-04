@@ -852,6 +852,81 @@
                 "type":"text",
                 "tooltip":"Level 4 Industries"
             }
+        },
+    "ruleElevenUa":{
+        "type":"ruleElevenUa",
+        "header":"Rule 11 UA",
+        "columns":{
+            "fairValueImmovableProp":{
+                "name":"fairValueImmovableProp",
+                "placeholder":"Fair value of Immovable Property",
+                "type":"text",
+                "toolTip":"Enter fair value of immovable property",
+                "label":"Immovable Property"
+            },
+            "fairValueJewellery":{
+                "name":"fairValueJewellery",
+                "placeholder":"Fair value of Jwellery",
+                "type":"text",
+                "toolTip":"Enter fair value for jwellery",
+                "label":"Fair value of Jewellery"
+            },
+            "fairValueArtistic":{
+                "name":"fairValueArtistic",
+                "placeholder":"Fair value of Artistic",
+                "type":"text",
+                "toolTip":"Enter fair value of Artistic",
+                "label":"Artistic Works"
+            },
+            "fairValueSharesSecurity":{
+                "name":"fairValueSharesSecurity",
+                "placeholder":"Fair value of shares and securities",
+                "type":"text",
+                "toolTip":"Enter fair shares and securities",
+                "label":"Shares and Securities"
+            },
+            "fairValueOthrTangibleAsset":{
+                "name":"fairValueOthrTangibleAsset",
+                "placeholder":"Fair value of other tangible assets",
+                "type":"text",
+                "toolTip":"Enter fair value of other tangible assets",
+                "label":"Tangible Assets"
+            },
+            "fairValueinvstShareSec":{
+                "name":"fairValueinvstShareSec",
+                "placeholder":"Fair value of Investments in Share & Securities",
+                "type":"text",
+                "toolTip":"Enter fair value of investments in Share & Securities",
+                "label":"Investment in Shares & Securities"
+            },
+            "fairValueOthrInvstment":{
+                "name":"fairValueOthrInvstment",
+                "placeholder":"Fair value of Other Investments",
+                "type":"text",
+                "toolTip":"Enter fair value of other investments",
+                "label":"Other Investment"
+            },
+            "contingentLiability":{
+                "name":"contingentLiability",
+                "placeholder":"Contingent liabilty",
+                "type":"text",
+                "tooltip":"Enter contingent liability",
+                "label":"Contingent Liability"
+            },
+            "otherThanAscertainLiability":{
+                "name":"otherThanAscertainLiability",
+                "placeholder":"Enter other ascertained liability",
+                "type":"text",
+                "tooltip":"Other Ascertained Liability",
+                "label":"Other Ascertained Liability"
+            },
+            "phaseValue":{
+                "name":"phaseValue",
+                "placeholder":"Enter phase value",
+                "type":"text",
+                "tooltip":"Phase value",
+                "label":"Phase Value"
+            }
         }
     }
 }

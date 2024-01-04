@@ -28,10 +28,12 @@ import { NavbarDetailsComponent } from 'src/app/layout/main-layout/navbar-detail
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { DashboardPanelComponent } from './dashboard-panel/dashboard-panel.component';
 import { ScreenInputDetailsComponent } from './main-valuation/screen-input-details/screen-input-details.component';
-
+import { ElevenUAComponent } from './main-valuation/models-details/eleven-ua/eleven-ua.component';
+import { ElevenUaDetailsComponent } from './main-valuation/group-model-review/eleven-ua-details/eleven-ua-details.component';
+import { ModelRuleElevenUaResultTableComponent } from './main-valuation/group-model-result/valuation-result-table/model-rule-eleven-ua-result-table/model-rule-eleven-ua-result-table.component';
 
 @NgModule({
-  declarations: [ValuationComponent, ActivityComponent, MainValuationComponent, GroupModelControlsComponent, GroupModelReviewComponent, GroupModelResultComponent, ProfitLossDataComponent, BalanceSheetDetailsComponent, RelativeValuationsTableComponent,ValuationResultTableComponent, ModelRelativeValuationResultTableComponent,FcfeDetailsComponent,FcffDetailsComponent,RelativeValuationDetailsComponent, ExcessEarningDetailsComponent, ComparableIndustriesDetailsComponent, NetAssetValueDetailsComponent, ReportDetailsComponent, AssessmentDetailsComponent,NavbarDetailsComponent, DashboardPanelComponent, ScreenInputDetailsComponent],
+  declarations: [ValuationComponent, ActivityComponent, MainValuationComponent, GroupModelControlsComponent, GroupModelReviewComponent, GroupModelResultComponent, ProfitLossDataComponent, BalanceSheetDetailsComponent, RelativeValuationsTableComponent,ValuationResultTableComponent, ModelRelativeValuationResultTableComponent,FcfeDetailsComponent,FcffDetailsComponent,RelativeValuationDetailsComponent, ExcessEarningDetailsComponent, ComparableIndustriesDetailsComponent, NetAssetValueDetailsComponent, ReportDetailsComponent, AssessmentDetailsComponent,NavbarDetailsComponent, DashboardPanelComponent, ElevenUAComponent, ElevenUaDetailsComponent, ModelRuleElevenUaResultTableComponent,ScreenInputDetailsComponent],
   imports: [CommonModule, MainRoutingModule, NgxDropzoneModule, SharedModule,QuillModule.forRoot(),NgxUiLoaderModule],
 })
 export class MainModule {}

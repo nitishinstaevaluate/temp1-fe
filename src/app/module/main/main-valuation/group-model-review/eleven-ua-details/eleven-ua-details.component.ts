@@ -1,28 +1,25 @@
-import { Component,EventEmitter,Input,OnChanges,OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { MODELS } from 'src/app/shared/enums/constant';
 import { isSelected } from 'src/app/shared/enums/functions';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.service';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
 
 @Component({
-  selector: 'app-profit-loss-data',
-  templateUrl: './profit-loss-data.component.html',
-  styleUrls: ['./profit-loss-data.component.scss']
+  selector: 'app-eleven-ua-details',
+  templateUrl: './eleven-ua-details.component.html',
+  styleUrls: ['./eleven-ua-details.component.scss']
 })
+export class ElevenUaDetailsComponent {
 
-
-export class ProfitLossDataComponent implements OnInit,OnChanges {
   @Input() transferStepperTwo :any;
   @Input() currentStepIndex :any;
   @Input() thirdStageInput :any;
-  @Output() profitLossData :any = new EventEmitter();
-  @Output() profitAndLossSheetData=new EventEmitter<any>();
+  @Output() ruleElevenData :any = new EventEmitter();
+  @Output() ruleElevenSheetData=new EventEmitter<any>();
 
   displayColumns:any;
-  profitAndLossDataSource:any;
+  ruleElevenUaDataSource:any;
   floatLabelType:any='never';
   appearance:any='fill';
   dataSource:any;
@@ -44,13 +41,14 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
         this.excelSheetId = this.thirdStageInput?.formThreeData.modifiedExcelSheetId;
         this.fetchExcelData(this.excelSheetId);
       }
-      else {
+      else{
         this.excelSheetId = this.thirdStageInput?.formOneData.excelSheetId;
-        this.fetchExcelData(this.excelSheetId);  
+        this.fetchExcelData(this.excelSheetId);
       }
     }
     else{
       this.excelSheetId = this.transferStepperTwo?.excelSheetId;
+      console.log(this.transferStepperTwo.excelSheetId,"excel sheet id")
       this.fetchExcelData();
     }
   }
@@ -75,16 +73,16 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
   fetchExcelData(alreadyProcessedSheetId?:any){
     const pAndLExcelId = alreadyProcessedSheetId ? alreadyProcessedSheetId : localStorage.getItem('excelStat') === 'true' ? `edited-${this.transferStepperTwo?.excelSheetId ? this.transferStepperTwo?.excelSheetId : this.thirdStageInput.formOneData.excelSheetId}` :  (this.transferStepperTwo?.excelSheetId ? this.transferStepperTwo?.excelSheetId : this.thirdStageInput.formOneData.excelSheetId);
     this.excelSheetId = pAndLExcelId;
-    this.valuationService.getProfitLossSheet(pAndLExcelId,'P&L').subscribe((response:any)=>{
+    this.valuationService.getProfitLossSheet(pAndLExcelId,'Rule 11 UA').subscribe((response:any)=>{
      if(response.status){
-      this.createprofitAndLossDataSource(response)
-      this.profitLossData.emit({status:true,result:response,isExcelModified:this.isExcelModified});
-      this.profitAndLossSheetData.emit({status:true, result:response})
+      this.createruleElevenUaDataSource(response)
+      this.ruleElevenData.emit({status:true,result:response,isExcelModified:this.isExcelModified});
+      this.ruleElevenSheetData.emit({status:true, result:response})
     }
   }
   ,(error)=>{
-    this.profitAndLossSheetData.emit({status:true, error:error})
-      this.profitLossData.emit({status:false,error:error});
+    this.ruleElevenSheetData.emit({status:true, error:error})
+      this.ruleElevenData.emit({status:false,error:error});
     })
   }
 
@@ -193,29 +191,29 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
       }
       
       const payload = {
-        excelSheet:'P&L',
+        excelSheet:'Rule 11 UA',
         excelSheetId:excelId,
         ...this.editedValues[0] 
       }
       if(payload.newValue !== null && payload.newValue !== undefined){
         this.excelAndReportService.modifyExcel(payload).subscribe(
           (response:any)=>{
-          if(response.status){
+          if(response?.status){
             this.isExcelModified = true;
-            this.createprofitAndLossDataSource(response);
-            this.profitAndLossSheetData.emit({status:true,result:response});
+            this.createruleElevenUaDataSource(response);
+            this.ruleElevenSheetData.emit({status:true,result:response});
           }
-          else{
-             this.profitAndLossSheetData.emit({status:false,error:response.error});
-             this.snackBar.open(response.error,'Ok',{
-              horizontalPosition: 'right',
-              verticalPosition: 'top',
-              duration: 3000,
-              panelClass: 'app-notification-error'
-            })
-          }
+          // else{  [please uncomment this once backend error handling is done]
+          //    this.ruleElevenSheetData.emit({status:false,error:response.error});
+          //    this.snackBar.open(response.error,'Ok',{
+          //     horizontalPosition: 'right',
+          //     verticalPosition: 'top',
+          //     duration: 3000,
+          //     panelClass: 'app-notification-error'
+          //   })
+          // }
         },(error)=>{
-          this.profitAndLossSheetData.emit({status:false,error:error.message});
+          this.ruleElevenSheetData.emit({status:false,error:error.message});
           this.snackBar.open(error.message,'Ok',{
             horizontalPosition: 'right',
               verticalPosition: 'top',
@@ -245,7 +243,7 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
     return cellAddresses;
   }
 
-  createprofitAndLossDataSource(response:any){
+  createruleElevenUaDataSource(response:any){
     this.dataSource = response?.data;
     this.displayColumns = Object.keys(this.dataSource[0]);
     
@@ -253,7 +251,7 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
     if(this.isRelativeValuation('Relative_Valuation') || this.isRelativeValuation('NAV') || this.isRelativeValuation('CTM')){
       this.displayColumns = this.displayColumns.splice(0,2)
     }
-    this.profitAndLossDataSource = this.dataSource.map((result:any)=>{
+    this.ruleElevenUaDataSource = this.dataSource.map((result:any)=>{
       const transformedItem: any = {};
       transformedItem['Particulars'] = result.lineEntry.particulars;
       for (let i = 1; i < this.displayColumns.length; i++) {
@@ -262,17 +260,12 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
       }
       return transformedItem;
     });
-    // this.profitAndLossDataSource.splice(this.profitAndLossDataSource.findIndex((item:any) => item.Particulars.includes('Income From Operation')),0,{Particulars:"  "}) //push empty object for line break      
-    // this.profitAndLossDataSource.splice(this.profitAndLossDataSource.findIndex((item:any) => item.Particulars.includes('Revenue from Operations')),0,{Particulars:"  "}) //push empty object for line break      
-    // this.profitAndLossDataSource.splice(this.profitAndLossDataSource.findIndex((item:any) => item.Particulars.includes('EXPENSES')),0,{Particulars:"  "}) //push empty object for line break      
-    // this.profitAndLossDataSource.splice(this.profitAndLossDataSource.findIndex((item:any) => item.Particulars.includes('Cost of Material Consumed')),0,{Particulars:"  "}) //push empty object for line break      
-    // this.profitAndLossDataSource.splice(this.profitAndLossDataSource.findIndex((item:any) => item.Particulars.includes('Earnings before exceptional items, extraordinary items, interest, tax, depreciation and amortisation (EBITDA)')),0,{Particulars:"  "}) //push empty object for line break      
-    // this.profitAndLossDataSource.splice(this.profitAndLossDataSource.findIndex((item:any) => item.Particulars.includes('Exceptional Items')),0,{Particulars:"  "}) //push empty object for line break      
-    // this.profitAndLossDataSource.splice(this.profitAndLossDataSource.findIndex((item:any) => item.Particulars.includes('Profit / (Loss) from continuing operations')),0,{Particulars:"  "}) //push empty object for line break      
-    // this.profitAndLossDataSource.splice(this.profitAndLossDataSource.findIndex((item:any) => item.Particulars.includes('DISCONTINUING OPERATIONS')),0,{Particulars:"  "}) //push empty object for line break      
-    // this.profitAndLossDataSource.splice(this.profitAndLossDataSource.findIndex((item:any) => item.Particulars.includes('Add / (Less): Tax expense of discontinuing operations')),0,{Particulars:"  "}) //push empty object for line break      
-    // this.profitAndLossDataSource.splice(this.profitAndLossDataSource.findIndex((item:any) => item.Particulars.includes('Profit / (Loss) from discontinuing operations net of tax')),0,{Particulars:"  "}) //push empty object for line break      
-    // this.profitAndLossDataSource.splice(this.profitAndLossDataSource.findIndex((item:any) => item.Particulars.includes('Profit / (Loss) for the year')),0,{Particulars:"  "}) //push empty object for line break      
+    this.ruleElevenUaDataSource.splice(this.ruleElevenUaDataSource.findIndex((item:any) => item.Particulars.includes('Current Assets')),0,{Particulars:"  "}) //push empty object for line break      
+    this.ruleElevenUaDataSource.splice(this.ruleElevenUaDataSource.findIndex((item:any) => item.Particulars === 'Current Liabilities'),0,{Particulars:"  "}) //push empty object for line break      
+    this.ruleElevenUaDataSource.splice(this.ruleElevenUaDataSource.findIndex((item:any) => item.Particulars.includes('Equity & Liabilities')),0,{Particulars:"  "}) //push empty object for line break      
+    this.ruleElevenUaDataSource.splice(this.ruleElevenUaDataSource.findIndex((item:any) => item.Particulars.includes('Non-Current Liabilities')),0,{Particulars:"  "}) //push empty object for line break      
+    // this.ruleElevenUaDataSource.splice(this.ruleElevenUaDataSource.findIndex((item:any) => item.Particulars.includes('Total Equity & Liabilities')),0,{Particulars:"  "}) //push empty object for line break      
+
     if(response?.modifiedFileName){
       this.modifiedExcelSheetId=response.modifiedFileName;
       // this.profitAndLossSheetData.emit({modifiedExcelSheetId:this.modifiedExcelSheetId,isModified:true});
@@ -302,6 +295,12 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
     if(data && Object.keys(data[0]).length > 6){
       return true;
     }
+    return false;
+  }
+
+  addDivider(element:string){
+    if(element === 'Total Assets' || element === 'Assets' || element === 'Total Equity & Liabilities')
+      return true;
     return false;
   }
 }

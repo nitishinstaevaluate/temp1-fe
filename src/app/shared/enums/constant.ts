@@ -72,6 +72,7 @@ export const MODELS = {
   RELATIVE_VALUATION: 'Relative_Valuation',
   EXCESS_EARNINGS: 'Excess_Earnings',
   COMPARABLE_INDUSTRIES: 'CTM',
+  RULE_ELEVEN_UA: 'ruleElevenUa',
 }
 
 export const ALL_MODELS = {
@@ -81,7 +82,8 @@ export const ALL_MODELS = {
   CTM:'Comparable Transaction',
   NAV:'Net Asset Value',
   Market_Price:'Market Price',
-  Excess_Earnings:"Excess Earning"
+  Excess_Earnings:"Excess Earning",
+  ruleElevenUa:"Rule Eleven UA",
 }
 
   export const GLOBAL_VALUES = {
@@ -209,7 +211,14 @@ export const ALL_MODELS = {
           name:'Market Price Method',
           info:'This is Market Price model'
         }
-      }
+      },
+      ruleElevenUaApproach:{
+        label:'Rule 11 UA Approach',
+        ruleElevenUa:{
+          name:'Rule 11 UA Method',
+          info:'This is NAV model'
+        }
+      },
     },
     RISK_FREE_RATE:{
       name:"Risk Free Rate",
@@ -224,6 +233,8 @@ export const ALL_MODELS = {
   export const INCOME_APPROACH = ['FCFE','FCFF','Excess_Earnings'];
 
   export const NET_ASSET_APPROACH = ['NAV'];
+
+  export const RULE_ELEVEN_UA_APPROACH = ['ruleElevenUa'];
 
   export const MARKET_APPROACH = ['Relative_Valuation','CTM','Market_Price'];
 

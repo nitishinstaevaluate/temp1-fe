@@ -36,6 +36,7 @@ export class MainValuationComponent implements OnInit{
   formOneAndTwoData:any;
   comparableIndustriesData:any;
   navData:any;
+  ruleElevenData:any;
   modelArray:any=[];
   
   // breadcrumb property
@@ -132,6 +133,7 @@ export class MainValuationComponent implements OnInit{
         ...(this.formOneData?.model.includes('Excess_Earnings') ? this.excessEarnData : {}),
         ...(this.formOneData?.model.includes('CTM') ? this.comparableIndustriesData : {}),
         ...(this.formOneData?.model.includes('NAV') ? this.navData : {}),
+        ...(this.formOneData?.model.includes('ruleElevenUa') ? this.ruleElevenData : {}),
       };
   }
 
@@ -221,6 +223,11 @@ export class MainValuationComponent implements OnInit{
     this.nextModelSelection(data.status);
     this.onStepChange();
   }
+  ruleElevenUaDetails(data:any){
+    this.ruleElevenData=data;
+    this.nextModelSelection(data.status);
+    this.onStepChange();
+  }
 
   async nextModelSelection(data?:any){
     const model = this.formOneData.model;
@@ -244,6 +251,9 @@ export class MainValuationComponent implements OnInit{
           break;
         case 'NAV':
           this.next = 6;
+          break;
+        case 'ruleElevenUa':
+          this.next = 7;
           break;
         default:
           // this.stepper.next(); 
@@ -285,6 +295,9 @@ export class MainValuationComponent implements OnInit{
        case 'NAV':
          this.next = 6;
          break;
+       case 'ruleElevenUa':
+         this.next = 7;
+         break;
        default:
         // this.stepper.previous(); 
         const currentStep:any = localStorage.getItem('step')
@@ -313,6 +326,9 @@ export class MainValuationComponent implements OnInit{
     this.previousModelSelection(data?.status);
   }
   navDetailsPrev(data:any){
+    this.previousModelSelection(data?.status);
+  }
+  ruleElevenUaDetailsPrev(data:any){
     this.previousModelSelection(data?.status);
   }
 
@@ -368,6 +384,10 @@ export class MainValuationComponent implements OnInit{
               updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
             }
             if(formTwoDetails.model === MODELS.NAV && processStateDetails?.firstStageInput.model.includes(MODELS.NAV)){
+              const {model , ...rest} = formTwoDetails;
+              updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
+            }
+            if(formTwoDetails.model === MODELS.RULE_ELEVEN_UA && processStateDetails?.firstStageInput.model.includes(MODELS.RULE_ELEVEN_UA)){
               const {model , ...rest} = formTwoDetails;
               updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
             }

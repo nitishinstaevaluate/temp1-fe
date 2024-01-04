@@ -345,7 +345,7 @@ export class GroupModelControlsComponent implements OnInit {
   }
   
   isRelativeValuation(value:string){
-    return !!this.checkedItems.includes(value);
+    return this.checkedItems.includes(value);
   }
 
   isSelected(value: any): boolean {
@@ -393,16 +393,14 @@ isSelectedpreferenceRatio(value:any){
       this.newDate = new Date(myDate.year, myDate.month - 1, myDate.day);
       payload['valuationDate'] = this.newDate.getTime();
     }
-    if(this.isRelativeValuation('NAV') &&  this.modelValuation.controls['model'].value.length=== 1){
-      const keysToRemove = ['taxRate', 'taxRateType', 'terminalGrowthRate', 'preferenceCompanies','projectionYears','projectionYearSelect','location'];
-
-    payload = Object.keys(payload).reduce((result:any, key) => {
-        if (!keysToRemove.includes(key)) {
-            result[key] = payload[key];
-        }
-        return result;
-    }, {});
-  }
+    if(this.modelValuation.controls['model'].value.includes(MODELS.NAV) && this.modelValuation.controls['model'].value.length=== 1){
+      const keysToRemove = ['taxRate', 'taxRateType', 'terminalGrowthRate', 'preferenceCompanies','projectionYears','projectionYearSelect','industriesRatio'];
+      payload = this.recalculateFields(payload,keysToRemove)
+    }
+    else if(this.modelValuation.controls['model'].value.includes(MODELS.RULE_ELEVEN_UA) && this.modelValuation.controls['model'].value.length=== 1){
+      const keysToRemove = ['taxRate', 'taxRateType', 'terminalGrowthRate', 'preferenceCompanies','projectionYears','projectionYearSelect','industriesRatio','industry','discountRateType','discountRateValue'];
+      payload = this.recalculateFields(payload,keysToRemove)
+    }
     // check if modified excel sheet id exist or not
     if(localStorage.getItem('excelStat') === 'true' && !this.isExcelReupload){
       payload['modifiedExcelSheetId']=  `edited-${this.modelValuation.controls['excelSheetId'].value}`;
@@ -423,7 +421,7 @@ isSelectedpreferenceRatio(value:any){
     else if(this.selectedIndustry){
       payload['selectedIndustry'] = this.selectedIndustry;
     }
-    const modelsNotRequireProjection = isSelected('NAV', this.modelValuation.controls['model'].value) || isSelected('CTM', this.modelValuation.controls['model'].value) || isSelected('Relative_Valuation', this.modelValuation.controls['model'].value)
+    const modelsNotRequireProjection = isSelected('NAV', this.modelValuation.controls['model'].value) || isSelected('CTM', this.modelValuation.controls['model'].value) || isSelected('Relative_Valuation', this.modelValuation.controls['model'].value) || isSelected('ruleElevenUa', this.modelValuation.controls['model'].value)
     const mmodelsRequireProjection = isSelected('FCFE', this.modelValuation.controls['model'].value) || isSelected('FCFF', this.modelValuation.controls['model'].value) || isSelected('Excess_Earnings', this.modelValuation.controls['model'].value)
     if (modelsNotRequireProjection && this.modelValuation.controls['model'].value.length === 1) {
       delete control.projectionYearSelect
@@ -435,12 +433,18 @@ isSelectedpreferenceRatio(value:any){
       delete control.terminalGrowthRate
       delete control.projectionYears
     }
-  
-    this.authService.extractUser().subscribe((extraction:any)=>{
-      if(extraction.status){
-        this.modelValuation.controls['userId'].setValue(extraction.userId)
-      }
-    })
+
+    if(payload.model.includes(MODELS.RULE_ELEVEN_UA)){
+      delete control.taxRate;
+      delete control.taxRateType;
+      delete control.terminalGrowthRate;
+      delete control.preferenceCompanies;
+      delete control.projectionYears;
+      delete control.projectionYearSelect;
+      delete control.industry;
+      delete control.discountRateType;
+      delete control.discountRateValue;
+    }
     
     this.isExcelReupload = false; // reset it once payload has modified excel sheet id
     
@@ -485,9 +489,9 @@ isSelectedpreferenceRatio(value:any){
     return this.modelValuation.controls['projectionYears'].value ? true : false;
   }
 
-  get downloadTemplate() {
-  return GET_TEMPLATE(this.modelValuation.controls['projectionYears'].value);
-  }
+  // get downloadTemplate() {
+  // return GET_TEMPLATE(this.modelValuation.controls['projectionYears'].value);
+  // }
 
   onFileSelected(event: any) {
     if (event && event.target.files && event.target.files.length > 0) {
@@ -606,7 +610,10 @@ isSelectedpreferenceRatio(value:any){
      dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         if(result?.excelSheetId !== this.modelValuation.controls['excelSheetId']){
-          this.isExcelReupload=true
+          this.isExcelReupload = true;
+        }
+        else{
+          this.isExcelReupload = false;
         }
         if(result.model.length > 0){
           this.modelSelectStatus = true
@@ -657,5 +664,21 @@ isSelectedpreferenceRatio(value:any){
         });
       }
     );
+  }
+
+  recalculateFields(payload:any,keysToRemove:any){
+    const result: any = {};
+      for (const key in payload) {
+        if (!keysToRemove.includes(key)) {
+          result[key] = payload[key];
+        }
+      }
+      return result;
+  }
+
+  isNotRuleElevenUa(){
+    if(this.modelValuation.controls['model'].value?.length && !this.modelValuation.controls['model'].value?.includes(MODELS.RULE_ELEVEN_UA))
+      return true;
+    return false
   }
 }

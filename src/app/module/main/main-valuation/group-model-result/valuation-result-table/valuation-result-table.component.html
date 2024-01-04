@@ -125,6 +125,18 @@
       </div>
     </div>
   </mat-tab>
+  <mat-tab label="Rule 11 UA" *ngIf="ruleElevenUa">
+    <div class="btn" style="text-align: right;width: 100%;">
+      <button mat-stroked-button class="exp">
+        <a class="exp-a" [href]="HOST + 'upload/generate/' + (transferStepperthree?.formThreeData?.appData?.reportId || 'null') + '/ruleElevenUa/' + 'true'" download>Export</a>
+      </button>
+    </div>
+    <div>
+      <div class="table-container">
+        <app-model-rule-eleven-ua-result-table [formData]="transferStepperthree"></app-model-rule-eleven-ua-result-table>
+      </div>
+    </div>
+  </mat-tab>
 </mat-tab-group>
 <p class="currency-unit" *ngIf="transferStepperthree?.formOneAndTwoData?.excelSheetId">Amount in {{transferStepperthree?.formOneAndTwoData?.currencyUnit}} ({{transferStepperthree?.formOneAndTwoData?.reportingUnit}})</p>
 </div>

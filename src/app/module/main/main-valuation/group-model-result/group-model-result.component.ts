@@ -57,26 +57,28 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
   checkProcessExist(){
     if(!this.transferStepperthree){
       this.transferStepperthree= this.fourthStageInput;
-
-      this.loadWeightageSlider();
-
-      if(this.transferStepperthree?.formFourData?.modelValue){
-        this.transferStepperthree.formFourData.modelValue.map((modelWeightage:any)=>{
-          this.setModelSliderValue(modelWeightage.model,(modelWeightage.weight).toFixed(2)*100,(modelWeightage.weight).toFixed(2)*100 - 100)
-        })
-        this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
-          if(response.status){
-            this.totalModelWeightageValue = response.result;
-            this.data = response?.result?.modelValue;
-            this.finalWeightedValue = response?.result?.weightedVal ?? 0;
-          }
-        })
+      if(!this.transferStepperthree?.formOneAndTwoData?.model.includes(MODELS.RULE_ELEVEN_UA)){
+        this.loadWeightageSlider();
+  
+        if(this.transferStepperthree?.formFourData?.modelValue){
+          this.transferStepperthree.formFourData.modelValue.map((modelWeightage:any)=>{
+            this.setModelSliderValue(modelWeightage.model,(modelWeightage.weight).toFixed(2)*100,(modelWeightage.weight).toFixed(2)*100 - 100)
+          })
+          this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
+            if(response.status){
+              this.totalModelWeightageValue = response.result;
+              this.data = response?.result?.modelValue;
+              this.finalWeightedValue = response?.result?.weightedVal ?? 0;
+            }
+          })
+        }
       }
     }
   }
 
   ngOnChanges(changes:SimpleChanges){
    
+    if(!this.transferStepperthree?.formOneAndTwoData?.model.includes(MODELS.RULE_ELEVEN_UA)){
     this.loadWeightageSlider()
     if(changes['transferStepperthree']?.currentValue && changes['transferStepperthree']?.previousValue ){
         const currentModel:any=[];
@@ -107,6 +109,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
             // console.log(this.calculateModelWeigtagePayload.results,"after payload");
           }
         }
+    }
     }
   }
 
