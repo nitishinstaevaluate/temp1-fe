@@ -43,7 +43,8 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     this.onValueChange()
   }
   ngOnChanges() {
-    this.loadIndustriesTable()
+    this.loadIndustriesTable();
+    this.checkProcessExist(this.formOneData);
   }
 
   loadForm(){
