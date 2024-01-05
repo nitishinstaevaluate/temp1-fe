@@ -485,9 +485,14 @@ export class MainValuationComponent implements OnInit{
   // }
 
   getTotalSteps(){
-    if(this.formOneData?.model?.includes(MODELS.FCFE) || this.formOneData?.model?.includes(MODELS.FCFF) || this.formOneData?.model?.includes(MODELS.EXCESS_EARNINGS) || this.formOneData?.model?.includes(MODELS.COMPARABLE_INDUSTRIES) || this.formOneData?.model?.includes(MODELS.RELATIVE_VALUATION)){
-      return '6'
-    }
-    return '5'
+    let totalSteps = false;
+    this.calculationService.checkModel.subscribe((data)=>{
+      if (data?.status) {
+        totalSteps =  false;
+      } else {
+        totalSteps =  true;
+      }
+    })
+    return totalSteps;
   }
 }

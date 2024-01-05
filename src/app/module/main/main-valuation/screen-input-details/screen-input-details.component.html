@@ -13,7 +13,7 @@
                 <div class="material-textfield">
                   <input class="new-inp" placeholder="Add company status" type="text" formControlName="companyStatus" />
                   <label>Company Status</label>
-                  <span class="tool-class">
+                  <span class="tool-class-company">
 
                     <svg [matTooltip]="modelControl.inputScreen.columns.industryL1.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
                       <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
@@ -27,8 +27,8 @@
               <div class="col-md-6 field" style="padding-top: 1%;">
                 <div class="material-textfield">
                   <input class="new-inp" placeholder="Add industry descriptor" type="text" formControlName="descriptor" />
-                  <label>Industry Desriptor</label>
-                  <span class="tool-class">
+                  <label>Business Descriptors</label>
+                  <span class="tool-class-business-desc">
 
                     <svg [matTooltip]="modelControl.inputScreen.columns.industryL2.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
                       <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
@@ -41,8 +41,12 @@
               <!-- industry Name level-3 -->
               <div class="col-md-6 field" >
                 <div class="material-textfield">
-                  <input class="new-inp" placeholder="Add level 3 industry" type="text" formControlName="industryL3" />
-                  <label>Industry Name (Level-3)</label>
+                  <!-- <input class="new-inp" placeholder="Add level 3 industry" type="text" formControlName="industryL3" /> -->
+                  <select id="industryL3" class="new-inp" formControlName="industryL3">
+                    <option value="" disabled selected>{{ modelControl.modelValuation.options.industry.placeholder }}</option>
+                    <option *ngFor="let doc of levelThreeIndustry" [ngValue]="doc.GICSDescriptor">{{ doc.GICSDescriptor }}</option>
+                  </select>
+                  <label for="industryL3">Industry Name (Level-3)</label>
                   <span class="tool-class">
 
                     <svg [matTooltip]="modelControl.inputScreen.columns.industryL3.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
@@ -54,11 +58,17 @@
               </div>
 
               <!-- industry Name Level-4 -->
-              <div class="col-md-6 field" >
+              <div class="col-md-6 field" style="padding-top: 1%;padding-left: 1.5%;">
                 <div class="material-textfield">
-                  <input class="new-inp" placeholder="Add level 4 industry" type="text" formControlName="industryL4" />
-                  <label>Industry Name (Level-4)</label>
-                  <span class="tool-class">
+                  <mat-form-field appearance="fill" class="ind4">
+                    <mat-label class="ind-4">Industry Name (Level-4)</mat-label>
+                    <mat-select formControlName="industryL4" multiple class="new-inp">
+                      <mat-option *ngFor="let industry of levelFourIndustry" [value]="industry.GICSDescriptor">
+                        {{ industry.GICSDescriptor }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <span class="tool-class"> 
 
                     <svg [matTooltip]="modelControl.inputScreen.columns.industryL4.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
                       <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>

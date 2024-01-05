@@ -74,9 +74,6 @@
     color: #004e67 !important;
     font-family: 'AR One Sans';
   }
-  mat-label{
-    color:#38a3b8;
-  }
   .field{
     padding-left: 2.5%;
     padding-top: 3%;
@@ -312,16 +309,42 @@ label {
   transform: translateY(-50%) scale(0.6) !important;
   background: white;
   padding-right: 2%;
-  padding-left: 3%;
+  padding-left: 1%;
   mat-icon{
     color: #6200ee;
   }
 }
-.tool-class{
+.new-inp:focus + label + .tool-class-company {
+  display: block;
+  position: absolute;
+  left: 20%;
+  top: 3%;
+  transform: translateY(-50%) scale(0.6) !important;
+  background: white;
+  padding-right: 2%;
+  padding-left: 1%;
+  mat-icon{
+    color: #6200ee;
+  }
+}
+.new-inp:focus + label + .tool-class-business-desc {
+  display: block;
+  position: absolute;
+  left: 25%;
+  top: 3%;
+  transform: translateY(-50%) scale(0.6) !important;
+  background: white;
+  padding-right: 2%;
+  padding-left: 1%;
+  mat-icon{
+    color: #6200ee;
+  }
+}
+.tool-class, .tool-class-company,.tool-class-business-desc{
   display: none;
 }
 
-.tool-class mat-icon {
+.tool-class mat-icon, .tool-class-company mat-icon, .tool-class-business-desc mat-icon {
   color: #6d6d6d;
 }
 
@@ -537,7 +560,6 @@ label {
   td {
     padding: 8px;
     text-align: left;
-    // border: 1px solid #ddd;
   }
   tr:nth-child(even) {
     background-color: #f5f5f5;
@@ -555,8 +577,107 @@ label {
     }
   }
   .inputscrn{
-    padding-bottom: 5%;
+    // padding-bottom: 5%;
   }
   .industry-id{
     padding-left: 4% !important;
   }
+
+  
+::ng-deep .mat-form-field-label {
+  position: absolute;
+  font-size: 1rem;
+  left: 0;
+  top: 10%;
+  transform: translateY(-100%);
+  background-color: white;
+  color: gray;
+  padding: 0 0.3rem;
+  margin: 0 0.5rem;
+  transition: 0.1s ease-out;
+  transform-origin: left top;
+  pointer-events: none;
+  font-family: 'AR One Sans', sans-serif;
+  font-weight: 500;
+}
+
+::ng-deep .new-inp .mat-select-trigger {
+  font-size: 1rem;
+  outline: none;
+  border: 1px solid #e4e4e4;
+  border-radius: 10px;
+  color: #6d6d6d;
+  transition: 0.1s ease-out;
+  font-family: 'AR One Sans', sans-serif;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  width: 100%;
+  padding-left: 2%;
+  box-shadow: 1px 2px 10px #f0ebeb;
+  height: 50px;
+  background-color: transparent;
+}
+
+::ng-deep .mat-option:hover {
+  background-color: transparent;
+}
+
+::ng-deep .mat-select-empty .mat-select-placeholder {
+  color: inherit;
+}
+
+::ng-deep .mat-select-empty .mat-option {
+  background-color: transparent;
+}
+
+::ng-deep .ind4 .mdc-text-field .mat-mdc-form-field-focus-overlay{
+  background-color: #ffffff !important;
+}
+
+::ng-deep .new-inp .mat-mdc-select-trigger .mat-mdc-select-arrow-wrapper .mat-mdc-select-arrow svg  {
+  top: 194%;
+    left: -50%;
+    color: #6d6d6d;
+}
+
+::ng-deep .ind4 .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix .mdc-floating-label .mat-mdc-form-field-required-marker{
+  display: none;
+}
+
+::ng-deep .ind4 .mat-mdc-form-field-subscript-wrapper{
+  border-top: 1px solid #ffffff;
+}
+::ng-deep .ind4 .mat-mdc-form-field-subscript-wrapper:hover{
+  border-top: 1px solid #ffffff;
+}
+
+::ng-deep .ind4 .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix .mdc-floating-label{
+  top: 58%;
+  left: 2%;
+  color: #6d6d6d;
+  font-family: 'AR One Sans', sans-serif;
+}
+
+::ng-deep .ind4 .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix:focus-within .mdc-floating-label {
+  top: 47%;
+  background-color: #ffffff;
+  font-size: 1rem !important;
+  color: #6d6d6d !important;
+  font-family: 'AR One Sans', sans-serif;
+}
+
+::ng-deep .ind4 .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix .mdc-floating-label--float-above {
+  top: 47%;
+  background-color: #ffffff;
+  font-family: 'AR One Sans', sans-serif;
+}
+.ind-4{
+  color:#6d6d6d !important;
+  font-size: 1rem !important;
+}
+::ng-deep .ind4 .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::before  {
+  border-bottom: 1px solid #ffffff;
+}
+::ng-deep .ind4 .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::after  {
+  border-bottom: 1px solid #ffffff;
+}

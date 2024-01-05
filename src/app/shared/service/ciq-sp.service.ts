@@ -22,4 +22,12 @@ export class CiqSPService {
    getSPCompanyBasedIndustry(industry:string,location:string){
     return this.http.get(`${this.HOST}ciq-sp/sp-industry-list/search?industry=${industry}&location=${location}`);
    }
+
+   getSPLevelFourIndustryBasedList(descriptor:string){
+    return this.http.get(`${this.HOST}ciq-sp/hierarchy-based-level-four-industry/${descriptor}`)
+   }
+   
+   getSPIndustryListByLevelFourIndustries(data:any){
+    return this.http.post(`${this.HOST}ciq-sp/sp-level-four-industry-list`,data)
+   }
 }

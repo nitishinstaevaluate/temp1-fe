@@ -391,7 +391,7 @@ isSelectedpreferenceRatio(value:any){
       payload['valuationDate'] = this.newDate.getTime();
     }
     if(this.modelValuation.controls['model'].value.includes(MODELS.NAV) && this.modelValuation.controls['model'].value.length=== 1){
-      const keysToRemove = ['taxRate', 'taxRateType', 'terminalGrowthRate', 'preferenceCompanies','projectionYears','projectionYearSelect','industriesRatio'];
+      const keysToRemove = ['taxRate', 'taxRateType', 'terminalGrowthRate', 'preferenceCompanies','projectionYears','projectionYearSelect','industriesRatio','industry','discountRateType','discountRateValue'];
       payload = this.recalculateFields(payload,keysToRemove)
     }
     else if(this.modelValuation.controls['model'].value.includes(MODELS.RULE_ELEVEN_UA) && this.modelValuation.controls['model'].value.length=== 1){
@@ -431,7 +431,7 @@ isSelectedpreferenceRatio(value:any){
       delete control.projectionYears
     }
 
-    if(payload.model.includes(MODELS.RULE_ELEVEN_UA)){
+    if((payload.model.includes(MODELS.RULE_ELEVEN_UA) || payload.model.includes(MODELS.NAV)) && payload.model.length === 1){
       delete control.taxRate;
       delete control.taxRateType;
       delete control.terminalGrowthRate;
