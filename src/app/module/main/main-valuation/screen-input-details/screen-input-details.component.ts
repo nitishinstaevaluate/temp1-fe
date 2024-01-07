@@ -28,6 +28,14 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   loader=false;
   levelThreeIndustry:any=[];
   levelFourIndustry:any=[];
+  industryFourDropdownValue:boolean = false;
+  companyStatusDropdownValue:boolean = false;
+  companyTypeDropdownValue:boolean = false;
+  industryFourDropdownFocused:boolean = false;
+  companyStatusDropdownFocused:boolean = false;
+  companyTypeDropdownFocused:boolean = false;
+  companyStatusType:any= [];
+  companyType:any= [];
 
   constructor(
     private fb:FormBuilder,
@@ -43,6 +51,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     this.onValueChange()
   }
   ngOnChanges() {
+    this.loadForm();
     this.loadIndustriesTable();
     this.checkProcessExist(this.formOneData);
   }
@@ -50,6 +59,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   loadForm(){
     this.inputScreenForm = this.fb.group({
       companyStatus:['', [Validators.required]],
+      companyType:['', [Validators.required]],
       descriptor:['', [Validators.required]],
       industryL3:['', [Validators.required]],
       industryL4:['', [Validators.required]],
@@ -58,6 +68,8 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
 
   loadEnums(){
     this.loadCiqIndustryList();
+    this.loadCiqCompanyStatusType();
+    this.loadCiqCompanyType();
   }
 
   checkProcessExist(data:any){
@@ -251,5 +263,75 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
         panelClass: 'app-notification-error'
       })
     })
+  }
+
+  loadCiqCompanyStatusType(){
+    this.ciqSpService.getSPCompanyStatusType().subscribe((companyStatusTypeData:any)=>{
+      if(companyStatusTypeData.status){
+        this.companyStatusType = companyStatusTypeData.data;
+      }
+      else{
+        this.snackBar.open('CIQ Company Status type fetch failed','OK',{
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 3000,
+          panelClass: 'app-notification-error'
+        })
+      }
+    },(error)=>{
+      this.snackBar.open(`${error}`,'OK',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 3000,
+        panelClass: 'app-notification-error'
+      })
+    })
+  }
+
+  loadCiqCompanyType(){
+    this.ciqSpService.getSPCompanyType().subscribe((companyTypeData:any)=>{
+      if(companyTypeData.status){
+        this.companyType = companyTypeData.data;
+      }
+      else{
+        this.snackBar.open('CIQ Company type fetch failed','OK',{
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 3000,
+          panelClass: 'app-notification-error'
+        })
+      }
+    },(error)=>{
+      this.snackBar.open(`${error}`,'OK',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 3000,
+        panelClass: 'app-notification-error'
+      })
+    })
+  }
+
+  onDropdownFocus(event: any, desc: string) {
+    if(desc === 'industryFour'){
+      this.industryFourDropdownFocused = event;
+    }
+    if(desc === 'companyStatus'){
+      this.companyStatusDropdownFocused = event;
+    }
+    if(desc === 'companyType'){
+      this.companyTypeDropdownFocused = event;
+    }
+  }
+
+  onDropdownChange(event: any, desc: string) {
+    if(desc === 'industryFour'){
+      this.industryFourDropdownValue = event.value !== undefined && event.value !== null && event.value?.length;
+    }
+    if(desc === 'companyStatus'){
+      this.companyStatusDropdownValue = event.value !== undefined && event.value !== null && event.value?.length;
+    }
+    if(desc === 'companyType'){
+      this.companyTypeDropdownValue = event.value !== undefined && event.value !== null && event.value?.length;
+    }
   }
 }

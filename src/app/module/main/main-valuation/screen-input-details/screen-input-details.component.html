@@ -8,14 +8,39 @@
     <form [formGroup]="inputScreenForm" class="inputscrn">
         <div class="row">
 
-            <!-- industry Name level-1 -->
-              <div class="col-md-6 field" style="padding-top: 1%;">
+            <!-- Company Status -->
+              <div class="col-md-4 field" style="padding-top: 0%;padding-left: 1.5%;">
                 <div class="material-textfield">
-                  <input class="new-inp" placeholder="Add company status" type="text" formControlName="companyStatus" />
-                  <label>Company Status</label>
-                  <span class="tool-class-company">
+                    <mat-form-field appearance="fill" class="companyStatus" style="width: 100%;">
+                      <mat-label class="ind-4">{{modelControl.inputScreen.columns.companyStatus.label}}</mat-label>
+                      <mat-select (openedChange)="onDropdownFocus($event,'companyStatus')" (selectionChange)="onDropdownChange($event,'companyStatus')" formControlName="companyStatus" multiple class="new-inp company-stat">
+                        <mat-option *ngFor="let industry of companyStatusType" [value]="industry.companystatustypename">
+                          {{ industry.companystatustypename }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <span class="company-status-info" [ngClass]="{'tool-class-company-stat': companyStatusDropdownFocused || companyStatusDropdownValue}"> 
+                      <svg [matTooltip]="modelControl.inputScreen.columns.companyStatus.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
+                        <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
+                        <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
+                        <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
+                    </span>
+                </div>
+              </div>
 
-                    <svg [matTooltip]="modelControl.inputScreen.columns.industryL1.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
+            <!-- Company type -->
+              <div class="col-md-4 field" style="padding-top: 0%;">
+                <div class="material-textfield">
+                  <mat-form-field appearance="fill" class="companyType" style="width: 100%;">
+                    <mat-label class="ind-4">{{modelControl.inputScreen.columns.companyStatus.label}}</mat-label>
+                    <mat-select (openedChange)="onDropdownFocus($event,'companyType')" (selectionChange)="onDropdownChange($event,'companyType')" formControlName="companyType" multiple class="new-inp company-type">
+                      <mat-option *ngFor="let industry of companyType" [value]="industry.companytypename">
+                        {{ industry.companytypename }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <span class="company-type-info" [ngClass]="{'tool-class-company-type': companyTypeDropdownFocused || companyTypeDropdownValue}"> 
+                    <svg [matTooltip]="modelControl.inputScreen.columns.companyType.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
                       <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
                       <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
                       <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
@@ -23,14 +48,13 @@
                 </div>
               </div>
 
-              <!-- industry Name level-2  -->
-              <div class="col-md-6 field" style="padding-top: 1%;">
+              <!-- Business descriptor  -->
+              <div class="col-md-4 field" style="padding-top: 2%;">
                 <div class="material-textfield">
-                  <input class="new-inp" placeholder="Add industry descriptor" type="text" formControlName="descriptor" />
-                  <label>Business Descriptors</label>
+                  <input class="new-inp" [placeholder]="modelControl.inputScreen.columns.descriptor.type" [type]="modelControl.inputScreen.columns.descriptor.type" formControlName="descriptor" />
+                  <label>{{modelControl.inputScreen.columns.descriptor.label}}</label>
                   <span class="tool-class-business-desc">
-
-                    <svg [matTooltip]="modelControl.inputScreen.columns.industryL2.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
+                    <svg [matTooltip]="modelControl.inputScreen.columns.descriptor.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
                       <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
                       <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
                       <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
@@ -43,12 +67,11 @@
                 <div class="material-textfield">
                   <!-- <input class="new-inp" placeholder="Add level 3 industry" type="text" formControlName="industryL3" /> -->
                   <select id="industryL3" class="new-inp" formControlName="industryL3">
-                    <option value="" disabled selected>{{ modelControl.modelValuation.options.industry.placeholder }}</option>
+                    <option value="" disabled selected>{{ modelControl.inputScreen.columns.industryL3.placeholder }}</option>
                     <option *ngFor="let doc of levelThreeIndustry" [ngValue]="doc.GICSDescriptor">{{ doc.GICSDescriptor }}</option>
                   </select>
-                  <label for="industryL3">Industry Name (Level-3)</label>
+                  <label for="industryL3">{{modelControl.inputScreen.columns.industryL3.label}}</label>
                   <span class="tool-class">
-
                     <svg [matTooltip]="modelControl.inputScreen.columns.industryL3.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
                       <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
                       <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
@@ -58,18 +81,17 @@
               </div>
 
               <!-- industry Name Level-4 -->
-              <div class="col-md-6 field" style="padding-top: 1%;padding-left: 1.5%;">
+              <div class="col-md-6 field" style="padding-top: 1%;padding-left: 1.5%;padding-right: 1%;">
                 <div class="material-textfield">
                   <mat-form-field appearance="fill" class="ind4">
-                    <mat-label class="ind-4">Industry Name (Level-4)</mat-label>
-                    <mat-select formControlName="industryL4" multiple class="new-inp">
+                    <mat-label class="ind-4">{{modelControl.inputScreen.columns.industryL4.label}}</mat-label>
+                    <mat-select (openedChange)="onDropdownFocus($event,'industryFour')" (selectionChange)="onDropdownChange($event,'industryFour')" formControlName="industryL4" multiple class="new-inp">
                       <mat-option *ngFor="let industry of levelFourIndustry" [value]="industry.GICSDescriptor">
                         {{ industry.GICSDescriptor }}
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
-                  <span class="tool-class"> 
-
+                  <span class="ind-four-info" [ngClass]="{'tool-class-business-ind-four': industryFourDropdownFocused || industryFourDropdownValue}"> 
                     <svg [matTooltip]="modelControl.inputScreen.columns.industryL4.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
                       <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
                       <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>

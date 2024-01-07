@@ -30,4 +30,12 @@ export class CiqSPService {
    getSPIndustryListByLevelFourIndustries(data:any){
     return this.http.post(`${this.HOST}ciq-sp/sp-level-four-industry-list`,data)
    }
+
+   getSPCompanyStatusType(){
+    return this.http.get(`${this.HOST}ciq-sp/sp-company-status-type`)
+   }
+
+   getSPCompanyType(){
+    return this.http.get(`${this.HOST}ciq-sp/sp-company-type`)
+   }
 }

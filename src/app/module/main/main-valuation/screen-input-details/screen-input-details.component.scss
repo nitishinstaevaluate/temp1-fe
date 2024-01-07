@@ -314,10 +314,23 @@ label {
     color: #6200ee;
   }
 }
-.new-inp:focus + label + .tool-class-company {
+.new-inp:focus + label + .tool-class-company-type {
   display: block;
   position: absolute;
-  left: 20%;
+  left: 29%;
+  top: 3%;
+  transform: translateY(-50%) scale(0.6) !important;
+  background: white;
+  padding-right: 2%;
+  padding-left: 1%;
+  mat-icon{
+    color: #6200ee;
+  }
+}
+.new-inp:focus + label + .tool-class-company-stat {
+  display: block;
+  position: absolute;
+  left: 32%;
   top: 3%;
   transform: translateY(-50%) scale(0.6) !important;
   background: white;
@@ -330,7 +343,7 @@ label {
 .new-inp:focus + label + .tool-class-business-desc {
   display: block;
   position: absolute;
-  left: 25%;
+  left: 41%;
   top: 3%;
   transform: translateY(-50%) scale(0.6) !important;
   background: white;
@@ -340,11 +353,59 @@ label {
     color: #6200ee;
   }
 }
-.tool-class, .tool-class-company,.tool-class-business-desc{
+.tool-class-business-ind-four {
+  display: block !important;
+  position: absolute;
+  left: 29%;
+  top: 10%;
+  transform: scale(0.6) !important;
+  background: white;
+  padding-right: 2%;
+  padding-left:2%;
+  mat-icon{
+    color: #6200ee;
+  }
+}
+.tool-class-company-stat {
+  display: block !important;
+  position: absolute;
+  left: 32%;
+  top: 10%;
+  transform: scale(0.6) !important;
+  background: white;
+  padding-right: 2%;
+  padding-left:3%;
+  mat-icon{
+    color: #6200ee;
+  }
+}
+.tool-class-company-type {
+  display: block !important;
+  position: absolute;
+  left: 33%;
+  top: 10%;
+  transform: scale(0.6) !important;
+  background: white;
+  padding-right: 2%;
+  padding-left:3%;
+  mat-icon{
+    color: #6200ee;
+  }
+}
+.ind-four-info{
+  display: none;
+}
+.company-status-info{
+  display: none;
+}
+.company-type-info{
+  display: none;
+}
+.tool-class, .tool-class-company-stat,.tool-class-company-type,.tool-class-business-desc{
   display: none;
 }
 
-.tool-class mat-icon, .tool-class-company mat-icon, .tool-class-business-desc mat-icon {
+.tool-class mat-icon, .tool-class-company-type mat-icon, .tool-class-company-stat mat-icon, .tool-class-business-desc mat-icon {
   color: #6d6d6d;
 }
 
@@ -681,3 +742,115 @@ label {
 ::ng-deep .ind4 .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::after  {
   border-bottom: 1px solid #ffffff;
 }
+
+
+// company status css starts
+::ng-deep .companyStatus .mdc-text-field .mat-mdc-form-field-focus-overlay{
+  background-color: #ffffff !important;
+}
+
+::ng-deep .companyStatus .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix .mdc-floating-label .mat-mdc-form-field-required-marker{
+  display: none;
+}
+
+::ng-deep .companyStatus .mat-mdc-form-field-subscript-wrapper{
+  border-top: 1px solid #ffffff;
+}
+::ng-deep .companyStatus .mat-mdc-form-field-subscript-wrapper:hover{
+  border-top: 1px solid #ffffff;
+}
+
+::ng-deep .companyStatus .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix .mdc-floating-label{
+  top: 58%;
+  left: 4%;
+  color: #6d6d6d;
+  font-family: 'AR One Sans', sans-serif;
+}
+
+::ng-deep .companyStatus .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix:focus-within .mdc-floating-label {
+  top: 47%;
+  background-color: #ffffff;
+  font-size: 1rem !important;
+  color: #6d6d6d !important;
+  font-family: 'AR One Sans', sans-serif;
+  left: 2%;
+}
+
+::ng-deep .companyStatus .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix .mdc-floating-label--float-above {
+  top: 47%;
+  background-color: #ffffff;
+  font-family: 'AR One Sans', sans-serif;
+  left: 2%;
+}
+.ind-4{
+  color:#6d6d6d !important;
+  font-size: 1rem !important;
+}
+::ng-deep .companyStatus .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::before  {
+  border-bottom: 1px solid #ffffff;
+}
+::ng-deep .companyStatus .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::after  {
+  border-bottom: 1px solid #ffffff;
+}
+::ng-deep .company-stat .mat-mdc-select-trigger .mat-mdc-select-value{
+  padding-top: 2% !important;
+  padding-left: 2%;
+} 
+.companyStatus{
+  width: 100%;
+}
+// company status css ends
+
+// company type scss starts
+::ng-deep .companyType .mdc-text-field .mat-mdc-form-field-focus-overlay{
+  background-color: #ffffff !important;
+}
+
+::ng-deep .companyType .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix .mdc-floating-label .mat-mdc-form-field-required-marker{
+  display: none;
+}
+
+::ng-deep .companyType .mat-mdc-form-field-subscript-wrapper{
+  border-top: 1px solid #ffffff;
+}
+::ng-deep .companyType .mat-mdc-form-field-subscript-wrapper:hover{
+  border-top: 1px solid #ffffff;
+}
+
+::ng-deep .companyType .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix .mdc-floating-label{
+  top: 58%;
+  left: 4%;
+  color: #6d6d6d;
+  font-family: 'AR One Sans', sans-serif;
+}
+
+::ng-deep .companyType .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix:focus-within .mdc-floating-label {
+  top: 47%;
+  background-color: #ffffff;
+  font-size: 1rem !important;
+  color: #6d6d6d !important;
+  font-family: 'AR One Sans', sans-serif;
+  left: 2%;
+}
+
+::ng-deep .companyType .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix .mdc-floating-label--float-above {
+  top: 47%;
+  background-color: #ffffff;
+  font-family: 'AR One Sans', sans-serif;
+  left: 2%;
+}
+
+::ng-deep .companyType .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::before  {
+  border-bottom: 1px solid #ffffff;
+}
+::ng-deep .companyType .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::after  {
+  border-bottom: 1px solid #ffffff;
+}
+::ng-deep .company-type .mat-mdc-select-trigger .mat-mdc-select-value{
+  padding-top: 2% !important;
+  padding-left: 2%;
+} 
+.companyType{
+  width: 100%;
+}
+// company type css ends

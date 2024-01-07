@@ -828,29 +828,40 @@
         "type":"inputScreen",
         "header":"Input Screening",
         "columns":{
-            "industryL1":{
-                "name":"industryL1",
-                "placeholder":"Enter level 1 industry",
+            "companyStatus":{
+                "name":"companyStatus",
+                "placeholder":"Select Company Status",
                 "type":"text",
-                "tooltip":"Global Industries"
+                "tooltip":"Eg. Private, Public",
+                "label":"Company Status"
             },
-            "industryL2":{
-                "name":"industryL2",
-                "placeholder":"Enter level 2 industry",
+            "companyType":{
+                "name":"companyType",
+                "placeholder":"Select Company type",
                 "type":"text",
-                "tooltip":"Level 2 Industries"
+                "tooltip":"Eg. Operational, Active, Liquidited",
+                "label":"Company Type"
+            },
+            "descriptor":{
+                "name":"descriptor",
+                "placeholder":"Enter business/company description",
+                "type":"text",
+                "tooltip":"Enter business/company description",
+                "label":"Business Description"
             },
             "industryL3":{
                 "name":"industryL3",
                 "placeholder":"Enter level 3 industry",
                 "type":"text",
-                "tooltip":"Level 3 Industries"
+                "tooltip":"Level 3 Industries",
+                "label":"Industry Name (Level-3)"
             },
             "industryL4":{
                 "name":"industryL4",
                 "placeholder":"Enter level 4 industry",
                 "type":"text",
-                "tooltip":"Level 4 Industries"
+                "tooltip":"Level 4 Industries",
+                "label":"Industry Name (Level-4)"
             }
         }
     },
