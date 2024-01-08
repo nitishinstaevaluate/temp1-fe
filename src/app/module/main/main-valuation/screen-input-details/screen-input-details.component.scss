@@ -301,7 +301,7 @@ label {
   transform: translateY(-50%) scale(0.8) !important;
 }
 
-.new-inp:focus + label + .tool-class {
+.new-inp:focus + label + .tool-class, .new-inp:not(:placeholder-shown) + label + .tool-class {
   display: block;
   position: absolute;
   left: 29%;
@@ -340,7 +340,7 @@ label {
     color: #6200ee;
   }
 }
-.new-inp:focus + label + .tool-class-business-desc {
+.new-inp:focus + label + .tool-class-business-desc, .new-inp:not(:placeholder-shown) + label + .tool-class-business-desc {
   display: block;
   position: absolute;
   left: 41%;

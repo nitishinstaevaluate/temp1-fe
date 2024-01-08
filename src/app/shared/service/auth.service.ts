@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { of, switchMap,BehaviorSubject } from 'rxjs';
+import { of, switchMap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 // import { AngularFireAuth } from '@angular/fire/compat/auth';
 
@@ -20,7 +20,7 @@ export class AuthService {
     // }))
   }
   
-  private loginStatus = new BehaviorSubject<boolean>(this.checkLoginStatus());
+  // private loginStatus = new BehaviorSubject<boolean>(this.checkLoginStatus());
 
   loginWithEmail(email: string, password: string) {
     const payload = {
@@ -30,9 +30,9 @@ export class AuthService {
     this.token =  this.http.post(`${environment.baseUrl}authentication/login`,payload).pipe(
       switchMap((authToken:any)=>{
         if(authToken.access_token)
-          this.loginStatus.next(true);
+          // this.loginStatus.next(true);
           localStorage.setItem('access_token', authToken.access_token);
-          localStorage.setItem('loginStatus','1')
+          // localStorage.setItem('loginStatus','1')
         return of(authToken);
       })
     );
@@ -44,15 +44,15 @@ export class AuthService {
     // this.router.navigate(['/login']);
   }
 
-  checkLoginStatus(): boolean {
-    var loginCookie = localStorage.getItem('loginStatus');
-    // console.log('login cookie ', loginCookie);
-    if (loginCookie === '1') {
-      return true;
-    } else {
-    return false;
-    }
-  }
+  // checkLoginStatus(): boolean {
+  //   var loginCookie = localStorage.getItem('loginStatus');
+  //   // console.log('login cookie ', loginCookie);
+  //   if (loginCookie === '1') {
+  //     return true;
+  //   } else {
+  //   return false;
+  //   }
+  // }
 
   extractUser(){
     return this.http.get(`${environment.baseUrl}authentication/extractUser`)

@@ -7,6 +7,7 @@ import { INDUSTRY_BASED_COMPANY, MODELS } from 'src/app/shared/enums/constant';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subject, debounceTime, distinctUntilChanged, switchMap, throttleTime } from 'rxjs';
 
 @Component({
   selector: 'app-screen-input-details',
@@ -23,7 +24,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   hasError=hasError;
   modelControl=groupModelControl;
   ciqIndustryData:any;
-  ciqIndustryHead=['Company Id', 'Company Name', 'Industry id', 'Industry Description'];
+  ciqIndustryHead=['Company Id', 'Company Name', 'City', 'Industry Description'];
   mapIndustryBasedCompany:any = INDUSTRY_BASED_COMPANY;
   loader=false;
   levelThreeIndustry:any=[];
@@ -36,7 +37,16 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   companyTypeDropdownFocused:boolean = false;
   companyStatusType:any= [];
   companyType:any= [];
-
+  levelFourIndustryDescription:any = [];
+  companyStatusTypeDescription:any = [];
+  companyTypeDescription:any = [];
+  levelThreeIndustryDescription:any='';
+  selectedObjects: any = [];
+  selectedLevelFourIndustry: any = [];
+  selectedCompanyType: any = [];
+  selectedCompanyStatusType: any = [];
+  descriptorQuery: any = '';
+  searchByDescriptor = new Subject<string>(); 
   constructor(
     private fb:FormBuilder,
     private ciqSpService:CiqSPService,
@@ -47,22 +57,23 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   ngOnInit(){
     this.loadForm();
     this.loadEnums();
-    this.checkProcessExist(this.secondStageInput?.formOneData);
-    this.onValueChange()
+    this.checkProcessExist(this.secondStageInput);
+    this.onValueChange();
+    this.searchByBusinessDescriptor();
   }
-  ngOnChanges() {
+   ngOnChanges() {
     this.loadForm();
-    this.loadIndustriesTable();
     this.checkProcessExist(this.formOneData);
+    this.onValueChange();
   }
 
   loadForm(){
     this.inputScreenForm = this.fb.group({
-      companyStatus:['', [Validators.required]],
-      companyType:['', [Validators.required]],
+      companyStatus:[[], [Validators.required]],
+      companyType:[[], [Validators.required]],
       descriptor:['', [Validators.required]],
       industryL3:['', [Validators.required]],
-      industryL4:['', [Validators.required]],
+      industryL4:[[], [Validators.required]],
     });
   }
 
@@ -73,12 +84,65 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   }
 
   checkProcessExist(data:any){
-    if(data){
-     this.inputScreenForm.controls['industryL3'].setValue(data?.industry ?? '');
+    const formOneData = data?.industry ? data?.industry :  data?.formOneData?.industry;
+
+    if(formOneData){ 
+     this.inputScreenForm.controls['industryL3'].setValue(formOneData);
       if(this.inputScreenForm.controls['industryL3'].value){
+        this.levelThreeIndustryDescription = this.inputScreenForm.controls['industryL3'].value;
         this.loadCiqDescriptorBasedIndustry(this.inputScreenForm.controls['industryL3'].value);
       }
      }
+
+     const formTwoData = data?.formTwoData;
+     if(formTwoData){
+      if(formTwoData?.industryL4){
+        this.selectedLevelFourIndustry = formTwoData.industryL4.map((elements:any)=>{
+          this.levelFourIndustryDescription.push(elements.GICSDescriptor);
+          return {
+            GICSDescriptor:elements.GICSDescriptor
+          }
+        })
+        if(formTwoData?.industryL4.length){
+          this.industryFourDropdownValue = true;
+        }
+      }
+
+      if(formTwoData?.companyType){
+        this.selectedCompanyType = formTwoData.companyType.map((elements:any)=>{
+          this.companyTypeDescription.push(elements.companytypename);
+          return {
+            companytypename:elements.companytypename
+          }
+        })
+        if(formTwoData?.companyType.length){
+          this.companyTypeDropdownValue = true;
+        }
+      }
+
+      if(formTwoData?.companyStatus){
+        this.selectedCompanyStatusType = formTwoData.companyStatus.map((elements:any)=>{
+          this.companyStatusTypeDescription.push(elements.companystatustypename)
+          return {
+            companystatustypename:elements.companystatustypename
+          }
+        })
+        if(formTwoData?.companyStatus.length){
+          this.companyStatusDropdownValue = true;
+        }
+      }
+
+      if(formTwoData?.descriptor && this.inputScreenForm){
+        this.descriptorQuery = formTwoData.descriptor;
+        this.inputScreenForm.get('descriptor').setValue(this.descriptorQuery);
+      }
+     }
+
+      this.loadCiqIndustryBasedLevelFour(this.createPayload());
+  }
+
+  comparer(o1: any, o2: any): boolean {
+    return o1 && o2 ? o1.GICSDescriptor === o2.GICSDescriptor : o2 === o2;
   }
 
   onValueChange(){
@@ -87,22 +151,13 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
         return;
       }
       this.loadCiqDescriptorBasedIndustry(val);
-      this.loadCiqIndustry(val,this.formOneData?.location || this.secondStageInput?.formOneData?.location);
-    });
 
-    this.inputScreenForm.controls['industryL4'].valueChanges.subscribe((val:any) => {
-      if (!val) {
-        return;
-      }
-      if(!val.length){
-        this.loadIndustriesTable();
-        return;
-      }
-      const payload ={
-        levelFourIndustries: val
-      }
-      this.loadCiqIndustryBasedLevelFour(payload);
+      this.levelThreeIndustryDescription = val;
+      this.loadCiqIndustryBasedLevelFour(this.createPayload());
     });
+    if(this.descriptorQuery){
+      this.inputScreenForm.get('descriptor').setValue(this.descriptorQuery);
+    }
   }
 
   saveAndNext(){
@@ -110,7 +165,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     this.screenInputDetails.emit({formFillingStatus:true});
     this.calculationService.checkStepStatus.next({stepStatus:true,step:this.step})
     const processStateModel ={
-      secondStageInput:{formFillingStatus:true},
+      secondStageInput:{formFillingStatus:true,...this.inputScreenForm.value},
       step:2
     }
     this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
@@ -196,23 +251,6 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     })
   }
 
-  loadIndustriesTable(){
-    if(!this.formOneData){
-      const industry = this.secondStageInput?.formOneData?.industry;
-      const location = this.secondStageInput?.formOneData?.location;
-      if(industry && location){
-        this.loadCiqIndustry(industry, location);
-      }
-    }
-    else {
-      const industry = this.formOneData?.industry;
-      const location = this.formOneData?.location;
-      if(industry && location){
-        this.loadCiqIndustry(industry, location);
-      }
-    }
-  }
-
   loadCiqDescriptorBasedIndustry(descriptor:any){
     this.ciqSpService.getSPLevelFourIndustryBasedList(descriptor).subscribe((levelFourIndustryData:any)=>{
       if(levelFourIndustryData.status){
@@ -237,12 +275,12 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     })
   }
 
-  loadCiqIndustryBasedLevelFour(levelFourIndustry:any){
+  loadCiqIndustryBasedLevelFour(payload:any){
     this.loader = true;
-    this.ciqSpService.getSPIndustryListByLevelFourIndustries(levelFourIndustry).subscribe((levelFourIndustryData:any)=>{
-      if(levelFourIndustryData.status){
+    this.ciqSpService.getSPIndustryListByLevelFourIndustries(payload).subscribe((industryData:any)=>{
+      if(industryData.status){
         this.loader = false;
-        this.ciqIndustryData = levelFourIndustryData.data
+        this.ciqIndustryData = industryData.data
       }
       else{
         this.loader = false;
@@ -318,20 +356,98 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     if(desc === 'companyStatus'){
       this.companyStatusDropdownFocused = event;
     }
+
     if(desc === 'companyType'){
       this.companyTypeDropdownFocused = event;
     }
   }
 
   onDropdownChange(event: any, desc: string) {
-    if(desc === 'industryFour'){
-      this.industryFourDropdownValue = event.value !== undefined && event.value !== null && event.value?.length;
+    if(desc === 'industryFour' && event?.value){
+      this.handleLevelFourIndustry(event);
     }
-    if(desc === 'companyStatus'){
-      this.companyStatusDropdownValue = event.value !== undefined && event.value !== null && event.value?.length;
+
+    if(desc === 'companyStatus' && event?.value){
+      this.handleCompanyStatusType(event);
     }
-    if(desc === 'companyType'){
-      this.companyTypeDropdownValue = event.value !== undefined && event.value !== null && event.value?.length;
+
+    if(desc === 'companyType' && event?.value){
+      this.handleCompanyType(event);
     }
+  }
+
+  handleCompanyType(event:any){
+    if(event.value?.length){
+      this.companyTypeDropdownValue = true;
+      const createCompanyType = event.value.map((elements: any)=>{
+        return elements.companytypename
+      })
+      this.companyTypeDescription = createCompanyType;
+    }
+    else{
+      this.companyTypeDropdownValue = false;
+      this.companyTypeDescription = [];
+    }
+      
+    this.loadCiqIndustryBasedLevelFour(this.createPayload());
+  }
+
+  handleCompanyStatusType(event:any){
+    if(event.value.length){
+      this.companyStatusDropdownValue = true;
+      const createCompanyStatusType = event.value.map((elements: any)=>{
+        return elements.companystatustypename
+      })
+      this.companyStatusTypeDescription = createCompanyStatusType;
+    }
+    else{
+      this.companyStatusDropdownValue = false
+      this.companyStatusTypeDescription = [];
+    }
+   
+    this.loadCiqIndustryBasedLevelFour(this.createPayload());
+  }
+
+  handleLevelFourIndustry(event:any){
+    if(event?.value.length){
+      this.industryFourDropdownValue = true;
+      const createLevelFourIndustry = event.value.map((elements: any)=>{
+        return elements.GICSDescriptor
+      })
+      this.levelFourIndustryDescription = createLevelFourIndustry;
+    }
+    else{
+      this.industryFourDropdownValue = false;
+      this.levelFourIndustryDescription = [];
+    }
+
+    this.loadCiqIndustryBasedLevelFour(this.createPayload());
+  }
+
+  filterByBusinessDescriptor(event:any){
+    if(this.descriptorQuery !== event.target.value){
+      this.descriptorQuery = event.target.value;
+      this.searchByDescriptor.next(this.descriptorQuery);
+    }
+  }
+
+  searchByBusinessDescriptor(){
+      this.searchByDescriptor.pipe(
+        debounceTime(2000),
+        throttleTime(1000),
+        distinctUntilChanged(),
+        switchMap(async () => this.loadCiqIndustryBasedLevelFour(this.createPayload()))
+      ).subscribe();
+  }
+
+  createPayload() {
+    return {
+      levelFourIndustries: this.levelFourIndustryDescription,
+      companyStatusType: this.companyStatusTypeDescription,
+      companyType: this.companyTypeDescription,
+      industryName: this.levelThreeIndustryDescription,
+      businessDescriptor: this.descriptorQuery,
+      location: this.formOneData?.location || this.secondStageInput?.formOneData?.location
+    };
   }
 }
