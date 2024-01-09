@@ -63,7 +63,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   }
    ngOnChanges() {
     this.loadForm();
-    this.checkProcessExist(this.formOneData);
+    // this.checkProcessExist(this.formOneData);
     this.onValueChange();
   }
 
@@ -84,18 +84,24 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   }
 
   checkProcessExist(data:any){
-    const formOneData = data?.industry ? data?.industry :  data?.formOneData?.industry;
+    // const formOneData = data?.industry ? data?.industry :  data?.formOneData?.industry;
 
-    if(formOneData){ 
-     this.inputScreenForm.controls['industryL3'].setValue(formOneData);
-      if(this.inputScreenForm.controls['industryL3'].value){
-        this.levelThreeIndustryDescription = this.inputScreenForm.controls['industryL3'].value;
-        this.loadCiqDescriptorBasedIndustry(this.inputScreenForm.controls['industryL3'].value);
-      }
-     }
+    // if(formOneData){ 
+    //  this.inputScreenForm.controls['industryL3'].setValue(formOneData);
+    //   if(this.inputScreenForm.controls['industryL3'].value){
+    //     this.levelThreeIndustryDescription = this.inputScreenForm.controls['industryL3'].value;
+    //     this.loadCiqDescriptorBasedIndustry(this.inputScreenForm.controls['industryL3'].value);
+    //   }
+    //  }
 
      const formTwoData = data?.formTwoData;
      if(formTwoData){
+      if(formTwoData?.industryL3){
+        // this.inputScreenForm.controls['industryL3'].setValue(formTwoData.industryL3);
+        this.levelThreeIndustryDescription = formTwoData?.industryL3;
+        this.loadCiqDescriptorBasedIndustry(formTwoData?.industryL3);
+      }
+
       if(formTwoData?.industryL4){
         this.selectedLevelFourIndustry = formTwoData.industryL4.map((elements:any)=>{
           this.levelFourIndustryDescription.push(elements.GICSDescriptor);
@@ -157,6 +163,9 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     });
     if(this.descriptorQuery){
       this.inputScreenForm.get('descriptor').setValue(this.descriptorQuery);
+    }
+    if(this.levelThreeIndustryDescription){
+      this.inputScreenForm.controls['industryL3'].setValue(this.levelThreeIndustryDescription);
     }
   }
 
@@ -252,6 +261,10 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   }
 
   loadCiqDescriptorBasedIndustry(descriptor:any){
+    this.levelFourIndustryDescription = [];
+    this.industryFourDropdownValue = false;
+    this.industryFourDropdownFocused = false;
+    
     this.ciqSpService.getSPLevelFourIndustryBasedList(descriptor).subscribe((levelFourIndustryData:any)=>{
       if(levelFourIndustryData.status){
         this.levelFourIndustry = levelFourIndustryData.data
@@ -432,12 +445,12 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   }
 
   searchByBusinessDescriptor(){
-      this.searchByDescriptor.pipe(
-        debounceTime(2000),
-        throttleTime(1000),
-        distinctUntilChanged(),
-        switchMap(async () => this.loadCiqIndustryBasedLevelFour(this.createPayload()))
-      ).subscribe();
+    this.searchByDescriptor.pipe(
+      debounceTime(1300),
+      throttleTime(1000),
+      distinctUntilChanged(),
+      switchMap(async () => this.loadCiqIndustryBasedLevelFour(this.createPayload()))
+    ).subscribe();
   }
 
   createPayload() {
@@ -447,7 +460,8 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       companyType: this.companyTypeDescription,
       industryName: this.levelThreeIndustryDescription,
       businessDescriptor: this.descriptorQuery,
-      location: this.formOneData?.location || this.secondStageInput?.formOneData?.location
+      location: this.formOneData?.location || this.secondStageInput?.formOneData?.location,
+      processStateId:localStorage.getItem('processStateId')
     };
   }
 }

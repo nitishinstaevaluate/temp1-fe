@@ -158,7 +158,7 @@ export class GroupModelControlsComponent implements OnInit {
     this.loadValues();
     this.checkProcessExist(this.firstStageInput)
     this.formLoad();
-    this.loadCiqIndustryList()
+    // this.loadCiqIndustryList()
   }
 
   async checkProcessExist(data:any){
@@ -241,29 +241,29 @@ export class GroupModelControlsComponent implements OnInit {
 
   }
 
-  loadCiqIndustryList(){
-    this.ciqSpService.fetchSPHierarchyBasedIndustry().subscribe((industryList:any)=>{
-      if(industryList.status){
-        this.industries = industryList.data;
-      }
-      else{
-       this.snackBar.open('CIQ Industry list not found','OK',{
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-          duration: 3000,
-          panelClass: 'app-notification-error'
-        })
-      }
-    },
-    (error)=>{
-      this.snackBar.open(`${error}`,'OK',{
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-          duration: 3000,
-          panelClass: 'app-notification-error'
-        })
-    })
-  }
+  // loadCiqIndustryList(){
+  //   this.ciqSpService.fetchSPHierarchyBasedIndustry().subscribe((industryList:any)=>{
+  //     if(industryList.status){
+  //       this.industries = industryList.data;
+  //     }
+  //     else{
+  //      this.snackBar.open('CIQ Industry list not found','OK',{
+  //         horizontalPosition: 'right',
+  //         verticalPosition: 'top',
+  //         duration: 3000,
+  //         panelClass: 'app-notification-error'
+  //       })
+  //     }
+  //   },
+  //   (error)=>{
+  //     this.snackBar.open(`${error}`,'OK',{
+  //         horizontalPosition: 'right',
+  //         verticalPosition: 'top',
+  //         duration: 3000,
+  //         panelClass: 'app-notification-error'
+  //       })
+  //   })
+  // }
   formLoad(){
 // Initiate form change detectors
     // this.modelValuation.controls['industry'].valueChanges.subscribe((val) => {
