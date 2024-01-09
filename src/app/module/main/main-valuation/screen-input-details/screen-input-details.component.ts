@@ -109,9 +109,6 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
             GICSDescriptor:elements.GICSDescriptor
           }
         })
-        if(formTwoData?.industryL4.length){
-          this.industryFourDropdownValue = true;
-        }
       }
 
       if(formTwoData?.companyType){
@@ -166,6 +163,9 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     }
     if(this.levelThreeIndustryDescription){
       this.inputScreenForm.controls['industryL3'].setValue(this.levelThreeIndustryDescription);
+    }
+    if(this.selectedLevelFourIndustry.length){
+      this.industryFourDropdownValue = true;
     }
   }
 
