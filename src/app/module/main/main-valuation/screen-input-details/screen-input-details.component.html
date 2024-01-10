@@ -78,6 +78,12 @@
                       <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
                   </span>
                 </div>
+                <div style="display: flex; align-items: center;padding-left: 1%;padding-top: 1%;">
+                  <span *ngIf="inputScreenForm.controls['industryL3'].value" style="width: 100%;">
+                    <input type="checkbox" (change)="onCheckboxChange($event)" style="vertical-align: middle;">
+                    <span class="reset-ind3" style="vertical-align: middle;">Reset Industry level-3</span>
+                  </span>
+                </div>
               </div>
 
               <!-- industry Name Level-4 -->
@@ -101,6 +107,9 @@
               </div>
             </div>
       </form>   
+      <div style="padding-left: 2%;padding-top: 1%;">
+        <p class="total-rec">Showing {{total}} records</p>
+      </div>
       <table class="table-industry-based-company">
         <thead>
           <tr style="text-transform: capitalize;" class="header">
@@ -111,7 +120,7 @@
         <tbody>
           <tr *ngFor="let row of ciqIndustryData; let i = index" class="content">
             <td style="text-align: left;font-size: 14px;text-transform: capitalize;border: 1px solid #eeeeee" class="make-light">
-              <input type="checkbox" [id]="'checkbox_' + i" />
+              <input type="checkbox" [id]="'checkbox_' + i" (click)="onIndustryCheck(row)"/>
             </td>
             <td style="text-align: left;font-size: 14px;text-transform: capitalize;border: 1px solid #eeeeee;" class="make-light">{{row.COMPANYID}}</td>
             <td style="text-align: justify;font-size: 14px;text-transform: capitalize;border: 1px solid #eeeeee" class="make-light">{{row.COMPANYNAME}}</td>

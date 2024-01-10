@@ -47,6 +47,8 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   selectedCompanyStatusType: any = [];
   descriptorQuery: any = '';
   searchByDescriptor = new Subject<string>(); 
+  mainIndustries:any = [];
+  total=0;
   constructor(
     private fb:FormBuilder,
     private ciqSpService:CiqSPService,
@@ -59,7 +61,13 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     this.loadEnums();
     this.checkProcessExist(this.secondStageInput);
     this.onValueChange();
-    this.searchByBusinessDescriptor();
+    // this.searchByBusinessDescriptor();
+    this.searchByDescriptor.pipe(
+      debounceTime(1300),
+      throttleTime(1000),
+      distinctUntilChanged(),
+      switchMap(async () => this.loadCiqIndustryBasedLevelFour(this.createPayload()))
+    ).subscribe();
   }
    ngOnChanges() {
     this.loadForm();
@@ -167,6 +175,9 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     if(this.selectedLevelFourIndustry.length){
       this.industryFourDropdownValue = true;
     }
+    if(this.formOneData?.location != this.secondStageInput?.formOneData?.location){
+      this.loadCiqIndustryBasedLevelFour(this.createPayload());
+    }
   }
 
   saveAndNext(){
@@ -264,28 +275,29 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     this.levelFourIndustryDescription = [];
     this.industryFourDropdownValue = false;
     this.industryFourDropdownFocused = false;
-    
-    this.ciqSpService.getSPLevelFourIndustryBasedList(descriptor).subscribe((levelFourIndustryData:any)=>{
-      if(levelFourIndustryData.status){
-        this.levelFourIndustry = levelFourIndustryData.data
-      }
-      else{
-        this.snackBar.open('CIQ Industry (Level-4) list not found','OK',{
+    if(!this.levelFourIndustry.length){
+      this.ciqSpService.getSPLevelFourIndustryBasedList(descriptor).subscribe((levelFourIndustryData:any)=>{
+        if(levelFourIndustryData.status){
+          this.levelFourIndustry = levelFourIndustryData.data
+        }
+        else{
+          this.snackBar.open('CIQ Industry (Level-4) list not found','OK',{
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 3000,
+            panelClass: 'app-notification-error'
+          })
+        }
+      },
+      (error)=>{
+        this.snackBar.open(`${error}`,'OK',{
           horizontalPosition: 'right',
           verticalPosition: 'top',
           duration: 3000,
           panelClass: 'app-notification-error'
         })
-      }
-    },
-    (error)=>{
-      this.snackBar.open(`${error}`,'OK',{
-        horizontalPosition: 'right',
-        verticalPosition: 'top',
-        duration: 3000,
-        panelClass: 'app-notification-error'
       })
-    })
+    }
   }
 
   loadCiqIndustryBasedLevelFour(payload:any){
@@ -293,7 +305,8 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     this.ciqSpService.getSPIndustryListByLevelFourIndustries(payload).subscribe((industryData:any)=>{
       if(industryData.status){
         this.loader = false;
-        this.ciqIndustryData = industryData.data
+        this.ciqIndustryData = industryData.data;
+        this.total = industryData.total
       }
       else{
         this.loader = false;
@@ -444,14 +457,10 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     }
   }
 
-  searchByBusinessDescriptor(){
-    this.searchByDescriptor.pipe(
-      debounceTime(1300),
-      throttleTime(1000),
-      distinctUntilChanged(),
-      switchMap(async () => this.loadCiqIndustryBasedLevelFour(this.createPayload()))
-    ).subscribe();
-  }
+  // searchByBusinessDescriptor(){
+  //   console.log("api triggered")
+    
+  // }
 
   createPayload() {
     return {
@@ -463,5 +472,40 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       location: this.formOneData?.location || this.secondStageInput?.formOneData?.location,
       processStateId:localStorage.getItem('processStateId')
     };
+  }
+
+ async onIndustryCheck(data:any){
+    if(!data)
+      return;
+    // await this.createIndustryStructure(data);
+  }
+
+  // async createIndustryStructure(data:any){
+  //   console.log(data,"data")
+  //   let newIndustryList = [];
+  //   const checkIfIndustryExist = this.mainIndustries;
+  //   // if(!checkIfIndustryExist.length){
+  //   //   newIndustryList.push(data)
+  //   //   return 
+  //   // }
+  //   for await(const industryData of checkIfIndustryExist){
+  //     // checkIfIndustryExist.map((industryData:any)=>{
+  //       if(industryData?.COMPANYID !== data.COMPANYID){
+  //         newIndustryList.push(data)
+  //       }else{
+  //         console.log("inside else")
+  //       }
+  //       // console.log(this.mainIndustries,"added")
+  //     // })
+  //   }
+  //   console.log([...this.mainIndustries,...newIndustryList],"all on select ind")
+  // }
+
+  onCheckboxChange(event:any){
+    if(event.target.checked){
+      this.inputScreenForm.controls['industryL3'].setValue('');
+      this.levelThreeIndustryDescription = '';
+      this.loadCiqIndustryBasedLevelFour(this.createPayload())
+    }
   }
 }
