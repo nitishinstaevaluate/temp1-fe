@@ -128,6 +128,7 @@ export class MainValuationComponent implements OnInit{
   onStepChange() {  
       this.formOneAndThreeData = {
         ...this.formOneData,
+        ...this.formTwoData,
         ...(this.formOneData?.model.includes('FCFF') ? this.fcffData : {}),
         ...(this.formOneData?.model.includes('FCFE') ? this.fcfeData : {}),
         ...(this.formOneData?.model.includes('Relative_Valuation') ? this.relativeData : {}),

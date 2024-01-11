@@ -61,7 +61,6 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     this.loadEnums();
     this.checkProcessExist(this.secondStageInput);
     this.onValueChange();
-    // this.searchByBusinessDescriptor();
     this.searchByDescriptor.pipe(
       debounceTime(1300),
       throttleTime(1000),
@@ -181,14 +180,44 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   }
 
   saveAndNext(){
+    let totalBeta = 0 ;
     localStorage.setItem('stepTwoStats',`true`)
     this.screenInputDetails.emit({formFillingStatus:true});
     this.calculationService.checkStepStatus.next({stepStatus:true,step:this.step})
-    const processStateModel ={
-      secondStageInput:{formFillingStatus:true,...this.inputScreenForm.value},
-      step:2
+    const betaPayload = {
+      industryAggregateList: this.mainIndustries
     }
-    this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
+    if(this.mainIndustries.length){
+      this.ciqSpService.calculateSPindustryBeta(betaPayload).subscribe((betaData:any)=>{
+        if(betaData.status){
+          totalBeta = betaData.total;
+          const processStateModel ={
+            secondStageInput:{formFillingStatus:true,...this.inputScreenForm.value,totalBeta},
+            step:2
+          }
+          this.processStateManager(processStateModel,localStorage.getItem('processStateId'));
+          this.screenInputDetails.emit({formFillingStatus:true,...this.inputScreenForm.value,totalBeta});
+        }
+        else{
+          this.snackBar.open(`Beta not found`, 'OK', {
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+            duration: 3000,
+            panelClass: 'app-notification-error',
+          },);
+        }
+      })
+    }
+    else{
+      const processStateModel ={
+        secondStageInput:{formFillingStatus:true,...this.inputScreenForm.value,totalBeta},
+        step:2
+      }
+      this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
+      this.screenInputDetails.emit({formFillingStatus:true,...this.inputScreenForm.value,totalBeta});
+    }
+    
+
   }
 
   previous(){
@@ -457,11 +486,6 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     }
   }
 
-  // searchByBusinessDescriptor(){
-  //   console.log("api triggered")
-    
-  // }
-
   createPayload() {
     return {
       levelFourIndustries: this.levelFourIndustryDescription,
@@ -474,32 +498,32 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     };
   }
 
- async onIndustryCheck(data:any){
+ async onIndustryCheck(event:any, data:any){
     if(!data)
       return;
-    // await this.createIndustryStructure(data);
+    if(event.target.checked){
+      await this.createIndustryStructure(data);
+    }
+    else{
+      await this.removeUncheckedIndustry(data)
+    }
   }
 
-  // async createIndustryStructure(data:any){
-  //   console.log(data,"data")
-  //   let newIndustryList = [];
-  //   const checkIfIndustryExist = this.mainIndustries;
-  //   // if(!checkIfIndustryExist.length){
-  //   //   newIndustryList.push(data)
-  //   //   return 
-  //   // }
-  //   for await(const industryData of checkIfIndustryExist){
-  //     // checkIfIndustryExist.map((industryData:any)=>{
-  //       if(industryData?.COMPANYID !== data.COMPANYID){
-  //         newIndustryList.push(data)
-  //       }else{
-  //         console.log("inside else")
-  //       }
-  //       // console.log(this.mainIndustries,"added")
-  //     // })
-  //   }
-  //   console.log([...this.mainIndustries,...newIndustryList],"all on select ind")
-  // }
+  async createIndustryStructure(data:any){
+    const checkIfIndustryExist = this.mainIndustries;
+    if(!this.mainIndustries.length){
+      this.mainIndustries.push(data)
+      return 
+    }
+    const isCompanyExist = checkIfIndustryExist.some((elements:any)=>{elements?.COMPANYID === data.COMPANYID})
+    if(!isCompanyExist){
+      this.mainIndustries.push(data)
+    }
+  }
+
+  async removeUncheckedIndustry(data:any){
+    this.mainIndustries.splice(this.mainIndustries.findIndex((element:any) => element.COMPANYID === data.COMPANYID),1);
+  }
 
   onCheckboxChange(event:any){
     if(event.target.checked){

@@ -38,4 +38,8 @@ export class CiqSPService {
    getSPCompanyType(){
     return this.http.get(`${this.HOST}ciq-sp/sp-company-type`)
    }
+
+   calculateSPindustryBeta(payload:any){
+    return this.http.post(`${this.HOST}ciq-sp/calculate-sp-industry-beta`,payload)
+   }
 }
