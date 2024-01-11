@@ -182,7 +182,6 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   saveAndNext(){
     let totalBeta = 0 ;
     localStorage.setItem('stepTwoStats',`true`)
-    this.screenInputDetails.emit({formFillingStatus:true});
     this.calculationService.checkStepStatus.next({stepStatus:true,step:this.step})
     const betaPayload = {
       industryAggregateList: this.mainIndustries
@@ -215,9 +214,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       }
       this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
       this.screenInputDetails.emit({formFillingStatus:true,...this.inputScreenForm.value,totalBeta});
-    }
-    
-
+    }    
   }
 
   previous(){
