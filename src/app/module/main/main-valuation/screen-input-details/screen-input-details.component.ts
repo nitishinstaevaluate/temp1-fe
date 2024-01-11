@@ -49,6 +49,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   searchByDescriptor = new Subject<string>(); 
   mainIndustries:any = [];
   total=0;
+  selectedIndustries:any= []
   constructor(
     private fb:FormBuilder,
     private ciqSpService:CiqSPService,
@@ -146,6 +147,12 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
         this.descriptorQuery = formTwoData.descriptor;
         this.inputScreenForm.get('descriptor').setValue(this.descriptorQuery);
       }
+
+      if(formTwoData?.selectedIndustries?.length){
+        this.selectedIndustries = formTwoData.selectedIndustries;
+        this.mainIndustries = formTwoData.selectedIndustries;
+        
+      }
      }
 
       this.loadCiqIndustryBasedLevelFour(this.createPayload());
@@ -156,6 +163,9 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   }
 
   onValueChange(){
+    if(this.step !== 2)
+      return;
+    
     this.inputScreenForm.controls['industryL3'].valueChanges.subscribe((val:any) => {
       if (!val) {
         return;
@@ -186,34 +196,45 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     const betaPayload = {
       industryAggregateList: this.mainIndustries
     }
+    this.loader = true;
     if(this.mainIndustries.length){
       this.ciqSpService.calculateSPindustryBeta(betaPayload).subscribe((betaData:any)=>{
         if(betaData.status){
+          this.loader = false
           totalBeta = betaData.total;
           const processStateModel ={
-            secondStageInput:{formFillingStatus:true,...this.inputScreenForm.value,totalBeta},
+            secondStageInput:{formFillingStatus:true,...this.inputScreenForm.value,totalBeta,selectedIndustries:this.mainIndustries},
             step:2
           }
           this.processStateManager(processStateModel,localStorage.getItem('processStateId'));
           this.screenInputDetails.emit({formFillingStatus:true,...this.inputScreenForm.value,totalBeta});
         }
         else{
+          this.loader = false;
           this.snackBar.open(`Beta not found`, 'OK', {
             horizontalPosition: 'center',
             verticalPosition: 'bottom',
             duration: 3000,
             panelClass: 'app-notification-error',
-          },);
+          });
         }
+      },(error)=>{
+        this.loader = false;
+        this.snackBar.open(`Beta calculation failed, please retry`, 'OK', {
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+          duration: 3000,
+          panelClass: 'app-notification-error',
+        },); 
       })
     }
     else{
       const processStateModel ={
-        secondStageInput:{formFillingStatus:true,...this.inputScreenForm.value,totalBeta},
+        secondStageInput:{formFillingStatus:true,...this.inputScreenForm.value,totalBeta, selectedIndustries:this.mainIndustries},
         step:2
       }
       this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
-      this.screenInputDetails.emit({formFillingStatus:true,...this.inputScreenForm.value,totalBeta});
+      this.screenInputDetails.emit({formFillingStatus:true, ...this.inputScreenForm.value, totalBeta, selectedIndustries:this.mainIndustries});
     }    
   }
 
@@ -332,6 +353,13 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       if(industryData.status){
         this.loader = false;
         this.ciqIndustryData = industryData.data;
+        if (this.selectedIndustries.length) {
+          this.ciqIndustryData.forEach((row: any) => {
+            row.isSelected = this.selectedIndustries.some((selectedIndustriesRow: any) => {
+              return selectedIndustriesRow.COMPANYID === row.COMPANYID;
+            });
+          });
+        }
         this.total = industryData.total
       }
       else{

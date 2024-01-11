@@ -120,7 +120,7 @@
         <tbody>
           <tr *ngFor="let row of ciqIndustryData; let i = index" class="content">
             <td style="text-align: left;font-size: 14px;text-transform: capitalize;border: 1px solid #eeeeee" class="make-light">
-              <input type="checkbox" [id]="'checkbox_' + i" (change)="onIndustryCheck($event, row)"/>
+              <input type="checkbox" [id]="'checkbox_' + i" [(ngModel)]="row.isSelected" (change)="onIndustryCheck($event, row)"/>
             </td>
             <td style="text-align: left;font-size: 14px;text-transform: capitalize;border: 1px solid #eeeeee;" class="make-light">{{row.COMPANYID}}</td>
             <td style="text-align: justify;font-size: 14px;text-transform: capitalize;border: 1px solid #eeeeee" class="make-light">{{row.COMPANYNAME}}</td>
