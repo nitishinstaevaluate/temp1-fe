@@ -110,14 +110,18 @@
       <div style="padding-left: 2%;padding-top: 1%;">
         <p class="total-rec">Showing {{total}} records</p>
       </div>
-      <table class="table-industry-based-company">
+      
+      <table class="table-industry-based-company" style="position: relative;">
         <thead>
           <tr style="text-transform: capitalize;" class="header">
             <th style="width: 5%;border: 1px solid #eeeeee"><i class="fa fa-filter" style="font-size:17px"></i></th>
-            <th style="border: 1px solid #eeeeee" *ngFor="let columnName of ciqIndustryHead" class="make-bold" [ngStyle]="(columnName === 'Company Name') ? { 'width': '30%'} : (columnName === 'City') ? { 'width':'10%', 'padding-left':'2%' } : (columnName === 'Company Id') ? {'width':'8%'} : (columnName === 'Industry Description') ? { 'width':'15%' } : { 'width':'auto' }">{{ columnName }}</th>
+            <th style="border: 1px solid #eeeeee" *ngFor="let columnName of ciqIndustryHead" class="make-bold" [ngStyle]="(columnName === 'Company Name') ? { 'width': '30%'} : (columnName === 'City') ? { 'width':'10%', 'padding-left':'2%' } : (columnName === 'Company Id') ? {'width':'8%'} : (columnName === 'Industry Description') ? { 'width':'15%' } : { 'width':'auto' }">{{ columnName }} </th>
           </tr>
         </thead>
         <tbody>
+          <div class="loader-overlay" *ngIf="loader">
+            <mat-progress-spinner diameter="30" mode="indeterminate" ></mat-progress-spinner>
+          </div>
           <tr *ngFor="let row of ciqIndustryData; let i = index" class="content">
             <td style="text-align: left;font-size: 14px;text-transform: capitalize;border: 1px solid #eeeeee" class="make-light">
               <input type="checkbox" [id]="'checkbox_' + i" [(ngModel)]="row.isSelected" (change)="onIndustryCheck($event, row)"/>
@@ -144,6 +148,5 @@
 </div>
 </div>
 
-<div *ngIf="loader">
-  <app-ngx-ui-loader [loader]="'inputScreen'"></app-ngx-ui-loader>
-</div>
+
+

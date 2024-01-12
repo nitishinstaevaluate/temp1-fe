@@ -105,7 +105,6 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
      const formTwoData = data?.formTwoData;
      if(formTwoData){
       if(formTwoData?.industryL3){
-        // this.inputScreenForm.controls['industryL3'].setValue(formTwoData.industryL3);
         this.levelThreeIndustryDescription = formTwoData?.industryL3;
         this.loadCiqDescriptorBasedIndustry(formTwoData?.industryL3);
       }
@@ -189,53 +188,52 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     }
   }
 
-  saveAndNext(){
+  async saveAndNext(){
     let totalBeta = 0 ;
     localStorage.setItem('stepTwoStats',`true`)
-    this.calculationService.checkStepStatus.next({stepStatus:true,step:this.step})
-    const betaPayload = {
-      industryAggregateList: this.mainIndustries
-    }
-    this.loader = true;
-    if(this.mainIndustries.length){
-      this.ciqSpService.calculateSPindustryBeta(betaPayload).subscribe((betaData:any)=>{
-        if(betaData.status){
-          this.loader = false
-          totalBeta = betaData.total;
-          const processStateModel ={
-            secondStageInput:{formFillingStatus:true,...this.inputScreenForm.value,totalBeta,selectedIndustries:this.mainIndustries},
-            step:2
+    this.calculationService.checkStepStatus.next({stepStatus:true,step:this.step});
+    if(this.secondStageInput?.formTwoData){
+      this.processStatusManagerService.getStageWiseDetails(localStorage.getItem('processStateId'), 'secondStageInput').subscribe(
+        async (response: any) => {
+          if (!response.status) {
+            this.snackBar.open(`Industry not found`, 'OK', {
+              horizontalPosition: 'center',
+              verticalPosition: 'bottom',
+              duration: 3000,
+              panelClass: 'app-notification-error',
+            });
+            return;
           }
-          this.processStateManager(processStateModel,localStorage.getItem('processStateId'));
-          this.screenInputDetails.emit({formFillingStatus:true,...this.inputScreenForm.value,totalBeta});
-        }
-        else{
-          this.loader = false;
-          this.snackBar.open(`Beta not found`, 'OK', {
+      
+          const areIndustriesEqual = response.data.secondStageInput.selectedIndustries.length === this.mainIndustries.length &&
+            response.data.secondStageInput.selectedIndustries.every((previousIndustries: any) =>
+              this.mainIndustries.some((newIndustries: any) =>
+                previousIndustries?.COMPANYID === newIndustries?.COMPANYID
+              )
+            );
+      
+          if (!areIndustriesEqual) {
+            this.calculationService.betaChangeDetector.next({ status: true });
+          }
+      
+          this.calculationService.betaChangeDetector.next({ status: false });
+        },
+        (error) => {
+          this.snackBar.open(`${error}`, 'OK', {
             horizontalPosition: 'center',
             verticalPosition: 'bottom',
             duration: 3000,
             panelClass: 'app-notification-error',
           });
         }
-      },(error)=>{
-        this.loader = false;
-        this.snackBar.open(`Beta calculation failed, please retry`, 'OK', {
-          horizontalPosition: 'center',
-          verticalPosition: 'bottom',
-          duration: 3000,
-          panelClass: 'app-notification-error',
-        },); 
-      })
+      );
+    } 
+    const processStateModel ={
+      secondStageInput:{formFillingStatus:true,...this.inputScreenForm.value,totalBeta, selectedIndustries:this.mainIndustries},
+      step:2
     }
-    else{
-      const processStateModel ={
-        secondStageInput:{formFillingStatus:true,...this.inputScreenForm.value,totalBeta, selectedIndustries:this.mainIndustries},
-        step:2
-      }
-      this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
-      this.screenInputDetails.emit({formFillingStatus:true, ...this.inputScreenForm.value, totalBeta, selectedIndustries:this.mainIndustries});
-    }    
+    this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
+    this.screenInputDetails.emit({formFillingStatus:true, ...this.inputScreenForm.value, totalBeta, selectedIndustries:this.mainIndustries});
   }
 
   previous(){

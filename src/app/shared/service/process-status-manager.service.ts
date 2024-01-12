@@ -26,4 +26,8 @@ export class ProcessStatusManagerService {
   updateActiveStage(data:any){
     return this.http.put(`${this.HOST}process-status-manager/updateStage`,data);
   }
+
+  getStageWiseDetails(processId:any, stage:any){
+    return this.http.get(`${this.HOST}process-status-manager/retrieve-particular-stage/filter?processId=${processId}&stageDetails=${stage}`);
+  }
 }

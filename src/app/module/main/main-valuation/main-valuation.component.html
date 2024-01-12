@@ -78,7 +78,7 @@
                 </div>
                 <!-- tab trial ends -->
                 
-                <app-fcfe-details (fcfeDetailsPrev)="fcfeDetailsPrev($event)" [hidden]="next !== 1" (fcfeDetails)="fcfeDetails($event)" [formOneData]="formOneData" [thirdStageInput]="formThreeData" [next]="next"></app-fcfe-details>
+                <app-fcfe-details (fcfeDetailsPrev)="fcfeDetailsPrev($event)" [hidden]="next !== 1" (fcfeDetails)="fcfeDetails($event)" [formOneData]="formOneData" [thirdStageInput]="formThreeData" [formTwoData]="formTwoData" [next]="next"></app-fcfe-details>
                 <app-fcff-details (fcffDetailsPrev)="fcffDetailsPrev($event)" (fcffDetails)="fcffDetails($event)" [hidden]="next !== 2" [formOneData]="formOneData" [thirdStageInput]="formThreeData" [next]="next"></app-fcff-details>
                 <app-relative-valuation-details (relativeValDetailsPrev)="relativeValDetailsPrev($event)" (relativeValDetails)="relativeValDetails($event)" [hidden]="next !== 3" [formOneData]="formOneData" [thirdStageInput]="formThreeData"></app-relative-valuation-details>
                 <app-excess-earning-details (excessEarnDetailsPrev)="excessEarnDetailsPrev($event)" (excessEarnDetails)="excessEarnDetails($event)" [hidden]="next !== 4" [formOneData]="formOneData" [thirdStageInput]="formThreeData" [next]="next"></app-excess-earning-details>
