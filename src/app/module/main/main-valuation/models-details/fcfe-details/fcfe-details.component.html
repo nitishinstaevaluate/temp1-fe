@@ -141,7 +141,7 @@
                       <span *ngIf="fcfeForm.controls['betaType'].touched && fcfeForm.controls['betaType'].errors">
                         <span *ngIf="hasError('betaType','required',fcfeForm)" class="error-text">Please select beta</span>
                       </span>
-                      <div style="display: flex; align-items: center;padding-left: 2%;padding-top: 1%;">
+                      <div style="display: flex; align-items: center;padding-left: 2%;padding-top: 1%;height: 30px;">
                         <span style="width: 90%;" *ngIf="fcfeForm.controls['betaType'].value">
                           <span *ngIf="fcfeForm.controls['betaType'].value !== 'market_beta'">
                             <input type="radio" style="vertical-align: middle;" [checked]="selectedSubBetaType === 'meanBeta'" (change)="onRadioButtonChange($event)" value="meanBeta" name="betaRadio" id="betaRadio">
@@ -156,7 +156,7 @@
                             <mat-hint *ngIf="fcfeForm.controls['beta'].value" style="vertical-align: middle;font-size: 11px;color: #1915bb;" class="reset-ind3">Beta is {{fcfeForm.controls['beta'].value?.toFixed(2)}}</mat-hint>
                           </span>
                         </span>
-                        <span style="padding-top: 1%;">
+                        <span>
                           <mat-progress-spinner style="vertical-align: middle" *ngIf="betaLoader" class="beta-spin" mode="indeterminate" diameter="20"></mat-progress-spinner>
                         </span>
                       </div>
