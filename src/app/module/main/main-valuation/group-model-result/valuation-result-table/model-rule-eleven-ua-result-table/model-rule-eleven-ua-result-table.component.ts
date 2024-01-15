@@ -22,7 +22,7 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
       const artisticWork = this.formData?.formThreeData?.appData?.inputData?.fairValueArtistic;
       const jewelleryAndArtisticWorkArray = [
         {
-          name:"jewellery",
+          name:"Jewellery",
           value:jewellery
         },
         {
@@ -76,13 +76,6 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
     return totalValue ? totalValue : '-';
   }
 
-  calculateTotalC(){
-    if(this.formData){
-      this.totalCalculationC = this.formData?.formThreeData?.appData?.inputData?.fairValueinvstShareSec ? parseFloat(this.formData?.formThreeData.appData.inputData.fairValueinvstShareSec) : 0;
-      return this.formData?.formThreeData?.appData?.inputData?.fairValueinvstShareSec ? this.formData?.formThreeData.appData.inputData.fairValueinvstShareSec : '-';
-    }
-  }
-
   calculateTotalD(){
     if(this.formData){
       this.totalCalculationD = this.formData?.formThreeData?.appData?.inputData?.fairValueImmovableProp ? parseFloat(this.formData.formThreeData.appData.inputData.fairValueImmovableProp) : 0;
@@ -105,7 +98,7 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
   }
 
   calculateAll() {
-      return  this.totalCalculationA+ this.totalCalculationB + this.totalCalculationC + this.totalCalculationD + this.totalCalculationL;
+      return  this.totalCalculationA+ this.totalCalculationB + this.totalCalculationC + this.totalCalculationD - this.totalCalculationL;
   }
   
   calculateFairMarketValue(){
@@ -122,6 +115,15 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
         result = 0;
     }
 
-    return result;
+    return result.toFixed(2);
+  }
+
+  calculateTotalInvestmentSharesAndSecurities(){
+    const investmentTotalFromExcel = this.formData?.formThreeData?.appData.totalInvestmentSharesAndSecurities;
+    const elevenUaInvestment = this.formData?.formThreeData.appData.inputData.fairValueinvstShareSec;
+    if(!elevenUaInvestment){
+      return investmentTotalFromExcel;
+    }
+    return elevenUaInvestment;
   }
 }
