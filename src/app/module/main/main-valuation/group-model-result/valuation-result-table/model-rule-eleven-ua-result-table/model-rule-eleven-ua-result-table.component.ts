@@ -105,7 +105,7 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
     const phaseValue = !isNaN(parseFloat(this.formData?.formThreeData?.appData?.inputData?.phaseValue)) ? parseFloat(this.formData?.formThreeData?.appData?.inputData?.phaseValue) : 1;
     const paidUpCapital = !isNaN(parseFloat(this.formData?.formThreeData?.appData?.paidUpCapital)) ? parseFloat(this.formData?.formThreeData?.appData?.paidUpCapital) : 1;
 
-    const totalSum = this.totalCalculationA + this.totalCalculationB + this.totalCalculationC + this.totalCalculationD + this.totalCalculationL;
+    const totalSum = this.totalCalculationA + this.totalCalculationB + this.totalCalculationC + this.totalCalculationD - this.totalCalculationL;
 
     let result;
 
