@@ -119,11 +119,14 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
   }
 
   calculateTotalInvestmentSharesAndSecurities(){
+    let investment=0;
     const investmentTotalFromExcel = this.formData?.formThreeData?.appData.totalInvestmentSharesAndSecurities;
     const elevenUaInvestment = this.formData?.formThreeData.appData.inputData.fairValueinvstShareSec;
+    investment = elevenUaInvestment;
     if(!elevenUaInvestment){
-      return investmentTotalFromExcel;
+       investment =  investmentTotalFromExcel;
     }
-    return elevenUaInvestment;
+    this.totalCalculationC = investment;
+    return investment;
   }
 }
