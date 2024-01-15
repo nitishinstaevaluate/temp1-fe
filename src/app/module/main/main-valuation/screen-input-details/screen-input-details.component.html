@@ -6,137 +6,153 @@
       </div>
     </div>
     <form [formGroup]="inputScreenForm" class="inputscrn">
-        <div class="row">
+      <div class="row">
 
-            <!-- Company Status -->
-              <div class="col-md-4 field" style="padding-top: 0%;padding-left: 1.5%;">
-                <div class="material-textfield">
-                    <mat-form-field appearance="fill" class="companyStatus" style="width: 100%;">
-                      <mat-label class="ind-4">{{modelControl.inputScreen.columns.companyStatus.label}}</mat-label>
-                      <mat-select [(ngModel)]="selectedCompanyStatusType" [compareWith]="comparer" (openedChange)="onDropdownFocus($event,'companyStatus')" (selectionChange)="onDropdownChange($event,'companyStatus')" formControlName="companyStatus" multiple class="new-inp company-stat">
-                        <mat-option *ngFor="let companyStatus of companyStatusType" [value]="companyStatus">
-                          {{ companyStatus.companystatustypename }}
-                        </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                    <span class="company-status-info" [ngClass]="{'tool-class-company-stat': companyStatusDropdownFocused || companyStatusDropdownValue}"> 
-                      <svg [matTooltip]="modelControl.inputScreen.columns.companyStatus.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
-                        <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
-                        <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
-                        <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
-                    </span>
-                </div>
-              </div>
-
-            <!-- Company type -->
-              <div class="col-md-4 field" style="padding-top: 0%;">
-                <div class="material-textfield">
-                  <mat-form-field appearance="fill" class="companyType" style="width: 100%;">
-                    <mat-label class="ind-4">{{modelControl.inputScreen.columns.companyType.label}}</mat-label>
-                    <mat-select [(ngModel)]="selectedCompanyType" [compareWith]="comparer" (openedChange)="onDropdownFocus($event,'companyType')" (selectionChange)="onDropdownChange($event,'companyType')" formControlName="companyType" multiple class="new-inp company-type">
-                      <mat-option *ngFor="let company of companyType" [value]="company">
-                        {{ company.companytypename }}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                  <span class="company-type-info" [ngClass]="{'tool-class-company-type': companyTypeDropdownFocused || companyTypeDropdownValue}"> 
-                    <svg [matTooltip]="modelControl.inputScreen.columns.companyType.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
-                      <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
-                      <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
-                      <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
-                  </span>
-                </div>
-              </div>
-
-              <!-- Business descriptor  -->
-              <div class="col-md-4 field" style="padding-top: 2%;">
-                <div class="material-textfield">
-                  <input class="new-inp" [placeholder]="modelControl.inputScreen.columns.descriptor.type" (keyup)="filterByBusinessDescriptor($event)" [type]="modelControl.inputScreen.columns.descriptor.type" formControlName="descriptor" />
-                  <label>{{modelControl.inputScreen.columns.descriptor.label}}</label>
-                  <span class="tool-class-business-desc">
-                    <svg [matTooltip]="modelControl.inputScreen.columns.descriptor.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
-                      <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
-                      <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
-                      <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
-                  </span>
-                </div>
-              </div>
-
-              <!-- industry Name level-3 -->
-              <div class="col-md-6 field" style="padding-top: 2%;">
-                <div class="material-textfield">
-                  <!-- <input class="new-inp" placeholder="Add level 3 industry" type="text" formControlName="industryL3" /> -->
-                  <select id="industryL3" class="new-inp" formControlName="industryL3">
-                    <option value="" disabled selected>{{ modelControl.inputScreen.columns.industryL3.placeholder }}</option>
-                    <option *ngFor="let doc of levelThreeIndustry" [ngValue]="doc.GICSDescriptor">{{ doc.GICSDescriptor }}</option>
-                  </select>
-                  <label for="industryL3">{{modelControl.inputScreen.columns.industryL3.label}}</label>
-                  <span class="tool-class">
-                    <svg [matTooltip]="modelControl.inputScreen.columns.industryL3.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
-                      <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
-                      <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
-                      <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
-                  </span>
-                </div>
-                <div style="display: flex; align-items: center;padding-left: 1%;padding-top: 1%;">
-                  <span *ngIf="inputScreenForm.controls['industryL3'].value" style="width: 100%;">
-                    <input type="checkbox" (change)="onCheckboxChange($event)" style="vertical-align: middle;">
-                    <span class="reset-ind3" style="vertical-align: middle;">Reset Industry level-3</span>
-                  </span>
-                </div>
-              </div>
-
-              <!-- industry Name Level-4 -->
-              <div class="col-md-6 field" style="padding-top: 0%;padding-left: 1.5%;padding-right: 1%;">
-                <div class="material-textfield">
-                  <mat-form-field appearance="fill" class="ind4">
-                    <mat-label class="ind-4">{{modelControl.inputScreen.columns.industryL4.label}}</mat-label>
-                    <mat-select [(ngModel)]="selectedLevelFourIndustry" [compareWith]="comparer" (openedChange)="onDropdownFocus($event,'industryFour')" (selectionChange)="onDropdownChange($event,'industryFour')" formControlName="industryL4" multiple class="new-inp">
-                      <mat-option *ngFor="let industry of levelFourIndustry" [value]="industry">
-                        {{ industry.GICSDescriptor }}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                  <span class="ind-four-info" [ngClass]="{'tool-class-business-ind-four': industryFourDropdownFocused || industryFourDropdownValue}"> 
-                    <svg [matTooltip]="modelControl.inputScreen.columns.industryL4.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
-                      <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
-                      <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
-                      <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
-                  </span>
-                </div>
-              </div>
-            </div>
-      </form>   
-      <div style="padding-left: 2%;padding-top: 1%;">
-        <p class="total-rec">Showing {{total}} records</p>
-      </div>
-      
-      <table class="table-industry-based-company">
-        <thead>
-          <tr style="text-transform: capitalize;" class="header">
-            <th style="width: 5%;border: 1px solid #eeeeee"><i class="fa fa-filter" style="font-size:17px"></i></th>
-            <th style="border: 1px solid #eeeeee; height: 40px;" *ngFor="let columnName of ciqIndustryHead" class="make-bold" [ngStyle]="(columnName === 'Company Name') ? { 'width': '30%'} : (columnName === 'City') ? { 'width':'10%', 'padding-left':'2%' } : (columnName === 'Company Id') ? {'width':'8%'} : (columnName === 'Industry Description') ? { 'width':'15%' } : { 'width':'auto' }">
-              {{ columnName }}
-              <span style="display: inline-block; vertical-align: top;padding-left: 1%;">
-                <mat-progress-spinner diameter="20" *ngIf="loader" style="transform: scale(0.7);" mode="indeterminate"></mat-progress-spinner>
+        <!-- Company Status -->
+        <div class="col-md-4 field" style="padding-top: 0%;padding-left: 1.5%;">
+          <div class="material-textfield">
+              <mat-form-field appearance="fill" class="companyStatus" style="width: 100%;">
+                <mat-label class="ind-4">{{modelControl.inputScreen.columns.companyStatus.label}}</mat-label>
+                <mat-select [(ngModel)]="selectedCompanyStatusType" [compareWith]="comparer" (openedChange)="onDropdownFocus($event,'companyStatus')" (selectionChange)="onDropdownChange($event,'companyStatus')" formControlName="companyStatus" multiple class="new-inp company-stat">
+                  <mat-option *ngFor="let companyStatus of companyStatusType" [value]="companyStatus">
+                    {{ companyStatus.companystatustypename }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <span class="company-status-info" [ngClass]="{'tool-class-company-stat': companyStatusDropdownFocused || companyStatusDropdownValue}"> 
+                <svg [matTooltip]="modelControl.inputScreen.columns.companyStatus.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
+                  <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
+                  <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
+                  <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
               </span>
-            </th>
-          </tr>
-        </thead>
-        <tbody style="position: relative;">
-          <div class="loader-overlay" *ngIf="loader">
           </div>
-          <tr *ngFor="let row of ciqIndustryData; let i = index" class="content">
-            <td style="text-align: left;font-size: 14px;text-transform: capitalize;border: 1px solid #eeeeee" class="make-light">
-              <input type="checkbox" [id]="'checkbox_' + i" [(ngModel)]="row.isSelected" (change)="onIndustryCheck($event, row)"/>
-            </td>
-            <td style="text-align: left;font-size: 14px;text-transform: capitalize;border: 1px solid #eeeeee;" class="make-light">{{row.COMPANYID}}</td>
-            <td style="text-align: justify;font-size: 14px;text-transform: capitalize;border: 1px solid #eeeeee" class="make-light">{{row.COMPANYNAME}}</td>
-            <td style="text-align: left;font-size: 14px;text-transform: capitalize;padding-left: 2%;border: 1px solid #eeeeee" class="make-light" >{{row.CITY}}</td>
-            <td style="text-align: left;font-size: 14px;text-transform: capitalize;border: 1px solid #eeeeee" class="make-light">{{row.SIMPLEINDUSTRYDESCRIPTION}}</td>
-          </tr>
-        </tbody>
-      </table>
+        </div>
+
+        <!-- Company type -->
+        <div class="col-md-4 field" style="padding-top: 0%;">
+          <div class="material-textfield">
+            <mat-form-field appearance="fill" class="companyType" style="width: 100%;">
+              <mat-label class="ind-4">{{modelControl.inputScreen.columns.companyType.label}}</mat-label>
+              <mat-select [(ngModel)]="selectedCompanyType" [compareWith]="comparer" (openedChange)="onDropdownFocus($event,'companyType')" (selectionChange)="onDropdownChange($event,'companyType')" formControlName="companyType" multiple class="new-inp company-type">
+                <mat-option *ngFor="let company of companyType" [value]="company">
+                  {{ company.companytypename }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <span class="company-type-info" [ngClass]="{'tool-class-company-type': companyTypeDropdownFocused || companyTypeDropdownValue}"> 
+              <svg [matTooltip]="modelControl.inputScreen.columns.companyType.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
+                <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
+                <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
+                <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
+            </span>
+          </div>
+        </div>
+
+        <!-- Business descriptor  -->
+        <div class="col-md-4 field" style="padding-top: 2%;">
+          <div class="material-textfield">
+            <input class="new-inp" [placeholder]="modelControl.inputScreen.columns.descriptor.type" (keyup)="filterByBusinessDescriptor($event)" [type]="modelControl.inputScreen.columns.descriptor.type" formControlName="descriptor" />
+            <label>{{modelControl.inputScreen.columns.descriptor.label}}</label>
+            <span class="tool-class-business-desc">
+              <svg [matTooltip]="modelControl.inputScreen.columns.descriptor.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
+                <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
+                <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
+                <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
+            </span>
+
+            <!-- <mat-form-field appearance="fill" class="ind4" style="width: 100%;">
+                <input type="text" matInput formControlName="descriptor" class="autocomplete-inp" (keyup)="filterByBusinessDescriptor($event)" [matAutocomplete]="auto" placeholder="Type to autocomplete">
+                <mat-label class="ind-4">{{modelControl.inputScreen.columns.descriptor.label}}</mat-label>
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (selectionChange)="onDropdownChange($event,'businessDescriptor')">
+                    {{ option }}
+                  </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+            <span class="tool-class-business-desc">
+              <svg [matTooltip]="modelControl.inputScreen.columns.descriptor.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
+                <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
+                <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
+                <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
+            </span> -->
+          </div>
+        </div>
+
+        <!-- industry Name level-3 -->
+        <div class="col-md-6 field" style="padding-top: 2%;">
+          <div class="material-textfield">
+            <!-- <input class="new-inp" placeholder="Add level 3 industry" type="text" formControlName="industryL3" /> -->
+            <select id="industryL3" class="new-inp" formControlName="industryL3">
+              <option value="" disabled selected>{{ modelControl.inputScreen.columns.industryL3.placeholder }}</option>
+              <option *ngFor="let doc of levelThreeIndustry" [ngValue]="doc.GICSDescriptor">{{ doc.GICSDescriptor }}</option>
+            </select>
+            <label for="industryL3">{{modelControl.inputScreen.columns.industryL3.label}}</label>
+            <span class="tool-class">
+              <svg [matTooltip]="modelControl.inputScreen.columns.industryL3.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
+                <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
+                <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
+                <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
+            </span>
+          </div>
+          <div style="display: flex; align-items: center;padding-left: 1%;padding-top: 1%;">
+            <span *ngIf="inputScreenForm.controls['industryL3'].value" style="width: 100%;">
+              <input type="checkbox" (change)="onCheckboxChange($event)" style="vertical-align: middle;">
+              <span class="reset-ind3" style="vertical-align: middle;">Reset Industry level-3</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- industry Name Level-4 -->
+        <div class="col-md-6 field" style="padding-top: 0%;padding-left: 1.5%;padding-right: 1%;">
+          <div class="material-textfield">
+            <mat-form-field appearance="fill" class="ind4">
+              <mat-label class="ind-4">{{modelControl.inputScreen.columns.industryL4.label}}</mat-label>
+              <mat-select [(ngModel)]="selectedLevelFourIndustry" [compareWith]="comparer" (openedChange)="onDropdownFocus($event,'industryFour')" (selectionChange)="onDropdownChange($event,'industryFour')" formControlName="industryL4" multiple class="new-inp">
+                <mat-option *ngFor="let industry of levelFourIndustry" [value]="industry">
+                  {{ industry.GICSDescriptor }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <span class="ind-four-info" [ngClass]="{'tool-class-business-ind-four': industryFourDropdownFocused || industryFourDropdownValue}"> 
+              <svg [matTooltip]="modelControl.inputScreen.columns.industryL4.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
+                <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
+                <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
+                <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
+            </span>
+          </div>
+        </div>
+      </div>
+    </form>   
+    <div style="padding-left: 2%;padding-top: 1%;">
+      <p class="total-rec">Showing {{total}} records</p>
+    </div>
+      
+    <table class="table-industry-based-company">
+      <thead>
+        <tr style="text-transform: capitalize;" class="header">
+          <th style="width: 5%;border: 1px solid #eeeeee"><i class="fa fa-filter" style="font-size:17px"></i></th>
+          <th style="border: 1px solid #eeeeee; height: 40px;" *ngFor="let columnName of ciqIndustryHead" class="make-bold" [ngStyle]="(columnName === 'Company Name') ? { 'width': '30%'} : (columnName === 'City') ? { 'width':'10%', 'padding-left':'2%' } : (columnName === 'Company Id') ? {'width':'8%'} : (columnName === 'Industry Description') ? { 'width':'15%' } : { 'width':'auto' }">
+            {{ columnName }}
+            <span style="display: inline-block; vertical-align: top;padding-left: 1%;">
+              <mat-progress-spinner diameter="20" *ngIf="loader" style="transform: scale(0.7);" mode="indeterminate"></mat-progress-spinner>
+            </span>
+          </th>
+        </tr>
+      </thead>
+      <tbody style="position: relative;">
+        <div class="loader-overlay" *ngIf="loader">
+        </div>
+        <tr *ngFor="let row of ciqIndustryData; let i = index" class="content">
+          <td style="text-align: left;font-size: 14px;text-transform: capitalize;border: 1px solid #eeeeee" class="make-light">
+            <input type="checkbox" [id]="'checkbox_' + i" [(ngModel)]="row.isSelected" (change)="onIndustryCheck($event, row)"/>
+          </td>
+          <td style="text-align: left;font-size: 14px;text-transform: capitalize;border: 1px solid #eeeeee;" class="make-light">{{row.COMPANYID}}</td>
+          <td style="text-align: justify;font-size: 14px;text-transform: capitalize;border: 1px solid #eeeeee" class="make-light">{{row.COMPANYNAME}}</td>
+          <td style="text-align: left;font-size: 14px;text-transform: capitalize;padding-left: 2%;border: 1px solid #eeeeee" class="make-light" >{{row.CITY}}</td>
+          <td style="text-align: left;font-size: 14px;text-transform: capitalize;border: 1px solid #eeeeee" class="make-light">{{row.SIMPLEINDUSTRYDESCRIPTION}}</td>
+        </tr>
+      </tbody>
+    </table>
     </div>
 
     <div class="col-md-12 btn-prop">
@@ -151,6 +167,3 @@
      </button>
 </div>
 </div>
-
-
-

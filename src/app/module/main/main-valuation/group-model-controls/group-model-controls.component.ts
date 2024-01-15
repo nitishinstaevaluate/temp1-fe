@@ -442,6 +442,7 @@ isSelectedpreferenceRatio(value:any){
       delete control.discountRateType;
       delete control.discountRateValue;
     }
+    delete control.industry;
     
     this.isExcelReupload = false; // reset it once payload has modified excel sheet id
     

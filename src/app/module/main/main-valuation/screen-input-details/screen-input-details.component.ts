@@ -7,7 +7,7 @@ import { INDUSTRY_BASED_COMPANY, MODELS } from 'src/app/shared/enums/constant';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subject, debounceTime, distinctUntilChanged, switchMap, throttleTime } from 'rxjs';
+import { Observable, Subject, debounceTime, distinctUntilChanged, map, startWith, switchMap, throttleTime } from 'rxjs';
 
 @Component({
   selector: 'app-screen-input-details',
@@ -49,7 +49,10 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   searchByDescriptor = new Subject<string>(); 
   mainIndustries:any = [];
   total=0;
-  selectedIndustries:any= []
+  selectedIndustries:any= [];
+  // options: string[] = ['Beverage', 'Chemicals', 'Automobile', 'Aerospace', 'Health', 'Electric'];
+  // filteredOptions: Observable<string[]> | undefined;
+
   constructor(
     private fb:FormBuilder,
     private ciqSpService:CiqSPService,
@@ -73,7 +76,20 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     this.loadForm();
     // this.checkProcessExist(this.formOneData);
     this.onValueChange();
+    // this.filteredOptions = this.inputScreenForm.controls['descriptor'].valueChanges.pipe(
+    //   startWith(''),
+    //   map(value => this.filter(value))
+    // );
   }
+
+  // displayFn(value: string): string {
+  //   return value || '';
+  // }
+
+  // filter(value: any): string[] {
+  //   const filterValue = value.toLowerCase();
+  //   return this.options.filter(option => option.toLowerCase().includes(filterValue));
+  // }
 
   loadForm(){
     this.inputScreenForm = this.fb.group({
