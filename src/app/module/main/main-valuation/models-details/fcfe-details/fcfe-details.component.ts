@@ -500,7 +500,8 @@ if(event?.target?.value){
 calculateBeta(betaSubType:any){
   const betaPayload = {
     industryAggregateList: this.formTwoData.formTwoData.selectedIndustries,
-    betaSubType: betaSubType
+    betaSubType: betaSubType,
+    taxRate: this.formOneData.taxRate || this.formTwoData.formOneData.taxRate
   }
   this.betaLoader = true
   this.ciqSpService.calculateSPindustryBeta(betaPayload).subscribe((betaData:any)=>{
