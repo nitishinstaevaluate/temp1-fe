@@ -40,6 +40,6 @@ export class CiqSPService {
    }
 
    calculateSPindustryBeta(payload:any){
-    return this.http.post(`${this.HOST}ciq-sp/calculate-sp-industry-beta`,payload)
+    return this.http.post(`${this.HOST}ciq-sp/calculate-sp-beta-aggregate`,payload)
    }
 }

@@ -214,6 +214,10 @@ export class GroupModelControlsComponent implements OnInit {
    }
   }
   loadValues(){
+    this.valuationService.getValuationDropdown()
+      .subscribe((resp: any) => {
+        this.taxRate = resp[DROPDOWN.TAX];
+      });
     // forkJoin([this.valuationService.getValuationDropdown(),this._dataReferencesService.getIndianTreasuryYields(),
     //   this._dataReferencesService.getHistoricalReturns(),
     //   this._dataReferencesService.getBetaIndustries()
