@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import groupModelControl from '../../../../../shared/enums/group-model-controls.json';
-import { isSelected } from 'src/app/shared/enums/functions';
+import { isNotRuleElevenUaAndNav, isSelected } from 'src/app/shared/enums/functions';
 import { MatSelect } from '@angular/material/select';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
@@ -12,7 +12,7 @@ import { MODELS } from 'src/app/shared/enums/constant';
   templateUrl: './net-asset-value-details.component.html',
   styleUrls: ['./net-asset-value-details.component.scss']
 })
-export class NetAssetValueDetailsComponent implements OnInit{
+export class NetAssetValueDetailsComponent implements OnInit, OnChanges{
 @Input() formOneData:any;
 @Output() navDetailsPrev=new EventEmitter<any>();
 @Output() navDetails=new EventEmitter<any>();
@@ -23,6 +23,7 @@ navForm:any;
 floatLabelType:any='never';
 appearance:any='fill';
 editedValues:any=[];
+modelValue:any = []
 
 constructor(private fb:FormBuilder,
   private processStatusManagerService:ProcessStatusManagerService,
@@ -30,6 +31,9 @@ constructor(private fb:FormBuilder,
 ngOnInit(): void {
   this.loadForm();
   this.checkProcessExist();
+}
+ngOnChanges(changes: SimpleChanges) {
+  this.checkPreviousAndCurrentValue(changes);
 }
 
 checkProcessExist(){
@@ -251,6 +255,10 @@ resetBookValue(value:any,controlName:any){
   }
 }
 previous(){
+  const checkModel = isNotRuleElevenUaAndNav(this.modelValue);
+  if(!checkModel){
+    localStorage.setItem('step', '2')
+  }
   this.navDetailsPrev.emit({status:MODELS.NAV})
 }
 saveAndNext(){
@@ -333,6 +341,12 @@ validateControls(controlArray: { [key: string]: FormControl },payload:any){
     this.processStateManager(processStateModel,localStorage.getItem('processStateId'));
 
     this.navDetails.emit(payload)
+}
+
+checkPreviousAndCurrentValue(changes:any){
+  if (this.formOneData && changes['formOneData'] ) {
+    this.modelValue = changes['formOneData'].currentValue.model;
+  }
 }
 
 processStateManager(process:any, processId:any){

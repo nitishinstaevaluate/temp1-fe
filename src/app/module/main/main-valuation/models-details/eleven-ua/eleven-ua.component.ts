@@ -1,17 +1,18 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import groupModelControl from '../../../../../shared/enums/group-model-controls.json';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { hasError } from 'src/app/shared/enums/errorMethods';
 import { MODELS } from 'src/app/shared/enums/constant';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { isNotRuleElevenUaAndNav } from 'src/app/shared/enums/functions';
 
 @Component({
   selector: 'app-eleven-ua',
   templateUrl: './eleven-ua.component.html',
   styleUrls: ['./eleven-ua.component.scss']
 })
-export class ElevenUAComponent implements OnInit{
+export class ElevenUAComponent implements OnInit, OnChanges{
   modelControl = groupModelControl
   ruleElevenUaForm: any;
   hasError = hasError;
@@ -19,6 +20,7 @@ export class ElevenUAComponent implements OnInit{
   @Output() ruleElevenUaDetailsPrev=new EventEmitter<any>();
   @Input() formOneData:any;
   @Input() thirdStageInput:any;
+  modelValue:any = [];
   
   constructor(
     private fb: FormBuilder,
@@ -30,6 +32,11 @@ export class ElevenUAComponent implements OnInit{
     this.loadForm();
     this.checkProcessExist();
   }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.checkPreviousAndCurrentValue(changes);
+  }
+
   loadForm(){
     this.ruleElevenUaForm = this.fb.group({
       fairValueJewellery: ['',[Validators.required]],
@@ -59,6 +66,10 @@ export class ElevenUAComponent implements OnInit{
   }
 
   previous(){
+    const checkModel = isNotRuleElevenUaAndNav(this.modelValue);
+    if(!checkModel){
+      localStorage.setItem('step', '2')
+    }
     this.ruleElevenUaDetailsPrev.emit({status:'ruleElevenUa'})
   }
 
@@ -70,6 +81,12 @@ export class ElevenUAComponent implements OnInit{
     }
     this.processStateManager(processStateModel,localStorage.getItem('processStateId'));
     this.ruleElevenUaDetails.emit( {...this.ruleElevenUaForm.value,status:MODELS.RULE_ELEVEN_UA} );
+  }
+
+  checkPreviousAndCurrentValue(changes:any){
+    if (this.formOneData && changes['formOneData'] ) {
+      this.modelValue = changes['formOneData'].currentValue.model;
+    }
   }
 
   processStateManager(process:any, processId:any){

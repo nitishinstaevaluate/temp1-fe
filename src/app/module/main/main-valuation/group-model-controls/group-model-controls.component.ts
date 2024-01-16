@@ -473,6 +473,12 @@ isSelectedpreferenceRatio(value:any){
         processStep = 0
       }
 
+      const checkModel = this.isNotRuleElevenUaAndNav();
+      if(!checkModel){
+        localStorage.setItem('step', '2')
+        processStep = 2
+      }
+
     localStorage.setItem('stepOneStats',`${allControlsFilled}`)
     this.calculationService.checkStepStatus.next({stepStatus:allControlsFilled,step:this.step})
 
