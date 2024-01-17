@@ -63,8 +63,8 @@
             <mat-form-field appearance="fill" class="ind4" style="width: 100%;">
                 <input type="text" matInput formControlName="descriptor" class="autocomplete-inp" (keyup)="filterByBusinessDescriptor($event)" [matAutocomplete]="auto" placeholder="Type to autocomplete">
                 <mat-label class="ind-4">{{modelControl.inputScreen.columns.descriptor.label}}</mat-label>
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onOptionSelection($event)">
-                  <mat-option *ngFor="let option of options" [value]="option">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onOptionSelection($event)" class="mat-auto">
+                  <mat-option *ngFor="let option of options" [value]="option" style="text-transform: capitalize;" class="input-scrn">
                     {{ option }}
                   </mat-option>
                 </mat-autocomplete>
