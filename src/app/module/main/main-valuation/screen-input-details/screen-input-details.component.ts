@@ -70,7 +70,6 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     this.searchByDescriptor.pipe(
       debounceTime(1300),
       throttleTime(1000),
-      distinctUntilChanged(),
       switchMap(async () => this.loadCiqIndustryBasedLevelFour(this.createPayload()))
     ).subscribe();
   }
@@ -513,12 +512,15 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   }
 
   filterByBusinessDescriptor(event:any){
-    if(this.descriptorQuery !== event.target.value){
+    if(event.target.value === ""){
+      this.descriptorQuery = ""
+      this.searchByDescriptor.next(this.descriptorQuery);
+    }
+    else if(this.descriptorQuery !== event.target.value){
       this.descriptorQuery = event.target.value;
       this.utilService.getWordList(this.descriptorQuery).subscribe((wordsArray)=>{
         this.options = wordsArray
       })
-      // this.searchByDescriptor.next(this.descriptorQuery);
     }
   }
 
