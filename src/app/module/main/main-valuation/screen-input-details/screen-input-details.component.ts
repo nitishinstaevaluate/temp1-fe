@@ -8,6 +8,7 @@ import { CalculationsService } from 'src/app/shared/service/calculations.service
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, Subject, debounceTime, distinctUntilChanged, map, startWith, switchMap, throttleTime } from 'rxjs';
+import { UtilService } from 'src/app/shared/service/util.service';
 
 @Component({
   selector: 'app-screen-input-details',
@@ -50,15 +51,16 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   mainIndustries:any = [];
   total=0;
   selectedIndustries:any= [];
-  // options: string[] = ['Beverage', 'Chemicals', 'Automobile', 'Aerospace', 'Health', 'Electric'];
-  // filteredOptions: Observable<string[]> | undefined;
+  options: any = [];
+  filteredOptions: Observable<string[]> | undefined;
 
   constructor(
     private fb:FormBuilder,
     private ciqSpService:CiqSPService,
     private calculationService:CalculationsService,
     private processStatusManagerService: ProcessStatusManagerService,
-    private snackBar: MatSnackBar){}
+    private snackBar: MatSnackBar,
+    private utilService: UtilService){}
 
   ngOnInit(){
     this.loadForm();
@@ -76,20 +78,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     this.loadForm();
     // this.checkProcessExist(this.formOneData);
     this.onValueChange();
-    // this.filteredOptions = this.inputScreenForm.controls['descriptor'].valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => this.filter(value))
-    // );
   }
-
-  // displayFn(value: string): string {
-  //   return value || '';
-  // }
-
-  // filter(value: any): string[] {
-  //   const filterValue = value.toLowerCase();
-  //   return this.options.filter(option => option.toLowerCase().includes(filterValue));
-  // }
 
   loadForm(){
     this.inputScreenForm = this.fb.group({
@@ -178,9 +167,9 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   }
 
   onValueChange(){
-    if(this.step !== 2)
+    if(this.step !== 2) 
       return;
-    
+
     this.inputScreenForm.controls['industryL3'].valueChanges.subscribe((val:any) => {
       if (!val) {
         return;
@@ -202,6 +191,11 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     if(this.formOneData?.location != this.secondStageInput?.formOneData?.location){
       this.loadCiqIndustryBasedLevelFour(this.createPayload());
     }
+
+    this.filteredOptions = this.inputScreenForm.controls['descriptor'].valueChanges.pipe(
+      startWith(''),
+      map(value => this.filter(value))
+    );
   }
 
   async saveAndNext(){
@@ -521,7 +515,10 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   filterByBusinessDescriptor(event:any){
     if(this.descriptorQuery !== event.target.value){
       this.descriptorQuery = event.target.value;
-      this.searchByDescriptor.next(this.descriptorQuery);
+      this.utilService.getWordList(this.descriptorQuery).subscribe((wordsArray)=>{
+        this.options = wordsArray
+      })
+      // this.searchByDescriptor.next(this.descriptorQuery);
     }
   }
 
@@ -570,5 +567,21 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       this.levelThreeIndustryDescription = '';
       this.loadCiqIndustryBasedLevelFour(this.createPayload())
     }
+  }
+
+  onOptionSelection(event:any){
+    if(event?.option?.value){
+      this.descriptorQuery = event.option.value;
+      this.loadCiqIndustryBasedLevelFour(this.createPayload())
+    }
+  }
+
+  displayFn(value: string): string {
+    return value || '';
+  }
+
+  filter(value: any): string[] {
+    const filterValue = value.toLowerCase();
+    return this.options.filter((option:any) => option.toLowerCase().includes(filterValue));
   }
 }

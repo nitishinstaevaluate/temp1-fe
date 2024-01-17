@@ -49,22 +49,22 @@
         </div>
 
         <!-- Business descriptor  -->
-        <div class="col-md-4 field" style="padding-top: 2%;">
+        <div class="col-md-4 field" style="padding-top: 0%;">
           <div class="material-textfield">
-            <input class="new-inp" [placeholder]="modelControl.inputScreen.columns.descriptor.type" (keyup)="filterByBusinessDescriptor($event)" [type]="modelControl.inputScreen.columns.descriptor.type" formControlName="descriptor" />
+            <!-- <input class="new-inp" [placeholder]="modelControl.inputScreen.columns.descriptor.type" (keyup)="filterByBusinessDescriptor($event)" [type]="modelControl.inputScreen.columns.descriptor.type" formControlName="descriptor" />
             <label>{{modelControl.inputScreen.columns.descriptor.label}}</label>
             <span class="tool-class-business-desc">
               <svg [matTooltip]="modelControl.inputScreen.columns.descriptor.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
                 <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
                 <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
                 <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
-            </span>
+            </span> -->
 
-            <!-- <mat-form-field appearance="fill" class="ind4" style="width: 100%;">
+            <mat-form-field appearance="fill" class="ind4" style="width: 100%;">
                 <input type="text" matInput formControlName="descriptor" class="autocomplete-inp" (keyup)="filterByBusinessDescriptor($event)" [matAutocomplete]="auto" placeholder="Type to autocomplete">
                 <mat-label class="ind-4">{{modelControl.inputScreen.columns.descriptor.label}}</mat-label>
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (selectionChange)="onDropdownChange($event,'businessDescriptor')">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onOptionSelection($event)">
+                  <mat-option *ngFor="let option of options" [value]="option">
                     {{ option }}
                   </mat-option>
                 </mat-autocomplete>
@@ -74,7 +74,7 @@
                 <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
                 <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
                 <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
-            </span> -->
+            </span>
           </div>
         </div>
 

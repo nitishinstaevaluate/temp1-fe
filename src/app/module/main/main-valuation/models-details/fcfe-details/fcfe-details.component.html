@@ -152,7 +152,7 @@
                             <input type="radio" style="vertical-align: middle;" [checked]="selectedSubBetaType === 'medianBeta'" (change)="onRadioButtonChange($event)" value="medianBeta" name="betaRadio" id="betaRadio">
                             <span class="reset-ind3" style="vertical-align: middle;">Median</span>
                           </span>
-                          <span style="padding-left: 25%;">
+                          <span [ngClass]="fcfeForm.controls['betaType'].value === 'market_beta' ? '' :  'add-padding-beta'">
                             <mat-hint *ngIf="fcfeForm.controls['beta'].value" style="vertical-align: middle;font-size: 11px;color: #1915bb;" class="reset-ind3">Beta is {{fcfeForm.controls['beta'].value?.toFixed(2)}}</mat-hint>
                           </span>
                         </span>
