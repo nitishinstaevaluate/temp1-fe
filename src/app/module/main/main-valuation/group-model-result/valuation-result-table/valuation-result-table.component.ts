@@ -164,7 +164,7 @@ ngOnChanges(changes:SimpleChanges): void {
       
       const discPeriodIndex = this.displayFcffColumn.findIndex(element => element.includes('Discounting Period'));
       if (discPeriodIndex !== -1  ) {
-        this.displayFcffColumn.splice(discPeriodIndex, 1, `Discounting Period - ${this.transferStepperthree.formOneAndThreeData.discountingPeriod} `);
+        this.displayFcffColumn.splice(discPeriodIndex, 1, `Discounting Period - ${this.transferStepperthree?.formOneAndThreeData?.discountingPeriod} `);
       }
       
       this.displayFcffColumn.splice(this.displayFcffColumn.length-1,1,`Value per Share (${this.transferStepperthree?.formOneAndThreeData?.currencyUnit})`)
@@ -209,7 +209,7 @@ ngOnChanges(changes:SimpleChanges): void {
           
         }
         else{
-          this.displayFcffColumn.splice(17, 1, `Equity Value on ${this.formatDate(this.transferStepperthree.formOneAndThreeData.valuationDate)}`);
+          this.displayFcffColumn.splice(17, 1, `Equity Value on ${this.formatDate(this.transferStepperthree?.formOneAndThreeData?.valuationDate)}`);
           const indexOfEquity = this.displayFcffColumn.findIndex(item => item.includes('Equity Value as on'));
           const indexOfStub = this.displayFcffColumn.findIndex(item => item.includes('Add:Stub Period Adjustment'));
           if (indexOfEquity !== -1) {
