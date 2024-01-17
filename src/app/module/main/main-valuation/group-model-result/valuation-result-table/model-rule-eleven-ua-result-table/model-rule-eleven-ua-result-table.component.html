@@ -82,14 +82,14 @@
                 <tr>
                     <td colspan="1" style="width: 5%;">i.</td>
                     <td colspan="1" style="text-align: left;width: 73%;">Investments</td>
-                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 13%;">{{formData?.formThreeData?.appData?.inputData?.fairValueinvstShareSec ? formData.formThreeData.appData.inputData.fairValueinvstShareSec : '-' }}</td>
+                    <td colspan="1" style="text-align: left;width: 20%;padding-left: 13%;">{{calculateTotalInvestmentSharesAndSecurities()}}</td>
                     <td colspan="1" style="width: 10%;"></td>
                 </tr>
             </td>
         </tr>
         <tr class="total" style="background-color: #f5f5f5;">
             <td colspan="4">Total (C)</td>
-            <td colspan="1">{{calculateTotalC()}}</td>
+            <td colspan="1">{{calculateTotalInvestmentSharesAndSecurities()}}</td>
         </tr>
         <tr>
             <td colspan="2">D</td>
@@ -177,7 +177,7 @@
             <td colspan="1">{{calculateTotalL()}}</td>
         </tr>
         <tr class="alltotal">
-            <td colspan="4">A + B + C + D + L</td>
+            <td colspan="4">A + B + C + D - L</td>
             <td colspan="1">{{calculateAll()}}</td>
         </tr>
         <tr>

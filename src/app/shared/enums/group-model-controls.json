@@ -1000,10 +1000,10 @@
             },
             "phaseValue":{
                 "name":"phaseValue",
-                "placeholder":"Enter phase value",
+                "placeholder":"Enter face value",
                 "type":"text",
-                "tooltip":"Phase value",
-                "label":"Phase Value"
+                "tooltip":"Face value",
+                "label":"Face Value"
             }
         }
     }
