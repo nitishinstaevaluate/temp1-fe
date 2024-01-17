@@ -4,6 +4,6 @@ export const environment = {
   // HOST: 'https://localhost:3000/',
   production: false,
   baseUrl: 'https://localhost:3000/',
-  version: '1.0.0',
+  version: '1.0.1',
   synfusionLicenseKey:'ORg4AjUWIQA/Gnt2VlhhQlJCfV5AQmBIYVp/TGpJfl96cVxMZVVBJAtUQF1hSn9SdE1jWXtacXRcQGBZ',
 };
