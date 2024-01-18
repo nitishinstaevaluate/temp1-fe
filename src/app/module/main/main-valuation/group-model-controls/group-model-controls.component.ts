@@ -168,7 +168,7 @@ export class GroupModelControlsComponent implements OnInit {
    this.modelValuation.controls['currencyUnit'].setValue(data?.currencyUnit ?? 'INR');
    this.modelValuation.controls['discountRateType'].setValue(data?.discountRateType === ""  ?  'WACC' : data?.discountRateType);
    this.modelValuation.controls['discountRateValue'].setValue(data?.discountRateValue === "" ? 20 : data?.discountRateValue);
-   this.industriesRatio = data.industriesRatio ?? '';
+  //  this.industriesRatio = data.industriesRatio ?? '';
    this.preferenceCompanies = data.preferenceCompanies ?? [];
   //  localStorage.setItem('excelStat',`${data.isExcelModified ?? ''}`);
    this.modelValuation.controls['industry'].setValue(data?.industry?? '');
@@ -373,7 +373,7 @@ isSelectedpreferenceRatio(value:any){
     if(!this.isRelativeValuation(this.MODEL.RELATIVE_VALUATION)){
       this.relativeValuation.controls['preferenceRatioSelect'].setValue('');
     }
-    let payload = {...this.modelValuation.value,betaIndustry:this.betaIndustriesId,preferenceCompanies:this.preferenceCompanies,industriesRatio:[this.industriesRatio]}
+    let payload = {...this.modelValuation.value,betaIndustry:this.betaIndustriesId,preferenceCompanies:this.preferenceCompanies}
     
     //  check if tax rate is null
     if (payload['taxRate'] == null || payload['taxRateType']=='25.17') {

@@ -53,6 +53,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   selectedIndustries:any= [];
   options: any = [];
   filteredOptions: Observable<string[]> | undefined;
+  meanMedianList:any= []
 
   constructor(
     private fb:FormBuilder,
@@ -202,47 +203,15 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     localStorage.setItem('stepTwoStats',`true`)
     this.calculationService.checkStepStatus.next({stepStatus:true,step:this.step});
     if(this.secondStageInput?.formTwoData){
-      this.processStatusManagerService.getStageWiseDetails(localStorage.getItem('processStateId'), 'secondStageInput').subscribe(
-        async (response: any) => {
-          if (!response.status) {
-            this.snackBar.open(`Industry not found`, 'OK', {
-              horizontalPosition: 'center',
-              verticalPosition: 'bottom',
-              duration: 3000,
-              panelClass: 'app-notification-error',
-            });
-            return;
-          }
-      
-          const areIndustriesEqual = response.data.secondStageInput.selectedIndustries.length === this.mainIndustries.length &&
-            response.data.secondStageInput.selectedIndustries.every((previousIndustries: any) =>
-              this.mainIndustries.some((newIndustries: any) =>
-                previousIndustries?.COMPANYID === newIndustries?.COMPANYID
-              )
-            );
-      
-          if (!areIndustriesEqual) {
-            this.calculationService.betaChangeDetector.next({ status: true });
-          }
-      
-          this.calculationService.betaChangeDetector.next({ status: false });
-        },
-        (error) => {
-          this.snackBar.open(`${error}`, 'OK', {
-            horizontalPosition: 'center',
-            verticalPosition: 'bottom',
-            duration: 3000,
-            panelClass: 'app-notification-error',
-          });
-        }
-      );
-    } 
+      this.getCurrentStageData();
+    }
+    
     const processStateModel ={
-      secondStageInput:{formFillingStatus:true,...this.inputScreenForm.value,totalBeta, selectedIndustries:this.mainIndustries},
+      secondStageInput:{formFillingStatus:true,...this.inputScreenForm.value,totalBeta, selectedIndustries:this.mainIndustries, companies:this.meanMedianList},
       step:2
     }
     this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
-    this.screenInputDetails.emit({formFillingStatus:true, ...this.inputScreenForm.value, totalBeta, selectedIndustries:this.mainIndustries});
+    this.screenInputDetails.emit({formFillingStatus:true, ...this.inputScreenForm.value, totalBeta, selectedIndustries:this.mainIndustries, companies:this.meanMedianList});
   }
 
   previous(){
@@ -585,5 +554,42 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   filter(value: any): string[] {
     const filterValue = value.toLowerCase();
     return this.options.filter((option:any) => option.toLowerCase().includes(filterValue));
+  }
+
+  getCurrentStageData(){
+    this.processStatusManagerService.getStageWiseDetails(localStorage.getItem('processStateId'), 'secondStageInput').subscribe(
+      async (response: any) => {
+        if (!response.status) {
+          this.snackBar.open(`Industry not found`, 'OK', {
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+            duration: 3000,
+            panelClass: 'app-notification-error',
+          });
+          return;
+        }
+    
+        const areIndustriesEqual = response.data.secondStageInput.selectedIndustries.length === this.mainIndustries.length &&
+          response.data.secondStageInput.selectedIndustries.every((previousIndustries: any) =>
+            this.mainIndustries.some((newIndustries: any) =>
+              previousIndustries?.COMPANYID === newIndustries?.COMPANYID
+            )
+          );
+    
+        if (!areIndustriesEqual) {
+          this.calculationService.betaChangeDetector.next({ status: true });
+        }
+    
+        this.calculationService.betaChangeDetector.next({ status: false });
+      },
+      (error) => {
+        this.snackBar.open(`${error}`, 'OK', {
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+          duration: 3000,
+          panelClass: 'app-notification-error',
+        });
+      }
+    );
   }
 }

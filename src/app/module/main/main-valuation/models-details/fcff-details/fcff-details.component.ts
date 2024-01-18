@@ -198,7 +198,7 @@ loadOnChangeValue(){
         // this.equityProp = 1 - this.debtProp;
         // this.prefProp = 1 - this.debtProp - this.equityProp;
         // this.totalCapital = 1 + this.debtRatio;
-        this.deRatio = parseFloat(this.formOneData?.betaIndustry?.deRatio);
+        // this.deRatio = parseFloat();
         this.debtProp = null;
         this.equityProp = null;
         this.prefProp = null;
@@ -215,7 +215,7 @@ loadOnChangeValue(){
           if(result){
             this.targetCapitalStructureForm.setValue(result);
 
-            this.deRatio = parseFloat(this.formOneData?.betaIndustry?.deRatio);
+            // this.deRatio = parseFloat(this.formOneData?.betaIndustry?.deRatio);
             this.debtProp = +this.targetCapitalStructureForm.controls['debtProportion'].value;
             this.equityProp = +this.targetCapitalStructureForm.controls['equityProportion'].value;
             this.prefProp = +this.targetCapitalStructureForm.controls['preferenceProportion'].value;
@@ -627,6 +627,7 @@ this.ciqSpService.calculateSPindustryBeta(betaPayload).subscribe((betaData:any)=
   if(betaData.status){
     this.betaLoader = false;
     this.fcffForm.controls['beta'].setValue(betaData.total);
+    this.deRatio = betaData.deRatio
     this.selectedSubBetaType = betaSubType;
     this.calculateCoeAndAdjustedCoe();
   }

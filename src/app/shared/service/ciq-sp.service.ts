@@ -42,4 +42,8 @@ export class CiqSPService {
    calculateSPindustryBeta(payload:any){
     return this.http.post(`${this.HOST}ciq-sp/calculate-sp-beta-aggregate`,payload)
    }
+
+   calculateSPCompaniesMeanMedianRatio(payload:any){
+    return this.http.post(`${this.HOST}ciq-sp/calculate-sp-companies-mean-median`, payload)
+   }
 }

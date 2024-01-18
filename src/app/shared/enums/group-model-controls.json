@@ -209,7 +209,7 @@
                 "toolTip":"Please select Beta",
                 "options":[
                     {
-                        "name":"Levered",
+                        "name":"Relevered",
                         "value":"levered"
                     },
                     {
@@ -334,7 +334,7 @@
                 "toolTip":"Please select Beta",
                 "options":[
                     {
-                        "name":"Levered",
+                        "name":"Relevered",
                         "value":"levered"
                     },
                     {
@@ -471,7 +471,7 @@
                 "toolTip":"Please select Beta",
                 "options":[
                     {
-                        "name":"Levered",
+                        "name":"Relevered",
                         "value":"levered"
                     },
                     {
