@@ -61,7 +61,7 @@
             </span> -->
 
             <mat-form-field appearance="fill" class="ind4" style="width: 100%;">
-                <input type="text" matInput formControlName="descriptor" class="autocomplete-inp" (keyup)="filterByBusinessDescriptor($event)" [matAutocomplete]="auto" placeholder="Type to autocomplete">
+                <input type="text" matInput formControlName="descriptor" class="autocomplete-inp" (keyup)="filterByBusinessDescriptor($event)" [matAutocomplete]="auto" placeholder="Enter description">
                 <mat-label class="ind-4">{{modelControl.inputScreen.columns.descriptor.label}}</mat-label>
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onOptionSelection($event)" class="mat-auto">
                   <mat-option *ngFor="let option of options" [value]="option" style="text-transform: capitalize;" class="input-scrn">
@@ -102,8 +102,9 @@
           </div>
         </div>
 
+        <!-- SANKET (19/01/2024): This is prospective advance feature -->
         <!-- industry Name Level-4 -->
-        <div class="col-md-6 field" style="padding-top: 0%;padding-left: 1.5%;padding-right: 1%;">
+        <!-- <div class="col-md-6 field" style="padding-top: 0%;padding-left: 1.5%;padding-right: 1%;">
           <div class="material-textfield">
             <mat-form-field appearance="fill" class="ind4">
               <mat-label class="ind-4">{{modelControl.inputScreen.columns.industryL4.label}}</mat-label>
@@ -120,22 +121,23 @@
                 <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
             </span>
           </div>
-        </div>
+        </div> -->
       </div>
     </form>   
-    <div style="padding-left: 2%;padding-top: 1%;">
+    <div class="loader-overlay" *ngIf="loader">
+      <mat-progress-spinner diameter="40" class="table-spinner"  mode="indeterminate"></mat-progress-spinner>
+  </div>
+  
+    <div style="padding-left: 2%;padding-top: 1%;" *ngIf="!loader">
       <p class="total-rec">Showing {{total}} records</p>
     </div>
-      
-    <table class="table-industry-based-company">
+     
+    <table class="table-industry-based-company" *ngIf="!loader">
       <thead>
         <tr style="text-transform: capitalize;" class="header">
           <th style="width: 5%;border: 1px solid #eeeeee"><i class="fa fa-filter" style="font-size:17px"></i></th>
           <th style="border: 1px solid #eeeeee; height: 40px;" *ngFor="let columnName of ciqIndustryHead" class="make-bold" [ngStyle]="(columnName === 'Company Name') ? { 'width': '30%'} : (columnName === 'City') ? { 'width':'10%', 'padding-left':'2%' } : (columnName === 'Company Id') ? {'width':'8%'} : (columnName === 'Industry Description') ? { 'width':'15%' } : { 'width':'auto' }">
             {{ columnName }}
-            <span style="display: inline-block; vertical-align: top;padding-left: 1%;">
-              <mat-progress-spinner diameter="20" *ngIf="loader" style="transform: scale(0.7);" mode="indeterminate"></mat-progress-spinner>
-            </span>
           </th>
         </tr>
       </thead>
@@ -155,7 +157,7 @@
     </table>
     </div>
 
-    <div class="col-md-12 btn-prop">
+    <div class="col-md-12 btn-prop" *ngIf="!loader">
         <button (click)="previous()" mat-raised-button class="button-back-mat">
           <span class="button-back"><mat-icon>send</mat-icon></span>
             Back
