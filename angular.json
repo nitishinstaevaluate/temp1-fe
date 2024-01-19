@@ -75,7 +75,8 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "Valuation_MVP:build:production"
+              "browserTarget": "Valuation_MVP:build:production",
+              "proxyConfig": "proxy.conf.js"
             },
             "development": {
               "browserTarget": "Valuation_MVP:build:development"
