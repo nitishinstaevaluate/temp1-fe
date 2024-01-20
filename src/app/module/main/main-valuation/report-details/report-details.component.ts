@@ -177,7 +177,8 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       ...this.registeredValuerDetails.value,
       reportId:this.transferStepperFour?.formFourData?.appData?.reportId || this.transferStepperFour?.formFourData?.appData?._id,
       reportDate:this.reportForm.controls['reportDate'].value,
-      finalWeightedAverage:this.transferStepperFour?.formFiveData || this.transferStepperFour?.totalWeightageModel 
+      finalWeightedAverage:this.transferStepperFour?.formFiveData || this.transferStepperFour?.totalWeightageModel,
+      processStateId:localStorage.getItem('processStateId')
     }
     const approach = (this.transferStepperFour?.formOneAndThreeData?.model.includes('NAV')) && this.transferStepperFour.formOneAndThreeData.model.length === 1? 'NAV' : (this.transferStepperFour?.formOneAndThreeData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndThreeData?.model.includes('FCFE')) && this.transferStepperFour.formOneAndThreeData.model.length === 1 ? 'DCF' : ((this.transferStepperFour?.formOneAndThreeData?.model.includes('Relative_Valuation') || this.transferStepperFour?.formOneAndThreeData?.model.includes('CTM')) && this.transferStepperFour.formOneAndThreeData.model.length === 1) ? 'CCM' : 'MULTI_MODEL';
     if(!this.transferStepperFour?.formOneAndThreeData?.model.includes(MODELS.RULE_ELEVEN_UA)){
@@ -293,7 +294,8 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       ...this.registeredValuerDetails.value,
       reportId:this.transferStepperFour?.formFourData?.appData?.reportId || this.transferStepperFour?.formFourData?.appData?._id,
       reportDate:this.reportForm.controls['reportDate'].value,
-      finalWeightedAverage:this.transferStepperFour?.formFiveData || this.transferStepperFour?.totalWeightageModel
+      finalWeightedAverage:this.transferStepperFour?.formFiveData || this.transferStepperFour?.totalWeightageModel,
+      processStateId:localStorage.getItem('processStateId')
     }
     if(!this.transferStepperFour?.formOneAndThreeData?.model.includes(MODELS.RULE_ELEVEN_UA)){
       const approach = (this.transferStepperFour?.formOneAndThreeData?.model.includes('NAV')) && this.transferStepperFour.formOneAndThreeData.model.length === 1? 'NAV' : (this.transferStepperFour?.formOneAndThreeData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndThreeData?.model.includes('FCFE')) && this.transferStepperFour.formOneAndThreeData.model.length === 1 ? 'DCF' : ((this.transferStepperFour?.formOneAndThreeData?.model.includes('Relative_Valuation') || this.transferStepperFour?.formOneAndThreeData?.model.includes('CTM')) && this.transferStepperFour.formOneAndThreeData.model.length === 1) ? 'CCM' : 'MULTI_MODEL';
