@@ -53,7 +53,8 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   selectedIndustries:any= [];
   options: any = [];
   filteredOptions: Observable<string[]> | undefined;
-  meanMedianList:any= []
+  meanMedianList:any= [];
+  previousIndustryL3Value:any=''
 
   constructor(
     private fb:FormBuilder,
@@ -171,13 +172,16 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       return;
 
     this.inputScreenForm.controls['industryL3'].valueChanges.subscribe((val:any) => {
-      if (!val) {
-        return;
-      }
+      if (val !== this.previousIndustryL3Value) {
+        if (!val) {
+          return;
+        }
+        this.previousIndustryL3Value = val;    
       this.loadCiqDescriptorBasedIndustry(val);
 
       this.levelThreeIndustryDescription = val;
       this.loadCiqIndustryBasedLevelFour(this.createPayload());
+      }
     });
     if(this.descriptorQuery){
       this.inputScreenForm.get('descriptor').setValue(this.descriptorQuery);
