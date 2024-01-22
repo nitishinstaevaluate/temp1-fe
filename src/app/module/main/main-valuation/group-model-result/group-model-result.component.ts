@@ -15,7 +15,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
   @Output() previousPage = new EventEmitter<any>();
   @Output() resultData = new EventEmitter<any>();
   @Input() transferStepperthree:any; //use this property as it contains data from form 1(stepper 1) and form 2 (stepper 2)
-  @Input() fourthStageInput:any; //use this property as it contains already processed data from form 1(stepper 1) and form 2 (stepper 2)
+  @Input() fifthStageInput:any; //use this property as it contains already processed data from form 1(stepper 1) and form 2 (stepper 2)
   
   fcfeSlider:any=0;
   fcffSlider:any=0;
@@ -56,8 +56,8 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
   }
   checkProcessExist(){
     if(!this.transferStepperthree){
-      this.transferStepperthree= this.fourthStageInput;
-      if(!this.transferStepperthree?.formOneAndTwoData?.model.includes(MODELS.RULE_ELEVEN_UA)){
+      this.transferStepperthree= this.fifthStageInput;
+      if(!this.transferStepperthree?.formOneAndThreeData?.model.includes(MODELS.RULE_ELEVEN_UA)){
         this.loadWeightageSlider();
   
         if(this.transferStepperthree?.formFourData?.modelValue){
@@ -78,7 +78,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
 
   ngOnChanges(changes:SimpleChanges){
    
-    if(!this.transferStepperthree?.formOneAndTwoData?.model.includes(MODELS.RULE_ELEVEN_UA)){
+    if(!this.transferStepperthree?.formOneAndThreeData?.model.includes(MODELS.RULE_ELEVEN_UA)){
     this.loadWeightageSlider()
     if(changes['transferStepperthree']?.currentValue && changes['transferStepperthree']?.previousValue ){
         const currentModel:any=[];
@@ -187,7 +187,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
   }
   checkModelWeightageData(){
     const resultData:any = this.transferStepperthree?.formThreeData?.appData?.valuationResult
-    const inputData = this.transferStepperthree?.formOneAndTwoData?.model;
+    const inputData = this.transferStepperthree?.formOneAndThreeData?.model;
     if(this.data && inputData && this.data?.length !== inputData?.length){
       this.calculateModelWeigtagePayload.results = [];
       this.loadWeightageSlider();
@@ -209,31 +209,31 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
   
   saveAndNext(){
     let processStateStep,processCompleteState=false;
-    if(this.transferStepperthree.formOneAndTwoData.model.length>1){
+    if(this.transferStepperthree.formOneAndThreeData.model.length>1){
       if(this.data){
-        processStateStep = 4;
+        processStateStep = 5;
         processCompleteState = true;
-        localStorage.setItem('stepFourStats','true');
+        localStorage.setItem('stepFiveStats','true');
       }
       else{
-        processStateStep = 3;
+        processStateStep = 4;
         processCompleteState = false;
-        localStorage.setItem('stepFourStats','false');
+        localStorage.setItem('stepFiveStats','false');
       }
     }
     else{
-      processStateStep = 4;
+      processStateStep = 5;
       processCompleteState = true
-      localStorage.setItem('stepFourStats','true');
+      localStorage.setItem('stepFiveStats','true');
     }
     const processStateModel ={
-      fourthStageInput:{valuationResultReportId:this.transferStepperthree?.formThreeData.valuationId,totalWeightageModel:this.totalModelWeightageValue,formFillingStatus:processCompleteState},
+      fifthStageInput:{valuationResultReportId:this.transferStepperthree?.formFourData.valuationId,totalWeightageModel:this.totalModelWeightageValue,formFillingStatus:processCompleteState},
       step:processStateStep
     }
   
     this.processStateManager(processStateModel,localStorage.getItem('processStateId'));
 
-    this.resultData.emit({...this.transferStepperthree,formFourData:this.totalModelWeightageValue});
+    this.resultData.emit({...this.transferStepperthree,formFiveData:this.totalModelWeightageValue});
   }
 
   previous(){
@@ -241,7 +241,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
     }
 
   checkModel(modelName: string) {
-    return this.transferStepperthree?.formThreeData?.appData?.valuationResult.some(
+    return this.transferStepperthree?.formFourData?.appData?.valuationResult.some(
       (response: any) => {
         return response.model === modelName;
       }
@@ -253,11 +253,11 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
       const slider = event.target as HTMLInputElement;
       
       const availPercentage = this.setModelSliderValue(modelName,parseFloat(slider.value));
-      const modelIndexToRemove = this.transferStepperthree?.formOneAndTwoData.model.sort().indexOf(modelName);
-       sortedModelArray = this.transferStepperthree?.formOneAndTwoData.model
+      const modelIndexToRemove = this.transferStepperthree?.formOneAndThreeData.model.sort().indexOf(modelName);
+       sortedModelArray = this.transferStepperthree?.formOneAndThreeData.model
        .sort()
        .slice(0, modelIndexToRemove)
-       .concat(this.transferStepperthree?.formOneAndTwoData.model.slice(modelIndexToRemove + 1));
+       .concat(this.transferStepperthree?.formOneAndThreeData.model.slice(modelIndexToRemove + 1));
       const remainingEle = modelIndexToRemove !== -1 ? modelIndexToRemove - sortedModelArray.length : sortedModelArray.length; 
       if(sortedModelArray.length == 1){
         for (let i = 0 ; i <= sortedModelArray.length;i++){

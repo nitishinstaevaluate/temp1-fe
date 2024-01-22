@@ -68,8 +68,8 @@ constructor(private excelAndReportService:ExcelAndReportService,
 ngOnChanges(changes:SimpleChanges): void {
   let equityValuationDate:any;
   this.formData = this.transferStepperthree;
-  if(!this.transferStepperthree?.formOneAndTwoData?.model?.includes(MODELS.RULE_ELEVEN_UA)){
-    this.transferStepperthree?.formThreeData?.appData?.valuationResult.map((response:any)=>{
+  if(!this.transferStepperthree?.formOneAndThreeData?.model?.includes(MODELS.RULE_ELEVEN_UA)){
+    this.transferStepperthree?.formFourData?.appData?.valuationResult.map((response:any)=>{
     if(response.model === 'FCFE'){
       this.fcfeColumn = response?.columnHeader;
       this.dataSourceFcfe = (this.transposeData(response.valuationData))?.slice(1);
@@ -82,10 +82,10 @@ ngOnChanges(changes:SimpleChanges): void {
      
       const discPeriodIndex = this.displayFcfeColumn.findIndex(element => element.includes('Discounting Period'));
       if (discPeriodIndex !== -1  ) {
-        this.displayFcfeColumn.splice(discPeriodIndex, 1, `Discounting Period - ${this.transferStepperthree.formOneAndTwoData.discountingPeriod} `);
+        this.displayFcfeColumn.splice(discPeriodIndex, 1, `Discounting Period - ${this.transferStepperthree.formOneAndThreeData.discountingPeriod} `);
       }
 
-      this.displayFcfeColumn.splice(this.displayFcfeColumn.length-1,1,`Value per Share (${this.transferStepperthree?.formOneAndTwoData?.currencyUnit})`)
+      this.displayFcfeColumn.splice(this.displayFcfeColumn.length-1,1,`Value per Share (${this.transferStepperthree?.formOneAndThreeData?.currencyUnit})`)
       
       let checkIfKeyExistInResult = this.dataSourceFcfe.some((item:any)=> {return item.some((checkVal:any)=>{return  (checkVal === 'stubAdjValue' || checkVal === 'equityValueNew')})});
       
@@ -102,7 +102,7 @@ ngOnChanges(changes:SimpleChanges): void {
             this.displayFcfeColumn.splice(stubIndex, 0, 'Add:Stub Period Adjustment');
           }
   
-          const equityValueString = `Equity Value as on ${this.formatDate(this.transferStepperthree.formOneAndTwoData.valuationDate)}`;
+          const equityValueString = `Equity Value as on ${this.formatDate(this.transferStepperthree.formOneAndThreeData.valuationDate)}`;
           if (!this.displayFcfeColumn.includes(equityValueString)) {
             this.displayFcfeColumn.splice(equityValueIndex, 0, equityValueString);
           } 
@@ -116,7 +116,7 @@ ngOnChanges(changes:SimpleChanges): void {
             });
           }
   
-          const equityValueString = `Equity Value as on ${this.formatDate(this.transferStepperthree.formOneAndTwoData.valuationDate)}`;
+          const equityValueString = `Equity Value as on ${this.formatDate(this.transferStepperthree.formOneAndThreeData.valuationDate)}`;
           if (this.displayFcfeColumn.includes(equityValueString)) {
             this.displayFcfeColumn = this.displayFcfeColumn.map((item: string) => {
               if (item.includes('Equity Value as on')) {
@@ -131,7 +131,7 @@ ngOnChanges(changes:SimpleChanges): void {
         return [this.displayFcfeColumn[index], ...subArray.slice(1)];
         }
         else{
-          this.displayFcfeColumn.splice(16, 1, `Equity Value on ${this.formatDate(this.transferStepperthree.formOneAndTwoData.valuationDate)}`);
+          this.displayFcfeColumn.splice(16, 1, `Equity Value on ${this.formatDate(this.transferStepperthree.formOneAndThreeData.valuationDate)}`);
           const indexOfEquity = this.displayFcfeColumn.findIndex(item => item.includes('Equity Value as on'));
           const indexOfStub = this.displayFcfeColumn.findIndex(item => item.includes('Add:Stub Period Adjustment'));
           if (indexOfEquity !== -1) {
@@ -164,10 +164,10 @@ ngOnChanges(changes:SimpleChanges): void {
       
       const discPeriodIndex = this.displayFcffColumn.findIndex(element => element.includes('Discounting Period'));
       if (discPeriodIndex !== -1  ) {
-        this.displayFcffColumn.splice(discPeriodIndex, 1, `Discounting Period - ${this.transferStepperthree.formOneAndTwoData.discountingPeriod} `);
+        this.displayFcffColumn.splice(discPeriodIndex, 1, `Discounting Period - ${this.transferStepperthree?.formOneAndThreeData?.discountingPeriod} `);
       }
       
-      this.displayFcffColumn.splice(this.displayFcffColumn.length-1,1,`Value per Share (${this.transferStepperthree?.formOneAndTwoData?.currencyUnit})`)
+      this.displayFcffColumn.splice(this.displayFcffColumn.length-1,1,`Value per Share (${this.transferStepperthree?.formOneAndThreeData?.currencyUnit})`)
       
       this.dataSourceFcff = this.dataSourceFcff.map((subArray: any, index: any) => {
         if(checkIfKeyExistInResult){
@@ -180,7 +180,7 @@ ngOnChanges(changes:SimpleChanges): void {
                   this.displayFcffColumn.splice(stubIndex, 0, 'Add:Stub Period Adjustment');
               }
       
-              const equityValueString = `Equity Value as on ${this.formatDate(this.transferStepperthree.formOneAndTwoData.valuationDate)}`;
+              const equityValueString = `Equity Value as on ${this.formatDate(this.transferStepperthree.formOneAndThreeData.valuationDate)}`;
               if (!this.displayFcffColumn.includes(equityValueString)) {
                   this.displayFcffColumn.splice(equityValueIndex, 0, equityValueString);
               }
@@ -194,7 +194,7 @@ ngOnChanges(changes:SimpleChanges): void {
                   });
               }
       
-              const equityValueString = `Equity Value as on ${this.formatDate(this.transferStepperthree.formOneAndTwoData.valuationDate)}`;
+              const equityValueString = `Equity Value as on ${this.formatDate(this.transferStepperthree.formOneAndThreeData.valuationDate)}`;
               if (this.displayFcffColumn.includes(equityValueString)) {
                   this.displayFcffColumn = this.displayFcffColumn.map((item: string) => {
                       if (item.includes('Equity Value as on')) {
@@ -209,7 +209,7 @@ ngOnChanges(changes:SimpleChanges): void {
           
         }
         else{
-          this.displayFcffColumn.splice(17, 1, `Equity Value on ${this.formatDate(this.transferStepperthree.formOneAndTwoData.valuationDate)}`);
+          this.displayFcffColumn.splice(17, 1, `Equity Value on ${this.formatDate(this.transferStepperthree?.formOneAndThreeData?.valuationDate)}`);
           const indexOfEquity = this.displayFcffColumn.findIndex(item => item.includes('Equity Value as on'));
           const indexOfStub = this.displayFcffColumn.findIndex(item => item.includes('Add:Stub Period Adjustment'));
           if (indexOfEquity !== -1) {
@@ -250,10 +250,10 @@ ngOnChanges(changes:SimpleChanges): void {
   
       const discPeriodIndex = this.displayExcessEarnColumn.findIndex(element => element.includes('Discounting Period'));
       if (discPeriodIndex !== -1  ) {
-        this.displayExcessEarnColumn.splice(discPeriodIndex, 1, `Discounting Period - ${this.transferStepperthree.formOneAndTwoData.discountingPeriod} `);
+        this.displayExcessEarnColumn.splice(discPeriodIndex, 1, `Discounting Period - ${this.transferStepperthree.formOneAndThreeData.discountingPeriod} `);
       }
 
-      this.displayExcessEarnColumn.splice(this.displayExcessEarnColumn.length-1,1,`Value per Share (${this.transferStepperthree?.formOneAndTwoData?.currencyUnit})`)
+      this.displayExcessEarnColumn.splice(this.displayExcessEarnColumn.length-1,1,`Value per Share (${this.transferStepperthree?.formOneAndThreeData?.currencyUnit})`)
      
       this.dataSourceExcessEarn = this.dataSourceExcessEarn.map((subArray: any, index: any) => {
        if(checkIfKeyExistInResult){
@@ -266,7 +266,7 @@ ngOnChanges(changes:SimpleChanges): void {
               this.displayExcessEarnColumn.splice(stubIndex, 0, 'Add:Stub Period Adjustment');
           }
   
-          const equityValueString = `Equity Value as on ${this.formatDate(this.transferStepperthree.formOneAndTwoData.valuationDate)}`;
+          const equityValueString = `Equity Value as on ${this.formatDate(this.transferStepperthree.formOneAndThreeData.valuationDate)}`;
           if (!this.displayExcessEarnColumn.includes(equityValueString)) {
               this.displayExcessEarnColumn.splice(equityValueIndex, 0, equityValueString);
           }
@@ -280,7 +280,7 @@ ngOnChanges(changes:SimpleChanges): void {
               });
             }
     
-            const equityValueString = `Equity Value as on ${this.formatDate(this.transferStepperthree.formOneAndTwoData.valuationDate)}`;
+            const equityValueString = `Equity Value as on ${this.formatDate(this.transferStepperthree.formOneAndThreeData.valuationDate)}`;
             if (this.displayExcessEarnColumn.includes(equityValueString)) {
                 this.displayExcessEarnColumn = this.displayExcessEarnColumn.map((item: string) => {
                     if (item.includes('Equity Value as on')) {
@@ -296,7 +296,7 @@ ngOnChanges(changes:SimpleChanges): void {
       }
       
       else{
-        this.displayExcessEarnColumn.splice(9, 1, `Equity Value on ${this.formatDate(this.transferStepperthree.formOneAndTwoData.valuationDate)}`);
+        this.displayExcessEarnColumn.splice(9, 1, `Equity Value on ${this.formatDate(this.transferStepperthree.formOneAndThreeData.valuationDate)}`);
         const indexOfEquity = this.displayExcessEarnColumn.findIndex(item => item.includes('Equity Value as on'));
         const indexOfStub = this.displayExcessEarnColumn.findIndex(item => item.includes('Add:Stub Period Adjustment'));
         if (indexOfEquity !== -1) {
@@ -314,12 +314,12 @@ ngOnChanges(changes:SimpleChanges): void {
     }
   })
 }
-this.dataSourceFcff && this.transferStepperthree?.formOneAndTwoData?.model.includes('FCFF') ? this.fcff = true : this.fcff = false;
-this.dataSourceFcfe && this.transferStepperthree?.formOneAndTwoData?.model.includes('FCFE') ? this.fcfe = true : this.fcfe = false;
-this.valuationDataReport && (this.transferStepperthree?.formOneAndTwoData?.model.includes('Relative_Valuation') || this.transferStepperthree?.formOneAndTwoData?.model.includes('CTM')) ? this.relativeVal = true : this.relativeVal = false;
-this.dataSourceExcessEarn && this.transferStepperthree?.formOneAndTwoData?.model.includes('Excess_Earnings') ? this.excessEarn = true : this.excessEarn = false;
-this.dataSourceNav && this.transferStepperthree?.formOneAndTwoData?.model.includes('NAV') ? this.nav = true : this.nav = false;
-this.transferStepperthree?.formThreeData?.appData && this.transferStepperthree?.formOneAndTwoData?.model.includes(MODELS.RULE_ELEVEN_UA) ? this.ruleElevenUa = true : this.ruleElevenUa = false;
+this.dataSourceFcff && this.transferStepperthree?.formOneAndThreeData?.model.includes('FCFF') ? this.fcff = true : this.fcff = false;
+this.dataSourceFcfe && this.transferStepperthree?.formOneAndThreeData?.model.includes('FCFE') ? this.fcfe = true : this.fcfe = false;
+this.valuationDataReport && (this.transferStepperthree?.formOneAndThreeData?.model.includes('Relative_Valuation') || this.transferStepperthree?.formOneAndThreeData?.model.includes('CTM')) ? this.relativeVal = true : this.relativeVal = false;
+this.dataSourceExcessEarn && this.transferStepperthree?.formOneAndThreeData?.model.includes('Excess_Earnings') ? this.excessEarn = true : this.excessEarn = false;
+this.dataSourceNav && this.transferStepperthree?.formOneAndThreeData?.model.includes('NAV') ? this.nav = true : this.nav = false;
+this.transferStepperthree?.formFourData?.appData && this.transferStepperthree?.formOneAndThreeData?.model.includes(MODELS.RULE_ELEVEN_UA) ? this.ruleElevenUa = true : this.ruleElevenUa = false;
   this.onTabSelectionChange();
 }
   
@@ -328,7 +328,7 @@ transposeData(data: any[][]): any[][] {
 }
 
 checkIndustryOrCompany(){
-  return this.transferStepperthree.formOneAndTwoData?.preferenceRatioSelect === 'Company Based' ? true :false;
+  return this.transferStepperthree.formOneAndThreeData?.preferenceRatioSelect === 'Company Based' ? true :false;
 }
 
 formatNumber(value: any) {
@@ -376,7 +376,7 @@ formatDate(epochTimestamp:any) {
 
 onTabSelectionChange() {
   // Update the selectedTabIndex when the user selects a tab
-  const findFirstEle = this.transferStepperthree?.formOneAndTwoData?.model.sort();
+  const findFirstEle = this.transferStepperthree?.formOneAndThreeData?.model.sort();
   if(findFirstEle){
     switch (findFirstEle[0]) {
       case 'FCFE':
@@ -401,14 +401,14 @@ onTabSelectionChange() {
 exportPdf(modelName:string){
   this.isLoader=true;
   let model
-  this.transferStepperthree?.formThreeData?.appData?.valuationResult.map((response:any)=>{
+  this.transferStepperthree?.formFourData?.appData?.valuationResult.map((response:any)=>{
     if(response.model === modelName){
       model = response.model;
     }
   })
   const payload={
     model,
-    reportId:this.transferStepperthree?.formThreeData?.appData?.reportId,
+    reportId:this.transferStepperthree?.formFourData?.appData?.reportId,
   }
    this.excelAndReportService.generatePdf(payload, true).subscribe(
     (data:any) => {

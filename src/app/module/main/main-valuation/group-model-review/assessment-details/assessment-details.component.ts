@@ -15,7 +15,7 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
     private snackbar:MatSnackBar){}
 
   @Input() transferStepperTwo:any;
-  @Input() thirdStageInput:any;
+  @Input() fourthStageInput:any;
   @Output() assessmentSheetData=new EventEmitter<any>();
 
   displayColumns:any;
@@ -34,8 +34,8 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
   }
   ngOnChanges(): void {
     // this.fetchExcelData();
-    if(this.thirdStageInput?.formThreeData?.isExcelModified){
-      this.excelSheetId = this.thirdStageInput?.formThreeData.modifiedExcelSheetId;
+    if(this.fourthStageInput?.formFourData?.isExcelModified){
+      this.excelSheetId = this.fourthStageInput?.formFourData.modifiedExcelSheetId;
       this.fetchExcelData(this.excelSheetId);
     }
     else {
@@ -45,14 +45,14 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
   }
 
   checkProcessState(){
-    if(this.thirdStageInput){
-      const excelSheetId = this.thirdStageInput?.formThreeData?.isExcelModified ?this.thirdStageInput?.formThreeData.modifiedExcelSheetId :  this.thirdStageInput.formOneData.excelSheetId;
+    if(this.fourthStageInput){
+      const excelSheetId = this.fourthStageInput?.formFourData?.isExcelModified ?this.fourthStageInput?.formFourData.modifiedExcelSheetId :  this.fourthStageInput.formOneData.excelSheetId;
       this.excelSheetId = excelSheetId;
       this.fetchExcelData(excelSheetId)
     }
   }
   fetchExcelData(alreadyProcessedSheetId?:any){
-    const assessmentExcelId = alreadyProcessedSheetId ? alreadyProcessedSheetId : localStorage.getItem('excelStat') === 'true' ? `edited-${this.transferStepperTwo?.excelSheetId ? this.transferStepperTwo?.excelSheetId : this.thirdStageInput.formOneData.excelSheetId}` :  (this.transferStepperTwo?.excelSheetId ? this.transferStepperTwo?.excelSheetId : this.thirdStageInput.formOneData.excelSheetId);
+    const assessmentExcelId = alreadyProcessedSheetId ? alreadyProcessedSheetId : localStorage.getItem('excelStat') === 'true' ? `edited-${this.transferStepperTwo?.excelSheetId ? this.transferStepperTwo?.excelSheetId : this.fourthStageInput.formOneData.excelSheetId}` :  (this.transferStepperTwo?.excelSheetId ? this.transferStepperTwo?.excelSheetId : this.fourthStageInput.formOneData.excelSheetId);
     this.excelSheetId = assessmentExcelId;
     this.valuationService.getProfitLossSheet(assessmentExcelId,'Assessment of Working Capital').subscribe((response:any)=>{
      if(response.status){
@@ -142,18 +142,18 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
           }
           this.editedValues.push(cellStructure);
 
-          const excelSheetId = this.thirdStageInput?.formThreeData?.isExcelModified ?this.thirdStageInput?.formThreeData.modifiedExcelSheetId :  this.thirdStageInput?.formOneData.excelSheetId;
+          const excelSheetId = this.fourthStageInput?.formFourData?.isExcelModified ?this.fourthStageInput?.formFourData.modifiedExcelSheetId :  this.fourthStageInput?.formOneData.excelSheetId;
 
           let excelId;
           if(!this.transferStepperTwo){
             if(localStorage.getItem('excelStat')==='true'){
-              excelId = `edited-${this.thirdStageInput?.formOneData?.excelSheetId}`
+              excelId = `edited-${this.fourthStageInput?.formOneData?.excelSheetId}`
             }
-            else if(this.thirdStageInput?.formThreeData?.isExcelModified){
-              excelId = this.thirdStageInput?.formThreeData.modifiedExcelSheetId
+            else if(this.fourthStageInput?.formFourData?.isExcelModified){
+              excelId = this.fourthStageInput?.formFourData.modifiedExcelSheetId
             }
             else {
-              excelId = this.thirdStageInput.formOneData?.excelSheetId 
+              excelId = this.fourthStageInput.formOneData?.excelSheetId 
             }
           } 
           else{

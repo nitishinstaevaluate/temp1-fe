@@ -176,16 +176,16 @@ export class ActivityComponent {
   }
 
   getValuation(modelArray:string,processData:any){
-    if(processData.thirdStageInput || processData.fourthStageInput){
+    if(processData.fourthStageInput || processData.fifthStageInput){
 
       if(modelArray.length === 1 && (modelArray.includes(MODELS.FCFE) || modelArray.includes(MODELS.FCFF) || modelArray.includes(MODELS.EXCESS_EARNINGS) || modelArray.includes(MODELS.NAV))){
-        return `${processData.firstStageInput.currencyUnit} ${this.formatNumber(processData.thirdStageInput.appData.valuationResult[0].valuation)}`;
+        return `${processData.firstStageInput.currencyUnit} ${this.formatNumber(processData?.fourthStageInput?.appData?.valuationResult[0].valuation ? processData?.fourthStageInput?.appData?.valuationResult[0].valuation : '-')}`;
       }
       else if(modelArray.length === 1 && (modelArray.includes(MODELS.COMPARABLE_INDUSTRIES) || modelArray.includes(MODELS.RELATIVE_VALUATION))){
-        return `${processData.firstStageInput.currencyUnit} ${this.formatNumber(processData.thirdStageInput.appData.valuationResult[0].valuation?.finalPriceAvg)}`;
+        return `${processData.firstStageInput.currencyUnit} ${this.formatNumber(processData.fourthStageInput.appData.valuationResult[0].valuation?.finalPriceAvg ? processData.fourthStageInput.appData.valuationResult[0].valuation?.finalPriceAvg : '-')}`;
       }
-      else if(processData.fourthStageInput?.totalWeightageModel){
-        return `${processData.firstStageInput.currencyUnit} ${this.formatNumber(processData.fourthStageInput.totalWeightageModel?.weightedVal)}`;
+      else if(processData.fifthStageInput?.totalWeightageModel){
+        return `${processData.firstStageInput.currencyUnit} ${this.formatNumber(processData.fifthStageInput.totalWeightageModel?.weightedVal ? processData.fifthStageInput.totalWeightageModel?.weightedVal : '-')}`;
       }
       else{
         return '-';

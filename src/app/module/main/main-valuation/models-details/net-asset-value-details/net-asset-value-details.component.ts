@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import groupModelControl from '../../../../../shared/enums/group-model-controls.json';
-import { isSelected } from 'src/app/shared/enums/functions';
+import { isNotRuleElevenUaAndNav, isSelected } from 'src/app/shared/enums/functions';
 import { MatSelect } from '@angular/material/select';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
@@ -12,17 +12,18 @@ import { MODELS } from 'src/app/shared/enums/constant';
   templateUrl: './net-asset-value-details.component.html',
   styleUrls: ['./net-asset-value-details.component.scss']
 })
-export class NetAssetValueDetailsComponent implements OnInit{
+export class NetAssetValueDetailsComponent implements OnInit, OnChanges{
 @Input() formOneData:any;
 @Output() navDetailsPrev=new EventEmitter<any>();
 @Output() navDetails=new EventEmitter<any>();
-@Input() secondStageInput:any;
+@Input() thirdStageInput:any;
 
 controls=groupModelControl;
 navForm:any;
 floatLabelType:any='never';
 appearance:any='fill';
 editedValues:any=[];
+modelValue:any = []
 
 constructor(private fb:FormBuilder,
   private processStatusManagerService:ProcessStatusManagerService,
@@ -31,12 +32,15 @@ ngOnInit(): void {
   this.loadForm();
   this.checkProcessExist();
 }
+ngOnChanges(changes: SimpleChanges) {
+  this.checkPreviousAndCurrentValue(changes);
+}
 
 checkProcessExist(){
-  if(this.secondStageInput){
-    this.secondStageInput.map((stateTwoDetails:any)=>{
-      if(stateTwoDetails.model === MODELS.NAV && this.formOneData.model.includes(MODELS.NAV)){
-        const navStateDetails = stateTwoDetails.navInputs;
+  if(this.thirdStageInput){
+    this.thirdStageInput.map((stateThreeDetails:any)=>{
+      if(stateThreeDetails.model === MODELS.NAV && this.formOneData.model.includes(MODELS.NAV)){
+        const navStateDetails = stateThreeDetails.navInputs;
         navStateDetails.map((navDetails:any)=>{
           for(let control in this.navForm.controls){
             if(control === navDetails.fieldName){
@@ -251,6 +255,10 @@ resetBookValue(value:any,controlName:any){
   }
 }
 previous(){
+  const checkModel = isNotRuleElevenUaAndNav(this.modelValue);
+  if(!checkModel){
+    localStorage.setItem('step', '2')
+  }
   this.navDetailsPrev.emit({status:MODELS.NAV})
 }
 saveAndNext(){
@@ -293,7 +301,7 @@ validateControls(controlArray: { [key: string]: FormControl },payload:any){
       else{
         localStorage.setItem('pendingStat',`6`)
       }
-      localStorage.setItem('stepTwoStats',`false`);
+      localStorage.setItem('stepThreeStats',`false`);
     }
     else{
       const formStat = localStorage.getItem('pendingStat');
@@ -302,37 +310,43 @@ validateControls(controlArray: { [key: string]: FormControl },payload:any){
         splitFormStatus.splice(splitFormStatus.indexOf('6'),1);
         localStorage.setItem('pendingStat',`${splitFormStatus}`);
         if(splitFormStatus.length>1){
-          localStorage.setItem('stepTwoStats',`false`);
+          localStorage.setItem('stepThreeStats',`false`);
           
         }else{
-        localStorage.setItem('stepTwoStats',`true`);
+        localStorage.setItem('stepThreeStats',`true`);
         localStorage.removeItem('pendingStat')
         }
       }
       else if ((formStat !== null) && !formStat.includes('6')){
-          localStorage.setItem('stepTwoStats',`false`);
+          localStorage.setItem('stepThreeStats',`false`);
         }
         else{
-          localStorage.setItem('stepTwoStats',`true`);
+          localStorage.setItem('stepThreeStats',`true`);
           
       }
     }
 
     let processStateStep;
     if(allControlsFilled){
-      processStateStep = 2
+      processStateStep = 3
     }
     else{
-      processStateStep = 1
+      processStateStep = 2
     }
 
     const processStateModel ={
-      secondStageInput:[{model:MODELS.NAV,...payload,formFillingStatus:allControlsFilled}],
+      thirdStageInput:[{model:MODELS.NAV,...payload,formFillingStatus:allControlsFilled}],
       step:processStateStep
     }
     this.processStateManager(processStateModel,localStorage.getItem('processStateId'));
 
     this.navDetails.emit(payload)
+}
+
+checkPreviousAndCurrentValue(changes:any){
+  if (this.formOneData && changes['formOneData'] ) {
+    this.modelValue = changes['formOneData'].currentValue.model;
+  }
 }
 
 processStateManager(process:any, processId:any){

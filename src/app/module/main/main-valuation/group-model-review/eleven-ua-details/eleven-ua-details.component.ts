@@ -14,7 +14,7 @@ export class ElevenUaDetailsComponent {
 
   @Input() transferStepperTwo :any;
   @Input() currentStepIndex :any;
-  @Input() thirdStageInput :any;
+  @Input() fourthStageInput :any;
   @Output() ruleElevenData :any = new EventEmitter();
   @Output() ruleElevenSheetData=new EventEmitter<any>();
 
@@ -37,12 +37,12 @@ export class ElevenUaDetailsComponent {
   ngOnChanges(){
     // this.fetchExcelData();
     if(!this.transferStepperTwo){
-      if(this.thirdStageInput?.formThreeData?.isExcelModified){
-        this.excelSheetId = this.thirdStageInput?.formThreeData.modifiedExcelSheetId;
+      if(this.fourthStageInput?.formFourData?.isExcelModified){
+        this.excelSheetId = this.fourthStageInput?.formFourData.modifiedExcelSheetId;
         this.fetchExcelData(this.excelSheetId);
       }
       else{
-        this.excelSheetId = this.thirdStageInput?.formOneData.excelSheetId;
+        this.excelSheetId = this.fourthStageInput?.formOneData.excelSheetId;
         this.fetchExcelData(this.excelSheetId);
       }
     }
@@ -57,21 +57,21 @@ export class ElevenUaDetailsComponent {
     // this.checkProcessState()
   }
   checkProcessState(){
-    if(this.thirdStageInput){
-      const excelSheetId = this.thirdStageInput?.formThreeData?.isExcelModified ?this.thirdStageInput?.formThreeData.modifiedExcelSheetId :  this.thirdStageInput.formOneData.excelSheetId;
+    if(this.fourthStageInput){
+      const excelSheetId = this.fourthStageInput?.formFourData?.isExcelModified ?this.fourthStageInput?.formFourData.modifiedExcelSheetId :  this.fourthStageInput.formOneData.excelSheetId;
       this.excelSheetId = excelSheetId;
       this.fetchExcelData(excelSheetId)
     }
   }
   isRelativeValuation(modelName:string){
     if(!this.transferStepperTwo){
-      return (isSelected(modelName,this.thirdStageInput?.formOneData.model) && this.thirdStageInput?.formOneData.model.length <= 1)
+      return (isSelected(modelName,this.fourthStageInput?.formOneData.model) && this.fourthStageInput?.formOneData.model.length <= 1)
     }
     return (isSelected(modelName,this.transferStepperTwo?.model) && this.transferStepperTwo.model.length <= 1)
   }
 
   fetchExcelData(alreadyProcessedSheetId?:any){
-    const pAndLExcelId = alreadyProcessedSheetId ? alreadyProcessedSheetId : localStorage.getItem('excelStat') === 'true' ? `edited-${this.transferStepperTwo?.excelSheetId ? this.transferStepperTwo?.excelSheetId : this.thirdStageInput.formOneData.excelSheetId}` :  (this.transferStepperTwo?.excelSheetId ? this.transferStepperTwo?.excelSheetId : this.thirdStageInput.formOneData.excelSheetId);
+    const pAndLExcelId = alreadyProcessedSheetId ? alreadyProcessedSheetId : localStorage.getItem('excelStat') === 'true' ? `edited-${this.transferStepperTwo?.excelSheetId ? this.transferStepperTwo?.excelSheetId : this.fourthStageInput.formOneData.excelSheetId}` :  (this.transferStepperTwo?.excelSheetId ? this.transferStepperTwo?.excelSheetId : this.fourthStageInput.formOneData.excelSheetId);
     this.excelSheetId = pAndLExcelId;
     this.valuationService.getProfitLossSheet(pAndLExcelId,'Rule 11 UA').subscribe((response:any)=>{
      if(response.status){
@@ -172,13 +172,13 @@ export class ElevenUaDetailsComponent {
       let excelId;
       if(!this.transferStepperTwo){
         if(localStorage.getItem('excelStat')==='true'){
-          excelId = `edited-${this.thirdStageInput?.formOneData?.excelSheetId}`
+          excelId = `edited-${this.fourthStageInput?.formOneData?.excelSheetId}`
         }
-        else if(this.thirdStageInput?.formThreeData?.isExcelModified){
-          excelId = this.thirdStageInput?.formThreeData.modifiedExcelSheetId
+        else if(this.fourthStageInput?.formFourData?.isExcelModified){
+          excelId = this.fourthStageInput?.formFourData.modifiedExcelSheetId
         }
         else {
-          excelId = this.thirdStageInput.formOneData?.excelSheetId 
+          excelId = this.fourthStageInput.formOneData?.excelSheetId 
         }
       } 
       else{

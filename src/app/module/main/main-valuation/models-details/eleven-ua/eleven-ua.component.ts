@@ -1,24 +1,26 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import groupModelControl from '../../../../../shared/enums/group-model-controls.json';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { hasError } from 'src/app/shared/enums/errorMethods';
 import { MODELS } from 'src/app/shared/enums/constant';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { isNotRuleElevenUaAndNav } from 'src/app/shared/enums/functions';
 
 @Component({
   selector: 'app-eleven-ua',
   templateUrl: './eleven-ua.component.html',
   styleUrls: ['./eleven-ua.component.scss']
 })
-export class ElevenUAComponent implements OnInit{
+export class ElevenUAComponent implements OnInit, OnChanges{
   modelControl = groupModelControl
   ruleElevenUaForm: any;
   hasError = hasError;
   @Output() ruleElevenUaDetails=new EventEmitter<any>();
   @Output() ruleElevenUaDetailsPrev=new EventEmitter<any>();
   @Input() formOneData:any;
-  @Input() secondStageInput:any;
+  @Input() thirdStageInput:any;
+  modelValue:any = [];
   
   constructor(
     private fb: FormBuilder,
@@ -30,6 +32,11 @@ export class ElevenUAComponent implements OnInit{
     this.loadForm();
     this.checkProcessExist();
   }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.checkPreviousAndCurrentValue(changes);
+  }
+
   loadForm(){
     this.ruleElevenUaForm = this.fb.group({
       fairValueJewellery: ['',[Validators.required]],
@@ -43,22 +50,26 @@ export class ElevenUAComponent implements OnInit{
   }
 
   checkProcessExist(){
-    if(this.secondStageInput){
-      this.secondStageInput.map((stateTwoDetails:any)=>{
-        if(stateTwoDetails.model === MODELS.RULE_ELEVEN_UA && this.formOneData.model.includes(MODELS.RULE_ELEVEN_UA)){
-          this.ruleElevenUaForm.controls['fairValueJewellery'].setValue(stateTwoDetails?.fairValueJewellery) 
-          this.ruleElevenUaForm.controls['fairValueArtistic'].setValue(stateTwoDetails?.fairValueArtistic) 
-          this.ruleElevenUaForm.controls['fairValueImmovableProp'].setValue(stateTwoDetails?.fairValueImmovableProp) 
-          this.ruleElevenUaForm.controls['fairValueinvstShareSec'].setValue(stateTwoDetails?.fairValueinvstShareSec); 
-          this.ruleElevenUaForm.controls['contingentLiability'].setValue(stateTwoDetails?.contingentLiability);
-          this.ruleElevenUaForm.controls['otherThanAscertainLiability'].setValue(stateTwoDetails?.otherThanAscertainLiability);
-          this.ruleElevenUaForm.controls['phaseValue'].setValue(stateTwoDetails?.phaseValue);
+    if(this.thirdStageInput){
+      this.thirdStageInput.map((stateThreeDetails:any)=>{
+        if(stateThreeDetails.model === MODELS.RULE_ELEVEN_UA && this.formOneData.model.includes(MODELS.RULE_ELEVEN_UA)){
+          this.ruleElevenUaForm.controls['fairValueJewellery'].setValue(stateThreeDetails?.fairValueJewellery) 
+          this.ruleElevenUaForm.controls['fairValueArtistic'].setValue(stateThreeDetails?.fairValueArtistic) 
+          this.ruleElevenUaForm.controls['fairValueImmovableProp'].setValue(stateThreeDetails?.fairValueImmovableProp) 
+          this.ruleElevenUaForm.controls['fairValueinvstShareSec'].setValue(stateThreeDetails?.fairValueinvstShareSec); 
+          this.ruleElevenUaForm.controls['contingentLiability'].setValue(stateThreeDetails?.contingentLiability);
+          this.ruleElevenUaForm.controls['otherThanAscertainLiability'].setValue(stateThreeDetails?.otherThanAscertainLiability);
+          this.ruleElevenUaForm.controls['phaseValue'].setValue(stateThreeDetails?.phaseValue);
         }
       })
     }
   }
 
   previous(){
+    const checkModel = isNotRuleElevenUaAndNav(this.modelValue);
+    if(!checkModel){
+      localStorage.setItem('step', '2')
+    }
     this.ruleElevenUaDetailsPrev.emit({status:'ruleElevenUa'})
   }
 
@@ -70,6 +81,12 @@ export class ElevenUAComponent implements OnInit{
     }
     this.processStateManager(processStateModel,localStorage.getItem('processStateId'));
     this.ruleElevenUaDetails.emit( {...this.ruleElevenUaForm.value,status:MODELS.RULE_ELEVEN_UA} );
+  }
+
+  checkPreviousAndCurrentValue(changes:any){
+    if (this.formOneData && changes['formOneData'] ) {
+      this.modelValue = changes['formOneData'].currentValue.model;
+    }
   }
 
   processStateManager(process:any, processId:any){

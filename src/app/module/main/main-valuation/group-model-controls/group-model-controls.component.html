@@ -89,7 +89,7 @@
                 </div>
     
                 <!--industry  -->
-                <div class="col-md-6 field" *ngIf="isNotRuleElevenUa()">
+                <!-- <div class="col-md-6 field" *ngIf="isNotRuleElevenUa()">
                     <div class="material-textfield">
                       <select id="industry" class="new-inp" formControlName="industry">
                         <option value="" disabled selected>{{ modelControl.modelValuation.options.industry.placeholder }}</option>
@@ -100,7 +100,21 @@
                     <span *ngIf="modelValuation.controls['industry'].touched && modelValuation.controls['industry'].errors">
                       <span *ngIf="hasError('industry','required',modelValuation)" class="error-text">Please select industry</span>
                     </span>
-                </div>
+                </div> -->
+
+                <!--industry  cia industry-->
+                <!-- <div class="col-md-6 field" *ngIf="isNotRuleElevenUaAndNav()">
+                  <div class="material-textfield">
+                    <select id="industry" class="new-inp" formControlName="industry">
+                      <option value="" disabled selected>{{ modelControl.modelValuation.options.industry.placeholder }}</option>
+                      <option *ngFor="let doc of industries" [ngValue]="doc.GICSDescriptor">{{ doc.GICSDescriptor }}</option>
+                    </select>
+                    <label for="industry">Industry</label>
+                  </div>
+                  <span *ngIf="modelValuation.controls['industry'].touched && modelValuation.controls['industry'].errors">
+                    <span *ngIf="hasError('industry','required',modelValuation)" class="error-text">Please select industry</span>
+                  </span>
+              </div> -->
 
                 <!-- outstanding shares -->
                 <div class="col-md-6 field" >
@@ -114,7 +128,7 @@
               </div>
 
               <!-- sub-industry -->
-                <div class="col-md-6 field"  *ngIf="modelValuation.controls['industry'].value && selectedIndustry?.industry &&  subIndustries.length > 0 && isNotRuleElevenUa()">
+                <!-- <div class="col-md-6 field"  *ngIf="modelValuation.controls['industry'].value && selectedIndustry?.industry &&  subIndustries.length > 0 && isNotRuleElevenUa()">
                       <div class="material-textfield">
                         <select id="subIndustry" class="new-inp" #subIndustryVal (change)="subIndustryChange(subIndustryVal.value)" formControlName="subIndustry">
                           <option value="" disabled selected>Select sub-industry</option>
@@ -125,10 +139,10 @@
                       <span *ngIf="modelValuation.controls['subIndustry'].touched && modelValuation.controls['subIndustry'].errors">
                         <span *ngIf="hasError('subIndustry','required',modelValuation)" class="error-text">Please select sub-industry</span>
                       </span>
-                </div>
+                </div> -->
 
                 <!-- tax rate -->
-                <div class="col-md-6 field" *ngIf="isNotRuleElevenUa()">
+                <div class="col-md-6 field" *ngIf="isNotRuleElevenUaAndNav()">
                     <div class="material-textfield">
                       <select id="subIndustry" class="new-inp"formControlName="taxRateType" (change)="onTaxRateChange($event)">
                         <option value="25.17" selected>Default</option>

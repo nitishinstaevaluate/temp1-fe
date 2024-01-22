@@ -23,17 +23,18 @@ export class MainValuationComponent implements OnInit{
   currentStepIndex:any=0;    
   transferSteppertwo:any;
   transferStepperthree:any;    
-  transferStepperFour:any;    
+  transferStepperFour:any;
   formOneData: any;
   formTwoData:any;
   formThreeData:any;
   formFourData:any;
   formFiveData:any;
+  formSixData:any;
   fcfeData:any;
   fcffData:any;
   relativeData:any;
   excessEarnData:any;
-  formOneAndTwoData:any;
+  formOneAndThreeData:any;
   comparableIndustriesData:any;
   navData:any;
   ruleElevenData:any;
@@ -125,8 +126,9 @@ export class MainValuationComponent implements OnInit{
 
   
   onStepChange() {  
-      this.formOneAndTwoData = {
+      this.formOneAndThreeData = {
         ...this.formOneData,
+        ...this.formTwoData,
         ...(this.formOneData?.model.includes('FCFF') ? this.fcffData : {}),
         ...(this.formOneData?.model.includes('FCFE') ? this.fcfeData : {}),
         ...(this.formOneData?.model.includes('Relative_Valuation') ? this.relativeData : {}),
@@ -137,12 +139,13 @@ export class MainValuationComponent implements OnInit{
       };
   }
 
-  groupModelControls(data:any,incrementStep?:boolean){
+  async groupModelControls(data:any,incrementStep?:boolean){
     this.transferSteppertwo = data;
     this.formOneData = data;
     this.modelArray=this.formOneData?.model;
     // this.stepper.next();
     const currentStep:any = localStorage.getItem('step')
+    //  const currentStep:any = await  this.fetchProcessActiveStage(localStorage.getItem('processStateId'));
     if(incrementStep){
       this.step = parseInt(currentStep);
     }
@@ -151,34 +154,49 @@ export class MainValuationComponent implements OnInit{
     }
 
   localStorage.setItem('step',`${this.step}`);
-  this.calculationService.checkStepStatus.next({status:true,step:this.step})
+    // await this.updateProcessActiveStage(localStorage.getItem('processStateId'),this.step);
+    this.calculationService.checkStepStatus.next({status:true,step:this.step})
   this.nextModelSelection();
   }
 
-  previous(event:any){
+  async previous(event:any){
     // this.stepper.previous();
     const currentStep:any = localStorage.getItem('step')
+    // const currentStep:any = await this.fetchProcessActiveStage(localStorage.getItem('processStateId'));
     this.step = parseInt(currentStep) - 1;
     localStorage.setItem('step',`${this.step}`);
+    // await this.updateProcessActiveStage(localStorage.getItem('processStateId'),this.step);
     this.calculationService.checkStepStatus.next({stepStatus:false,step:this.step,prev:true})
-    if(this.step === 2){
+    if(this.step === 3){
       this.previousModelSelection(this.formOneData,true)
     }
   }
 
-  groupReviewControls(data:any){
-    this.transferStepperthree= {formOneAndTwoData:this.formOneAndTwoData ? this.formOneAndTwoData :  this.formFourData?.formOneAndTwoData,formThreeData:data};
+  async screenInputDetails(data:any){
+    this.formTwoData = {formOneData: this.formOneData, formTwoData: data};
+    const currentStep:any = localStorage.getItem('step')
+    this.step = parseInt(currentStep) + 1;
+    localStorage.setItem('step',`${this.step}`);
+    this.calculationService.checkStepStatus.next({status:true,step:this.step})
+    this.nextModelSelection();
+  }
+
+  async groupReviewControls(data:any){
+    this.transferStepperthree= {formOneAndThreeData:this.formOneAndThreeData ? this.formOneAndThreeData :  this.formFiveData?.formOneAndThreeData,formFourData:data,formTwoData:this.formTwoData};
     // this.stepper.next();
     const currentStep:any = localStorage.getItem('step')
+    // const currentStep:any = await this.fetchProcessActiveStage(localStorage.getItem('processStateId'));
     this.step=parseInt(currentStep)
     this.calculationService.checkStepStatus.next({status:true,step:this.step})
   }
 
-  resultData(data:any){
+  async resultData(data:any){
     // this.stepper.next();
     const currentStep:any = localStorage.getItem('step');
+    // const currentStep:any = await this.fetchProcessActiveStage(localStorage.getItem('processStateId'));
     this.step = parseInt(currentStep) + 1;
-    localStorage.setItem('step',`${this.step}`)
+    localStorage.setItem('step',`${this.step}`);
+    // await this.updateProcessActiveStage(localStorage.getItem('processStateId'),this.step);
     this.calculationService.checkStepStatus.next({stepStatus:true,step:this.step})
     this.transferStepperFour = data; 
   }
@@ -222,7 +240,7 @@ export class MainValuationComponent implements OnInit{
     this.onStepChange();
   }
 
-  nextModelSelection(data?:any){
+  async nextModelSelection(data?:any){
     const model = this.formOneData.model;
 
     const currentModel =this.formOneData?.model[model.indexOf(data)+1];
@@ -251,14 +269,16 @@ export class MainValuationComponent implements OnInit{
         default:
           // this.stepper.next(); 
           const currentStep:any = localStorage.getItem('step')
+          // const currentStep:any = await this.fetchProcessActiveStage(localStorage.getItem('processStateId'));
           this.step = parseInt(currentStep) + 1;
           localStorage.setItem('step',`${this.step}`)
+          // await this.updateProcessActiveStage(localStorage.getItem('processStateId'),this.step);
           this.calculationService.checkStepStatus.next({stepStatus:false,step:this.step})
       
     }
   }
   
-  previousModelSelection(modelName?:string,isProcessState?:boolean){
+  async previousModelSelection(modelName?:string,isProcessState?:boolean){
     let currentModel;
     // Determine the 'next' property based on the current model
     currentModel = this.formOneData?.model[this.formOneData?.model.indexOf(modelName)-1];
@@ -292,8 +312,10 @@ export class MainValuationComponent implements OnInit{
        default:
         // this.stepper.previous(); 
         const currentStep:any = localStorage.getItem('step')
+        // const currentStep:any = await this.fetchProcessActiveStage(localStorage.getItem('processStateId'));
         this.step = parseInt(currentStep) - 1;
         localStorage.setItem('step',`${this.step}`)
+        // await this.updateProcessActiveStage(localStorage.getItem('processStateId'),this.step);
         this.calculationService.checkStepStatus.next({stepStatus:false,step:this.step,prev:true})
 
      }
@@ -327,29 +349,34 @@ export class MainValuationComponent implements OnInit{
     return false;
   }
 
-  loadStateByProcessId(processStateId:string){
+   loadStateByProcessId(processStateId:string){
     this.isProcessExistLoader = true;
     this.processLoader = true;
-    this.processStatusManagerService.retrieveProcess(processStateId).subscribe((processInfo:any)=>{
+    this.processStatusManagerService.retrieveProcess(processStateId).subscribe(async (processInfo:any)=>{
       if(processInfo.status){
         const processStateDetails = processInfo.stateInfo;
         this.step = localStorage.setItem('step',`${processStateDetails.step}`)
+        // this.step = await this.fetchProcessActiveStage(processStateDetails._id)
+
         if(processStateDetails?.firstStageInput){
           localStorage.setItem('stepOneStats',`${processStateDetails.firstStageInput.formFillingStatus}`)
           this.groupModelControls(processStateDetails.firstStageInput,true)
         }
 
-        if(processStateDetails?.secondStageInput){
-          this.formTwoData = processStateDetails.secondStageInput;
+        if(processStateDetails?.firstStageInput || processStateDetails?.secondStageInput){
+          this.formTwoData = {formOneData :this.formOneData, formTwoData: processStateDetails.secondStageInput};
+        }
+        if(processStateDetails?.thirdStageInput){
+          this.formThreeData = processStateDetails.thirdStageInput;
         }
 
-        if(processStateDetails?.secondStageInput && processStateDetails?.firstStageInput){
-          this.formThreeData = {formOneData:processStateDetails.firstStageInput,formTwoData: this.formTwoData,formThreeData:processStateDetails?.thirdStageInput};
+        if(processStateDetails?.thirdStageInput && processStateDetails?.firstStageInput){
+          this.formFourData = {formOneData:processStateDetails.firstStageInput,formThreeData: this.formThreeData,formFourData:processStateDetails?.fourthStageInput};
         }
 
-        if(processStateDetails?.thirdStageInput || processStateDetails?.secondStageInput){
+        if(processStateDetails?.fourthtageInput || processStateDetails?.thirdStageInput){
           let updatedPayload:any;
-          this.formTwoData.map((formTwoDetails:any)=>{
+          this.formThreeData.map((formTwoDetails:any)=>{
             if(formTwoDetails.model === MODELS.FCFE && processStateDetails?.firstStageInput.model.includes(MODELS.FCFE)){
               const {model , ...rest} = formTwoDetails;
               updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
@@ -379,10 +406,10 @@ export class MainValuationComponent implements OnInit{
               updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
             }
           }) 
-          this.formFourData = {formOneAndTwoData : updatedPayload,formThreeData:processStateDetails.thirdStageInput,formFourData:processStateDetails?.fourthStageInput?.totalWeightageModel};
+          this.formFiveData = {formOneAndThreeData : updatedPayload,formFourData:processStateDetails.fourthStageInput,formFiveData:processStateDetails?.fifthStageInput?.totalWeightageModel};
         }
-        if(processStateDetails?.fourthStageInput){
-          this.formFiveData = {...this.formFourData,formFourData : processStateDetails.fourthStageInput?.totalWeightageModel,formFiveData:processStateDetails?.fifthStageInput}
+        if(processStateDetails?.fifthStageInput){
+          this.formSixData = {...this.formFiveData,formFiveData : processStateDetails.fifthStageInput?.totalWeightageModel,formSixData:processStateDetails?.sixthStageInput}
         }
 
         this.isProcessExistLoader = false;
@@ -397,5 +424,76 @@ export class MainValuationComponent implements OnInit{
         })
       }
     })
+  }
+
+  // async fetchProcessActiveStage(processId: any) {
+  //   try {
+  //     const response: any = await this.processStatusManagerService.retrieveActiveStage(processId).toPromise();
+  
+  //     if (response.status) {
+  //       const processStageData = response?.data;
+  //       const step = processStageData.step;
+  //       return step;
+  
+  //       // Do more processing with the step here if needed
+  //     } else {
+  //       this.snackBar.open('Stage retrieve failed', 'ok', {
+  //         horizontalPosition: 'right',
+  //         verticalPosition: 'top',
+  //         duration: 3000,
+  //         panelClass: 'app-notification-error'
+  //       });
+  //     }
+  //   } catch (error) {
+  //     this.snackBar.open(`${error}`, 'ok', {
+  //       horizontalPosition: 'right',
+  //       verticalPosition: 'top',
+  //       duration: 3000,
+  //       panelClass: 'app-notification-error'
+  //     });
+  //   }
+  // }
+
+  // async updateProcessActiveStage(processId: any, step: any) {
+  //   try {
+  //     const data = {
+  //       processId: processId,
+  //       step: step
+  //     };
+  
+  //     const response: any = await this.processStatusManagerService.updateActiveStage(data).toPromise();
+  
+  //     if (response.status) {
+  //       const processStageData = response?.data;
+  //       console.log(processStageData, "updated stage data");
+  //       return processStageData.step;
+  //     } else {
+  //       this.snackBar.open('Stage update failed', 'ok', {
+  //         horizontalPosition: 'right',
+  //         verticalPosition: 'top',
+  //         duration: 3000,
+  //         panelClass: 'app-notification-error'
+  //       });
+  //     }
+  //   } catch (error) {
+  //     this.snackBar.open(`${error}`, 'ok', {
+  //       horizontalPosition: 'right',
+  //       verticalPosition: 'top',
+  //       duration: 3000,
+  //       panelClass: 'app-notification-error'
+  //     });
+  //   }
+  // }
+
+  getTotalSteps(){
+    let totalSteps = false;
+    this.calculationService.checkModel.subscribe((data)=>{
+      if (data?.status) {
+        totalSteps =  false;
+      } else {
+        totalSteps =  true;
+      }
+    })
+    return totalSteps;
   }
 }

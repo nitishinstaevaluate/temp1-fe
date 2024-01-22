@@ -49,7 +49,7 @@
         <div class='c-decorated-header'>
           <h3><span style="padding-left: 2%;">Valuation of Company</span></h3>
           <div class='c-decorated-header_link-view-more'>
-            <a ><span style="border: #2dd79e;color: #2dd79e;"> Step {{step}} </span>of 5</a>
+            <a ><span style="border: #2dd79e;color: #2dd79e;"> Step {{step}} </span>of {{getTotalSteps() ? '6' : '5'}}</a>
           </div>
         </div>
         <h4 style="text-align: center;padding-top: 1.5%;font-weight: 400;color:#858985;margin-bottom: 0px !important;">{{headerLabel}}</h4>
@@ -63,8 +63,9 @@
             <div class="col-md-10">
               <!-- <router-outlet></router-outlet> -->
               <app-group-model-controls [step]="step" (groupModelControls)="groupModelControls($event)" [hidden]="step !== 1" [firstStageInput]="formOneData"></app-group-model-controls>
+              <app-screen-input-details [hidden]="step !== 2" [step]="step" (previousPage)="previous($event)" (screenInputDetails)="screenInputDetails($event)" [formOneData]="formOneData" [secondStageInput]="formTwoData"></app-screen-input-details>
 
-              <div [hidden]="step !== 2">
+              <div [hidden]="step !== 3">
                 <!-- tab trial starts -->
                 <div class="tab-container">
                   <div class="tab-element" [ngClass]="{ 'active': next === 1 }" *ngIf="ifModelExist('FCFE',formOneData?.model)">Free Cash Flow To Equity</div>
@@ -74,27 +75,23 @@
                   <div class="tab-element" [ngClass]="{ 'active': next === 3 }" *ngIf="ifModelExist('Relative_Valuation',formOneData?.model)">Comparable Companies</div>
                   <div class="tab-element" [ngClass]="{ 'active': next === 5 }" *ngIf="ifModelExist('CTM',formOneData?.model)">Comparable Transaction</div>
                   <div class="tab-element" [ngClass]="{ 'active': next === 7 }" *ngIf="ifModelExist('ruleElevenUa',formOneData?.model)">Rule 11 UA</div>
-                  <!-- Add more tab elements as needed -->
                 </div>
-                
                 <!-- tab trial ends -->
-
-
-
-                <app-fcfe-details (fcfeDetailsPrev)="fcfeDetailsPrev($event)" [hidden]="next !== 1" (fcfeDetails)="fcfeDetails($event)" [formOneData]="formOneData" [secondStageInput]="formTwoData" [next]="next"></app-fcfe-details>
-                <app-fcff-details (fcffDetailsPrev)="fcffDetailsPrev($event)" (fcffDetails)="fcffDetails($event)" [hidden]="next !== 2" [formOneData]="formOneData" [secondStageInput]="formTwoData" [next]="next"></app-fcff-details>
-                <app-relative-valuation-details (relativeValDetailsPrev)="relativeValDetailsPrev($event)" (relativeValDetails)="relativeValDetails($event)" [hidden]="next !== 3" [formOneData]="formOneData" [secondStageInput]="formTwoData"></app-relative-valuation-details>
-                <app-excess-earning-details (excessEarnDetailsPrev)="excessEarnDetailsPrev($event)" (excessEarnDetails)="excessEarnDetails($event)" [hidden]="next !== 4" [formOneData]="formOneData" [secondStageInput]="formTwoData" [next]="next"></app-excess-earning-details>
-                <app-comparable-industries-details (comparableIndustriesDetailsPrev)="comparableIndustriesDetailsPrev($event)" (comparableIndustriesDetails)="comparableIndustriesDetails($event)" [hidden]="next !== 5" [formOneData]="formOneData" [secondStageInput]="formTwoData"></app-comparable-industries-details>
-                <app-net-asset-value-details (navDetailsPrev)="navDetailsPrev($event)" (navDetails)="navDetails($event)" [hidden]="next !== 6" [formOneData]="formOneData" [secondStageInput]="formTwoData"></app-net-asset-value-details>
-                <app-eleven-ua (ruleElevenUaDetailsPrev)="ruleElevenUaDetailsPrev($event)" (ruleElevenUaDetails)="ruleElevenUaDetails($event)" [hidden]="next !== 7" [formOneData]="formOneData" [secondStageInput]="formTwoData"></app-eleven-ua>
+                
+                <app-fcfe-details (fcfeDetailsPrev)="fcfeDetailsPrev($event)" [hidden]="next !== 1" (fcfeDetails)="fcfeDetails($event)" [formOneData]="formOneData" [thirdStageInput]="formThreeData" [formTwoData]="formTwoData" [next]="next"></app-fcfe-details>
+                <app-fcff-details (fcffDetailsPrev)="fcffDetailsPrev($event)" (fcffDetails)="fcffDetails($event)" [hidden]="next !== 2" [formOneData]="formOneData" [thirdStageInput]="formThreeData" [next]="next" [formTwoData]="formTwoData"></app-fcff-details>
+                <app-relative-valuation-details (relativeValDetailsPrev)="relativeValDetailsPrev($event)" (relativeValDetails)="relativeValDetails($event)" [hidden]="next !== 3" [formOneData]="formOneData" [thirdStageInput]="formThreeData" [formTwoData]="formTwoData" [next]="next"></app-relative-valuation-details>
+                <app-excess-earning-details (excessEarnDetailsPrev)="excessEarnDetailsPrev($event)" (excessEarnDetails)="excessEarnDetails($event)" [hidden]="next !== 4" [formOneData]="formOneData" [thirdStageInput]="formThreeData" [next]="next" [formTwoData]="formTwoData"></app-excess-earning-details>
+                <app-comparable-industries-details (comparableIndustriesDetailsPrev)="comparableIndustriesDetailsPrev($event)" (comparableIndustriesDetails)="comparableIndustriesDetails($event)" [hidden]="next !== 5" [formOneData]="formOneData" [thirdStageInput]="formThreeData"></app-comparable-industries-details>
+                <app-net-asset-value-details (navDetailsPrev)="navDetailsPrev($event)" (navDetails)="navDetails($event)" [hidden]="next !== 6" [formOneData]="formOneData" [thirdStageInput]="formThreeData"></app-net-asset-value-details>
+                <app-eleven-ua (ruleElevenUaDetailsPrev)="ruleElevenUaDetailsPrev($event)" (ruleElevenUaDetails)="ruleElevenUaDetails($event)" [hidden]="next !== 7" [formOneData]="formOneData" [thirdStageInput]="formThreeData"></app-eleven-ua>
               </div>
 
-              <app-group-model-review (groupReviewControls)="groupReviewControls($event)" [step]="step" (previousPage)="previous($event)" [transferStepperTwo]="formOneAndTwoData" [hidden]="step !== 3" [thirdStageInput]="formThreeData"></app-group-model-review>
+              <app-group-model-review (groupReviewControls)="groupReviewControls($event)" [step]="step" (previousPage)="previous($event)" [transferStepperTwo]="formOneAndThreeData" [hidden]="step !== 4" [fourthStageInput]="formFourData"></app-group-model-review>
               
-              <app-group-model-result [transferStepperthree]="transferStepperthree"  (previousPage)="previous($event)" (resultData)="resultData($event)" [hidden]="step !== 4" [fourthStageInput]="formFourData"></app-group-model-result>
+              <app-group-model-result [transferStepperthree]="transferStepperthree"  (previousPage)="previous($event)" (resultData)="resultData($event)" [hidden]="step !== 5" [fifthStageInput]="formFiveData"></app-group-model-result>
               
-              <app-report-details [transferStepperFour]="transferStepperFour" (previousPage)="previous($event)" [hidden]="step !== 5" [fifthStageInput]="formFiveData"></app-report-details>
+              <app-report-details [transferStepperFour]="transferStepperFour" (previousPage)="previous($event)" [hidden]="step !== 6" [sixthStageInput]="formSixData"></app-report-details>
             </div>
           </div>
   

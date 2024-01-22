@@ -1,0 +1,947 @@
+@import url('https://fonts.googleapis.com/css2?family=AR+One+Sans:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+  .model-label{
+    font-size: 17px;
+    color:#38a3b8;
+    padding-left: 2%;
+    cursor: pointer;
+  }
+  ::ng-deep .model-checkbox .mdc-form-field > label{
+    // border-radius: 5px;
+    font-family: 'AR One Sans', sans-serif;
+    font-size: 15px !important;
+    color: #26879d;
+    padding-left: 0% !important;
+    cursor: pointer;
+    transition:color .3s;
+  }
+  .model-checkbox{
+    width: fit-content !important;
+  }
+  .upload-btn-enabled {
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    opacity: 0.6;
+    cursor: pointer;
+    width: 100%;
+    background-color: #26879d !important;
+  }
+
+.modelview{
+  text-align: end;
+  margin-top: auto;
+  margin-bottom: auto;
+  max-width: 11.667% !important;
+}
+
+::ng-deep .radio-group-control mat-radio-button .mdc-form-field > label{
+  font-family: 'AR One Sans', sans-serif;
+    font-size: 15px !important;
+    color: #26879d;
+    padding-left: 0% !important;
+    cursor: pointer;
+    transition:color .3s;
+}
+.upload-doc{
+  box-shadow: 1px 2px 13px #ffffff;
+    border-radius: -3%;
+    border: 1px solid #f4e9e9; // another gradient 1px solid #f5f3f3
+    text-align: center;
+    padding-top: 1%;
+    margin-top: 1%;
+    margin-bottom: 2%;
+}
+
+.full-width-input {
+    width: 100%; /* Set the width to 100% to occupy the full width of the container */
+  }
+  .col-md-6 mat-form-field{
+    width: 100% !important;
+  }
+
+  .label{
+    border-radius: 5px;
+    font-family: 'AR One Sans', sans-serif;
+    font-size: 17px;
+    color: #26879d;
+    padding-left: 2%;
+    cursor: pointer;
+    transition:color .3s;
+  }
+  
+  ::ng-deep .mat-relative-val input
+  {
+    color: #004e67 !important;
+    font-family: 'AR One Sans';
+  }
+  .field{
+    padding-left: 2.5%;
+    padding-top: 3%;
+    padding-right: 2.5%;
+  }
+
+.card-header{
+    color: #1c6e8f;
+    // border-top: 1px solid #e3e3f7;
+    font-size: 19px;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .card-title{
+    font-size: 1.25rem;
+    color: #004e67 !important;
+    font-family: 'AR One Sans';
+    font-weight: 500;
+  }
+  .card-text{
+    font-size: 1.1rem;
+    color: #1c6e8f !important;
+    font-family: 'AR One Sans';
+    font-weight: 500;
+  }
+
+// keep this css
+.revalmodel{
+    margin-top: auto;
+    margin-bottom: auto;
+    padding-top: 1%;
+    position: relative;
+    padding-left: 1.8%;
+  }
+  .label:hover{
+    color: #26879d;
+  }
+
+  .mat-bullet{
+    position: absolute;
+    left: 2%;
+    top: 30%;
+    mat-icon{
+        transform: scale(.5);
+        color: #26879d;
+    }
+  }
+
+  mat-hint{
+    font-family: 'Poppins', sans-serif;
+    color: #219476;
+    font-size: 11px;
+    font-weight: 500;
+    padding-left: 2%;
+  }
+
+  ::ng-deep .mat-select-value .mat-mdc-select-trigger .mat-mdc-select-value .mat-mdc-select-value-text{    
+    padding: 0px !important;
+    color: #004e67 !important;
+      font-family: 'AR One Sans';
+  }
+  ::ng-deep .mat-relative-val .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) .mat-mdc-form-field-infix {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+  }
+
+//risk premium card css
+.card-container {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.card-est {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s,box-shadow 0.2s, background-color 0.2s;
+  cursor: pointer;
+}
+
+.card-est:hover {
+  // transform: translateY(-5px);
+  box-shadow: 0px 4px 8px rgba(45, 45, 45, 0.6);
+  background-color: #f1f1f1;
+}
+
+.card-header-rp {
+  font-size: 19px;
+  font-weight: 500;
+  // font-family: 'Ubuntu', sans-serif;
+  font-family: 'AR One Sans';
+  border-top: 1px solid #e3e3f7;
+  color: #0075a3;
+  display: table-cell;
+}
+
+.card-subtext {
+  color: #0075a3;
+  height: 100%;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  font-size: 18px;
+  padding-top: 4%;
+  // font-family: 'Teko', sans-serif;
+  font-family: 'AR One Sans';
+  font-weight: 500;
+}
+
+.rp-p{
+  color: #089e94;
+  font-family: 'Oxygen', sans-serif;
+  font-size: 20px;
+  border-top: 1px solid #e3e3f7;
+  font-weight: 500;
+  padding-top: 2%;
+  padding-left: 1%;
+}
+
+// new css
+.outer-section{
+  box-shadow: 1px 2px 10px #cecece;
+  border-radius: 10px;
+  background-color: #ffffff;
+}
+
+.c-decorated-header {
+  position: relative;
+}
+
+.c-decorated-header h3 {
+  position: relative;
+  text-align: left;
+
+  font-family: 'AR One Sans', sans-serif;
+  font-size: 19px;
+  color: #666666;
+  cursor: pointer;
+}
+
+.c-decorated-header{
+  padding-top: 2%;
+}
+.c-decorated-header h3:after {
+  content: "";
+  height: 1px;
+  position: absolute;
+  right: 0;
+  left: 16%;
+  top: 20%;
+  bottom: 0;
+  margin: auto;
+  background: #e2e2e6;
+}
+
+.c-decorated-header h3 span {
+  position: relative;
+  font-size: 19px;
+  font-weight: 500;
+  font-stretch: condensed;
+}
+
+.c-decorated-header_link-view-more {
+  position: absolute;
+  top: 12px;
+  right: 40px;
+  font-size: 15px;
+  font-weight: 400;
+  font-family: 'AR One Sans', sans-serif;
+  color: #aaaaaa;
+  text-decoration: none;
+  background: #fcf8fe;;
+  padding: 5px;
+}
+
+
+.material-textfield {
+  position: relative;
+}
+
+label {
+  position: absolute;
+  font-size: 1rem;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: white;
+  color: gray;
+  padding: 0 0.3rem;
+  padding-right: 0.5rem;
+  margin: 0 0.5rem;
+  transition: 0.1s ease-out;
+  transform-origin: left top;
+  pointer-events: none;
+  font-family: 'AR One Sans', sans-serif;
+  font-weight: 500;
+}
+
+.new-inp {
+  font-size: 1rem;
+  outline: none;
+  border: 1px solid #e4e4e4;
+  border-radius: 10px;
+  color: #6d6d6d;
+  transition: 0.1s ease-out;
+  font-family: 'AR One Sans', sans-serif;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  width: 100%;
+  padding-left: 2%;
+  box-shadow: 1px 2px 10px #f0ebeb;
+  height: 50px;
+}
+
+.new-inp:focus {
+  border-color: #6200ee;
+}
+
+.new-inp:focus+label {
+  color: #6200ee;
+  top: 3%;
+  transform: translateY(-50%) scale(0.8) !important;
+}
+
+.new-inp:focus + label + .tool-class, .new-inp:not(:placeholder-shown) + label + .tool-class {
+  display: block;
+  position: absolute;
+  left: 29%;
+  top: 3%;
+  transform: translateY(-50%) scale(0.6) !important;
+  background: white;
+  padding-right: 2%;
+  padding-left: 1%;
+  mat-icon{
+    color: #6200ee;
+  }
+}
+.new-inp:focus + label + .tool-class-company-type {
+  display: block;
+  position: absolute;
+  left: 29%;
+  top: 3%;
+  transform: translateY(-50%) scale(0.6) !important;
+  background: white;
+  padding-right: 2%;
+  padding-left: 1%;
+  mat-icon{
+    color: #6200ee;
+  }
+}
+.new-inp:focus + label + .tool-class-company-stat {
+  display: block;
+  position: absolute;
+  left: 32%;
+  top: 3%;
+  transform: translateY(-50%) scale(0.6) !important;
+  background: white;
+  padding-right: 2%;
+  padding-left: 1%;
+  mat-icon{
+    color: #6200ee;
+  }
+}
+.new-inp:focus + label + .tool-class-business-desc, .new-inp:not(:placeholder-shown) + label + .tool-class-business-desc {
+  display: block;
+  position: absolute;
+  left: 41%;
+  top: 3%;
+  transform: translateY(-50%) scale(0.6) !important;
+  background: white;
+  padding-right: 2%;
+  padding-left: 1%;
+  mat-icon{
+    color: #6200ee;
+  }
+}
+.tool-class-business-ind-four {
+  display: block !important;
+  position: absolute;
+  left: 29%;
+  top: 10%;
+  transform: scale(0.6) !important;
+  background: white;
+  padding-right: 2%;
+  padding-left:2%;
+  mat-icon{
+    color: #6200ee;
+  }
+}
+.tool-class-company-stat {
+  display: block !important;
+  position: absolute;
+  left: 32%;
+  top: 10%;
+  transform: scale(0.6) !important;
+  background: white;
+  padding-right: 2%;
+  padding-left:3%;
+  mat-icon{
+    color: #6200ee;
+  }
+}
+.tool-class-company-type {
+  display: block !important;
+  position: absolute;
+  left: 30%;
+  top: 10%;
+  transform: scale(0.6) !important;
+  background: white;
+  padding-right: 2%;
+  padding-left:3%;
+  mat-icon{
+    color: #6200ee;
+  }
+}
+.ind-four-info{
+  display: none;
+}
+.company-status-info{
+  display: none;
+}
+.company-type-info{
+  display: none;
+}
+.tool-class, .tool-class-company-stat,.tool-class-company-type,.tool-class-business-desc{
+  display: none;
+}
+
+.tool-class mat-icon, .tool-class-company-type mat-icon, .tool-class-company-stat mat-icon, .tool-class-business-desc mat-icon {
+  color: #6d6d6d;
+}
+
+.new-inp:not(:placeholder-shown)+label {
+  top: 3%;
+  transform: translateY(-50%) scale(0.8) !important;
+}
+
+.new-inp:not(:focus)::placeholder {
+  opacity: 0;
+}
+
+.button-save{
+  position: absolute;
+  left: 117%;
+  transform: scale(0.7);
+  top: -8%;
+}
+
+.button-save-mat{
+    box-shadow: 1px 2px 15px #d1d1d1;
+    color:#ffffff !important;
+    background-color: #0cd18f !important;
+    border-radius: 8px;
+    position: relative;
+    font-family: 'AR One Sans', sans-serif;
+    font-weight: 500;
+    width: 10%;
+    padding-right: 4%;
+  }
+
+.button-resave-mat{
+  box-shadow: 1px 2px 15px #d1d1d1;
+  color:#ffffff !important;
+  background-color: #0cd18f !important;
+  border-radius: 8px;
+  position: relative;
+  font-family: 'AR One Sans', sans-serif;
+  font-weight: 500;
+  width: 10%;
+  padding-right: 3%;
+}
+
+.model-button{
+  box-shadow: 1px 2px 15px #d1d1d1;
+  color:#ffffff !important;
+  background-color: #0cd18f !important;
+  border-radius: 8px;
+  font-family: 'AR One Sans', sans-serif;
+  font-weight: 500;
+}
+
+.chip-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.chip {
+  background-color: #e7faf4;
+  color: #44dba9;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin: 5px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  border-radius: 10px;
+}
+
+.icon-container {
+  position: absolute;
+  top: 20%;
+  left: 75%;
+  transform: translate(-50%, 0);
+}
+
+.check-icon {
+  color: green;
+}
+
+.close-btn {
+  position: absolute;
+  top: -19%   ;
+  right: 3%;
+  cursor: pointer;
+  color: #0cd18f; /* Color for the close icon */
+  transform: scale(1.3);
+}
+
+
+.error-text{
+  padding-left: 3%;
+  color: red;
+  font-size: 10px;
+  font-family: 'AR One Sans';
+}
+
+.btn-prop{
+    text-align: right;
+    padding-bottom: 1%;
+    padding-top: 1%;
+    padding-right: 2%;
+  }
+
+  .button-back-mat{
+    box-shadow: 1px 2px 15px #d1d1d1;
+    margin-right: 1%;
+    color:#ffffff !important;
+    background-color: #fe6060 !important;
+    // background-color: #0cd18f !important;
+    border-radius: 8px;
+    position: relative;
+    font-family: 'AR One Sans', sans-serif;
+    font-weight: 500;
+    width: 10%;
+    padding-left: 4%;
+  }
+
+  .button-save{
+    position: absolute;
+      left: 112%;
+      transform: scale(0.7);
+      top: -8%;
+      mat-icon{
+        font-weight: bold;
+        color: #ffffff;
+      }
+  }
+  .button-back{
+    position: absolute;
+      right: 112%;
+      transform: scale(0.7);
+      top: -8%;
+      mat-icon{
+        font-weight: bold;
+        color: #ffffff;
+        transform: rotate(180deg);
+      }
+  }
+  .prev-button{
+    box-shadow: 1px 2px 15px #d1d1d1;
+    color:#ffffff !important;
+    font-weight: bold !important;
+    margin-right: 1%;
+    background-color: #fe6060 !important;
+    border-radius: 8px;
+    mat-icon{
+      font-weight: bold;
+      color: #ffffff !important;
+    }
+  }
+  .btn-prop{
+    text-align: right;
+    padding-bottom: 1%;
+    padding-top: 1%;
+    padding-right: 2%;
+  }
+
+  .header{
+    font-size: 13px;
+    font-weight: 500;
+    padding: 0px !important;
+    background-color: #e7faf4 !important;
+    color: #0f8a76 ;
+    th{
+      text-align: left;
+      padding-left: 2%;
+      font-family: 'AR One Sans', sans-serif;
+    }
+  }
+
+  .content{
+    height: 28px;
+    .make-bold{
+      color: #666666 !important;
+    font-size: 13px !important;
+    font-weight: 500;
+    font-family: 'AR One Sans', sans-serif !important;
+    padding-left: 2% !important;
+    text-align: left !important;
+    }
+
+    .make-light{
+      color: #666666 !important;
+    font-size: 13px !important;
+    font-weight: 500;
+    font-family: 'AR One Sans', sans-serif !important;
+    text-align: left !important;
+    padding-left: 2% !important;
+    }
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  /* Style the table header row */
+  thead tr {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  
+  /* Style table header cells */
+  th {
+    padding: 8px;
+    text-align: left;
+  }
+  
+  /* Style table data cells */
+  td {
+    padding: 8px;
+    text-align: left;
+  }
+  tr:nth-child(even) {
+    background-color: #f5f5f5;
+  }
+  tr:hover td {
+    background-color: #f5f5f5;
+    .line-item-even:hover{
+      background-color: #f5f5f5 !important;
+    }
+  }
+  tr:hover {
+    background-color: #f5f5f5;
+    .line-item-even{
+      background-color: #f5f5f5 !important;
+    }
+  }
+  .inputscrn{
+    // padding-bottom: 5%;
+  }
+  .industry-id{
+    padding-left: 4% !important;
+  }
+
+  
+::ng-deep .mat-form-field-label {
+  position: absolute;
+  font-size: 1rem;
+  left: 0;
+  top: 10%;
+  transform: translateY(-100%);
+  background-color: white;
+  color: gray;
+  padding: 0 0.3rem;
+  margin: 0 0.5rem;
+  transition: 0.1s ease-out;
+  transform-origin: left top;
+  pointer-events: none;
+  font-family: 'AR One Sans', sans-serif;
+  font-weight: 500;
+}
+
+::ng-deep .new-inp .mat-select-trigger {
+  font-size: 1rem;
+  outline: none;
+  border: 1px solid #e4e4e4;
+  border-radius: 10px;
+  color: #6d6d6d;
+  transition: 0.1s ease-out;
+  font-family: 'AR One Sans', sans-serif;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  width: 100%;
+  padding-left: 2%;
+  box-shadow: 1px 2px 10px #f0ebeb;
+  height: 50px;
+  background-color: transparent;
+}
+
+::ng-deep .mat-option:hover {
+  background-color: transparent;
+}
+
+::ng-deep .mat-select-empty .mat-select-placeholder {
+  color: inherit;
+}
+
+::ng-deep .mat-select-empty .mat-option {
+  background-color: transparent;
+}
+
+::ng-deep .ind4 .mdc-text-field .mat-mdc-form-field-focus-overlay{
+  background-color: #ffffff !important;
+}
+
+::ng-deep .new-inp .mat-mdc-select-trigger .mat-mdc-select-arrow-wrapper .mat-mdc-select-arrow svg  {
+  top: 194%;
+    left: -50%;
+    color: #6d6d6d;
+}
+
+::ng-deep .ind4 .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix .mdc-floating-label .mat-mdc-form-field-required-marker{
+  display: none;
+}
+
+::ng-deep .ind4 .mat-mdc-form-field-subscript-wrapper{
+  border-top: 1px solid #ffffff;
+}
+::ng-deep .ind4 .mat-mdc-form-field-subscript-wrapper:hover{
+  border-top: 1px solid #ffffff;
+}
+
+::ng-deep .ind4 .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix .mdc-floating-label{
+  top: 58%;
+  left: 2%;
+  color: #6d6d6d;
+  font-family: 'AR One Sans', sans-serif;
+}
+
+::ng-deep .ind4 .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix:focus-within .mdc-floating-label {
+  top: 47%;
+  background-color: #ffffff;
+  font-size: 1rem !important;
+  color: #6d6d6d !important;
+  font-family: 'AR One Sans', sans-serif;
+}
+
+::ng-deep .ind4 .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix .mdc-floating-label--float-above {
+  top: 47%;
+  background-color: #ffffff;
+  font-family: 'AR One Sans', sans-serif;
+}
+.ind-4{
+  color:#6d6d6d !important;
+  font-size: 1rem !important;
+}
+::ng-deep .ind4 .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::before  {
+  border-bottom: 1px solid #ffffff;
+}
+::ng-deep .ind4 .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::after  {
+  border-bottom: 1px solid #ffffff;
+}
+
+
+// company status css starts
+::ng-deep .companyStatus .mdc-text-field .mat-mdc-form-field-focus-overlay{
+  background-color: #ffffff !important;
+}
+
+::ng-deep .companyStatus .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix .mdc-floating-label .mat-mdc-form-field-required-marker{
+  display: none;
+}
+
+::ng-deep .companyStatus .mat-mdc-form-field-subscript-wrapper{
+  border-top: 1px solid #ffffff;
+}
+::ng-deep .companyStatus .mat-mdc-form-field-subscript-wrapper:hover{
+  border-top: 1px solid #ffffff;
+}
+
+::ng-deep .companyStatus .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix .mdc-floating-label{
+  top: 58%;
+  left: 4%;
+  color: #6d6d6d;
+  font-family: 'AR One Sans', sans-serif;
+}
+
+::ng-deep .companyStatus .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix:focus-within .mdc-floating-label {
+  top: 47%;
+  background-color: #ffffff;
+  font-size: 1rem !important;
+  color: #6d6d6d !important;
+  font-family: 'AR One Sans', sans-serif;
+  left: 2%;
+}
+
+::ng-deep .companyStatus .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix .mdc-floating-label--float-above {
+  top: 47%;
+  background-color: #ffffff;
+  font-family: 'AR One Sans', sans-serif;
+  left: 2%;
+}
+.ind-4{
+  color:#6d6d6d !important;
+  font-size: 1rem !important;
+}
+::ng-deep .companyStatus .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::before  {
+  border-bottom: 1px solid #ffffff;
+}
+::ng-deep .companyStatus .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::after  {
+  border-bottom: 1px solid #ffffff;
+}
+::ng-deep .company-stat .mat-mdc-select-trigger .mat-mdc-select-value{
+  padding-top: 2% !important;
+  padding-left: 2%;
+} 
+.companyStatus{
+  width: 100%;
+}
+// company status css ends
+
+// company type scss starts
+::ng-deep .companyType .mdc-text-field .mat-mdc-form-field-focus-overlay{
+  background-color: #ffffff !important;
+}
+
+::ng-deep .companyType .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix .mdc-floating-label .mat-mdc-form-field-required-marker{
+  display: none;
+}
+
+::ng-deep .companyType .mat-mdc-form-field-subscript-wrapper{
+  border-top: 1px solid #ffffff;
+}
+::ng-deep .companyType .mat-mdc-form-field-subscript-wrapper:hover{
+  border-top: 1px solid #ffffff;
+}
+
+::ng-deep .companyType .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix .mdc-floating-label{
+  top: 58%;
+  left: 4%;
+  color: #6d6d6d;
+  font-family: 'AR One Sans', sans-serif;
+}
+
+::ng-deep .companyType .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix:focus-within .mdc-floating-label {
+  top: 47%;
+  background-color: #ffffff;
+  font-size: 1rem !important;
+  color: #6d6d6d !important;
+  font-family: 'AR One Sans', sans-serif;
+  left: 2%;
+}
+
+::ng-deep .companyType .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix .mdc-floating-label--float-above {
+  top: 47%;
+  background-color: #ffffff;
+  font-family: 'AR One Sans', sans-serif;
+  left: 2%;
+}
+
+::ng-deep .companyType .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::before  {
+  border-bottom: 1px solid #ffffff;
+}
+::ng-deep .companyType .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::after  {
+  border-bottom: 1px solid #ffffff;
+}
+::ng-deep .company-type .mat-mdc-select-trigger .mat-mdc-select-value{
+  padding-top: 2% !important;
+  padding-left: 2%;
+} 
+.companyType{
+  width: 100%;
+}
+// company type css ends
+
+.total-rec{
+  font-size: 13px;
+  color: #1762ff;
+  font-family: 'AR One Sans', sans-serif;
+}
+.reset-ind3{
+  padding-left: 1%;
+  font-family: 'AR One Sans', sans-serif;
+  font-size: 12px;
+  color: #2da107;
+}
+
+.loader-overlay {
+  // position: absolute;
+  width: 100%;
+  height:400px;
+  // background: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1; 
+}
+
+.loader-overlay p {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.autocomplete-inp{
+  font-size: 1rem !important;
+  outline: none;
+  border: 1px solid #e4e4e4 !important;
+  border-radius: 10px;
+  color: #6d6d6d !important;
+  transition: 0.1s ease-out !important;
+  font-family: 'AR One Sans', sans-serif !important;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  width: 100%;
+  padding-left: 2%;
+  box-shadow: 1px 2px 10px #f0ebeb !important;
+  height: 50px !important;
+}
+
+::ng-deep .input-scrn {
+font-size: 1rem !important;
+  outline: none;
+  border: 1px solid #e4e4e4 !important;
+  border-radius: 5px;
+  color: #6d6d6d !important;
+  transition: 0.1s ease-out !important;
+  font-family: 'AR One Sans', sans-serif !important;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  width: 100%;
+  padding-left: 2%;
+  box-shadow: 1px 2px 10px #eeeeee !important;
+  height: 30px !important;
+  min-height: 39px !important;
+}
+
+::ng-deep .mat-auto .mat-mdc-option.mdc-list-item--selected:not(.mat-mdc-option-multiple):not(.mdc-list-item--disabled){
+  background: #6ce598 !important;
+}
+::ng-deep .mat-auto .mat-mdc-option:hover:not(.mdc-list-item--disabled){
+  background: #bdf8de !important;
+}
+
+::ng-deep .mat-auto {
+  padding: 0px !important;
+  outline: none;
+  border: 1px solid #e4e4e4 !important;
+  border-radius: 8px !important;
+  color: #6d6d6d !important;
+  transition: 0.1s ease-out !important;
+  font-family: 'AR One Sans', sans-serif !important;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  width: 100%;
+  padding-left: 2%;
+  box-shadow: 1px 2px 10px #eeeeee !important;
+}
+
+.table-spinner{
+  transform: scale(.8);
+}
+
+.table-spinner::ng-deep circle{
+  stroke: #666666 !important;
+  }

@@ -12,7 +12,7 @@ import { ValuationService } from 'src/app/shared/service/valuation.service';
 })
 export class BalanceSheetDetailsComponent implements OnChanges {
   @Input() transferStepperTwo :any; 
-  @Input() thirdStageInput :any; 
+  @Input() fourthStageInput :any; 
   @Output() balanceSheetData=new EventEmitter<any>();
 
 
@@ -32,8 +32,8 @@ export class BalanceSheetDetailsComponent implements OnChanges {
 
   ngOnChanges(){
   //  this.fetchExcelData();
-  if(this.thirdStageInput?.formThreeData?.isExcelModified){
-    this.excelSheetId = this.thirdStageInput?.formThreeData.modifiedExcelSheetId;
+  if(this.fourthStageInput?.formFourData?.isExcelModified){
+    this.excelSheetId = this.fourthStageInput?.formFourData.modifiedExcelSheetId;
     this.fetchExcelData(this.excelSheetId);
   }
   else{
@@ -46,8 +46,8 @@ export class BalanceSheetDetailsComponent implements OnChanges {
   }
 
   checkProcessState(){
-    if(this.thirdStageInput){
-      const excelSheetId = this.thirdStageInput?.formThreeData?.isExcelModified ?this.thirdStageInput?.formThreeData.modifiedExcelSheetId :  this.thirdStageInput.formOneData.excelSheetId;
+    if(this.fourthStageInput){
+      const excelSheetId = this.fourthStageInput?.formFourData?.isExcelModified ?this.fourthStageInput?.formFourData.modifiedExcelSheetId :  this.fourthStageInput.formOneData.excelSheetId;
       this.excelSheetId = excelSheetId;
       this.fetchExcelData(excelSheetId)
     }
@@ -55,7 +55,7 @@ export class BalanceSheetDetailsComponent implements OnChanges {
 
   isRelativeValuation(modelName:string){
     if(!this.transferStepperTwo){
-      return (isSelected(modelName,this.thirdStageInput?.formOneData.model) && this.thirdStageInput?.formOneData.model.length <= 1)
+      return (isSelected(modelName,this.fourthStageInput?.formOneData.model) && this.fourthStageInput?.formOneData.model.length <= 1)
     }
     return (isSelected(modelName,this.transferStepperTwo?.model) && this.transferStepperTwo.model.length <= 1)
   }
@@ -165,7 +165,7 @@ export class BalanceSheetDetailsComponent implements OnChanges {
   // }
 
   fetchExcelData(alreadyProcessedSheetId?:any){
-    const balanceSheetExcelId = alreadyProcessedSheetId ? alreadyProcessedSheetId : localStorage.getItem('excelStat') === 'true' ? `edited-${this.transferStepperTwo?.excelSheetId ? this.transferStepperTwo?.excelSheetId : this.thirdStageInput.formOneData.excelSheetId}` :  (this.transferStepperTwo?.excelSheetId ? this.transferStepperTwo?.excelSheetId : this.thirdStageInput.formOneData.excelSheetId)
+    const balanceSheetExcelId = alreadyProcessedSheetId ? alreadyProcessedSheetId : localStorage.getItem('excelStat') === 'true' ? `edited-${this.transferStepperTwo?.excelSheetId ? this.transferStepperTwo?.excelSheetId : this.fourthStageInput.formOneData.excelSheetId}` :  (this.transferStepperTwo?.excelSheetId ? this.transferStepperTwo?.excelSheetId : this.fourthStageInput.formOneData.excelSheetId)
     this.excelSheetId = balanceSheetExcelId;
     this.valuationService.getProfitLossSheet(balanceSheetExcelId,'BS').subscribe((response:any)=>{
      if(response.status){
@@ -266,13 +266,13 @@ export class BalanceSheetDetailsComponent implements OnChanges {
       let excelId;
       if(!this.transferStepperTwo){
         if(localStorage.getItem('excelStat')==='true'){
-          excelId = `edited-${this.thirdStageInput?.formOneData?.excelSheetId}`
+          excelId = `edited-${this.fourthStageInput?.formOneData?.excelSheetId}`
         }
-        else if(this.thirdStageInput?.formThreeData?.isExcelModified){
-          excelId = this.thirdStageInput?.formThreeData.modifiedExcelSheetId
+        else if(this.fourthStageInput?.formFourData?.isExcelModified){
+          excelId = this.fourthStageInput?.formFourData.modifiedExcelSheetId
         }
         else {
-          excelId = this.thirdStageInput.formOneData?.excelSheetId 
+          excelId = this.fourthStageInput.formOneData?.excelSheetId 
         }
       } 
       else{

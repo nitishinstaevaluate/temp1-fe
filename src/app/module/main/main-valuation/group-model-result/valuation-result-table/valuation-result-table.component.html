@@ -3,7 +3,7 @@
   <mat-tab label="FCFE" *ngIf = "fcfe">
     <div class="btn" style="text-align: right;width: 100%;">
       <button mat-stroked-button class="exp">
-        <a class="exp-a" [href]="HOST + 'upload/generate/' + (transferStepperthree?.formThreeData?.appData?.reportId || 'null') +'/FCFE/' + 'true'" download>Export</a>
+        <a class="exp-a" [href]="HOST + 'upload/generate/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/FCFE/' + 'true'" download>Export</a>
       </button>
     </div>
     <div>
@@ -30,7 +30,7 @@
    <mat-tab label="FCFF" *ngIf = "fcff">
     <div class="btn" style="text-align: right;width: 100%;">
       <button mat-stroked-button class="exp">
-        <a class="exp-a" [href]="HOST + 'upload/generate/' + (transferStepperthree?.formThreeData?.appData?.reportId || 'null') +'/FCFF/' + 'true'" download>Export</a>
+        <a class="exp-a" [href]="HOST + 'upload/generate/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/FCFF/' + 'true'" download>Export</a>
       </button>
     </div>
     <div>
@@ -56,7 +56,7 @@
   <mat-tab label="Excess Earning" *ngIf = "excessEarn">
     <div class="btn" style="text-align: right;width: 100%;">
       <button mat-stroked-button class="exp">
-        <a class="exp-a" [href]="HOST + 'upload/generate/' + (transferStepperthree?.formThreeData?.appData?.reportId || 'null') +'/Excess_Earnings/' + 'true'" download>Export</a>
+        <a class="exp-a" [href]="HOST + 'upload/generate/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/Excess_Earnings/' + 'true'" download>Export</a>
       </button>
     </div>
     <div>
@@ -82,7 +82,7 @@
   <mat-tab [label]="checkIndustryOrCompany() ? 'Comparable Companies' : 'Comparable Transaction'" *ngIf="relativeVal">
     <div class="btn" style="text-align: right;width: 100%;">
       <button mat-stroked-button class="exp">
-        <a class="exp-a" [href]="HOST + 'upload/generate/' + (transferStepperthree?.formThreeData?.appData?.reportId || 'null') + (checkIndustryOrCompany() ? '/Relative_Valuation/' : '/CTM/') + 'true'" download>Export</a>
+        <a class="exp-a" [href]="HOST + 'upload/generate/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + (checkIndustryOrCompany() ? '/Relative_Valuation/' : '/CTM/') + 'true'" download>Export</a>
       </button>
     </div>
     <div>
@@ -98,7 +98,7 @@
   <mat-tab label="Net Asset Value" *ngIf="nav">
     <div class="btn" style="text-align: right;width: 100%;">
       <button mat-stroked-button class="exp">
-        <a class="exp-a" [href]="HOST + 'upload/generate/' + (transferStepperthree?.formThreeData?.appData?.reportId || 'null') + '/NAV/' + 'true'" download>Export</a>
+        <a class="exp-a" [href]="HOST + 'upload/generate/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + '/NAV/' + 'true'" download>Export</a>
       </button>
     </div>
     <div>
@@ -128,7 +128,7 @@
   <mat-tab label="Rule 11 UA" *ngIf="ruleElevenUa">
     <div class="btn" style="text-align: right;width: 100%;">
       <button mat-stroked-button class="exp">
-        <a class="exp-a" [href]="HOST + 'upload/generate/' + (transferStepperthree?.formThreeData?.appData?.reportId || 'null') + '/ruleElevenUa/' + 'true'" download>Export</a>
+        <a class="exp-a" [href]="HOST + 'upload/generate/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + '/ruleElevenUa/' + 'true'" download>Export</a>
       </button>
     </div>
     <div>
@@ -138,7 +138,7 @@
     </div>
   </mat-tab>
 </mat-tab-group>
-<p class="currency-unit" *ngIf="transferStepperthree?.formOneAndTwoData?.excelSheetId">Amount in {{transferStepperthree?.formOneAndTwoData?.currencyUnit}} ({{transferStepperthree?.formOneAndTwoData?.reportingUnit}})</p>
+<p class="currency-unit" *ngIf="transferStepperthree?.formOneAndThreeData?.excelSheetId">Amount in {{transferStepperthree?.formOneAndThreeData?.currencyUnit}} ({{transferStepperthree?.formOneAndThreeData?.reportingUnit}})</p>
 </div>
 <div class="loader-overlay" *ngIf="isLoader">
   <div class="loader">

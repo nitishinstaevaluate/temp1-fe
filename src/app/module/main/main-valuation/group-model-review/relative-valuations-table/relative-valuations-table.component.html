@@ -3,7 +3,7 @@
     <table mat-table [dataSource]="companyData" [ngClass]="tableData?.tableClass ? 'result-table': 'mat-elevation-z8 my-table'">
         <ng-container *ngFor="let column of companyColumn; let i = index" [matColumnDef]="column">
           <th mat-header-cell *matHeaderCellDef [ngClass]="column === 'Company Name' ? 'inc-p' : ''">{{ column }}</th>
-          <td mat-cell *matCellDef="let element">{{ element[companyColumnMap[column]] }}</td>
+          <td mat-cell *matCellDef="let element" [ngClass]="updateDecimal(element[companyColumnMap[column]]) === '-'? 'add-padding' : ''">{{ updateDecimal(element[companyColumnMap[column]]) }}</td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="companyColumn"></tr>
         <tr mat-row *matRowDef="let row; columns: companyColumn;"></tr>
@@ -15,7 +15,7 @@
     <table mat-table [dataSource]="industryData" [ngClass]="tableData?.tableClass ? 'result-table': 'mat-elevation-z8 my-table'">
         <ng-container *ngFor="let column of industryColumn; let i = index" [matColumnDef]="column">
           <th mat-header-cell *matHeaderCellDef [ngClass]="column === 'Company Name' ? 'inc-p' : ''">{{ column }}</th>
-          <td mat-cell *matCellDef="let element">{{ element[industryColumnMap[column]] }}</td>
+          <td mat-cell *matCellDef="let element" [ngClass]="updateDecimal(element[companyColumnMap[column]]) === '-'? 'add-padding' : ''">{{ updateDecimal(element[companyColumnMap[column]]) }}</td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="industryColumn"></tr>
         <tr mat-row *matRowDef="let row; columns: industryColumn;"></tr>

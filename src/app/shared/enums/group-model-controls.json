@@ -209,7 +209,7 @@
                 "toolTip":"Please select Beta",
                 "options":[
                     {
-                        "name":"Levered",
+                        "name":"Relevered",
                         "value":"levered"
                     },
                     {
@@ -232,7 +232,29 @@
                 "name":"riskFreeRate",
                 "placeholder":"Risk Free Rate",
                 "type":"dropdown",
-                "toolTip":"Please select Risk Free Rate"
+                "toolTip":"Please select Risk Free Rate",
+                "options":[
+                    {
+                        "_id": "6480733b25d198a5bfeb29d8",
+                        "latest": 6.8,
+                        "maturityInYrs": 5
+                    },
+                    {
+                        "_id": "6480733b25d198a5bfeb29e2",
+                        "latest": 7.32,
+                        "maturityInYrs": 10
+                    },
+                    {
+                        "_id": "6480733b25d198a5bfeb29f6",
+                        "latest": 6.99,
+                        "maturityInYrs": 20
+                    },
+                    {
+                        "_id": "6480733b25d198a5bfeb2a0a",
+                        "latest": 7.11,
+                        "maturityInYrs": 30
+                    }
+                ]
             },
             "expMarketReturnType":{
                 "name":"expMarketReturnType",
@@ -312,7 +334,7 @@
                 "toolTip":"Please select Beta",
                 "options":[
                     {
-                        "name":"Levered",
+                        "name":"Relevered",
                         "value":"levered"
                     },
                     {
@@ -335,7 +357,29 @@
                 "name":"riskFreeRate",
                 "placeholder":"Risk Free Rate",
                 "type":"dropdown",
-                "toolTip":"Please select Risk Free Rate"
+                "toolTip":"Please select Risk Free Rate",
+                "options":[
+                    {
+                        "_id": "6480733b25d198a5bfeb29d8",
+                        "latest": 6.8,
+                        "maturityInYrs": 5
+                    },
+                    {
+                        "_id": "6480733b25d198a5bfeb29e2",
+                        "latest": 7.32,
+                        "maturityInYrs": 10
+                    },
+                    {
+                        "_id": "6480733b25d198a5bfeb29f6",
+                        "latest": 6.99,
+                        "maturityInYrs": 20
+                    },
+                    {
+                        "_id": "6480733b25d198a5bfeb2a0a",
+                        "latest": 7.11,
+                        "maturityInYrs": 30
+                    }
+                ]
             },
             "expMarketReturnType":{
                 "name":"expMarketReturnType",
@@ -427,7 +471,7 @@
                 "toolTip":"Please select Beta",
                 "options":[
                     {
-                        "name":"Levered",
+                        "name":"Relevered",
                         "value":"levered"
                     },
                     {
@@ -450,7 +494,29 @@
                 "name":"riskFreeRate",
                 "placeholder":"Risk Free Rate",
                 "type":"dropdown",
-                "toolTip":"Please select Risk Free Rate"
+                "toolTip":"Please select Risk Free Rate",
+                "options":[
+                    {
+                        "_id": "6480733b25d198a5bfeb29d8",
+                        "latest": 6.8,
+                        "maturityInYrs": 5
+                    },
+                    {
+                        "_id": "6480733b25d198a5bfeb29e2",
+                        "latest": 7.32,
+                        "maturityInYrs": 10
+                    },
+                    {
+                        "_id": "6480733b25d198a5bfeb29f6",
+                        "latest": 6.99,
+                        "maturityInYrs": 20
+                    },
+                    {
+                        "_id": "6480733b25d198a5bfeb2a0a",
+                        "latest": 7.11,
+                        "maturityInYrs": 30
+                    }
+                ]
             },
             "expMarketReturnType":{
                 "name":"expMarketReturnType",
@@ -822,6 +888,47 @@
                     "value":"convertibleNotes"
                 }
             ]
+        }
+    },
+    "inputScreen":{
+        "type":"inputScreen",
+        "header":"Input Screening",
+        "columns":{
+            "companyStatus":{
+                "name":"companyStatus",
+                "placeholder":"Select Company Status",
+                "type":"text",
+                "tooltip":"Eg. Private, Public",
+                "label":"Company Status"
+            },
+            "companyType":{
+                "name":"companyType",
+                "placeholder":"Select Company type",
+                "type":"text",
+                "tooltip":"Eg. Operational, Active, Liquidited",
+                "label":"Company Type"
+            },
+            "descriptor":{
+                "name":"descriptor",
+                "placeholder":"Enter business/company description",
+                "type":"text",
+                "tooltip":"Enter business/company description",
+                "label":"Business Description"
+            },
+            "industryL3":{
+                "name":"industryL3",
+                "placeholder":"Enter level 3 industry",
+                "type":"text",
+                "tooltip":"Level 3 Industries",
+                "label":"Industry Name (Level-3)"
+            },
+            "industryL4":{
+                "name":"industryL4",
+                "placeholder":"Enter level 4 industry",
+                "type":"text",
+                "tooltip":"Level 4 Industries",
+                "label":"Industry Name (Level-4)"
+            }
         }
     },
     "ruleElevenUa":{

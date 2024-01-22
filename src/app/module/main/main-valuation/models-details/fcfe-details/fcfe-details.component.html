@@ -87,7 +87,7 @@
                         <select id="riskFreeRate" class="new-inp" formControlName="riskFreeRate">
                           <option value="" disabled selected>Select risk free rate</option>
                           <option value="customRiskFreeRate">Custom</option>
-                          <option *ngFor="let doc of indianTreasuryY"  [ngValue]="doc.latest">Yield on {{ doc.maturityInYrs }} Years Indian Treasury Bond</option>
+                          <option *ngFor="let doc of modelControl.fcfe.options.riskFreeRate.options"  [ngValue]="doc.latest">Yield on {{ doc.maturityInYrs }} Years Indian Treasury Bond</option>
                         </select>
                         <label for="riskFreeRate">Risk Free Rate</label>
                       <mat-hint *ngIf="fcfeForm.controls['riskFreeRate'].value" class="taxrate-hint">Risk-Free rate is {{fcfeForm.controls['riskFreeRate'].value === 'customRiskFreeRate' ? customRiskFreeRate : fcfeForm.controls['riskFreeRate'].value}}%</mat-hint>
@@ -131,16 +131,35 @@
                       </mat-form-field> -->
 
                       <div class="material-textfield">
-                        <select id="betaType" class="new-inp" formControlName="betaType">
+                        <select id="betaType" class="new-inp" formControlName="betaType" (change)="betaChange($event)">
                           <option value="" disabled selected>Select beta</option>
-                          <option [disabled]="!formOneData?.industry" *ngFor="let doc of modelControl.fcfe.options.betaType.options"  [ngValue]="doc.value">{{doc.name}}</option>
+                          <option *ngFor="let doc of modelControl.fcfe.options.betaType.options"  [ngValue]="doc.value">{{doc.name}}</option>
                         </select>
                         <label for="betaType">Beta</label>
-                      <mat-hint *ngIf="fcfeForm.controls['beta'].value" class="taxrate-hint">Beta is {{fcfeForm.controls['beta'].value?.toFixed(2)}}</mat-hint>
+                      <!-- <mat-hint *ngIf="fcfeForm.controls['beta'].value" class="taxrate-hint">Beta is {{fcfeForm.controls['beta'].value?.toFixed(2)}}</mat-hint> -->
                       </div>
                       <span *ngIf="fcfeForm.controls['betaType'].touched && fcfeForm.controls['betaType'].errors">
                         <span *ngIf="hasError('betaType','required',fcfeForm)" class="error-text">Please select beta</span>
                       </span>
+                      <div style="display: flex; align-items: center;padding-left: 2%;padding-top: 1%;height: 30px;">
+                        <span style="width: 90%;" *ngIf="fcfeForm.controls['betaType'].value">
+                          <span *ngIf="fcfeForm.controls['betaType'].value !== 'market_beta'">
+                            <input type="radio" style="vertical-align: middle;" [checked]="selectedSubBetaType === 'meanBeta'" (change)="onRadioButtonChange($event)" value="meanBeta" name="betaRadio" id="betaRadio">
+                            <span class="reset-ind3" style="vertical-align: middle;">Mean</span>
+                          </span>
+
+                          <span style="padding-left: 14%;" *ngIf="fcfeForm.controls['betaType'].value !== 'market_beta'">
+                            <input type="radio" style="vertical-align: middle;" [checked]="selectedSubBetaType === 'medianBeta'" (change)="onRadioButtonChange($event)" value="medianBeta" name="betaRadio" id="betaRadio">
+                            <span class="reset-ind3" style="vertical-align: middle;">Median</span>
+                          </span>
+                          <span [ngClass]="fcfeForm.controls['betaType'].value === 'market_beta' ? '' :  'add-padding-beta'">
+                            <mat-hint *ngIf="fcfeForm.controls['beta'].value" style="vertical-align: middle;font-size: 11px;color: #1915bb;" class="reset-ind3">Beta is {{fcfeForm.controls['beta'].value?.toFixed(2)}}</mat-hint>
+                          </span>
+                        </span>
+                        <span>
+                          <mat-progress-spinner style="vertical-align: middle" *ngIf="betaLoader" class="beta-spin" mode="indeterminate" diameter="20"></mat-progress-spinner>
+                        </span>
+                      </div>
                 </div>
 
                 <!-- risk premium -->
@@ -153,7 +172,7 @@
                 </div> -->
 
                 <!-- Specific Risk Premium -->
-                <div class="col-md-4 field">
+                <div class="col-md-4 field" style="padding-top: 1%;">
                     <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
                         <mat-label>Specific Risk Premium</mat-label>
                         <input (mousedown)="onSlideToggleChange($event)" formControlName="riskPremium" [type]="modelControl.fcfe.options.riskPremium.type" matInput>
