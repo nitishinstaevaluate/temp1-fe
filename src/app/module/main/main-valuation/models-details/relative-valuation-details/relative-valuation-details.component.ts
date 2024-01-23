@@ -144,7 +144,6 @@ loadFormControl(){
       const current = changes['formTwoData'].currentValue;
       this.selectedIndustry = current.formTwoData.industryL3
       this.companyList = current.formTwoData.selectedIndustries
-      console.log(current.formTwoData.selectedIndustries,"selected companies", this.selectedIndustry,"industry l3 selected")
     }
   
     
