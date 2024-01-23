@@ -64,7 +64,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   pageSizeOptions = PAGINATION_VAL;
   pageStart: number = 0;
   previousPageIndex: number = 0
-  prevPageSize: number = 0;
+  prevPageSize: any;
 
   constructor(
     private fb:FormBuilder,
@@ -544,6 +544,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     else{
       await this.removeUncheckedIndustry(data)
     }
+    event.stopPropagation()
   }
 
   async createIndustryStructure(data:any){
@@ -632,8 +633,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   } else {
     this.pageStart += pageSize;
   }
-
-  if (this.prevPageSize && this.prevPageSize !== pageSize) {
+  if (this.prevPageSize !== null && this.prevPageSize !== undefined && this.prevPageSize !== pageSize) {
     this.resetPaginator();
     this.prevPageSize = pageSize;
   }

@@ -1,4 +1,4 @@
-<div *ngIf="modelControl.relativeValuation.type === 'relativeValuation' && isRelativeValuation(MODEL.RELATIVE_VALUATION)">
+<div *ngIf="modelControl.relativeValuation.type === 'relativeValuation' && isRelativeValuation(MODEL.RELATIVE_VALUATION) && next === 3">
     <h4 class="card-header">{{modelControl.relativeValuation.header}}</h4>
     <form [formGroup]="relativeValuation" class="outer-wrapper">
         <div class="row" style="padding-top: 1%;">
