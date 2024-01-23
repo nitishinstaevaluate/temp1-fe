@@ -478,3 +478,34 @@
       </button>
     </div>
   </div>
+
+  <div *ngIf="data?.value === appValues.CIQ_COMPANY_DETAILS.value" style="padding: 2%;">
+    <div class="company-info-container">
+      <div class="company-info-section">
+        <h4>Company Information</h4>
+        <ul>
+          <li><strong>Company Name:</strong> {{ data.companyDetails.COMPANYNAME }}</li>
+          <li><strong>Industry:</strong> {{ data.companyDetails?.INDUSTRY }}</li>
+        </ul>
+      </div>
+    
+      <div class="address-info-section">
+        <h4>Address</h4>
+        <ul>
+          <li><strong>Line 1:</strong> {{ data.companyDetails?.STREETADDRESS }}</li>
+          <li><strong>Line 2:</strong> {{ data.companyDetails?.STREETADDRESS2 }}</li>
+          <li><strong>Line 3:</strong> {{ data.companyDetails?.STREETADDRESS3 }}</li>
+          <li><strong>Zip Code:</strong> {{ data.companyDetails?.ZIPCODE }}</li>
+        </ul>
+      </div>
+    
+      <div class="contact-info-section">
+        <h4>Contact Information</h4>
+        <ul>
+          <li><strong>Email:</strong> {{ data.companyDetails?.EMAIL }}</li>
+          <li><strong>Phone:</strong> {{ data.companyDetails?.PHONE }}</li>
+          <li><strong>Web Page:</strong> <a [href]="'http://' + data.companyDetails?.WEBPAGE" target="_blank">{{ data.companyDetails?.WEBPAGE }}</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>

@@ -140,6 +140,7 @@ loadModel(data:any){
   if(data?.value == this.appValues.RISK_FREE_RATE.value){
     this.patchExistingRiskFreeRateDetails(data);
   }
+  if(data.value === this.appValues.CIQ_COMPANY_DETAILS.value) return this.label = this.appValues.CIQ_COMPANY_DETAILS.name;
   return '';
 }
 

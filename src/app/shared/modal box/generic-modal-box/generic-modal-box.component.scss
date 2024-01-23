@@ -846,3 +846,60 @@ input.form-check-input[type="radio"] {
     transform: scale(0.7);
   }
 }
+
+.company-info-container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+.company-info-section,
+.address-info-section,
+.contact-info-section {
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: #f4f4f4;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+  font-family: 'AR One Sans', sans-serif !important;
+}
+
+.company-info-section:hover,
+.address-info-section:hover,
+.contact-info-section:hover {
+  transform: scale(1.02);
+}
+
+.company-info-section h4,
+.address-info-section h4,
+.contact-info-section h4 {
+  color: #333;
+  margin-bottom: 15px;
+  font-size: 1.2em;
+}
+
+.company-info-section ul,
+.address-info-section ul,
+.contact-info-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.company-info-section li,
+.address-info-section li,
+.contact-info-section li {
+  margin-bottom: 12px;
+  font-size: 1.1em;
+}
+
+.company-info-section a {
+  color: #007BFF;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.company-info-section a:hover {
+  text-decoration: underline;
+}
