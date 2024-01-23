@@ -1,14 +1,17 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { hasError } from 'src/app/shared/enums/errorMethods';
 import groupModelControl from '../../../../shared/enums/group-model-controls.json';
 import { CiqSPService } from 'src/app/shared/service/ciq-sp.service';
-import { INDUSTRY_BASED_COMPANY, MODELS } from 'src/app/shared/enums/constant';
+import { INDUSTRY_BASED_COMPANY, MODELS, PAGINATION_VAL } from 'src/app/shared/enums/constant';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, Subject, debounceTime, distinctUntilChanged, map, startWith, switchMap, throttleTime } from 'rxjs';
 import { UtilService } from 'src/app/shared/service/util.service';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
+import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal-box/generic-modal-box.component';
 
 @Component({
   selector: 'app-screen-input-details',
@@ -16,6 +19,7 @@ import { UtilService } from 'src/app/shared/service/util.service';
   styleUrls: ['./screen-input-details.component.scss']
 })
 export class ScreenInputDetailsComponent implements OnInit,OnChanges {
+  @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
   @Input() step:any;
   @Output() screenInputDetails:any = new EventEmitter<any>();
   @Output() previousPage:any = new EventEmitter<any>();
@@ -54,7 +58,13 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   options: any = [];
   filteredOptions: Observable<string[]> | undefined;
   meanMedianList:any= [];
-  previousIndustryL3Value:any=''
+  previousIndustryL3Value:any='';
+  length:number = 0;
+  pageSize: number = 10;
+  pageSizeOptions = PAGINATION_VAL;
+  pageStart: number = 0;
+  previousPageIndex: number = 0
+  prevPageSize: any;
 
   constructor(
     private fb:FormBuilder,
@@ -62,7 +72,8 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     private calculationService:CalculationsService,
     private processStatusManagerService: ProcessStatusManagerService,
     private snackBar: MatSnackBar,
-    private utilService: UtilService){}
+    private utilService: UtilService,
+    private dialog:MatDialog){}
 
   ngOnInit(){
     this.loadForm();
@@ -180,6 +191,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       this.loadCiqDescriptorBasedIndustry(val);
 
       this.levelThreeIndustryDescription = val;
+      this.resetPaginator();
       this.loadCiqIndustryBasedLevelFour(this.createPayload());
       }
     });
@@ -340,11 +352,20 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
             });
           });
         }
-        this.total = industryData.total
+        this.total = industryData.total;
+        this.length = industryData.total;
+        if(!this.ciqIndustryData.length){
+          this.snackBar.open('No records to be found','OK',{
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 3000,
+            panelClass: 'app-notification-error'
+          })
+        }
       }
       else{
         this.loader = false;
-        this.snackBar.open('CIQ Industry (Level-4) list not found','OK',{
+        this.snackBar.open('Companies not found','OK',{
           horizontalPosition: 'right',
           verticalPosition: 'top',
           duration: 3000,
@@ -448,7 +469,8 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       this.companyTypeDropdownValue = false;
       this.companyTypeDescription = [];
     }
-      
+
+    this.resetPaginator();
     this.loadCiqIndustryBasedLevelFour(this.createPayload());
   }
 
@@ -464,7 +486,8 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       this.companyStatusDropdownValue = false
       this.companyStatusTypeDescription = [];
     }
-   
+
+    this.resetPaginator();
     this.loadCiqIndustryBasedLevelFour(this.createPayload());
   }
 
@@ -491,6 +514,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     }
     else if(this.descriptorQuery !== event.target.value){
       this.descriptorQuery = event.target.value;
+      this.resetPaginator();
       this.utilService.getWordList(this.descriptorQuery).subscribe((wordsArray)=>{
         this.options = wordsArray
       })
@@ -505,7 +529,9 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       industryName: this.levelThreeIndustryDescription,
       businessDescriptor: this.descriptorQuery,
       location: this.formOneData?.location || this.secondStageInput?.formOneData?.location,
-      processStateId:localStorage.getItem('processStateId')
+      processStateId:localStorage.getItem('processStateId'),
+      pageStart: this.pageStart,
+      size: this.pageSize
     };
   }
 
@@ -518,6 +544,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     else{
       await this.removeUncheckedIndustry(data)
     }
+    event.stopPropagation()
   }
 
   async createIndustryStructure(data:any){
@@ -540,6 +567,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     if(event.target.checked){
       this.inputScreenForm.controls['industryL3'].setValue('');
       this.levelThreeIndustryDescription = '';
+      this.resetPaginator();
       this.loadCiqIndustryBasedLevelFour(this.createPayload())
     }
   }
@@ -595,5 +623,40 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
         });
       }
     );
+  }
+
+  onPageChange(event: any): void {
+    const { pageIndex, pageSize, previousPageIndex, length } = event;
+
+  if (previousPageIndex > pageIndex) {
+    this.pageStart = Math.max(0, this.pageStart - pageSize);
+  } else {
+    this.pageStart += pageSize;
+  }
+  if (this.prevPageSize !== null && this.prevPageSize !== undefined && this.prevPageSize !== pageSize) {
+    this.resetPaginator();
+    this.prevPageSize = pageSize;
+  }
+
+  this.pageSize = pageSize;
+  this.loadCiqIndustryBasedLevelFour(this.createPayload());
+  }
+
+  resetPaginator(): void {
+    if (this.paginator) {
+      this.pageStart = 0;
+      this.paginator.firstPage();
+    }
+  }
+  companyDetails(data:any){
+    this.ciqSpService.searchCiqEntityByCompanyId(data.COMPANYID).subscribe((companyData:any)=>{
+      if(companyData.status){
+        const data = {
+          value: 'ciqCompanyDetails',
+          companyDetails:companyData.data[0]
+        }
+        const dialogRef =  this.dialog.open(GenericModalBoxComponent, {data:data,width:'80%'});
+      }
+    })
   }
 }

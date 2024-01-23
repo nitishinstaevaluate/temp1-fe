@@ -227,6 +227,10 @@ export const ALL_MODELS = {
     RESTORE_SESSION:{
       name:"Session Found",
       value:"restoreSession"
+    },
+    CIQ_COMPANY_DETAILS:{
+      value:'ciqCompanyDetails',
+      name:"CIQ Company Details"
     }
   }
 

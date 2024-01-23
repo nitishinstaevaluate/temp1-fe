@@ -1,13 +1,13 @@
 <!-- valuation results starts -->
 <!-- <div class="mydiv" style="border-top: 1px solid #e3e3f7;border-bottom:1px solid #e3e3f7;">
     <h4 class="card-header-2" style="border-top: none;">Valuation Results</h4>
-    <h4 class="card-header-2" style="margin-left: auto;">Valuation Date {{transferStepperthree?.formOneAndTwoData?.valuationDate | date:'MMM d, yyyy'}}</h4>
+    <h4 class="card-header-2" style="margin-left: auto;">Valuation Date {{transferStepperthree?.formOneAndThreeData?.valuationDate | date:'MMM d, yyyy'}}</h4>
 </div> -->
 
 <div class='c-decorated-header'>
     <h3><span style="padding-left: 2%;">Valuation Results</span></h3>
     <div class='c-decorated-header_link-view-more'>
-      <a ><span>Valuation Date {{transferStepperthree?.formOneAndTwoData?.valuationDate | date:'MMM d, yyyy'}}</span></a>
+      <a ><span>Valuation Date {{transferStepperthree?.formOneAndThreeData?.valuationDate | date:'MMM d, yyyy'}}</span></a>
     </div>
   </div>
 <div class="outer-wrapper">
@@ -20,7 +20,7 @@
 <!-- valuation results ends -->
 
 <!-- modal weightage starts -->
-<div *ngIf="transferStepperthree?.formOneAndTwoData?.model.length > 1">
+<div *ngIf="transferStepperthree?.formOneAndThreeData?.model.length > 1">
     <!-- <h4 class="card-header" >Model Weightage</h4> -->
     <div class='c-decorated-header'>
         <h3><span style="padding-left: 2%;color: #868686;">Model Weightage</span></h3>
@@ -215,7 +215,7 @@
 <!-- modal weightage ends -->
 
 <!-- Model Weigtage Result starts -->
-<div *ngIf="checkModelWeightageData() && data && transferStepperthree?.formOneAndTwoData?.model.length > 1" style="padding-top: 2%;">
+<div *ngIf="checkModelWeightageData() && data && transferStepperthree?.formOneAndThreeData?.model.length > 1" style="padding-top: 2%;">
 <!-- <div *ngIf="data" style="padding-top: 2%;"> -->
     <!-- <h4 class="card-header" >Model Weightage Result</h4> -->
     <div class='c-decorated-header-model-weightage-table'>

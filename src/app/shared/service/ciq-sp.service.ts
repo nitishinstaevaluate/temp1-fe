@@ -46,4 +46,8 @@ export class CiqSPService {
    calculateSPCompaniesMeanMedianRatio(payload:any){
     return this.http.post(`${this.HOST}ciq-sp/calculate-sp-companies-mean-median`, payload)
    }
+
+   searchCiqEntityByCompanyId(companyId:any){
+    return this.http.get(`${this.HOST}ciq-elastic-search/ciq-elastic-search-company-details/${companyId}`)
+   }
 }

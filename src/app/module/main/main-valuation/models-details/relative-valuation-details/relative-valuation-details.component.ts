@@ -38,8 +38,8 @@ export class RelativeValuationDetailsComponent implements OnInit,OnChanges {
     private ciqSpService: CiqSPService){}
 
   ngOnChanges(changes:SimpleChanges){
-    if(this.next !== 3)
-      return;
+    // if(this.next !== 3)
+    //   return;
     
     this.loadFormControl();
     this.checkPreviousAndCurrentValue(changes);
@@ -139,7 +139,7 @@ loadFormControl(){
         this.selectedIndustry = current.formTwoData.industryL3;
       }
     })
-
+    
     if (this.formTwoData && changes['formTwoData'] ) {
       const current = changes['formTwoData'].currentValue;
       this.selectedIndustry = current.formTwoData.industryL3

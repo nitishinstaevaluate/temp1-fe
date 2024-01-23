@@ -478,3 +478,96 @@
       </button>
     </div>
   </div>
+
+  <div *ngIf="data?.value === appValues.CIQ_COMPANY_DETAILS.value" style="padding: 1%;">
+    <div id="profile-log-switch" style="position: relative;">
+      <p style="font-size: 14px;color: #949494;">Company Id : #{{data.companyDetails?.COMPANYID}}
+        <span><mat-icon class="close-modal-valuer" (click)="modalData()" style="padding-right: 2%;">close</mat-icon></span>
+      </p>
+      
+      <div class="media-heading">
+        <h5 class="text-uppercase">Personal Information</h5>
+      </div>
+      <div class="table-responsive ">
+        <table class="table row table-borderless bg-transparent">
+          <tbody class="col-lg-12 col-xl-6 p-0">
+            <tr>
+              <td><strong>Company Full Name : </strong>{{ data.companyDetails.COMPANYNAME }}</td>
+            </tr>
+            <tr>
+              <td><strong>Location :</strong> India</td>
+            </tr>
+            <tr>
+              <td><strong>Languages :</strong> English, German, Spanish.</td>
+            </tr>
+          </tbody>
+          <tbody class="col-lg-12 col-xl-6 p-0">
+            <tr>
+              <td><strong>Website :</strong> <a [href]="'http://' + data.companyDetails?.WEBPAGE" target="_blank">{{ data.companyDetails?.WEBPAGE }}</a></td>
+            </tr>
+            <tr>
+              <td><strong>Email :</strong> NIL</td>
+            </tr>
+            <tr>
+              <td><strong>Phone :</strong> +{{ data.companyDetails?.OFFICEPHONEVALUE }} </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="media-heading mt-3">
+        <h5 class="text-uppercase">Business Contact Information</h5>
+      </div>
+      <div class="table-responsive ">
+        <table class="table row table-borderless bg-transparent">
+          <tbody class="col-lg-12 col-xl-6 p-0">
+            <tr>
+              <td><strong>Business Telephone:</strong> +{{ data.companyDetails?.OFFICEPHONEVALUE }}</td>
+            </tr>
+            <tr>
+              <td><strong>Business Mobile :</strong> NIL</td>
+            </tr>
+          </tbody>
+          <tbody class="col-lg-12 col-xl-6 p-0">
+            <tr>
+              <td><strong>Business Fax :</strong> +{{ data.companyDetails?.OFFICEFAXVALUE }}</td>
+            </tr>
+            <tr>
+              <td><strong>Managers Name :</strong> NIL</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="media-heading mt-3">
+        <h5 class="text-uppercase">Business Location Information</h5>
+      </div>
+      <div class="table-responsive ">
+        <table class="table row table-borderless bg-transparent">
+          <tbody class="col-lg-12 col-xl-6 p-0">
+            <tr>
+              <td><strong>Streen Name:</strong> {{ data.companyDetails?.STREETADDRESS }}</td>
+            </tr>
+            <tr>
+              <td><strong>City :</strong> {{ data.companyDetails?.CITY }}</td>
+            </tr>
+          </tbody>
+          <tbody class="col-lg-12 col-xl-6 p-0">
+            <tr>
+              <td><strong>Country :</strong> India</td>
+            </tr>
+            <tr>
+              <td><strong>Postal Code :</strong> {{data.companyDetails?.ZIPCODE}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="row profie-img">
+        <div class="col-md-12">
+          <div class="media-heading">
+            <h5>Biography</h5>
+          </div>
+          <p>Omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
+          <p class="mb-0">We denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection</p>
+        </div>
+      </div>
+    </div>
+  </div>

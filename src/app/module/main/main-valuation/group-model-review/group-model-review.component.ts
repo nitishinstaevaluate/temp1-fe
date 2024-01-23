@@ -90,7 +90,7 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
     let fourthStageData:any;
     if(!this.transferStepperTwo){
       const formOneData = this.fourthStageInput?.formOneData;
-      const formThreeData = this.fourthStageInput?.formFourData;
+      const formThreeData = this.fourthStageInput?.formThreeData;
       formThreeData.map((formThreeDetails:any)=>{
         if(formThreeDetails.model === MODELS.FCFE && formOneData.model.includes(MODELS.FCFE)){
           const {model ,formFillingStatus, ...rest} = formThreeDetails;
