@@ -90,12 +90,12 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
         // this.comparableIndustrySlider=0;
         // this.relativeValSlider=0;
         // this.excessEarnSlider=0;
-        // console.log(changes['transferStepperthree']?.currentValue?.formThreeData?.appData,"current final")
-        // console.log(changes['transferStepperthree']?.previousValue?.formThreeData?.appData,"previous final")
-        changes['transferStepperthree']?.currentValue?.formThreeData?.appData?.valuationResult.map((val:any)=>{
+        // console.log(changes['transferStepperthree']?.currentValue?.formFourData?.appData,"current final")
+        // console.log(changes['transferStepperthree']?.previousValue?.formFourData?.appData,"previous final")
+        changes['transferStepperthree']?.currentValue?.formFourData?.appData?.valuationResult.map((val:any)=>{
           currentModel.push(val.model); 
         })
-        changes['transferStepperthree']?.previousValue?.formThreeData?.appData?.valuationResult.map((val:any)=>{
+        changes['transferStepperthree']?.previousValue?.formFourData?.appData?.valuationResult.map((val:any)=>{
           previousModel.push(val.model);
         })
         const elementsNotInArray = previousModel.filter((item:any) => !currentModel.includes(item));
@@ -114,7 +114,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
   }
 
   loadWeightageSlider(){
-    this.transferStepperthree?.formThreeData?.appData?.valuationResult.map(
+    this.transferStepperthree?.formFourData?.appData?.valuationResult.map(
       (response: any) => {
         if(response.model === 'FCFE'){
           this.fcfeValuation =  response.valuation;
@@ -186,7 +186,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
     );
   }
   checkModelWeightageData(){
-    const resultData:any = this.transferStepperthree?.formThreeData?.appData?.valuationResult
+    const resultData:any = this.transferStepperthree?.formFourData?.appData?.valuationResult
     const inputData = this.transferStepperthree?.formOneAndThreeData?.model;
     if(this.data && inputData && this.data?.length !== inputData?.length){
       this.calculateModelWeigtagePayload.results = [];
