@@ -68,7 +68,7 @@ constructor(private excelAndReportService:ExcelAndReportService,
 ngOnChanges(changes:SimpleChanges): void {
   let equityValuationDate:any;
   this.formData = this.transferStepperthree;
-  if(!this.transferStepperthree?.formOneAndThreeData?.model?.includes(MODELS.RULE_ELEVEN_UA)){
+  if(this.transferStepperthree?.formOneAndThreeData && !this.transferStepperthree?.formOneAndThreeData?.model?.includes(MODELS.RULE_ELEVEN_UA)){
     this.transferStepperthree?.formFourData?.appData?.valuationResult.map((response:any)=>{
     if(response.model === 'FCFE'){
       this.fcfeColumn = response?.columnHeader;

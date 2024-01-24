@@ -132,13 +132,15 @@ loadFormControl(){
   }
 
   checkPreviousAndCurrentValue(changes:any){
-    this.calculationsService.betaChangeDetector.subscribe((detector:any)=>{
-      if(detector.status){
-        const current = changes['formTwoData'].currentValue;
-        this.companyList = current.formTwoData.selectedIndustries;
-        this.selectedIndustry = current.formTwoData.industryL3;
-      }
-    })
+
+    // (If selected companies list is modified, use this code )
+    // this.calculationsService.betaChangeDetector.subscribe((detector:any)=>{
+    //   if(detector.status){
+    //     const current = changes['formTwoData'].currentValue;
+    //     // this.companyList = current.formTwoData.selectedIndustries;
+    //     // this.selectedIndustry = current.formTwoData.industryL3;
+    //   }
+    // })
     
     if (this.formTwoData && changes['formTwoData'] ) {
       const current = changes['formTwoData'].currentValue;

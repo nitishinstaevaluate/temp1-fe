@@ -514,6 +514,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     }
     else if(this.descriptorQuery !== event.target.value){
       this.descriptorQuery = event.target.value;
+      this.searchByDescriptor.next(this.descriptorQuery);
       this.resetPaginator();
       this.utilService.getWordList(this.descriptorQuery).subscribe((wordsArray)=>{
         this.options = wordsArray
