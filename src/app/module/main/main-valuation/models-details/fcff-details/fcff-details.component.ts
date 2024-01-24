@@ -167,8 +167,8 @@ loadOnChangeValue(){
           } else {
             this.fcffForm.controls['expMarketReturnType'].setValue('');
           }
+          this.calculateCoeAndAdjustedCoe();
         })
-        this.calculateCoeAndAdjustedCoe();
       }
       else{
         this.dataReferenceService.getBSE500(expectedMarketReturnData?.years,this.formOneData?.valuationDate).subscribe(

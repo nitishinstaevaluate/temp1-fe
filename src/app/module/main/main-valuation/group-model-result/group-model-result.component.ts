@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges, ViewChild } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MODELS } from 'src/app/shared/enums/constant';
-import { isSelected } from 'src/app/shared/enums/functions';
+import { isNotRuleElevenUaAndNav, isSelected } from 'src/app/shared/enums/functions';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
@@ -45,6 +45,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
   navMaxValue: number=100;
   maxModelValue: any;
   totalModelWeightageValue: any
+  isNotRuleElevenUaAndNav=isNotRuleElevenUaAndNav
   
   constructor(private calculationsService:CalculationsService,
     private snackBar:MatSnackBar,
@@ -57,11 +58,10 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
   checkProcessExist(){
     if(!this.transferStepperthree){
       this.transferStepperthree= this.fifthStageInput;
-      if(!this.transferStepperthree?.formOneAndThreeData?.model.includes(MODELS.RULE_ELEVEN_UA)){
+      if(this.transferStepperthree?.formOneAndThreeData && !this.transferStepperthree?.formOneAndThreeData?.model.includes(MODELS.RULE_ELEVEN_UA)){
         this.loadWeightageSlider();
-  
-        if(this.transferStepperthree?.formFourData?.modelValue){
-          this.transferStepperthree.formFourData.modelValue.map((modelWeightage:any)=>{
+        if(this.transferStepperthree?.formFiveData?.modelValue){
+          this.transferStepperthree.formFiveData.modelValue.map((modelWeightage:any)=>{
             this.setModelSliderValue(modelWeightage.model,(modelWeightage.weight).toFixed(2)*100,(modelWeightage.weight).toFixed(2)*100 - 100)
           })
           this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
@@ -78,7 +78,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
 
   ngOnChanges(changes:SimpleChanges){
    
-    if(!this.transferStepperthree?.formOneAndThreeData?.model.includes(MODELS.RULE_ELEVEN_UA)){
+    if(this.transferStepperthree?.formOneAndThreeData && !this.transferStepperthree?.formOneAndThreeData?.model.includes(MODELS.RULE_ELEVEN_UA)){
     this.loadWeightageSlider()
     if(changes['transferStepperthree']?.currentValue && changes['transferStepperthree']?.previousValue ){
         const currentModel:any=[];
@@ -190,6 +190,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
     const inputData = this.transferStepperthree?.formOneAndThreeData?.model;
     if(this.data && inputData && this.data?.length !== inputData?.length){
       this.calculateModelWeigtagePayload.results = [];
+      console.log(",195")
       this.loadWeightageSlider();
     }
     let bool=true;

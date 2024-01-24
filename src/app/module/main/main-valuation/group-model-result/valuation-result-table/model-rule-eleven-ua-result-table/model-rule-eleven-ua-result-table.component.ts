@@ -18,8 +18,8 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
   ngOnChanges(){
     if(this.formData){
       this.jewelleryOrArtisticWork=[];
-      const jewellery = this.formData?.formThreeData?.appData?.inputData?.fairValueJewellery;
-      const artisticWork = this.formData?.formThreeData?.appData?.inputData?.fairValueArtistic;
+      const jewellery = this.formData?.formFourData?.appData?.inputData?.fairValueJewellery;
+      const artisticWork = this.formData?.formFourData?.appData?.inputData?.fairValueArtistic;
       const jewelleryAndArtisticWorkArray = [
         {
           name:"Jewellery",
@@ -56,8 +56,8 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
 
   calculateTotalA(){
     if(this.formData){
-      const totalIncomeTaxPaid = this.formData?.formThreeData?.appData?.totalIncomeTaxPaid;
-      const unamortisedAmountOfDeferredExpenditure = this.formData?.formThreeData?.appData?.unamortisedAmountOfDeferredExpenditure;
+      const totalIncomeTaxPaid = this.formData?.formFourData?.appData?.totalIncomeTaxPaid;
+      const unamortisedAmountOfDeferredExpenditure = this.formData?.formFourData?.appData?.unamortisedAmountOfDeferredExpenditure;
       this.totalCalculationA = totalIncomeTaxPaid + unamortisedAmountOfDeferredExpenditure; 
       return totalIncomeTaxPaid + unamortisedAmountOfDeferredExpenditure;
     }
@@ -78,19 +78,19 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
 
   calculateTotalD(){
     if(this.formData){
-      this.totalCalculationD = this.formData?.formThreeData?.appData?.inputData?.fairValueImmovableProp ? parseFloat(this.formData.formThreeData.appData.inputData.fairValueImmovableProp) : 0;
-      return this.formData?.formThreeData?.appData?.inputData?.fairValueImmovableProp ? this.formData.formThreeData.appData.inputData.fairValueImmovableProp : '-';
+      this.totalCalculationD = this.formData?.formFourData?.appData?.inputData?.fairValueImmovableProp ? parseFloat(this.formData.formFourData.appData.inputData.fairValueImmovableProp) : 0;
+      return this.formData?.formFourData?.appData?.inputData?.fairValueImmovableProp ? this.formData.formFourData.appData.inputData.fairValueImmovableProp : '-';
     }
   }
 
   calculateTotalL(){
     if(this.formData){
-      const paidUpCapital = this.formData?.formThreeData?.appData?.paidUpCapital;
-      const paymentDividends = this.formData?.formThreeData?.appData?.paymentDividends;
-      const reservAndSurplus = this.formData?.formThreeData?.appData?.reserveAndSurplus;
-      const provisionForTaxation = this.formData?.formThreeData?.appData?.provisionForTaxation;
-      const contingentLiabilities = isNaN(parseFloat(this.formData?.formThreeData?.appData?.inputData?.contingentLiability)) ? 0 : parseFloat(this.formData?.formThreeData?.appData?.inputData?.contingentLiability);
-      const otherThanAscertainLiability = isNaN(parseFloat(this.formData?.formThreeData?.appData?.inputData?.otherThanAscertainLiability)) ? 0 : parseFloat(this.formData?.formThreeData?.appData?.inputData?.otherThanAscertainLiability);
+      const paidUpCapital = this.formData?.formFourData?.appData?.paidUpCapital;
+      const paymentDividends = this.formData?.formFourData?.appData?.paymentDividends;
+      const reservAndSurplus = this.formData?.formFourData?.appData?.reserveAndSurplus;
+      const provisionForTaxation = this.formData?.formFourData?.appData?.provisionForTaxation;
+      const contingentLiabilities = isNaN(parseFloat(this.formData?.formFourData?.appData?.inputData?.contingentLiability)) ? 0 : parseFloat(this.formData?.formFourData?.appData?.inputData?.contingentLiability);
+      const otherThanAscertainLiability = isNaN(parseFloat(this.formData?.formFourData?.appData?.inputData?.otherThanAscertainLiability)) ? 0 : parseFloat(this.formData?.formFourData?.appData?.inputData?.otherThanAscertainLiability);
       this.totalCalculationL = paidUpCapital + paymentDividends + reservAndSurplus + provisionForTaxation + contingentLiabilities + otherThanAscertainLiability; 
       return paidUpCapital + paymentDividends + reservAndSurplus + provisionForTaxation + contingentLiabilities + otherThanAscertainLiability;
     }
@@ -102,8 +102,8 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
   }
   
   calculateFairMarketValue(){
-    const phaseValue = !isNaN(parseFloat(this.formData?.formThreeData?.appData?.inputData?.phaseValue)) ? parseFloat(this.formData?.formThreeData?.appData?.inputData?.phaseValue) : 1;
-    const paidUpCapital = !isNaN(parseFloat(this.formData?.formThreeData?.appData?.paidUpCapital)) ? parseFloat(this.formData?.formThreeData?.appData?.paidUpCapital) : 1;
+    const phaseValue = !isNaN(parseFloat(this.formData?.formFourData?.appData?.inputData?.phaseValue)) ? parseFloat(this.formData?.formFourData?.appData?.inputData?.phaseValue) : 1;
+    const paidUpCapital = !isNaN(parseFloat(this.formData?.formFourData?.appData?.paidUpCapital)) ? parseFloat(this.formData?.formFourData?.appData?.paidUpCapital) : 1;
 
     const totalSum = this.totalCalculationA + this.totalCalculationB + this.totalCalculationC + this.totalCalculationD - this.totalCalculationL;
 
@@ -120,8 +120,8 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
 
   calculateTotalInvestmentSharesAndSecurities(){
     let investment=0;
-    const investmentTotalFromExcel = this.formData?.formThreeData?.appData.totalInvestmentSharesAndSecurities;
-    const elevenUaInvestment = this.formData?.formThreeData.appData.inputData.fairValueinvstShareSec;
+    const investmentTotalFromExcel = this.formData?.formFourData?.appData.totalInvestmentSharesAndSecurities;
+    const elevenUaInvestment = this.formData?.formFourData.appData.inputData.fairValueinvstShareSec;
     investment = elevenUaInvestment;
     if(!elevenUaInvestment){
        investment =  investmentTotalFromExcel;
