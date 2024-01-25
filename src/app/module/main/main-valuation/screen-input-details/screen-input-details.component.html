@@ -13,7 +13,7 @@
           <div class="material-textfield">
               <mat-form-field appearance="fill" class="companyStatus" style="width: 100%;">
                 <mat-label class="ind-4">{{modelControl.inputScreen.columns.companyStatus.label}}</mat-label>
-                <mat-select [(ngModel)]="selectedCompanyStatusType" [compareWith]="comparer" (openedChange)="onDropdownFocus($event,'companyStatus')" (selectionChange)="onDropdownChange($event,'companyStatus')" formControlName="companyStatus" multiple class="new-inp company-stat">
+                <mat-select [(ngModel)]="selectedCompanyStatusType" [compareWith]="comparerStatusCompany" (openedChange)="onDropdownFocus($event,'companyStatus')" (selectionChange)="onDropdownChange($event,'companyStatus')" formControlName="companyStatus" multiple class="new-inp company-stat">
                   <mat-option *ngFor="let companyStatus of companyStatusType" [value]="companyStatus">
                     {{ companyStatus.companystatustypename }}
                   </mat-option>
@@ -33,7 +33,7 @@
           <div class="material-textfield">
             <mat-form-field appearance="fill" class="companyType" style="width: 100%;">
               <mat-label class="ind-4">{{modelControl.inputScreen.columns.companyType.label}}</mat-label>
-              <mat-select [(ngModel)]="selectedCompanyType" [compareWith]="comparer" (openedChange)="onDropdownFocus($event,'companyType')" (selectionChange)="onDropdownChange($event,'companyType')" formControlName="companyType" multiple class="new-inp company-type">
+              <mat-select [(ngModel)]="selectedCompanyType" [compareWith]="comparerCompany" (openedChange)="onDropdownFocus($event,'companyType')" (selectionChange)="onDropdownChange($event,'companyType')" formControlName="companyType" multiple class="new-inp company-type">
                 <mat-option *ngFor="let company of companyType" [value]="company">
                   {{ company.companytypename }}
                 </mat-option>
