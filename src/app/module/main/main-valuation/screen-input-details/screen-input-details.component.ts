@@ -65,6 +65,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   pageStart: number = 0;
   previousPageIndex: number = 0
   prevPageSize: any;
+  selectAll: boolean = false;
 
   constructor(
     private fb:FormBuilder,
@@ -341,6 +342,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
 
   loadCiqIndustryBasedLevelFour(payload:any){
     this.loader = true;
+    this.selectAll = false;
     this.ciqSpService.getSPIndustryListByLevelFourIndustries(payload).subscribe((industryData:any)=>{
       if(industryData.status){
         this.loader = false;
@@ -545,7 +547,8 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     else{
       await this.removeUncheckedIndustry(data)
     }
-    event.stopPropagation()
+    // event.stopPropagation();
+    this.selectAll = this.ciqIndustryData.every((row:any) => row.isSelected);
   }
 
   async createIndustryStructure(data:any){
@@ -560,8 +563,16 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     }
   }
 
+  async createMultiSelectIndustryStructure(data:any){
+    this.mainIndustries.push(...data);
+  }
+
   async removeUncheckedIndustry(data:any){
     this.mainIndustries.splice(this.mainIndustries.findIndex((element:any) => element.COMPANYID === data.COMPANYID),1);
+  }
+
+  removeMultiSelectIndustryStructure(){
+    this.mainIndustries = [];
   }
 
   onCheckboxChange(event:any){
@@ -569,7 +580,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       this.inputScreenForm.controls['industryL3'].setValue('');
       this.levelThreeIndustryDescription = '';
       this.resetPaginator();
-      this.loadCiqIndustryBasedLevelFour(this.createPayload())
+      this.loadCiqIndustryBasedLevelFour(this.createPayload());
     }
   }
 
@@ -660,4 +671,22 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       }
     })
   }
+
+  onSelectAllChange() {
+    let toggleMultiSelect = false;
+    for (let row of this.ciqIndustryData) {
+      row.isSelected = this.selectAll;
+      if(this.selectAll){
+        toggleMultiSelect = true
+      }
+    }
+    
+    if(toggleMultiSelect){
+      this.createMultiSelectIndustryStructure(this.ciqIndustryData);
+    }
+    else{
+      this.removeMultiSelectIndustryStructure();
+    }
+  }
+
 }
