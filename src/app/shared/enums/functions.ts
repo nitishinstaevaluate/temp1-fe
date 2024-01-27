@@ -57,3 +57,12 @@ export function isNotRuleElevenUaAndNav(modelArray:any){
       return true;
     }
 }
+
+export function convertToNumberOrZero(value: any): number {
+  if (typeof value === 'string' || typeof value === 'number') {
+    const num:any = Number(value);
+    return isNaN(num) ? 0 : num;
+  } else {
+    return 0;
+  }
+}

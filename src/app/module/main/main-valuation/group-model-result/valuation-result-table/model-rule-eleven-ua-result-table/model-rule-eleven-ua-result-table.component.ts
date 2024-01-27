@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
+import { convertToNumberOrZero } from 'src/app/shared/enums/functions';
 
 @Component({
   selector: 'app-model-rule-eleven-ua-result-table',
@@ -58,9 +59,10 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
     if(this.formData){
       const totalIncomeTaxPaid = this.formData?.formFourData?.appData?.totalIncomeTaxPaid;
       const unamortisedAmountOfDeferredExpenditure = this.formData?.formFourData?.appData?.unamortisedAmountOfDeferredExpenditure;
-      this.totalCalculationA = totalIncomeTaxPaid + unamortisedAmountOfDeferredExpenditure; 
-      return totalIncomeTaxPaid + unamortisedAmountOfDeferredExpenditure;
+      this.totalCalculationA = this.formData?.formFourData?.appData?.bookValueOfAllAssets -  (totalIncomeTaxPaid + unamortisedAmountOfDeferredExpenditure); 
+      return (this.formData?.formFourData?.appData?.bookValueOfAllAssets -  (totalIncomeTaxPaid + unamortisedAmountOfDeferredExpenditure));
     }
+    return '-'
   }
 
   calculateTotalB(){
@@ -89,16 +91,32 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
       const paymentDividends = this.formData?.formFourData?.appData?.paymentDividends;
       const reservAndSurplus = this.formData?.formFourData?.appData?.reserveAndSurplus;
       const provisionForTaxation = this.formData?.formFourData?.appData?.provisionForTaxation;
-      const contingentLiabilities = isNaN(parseFloat(this.formData?.formFourData?.appData?.inputData?.contingentLiability)) ? 0 : parseFloat(this.formData?.formFourData?.appData?.inputData?.contingentLiability);
-      const otherThanAscertainLiability = isNaN(parseFloat(this.formData?.formFourData?.appData?.inputData?.otherThanAscertainLiability)) ? 0 : parseFloat(this.formData?.formFourData?.appData?.inputData?.otherThanAscertainLiability);
-      this.totalCalculationL = paidUpCapital + paymentDividends + reservAndSurplus + provisionForTaxation + contingentLiabilities + otherThanAscertainLiability; 
-      return paidUpCapital + paymentDividends + reservAndSurplus + provisionForTaxation + contingentLiabilities + otherThanAscertainLiability;
+      // const contingentLiabilities = isNaN(parseFloat(this.formData?.formFourData?.appData?.inputData?.contingentLiability)) ? 0 : parseFloat(this.formData?.formFourData?.appData?.inputData?.contingentLiability);
+      // const otherThanAscertainLiability = isNaN(parseFloat(this.formData?.formFourData?.appData?.inputData?.otherThanAscertainLiability)) ? 0 : parseFloat(this.formData?.formFourData?.appData?.inputData?.otherThanAscertainLiability);
+      this.totalCalculationL = (convertToNumberOrZero(this.formData?.formFourData?.appData?.bookValueOfLiabilities) - 
+      (convertToNumberOrZero(paidUpCapital) +
+       convertToNumberOrZero(paymentDividends) + 
+       convertToNumberOrZero(reservAndSurplus) + 
+       convertToNumberOrZero(provisionForTaxation) + 
+       convertToNumberOrZero(this.formData?.formFourData?.appData?.inputData?.contingentLiability) + 
+       convertToNumberOrZero(this.formData?.formFourData?.appData?.inputData?.otherThanAscertainLiability)));
+      return (
+        convertToNumberOrZero(this.formData?.formFourData?.appData?.bookValueOfLiabilities) - 
+      (
+        convertToNumberOrZero(paidUpCapital) + 
+        convertToNumberOrZero(paymentDividends) + 
+        convertToNumberOrZero(reservAndSurplus) + 
+        convertToNumberOrZero(provisionForTaxation) + 
+        convertToNumberOrZero(this.formData?.formFourData?.appData?.inputData?.contingentLiability) + 
+        convertToNumberOrZero(this.formData?.formFourData?.appData?.inputData?.otherThanAscertainLiability)
+      )
+      ).toFixed(2);
     }
     return '-';
   }
 
   calculateAll() {
-      return  this.totalCalculationA+ this.totalCalculationB + this.totalCalculationC + this.totalCalculationD - this.totalCalculationL;
+      return  (this.totalCalculationA+ this.totalCalculationB + this.totalCalculationC + this.totalCalculationD - this.totalCalculationL).toFixed(2);
   }
   
   calculateFairMarketValue(){
