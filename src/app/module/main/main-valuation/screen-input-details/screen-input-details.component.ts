@@ -65,6 +65,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   pageStart: number = 0;
   previousPageIndex: number = 0
   prevPageSize: any;
+  selectAll: boolean = false;
 
   constructor(
     private fb:FormBuilder,
@@ -129,18 +130,14 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       if(formTwoData?.industryL4){
         this.selectedLevelFourIndustry = formTwoData.industryL4.map((elements:any)=>{
           this.levelFourIndustryDescription.push(elements.GICSDescriptor);
-          return {
-            GICSDescriptor:elements.GICSDescriptor
-          }
+          return elements
         })
       }
 
       if(formTwoData?.companyType){
         this.selectedCompanyType = formTwoData.companyType.map((elements:any)=>{
           this.companyTypeDescription.push(elements.companytypename);
-          return {
-            companytypename:elements.companytypename
-          }
+          return elements
         })
         if(formTwoData?.companyType.length){
           this.companyTypeDropdownValue = true;
@@ -150,9 +147,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       if(formTwoData?.companyStatus){
         this.selectedCompanyStatusType = formTwoData.companyStatus.map((elements:any)=>{
           this.companyStatusTypeDescription.push(elements.companystatustypename)
-          return {
-            companystatustypename:elements.companystatustypename
-          }
+          return elements;
         })
         if(formTwoData?.companyStatus.length){
           this.companyStatusDropdownValue = true;
@@ -176,6 +171,14 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
 
   comparer(o1: any, o2: any): boolean {
     return o1 && o2 ? o1.GICSDescriptor === o2.GICSDescriptor : o2 === o2;
+  }
+
+  comparerCompany(o1: any, o2: any): boolean {
+    return o1 && o2 ? o1.companytypeid  === o2.companytypeid  : o2 === o2;
+  }
+
+  comparerStatusCompany(o1: any, o2: any): boolean {
+    return o1 && o2 ? o1.companystatustypeid  === o2.companystatustypeid  : o2 === o2;
   }
 
   onValueChange(){
@@ -207,7 +210,6 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     if(this.formOneData?.location != this.secondStageInput?.formOneData?.location){
       this.loadCiqIndustryBasedLevelFour(this.createPayload());
     }
-
     this.filteredOptions = this.inputScreenForm.controls['descriptor'].valueChanges.pipe(
       startWith(''),
       map(value => this.filter(value))
@@ -341,6 +343,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
 
   loadCiqIndustryBasedLevelFour(payload:any){
     this.loader = true;
+    this.selectAll = false;
     this.ciqSpService.getSPIndustryListByLevelFourIndustries(payload).subscribe((industryData:any)=>{
       if(industryData.status){
         this.loader = false;
@@ -545,7 +548,8 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     else{
       await this.removeUncheckedIndustry(data)
     }
-    event.stopPropagation()
+    // event.stopPropagation();
+    this.selectAll = this.ciqIndustryData.every((row:any) => row.isSelected);
   }
 
   async createIndustryStructure(data:any){
@@ -560,8 +564,16 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     }
   }
 
+  async createMultiSelectIndustryStructure(data:any){
+    this.mainIndustries.push(...data);
+  }
+
   async removeUncheckedIndustry(data:any){
     this.mainIndustries.splice(this.mainIndustries.findIndex((element:any) => element.COMPANYID === data.COMPANYID),1);
+  }
+
+  removeMultiSelectIndustryStructure(){
+    this.mainIndustries = [];
   }
 
   onCheckboxChange(event:any){
@@ -569,7 +581,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       this.inputScreenForm.controls['industryL3'].setValue('');
       this.levelThreeIndustryDescription = '';
       this.resetPaginator();
-      this.loadCiqIndustryBasedLevelFour(this.createPayload())
+      this.loadCiqIndustryBasedLevelFour(this.createPayload());
     }
   }
 
@@ -660,4 +672,22 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       }
     })
   }
+
+  onSelectAllChange() {
+    let toggleMultiSelect = false;
+    for (let row of this.ciqIndustryData) {
+      row.isSelected = this.selectAll;
+      if(this.selectAll){
+        toggleMultiSelect = true
+      }
+    }
+    
+    if(toggleMultiSelect){
+      this.createMultiSelectIndustryStructure(this.ciqIndustryData);
+    }
+    else{
+      this.removeMultiSelectIndustryStructure();
+    }
+  }
+
 }

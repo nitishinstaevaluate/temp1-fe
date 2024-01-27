@@ -13,7 +13,7 @@
           <div class="material-textfield">
               <mat-form-field appearance="fill" class="companyStatus" style="width: 100%;">
                 <mat-label class="ind-4">{{modelControl.inputScreen.columns.companyStatus.label}}</mat-label>
-                <mat-select [(ngModel)]="selectedCompanyStatusType" [compareWith]="comparer" (openedChange)="onDropdownFocus($event,'companyStatus')" (selectionChange)="onDropdownChange($event,'companyStatus')" formControlName="companyStatus" multiple class="new-inp company-stat">
+                <mat-select [(ngModel)]="selectedCompanyStatusType" [compareWith]="comparerStatusCompany" (openedChange)="onDropdownFocus($event,'companyStatus')" (selectionChange)="onDropdownChange($event,'companyStatus')" formControlName="companyStatus" multiple class="new-inp company-stat">
                   <mat-option *ngFor="let companyStatus of companyStatusType" [value]="companyStatus">
                     {{ companyStatus.companystatustypename }}
                   </mat-option>
@@ -33,7 +33,7 @@
           <div class="material-textfield">
             <mat-form-field appearance="fill" class="companyType" style="width: 100%;">
               <mat-label class="ind-4">{{modelControl.inputScreen.columns.companyType.label}}</mat-label>
-              <mat-select [(ngModel)]="selectedCompanyType" [compareWith]="comparer" (openedChange)="onDropdownFocus($event,'companyType')" (selectionChange)="onDropdownChange($event,'companyType')" formControlName="companyType" multiple class="new-inp company-type">
+              <mat-select [(ngModel)]="selectedCompanyType" [compareWith]="comparerCompany" (openedChange)="onDropdownFocus($event,'companyType')" (selectionChange)="onDropdownChange($event,'companyType')" formControlName="companyType" multiple class="new-inp company-type">
                 <mat-option *ngFor="let company of companyType" [value]="company">
                   {{ company.companytypename }}
                 </mat-option>
@@ -135,7 +135,10 @@
     <table class="table-industry-based-company" *ngIf="!loader">
       <thead>
         <tr style="text-transform: capitalize;" class="header">
-          <th style="width: 5%;border: 1px solid #eeeeee"><i class="fa fa-filter" style="font-size:17px"></i></th>
+          <th style="width: 5%;border: 1px solid #eeeeee">
+            <input type="checkbox" [(ngModel)]="selectAll" style="vertical-align: middle;" (change)="onSelectAllChange()"/>
+            <i class="fa fa-filter" style="font-size:17px;vertical-align: middle;padding-left: 35%;"></i>
+          </th>
           <th style="border: 1px solid #eeeeee; height: 40px;" *ngFor="let columnName of ciqIndustryHead" class="make-bold" [ngStyle]="(columnName === 'Company Name') ? { 'width': '30%'} : (columnName === 'City') ? { 'width':'10%', 'padding-left':'2%' } : (columnName === 'Company Id') ? {'width':'8%'} : (columnName === 'Industry Description') ? { 'width':'15%' } : { 'width':'auto' }">
             {{ columnName }}
           </th>
