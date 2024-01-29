@@ -66,3 +66,30 @@ export function convertToNumberOrZero(value: any): number {
     return 0;
   }
 }
+
+export function formatNumber(value: any) {
+  if (!isNaN(value)  && typeof value === 'number') {
+    if(value && `${value}`.includes('-')){
+      let formattedNumber = value.toLocaleString(undefined, {
+        minimumIntegerDigits: 1,
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+      return `(${`${formattedNumber}`.replace(/-/g,'')})`;
+    }
+    else if(value){
+     const formatValue =  value.toLocaleString(undefined, {
+        minimumIntegerDigits: 1,
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })
+      return formatValue;
+    }
+    else{
+     return value.toFixed(2);
+    }
+  }
+    else{
+      return  value;
+    }
+}

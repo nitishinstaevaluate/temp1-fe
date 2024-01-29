@@ -163,7 +163,9 @@
         </tr>
       </tbody>
     </table>
-    <mat-paginator *ngIf="ciqIndustryData?.length" [length]="length"
+    <div>
+      <p class="total-count">{{mainIndustries?.length}} selected</p>
+      <mat-paginator *ngIf="ciqIndustryData?.length" style="float: inline-end;" [length]="length"
       [pageSize]="pageSize"
       [pageSizeOptions]="pageSizeOptions"
       (page)="onPageChange($event)"
@@ -171,6 +173,7 @@
       class="table-paginator"
       #paginatorRef>
     </mat-paginator>
+    </div>
     </div>
 
     <div class="col-md-12 btn-prop" *ngIf="!loader">

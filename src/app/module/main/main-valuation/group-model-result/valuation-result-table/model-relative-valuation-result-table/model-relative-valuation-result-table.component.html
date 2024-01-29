@@ -3,7 +3,7 @@
             <table class="relval-table">
               <thead>
                 <tr class="header">
-                  <th  colspan="4" style="border-right: none;text-align: left;padding-left:14%;padding-top:1%;padding-bottom: 1%;">
+                  <th  colspan="4" style="border-right: none;text-align: left;padding-left:3.3%;padding-top:1%;padding-bottom: 1%;">
                     Valuation of <span style="border-right: none;text-transform: uppercase;">{{formData?.formOneAndThreeData?.company}}</span> 
                   </th>
                   <!-- <th *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'" colspan="2" style="border-left: none;text-align: right !important;">
@@ -18,14 +18,14 @@
                   <th >Particulars</th>
                   <!-- <th>As on {{returnDate(firstFormGroup.value?.valuationDate) | date}}</th>
                   <th>As on {{returnDate(firstFormGroup.value?.valuationDate) | date}}</th> -->
-                  <th>As on {{formData?.formOneAndThreeData?.valuationDate | date:'MMM d, yyyy'}} </th>
-                  <th *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">As on {{formData?.formOneAndThreeData?.valuationDate | date:'MMM d, yyyy'}} </th>
+                  <th style="text-align: center;padding-left: 1%;">As on {{formData?.formOneAndThreeData?.valuationDate | date:'MMM d, yyyy'}} </th>
+                  <th *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'" style="text-align: center;padding-left: 1%;">As on {{formData?.formOneAndThreeData?.valuationDate | date:'MMM d, yyyy'}} </th>
                 </tr>
                 <tr *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'" class="header">
                   <th></th>
                   <th></th>
-                  <th>Average</th>
-                  <th>Median</th>
+                  <th style="text-align: center;padding-left: 1%;">Average</th>
+                  <th style="text-align: center;padding-left: 1%;">Median</th>
                 </tr>
               </thead>
               <tbody>
@@ -57,11 +57,11 @@
                     </tr>
                     <tr>
                       <td></td>
-                      <td class="td-label">Fair Value of Equity</td>
-                      <td>{{ item.pbMarketPriceAvg | number : '1.2-2' }}</td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ item.pbMarketPriceMed | number : '1.2-2' }}</td>
+                      <td class="td-label" style="font-weight: bold;">Fair Value of Equity</td>
+                      <td style="font-weight: bold;">{{ item.pbMarketPriceAvg | number : '1.2-2' }}</td>
+                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'" style="font-weight: bold;">{{ item.pbMarketPriceMed | number : '1.2-2' }}</td>
                     </tr>
-                    <tr style="height: 40px">
+                    <tr style="height: 30px">
                       <td></td>
                       <td></td>
                       <td></td>
@@ -89,11 +89,11 @@
                     </tr>
                     <tr>
                       <td></td>
-                      <td class="td-label">Fair Value Of Equity</td>
-                      <td>{{ item.peMarketPriceAvg | number : '1.2-2' }}</td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ item.peMarketPriceMed | number : '1.2-2' }}</td>
+                      <td class="td-label" style="font-weight: bold;">Fair Value Of Equity</td>
+                      <td style="font-weight: bold;">{{ item.peMarketPriceAvg | number : '1.2-2' }}</td>
+                      <td style="font-weight: bold;" *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ item.peMarketPriceMed | number : '1.2-2' }}</td>
                     </tr>
-                    <tr style="height: 40px">
+                    <tr style="height: 30px">
                       <td></td>
                       <td></td>
                       <td></td>
@@ -101,7 +101,7 @@
                     </tr>
                   </ng-container>
                   <ng-container *ngIf="item.particular == 'ebitda'">
-                    <tr style="height: 40px">
+                    <tr style="height: 30px">
                       <td>3</td>
                       <td class="td-label-h"><b>EV/EBITDA</b></td>
                       <td></td>
@@ -133,9 +133,9 @@
                     </tr>
                     <tr>
                       <td></td>
-                      <td class="td-label">Value of Equity</td>
-                      <td>{{ item.ebitdaEquityAvg | number : '1.2-2' }}</td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ item.ebitdaEquityMed | number : '1.2-2' }}</td>
+                      <td class="td-label" style="font-weight: bold;">Value of Equity</td>
+                      <td style="font-weight: bold;">{{ item.ebitdaEquityAvg | number : '1.2-2' }}</td>
+                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'" style="font-weight: bold;">{{ item.ebitdaEquityMed | number : '1.2-2' }}</td>
                     </tr>
                     <!-- <tr>
                       <td></td>
@@ -143,7 +143,7 @@
                       <td>{{ item.ebitdaMarketPriceAvg | number : '1.2-2' }}</td>
                       <td>{{ item.ebitdaMarketPriceMed | number : '1.2-2' }}</td>
                     </tr> -->
-                    <tr style="height: 40px">
+                    <tr style="height: 30px">
                       <td></td>
                       <td></td>
                       <td></td>
@@ -171,9 +171,9 @@
                     </tr>
                     <tr>
                       <td></td>
-                      <td class="td-label">Value of Equity</td>
-                      <td>{{ item.salesEquityAvg | number : '1.2-2' }}</td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ item.salesEquityMed | number : '1.2-2' }}</td>
+                      <td class="td-label" style="font-weight: bold;">Value of Equity</td>
+                      <td style="font-weight: bold;">{{ item.salesEquityAvg | number : '1.2-2' }}</td>
+                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'" style="font-weight: bold;">{{ item.salesEquityMed | number : '1.2-2' }}</td>
                     </tr>
                     <!-- <tr>
                       <td></td>
@@ -181,7 +181,7 @@
                       <td>{{ item.salesMarketPriceAvg | number : '1.2-2' }}</td>
                       <td>{{ item.salesMarketPriceMed | number : '1.2-2' }}</td>
                     </tr> -->
-                    <tr style="height: 40px">
+                    <tr style="height: 30px">
                       <td></td>
                       <td></td>
                       <td></td>
@@ -195,7 +195,7 @@
                       <td>{{ item.avgPricePerShareAvg | number : '1.2-2' }}</td>
                       <td>{{ item.avgPricePerShareMed | number : '1.2-2' }}</td>
                     </tr>
-                    <tr style="height: 40px">
+                    <tr style="height: 30px">
                       <td></td>
                       <td></td>
                       <td></td>
@@ -210,16 +210,16 @@
                     <tr>
                       <td></td>
                       <td class="td-label">
-                        Less: Illiquidity
+                        Illiquidity Discount
                       </td>
                       <td>{{ item.locAvg | number : '1.2-2' }}</td>
                       <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ item.locMed | number : '1.2-2' }}</td>
                     </tr>
                     <tr>
                       <td></td>
-                      <td class="td-label">Final Price</td>
-                      <td>{{ item.finalPriceAvg | number : '1.2-2' }}</td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ item.finalPriceMed | number : '1.2-2' }}</td>
+                      <td class="td-label" style="font-weight: bold;">Final Price</td>
+                      <td style="font-weight: bold;">{{ item.finalPriceAvg | number : '1.2-2' }}</td>
+                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'" style="font-weight: bold;">{{ item.finalPriceMed | number : '1.2-2' }}</td>
                     </tr>
                     <tr>
                       <td></td>
@@ -229,9 +229,9 @@
                     </tr>
                     <tr>
                       <td></td>
-                      <td class="td-label">Fair Value per Share</td>
-                      <td>{{ item.fairValuePerShareAvg | number : '1.2-2' }}</td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ item.fairValuePerShareMed | number : '1.2-2' }}</td>
+                      <td class="td-label" style="font-weight: bold;">Fair Value per Share</td>
+                      <td style="font-weight: bold;">{{ item.fairValuePerShareAvg | number : '1.2-2' }}</td>
+                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'" style="font-weight: bold;">{{ item.fairValuePerShareMed | number : '1.2-2' }}</td>
                     </tr>
                     <!-- <tr>
                       <td></td>

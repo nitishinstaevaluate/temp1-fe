@@ -131,4 +131,21 @@ export class RelativeValuationsTableComponent implements OnChanges {
     }
     return '-'
   }
+
+  addStylingConditions(column:any, element:any){
+    const value = element[RELATIVE_VALUATION_COMPANY_MAPPING[column]];
+
+    if (this.updateDecimal(value) === '-') {
+      return 'add-padding';
+    } else if (value === 'Average' || value === 'Median' ) {
+      return 'make-bold';
+    } else if(element.company === 'Average' || element.company === 'Median') {
+      return 'make-bold remove-pad'
+    } else if (RELATIVE_VALUATION_COMPANY_MAPPING[column] !== 'company') {
+      return 'remove-pad';
+    } else {
+      return '';
+    }
+  
+  }
 }
