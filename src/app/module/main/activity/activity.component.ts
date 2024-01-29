@@ -11,6 +11,7 @@ import { saveAs } from 'file-saver';
 import { Subject, debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.service';
+import { formatNumber } from 'src/app/shared/enums/functions';
 
 @Component({
   selector: 'app-activity',
@@ -179,13 +180,13 @@ export class ActivityComponent {
     if(processData.fourthStageInput || processData.fifthStageInput){
 
       if(modelArray.length === 1 && (modelArray.includes(MODELS.FCFE) || modelArray.includes(MODELS.FCFF) || modelArray.includes(MODELS.EXCESS_EARNINGS) || modelArray.includes(MODELS.NAV))){
-        return `${processData.firstStageInput.currencyUnit} ${this.formatNumber(processData?.fourthStageInput?.appData?.valuationResult[0].valuation ? processData?.fourthStageInput?.appData?.valuationResult[0].valuation : '-')}`;
+        return `${processData.firstStageInput.currencyUnit} ${formatNumber(processData?.fourthStageInput?.appData?.valuationResult[0].valuation ? processData?.fourthStageInput?.appData?.valuationResult[0].valuation : '-')}`;
       }
       else if(modelArray.length === 1 && (modelArray.includes(MODELS.COMPARABLE_INDUSTRIES) || modelArray.includes(MODELS.RELATIVE_VALUATION))){
-        return `${processData.firstStageInput.currencyUnit} ${this.formatNumber(processData.fourthStageInput.appData.valuationResult[0].valuation?.finalPriceAvg ? processData.fourthStageInput.appData.valuationResult[0].valuation?.finalPriceAvg : '-')}`;
+        return `${processData.firstStageInput.currencyUnit} ${formatNumber(processData.fourthStageInput.appData.valuationResult[0].valuation?.finalPriceAvg ? processData.fourthStageInput.appData.valuationResult[0].valuation?.finalPriceAvg : '-')}`;
       }
       else if(processData.fifthStageInput?.totalWeightageModel){
-        return `${processData.firstStageInput.currencyUnit} ${this.formatNumber(processData.fifthStageInput.totalWeightageModel?.weightedVal ? processData.fifthStageInput.totalWeightageModel?.weightedVal : '-')}`;
+        return `${processData.firstStageInput.currencyUnit} ${formatNumber(processData.fifthStageInput.totalWeightageModel?.weightedVal ? processData.fifthStageInput.totalWeightageModel?.weightedVal : '-')}`;
       }
       else{
         return '-';
@@ -194,33 +195,6 @@ export class ActivityComponent {
     else{
       return '-';
     }
-  }
-
-  formatNumber(value: any) {
-    if (!isNaN(value)  && typeof value === 'number') {
-      if(value && `${value}`.includes('-')){
-        let formattedNumber = value.toLocaleString(undefined, {
-          minimumIntegerDigits: 1,
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        });
-        return `(${`${formattedNumber}`.replace(/-/g,'')})`;
-      }
-      else if(value){
-       const formatValue =  value.toLocaleString(undefined, {
-          minimumIntegerDigits: 1,
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })
-        return formatValue;
-      }
-      else{
-       return value.toFixed(2);
-      }
-    }
-      else{
-        return  value;
-      }
   }
 
   filterByCompany(event:any){

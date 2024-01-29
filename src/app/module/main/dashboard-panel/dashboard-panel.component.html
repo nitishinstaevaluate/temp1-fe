@@ -107,91 +107,24 @@
     </div> -->
     <div class="header" style="padding-top: 30px;">Valuation Stats</div>
     <div class="right-content">
-      <div class="task-box yellow">
-        <div class="description-task">
-          <div class="time">Dec 13, 2023 5:30 PM</div>
-          <div class="task-name">Ifinworth</div>
-          <div class="ref-id">#100022</div>
-        </div>
-        <div class="more-button"></div>
-        <div class="members">
-            <span class="stat">Status</span> <span class="stat-result">- Completed</span>
-        </div>
-        <div class="members">
-            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
-        </div>
-      </div>
-      <div class="task-box yellow">
-        <div class="description-task">
-          <div class="time">Dec 13, 2023 5:20 PM</div>
-          <div class="task-name">Kodak</div>
-          <div class="ref-id">#100021</div>
-        </div>
-        <div class="more-button"></div>
-        <div class="members">
-            <span class="stat">Status</span> <span class="stat-result" style="color: #3253d8;">- Pending</span>
-        </div>
-        <div class="members">
-            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+      <div *ngFor="let records of totalRecords">
+        <div class="task-box yellow">
+          <div class="description-task">
+            <div class="time">{{records.createdOn | date :'MMM d, yyyy h:mm a'}}</div>
+            <div class="task-name">{{getCompanyName(records)}}</div>
+            <div class="ref-id">#{{getCompanyId(records)}}</div>
+            <div class="ref-id">Model - {{valuationModels(records)}}</div>
+          </div>
+          <div class="more-button"></div>
+          <div class="members">
+              <span class="stat">Status</span> <span class="stat-result" [ngClass]="getStatus(records)">- {{getCompanyStatus(records)}}</span>
+          </div>
+          <div class="members" *ngIf="valuationFinalValue(records)">
+              <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- {{valuationCurrencyUnit(records)}} {{valuationFinalValue(records)}}</span>
+          </div>
         </div>
       </div>
-      <div class="task-box yellow">
-        <div class="description-task">
-          <div class="time">Dec 12, 2023 6:01 PM</div>
-          <div class="task-name">ABC Pvt</div>
-          <div class="ref-id">#100020</div>
-        </div>
-        <div class="more-button"></div>
-        <div class="members">
-            <span class="stat">Status</span> <span class="stat-result" style="color: #007989">- Report Pending</span>
-        </div>
-        <div class="members">
-            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
-        </div>
-      </div>
-      <div class="task-box yellow">
-        <div class="description-task">
-          <div class="time">Dec 13, 2023 2:07 PM</div>
-          <div class="task-name">DUB</div>
-          <div class="ref-id">#100019</div>
-        </div>
-        <div class="more-button"></div>
-        <div class="members">
-            <span class="stat">Status</span> <span class="stat-result" style="color: #a4a4a4">- Draft</span>
-        </div>
-        <div class="members">
-            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
-        </div>
-      </div>
-      <div class="task-box yellow">
-        <div class="description-task">
-          <div class="time">Dec 13, 2023 2:07 PM</div>
-          <div class="task-name">SPAR</div>
-          <div class="ref-id">#100018</div>
-        </div>
-        <div class="more-button"></div>
-        <div class="members">
-            <span class="stat">Status</span> <span class="stat-result" style="color: #a4a4a4">- Draft</span>
-        </div>
-        <div class="members">
-            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
-        </div>
-      </div>
-      <div class="task-box yellow">
-        <div class="description-task">
-          <div class="time">Dec 13, 2023 5:30 PM</div>
-          <div class="task-name">Ifinworth</div>
-          <div class="ref-id">#100022</div>
-        </div>
-        <div class="more-button"></div>
-        <div class="members">
-            <span class="stat">Status</span> <span class="stat-result">- Completed</span>
-        </div>
-        <div class="members">
-            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
-        </div>
-      </div>
-      <div class="task-box yellow">
+      <!-- <div class="task-box yellow">
         <div class="description-task">
           <div class="time">Dec 13, 2023 5:20 PM</div>
           <div class="task-name">Kodak</div>
@@ -531,6 +464,7 @@
         <div class="description-task">
           <div class="time">Dec 13, 2023 5:30 PM</div>
           <div class="task-name">Ifinworth</div>
+          <div class="ref-id">#100022</div>
         </div>
         <div class="more-button"></div>
         <div class="members">
@@ -540,6 +474,75 @@
             <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
         </div>
       </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 13, 2023 5:20 PM</div>
+          <div class="task-name">Kodak</div>
+          <div class="ref-id">#100021</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result" style="color: #3253d8;">- Pending</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 12, 2023 6:01 PM</div>
+          <div class="task-name">ABC Pvt</div>
+          <div class="ref-id">#100020</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result" style="color: #007989">- Report Pending</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 13, 2023 2:07 PM</div>
+          <div class="task-name">DUB</div>
+          <div class="ref-id">#100019</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result" style="color: #a4a4a4">- Draft</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 13, 2023 2:07 PM</div>
+          <div class="task-name">SPAR</div>
+          <div class="ref-id">#100018</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result" style="color: #a4a4a4">- Draft</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div>
+      <div class="task-box yellow">
+        <div class="description-task">
+          <div class="time">Dec 13, 2023 5:30 PM</div>
+          <div class="task-name">Ifinworth</div>
+        </div>
+        <div class="more-button"></div>
+        <div class="members">
+            <span class="stat">Status</span> <span class="stat-result">- Completed</span>
+        </div>
+        <div class="members">
+            <span><img src="../../../../assets/images/icons/valuation.png" style="height: 20px;width: 20px;" alt=""></span><span class="stat-valuation"><h4 class="modal-subtitle">Valuation</h4></span> <span class="stat-result">- INR 231.43</span>
+        </div>
+      </div> -->
     
     </div>
   </div>

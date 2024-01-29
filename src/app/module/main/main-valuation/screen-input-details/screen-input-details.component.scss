@@ -562,7 +562,7 @@ label {
   .btn-prop{
     text-align: right;
     padding-bottom: 1%;
-    padding-top: 1%;
+    padding-top: 4%;
     padding-right: 2%;
   }
 
@@ -1036,5 +1036,15 @@ font-size: 1rem !important;
     min-height: 38px;
     font-size: 14px;
     font-family: 'AR One Sans', sans-serif !important;
+}
+
+.total-count{
+  display: inline-block;
+    padding-left: 1%;
+    padding-top: 1%;
+    font-weight: 400;
+    font-size: 13px;
+    font-family: 'AR One Sans', sans-serif;
+    color: #bbccbb;
 }
   

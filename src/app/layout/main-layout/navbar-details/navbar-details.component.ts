@@ -109,15 +109,15 @@ async checkProcessState(){
     }
   }
   async selectMenuItem(route: string) {
-    // if(this.showBlackBox){
-    //   this.snackBar.open('Cannot select this tab','Ok',{
-    //     horizontalPosition: 'right',
-    //     verticalPosition: 'top',
-    //     duration: 3000,
-    //     panelClass: 'app-notification-error'
-    //   })
-    //   return;
-    // }
+    if (route === '2' && this.showBlackBox) {
+      this.snackBar.open('Cannot select this tab', 'Ok', {
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 3000,
+        panelClass: 'app-notification-error'
+      });
+      return;
+    }
     this.selectedMenuItem = route;
     this.currentStep = route;
     localStorage.setItem('step',route);

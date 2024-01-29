@@ -246,16 +246,16 @@ export const RELATIVE_VALUATION_COMPANY_MAPPING: { [key: string]: string } = {
   'Company Name': 'company',
   'P/E': 'peRatio',
   'P/B': 'pbRatio',
-  'EV/EBITDA': 'ebitda',
-  'P/S': 'sales'
+  'P/S': 'sales',
+  'EV/EBITDA': 'ebitda'
 }
 
 export const RELATIVE_VALUATION_INDUSTRY_MAPPING: { [key: string]: string } = {
   'Industry Name': 'industry',
   'P/E': 'currentPE',
   'P/B': 'pbv',
-  'EV/EBITDA': 'evEBITDA_PV',
-  'P/S': 'priceSales'
+  'P/S': 'priceSales',
+  'EV/EBITDA': 'evEBITDA_PV'
 }
 
 export const VALUATION_RESULT_FCFE_MAPPING: { [key: string]: string } = {
@@ -281,9 +281,9 @@ export const VALUATION_RESULT_FCFE_MAPPING: { [key: string]: string } = {
   'Value per share': 'valuePerShare',
 }
 
-export const RELATIVE_VALUATION_INDUSTRY_COLUMNS = ['Industry Name', 'P/E', 'P/B', 'EV/EBITDA', 'P/S'];
+export const RELATIVE_VALUATION_INDUSTRY_COLUMNS = ['Industry Name', 'P/E', 'P/B', 'P/S', 'EV/EBITDA'];
 
-export const RELATIVE_VALUATION_COMPANY_COLUMNS = ['Company Name', 'P/E', 'P/B', 'EV/EBITDA', 'P/S'];
+export const RELATIVE_VALUATION_COMPANY_COLUMNS = ['Company Name', 'P/E', 'P/B', 'P/S', 'EV/EBITDA'];
 
 export const IS_FCFE_CHECK = [
   'particulars','pat', 'depAndAmortisation','onCashItems','nca','changeInBorrowings','defferedTaxAssets', 'netCashFlow','fixedAssets','fcff','discountingPeriod','discountingFactor','presentFCFF',
