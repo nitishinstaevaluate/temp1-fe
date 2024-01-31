@@ -860,6 +860,7 @@ label {
   font-size: 13px;
   color: #1762ff;
   font-family: 'AR One Sans', sans-serif;
+  display: inline-block;
 }
 .reset-ind3{
   padding-left: 1%;
@@ -1046,5 +1047,16 @@ font-size: 1rem !important;
     font-size: 13px;
     font-family: 'AR One Sans', sans-serif;
     color: #bbccbb;
+}
+.add-padding-left{
+  padding-left: 4% !important;
+  font-weight: bold;
+}
+.sidenote{
+  float: inline-end;
+  padding-right: 2%;
+  font-family: 'AR One Sans', sans-serif;
+  color: #b1b1b1;
+  font-size: 11px;
 }
   
