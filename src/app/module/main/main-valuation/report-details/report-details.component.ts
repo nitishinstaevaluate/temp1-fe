@@ -143,7 +143,8 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
         this.reportObjective = this.reportObjectives[`${value}`];
         if(this.reportPurposeData.length>0){
           this.shouldShowReportPurpose=true;
-          this.reportPurposeDataChips=[]
+          this.reportPurposeDataChips=[];
+          this.reportForm.controls['reportSection'].setValue([]);
         }
         else{
           this.shouldShowReportPurpose=false;
