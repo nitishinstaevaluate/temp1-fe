@@ -172,10 +172,9 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
 
     this.reportGenerate = true;
 
-    const payload = this.constructPayload();
     const approach = this.determineApproach();
 
-    this.postReportData(payload, approach);
+    this.postReportData(approach);
   }
 
   previewReport(){
@@ -194,10 +193,9 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
 
     this.reportGenerate = true;
 
-    const payload = this.constructPayload();
     const approach = this.determineApproach();
 
-    this.postReportPreviewData(payload, approach);
+    this.postReportPreviewData(approach);
   }
 
   getFilteredControls() {
@@ -236,15 +234,13 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     return 'MULTI_MODEL';
   }
 
-  postReportData(payload: any, approach: string) {
-    const excelService = this.transferStepperFour?.formOneAndThreeData?.model.includes(MODELS.RULE_ELEVEN_UA)
-        ? this.generateElevenUaReport.bind(this)
-        : this.generateBasicReport.bind(this);
-
+  postReportData(approach: string) {
+    const excelService = this.constructConditionalReportFunctioning();
+    const payload = this.constructPayload();
     this.excelAdnReportService.postReportData(payload).subscribe(
       (response: any) => {
         if (response) {
-            excelService(response, payload, approach);
+            excelService(response, approach);
         }
       },
       (error) => {
@@ -262,22 +258,50 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
         panelClass: 'app-notification-error',
     });
   }
+
+  constructConditionalReportFunctioning(){
+    let excelService:any;
+    switch (true) {
+        case this.transferStepperFour?.formOneAndThreeData?.model.includes(MODELS.RULE_ELEVEN_UA):
+            excelService = this.generateElevenUaReport.bind(this);
+            break;
+        case this.reportForm.controls['reportPurpose'].value === 'sebiRegulations':
+            excelService = this.generateSebiReport.bind(this);
+            break;
+        default:
+            excelService = this.generateBasicReport.bind(this);
+    }
+    return excelService;
+  }
+
+  constructConditionalPreviewReportFunctioning(){
+    let excelService:any;
+    switch (true) {
+        case this.transferStepperFour?.formOneAndThreeData?.model.includes(MODELS.RULE_ELEVEN_UA):
+            excelService = this.elevenUaPreviewReport.bind(this);
+            break;
+        case this.reportForm.controls['reportPurpose'].value === 'sebiRegulations':
+            excelService = this.previewSebiReport.bind(this);
+            break;
+        default:
+            excelService = this.basicReportPreview.bind(this);
+    }
+    return excelService;
+  }
   
 
-  postReportPreviewData(payload: any, approach: string) {
-    const excelService = this.transferStepperFour?.formOneAndThreeData?.model.includes(MODELS.RULE_ELEVEN_UA)
-        ? this.elevenUaPreviewReport.bind(this)
-        : this.basicReportPreview.bind(this);
-
+  postReportPreviewData(approach: string) {
+    const excelService = this.constructConditionalPreviewReportFunctioning()
+    const payload = this.constructPayload();
     this.excelAdnReportService.postReportData(payload).subscribe(
         (response: any) => {
-            if (response) {
-              excelService(response, payload, approach);
-            }
+          if (response) {
+            excelService(response, approach);
+          }
         },
         (error) => {
-            this.reportGenerate = false;
-            this.displayErrorSnackbar();
+          this.reportGenerate = false;
+          this.displayErrorSnackbar();
         }
     );
 }
@@ -420,7 +444,8 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       );
     }
 
-    elevenUaPreviewReport(response:any,payload:any){
+    elevenUaPreviewReport(response:any){
+      const payload = this.constructPayload();
       this.excelAdnReportService.previewElevenUaReport(response).subscribe((reportData:any)=>{
         if (reportData) {
           const dataSet={
@@ -450,7 +475,8 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       })
     }
 
-    basicReportPreview(response:any,payload:any,approach:any){
+    basicReportPreview(response:any, approach:any){
+      const payload = this.constructPayload();
       this.excelAdnReportService.previewReport(response,approach).subscribe((reportData:any)=>{
         if (reportData) {
           const dataSet={
@@ -480,7 +506,8 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       })
     }
 
-    generateElevenUaReport(response:any, payload:any){
+    generateElevenUaReport(response:any){
+      const payload = this.constructPayload();
       this.excelAdnReportService.generateElevenUaReport(response).subscribe((reportData:any)=>{
         if (reportData instanceof Blob) {
           this.reportGenerate = false;
@@ -512,7 +539,8 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       })
     }
 
-    generateBasicReport(response:any, payload:any, approach:any){
+    generateBasicReport(response:any, approach:any){
+      const payload = this.constructPayload();
       this.excelAdnReportService.generateReport(response,approach).subscribe((reportData:any)=>{
         if (reportData instanceof Blob) {
           this.reportGenerate = false;
@@ -528,6 +556,72 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
           const {reportId,...rest} = payload;
           const processStateModel ={
             sixthStageInput:{...rest,formFillingStatus:true,valuationReportId:response,valuationResultId:reportId},
+            step:5
+          }
+          this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
+      }
+      },
+      (error)=>{
+        this.reportGenerate = false;
+        this.snackBar.open('Something went wrong', 'OK', {
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 2000,
+          panelClass: 'app-notification-error',
+        });
+      })
+    }
+
+    generateSebiReport(response:any){
+      const payload = this.constructPayload();
+      this.excelAdnReportService.generateSebiReport(response).subscribe((reportData:any)=>{
+        if (reportData instanceof Blob) {
+          console.log("sebi function called")
+          this.reportGenerate = false;
+          this.snackBar.open('Report generated successfully', 'OK', {
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 2000,
+            panelClass: 'app-notification-success',
+          });
+          saveAs(reportData, `${this.transferStepperFour?.formOneAndThreeData?.company}.pdf`);
+          localStorage.setItem('stepSixStats','true')
+          this.calculationService.checkStepStatus.next({status:true})
+          const {reportId,...rest} = payload;
+          const processStateModel ={
+            sixthStageInput:{...rest,formFillingStatus:true,valuationReportId:response,valuationResultId:reportId},
+            step:5
+          }
+          this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
+      }
+      },
+      (error)=>{
+        this.reportGenerate = false;
+        this.snackBar.open('Something went wrong', 'OK', {
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 2000,
+          panelClass: 'app-notification-error',
+        });
+      })
+    }
+
+
+    previewSebiReport(response:any){
+      const payload = this.constructPayload();
+      this.excelAdnReportService.previewSebiReport(response).subscribe((reportData:any)=>{
+        if (reportData) {
+          const dataSet={
+            value: 'previewDoc',
+            dataBlob:reportData,
+            reportId: response,
+            companyName:this.transferStepperFour?.formOneAndThreeData?.company
+          }
+          const dialogRef =  this.dialog.open(GenericModalBoxComponent, {data:dataSet,width:'80%',disableClose: true});
+          this.reportGenerate = false;
+          const {reportId,...rest} = payload;
+          const processStateModel ={
+            sixthStageInput:{...rest,formFillingStatus:false,valuationReportId:response,valuationResultId:reportId},
             step:5
           }
           this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
