@@ -144,8 +144,8 @@ loadFormControl(){
     
     if (this.formTwoData && changes['formTwoData'] ) {
       const current = changes['formTwoData'].currentValue;
-      this.selectedIndustry = current.formTwoData.industryL3
-      this.companyList = current.formTwoData.selectedIndustries
+      this.selectedIndustry = current.formTwoData?.industryL3
+      this.companyList = current.formTwoData?.selectedIndustries
     }
   
     

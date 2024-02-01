@@ -244,7 +244,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     this.excelAdnReportService.postReportData(payload).subscribe(
       (response: any) => {
         if (response) {
-            excelService(response, approach, payload);
+            excelService(response, payload, approach);
         }
       },
       (error) => {
@@ -272,7 +272,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     this.excelAdnReportService.postReportData(payload).subscribe(
         (response: any) => {
             if (response) {
-              excelService(response, approach, payload);
+              excelService(response, payload, approach);
             }
         },
         (error) => {
@@ -450,7 +450,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       })
     }
 
-    basicReportPreview(response:any,approach:any,payload:any){
+    basicReportPreview(response:any,payload:any,approach:any){
       this.excelAdnReportService.previewReport(response,approach).subscribe((reportData:any)=>{
         if (reportData) {
           const dataSet={
@@ -512,7 +512,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       })
     }
 
-    generateBasicReport(response:any, approach:any, payload:any){
+    generateBasicReport(response:any, payload:any, approach:any){
       this.excelAdnReportService.generateReport(response,approach).subscribe((reportData:any)=>{
         if (reportData instanceof Blob) {
           this.reportGenerate = false;
