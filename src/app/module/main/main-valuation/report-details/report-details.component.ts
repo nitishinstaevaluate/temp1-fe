@@ -157,232 +157,130 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
 
 
   generateReport(){
-    const controls = {...this.reportForm.controls}
-    delete controls.clientName;
-    delete controls.dateOfIncorporation;
-    delete controls.companyAddress;
-    delete controls.cinNumber;
+    const controls = this.getFilteredControls();
     const validatedReportForm = this.validateControls(controls);
-    if(!validatedReportForm){
-        this.reportForm.markAllAsTouched();
-        return;
+
+    if (!validatedReportForm) {
+      this.reportForm.markAllAsTouched();
+      return;
     }
-    if(this.reportPurposeDataChips.length === 0){
+
+    if (this.reportPurposeDataChips.length === 0) {
       this.regulationPrefSelectionStatus = false;
       return;
     }
+
     this.reportGenerate = true;
-    const payload = {
-      ...this.reportForm.value,
-      ...this.registeredValuerDetails.value,
-      reportId:this.transferStepperFour?.formFourData?.appData?.reportId || this.transferStepperFour?.formFourData?.appData?._id,
-      reportDate:this.reportForm.controls['reportDate'].value,
-      finalWeightedAverage:this.transferStepperFour?.formFiveData || this.transferStepperFour?.totalWeightageModel,
-      processStateId:localStorage.getItem('processStateId')
-    }
-    const approach = (this.transferStepperFour?.formOneAndThreeData?.model.includes('NAV')) && this.transferStepperFour.formOneAndThreeData.model.length === 1? 'NAV' : (this.transferStepperFour?.formOneAndThreeData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndThreeData?.model.includes('FCFE')) && this.transferStepperFour.formOneAndThreeData.model.length === 1 ? 'DCF' : ((this.transferStepperFour?.formOneAndThreeData?.model.includes('Relative_Valuation') || this.transferStepperFour?.formOneAndThreeData?.model.includes('CTM')) && this.transferStepperFour.formOneAndThreeData.model.length === 1) ? 'CCM' : 'MULTI_MODEL';
-    if(!this.transferStepperFour?.formOneAndThreeData?.model.includes(MODELS.RULE_ELEVEN_UA)){
-      
-    this.excelAdnReportService.postReportData(payload).subscribe((response:any)=>{
-      if(response){
-        this.excelAdnReportService.generateReport(response,approach).subscribe((reportData:any)=>{
-          if (reportData instanceof Blob) {
-            this.reportGenerate = false;
-            this.snackBar.open('Report generated successfully', 'OK', {
-              horizontalPosition: 'right',
-              verticalPosition: 'top',
-              duration: 2000,
-              panelClass: 'app-notification-success',
-            });
-            saveAs(reportData, `${this.transferStepperFour?.formOneAndThreeData?.company}.pdf`);
-            localStorage.setItem('stepSixStats','true')
-            this.calculationService.checkStepStatus.next({status:true})
-            const {reportId,...rest} = payload;
-            const processStateModel ={
-              sixthStageInput:{...rest,formFillingStatus:true,valuationReportId:response,valuationResultId:reportId},
-              step:5
-            }
-            this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
-        }
-        },
-        (error)=>{
-          this.reportGenerate = false;
-          this.snackBar.open('Something went wrong', 'OK', {
-            horizontalPosition: 'right',
-            verticalPosition: 'top',
-            duration: 2000,
-            panelClass: 'app-notification-error',
-          });
-        })
-      }
-    },
-    (error)=>{
-      this.reportGenerate = false;
-      this.snackBar.open('Something went wrong', 'OK', {
-        horizontalPosition: 'right',
-        verticalPosition: 'top',
-        duration: 2000,
-        panelClass: 'app-notification-error',
-      });
-    })
-    }
-    else{
-      this.excelAdnReportService.postReportData(payload).subscribe((response:any)=>{
-        if(response){
-          this.excelAdnReportService.generateElevenUaReport(response).subscribe((reportData:any)=>{
-            if (reportData instanceof Blob) {
-              this.reportGenerate = false;
-              this.snackBar.open('Report generated successfully', 'OK', {
-                horizontalPosition: 'right',
-                verticalPosition: 'top',
-                duration: 2000,
-                panelClass: 'app-notification-success',
-              });
-              saveAs(reportData, `${this.transferStepperFour?.formOneAndThreeData?.company}.pdf`);
-              localStorage.setItem('stepSixStats','true')
-              this.calculationService.checkStepStatus.next({status:true})
-              const {reportId,...rest} = payload;
-              const processStateModel ={
-                sixthStageInput:{...rest,formFillingStatus:true,valuationReportId:response,valuationResultId:reportId},
-                step:5
-              }
-              this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
-          }
-          },
-          (error)=>{
-            this.reportGenerate = false;
-            this.snackBar.open('Something went wrong', 'OK', {
-              horizontalPosition: 'right',
-              verticalPosition: 'top',
-              duration: 2000,
-              panelClass: 'app-notification-error',
-            });
-          })
-        }
-      },
-      (error)=>{
-        this.reportGenerate = false;
-        this.snackBar.open('Something went wrong', 'OK', {
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-          duration: 2000,
-          panelClass: 'app-notification-error',
-        });
-      })
-    }
+
+    const payload = this.constructPayload();
+    const approach = this.determineApproach();
+
+    this.postReportData(payload, approach);
   }
 
   previewReport(){
-    const controls = {...this.reportForm.controls}
-    delete controls.clientName;
-    delete controls.dateOfIncorporation;
-    delete controls.companyAddress;
-    delete controls.cinNumber;
+    const controls = this.getFilteredControls();
     const validatedReportForm = this.validateControls(controls);
-    if(!validatedReportForm){
-        this.reportForm.markAllAsTouched();
-        return;
+
+    if (!validatedReportForm) {
+      this.reportForm.markAllAsTouched();
+      return;
     }
-    if(this.reportPurposeDataChips.length === 0){
+
+    if (this.reportPurposeDataChips.length === 0) {
       this.regulationPrefSelectionStatus = false;
       return;
     }
-    
+
     this.reportGenerate = true;
-    const payload = {
+
+    const payload = this.constructPayload();
+    const approach = this.determineApproach();
+
+    this.postReportPreviewData(payload, approach);
+  }
+
+  getFilteredControls() {
+    const controls = { ...this.reportForm.controls };
+    const propertiesToRemove = ['clientName', 'dateOfIncorporation', 'companyAddress', 'cinNumber'];
+    propertiesToRemove.forEach(property => delete controls[property]);
+    return controls;
+  }
+
+  constructPayload() {
+    return {
       ...this.reportForm.value,
       ...this.registeredValuerDetails.value,
-      reportId:this.transferStepperFour?.formFourData?.appData?.reportId || this.transferStepperFour?.formFourData?.appData?._id,
-      reportDate:this.reportForm.controls['reportDate'].value,
-      finalWeightedAverage:this.transferStepperFour?.formFiveData || this.transferStepperFour?.totalWeightageModel,
-      processStateId:localStorage.getItem('processStateId')
-    }
-    if(!this.transferStepperFour?.formOneAndThreeData?.model.includes(MODELS.RULE_ELEVEN_UA)){
-      const approach = (this.transferStepperFour?.formOneAndThreeData?.model.includes('NAV')) && this.transferStepperFour.formOneAndThreeData.model.length === 1? 'NAV' : (this.transferStepperFour?.formOneAndThreeData?.model.includes('FCFF') || this.transferStepperFour?.formOneAndThreeData?.model.includes('FCFE')) && this.transferStepperFour.formOneAndThreeData.model.length === 1 ? 'DCF' : ((this.transferStepperFour?.formOneAndThreeData?.model.includes('Relative_Valuation') || this.transferStepperFour?.formOneAndThreeData?.model.includes('CTM')) && this.transferStepperFour.formOneAndThreeData.model.length === 1) ? 'CCM' : 'MULTI_MODEL';
-    this.excelAdnReportService.postReportData(payload).subscribe((response:any)=>{
-      if(response){
-        this.excelAdnReportService.previewReport(response,approach).subscribe((reportData:any)=>{
-          if (reportData) {
-            const dataSet={
-              value: 'previewDoc',
-              dataBlob:reportData,
-              reportId: response,
-              companyName:this.transferStepperFour?.formOneAndThreeData?.company
-            }
-            const dialogRef =  this.dialog.open(GenericModalBoxComponent, {data:dataSet,width:'80%',disableClose: true});
-            this.reportGenerate = false;
-            const {reportId,...rest} = payload;
-            const processStateModel ={
-              sixthStageInput:{...rest,formFillingStatus:false,valuationReportId:response,valuationResultId:reportId},
-              step:5
-            }
-            this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
-        }
-        },
-        (error)=>{
-          this.reportGenerate = false;
-          this.snackBar.open('Something went wrong', 'OK', {
-            horizontalPosition: 'right',
-            verticalPosition: 'top',
-            duration: 2000,
-            panelClass: 'app-notification-error',
-          });
-        })
-      }
-    },
-    (error)=>{
-      this.reportGenerate = false;
-      this.snackBar.open('Something went wrong', 'OK', {
-        horizontalPosition: 'right',
-        verticalPosition: 'top',
-        duration: 2000,
-        panelClass: 'app-notification-error',
-      });
-    })
-    }
-    else{
-    this.excelAdnReportService.postReportData(payload).subscribe((response:any)=>{
-      if(response){
-        this.excelAdnReportService.previewElevenUaReport(response).subscribe((reportData:any)=>{
-          if (reportData) {
-            const dataSet={
-              value: 'previewDoc',
-              dataBlob:reportData,
-              reportId: response,
-              companyName:this.transferStepperFour?.formOneAndThreeData?.company
-            }
-            const dialogRef =  this.dialog.open(GenericModalBoxComponent, {data:dataSet,width:'80%',disableClose: true});
-            this.reportGenerate = false;
-            const {reportId,...rest} = payload;
-            const processStateModel ={
-              sixthStageInput:{...rest,formFillingStatus:false,valuationReportId:response,valuationResultId:reportId},
-              step:5
-            }
-            this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
-        }
-        },
-        (error)=>{
-          this.reportGenerate = false;
-          this.snackBar.open('Something went wrong', 'OK', {
-            horizontalPosition: 'right',
-            verticalPosition: 'top',
-            duration: 2000,
-            panelClass: 'app-notification-error',
-          });
-        })
-      }
-    },
-    (error)=>{
-      this.reportGenerate = false;
-      this.snackBar.open('Something went wrong', 'OK', {
-        horizontalPosition: 'right',
-        verticalPosition: 'top',
-        duration: 2000,
-        panelClass: 'app-notification-error',
-      });
-    })
-    }
+      reportId: this.transferStepperFour?.formFourData?.appData?.reportId || this.transferStepperFour?.formFourData?.appData?._id,
+      reportDate: this.reportForm.controls['reportDate'].value,
+      finalWeightedAverage: this.transferStepperFour?.formFiveData || this.transferStepperFour?.totalWeightageModel,
+      processStateId: localStorage.getItem('processStateId')
+    };
   }
+
+  determineApproach() {
+    const model = this.transferStepperFour?.formOneAndThreeData?.model;
+
+    if (model.includes('NAV') && model.length === 1) {
+      return 'NAV';
+    }
+    
+    if ((model.includes('FCFF') || model.includes('FCFE')) && model.length === 1) {
+      return 'DCF';
+    }
+
+    if ((model.includes('Relative_Valuation') || model.includes('CTM')) && model.length === 1) {
+      return 'CCM';
+    }
+
+    return 'MULTI_MODEL';
+  }
+
+  postReportData(payload: any, approach: string) {
+    const excelService = this.transferStepperFour?.formOneAndThreeData?.model.includes(MODELS.RULE_ELEVEN_UA)
+        ? this.generateElevenUaReport.bind(this)
+        : this.generateBasicReport.bind(this);
+
+    this.excelAdnReportService.postReportData(payload).subscribe(
+      (response: any) => {
+        if (response) {
+            excelService(response, approach, payload);
+        }
+      },
+      (error) => {
+        this.reportGenerate = false;
+        this.displayErrorSnackbar();
+      }
+    );
+  }
+
+  displayErrorSnackbar() {
+    this.snackBar.open('Something went wrong', 'OK', {
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 2000,
+        panelClass: 'app-notification-error',
+    });
+  }
+  
+
+  postReportPreviewData(payload: any, approach: string) {
+    const excelService = this.transferStepperFour?.formOneAndThreeData?.model.includes(MODELS.RULE_ELEVEN_UA)
+        ? this.elevenUaPreviewReport.bind(this)
+        : this.basicReportPreview.bind(this);
+
+    this.excelAdnReportService.postReportData(payload).subscribe(
+        (response: any) => {
+            if (response) {
+              excelService(response, approach, payload);
+            }
+        },
+        (error) => {
+            this.reportGenerate = false;
+            this.displayErrorSnackbar();
+        }
+    );
+}
   
   onSlideToggleChange(event?: any) {
     if (event) {
@@ -522,4 +420,127 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       );
     }
 
+    elevenUaPreviewReport(response:any,payload:any){
+      this.excelAdnReportService.previewElevenUaReport(response).subscribe((reportData:any)=>{
+        if (reportData) {
+          const dataSet={
+            value: 'previewDoc',
+            dataBlob:reportData,
+            reportId: response,
+            companyName:this.transferStepperFour?.formOneAndThreeData?.company
+          }
+          const dialogRef =  this.dialog.open(GenericModalBoxComponent, {data:dataSet,width:'80%',disableClose: true});
+          this.reportGenerate = false;
+          const {reportId,...rest} = payload;
+          const processStateModel ={
+            sixthStageInput:{...rest,formFillingStatus:false,valuationReportId:response,valuationResultId:reportId},
+            step:5
+          }
+          this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
+      }
+      },
+      (error)=>{
+        this.reportGenerate = false;
+        this.snackBar.open('Something went wrong', 'OK', {
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 2000,
+          panelClass: 'app-notification-error',
+        });
+      })
+    }
+
+    basicReportPreview(response:any,approach:any,payload:any){
+      this.excelAdnReportService.previewReport(response,approach).subscribe((reportData:any)=>{
+        if (reportData) {
+          const dataSet={
+            value: 'previewDoc',
+            dataBlob:reportData,
+            reportId: response,
+            companyName:this.transferStepperFour?.formOneAndThreeData?.company
+          }
+          const dialogRef =  this.dialog.open(GenericModalBoxComponent, {data:dataSet,width:'80%',disableClose: true});
+          this.reportGenerate = false;
+          const {reportId,...rest} = payload;
+          const processStateModel ={
+            sixthStageInput:{...rest,formFillingStatus:false,valuationReportId:response,valuationResultId:reportId},
+            step:5
+          }
+          this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
+      }
+      },
+      (error)=>{
+        this.reportGenerate = false;
+        this.snackBar.open('Something went wrong', 'OK', {
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 2000,
+          panelClass: 'app-notification-error',
+        });
+      })
+    }
+
+    generateElevenUaReport(response:any, payload:any){
+      this.excelAdnReportService.generateElevenUaReport(response).subscribe((reportData:any)=>{
+        if (reportData instanceof Blob) {
+          this.reportGenerate = false;
+          this.snackBar.open('Report generated successfully', 'OK', {
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 2000,
+            panelClass: 'app-notification-success',
+          });
+          saveAs(reportData, `${this.transferStepperFour?.formOneAndThreeData?.company}.pdf`);
+          localStorage.setItem('stepSixStats','true')
+          this.calculationService.checkStepStatus.next({status:true})
+          const {reportId,...rest} = payload;
+          const processStateModel ={
+            sixthStageInput:{...rest,formFillingStatus:true,valuationReportId:response,valuationResultId:reportId},
+            step:5
+          }
+          this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
+      }
+      },
+      (error)=>{
+        this.reportGenerate = false;
+        this.snackBar.open('Something went wrong', 'OK', {
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 2000,
+          panelClass: 'app-notification-error',
+        });
+      })
+    }
+
+    generateBasicReport(response:any, approach:any, payload:any){
+      this.excelAdnReportService.generateReport(response,approach).subscribe((reportData:any)=>{
+        if (reportData instanceof Blob) {
+          this.reportGenerate = false;
+          this.snackBar.open('Report generated successfully', 'OK', {
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 2000,
+            panelClass: 'app-notification-success',
+          });
+          saveAs(reportData, `${this.transferStepperFour?.formOneAndThreeData?.company}.pdf`);
+          localStorage.setItem('stepSixStats','true')
+          this.calculationService.checkStepStatus.next({status:true})
+          const {reportId,...rest} = payload;
+          const processStateModel ={
+            sixthStageInput:{...rest,formFillingStatus:true,valuationReportId:response,valuationResultId:reportId},
+            step:5
+          }
+          this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
+      }
+      },
+      (error)=>{
+        this.reportGenerate = false;
+        this.snackBar.open('Something went wrong', 'OK', {
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 2000,
+          panelClass: 'app-notification-error',
+        });
+      })
+    }
 }
