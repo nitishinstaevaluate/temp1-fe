@@ -235,12 +235,12 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
   }
 
   postReportData(approach: string) {
-    const excelService = this.constructConditionalReportFunctioning();
+    const reportService = this.constructConditionalReportFunctioning();
     const payload = this.constructPayload();
     this.excelAdnReportService.postReportData(payload).subscribe(
       (response: any) => {
         if (response) {
-            excelService(response, approach);
+          reportService(response, approach);
         }
       },
       (error) => {
@@ -260,43 +260,43 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
   }
 
   constructConditionalReportFunctioning(){
-    let excelService:any;
+    let reportService:any;
     switch (true) {
         case this.transferStepperFour?.formOneAndThreeData?.model.includes(MODELS.RULE_ELEVEN_UA):
-            excelService = this.generateElevenUaReport.bind(this);
+          reportService = this.generateElevenUaReport.bind(this);
             break;
         case this.reportForm.controls['reportPurpose'].value === 'sebiRegulations':
-            excelService = this.generateSebiReport.bind(this);
+          reportService = this.generateSebiReport.bind(this);
             break;
         default:
-            excelService = this.generateBasicReport.bind(this);
+          reportService = this.generateBasicReport.bind(this);
     }
-    return excelService;
+    return reportService;
   }
 
   constructConditionalPreviewReportFunctioning(){
-    let excelService:any;
+    let reportService:any;
     switch (true) {
         case this.transferStepperFour?.formOneAndThreeData?.model.includes(MODELS.RULE_ELEVEN_UA):
-            excelService = this.elevenUaPreviewReport.bind(this);
+            reportService = this.elevenUaPreviewReport.bind(this);
             break;
         case this.reportForm.controls['reportPurpose'].value === 'sebiRegulations':
-            excelService = this.previewSebiReport.bind(this);
+            reportService = this.previewSebiReport.bind(this);
             break;
         default:
-            excelService = this.basicReportPreview.bind(this);
+            reportService = this.basicReportPreview.bind(this);
     }
-    return excelService;
+    return reportService;
   }
   
 
   postReportPreviewData(approach: string) {
-    const excelService = this.constructConditionalPreviewReportFunctioning()
+    const reportService = this.constructConditionalPreviewReportFunctioning()
     const payload = this.constructPayload();
     this.excelAdnReportService.postReportData(payload).subscribe(
         (response: any) => {
           if (response) {
-            excelService(response, approach);
+            reportService(response, approach);
           }
         },
         (error) => {
