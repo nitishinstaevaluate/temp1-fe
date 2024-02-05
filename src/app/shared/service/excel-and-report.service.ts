@@ -45,4 +45,14 @@ export class ExcelAndReportService {
   previewElevenUaReport(reportId:string){
     return this.http.get(`${this.HOST}report/preview-rule-eleven-ua-report/${reportId}`);
   }
+
+  generateSebiReport(reportId:any){
+    return this.http.get(`${this.HOST}report/sebi-report/${reportId}`,{
+      responseType: 'blob'
+    });
+  }
+
+  previewSebiReport(reportId:any){
+    return this.http.get(`${this.HOST}report/preview-sebi-report/${reportId}`);
+  }
 }

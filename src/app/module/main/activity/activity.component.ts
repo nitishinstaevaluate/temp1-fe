@@ -141,38 +141,21 @@ export class ActivityComponent {
     return str;
   }
 
-  downloadReport(valuationReportId:string,model:any,company:string){
-    if(!valuationReportId)
+  downloadReport(reportFormDetails:any,model:any,company:string){
+    if(!reportFormDetails?.valuationReportId)
       return this.snackBar.open('Please complete all the details', 'OK', {
         horizontalPosition: 'right',
         verticalPosition: 'top',
         duration: 2000,
         panelClass: 'app-notification-error',
       })
-    this.ngxLoaderService.start();
-    const approach = (model.includes('NAV')) && model.length === 1? 'NAV' : (model.includes('FCFF') || model.includes('FCFE')) && length === 1 ? 'DCF' : ((model.includes('Relative_Valuation') || model.includes('CTM')) && model.length === 1) ? 'CCM' : 'MULTI_MODEL';
 
-    this.excelAndReportService.generateReport(valuationReportId,approach).subscribe((reportData:any)=>{
-      if (reportData instanceof Blob) {
-        this.snackBar.open('Report generated successfully', 'OK', {
-          horizontalPosition: 'center',
-          verticalPosition: 'bottom',
-          duration: 2000,
-          panelClass: 'app-notification-success',
-        });
-        saveAs(reportData, `${company}.pdf`);
-        this.ngxLoaderService.stop();
-    }
-    },
-    (error)=>{
-      this.ngxLoaderService.stop();
-      this.snackBar.open('Something went wrong', 'OK', {
-        horizontalPosition: 'right',
-        verticalPosition: 'top',
-        duration: 2000,
-        panelClass: 'app-notification-error',
-      });
-    })
+    const approach = this.determineApproach(model);
+
+    const reportService = this.constructConditionalReportFunctioning(model,reportFormDetails.reportPurpose);
+
+    reportService(reportFormDetails?.valuationReportId,approach,company);
+
     return;
   }
 
@@ -208,4 +191,105 @@ export class ActivityComponent {
       this.paginator.firstPage();
     }
   }
+
+  generateElevenUaReport(response:any,companyName:any){
+    this.excelAndReportService.generateElevenUaReport(response).subscribe((reportData:any)=>{
+      if (reportData instanceof Blob) {
+        this.snackBar.open('Report generated successfully', 'OK', {
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 2000,
+          panelClass: 'app-notification-success',
+        });
+        saveAs(reportData, `${companyName}.pdf`);
+    }
+    },
+    (error)=>{
+      this.snackBar.open('Something went wrong', 'OK', {
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 2000,
+        panelClass: 'app-notification-error',
+      });
+    })
+  }
+
+  generateBasicReport(response:any, approach:any, companyName:any){
+    this.excelAndReportService.generateReport(response,approach).subscribe((reportData:any)=>{
+      if (reportData instanceof Blob) {
+        this.snackBar.open('Report generated successfully', 'OK', {
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 2000,
+          panelClass: 'app-notification-success',
+        });
+        saveAs(reportData, `${companyName}.pdf`);   
+    }
+    },
+    (error)=>{
+      this.snackBar.open('Something went wrong', 'OK', {
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 2000,
+        panelClass: 'app-notification-error',
+      });
+    })
+  }
+
+  generateSebiReport(response:any, companyName:any){
+    this.excelAndReportService.generateSebiReport(response).subscribe((reportData:any)=>{
+      if (reportData instanceof Blob) {
+        this.snackBar.open('Report generated successfully', 'OK', {
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 2000,
+          panelClass: 'app-notification-success',
+        });
+        saveAs(reportData, `${companyName}.pdf`);
+    }
+    },
+    (error)=>{
+      // this.reportGenerate = false;
+      this.snackBar.open('Something went wrong', 'OK', {
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 2000,
+        panelClass: 'app-notification-error',
+      });
+    })
+  }
+
+  constructConditionalReportFunctioning(modelArray:any, reportPurpose:any){
+    let reportService:any;
+    switch (true) {
+        case modelArray.includes(MODELS.RULE_ELEVEN_UA):
+            reportService = this.generateElevenUaReport.bind(this);
+            break;
+        case reportPurpose === 'sebiRegulations':
+            reportService = this.generateSebiReport.bind(this);
+            break;
+        default:
+            reportService = this.generateBasicReport.bind(this);
+    }
+    return reportService;
+  }
+
+  determineApproach(modelArray:any) {
+    const model = modelArray;
+
+    if (model.includes('NAV') && model.length === 1) {
+      return 'NAV';
+    }
+    
+    if ((model.includes('FCFF') || model.includes('FCFE')) && model.length === 1) {
+      return 'DCF';
+    }
+
+    if ((model.includes('Relative_Valuation') || model.includes('CTM')) && model.length === 1) {
+      return 'CCM';
+    }
+
+    return 'MULTI_MODEL';
+  }
+
 }

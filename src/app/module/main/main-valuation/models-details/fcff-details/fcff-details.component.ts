@@ -13,6 +13,7 @@ import { hasError } from 'src/app/shared/enums/errorMethods';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { BETA_SUB_TYPE, MODELS } from 'src/app/shared/enums/constant';
 import { CiqSPService } from 'src/app/shared/service/ciq-sp.service';
+import { formatNumber } from 'src/app/shared/enums/functions';
 
 @Component({
   selector: 'app-fcff-details',
@@ -101,6 +102,7 @@ checkProcessExist(){
         this.selectedSubBetaType = stateThreeDetails?.betaSubType ? stateThreeDetails.betaSubType : BETA_SUB_TYPE[0];
         this.fcffForm.controls['coeMethod'].setValue(stateThreeDetails?.coeMethod); 
         this.fcffForm.controls['riskFreeRate'].setValue(stateThreeDetails?.riskFreeRate); 
+        this.fcffForm.controls['riskFreeRateYears'].setValue(stateThreeDetails?.riskFreeRateYears); 
         let expectedMarketReturnData:any;
         this.modelControl.fcfe.options.expMarketReturnType.options.map((response:any)=>{
           if(response.value ===  stateThreeDetails?.expMarketReturnType){
@@ -249,49 +251,23 @@ loadOnChangeValue(){
 
     }
   );
-
-  // this.fcffForm.controls['betaType'].valueChanges.subscribe((val:any) => {
-  //   if(!val) return;
-  //   const beta = parseFloat(this.formOneData?.betaIndustry?.beta);
-  //   if (val == 'levered'){
-  //     this.fcffForm.controls['beta'].setValue(
-  //       beta
-  //       );
-  //     }
-  //     else if (val == 'unlevered') {
-  //     const deRatio = parseFloat(this.formOneData?.betaIndustry?.deRatio)/100
-  //     const effectiveTaxRate = parseFloat(this.formOneData?.betaIndustry?.effectiveTaxRate)/100;        
-  //     const unleveredBeta = beta / (1 + (1-effectiveTaxRate) * deRatio);
-  //     this.fcffForm.controls['beta'].setValue(
-  //       unleveredBeta
-  //     );
-  //   }
-  //   else if (val == 'market_beta') {
-  //     this.fcffForm.controls['beta'].setValue(1);
-  //   }
-  //   else {
-  //     // Do nothing for now
-  //   }
-  //   this.calculateCoeAndAdjustedCoe()
-    
-  // });
   
   this.fcffForm.controls['copShareCapital'].valueChanges.subscribe((val:any)=>{
     if(!val) return;
     this.calculateCoeAndAdjustedCoe();
   })
 
-  this.fcffForm.controls['riskFreeRate'].valueChanges.subscribe((val:any)=>{
+  this.fcffForm.controls['riskFreeRateYears'].valueChanges.subscribe((val:any)=>{
     if(!val) return;
     if(val === "customRiskFreeRate"){
       const data={
         value: 'customRiskFreeRate',
-        riskFreeRate: this.customRiskFreeRate
+        riskFreeRate: this.fcffForm.controls['riskFreeRate'].value
       }
       const dialogRef = this.dialog.open(GenericModalBoxComponent,{data:data,width:'30%'});
       dialogRef.afterClosed().subscribe((result)=>{
         if (result) {
-          this.customRiskFreeRate = parseFloat(result?.riskFreeRate)
+          this.fcffForm.controls['riskFreeRate'].setValue(parseFloat(result?.riskFreeRate));
           
           this.snackBar.open('Risk Free Rate Added','OK',{
             horizontalPosition: 'right',
@@ -302,11 +278,11 @@ loadOnChangeValue(){
         } else {
           this.fcffForm.controls['riskFreeRate'].setValue('');
         }
-        this.calculateCoeAndAdjustedCoe()
+        this.calculateCoeAndAdjustedCoe();
       })
     }
     else{
-      this.calculateCoeAndAdjustedCoe()
+      this.calculateRiskFreeRate(val);
     }
   })
   this.fcffForm.controls['costOfDebt'].valueChanges.subscribe((val:any)=>{
@@ -327,6 +303,7 @@ loadFormControl(){
     betaType:['',[Validators.required]],
     coeMethod:['',[Validators.required]],
     riskFreeRate:['',[Validators.required]],
+    riskFreeRateYears:['',[Validators.required]],
     expMarketReturnType:['',[Validators.required]],
     expMarketReturn:['',[Validators.required]],
     specificRiskPremium:[false,[Validators.required]],
@@ -434,13 +411,10 @@ saveAndNext(): void {
   payload['wacc']=this.wacc;
   payload['bse500Value']=this.bse500Value;
   payload['betaSubType']=this.selectedSubBetaType;
+  payload['riskFreeRate'] = +this.fcffForm.controls['riskFreeRate'].value;
   // check if expected market return  is empty or not
  
   payload['expMarketReturnType']=expectedMarketReturnData.value;
-    
-  if(this.fcffForm.controls['riskFreeRate'].value  === 'customRiskFreeRate'){
-    payload['riskFreeRate'] = this.customRiskFreeRate
-  }
 
   const controls = {...this.fcffForm.controls};
   this.validateControls(controls,payload);
@@ -516,7 +490,7 @@ validateControls(controlArray: { [key: string]: FormControl },payload:any){
 calculateCoeAndAdjustedCoe() {
   this.isLoader=true
   const coePayload = {
-    riskFreeRate: this.fcffForm.controls['riskFreeRate'].value === 'customRiskFreeRate' ? this.customRiskFreeRate : this.fcffForm.controls['riskFreeRate'].value,
+    riskFreeRate: this.fcffForm.controls['riskFreeRate'].value,
     expMarketReturn: this.fcffForm.controls['expMarketReturn'].value,
     beta: this.fcffForm.controls['beta']?.value ? this.fcffForm.controls['beta'].value : 0,
     riskPremium: this.fcffForm.controls['riskPremium'].value,
@@ -582,9 +556,10 @@ checkPreviousAndCurrentValue(changes:any){
     const current = changes['formOneData'].currentValue;
     const previous = changes['formOneData'].previousValue;
     
-    if((current && previous) && current.valuationDate !== previous.valuationDate){
+    if((current?.valuationDate && previous?.valuationDate) && current.valuationDate !== previous.valuationDate){
       this.fcffForm.controls['expMarketReturnType'].setValue('');
       this.fcffForm.controls['expMarketReturn'].reset();
+      this.calculateRiskFreeRate(this.fcffForm.controls['riskFreeRateYears'].value)
     }
   }
   if(this.equityM?.length > 0){
@@ -668,5 +643,30 @@ processStateManager(process:any, processId:any){
       });
     }
   );
+}
+
+calculateRiskFreeRate(maturityYears:any){
+  this.calculationsService.getRiskFreeRate(maturityYears,this.formOneData.valuationDate).subscribe((response:any)=>{
+    if(response.status){
+      this.fcffForm.controls['riskFreeRate'].setValue(formatNumber(response.riskFreeRate));
+      this.calculateCoeAndAdjustedCoe();
+    }
+    else{
+      this.snackBar.open('Risk Free Rate Calculation Failed', 'Ok',{
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+        duration: 3000,
+        panelClass: 'app-notification-error',
+      })
+    }
+  },
+  (error)=>{
+    this.snackBar.open('Error in risk free rate calculation', 'Ok',{
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+      duration: 3000,
+      panelClass: 'app-notification-error',
+    })
+  })
 }
 }

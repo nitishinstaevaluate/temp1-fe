@@ -30,6 +30,9 @@ export class CalculationsService {
 
   getWaccIndustryOrCompanyBased(payload:any){
     return this.http.get(`${HOST}coe/industryOrCompanyBasedWacc?adjCoe=${payload.adjCoe}&costOfDebt=${payload.costOfDebt}&copShareCapital=${payload.copShareCapital}&deRatio=${payload.deRatio}&type=${payload.type}&taxRate=${payload.taxRate}&excelSheetId=${payload.excelSheetId}`)
+  }
 
+  getRiskFreeRate(maturityYears:any,date:any){
+    return this.http.get(`${HOST}calculation/risk-free-rate/${maturityYears}/${date}`);
   }
 }

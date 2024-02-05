@@ -12,6 +12,7 @@ import { UtilService } from 'src/app/shared/service/util.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal-box/generic-modal-box.component';
+import { formatNumber } from 'src/app/shared/enums/functions';
 
 @Component({
   selector: 'app-screen-input-details',
@@ -29,7 +30,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   hasError=hasError;
   modelControl=groupModelControl;
   ciqIndustryData:any;
-  ciqIndustryHead=['Company Id', 'Company Name', 'City', 'Industry Description'];
+  ciqIndustryHead=['Company Id', 'Company Name', 'Market Cap', 'Outstanding Shares', 'City', 'Industry Description'];
   mapIndustryBasedCompany:any = INDUSTRY_BASED_COMPANY;
   loader=false;
   levelThreeIndustry:any=[];
@@ -66,6 +67,8 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   previousPageIndex: number = 0
   prevPageSize: any;
   selectAll: boolean = false;
+  valuationDateNote = '';
+  formatNumber=formatNumber
 
   constructor(
     private fb:FormBuilder,
@@ -87,10 +90,11 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       switchMap(async () => this.loadCiqIndustryBasedLevelFour(this.createPayload()))
     ).subscribe();
   }
-   ngOnChanges() {
+   ngOnChanges(changes:SimpleChanges) {
     this.loadForm();
     // this.checkProcessExist(this.formOneData);
     this.onValueChange();
+    this.loadTableAsPerValuationDate(changes);
   }
 
   loadForm(){
@@ -214,6 +218,16 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       startWith(''),
       map(value => this.filter(value))
     );
+  }
+
+  loadTableAsPerValuationDate(changes:any){
+    this.valuationDateNote = this.formOneData?.valuationDate;
+    const formOneDataCurrentChanges = changes['formOneData']?.currentValue;
+    const formOneDataPreviousChanges = changes['formOneData']?.previousValue;
+
+    if(formOneDataCurrentChanges && formOneDataPreviousChanges && formOneDataCurrentChanges?.valuationDate !== formOneDataPreviousChanges?.valuationDate){
+        this.loadCiqIndustryBasedLevelFour(this.createPayload());
+    }
   }
 
   async saveAndNext(){
@@ -535,7 +549,8 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       location: this.formOneData?.location || this.secondStageInput?.formOneData?.location,
       processStateId:localStorage.getItem('processStateId'),
       pageStart: this.pageStart,
-      size: this.pageSize
+      size: this.pageSize,
+      valuationDate: this.formOneData?.valuationDate
     };
   }
 
