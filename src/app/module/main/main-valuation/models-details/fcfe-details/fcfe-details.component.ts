@@ -344,6 +344,7 @@ saveAndNext(): void {
   payload['costOfEquity']=this.coe;
   payload['bse500Value']=this.bse500Value;
   payload['betaSubType']=this.selectedSubBetaType
+  payload['riskFreeRate'] = +this.fcfeForm.controls['riskFreeRate'].value;
 
   // validate formcontrols
   this.validateControls(this.fcfeForm.controls,payload);

@@ -411,6 +411,7 @@ saveAndNext(): void {
   payload['wacc']=this.wacc;
   payload['bse500Value']=this.bse500Value;
   payload['betaSubType']=this.selectedSubBetaType;
+  payload['riskFreeRate'] = +this.fcffForm.controls['riskFreeRate'].value;
   // check if expected market return  is empty or not
  
   payload['expMarketReturnType']=expectedMarketReturnData.value;

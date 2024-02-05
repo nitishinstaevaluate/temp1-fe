@@ -15,6 +15,7 @@ import { hasError } from 'src/app/shared/enums/errorMethods';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { BETA_SUB_TYPE, MODELS } from 'src/app/shared/enums/constant';
 import { CiqSPService } from 'src/app/shared/service/ciq-sp.service';
+import { formatNumber } from 'src/app/shared/enums/functions';
 
 @Component({
   selector: 'app-excess-earning-details',
@@ -46,7 +47,6 @@ export class ExcessEarningDetailsComponent {
   isLoader = false;
   isDialogOpen = false;
   bse500Value:number=0;
-  customRiskFreeRate = 0;
   meanBeta = false;
   medianBeta = true;
   betaLoader=false;
@@ -95,6 +95,7 @@ checkProcessExist(){
         this.selectedSubBetaType = stateTwoDetails?.betaSubType ? stateTwoDetails.betaSubType : BETA_SUB_TYPE[0];
         this.excessEarningForm.controls['coeMethod'].setValue(stateTwoDetails?.coeMethod); 
         this.excessEarningForm.controls['riskFreeRate'].setValue(stateTwoDetails?.riskFreeRate); 
+        this.excessEarningForm.controls['riskFreeRateYears'].setValue(stateTwoDetails?.riskFreeRateYears); 
         let expectedMarketReturnData:any;
         this.modelControl.fcfe.options.expMarketReturnType.options.map((response:any)=>{
           if(response.value ===  stateTwoDetails?.expMarketReturnType){
@@ -204,17 +205,18 @@ loadOnChangeValue(){
     
   // });
 
-  this.excessEarningForm.controls['riskFreeRate'].valueChanges.subscribe((val:any)=>{
+  this.excessEarningForm.controls['riskFreeRateYears'].valueChanges.subscribe((val:any)=>{
     if(!val) return;
     if(val === "customRiskFreeRate"){
       const data={
         value: 'customRiskFreeRate',
-        riskFreeRate: this.customRiskFreeRate
+        riskFreeRate: this.excessEarningForm.controls['riskFreeRate'].value
       }
       const dialogRef = this.dialog.open(GenericModalBoxComponent,{data:data,width:'30%'});
       dialogRef.afterClosed().subscribe((result)=>{
         if (result) {
-          this.customRiskFreeRate = parseFloat(result?.riskFreeRate)
+          // this.customRiskFreeRate = parseFloat(result?.riskFreeRate)
+          this.excessEarningForm.controls['riskFreeRate'].setValue(parseFloat(result?.riskFreeRate));
           
           this.snackBar.open('Risk Free Rate Added','OK',{
             horizontalPosition: 'right',
@@ -229,7 +231,7 @@ loadOnChangeValue(){
       })
     }
     else{
-      this.calculateCoeAndAdjustedCoe();
+      this.calculateRiskFreeRate(val);
     }
   })
 
@@ -246,6 +248,7 @@ loadFormControl(){
     betaType:['',[Validators.required]],
     coeMethod:['',[Validators.required]],
     riskFreeRate:['',[Validators.required]],
+    riskFreeRateYears:['',[Validators.required]],
     expMarketReturnType:['',[Validators.required]],
     expMarketReturn:['',[Validators.required]],
     specificRiskPremium:[false,[Validators.required]],
@@ -335,10 +338,8 @@ saveAndNext(): void {
   payload['costOfEquity']=this.coe;
   payload['bse500Value']=this.bse500Value;
   payload['betaSubType']=this.selectedSubBetaType;
+  payload['riskFreeRate'] = +this.excessEarningForm.controls['riskFreeRate'].value;
   
-  if(this.excessEarningForm.controls['riskFreeRate'].value  === 'customRiskFreeRate'){
-    payload['riskFreeRate'] = this.customRiskFreeRate
-  }
 
   this.validateControls(this.excessEarningForm.controls,payload);
   
@@ -414,7 +415,7 @@ previous(){
 calculateCoeAndAdjustedCoe() {
   this.isLoader=true
   const coePayload = {
-    riskFreeRate: this.excessEarningForm.controls['riskFreeRate'].value === 'customRiskFreeRate' ? this.customRiskFreeRate : this.excessEarningForm.controls['riskFreeRate'].value,
+    riskFreeRate: this.excessEarningForm.controls['riskFreeRate'].value,
     expMarketReturn: this.excessEarningForm.controls['expMarketReturn'].value,
     beta: this.excessEarningForm.controls['beta']?.value ? this.excessEarningForm.controls['beta'].value : 0,
     riskPremium: this.excessEarningForm.controls['riskPremium'].value,
@@ -458,9 +459,10 @@ checkPreviousAndCurrentValue(changes:any){
     const current = changes['formOneData'].currentValue;
     const previous = changes['formOneData'].previousValue;
     
-    if((current && previous) && current.valuationDate !== previous.valuationDate){
+    if((current?.valuationDate && previous?.valuationDate) && current.valuationDate !== previous.valuationDate){
       this.excessEarningForm.controls['expMarketReturnType'].setValue('');
       this.excessEarningForm.controls['expMarketReturn'].reset();
+      this.calculateRiskFreeRate(this.excessEarningForm.controls['riskFreeRateYears'].value)
     }
   }
   if(this.equityM?.length > 0){
@@ -525,6 +527,31 @@ calculateBeta(betaSubType:any){
     },); 
   })
 
+}
+
+calculateRiskFreeRate(maturityYears:any){
+  this.calculationsService.getRiskFreeRate(maturityYears,this.formOneData.valuationDate).subscribe((response:any)=>{
+    if(response.status){
+      this.excessEarningForm.controls['riskFreeRate'].setValue(formatNumber(response.riskFreeRate));
+      this.calculateCoeAndAdjustedCoe();
+    }
+    else{
+      this.snackBar.open('Risk Free Rate Calculation Failed', 'Ok',{
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+        duration: 3000,
+        panelClass: 'app-notification-error',
+      })
+    }
+  },
+  (error)=>{
+    this.snackBar.open('Error in risk free rate calculation', 'Ok',{
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+      duration: 3000,
+      panelClass: 'app-notification-error',
+    })
+  })
 }
 }
 
