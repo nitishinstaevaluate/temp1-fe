@@ -550,7 +550,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       processStateId:localStorage.getItem('processStateId'),
       pageStart: this.pageStart,
       size: this.pageSize,
-      valuationDate: this.formOneData.valuationDate
+      valuationDate: this.formOneData?.valuationDate
     };
   }
 
