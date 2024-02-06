@@ -13,6 +13,7 @@ import { AuthService } from 'src/app/shared/service/auth.service';
 export class LoginComponent  implements OnInit {
   disabled = ""
   active:any;
+  passwordVisible: boolean = false;
   constructor(private authservice: AuthService, private router: Router, private formBuilder : FormBuilder,private snackbar:MatSnackBar) { }
 
   ngOnInit(): void {
@@ -100,4 +101,8 @@ export class LoginComponent  implements OnInit {
   //     this.error = "Please check email and passowrd"
   //   }
   // }
+
+  togglePasswordVisibility(): void {
+    this.passwordVisible = !this.passwordVisible;
+  }
 }

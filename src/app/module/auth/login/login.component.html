@@ -42,6 +42,7 @@
                             <a
                               href="javascript:void(0)"
                               class="input-group-text bg-white text-muted"
+                              (click)="togglePasswordVisibility()"
                             >
                               <i
                                 class="zmdi zmdi-eye text-muted"
@@ -49,7 +50,7 @@
                               ></i>
                             </a>
                             <input
-                              type="password"
+                            [type]="passwordVisible ? 'text' : 'password'"
                               class="border-start-0 form-control ms-0"
                               placeholder="Password"
                               autocomplete
@@ -82,7 +83,7 @@
                           <div class="text-center pt-3">
                             <p class="text-dark mb-0">
                               Not a member?<a
-                                routerLink="/auth/register"
+                                routerLink="/contact-sales"
                                 class="text-primary ms-1"
                                 >Contact Sales</a
                               >
