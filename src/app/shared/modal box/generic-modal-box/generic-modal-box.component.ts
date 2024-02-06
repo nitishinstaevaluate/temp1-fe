@@ -1,6 +1,6 @@
 import { Component , ElementRef, Inject, Renderer2, OnInit, ViewChild,AfterViewInit, Input} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { GLOBAL_VALUES, INCOME_APPROACH, MARKET_APPROACH, NET_ASSET_APPROACH, RULE_ELEVEN_UA_APPROACH } from '../../enums/constant';
+import { GLOBAL_VALUES, INCOME_APPROACH, MARKET_APPROACH, NET_ASSET_APPROACH, RULE_ELEVEN_UA_APPROACH, helperText } from '../../enums/constant';
 import groupModelControl from '../../enums/group-model-controls.json'
 import WebViewer, { Core } from '@pdftron/webviewer';
 import PDFNet  from '@pdftron/webviewer';
@@ -82,6 +82,7 @@ editDoc:any='';
 fileUploadStatus:boolean=true;
 projectionSelectionStatus:boolean=true;
 hasError=hasError
+helperText = helperText;
 
   // Quill toolbar options
   quillModules = {

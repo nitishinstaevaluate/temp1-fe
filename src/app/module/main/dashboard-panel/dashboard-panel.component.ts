@@ -12,7 +12,7 @@ export class DashboardPanelComponent {
   totalRecords:any=[];
   constructor(private valuationService:ValuationService){this.fetchData()}
 
-  fetchData(page:number=1,pageSize:number=30,query?:string): void { //inorder to increase the total count, increase the pageSize number 
+  fetchData(page:number=1,pageSize:number=10,query?:string): void { //inorder to increase the total count, increase the pageSize number 
     this.valuationService.getPaginatedValuations(page, pageSize,query)
       .subscribe((data:any) => {
         this.totalRecords = data.response;

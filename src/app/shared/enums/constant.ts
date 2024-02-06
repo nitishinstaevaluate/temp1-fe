@@ -234,6 +234,17 @@ export const ALL_MODELS = {
     }
   }
 
+  export const helperText = {
+    fcffModelLabel: 'Cash flow available to all claimholders of a firm, including both debt and equity holders, after operating expenses and capital expenditures have been deducted from revenue.',
+    fcfeModelLabel: 'Cash flow available to equity holders of a firm, after interest payments on debt have been deducted from operating cash flow.',
+    excessEarningModelLabel: `Estimate the present value of a company's future cash flows by subtracting the cost of capital from the operating cash flow to arrive at the excess earnings, which are then discounted to their present value.`,
+    navModelLabel: `Estimate the value of a company by subtracting the total liabilities from the total assets to arrive at the net asset value, which represents the value of the company's assets minus its liabilities.`,
+    comparableCompaniesModelLabel: `Estimate the value of a company by comparing it to similar publicly traded companies, and using their valuation multiples, such as price-to-earnings ratio or enterprise value-to-EBITDA ratio, to estimate the value of the company.`,
+    comparableTransactionModelLabel: `Estimate the value of a company by analyzing the values paid in similar mergers and acquisitions transactions, and using those values as a basis for estimating the value of the company. This method is particularly useful when there are no comparable public companies or when the company's financials are not publicly available.`,
+    marketPriceModelLabel: `Estimate the value of a company by comparing its market price to its financial metrics, such as earnings, revenue, or book value.0`,
+    ruleElevenModelLabel: `Estimate the value of a company for the purpose of mergers and acquisitions, takeovers, and other financial transactions. It is a judicial approach that is based on the principles of the Indian Companies Act, 1956, and the Securities and Exchange Board of India (SEBI) regulations.`
+  }
+
   export const INCOME_APPROACH = ['FCFE','FCFF','Excess_Earnings'];
 
   export const NET_ASSET_APPROACH = ['NAV'];

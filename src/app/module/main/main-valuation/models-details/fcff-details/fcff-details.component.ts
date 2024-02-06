@@ -646,6 +646,8 @@ processStateManager(process:any, processId:any){
 }
 
 calculateRiskFreeRate(maturityYears:any){
+  if(!maturityYears)
+    return;
   this.calculationsService.getRiskFreeRate(maturityYears,this.formOneData.valuationDate).subscribe((response:any)=>{
     if(response.status){
       this.fcffForm.controls['riskFreeRate'].setValue(formatNumber(response.riskFreeRate));

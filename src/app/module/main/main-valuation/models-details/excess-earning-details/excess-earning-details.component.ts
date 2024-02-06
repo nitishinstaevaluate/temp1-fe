@@ -530,6 +530,8 @@ calculateBeta(betaSubType:any){
 }
 
 calculateRiskFreeRate(maturityYears:any){
+  if(!maturityYears)
+    return;
   this.calculationsService.getRiskFreeRate(maturityYears,this.formOneData.valuationDate).subscribe((response:any)=>{
     if(response.status){
       this.excessEarningForm.controls['riskFreeRate'].setValue(formatNumber(response.riskFreeRate));
