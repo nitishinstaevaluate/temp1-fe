@@ -358,6 +358,9 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   loadCiqIndustryBasedLevelFour(payload:any){
     this.loader = true;
     this.selectAll = false;
+    if(!this.formOneData?.valuationDate)
+      return;
+    
     this.ciqSpService.getSPIndustryListByLevelFourIndustries(payload).subscribe((industryData:any)=>{
       if(industryData.status){
         this.loader = false;
