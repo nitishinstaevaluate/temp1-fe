@@ -356,10 +356,20 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   }
 
   loadCiqIndustryBasedLevelFour(payload:any){
+    if(this.step !==2)
+      return;
     this.loader = true;
     this.selectAll = false;
-    if(!this.formOneData?.valuationDate)
+    if(!this.formOneData?.valuationDate){
+      this.loader = false
+      this.snackBar.open('Valuation date is missing','Ok',{
+        horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 3000,
+          panelClass: 'app-notification-error'
+      })
       return;
+    }
     
     this.ciqSpService.getSPIndustryListByLevelFourIndustries(payload).subscribe((industryData:any)=>{
       if(industryData.status){
