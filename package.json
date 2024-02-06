@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build:ssr:outhashall": "npm run build:client-and-server-bundles:outhashall && npm run compile:server",
-    "build:client-and-server-bundles:outhashall": "ng build --prod --output-hashing=all && ng run sample-project:server:production --bundleDependencies all",
+    "build:client-and-server-bundles:outhashall": "ng build --prod --output-hashing=all && ng run sample-project:server:production --bundleDependencies all && gzipper compress ./dist/client/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "move-static": "cp -a ./node_modules/@pdftron/webviewer/public/. ./dist/public/webviewer"
