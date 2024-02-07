@@ -241,15 +241,25 @@
         <span>{{appValues.VALUATION_METHOD.incomeApproach.label}}</span>
       </div>
       <div class="row fcfe-hover">
-        <div class="col-xl-5 n-models-fcfe">
+        <div class="col-xl-6 n-models-fcfe">
           <div class="form-check">
             <input class="form-check-input" [checked]="fcfeSelectedModel" (click)="createModelControl('FCFE','incomeApproach')" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
             <label class="form-check-label" for="flexRadioDefault1">
               DCF Method - FCFE
             </label>
+            <p class="rm-pad">
+              <span class="tool-class">
+                <svg [matTooltip]="helperText.fcfeModelLabel" matTooltipPosition="right"  xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
+                  <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:37px" 
+                  fill="#ff0000"></path>
+                  <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px">
+                  </polyline><line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px">
+                </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
+              </span>
+            </p>
           </div>
         </div>
-        <div class="col-xl-7 text-center">
+        <!-- <div class="col-xl-9 text-left">
           <p class="rm-pad">
             <span class="tool-class">
               <svg [matTooltip]="helperText.fcfeModelLabel" matTooltipPosition="right"  xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
@@ -260,18 +270,28 @@
               </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
             </span>
           </p>
-        </div>
+        </div> -->
       </div>
       <div class="row fcff-hover">
-        <div class="col-xl-5 n-models-fcff">
+        <div class="col-xl-6 n-models-fcff">
           <div class="form-check">
             <input class="form-check-input" [checked]="fcffSelectedModel" type="radio" (click)="createModelControl('FCFF','incomeApproach')" name="flexRadioDefault" id="flexRadioDefault1">
             <label class="form-check-label" for="flexRadioDefault1">
               DCF Method - FCFF
             </label>
+            <p class="rm-pad">
+              <span class="tool-class">
+                <svg [matTooltip]="helperText.fcffModelLabel" matTooltipPosition="right" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
+                  <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:32px" 
+                  fill="#ff0000"></path>
+                  <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px">
+                  </polyline><line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px">
+                </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
+              </span>
+            </p>
           </div>
         </div>
-        <div class="col-xl-7 text-center">
+        <!-- <div class="col-xl-7 text-center">
           <p class="rm-pad">
             <span class="tool-class">
               <svg [matTooltip]="helperText.fcffModelLabel" matTooltipPosition="right" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
@@ -282,18 +302,28 @@
               </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
             </span>
           </p>
-        </div>
+        </div> -->
       </div>
       <div class="row excess-earn-hover">
-        <div class="col-xl-5 n-models-excessEarn">
+        <div class="col-xl-6 n-models-excessEarn">
           <div class="form-check">
             <input class="form-check-input" [checked]="excessEarningSelectedModel" (click)="createModelControl('Excess_Earnings','incomeApproach')" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
             <label class="form-check-label" for="flexRadioDefault1">
               Excess Earning Method
             </label>
+            <p class="rm-pad"> 
+              <span class="tool-class">
+                <svg [matTooltip]="helperText.excessEarningModelLabel" matTooltipPosition="right"  xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
+                  <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:32px;" 
+                  fill="#ff0000"></path>
+                  <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px;">
+                  </polyline><line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px;">
+                </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
+              </span>
+            </p>
           </div>
         </div>
-        <div class="col-xl-7 text-center">
+        <!-- <div class="col-xl-7 text-center">
           <p class="rm-pad"> 
             <span class="tool-class">
               <svg [matTooltip]="helperText.excessEarningModelLabel" matTooltipPosition="right"  xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
@@ -304,7 +334,7 @@
               </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
             </span>
           </p>
-        </div>
+        </div> -->
       </div>
 
       <div class="row projectionSelect" *ngIf="(incomeApproachmodels?.length > 0) && (incomeApproachmodels.includes('FCFE') || incomeApproachmodels.includes('FCFF') || incomeApproachmodels.includes('Excess_Earnings'))">
@@ -363,15 +393,25 @@
         <span>{{appValues.VALUATION_METHOD.assetApproach.label}}</span>
       </div>
       <div class="row nav-hover" >
-        <div class="col-xl-5 n-models-nav">
+        <div class="col-xl-6 n-models-nav">
           <div class="form-check">
             <input class="form-check-input" [checked]="navSelectedModel" (click)="createModelControl('NAV','netAssetValueApproach')" type="radio" name="flexRadioDefault3" id="flexRadioDefault3">
             <label class="form-check-label" for="flexRadioDefault3">
               Net Asset Value Approach
             </label>
+            <p class="rm-pad"> 
+              <span class="tool-class">
+                <svg [matTooltip]="helperText.navModelLabel" matTooltipPosition="right"  xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
+                  <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:32px;" 
+                  fill="#ff0000"></path>
+                  <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px;">
+                  </polyline><line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px;">
+                </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
+              </span>
+            </p>
           </div>
         </div>
-        <div class="col-xl-7 hp-text-nav">
+        <!-- <div class="col-xl-7 hp-text-nav">
           <p class="rm-pad"> 
             <span class="tool-class">
               <svg [matTooltip]="helperText.navModelLabel" matTooltipPosition="right"  xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
@@ -382,7 +422,7 @@
               </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
             </span>
           </p>
-        </div>
+        </div> -->
       </div>
     </div>
 
@@ -392,15 +432,25 @@
         <span>{{appValues.VALUATION_METHOD.marketApproach.label}}</span>
       </div>
       <div class="row ccm-hover" >
-        <div class="col-xl-5 n-models-ccm">
+        <div class="col-xl-6 n-models-ccm">
           <div class="form-check">
             <input class="form-check-input" [checked]="relativeValuationSelectedModel" (click)="createModelControl('Relative_Valuation','marketApproach')" type="radio" name="flexRadioDefault4" id="flexRadioDefault4">
             <label class="form-check-label" for="flexRadioDefault4">
               Comparable Companies Method
             </label>
+            <p class="rm-pad"> 
+              <span class="tool-class">
+                <svg [matTooltip]="helperText.comparableCompaniesModelLabel" matTooltipPosition="right"  xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
+                  <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:32px;" 
+                  fill="#ff0000"></path>
+                  <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px;">
+                  </polyline><line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px;">
+                </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
+              </span>
+            </p>
           </div>
         </div>
-        <div class="col-xl-7 hp-text-ccm">
+        <!-- <div class="col-xl-7 hp-text-ccm">
           <p class="rm-pad"> 
             <span class="tool-class">
               <svg [matTooltip]="helperText.comparableCompaniesModelLabel" matTooltipPosition="right"  xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
@@ -411,18 +461,28 @@
               </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
             </span>
           </p>
-        </div>
+        </div> -->
       </div>
       <div class="row ctm-hover">
-        <div class="col-xl-5 n-models-ctm">
+        <div class="col-xl-6 n-models-ctm">
           <div class="form-check">
             <input class="form-check-input" [checked]="ctmSelectedModel" (click)="createModelControl('CTM','marketApproach')" type="radio" name="flexRadioDefault4" id="flexRadioDefault4">
             <label class="form-check-label" for="flexRadioDefault4">
               Comparable Transaction Method
             </label>
+            <p class="rm-pad"> 
+              <span class="tool-class">
+                <svg [matTooltip]="helperText.comparableTransactionModelLabel" matTooltipPosition="right"  xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
+                  <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:32px;" 
+                  fill="#ff0000"></path>
+                  <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px;">
+                  </polyline><line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px;">
+                </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
+              </span>
+            </p>
           </div>
         </div>
-        <div class="col-xl-7 hp-text-ctm">
+        <!-- <div class="col-xl-7 hp-text-ctm">
           <p class="rm-pad"> 
             <span class="tool-class">
               <svg [matTooltip]="helperText.comparableTransactionModelLabel" matTooltipPosition="right"  xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
@@ -433,18 +493,28 @@
               </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
             </span>
           </p>
-        </div>
+        </div> -->
       </div>
       <div class="row market-price-hover">
-        <div class="col-xl-5 n-models-market-price">
+        <div class="col-xl-6 n-models-market-price">
           <div class="form-check">
             <input class="form-check-input" [checked]="marketPriceSelectedModel" (click)="createModelControl('Market_Price','marketApproach')" type="radio" name="flexRadioDefault4" id="flexRadioDefault4">
             <label class="form-check-label" for="flexRadioDefault4">
               Market Price Method
             </label>
+            <p class="rm-pad"> 
+              <span class="tool-class">
+                <svg [matTooltip]="helperText.marketPriceModelLabel" matTooltipPosition="right"  xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
+                  <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:32px;" 
+                  fill="#ff0000"></path>
+                  <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px;">
+                  </polyline><line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px;">
+                </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
+              </span>
+            </p>
           </div>
         </div>
-        <div class="col-xl-7 hp-text-market-price">
+        <!-- <div class="col-xl-7 hp-text-market-price">
           <p class="rm-pad"> 
             <span class="tool-class">
               <svg [matTooltip]="helperText.marketPriceModelLabel" matTooltipPosition="right"  xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
@@ -455,7 +525,7 @@
               </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
             </span>
           </p>
-        </div>
+        </div> -->
       </div>
     </div>
 
@@ -471,9 +541,19 @@
             <label class="form-check-label" for="flexRadioDefault5">
               Rule 11 UA Method
             </label>
+            <p class="rm-pad"> 
+              <span class="tool-class">
+                <svg [matTooltip]="helperText.ruleElevenModelLabel" matTooltipPosition="right"  xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
+                  <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:32px;" 
+                  fill="#ff0000"></path>
+                  <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px;">
+                  </polyline><line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px;">
+                </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
+              </span>
+            </p>
           </div>
         </div>
-        <div class="col-xl-7 hp-text-r11a">
+        <!-- <div class="col-xl-7 hp-text-r11a">
           <p class="rm-pad"> 
             <span class="tool-class">
               <svg [matTooltip]="helperText.ruleElevenModelLabel" matTooltipPosition="right"  xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
@@ -484,7 +564,7 @@
               </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
             </span>
           </p>
-        </div>
+        </div> -->
       </div>
     </div>
     <!-- template download and upload -->
