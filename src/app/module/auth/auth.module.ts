@@ -16,8 +16,7 @@ import { MainLayoutModule } from 'src/app/layout/main-layout/main-layout.module'
   imports: [
     CommonModule,
     AuthRoutingModule,
-    SharedModule,
-    MainLayoutModule
+    SharedModule
   ]
 })
 export class AuthModule { }

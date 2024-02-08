@@ -13,7 +13,6 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 @NgModule({
   declarations: [
     MainLayoutComponent,
-    HeaderComponent,
     SidebarComponent,
     // NewMainLayoutComponent,
     // NewHeaderComponent,
@@ -22,9 +21,6 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     CommonModule,
     MainLayoutRoutingModule,
     SharedModule
-  ],
-  exports: [
-    HeaderComponent
   ]
 })
 export class MainLayoutModule { }
