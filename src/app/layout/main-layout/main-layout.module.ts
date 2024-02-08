@@ -22,6 +22,9 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     CommonModule,
     MainLayoutRoutingModule,
     SharedModule
+  ],
+  exports: [
+    HeaderComponent
   ]
 })
 export class MainLayoutModule { }
