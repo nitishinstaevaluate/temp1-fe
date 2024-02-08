@@ -52,8 +52,8 @@
                       </button>
                     </span> -->
 
-                    <span matTooltip="Resume valuation" matTooltipPosition="above" (click)="loadProcess(item._id)"><img style="height: 20px;width: 20px;cursor: pointer;" src="../../../../assets/images/icons/report-edit.png" alt=""></span>
-                    <span matTooltip="Download valuation report" matTooltipPosition="above" (click)="downloadReport(item?.sixthStageInput,item?.firstStageInput?.model, item?.firstStageInput?.company)" style="padding-left: 30%;"><img style="height: 20px;width: 20px;cursor: pointer;" src="../../../../assets/images/icons/down-arrow.png" alt=""></span>
+                    <span matTooltip="Resume valuation" matTooltipPosition="left" matTooltipClass='activity-resume-tooltip' (click)="loadProcess(item._id)"><img style="height: 20px;width: 20px;cursor: pointer;" src="../../../../assets/images/icons/report-edit.png" alt=""></span>
+                    <span matTooltip="Download valuation report" matTooltipPosition="above" matTooltipClass="activity-download-tooltip" (click)="downloadReport(item?.sixthStageInput,item?.firstStageInput?.model, item?.firstStageInput?.company)" style="padding-left: 30%;"><img style="height: 20px;width: 20px;cursor: pointer;" src="../../../../assets/images/icons/down-arrow.png" alt=""></span>
                   </td>
                 </tr>
               </table>

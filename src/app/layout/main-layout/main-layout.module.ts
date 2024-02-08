@@ -13,7 +13,6 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 @NgModule({
   declarations: [
     MainLayoutComponent,
-    HeaderComponent,
     SidebarComponent,
     // NewMainLayoutComponent,
     // NewHeaderComponent,

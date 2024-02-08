@@ -909,11 +909,6 @@ html {
     overflow-y: scroll;
     position: relative;
 } */
-  .mdc-tooltip__surface {
-    background-color:#eeeeee !important;
-    color:#004e67 !important;
-    font-family: 'Rubik', sans-serif !important;
-  }
 
   .mat-mdc-dialog-container .mdc-dialog__surface{
     border-radius:15px !important;

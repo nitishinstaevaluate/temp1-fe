@@ -169,8 +169,9 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
         
       }
      }
-
-      this.loadCiqIndustryBasedLevelFour(this.createPayload());
+     if(data?.formOneData?.valuationDate){
+       this.loadCiqIndustryBasedLevelFour(this.createPayload());
+     }
   }
 
   comparer(o1: any, o2: any): boolean {
@@ -225,8 +226,8 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     const formOneDataCurrentChanges = changes['formOneData']?.currentValue;
     const formOneDataPreviousChanges = changes['formOneData']?.previousValue;
 
-    if(formOneDataCurrentChanges && formOneDataPreviousChanges && formOneDataCurrentChanges?.valuationDate !== formOneDataPreviousChanges?.valuationDate){
-        this.loadCiqIndustryBasedLevelFour(this.createPayload());
+    if(formOneDataCurrentChanges && formOneDataPreviousChanges && (formOneDataCurrentChanges?.valuationDate !== formOneDataPreviousChanges?.valuationDate || !formOneDataCurrentChanges?.valuationDate)){
+      this.loadCiqIndustryBasedLevelFour(this.createPayload());
     }
   }
 
@@ -356,8 +357,6 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   }
 
   loadCiqIndustryBasedLevelFour(payload:any){
-    if(this.step !==2)
-      return;
     this.loader = true;
     this.selectAll = false;
     if(!this.formOneData?.valuationDate){

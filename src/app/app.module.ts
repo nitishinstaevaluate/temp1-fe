@@ -13,10 +13,11 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { HttpInterceptorService } from './interceptors/http-interceptor.service';
+import { HeaderComponent } from './layout/main-layout/header/header.component';
 
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, HeaderComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

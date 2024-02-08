@@ -435,7 +435,7 @@ clearModelRadioButton(modelName:string){
 }
 
 get downloadTemplate() {
-  return GET_TEMPLATE(this.projectionYears,this.ruleElevenApproachModels.length ? 'ruleElevenUa' : '');
+  return GET_TEMPLATE(this.projectionYears,this.ruleElevenApproachModels.length ? 'ruleElevenUa' : 'default');
   }
 
   onFileSelected(event: any) {
