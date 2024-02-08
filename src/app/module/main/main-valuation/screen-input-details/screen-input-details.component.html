@@ -130,7 +130,7 @@
   
     <div style="padding-left: 2%;padding-top: 1%;" *ngIf="!loader">
       <p class="total-rec" *ngIf="ciqIndustryData?.length">Showing {{ciqIndustryData?.length}} out of {{total}} records</p>
-      <p class="sidenote"><i>*as on {{valuationDateNote | date:'MMM d, yyyy'}}</i></p>
+      <p class="sidenote" *ngIf="valuationDateNote"><i>*as on {{valuationDateNote | date:'MMM d, yyyy'}}</i></p>
     </div>
     <table class="table-industry-based-company" *ngIf="!loader">
       <thead>
@@ -170,15 +170,15 @@
           <td style="text-align: left;font-size: 14px;text-transform: capitalize;border: 1px solid #eeeeee" class="make-light">{{row.SIMPLEINDUSTRYDESCRIPTION}}</td>
         </tr>
         <tr *ngIf="!ciqIndustryData?.length">
-          <td colspan="5">
+          <td colspan="7">
             <p class="total-rec empty-ciqindustrydata" >No records were to be found, try changing above parameters</p>
           </td>
         </tr>
       </tbody>
     </table>
     <div>
-      <p class="total-count">{{mainIndustries?.length}} selected</p>
-      <mat-paginator style="float: inline-end;" [length]="length"
+      <p class="total-count" *ngIf="ciqIndustryData?.length">{{mainIndustries?.length}} selected</p>
+      <mat-paginator style="float: inline-end;" *ngIf="ciqIndustryData?.length" [length]="length"
       [pageSize]="pageSize"
       [pageSizeOptions]="pageSizeOptions"
       (page)="onPageChange($event)"

@@ -1013,11 +1013,12 @@ font-size: 1rem !important;
     margin: 0px;
   }
   .empty-ciqindustrydata{
-    text-align: left;
+    text-align: center;
     padding-left: 1%;
-    color: #828384;
+    color: #ff0000;
     font-size: 18px;
-    background: #c7f1d27d;
+    display: block;
+    padding-top: 2%;
 }
   ::ng-deep .mat-mdc-select-panel-above .mdc-menu-surface.mat-mdc-select-panel{
     padding: 0px !important;
