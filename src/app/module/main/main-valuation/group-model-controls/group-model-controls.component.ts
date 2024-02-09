@@ -4,10 +4,10 @@ import { hasError } from 'src/app/shared/enums/errorMethods';
 import groupModelControl from '../../../../shared/enums/group-model-controls.json'
 import { ValuationService } from 'src/app/shared/service/valuation.service';
 import { DataReferencesService } from 'src/app/shared/service/data-references.service';
-import { forkJoin } from 'rxjs';
+import { Subject, debounceTime, distinctUntilChanged, switchMap, throttleTime } from 'rxjs';
 import { DROPDOWN } from 'src/app/shared/enums/enum';
 import { GET_TEMPLATE, isSelected, toggleCheckbox } from 'src/app/shared/enums/functions';
-import { ALL_MODELS, MODELS } from 'src/app/shared/enums/constant';
+import { ALL_MODELS, MODELS, helperText } from 'src/app/shared/enums/constant';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal-box/generic-modal-box.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -15,6 +15,7 @@ import { CalculationsService } from 'src/app/shared/service/calculations.service
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { AuthService } from 'src/app/shared/service/auth.service';
 import { CiqSPService } from 'src/app/shared/service/ciq-sp.service';
+import { UtilService } from 'src/app/shared/service/util.service';
 
 
 @Component({
@@ -39,7 +40,8 @@ export class GroupModelControlsComponent implements OnInit {
   relativeValuation:FormGroup;
   hasError= hasError;
   MODEL=MODELS;
-  allModels:any = ALL_MODELS
+  allModels:any = ALL_MODELS;
+  helperText = helperText
 
 // array declaration
   inputs = [{}];
@@ -49,20 +51,6 @@ export class GroupModelControlsComponent implements OnInit {
   industries:any=[];
   subIndustries: any=[];
   preferenceCompanies:any=[];
-  prefrerenceIndustries:any=[
-    {
-      industry:"steel",
-      _id:0
-    },
-    {
-      industry:"auto",
-      _id:1
-    },
-    {
-      industry:"car",
-      _id:2
-    }
-  ];
   
   // property declaration
   industriesRatio: any = '';
@@ -96,16 +84,20 @@ export class GroupModelControlsComponent implements OnInit {
   fileName:any='';
   modelSelectStatus:boolean= true;
   selectedIndustry:any;
+  companyQuery:any;
+  searchByCompanyName = new Subject<string>();
+  options:any=[];
+  companyListLoader=false;
+  companyInput=false;
+  
 
   constructor(private formBuilder: FormBuilder,
     private valuationService: ValuationService,
-    private _dataReferencesService: DataReferencesService,
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
     private calculationService:CalculationsService,
     private processStatusManagerService:ProcessStatusManagerService,
-    private authService:AuthService,
-    private ciqSpService:CiqSPService) {
+    private utilService:UtilService) {
     this.form=this.formBuilder.group({});
 
     this.modelValuation=this.formBuilder.group({
@@ -157,20 +149,28 @@ export class GroupModelControlsComponent implements OnInit {
   ngOnInit(){
     this.loadValues();
     this.checkProcessExist(this.firstStageInput)
-    this.formLoad();
+    this.searchByCompanyName.pipe(
+      debounceTime(600),
+      distinctUntilChanged(),
+      throttleTime(600),
+      switchMap(async () => this.fetchCompanyNames())
+    ).subscribe();
     // this.loadCiqIndustryList()
   }
 
   async checkProcessExist(data:any){
    if(data){
     this.betaIndustries = data?.betaIndustries;
-   this.modelValuation.controls['company'].setValue(data?.company ?? '');
+    if(data?.company){
+      this.companyQuery = data?.company;
+      this.fetchCompanyNames()
+      this.modelValuation.controls['company'].setValue(data?.company ?? '');
+    }
    this.modelValuation.controls['currencyUnit'].setValue(data?.currencyUnit ?? 'INR');
    this.modelValuation.controls['discountRateType'].setValue(data?.discountRateType === ""  ?  'WACC' : data?.discountRateType);
    this.modelValuation.controls['discountRateValue'].setValue(data?.discountRateValue === "" ? 20 : data?.discountRateValue);
-  //  this.industriesRatio = data.industriesRatio ?? '';
+
    this.preferenceCompanies = data.preferenceCompanies ?? [];
-  //  localStorage.setItem('excelStat',`${data.isExcelModified ?? ''}`);
    this.modelValuation.controls['industry'].setValue(data?.industry?? '');
    this.modelValuation.controls['location'].setValue(data?.location?? 'India');
    this.modelValuation.controls['model'].setValue(data?.model?? false);
@@ -192,25 +192,6 @@ export class GroupModelControlsComponent implements OnInit {
   const dateToSet = data?.valuationDate ? new Date(data?.valuationDate) : null;
   const formattedDate = dateToSet ? `${dateToSet.getFullYear()}-${(dateToSet.getMonth() + 1).toString().padStart(2, '0')}-${dateToSet.getDate().toString().padStart(2, '0')}` : '';
   this.modelValuation.controls['valuationDate'].patchValue(formattedDate);
-  // if(this.modelValuation.controls['industry'].value && this.selectedIndustry){
-  //   const indst = this.selectedIndustry;
-  //   this.valuationService.getIndustries(indst?._id).subscribe((resp: any) => {
-  //     if(resp.length !== 0){
-  //       this.subIndustries = resp;
-  //     }
-  //     else{
-  //       console.log("emptying sub-industry")
-  //       this.subIndustries = [];
-  //       this.modelValuation.controls['subIndustry'].setValue('');
-  //     }
-  //   });
-  //   this._dataReferencesService.getIndustriesRatio(indst?._id).subscribe((resp: any) => {
-  //     this.industriesRatio = resp[0];
-  //   });
-  //   this._dataReferencesService.getBetaIndustriesById(indst?._id).subscribe((resp: any) => {
-  //     this.betaIndustriesId = resp;
-  //   });
-  // }
    }
   }
   loadValues(){
@@ -244,124 +225,15 @@ export class GroupModelControlsComponent implements OnInit {
     //   });
 
   }
-
-  // loadCiqIndustryList(){
-  //   this.ciqSpService.fetchSPHierarchyBasedIndustry().subscribe((industryList:any)=>{
-  //     if(industryList.status){
-  //       this.industries = industryList.data;
-  //     }
-  //     else{
-  //      this.snackBar.open('CIQ Industry list not found','OK',{
-  //         horizontalPosition: 'right',
-  //         verticalPosition: 'top',
-  //         duration: 3000,
-  //         panelClass: 'app-notification-error'
-  //       })
-  //     }
-  //   },
-  //   (error)=>{
-  //     this.snackBar.open(`${error}`,'OK',{
-  //         horizontalPosition: 'right',
-  //         verticalPosition: 'top',
-  //         duration: 3000,
-  //         panelClass: 'app-notification-error'
-  //       })
-  //   })
-  // }
-  formLoad(){
-// Initiate form change detectors
-    // this.modelValuation.controls['industry'].valueChanges.subscribe((val) => {
-    //   if (!val) {
-    //     this.subIndustries = [];
-    //     return;
-    //   }
-    //   const indst = this.industries.find((e:any) => e.industry == val);
-    //   this.valuationService.getIndustries(indst?._id).subscribe((resp: any) => {
-    //     if(resp.length !== 0){
-    //       this.subIndustries = resp;
-    //       this.selectedIndustry = indst;
-    //     }
-    //     else{
-    //       this.subIndustries = [];
-    //       this.modelValuation.controls['subIndustry'].setValue('');
-    //     }
-    //   });
-    //   this._dataReferencesService.getIndustriesRatio(indst?._id).subscribe((resp: any) => {
-    //     this.industriesRatio = resp[0];
-    //   });
-    //   this._dataReferencesService.getBetaIndustriesById(indst?._id).subscribe((resp: any) => {
-    //     this.betaIndustriesId = resp;
-    //   });
-  
-    // });
-
-    // this.waccCalculation.controls['capitalStructureType'].valueChanges.subscribe(
-    //   (val) => {
-    //     if(!val) return
-    //     if (val == 'Industry_Based') {
-    //       this.debtRatio = parseFloat(this.betaIndustriesId?.deRatio)/100;
-    //       this.totalCapital = 1 + this.debtRatio;
-    //       this.debtProp = this.debtRatio/this.totalCapital;
-    //       this.equityProp = 1 - this.debtProp;
-    //       // });
-    //     } else {
-    //       // this.anaConEst = null;
-    //     }
-    //   }
-    // );
-
-    // this.modelSpecificCalculation.controls['betaType'].valueChanges.subscribe((val) => {
-    //   if(!val) return;
-    //   const beta = parseFloat(this.betaIndustriesId?.beta);
-    //   if (val == 'levered'){
-    //     this.modelSpecificCalculation.controls['beta'].setValue(
-    //       beta
-    //       );
-    //     }
-    //     else if (val == 'unlevered') {
-    //     const deRatio = parseFloat(this.betaIndustriesId?.deRatio)/100
-    //     const effectiveTaxRate = parseFloat(this.betaIndustriesId?.effectiveTaxRate)/100;        
-    //     const unleveredBeta = beta / (1 + (1-effectiveTaxRate) * deRatio);
-    //     this.modelSpecificCalculation.controls['beta'].setValue(
-    //       unleveredBeta
-    //     );
-    //   }
-    //   else if (val == 'market_beta') {
-    //     this.modelSpecificCalculation.controls['beta'].setValue(1);
-    //   }
-    //   else {
-    //     // Do nothing for now
-    //   }
-      
-    // });
-    // this.modelValuation.controls['model'].valueChanges.subscribe((val) => {
-    //   if(!val) return;
-    //   if (val == 'Relative_Valuation' || val == 'CTM'){
-    //     this.modelValuation.controls['projectionYearSelect'].reset();
-    //     this.modelValuation.controls['terminalGrowthRate'].reset();
-    //     this.modelValuation.controls['projectionYears'].reset();
-    //   }
-    // });
-
-  }
   
   isRelativeValuation(value:string){
     return this.checkedItems.includes(value);
   }
 
-  // isSelected(value: any): boolean {
-  //   var value:any= isSelected(value,this.checkedItems);
-  //   this.modelValuation.controls['model'].setValue(value);
-  //   return value;
-  // }
-
-//   toggleCheckbox(option:any) {
-//    this.checkedItems=toggleCheckbox(option['value'],this.checkedItems);
-// }
-isSelectedpreferenceRatio(value:any){
-  return isSelected(value,this.selectedPreferenceItems)
- 
-}
+  isSelectedpreferenceRatio(value:any){
+    return isSelected(value,this.selectedPreferenceItems)
+  
+  }
 
   saveAndNext(): void {
     if(!this.modelValuation.controls['model'].value || this.modelValuation.controls['model'].value?.length === 0){
@@ -369,7 +241,6 @@ isSelectedpreferenceRatio(value:any){
       return;
     }
 
-    // this.modelValuation.controls['model'].setValue(this.checkedItems);
     if(!this.isRelativeValuation(this.MODEL.RELATIVE_VALUATION)){
       this.relativeValuation.controls['preferenceRatioSelect'].setValue('');
     }
@@ -413,6 +284,9 @@ isSelectedpreferenceRatio(value:any){
       localStorage.setItem('excelStat','false')
     }
     
+    payload['companyId'] = this.fetchCompanyId()?.companyId;
+    payload['companyType'] = this.fetchCompanyId()?.companyTypeId;
+
     // validate form controls
     let control:any;
     control = { ...this.modelValuation.controls };
@@ -451,7 +325,21 @@ isSelectedpreferenceRatio(value:any){
     this.isExcelReupload = false; // reset it once payload has modified excel sheet id
     
     this.validateControls(control,payload);
-   
+  }
+
+  fetchCompanyId(){
+    const foundElement = this.options.find((element: any) => {
+      return element.COMPANYNAME === this.modelValuation.controls['company'].value;
+    });
+    
+    if (foundElement) {
+        return {
+            companyId: foundElement.COMPANYID,
+            companyTypeId: '6598f0370b042902bcf9b7fb' // hardcoded company type as public company
+        };
+    }
+    
+    return null;
   }
 
   validateControls(controlArray: { [key: string]: FormControl },payload:any){
@@ -488,34 +376,16 @@ isSelectedpreferenceRatio(value:any){
       step:processStep
     }
     
-    this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
+    this.processStateManager(processStateModel,localStorage.getItem('processStateId'));
+
       // submit final payload
       this.groupModelControls.emit(payload);
   }
 
-  // subIndustryChange(val:any){
-  //   if(val){
-  //     const parts = val.split(': ');
-  //     const id = parts[1]; 
-  //     this.valuationService.getCompanies(id).subscribe((resp: any) => {
-  //       if(resp.length>0){
-  //         this.preferenceCompanies = resp;
-  //       }
-  //       else{
-  //         this.preferenceCompanies=[{company:'No company Found',_id:0}];
-  //       }
-  //     });
-  //   }
-  //   else{
-  //     this.preferenceCompanies=[];
-  //   }
-  // }
-  
-
- 
   previous(){
     this.previousPage.emit(true)
   }
+
   openDialog(bool?:boolean){
     if(bool){
       const data={
@@ -699,5 +569,61 @@ isSelectedpreferenceRatio(value:any){
     else{
       this.calculationService.checkModel.next({status:true})
     }
+  }
+
+  filterByBusinessDescriptor(event:any){
+    if(event.target.value && this.companyQuery !== event.target.value){
+      this.companyQuery = event.target.value;
+      this.searchByCompanyName.next(this.companyQuery);
+    }
+  }
+
+  fetchCompanyNames(){
+    this.companyListLoader = true
+    this.utilService.fuzzySearchCompanyName(this.companyQuery).subscribe((data:any)=>{
+      this.companyListLoader = false
+      if(data?.companyDetails?.length){
+        this.options = data.companyDetails;
+      }
+      else{
+        this.snackBar.open('Company not found', 'Ok',{
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 3000,
+          panelClass: 'app-notification-error',
+        })
+      }
+    },(error)=>{
+      this.companyListLoader = false
+      this.snackBar.open('Backend error - company details not found', 'Ok',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 3000,
+        panelClass: 'app-notification-error',
+      })
+    })
+  }
+
+  onOptionSelection(event:any){
+    if(event?.option?.value){
+      this.companyQuery = event.option.value;
+      this.fetchCompanyNames();
+    }
+  }
+
+  displayFn(value: string): string {
+    return value || '';
+  }
+
+  clearCompanyInput(){
+    this.modelValuation.controls['company'].setValue('');
+  }
+
+  companyInputFocused(){
+    this.companyInput = true;
+  }
+
+  companyInputBlurred(){
+    this.companyInput = false;
   }
 }

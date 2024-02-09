@@ -15,4 +15,8 @@ export class UtilService {
   getWordList(word:any){
     return this.http.get(`${this.HOST}util/get-word-list/search?word=${word}`)
   }
+
+  fuzzySearchCompanyName(companyName:any){
+    return this.http.get(`${this.HOST}fuse-search/fuse-search-by-company-name/${companyName}`)
+  }
 }

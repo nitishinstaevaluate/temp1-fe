@@ -13,33 +13,46 @@
             <span class="mat-bullet"><mat-icon>fiber_manual_record</mat-icon></span>
           </div> -->
 
-            <!-- company -->
-         
-              <div class="col-md-6 field" style="padding-top: 1%;">
+              <!-- company -->
+              <div class="col-md-6 field" style="padding-top: 0%;">
                 <div class="material-textfield">
-                  <input class="new-inp" placeholder="Add company" type="text" formControlName="company" />
-                  <label>Company Name</label>
-                  <span class="tool-class">
-                    <!-- <svg matTooltip="This are the company details" matTooltipPosition="above" style="color: blue" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 512 512"><title>ionicons-v5-e</title>
-                      <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" style="fill:none;stroke:#6200ee;stroke-miterlimit:10;stroke-width:32px" 
-                      fill="#ff0000"></path><polyline points="220 220 252 220 252 336" style="fill:none;stroke:#6200ee;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px">
-                      </polyline><line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#6200ee;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px">
-
-                    </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg> -->
-
-                    <svg matTooltip="This are the company details" matTooltipClass="form-one-tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
-                      <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
-                      <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
-                      <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
-                  </span>
-                </div>
-                <span *ngIf="modelValuation.controls['company'].touched && modelValuation.controls['company'].errors">
-                  <span *ngIf="hasError('company','required',modelValuation)" class="error-text">Please enter company name</span>
-                </span>
+                  <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                      <input type="text" matInput formControlName="company" class="company-list-inp" (focus)="companyInputFocused()" (blur)="companyInputBlurred()" (keyup)="filterByBusinessDescriptor($event)" [matAutocomplete]="auto" placeholder="Enter description">
+                      <span class="company-info-span" *ngIf="modelValuation.controls['company']?.value || companyInput">
+                        <svg matTooltipClass='form-one-tooltip' [matTooltip]="helperText.companyName" matTooltipPosition="right" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
+                          <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:32px;" 
+                          fill="#ff0000"></path>
+                          <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px;">
+                          </polyline><line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px;">
+                        </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
+                      </span>
+                        <span class="company-list-rmve" *ngIf="modelValuation.controls['company']?.value && !companyListLoader">
+                          <mat-icon class="company-list-rmve-icon" (click)="clearCompanyInput()">close</mat-icon>
+                        </span>
+                      <span class="outercmpny-spinner" *ngIf="companyListLoader">
+                        <mat-progress-spinner style="vertical-align: middle" class="company-list-spinner" mode="indeterminate" diameter="20"></mat-progress-spinner>
+                      </span>
+                      <mat-label class="companylist">
+                        Company Name
+                      </mat-label>
+                      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onOptionSelection($event)" class="mat-auto">
+                        <mat-option *ngFor="let option of options" [value]="option.COMPANYNAME" style="text-transform: capitalize;" class="company-list">
+                          {{ option.COMPANYNAME }}
+                        </mat-option>
+                      </mat-autocomplete>
+                      <mat-error class="company-list-error" *ngIf="modelValuation.controls['company'].touched && modelValuation.controls['company'].errors">
+                        <span *ngIf="hasError('company','required',modelValuation)">
+                          Please provide a valid company name.
+                        </span>
+                    </mat-error>
+                    </mat-form-field>
+                    
+                  </div>
+                  
               </div>
-            
+
                 <!--valuation date  -->
-                <div class="col-md-6 field" style="padding-top: 1%;">
+                <div class="col-md-6 field" style="padding-top: 2%;">
                     <div class="material-textfield">
                       <input class="new-inp" formControlName="valuationDate" [placeholder]="modelControl.modelValuation.options.valuationDate.placeholder" type="date" />
                       <label>Valuation Date</label>
@@ -50,7 +63,7 @@
                 </div>
 
                 <!-- Reporting unit -->
-                <div class="col-md-6 field">
+                <div class="col-md-6 field" style="padding-top: 1%;">
                   <div class="material-textfield">
                     <select id="reportingUnit" class="new-inp" formControlName="reportingUnit">
                       <option value="" disabled selected>Select reporting unit</option>
@@ -64,7 +77,7 @@
               </div>
 
               <!-- currency unit -->
-              <div class="col-md-6 field">
+              <div class="col-md-6 field" style="padding-top: 1%;">
                 <div class="material-textfield">
                   <select id="currencyUnit" class="new-inp" formControlName="currencyUnit">
                     <option value="" disabled selected>Select currency</option>

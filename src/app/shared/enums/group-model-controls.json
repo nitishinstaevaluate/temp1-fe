@@ -219,6 +219,10 @@
                     {
                         "name":"Market Beta",
                         "value":"market_beta"
+                    },
+                    {
+                        "name":"Stock Beta",
+                        "value":"stock_beta"
                     }
                 ]
             },
@@ -344,6 +348,10 @@
                     {
                         "name":"Market Beta",
                         "value":"market_beta"
+                    },
+                    {
+                        "name":"Stock Beta",
+                        "value":"stock_beta"
                     }
                 ]
             },
@@ -481,6 +489,10 @@
                     {
                         "name":"Market Beta",
                         "value":"market_beta"
+                    },
+                    {
+                        "name":"Stock Beta",
+                        "value":"stock_beta"
                     }
                 ]
             },
