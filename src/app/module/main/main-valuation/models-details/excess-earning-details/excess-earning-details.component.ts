@@ -51,7 +51,7 @@ export class ExcessEarningDetailsComponent {
   medianBeta = true;
   betaLoader=false;
   selectedSubBetaType:any = BETA_SUB_TYPE[0];
-
+  stockBetaChecker = false;
   @ViewChild(MatStepper, { static: false }) stepper!: MatStepper;
   
 constructor(private valuationService:ValuationService,
@@ -61,24 +61,19 @@ constructor(private valuationService:ValuationService,
   private snackBar:MatSnackBar,
   private calculationsService: CalculationsService,
   private processStatusManagerService:ProcessStatusManagerService,
-  private ciqSpService:CiqSPService){}
+  private ciqSpService:CiqSPService){
+    this.loadFormControl();
+  }
   
 ngOnChanges(changes:SimpleChanges): void {
   if(this.next !== 4)
     return
-  // if(this.next === 4){
-  //   this.loadFormControl();
-  //   this.checkProcessExist();
-  //   this.loadValues();
-  //   this.loadOnChangeValue();
   this.formOneData;
-    this.checkPreviousAndCurrentValue(changes)
-  // }
+  this.checkPreviousAndCurrentValue(changes)
 }
 
 ngOnInit(): void {
   // if(this.next === 4){
-    this.loadFormControl();
     this.checkProcessExist();
     this.loadValues();
     this.loadOnChangeValue();
@@ -91,7 +86,6 @@ checkProcessExist(){
       if(stateTwoDetails.model === MODELS.EXCESS_EARNINGS && this.formOneData.model.includes(MODELS.EXCESS_EARNINGS)){
         this.excessEarningForm.controls['discountRate'].setValue(stateTwoDetails?.discountRate);
         this.excessEarningForm.controls['discountingPeriod'].setValue(stateTwoDetails?.discountingPeriod);
-        this.excessEarningForm.controls['betaType'].setValue(stateTwoDetails?.betaType);
         this.selectedSubBetaType = stateTwoDetails?.betaSubType ? stateTwoDetails.betaSubType : BETA_SUB_TYPE[0];
         this.excessEarningForm.controls['coeMethod'].setValue(stateTwoDetails?.coeMethod); 
         this.excessEarningForm.controls['riskFreeRate'].setValue(stateTwoDetails?.riskFreeRate); 
@@ -105,12 +99,19 @@ checkProcessExist(){
         this.excessEarningForm.controls['expMarketReturnType'].setValue(expectedMarketReturnData.name);
         this.excessEarningForm.controls['expMarketReturn'].setValue(stateTwoDetails?.expMarketReturn);
         this.excessEarningForm.controls['specificRiskPremium'].setValue(stateTwoDetails?.specificRiskPremium); 
-        this.excessEarningForm.controls['beta'].setValue(stateTwoDetails?.beta);
         this.excessEarningForm.controls['riskPremium'].setValue(stateTwoDetails?.riskPremium); 
         this.specificRiskPremiumModalForm.controls['companySize'].setValue(stateTwoDetails?.alpha.companySize);
         this.specificRiskPremiumModalForm.controls['marketPosition'].setValue(stateTwoDetails?.alpha.marketPosition);
         this.specificRiskPremiumModalForm.controls['liquidityFactor'].setValue(stateTwoDetails?.alpha.liquidityFactor);
         this.specificRiskPremiumModalForm.controls['competition'].setValue(stateTwoDetails?.alpha.competition);
+        if(!this.formOneData.companyId && stateTwoDetails.betaType === 'stock_beta'){
+          this.excessEarningForm.controls['betaType'].setValue('');
+          this.excessEarningForm.controls['beta'].reset();
+        }
+        else{
+          this.excessEarningForm.controls['betaType'].setValue(stateTwoDetails?.betaType) 
+          this.excessEarningForm.controls['beta'].setValue(stateTwoDetails?.beta);
+        }
         this.calculateCoeAndAdjustedCoe();
       }
     })
@@ -178,32 +179,6 @@ loadOnChangeValue(){
       this.calculateCoeAndAdjustedCoe();
     }
   );
-
-  // this.excessEarningForm.controls['betaType'].valueChanges.subscribe((val:any) => {
-  //   if(!val) return;
-  //   const beta = parseFloat(this.formOneData?.betaIndustry?.beta);
-  //   if (val == 'levered'){
-  //     this.excessEarningForm.controls['beta'].setValue(
-  //       beta
-  //       );
-  //     }
-  //     else if (val == 'unlevered') {
-  //     const deRatio = parseFloat(this.formOneData?.betaIndustry?.deRatio)/100
-  //     const effectiveTaxRate = parseFloat(this.formOneData?.betaIndustry?.effectiveTaxRate)/100;        
-  //     const unleveredBeta = beta / (1 + (1-effectiveTaxRate) * deRatio);
-  //     this.excessEarningForm.controls['beta'].setValue(
-  //       unleveredBeta
-  //     );
-  //   }
-  //   else if (val == 'market_beta') {
-  //     this.excessEarningForm.controls['beta'].setValue(1);
-  //   }
-  //   else {
-  //     // Do nothing for now
-  //   }
-  //   this.calculateCoeAndAdjustedCoe()
-    
-  // });
 
   this.excessEarningForm.controls['riskFreeRateYears'].valueChanges.subscribe((val:any)=>{
     if(!val) return;
@@ -464,6 +439,8 @@ checkPreviousAndCurrentValue(changes:any){
       this.excessEarningForm.controls['expMarketReturn'].reset();
       this.calculateRiskFreeRate(this.excessEarningForm.controls['riskFreeRateYears'].value)
     }
+
+    this.stockBetaCheck(current, previous);
   }
   if(this.equityM?.length > 0){
     this.excessEarningForm.controls['coeMethod'].setValue(this.equityM[0].type);
@@ -486,11 +463,30 @@ if(event?.target?.value){
   if(event?.target?.value.includes('unlevered') || event?.target?.value.includes('levered')){
     this.calculateBeta(BETA_SUB_TYPE[0]);
   }
+  else if(event?.target?.value.includes('stock_beta')){
+    this.calculateStockBeta();
+  }
   else{
     this.selectedSubBetaType = '';
     this.excessEarningForm.controls['beta'].setValue(1);
   }
 }
+}
+
+stockBetaCheck(current:any, previous:any){
+  if(this.formOneData.companyId){
+    this.stockBetaChecker = true;
+  }
+  else{
+    this.stockBetaChecker = false;
+  }
+  if(!current.companyId && this.excessEarningForm.controls['betaType'].value === 'stock_beta'){
+    this.excessEarningForm.controls['betaType'].setValue('');
+    this.excessEarningForm.controls['beta'].reset();
+  }
+  else if(current.companyId && current.companyId !== previous?.companyId && this.excessEarningForm.controls['betaType'].value === 'stock_beta'){
+    this.calculateStockBeta();
+  }
 }
 
 calculateBeta(betaSubType:any){
@@ -555,5 +551,62 @@ calculateRiskFreeRate(maturityYears:any){
     })
   })
 }
+
+calculateStockBeta(){
+  this.betaLoader = true;
+
+  const payload = {
+    companyId: this.formOneData.companyId,
+    valuationDate: this.formOneData?.valuationDate
+  }
+
+  this.ciqSpService.calculateStockBeta(payload).subscribe((response:any)=>{
+    this.betaLoader = false;
+    if(response.status){
+      if(response.total){
+        this.excessEarningForm.controls['beta'].setValue(response.total);
+      }
+      if(!response.isStockBetaPositive && !response.total){
+        this.excessEarningForm.controls['beta'].setValue(response.negativeBeta);
+      }
+      this.calculateCoeAndAdjustedCoe();
+    }
+    else{
+      this.snackBar.open('stock beta calculation failed', 'Ok',{
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+        duration: 3000,
+        panelClass: 'app-notification-error',
+      })
+    }
+  },(error)=>{
+    this.betaLoader = false;
+    this.snackBar.open('backend error - stock beta calculation failed', 'Ok',{
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+      duration: 3000,
+      panelClass: 'app-notification-error',
+    })
+  }
+  )
+}
+
+  loadBetaDropdown() {
+    const betaDropdownValues = this.modelControl.fcfe.options.betaType.options.slice();
+    const stockBetaIndex = betaDropdownValues.findIndex((element: any) => element.value === 'stock_beta');
+
+    if (!this.stockBetaChecker) {
+      if (stockBetaIndex >= 0) {
+        betaDropdownValues.splice(stockBetaIndex, 1);
+      }  
+    } 
+    else {
+      if (stockBetaIndex < 0) {
+        betaDropdownValues.push({ name: "Stock Beta", value: "stock_beta" });
+      }
+    }
+
+    return betaDropdownValues;
+  }
 }
 

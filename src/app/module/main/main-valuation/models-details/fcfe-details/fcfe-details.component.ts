@@ -51,7 +51,6 @@ export class FcfeDetailsComponent implements OnChanges,OnInit{
   betaLoader=false;
   selectedSubBetaType:any = BETA_SUB_TYPE[0];
   stockBetaChecker = false;
-
   @ViewChild('countElement', { static: false }) countElement!: ElementRef;
   @ViewChild(MatStepper, { static: false }) stepper!: MatStepper;
   
@@ -472,7 +471,7 @@ stockBetaCheck(current:any, previous:any){
     this.fcfeForm.controls['betaType'].setValue('');
     this.fcfeForm.controls['beta'].reset();
   }
-  else if(current.companyId && current.companyId !== previous.companyId && this.fcfeForm.controls['betaType'].value === 'stock_beta'){
+  else if(current.companyId && current.companyId !== previous?.companyId && this.fcfeForm.controls['betaType'].value === 'stock_beta'){
     this.calculateStockBeta();
   }
 }
@@ -544,13 +543,19 @@ calculateStockBeta(){
   this.betaLoader = true;
 
   const payload = {
-    COMPANYID: this.formOneData.companyId
+    companyId: this.formOneData.companyId,
+    valuationDate: this.formOneData?.valuationDate
   }
 
   this.ciqSpService.calculateStockBeta(payload).subscribe((response:any)=>{
     this.betaLoader = false;
     if(response.status){
-      this.fcfeForm.controls['beta'].setValue(response.total);
+      if(response.total){
+        this.fcfeForm.controls['beta'].setValue(response.total);
+      }
+      if(!response.isStockBetaPositive && !response.total){
+        this.fcfeForm.controls['beta'].setValue(response.negativeBeta);
+      }
       this.calculateCoeAndAdjustedCoe();
     }
     else{
