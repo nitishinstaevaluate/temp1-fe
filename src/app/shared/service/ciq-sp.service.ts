@@ -50,4 +50,8 @@ export class CiqSPService {
    searchCiqEntityByCompanyId(companyId:any){
     return this.http.get(`${this.HOST}ciq-elastic-search/ciq-elastic-search-company-details/${companyId}`)
    }
+
+   calculateStockBeta(payload:any){
+    return this.http.post(`${this.HOST}ciq-sp/calculate-sp-stock-beta`,payload)
+   }
 }

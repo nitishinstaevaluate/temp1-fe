@@ -132,7 +132,7 @@
                   <div class="material-textfield">
                     <select id="betaType" class="new-inp" formControlName="betaType" (change)="betaChange($event)">
                       <option value="" disabled selected>Select beta</option>
-                      <option *ngFor="let doc of modelControl.fcff.options.betaType.options"  [ngValue]="doc.value">{{doc.name}}</option>
+                      <option *ngFor="let doc of loadBetaDropdown()"  [ngValue]="doc.value">{{doc.name}}</option>
                     </select>
                     <label for="betaType">Beta</label>
                   <!-- <mat-hint *ngIf="fcffForm.controls['beta'].value" class="taxrate-hint">Beta is {{fcffForm.controls['beta'].value.toFixed(2)}}</mat-hint> -->
@@ -142,17 +142,17 @@
                   </span>
                   <div style="display: flex; align-items: center;padding-left: 2%;padding-top: 1%;height: 30px;">
                     <span style="width: 90%;" *ngIf="fcffForm.controls['betaType'].value">
-                      <span *ngIf="fcffForm.controls['betaType'].value !== 'market_beta'">
+                      <span *ngIf="fcffForm.controls['betaType'].value !== 'market_beta' && fcffForm.controls['betaType'].value !== 'stock_beta'">
                         <input type="radio" style="vertical-align: middle;" [checked]="selectedSubBetaType === 'meanBeta'" (change)="onRadioButtonChange($event)" value="meanBeta" name="betaRadio" id="betaRadio">
                         <span class="reset-ind3" style="vertical-align: middle;">Mean</span>
                       </span>
 
-                      <span style="padding-left: 14%;" *ngIf="fcffForm.controls['betaType'].value !== 'market_beta'">
+                      <span style="padding-left: 14%;" *ngIf="fcffForm.controls['betaType'].value !== 'market_beta' && fcffForm.controls['betaType'].value !== 'stock_beta'">
                         <input type="radio" style="vertical-align: middle;" [checked]="selectedSubBetaType === 'medianBeta'" (change)="onRadioButtonChange($event)" value="medianBeta" name="betaRadio" id="betaRadio">
                         <span class="reset-ind3" style="vertical-align: middle;">Median</span>
                       </span>
-                      <span [ngClass]="fcffForm.controls['betaType'].value === 'market_beta' ? '' :  'add-padding-beta'">
-                        <mat-hint *ngIf="fcffForm.controls['beta'].value" style="vertical-align: middle;font-size: 11px;color: #1915bb;" class="reset-ind3">Beta is {{fcffForm.controls['beta'].value?.toFixed(2)}}</mat-hint>
+                      <span [ngClass]="(fcffForm.controls['betaType'].value === 'market_beta' || fcffForm.controls['betaType'].value === 'stock_beta') ? '' :  'add-padding-beta'">
+                        <mat-hint *ngIf="fcffForm.controls['beta'].value && !betaLoader" style="vertical-align: middle;font-size: 11px;color: #1915bb;" class="reset-ind3">Beta is {{fcffForm.controls['beta'].value?.toFixed(2)}}</mat-hint>
                       </span>
                     </span>
                     <span>

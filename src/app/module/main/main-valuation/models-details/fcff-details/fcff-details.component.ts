@@ -61,7 +61,7 @@ export class FcffDetailsComponent implements OnInit{
   medianBeta = true;
   betaLoader=false;
   selectedSubBetaType:any = BETA_SUB_TYPE[0];
-  
+  stockBetaChecker = false;  
 constructor(private valuationService:ValuationService,
   private dataReferenceService: DataReferencesService,
   private formBuilder:FormBuilder,
@@ -69,23 +69,21 @@ constructor(private valuationService:ValuationService,
   private snackBar:MatSnackBar,
   private calculationsService:CalculationsService,
   private processStatusManagerService:ProcessStatusManagerService,
-  private ciqSpService:CiqSPService){}
+  private ciqSpService:CiqSPService){
+    this.loadFormControl();
+  }
   
 ngOnChanges(changes:SimpleChanges): void {
   if(this.next !== 2 )
     return;
-  // if(this.next === 2){
-    // this.loadFormControl();
-    // this.checkProcessExist();
-    // this.loadValues();
-    // this.loadOnChangeValue();
-    this.formOneData;
-    this.checkPreviousAndCurrentValue(changes)
+
+  this.formOneData;
+  this.checkPreviousAndCurrentValue(changes)
 }
 
 ngOnInit(): void {
   // if(this.next === 2){
-  this.loadFormControl();
+  // this.loadFormControl();
   this.checkProcessExist();
   this.loadValues();
   this.loadOnChangeValue();
@@ -98,7 +96,6 @@ checkProcessExist(){
       if(stateThreeDetails.model === MODELS.FCFF && this.formOneData.model.includes(MODELS.FCFF)){
         this.fcffForm.controls['discountRate'].setValue(stateThreeDetails?.discountRate) 
         this.fcffForm.controls['discountingPeriod'].setValue(stateThreeDetails?.discountingPeriod) 
-        this.fcffForm.controls['betaType'].setValue(stateThreeDetails?.betaType);
         this.selectedSubBetaType = stateThreeDetails?.betaSubType ? stateThreeDetails.betaSubType : BETA_SUB_TYPE[0];
         this.fcffForm.controls['coeMethod'].setValue(stateThreeDetails?.coeMethod); 
         this.fcffForm.controls['riskFreeRate'].setValue(stateThreeDetails?.riskFreeRate); 
@@ -113,7 +110,6 @@ checkProcessExist(){
         this.fcffForm.controls['expMarketReturn'].setValue(stateThreeDetails?.expMarketReturn);
         this.fcffForm.controls['specificRiskPremium'].setValue(stateThreeDetails?.specificRiskPremium); 
         this.fcffForm.controls['riskPremium'].setValue(stateThreeDetails?.riskPremium); 
-        this.fcffForm.controls['beta'].setValue(stateThreeDetails?.beta);
         this.fcffForm.controls['costOfDebt'].setValue(stateThreeDetails?.costOfDebt);
         this.fcffForm.controls['capitalStructureType'].setValue(stateThreeDetails?.capitalStructureType);
         this.fcffForm.controls['copShareCapital'].setValue(stateThreeDetails?.copShareCapital);
@@ -121,6 +117,14 @@ checkProcessExist(){
         this.specificRiskPremiumModalForm.controls['marketPosition'].setValue(stateThreeDetails?.alpha.marketPosition)
         this.specificRiskPremiumModalForm.controls['liquidityFactor'].setValue(stateThreeDetails?.alpha.liquidityFactor)
         this.specificRiskPremiumModalForm.controls['competition'].setValue(stateThreeDetails?.alpha.competition);
+        if(!this.formOneData.companyId && stateThreeDetails.betaType === 'stock_beta'){
+          this.fcffForm.controls['betaType'].setValue('');
+          this.fcffForm.controls['beta'].reset();
+        }
+        else{
+          this.fcffForm.controls['betaType'].setValue(stateThreeDetails?.betaType) 
+          this.fcffForm.controls['beta'].setValue(stateThreeDetails?.beta);
+        }
         this.calculateCoeAndAdjustedCoe()
       }
     })
@@ -561,6 +565,8 @@ checkPreviousAndCurrentValue(changes:any){
       this.fcffForm.controls['expMarketReturn'].reset();
       this.calculateRiskFreeRate(this.fcffForm.controls['riskFreeRateYears'].value)
     }
+
+    this.stockBetaCheck(current, previous);
   }
   if(this.equityM?.length > 0){
     this.fcffForm.controls['coeMethod'].setValue(this.equityM[0].type);
@@ -583,11 +589,30 @@ if(event?.target?.value){
 if(event?.target?.value.includes('unlevered') || event?.target?.value.includes('levered')){
   this.calculateBeta(BETA_SUB_TYPE[0]);
 }
+else if(event?.target?.value.includes('stock_beta')){
+  this.calculateStockBeta();
+}
 else{
   this.selectedSubBetaType = '';
   this.fcffForm.controls['beta'].setValue(1);
 }
 }
+}
+
+stockBetaCheck(current:any, previous:any){
+  if(this.formOneData.companyId){
+    this.stockBetaChecker = true;
+  }
+  else{
+    this.stockBetaChecker = false;
+  }
+  if(!current.companyId && this.fcffForm.controls['betaType'].value === 'stock_beta'){
+    this.fcffForm.controls['betaType'].setValue('');
+    this.fcffForm.controls['beta'].reset();
+  }
+  else if(current.companyId && current.companyId !== previous?.companyId && this.fcffForm.controls['betaType'].value === 'stock_beta'){
+    this.calculateStockBeta();
+  }
 }
 
 calculateBeta(betaSubType:any){
@@ -671,4 +696,61 @@ calculateRiskFreeRate(maturityYears:any){
     })
   })
 }
+
+calculateStockBeta(){
+  this.betaLoader = true;
+
+  const payload = {
+    companyId: this.formOneData.companyId,
+    valuationDate: this.formOneData?.valuationDate
+  }
+
+  this.ciqSpService.calculateStockBeta(payload).subscribe((response:any)=>{
+    this.betaLoader = false;
+    if(response.status){
+      if(response.total){
+        this.fcffForm.controls['beta'].setValue(response.total);
+      }
+      if(!response.isStockBetaPositive && !response.total){
+        this.fcffForm.controls['beta'].setValue(response.negativeBeta);
+      }
+      this.calculateCoeAndAdjustedCoe();
+    }
+    else{
+      this.snackBar.open('stock beta calculation failed', 'Ok',{
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+        duration: 3000,
+        panelClass: 'app-notification-error',
+      })
+    }
+  },(error)=>{
+    this.betaLoader = false;
+    this.snackBar.open('backend error - stock beta calculation failed', 'Ok',{
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+      duration: 3000,
+      panelClass: 'app-notification-error',
+    })
+  }
+  )
+}
+
+  loadBetaDropdown() {
+    const betaDropdownValues = this.modelControl.fcff.options.betaType.options.slice();
+    const stockBetaIndex = betaDropdownValues.findIndex((element: any) => element.value === 'stock_beta');
+
+    if (!this.stockBetaChecker) {
+      if (stockBetaIndex >= 0) {
+        betaDropdownValues.splice(stockBetaIndex, 1);
+      }  
+    } 
+    else {
+      if (stockBetaIndex < 0) {
+        betaDropdownValues.push({ name: "Stock Beta", value: "stock_beta" });
+      }
+    }
+
+    return betaDropdownValues;
+  }
 }

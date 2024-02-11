@@ -242,7 +242,8 @@ export const ALL_MODELS = {
     comparableCompaniesModelLabel: `Estimate the value of a company by comparing it to similar publicly traded companies, and using their valuation multiples, such as price-to-earnings ratio or enterprise value-to-EBITDA ratio, to estimate the value of the company.`,
     comparableTransactionModelLabel: `Estimate the value of a company by analyzing the values paid in similar mergers and acquisitions transactions, and using those values as a basis for estimating the value of the company. This method is particularly useful when there are no comparable public companies or when the company's financials are not publicly available.`,
     marketPriceModelLabel: `Estimate the value of a company by comparing its market price to its financial metrics, such as earnings, revenue, or book value`,
-    ruleElevenModelLabel: `Estimate the value of a company for the purpose of mergers and acquisitions, takeovers, and other financial transactions. It is a judicial approach that is based on the principles of the Indian Companies Act, 1956, and the Securities and Exchange Board of India (SEBI) regulations.`
+    ruleElevenModelLabel: `Estimate the value of a company for the purpose of mergers and acquisitions, takeovers, and other financial transactions. It is a judicial approach that is based on the principles of the Indian Companies Act, 1956, and the Securities and Exchange Board of India (SEBI) regulations.`,
+    companyName:`Please select name of the company for valuation analysis.`
   }
 
   export const INCOME_APPROACH = ['FCFE','FCFF','Excess_Earnings'];
