@@ -3,6 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { isSelected } from 'src/app/shared/enums/functions';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.service';
+import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
 
 @Component({
@@ -28,41 +29,29 @@ export class ElevenUaDetailsComponent {
   modifiedExcelSheetId:string='';
   excelSheetId:any='';
   financialSheetLoader = true;
+  loadExcelTable = false;
+  excelErrorMsg = false;
 
   constructor(private valuationService:ValuationService,
     private snackBar: MatSnackBar,
-    private excelAndReportService:ExcelAndReportService){
+    private excelAndReportService:ExcelAndReportService,
+    private processStateManagerService:ProcessStatusManagerService){
 
   }
   ngOnChanges(){
-    // this.fetchExcelData();
-    if(!this.transferStepperTwo){
-      if(this.fourthStageInput?.formFourData?.isExcelModified){
-        this.excelSheetId = this.fourthStageInput?.formFourData.modifiedExcelSheetId;
-        this.fetchExcelData(this.excelSheetId);
-      }
-      else{
-        this.excelSheetId = this.fourthStageInput?.formOneData.excelSheetId;
-        this.fetchExcelData(this.excelSheetId);
-      }
-    }
-    else{
-      this.excelSheetId = this.transferStepperTwo?.excelSheetId;
-      console.log(this.transferStepperTwo.excelSheetId,"excel sheet id")
-      this.fetchExcelData();
-    }
+    this.fetchExcelData();
   }
   ngOnInit(): void {
 
     // this.checkProcessState()
   }
-  checkProcessState(){
-    if(this.fourthStageInput){
-      const excelSheetId = this.fourthStageInput?.formFourData?.isExcelModified ?this.fourthStageInput?.formFourData.modifiedExcelSheetId :  this.fourthStageInput.formOneData.excelSheetId;
-      this.excelSheetId = excelSheetId;
-      this.fetchExcelData(excelSheetId)
-    }
-  }
+  // checkProcessState(){
+  //   if(this.fourthStageInput){
+  //     const excelSheetId = this.fourthStageInput?.formFourData?.isExcelModified ?this.fourthStageInput?.formFourData.modifiedExcelSheetId :  this.fourthStageInput.formOneData.excelSheetId;
+  //     this.excelSheetId = excelSheetId;
+  //     this.fetchExcelData(excelSheetId)
+  //   }
+  // }
   isRelativeValuation(modelName:string){
     if(!this.transferStepperTwo){
       return (isSelected(modelName,this.fourthStageInput?.formOneData.model) && this.fourthStageInput?.formOneData.model.length <= 1)
@@ -70,20 +59,52 @@ export class ElevenUaDetailsComponent {
     return (isSelected(modelName,this.transferStepperTwo?.model) && this.transferStepperTwo.model.length <= 1)
   }
 
-  fetchExcelData(alreadyProcessedSheetId?:any){
-    const pAndLExcelId = alreadyProcessedSheetId ? alreadyProcessedSheetId : localStorage.getItem('excelStat') === 'true' ? `edited-${this.transferStepperTwo?.excelSheetId ? this.transferStepperTwo?.excelSheetId : this.fourthStageInput.formOneData.excelSheetId}` :  (this.transferStepperTwo?.excelSheetId ? this.transferStepperTwo?.excelSheetId : this.fourthStageInput.formOneData.excelSheetId);
-    this.excelSheetId = pAndLExcelId;
-    this.valuationService.getProfitLossSheet(pAndLExcelId,'Rule 11 UA').subscribe((response:any)=>{
-     if(response.status){
-      this.createruleElevenUaDataSource(response)
-      this.ruleElevenData.emit({status:true,result:response,isExcelModified:this.isExcelModified});
-      this.ruleElevenSheetData.emit({status:true, result:response})
-    }
-  }
-  ,(error)=>{
-    this.ruleElevenSheetData.emit({status:true, error:error})
-      this.ruleElevenData.emit({status:false,error:error});
+  fetchExcelData(){
+    this.processStateManagerService.getExcelStatus(localStorage.getItem('processStateId')).subscribe((excelResponse:any)=>{
+      if(excelResponse.status){ 
+        this.isExcelModified = excelResponse.isExcelModifiedStatus;
+        this.excelSheetId = excelResponse.excelSheetId;
+        this.loadExcel();
+      }
+      else{
+        this.snackBar.open('Excel sheet Id not found, try reuploading', 'ok',{
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 3000,
+          panelClass: 'app-notification-error'
+        })
+      }
+    },(error)=>{
+      this.snackBar.open('Backend error - excel sheet fetch failed', 'ok',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 3000,
+        panelClass: 'app-notification-error'
+      })
     })
+    
+  }
+
+  loadExcel(){
+    this.loadExcelTable = true;
+    this.valuationService.getProfitLossSheet(this.excelSheetId,'Rule 11 UA').subscribe((response:any)=>{
+      this.loadExcelTable = false;
+      if(response.status){
+        this.excelErrorMsg = false;
+        this.createruleElevenUaDataSource(response)
+        this.ruleElevenData.emit({status:true,result:response,isExcelModified:this.isExcelModified});
+        this.ruleElevenSheetData.emit({status:true, result:response})
+      }
+      else{
+        this.excelErrorMsg = true;
+      }
+    }
+    ,(error)=>{
+      this.excelErrorMsg = true;
+     this.loadExcelTable = false;
+     this.ruleElevenSheetData.emit({status:true, error:error})
+       this.ruleElevenData.emit({status:false,error:error});
+     })
   }
 
   checkType(ele:any){
@@ -168,31 +189,10 @@ export class ElevenUaDetailsComponent {
         particulars:originalValue.Particulars
       }
       this.editedValues.push(cellStructure);
-
-      let excelId;
-      if(!this.transferStepperTwo){
-        if(localStorage.getItem('excelStat')==='true'){
-          excelId = `edited-${this.fourthStageInput?.formOneData?.excelSheetId}`
-        }
-        else if(this.fourthStageInput?.formFourData?.isExcelModified){
-          excelId = this.fourthStageInput?.formFourData.modifiedExcelSheetId
-        }
-        else {
-          excelId = this.fourthStageInput.formOneData?.excelSheetId 
-        }
-      } 
-      else{
-        if(localStorage.getItem('excelStat')==='true'){
-          excelId = `edited-${this.transferStepperTwo?.excelSheetId}`
-        }
-        else {
-          excelId = this.transferStepperTwo?.excelSheetId
-        }
-      }
       
       const payload = {
         excelSheet:'Rule 11 UA',
-        excelSheetId:excelId,
+        excelSheetId:this.excelSheetId,
         ...this.editedValues[0] 
       }
       if(payload.newValue !== null && payload.newValue !== undefined){
@@ -267,9 +267,7 @@ export class ElevenUaDetailsComponent {
     // this.ruleElevenUaDataSource.splice(this.ruleElevenUaDataSource.findIndex((item:any) => item.Particulars.includes('Total Equity & Liabilities')),0,{Particulars:"  "}) //push empty object for line break      
 
     if(response?.modifiedFileName){
-      this.modifiedExcelSheetId=response.modifiedFileName;
-      // this.profitAndLossSheetData.emit({modifiedExcelSheetId:this.modifiedExcelSheetId,isModified:true});
-      localStorage.setItem('excelStat','true')
+      this.ruleElevenData.emit({status:true,result:response,isExcelModified:this.isExcelModified});
     }
   }
 

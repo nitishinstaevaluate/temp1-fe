@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angu
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.service';
+import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
 
 @Component({
@@ -12,7 +13,8 @@ import { ValuationService } from 'src/app/shared/service/valuation.service';
 export class AssessmentDetailsComponent implements OnInit,OnChanges {
   constructor(private valuationService:ValuationService,
     private excelAndReportService:ExcelAndReportService,
-    private snackbar:MatSnackBar){}
+    private snackbar:MatSnackBar,
+    private processStateManagerService:ProcessStatusManagerService){}
 
   @Input() transferStepperTwo:any;
   @Input() fourthStageInput:any;
@@ -27,40 +29,64 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
   isExcelModified=false;
   modifiedExcelSheetId:string='';
   excelSheetId:any='';
+  loadExcelTable = false;
+  excelErrorMsg = false;
 
   ngOnInit(): void {
     // this.checkProcessState()
 
   }
   ngOnChanges(): void {
-    // this.fetchExcelData();
-    if(this.fourthStageInput?.formFourData?.isExcelModified){
-      this.excelSheetId = this.fourthStageInput?.formFourData.modifiedExcelSheetId;
-      this.fetchExcelData(this.excelSheetId);
-    }
-    else {
-      this.excelSheetId = this.transferStepperTwo?.excelSheetId;
-      this.fetchExcelData();
-    }
+    this.fetchExcelData();
   }
 
-  checkProcessState(){
-    if(this.fourthStageInput){
-      const excelSheetId = this.fourthStageInput?.formFourData?.isExcelModified ?this.fourthStageInput?.formFourData.modifiedExcelSheetId :  this.fourthStageInput.formOneData.excelSheetId;
-      this.excelSheetId = excelSheetId;
-      this.fetchExcelData(excelSheetId)
-    }
+  // checkProcessState(){
+  //   if(this.fourthStageInput){
+  //     const excelSheetId = this.fourthStageInput?.formFourData?.isExcelModified ?this.fourthStageInput?.formFourData.modifiedExcelSheetId :  this.fourthStageInput.formOneData.excelSheetId;
+  //     this.excelSheetId = excelSheetId;
+  //     this.fetchExcelData(excelSheetId)
+  //   }
+  // }
+  fetchExcelData(){
+    this.processStateManagerService.getExcelStatus(localStorage.getItem('processStateId')).subscribe((excelResponse:any)=>{
+      if(excelResponse.status){ 
+        this.isExcelModified = excelResponse.isExcelModifiedStatus;
+        this.excelSheetId = excelResponse.excelSheetId;
+        this.loadExcel();
+      }
+      else{
+        this.snackbar.open('Excel sheet Id not found, try reuploading', 'ok',{
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 3000,
+          panelClass: 'app-notification-error'
+        })
+      }
+    },(error)=>{
+      this.snackbar.open('Backend error - excel sheet fetch failed', 'ok',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 3000,
+        panelClass: 'app-notification-error'
+      })
+    })
   }
-  fetchExcelData(alreadyProcessedSheetId?:any){
-    const assessmentExcelId = alreadyProcessedSheetId ? alreadyProcessedSheetId : localStorage.getItem('excelStat') === 'true' ? `edited-${this.transferStepperTwo?.excelSheetId ? this.transferStepperTwo?.excelSheetId : this.fourthStageInput.formOneData.excelSheetId}` :  (this.transferStepperTwo?.excelSheetId ? this.transferStepperTwo?.excelSheetId : this.fourthStageInput.formOneData.excelSheetId);
-    this.excelSheetId = assessmentExcelId;
-    this.valuationService.getProfitLossSheet(assessmentExcelId,'Assessment of Working Capital').subscribe((response:any)=>{
-     if(response.status){
-      this.createAssessmentDataSource(response);
-      this.assessmentSheetData.emit({status:true,result:response})
-     }
+
+  loadExcel(){
+    this.loadExcelTable = true;
+    this.valuationService.getProfitLossSheet(this.excelSheetId,'Assessment of Working Capital').subscribe((response:any)=>{
+      this.loadExcelTable = false;
+      if(response.status){
+        this.excelErrorMsg = false;
+        this.createAssessmentDataSource(response);
+        this.assessmentSheetData.emit({status:true,result:response, isExcelModified:this.isExcelModified})
+      }else{
+        this.excelErrorMsg = true;
+      }
     },
     (error)=>{
+    this.loadExcelTable = false;
+      this.excelErrorMsg = true;
       this.assessmentSheetData.emit({status:false,error:error});
     })
   }
@@ -142,32 +168,9 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
           }
           this.editedValues.push(cellStructure);
 
-          const excelSheetId = this.fourthStageInput?.formFourData?.isExcelModified ?this.fourthStageInput?.formFourData.modifiedExcelSheetId :  this.fourthStageInput?.formOneData.excelSheetId;
-
-          let excelId;
-          if(!this.transferStepperTwo){
-            if(localStorage.getItem('excelStat')==='true'){
-              excelId = `edited-${this.fourthStageInput?.formOneData?.excelSheetId}`
-            }
-            else if(this.fourthStageInput?.formFourData?.isExcelModified){
-              excelId = this.fourthStageInput?.formFourData.modifiedExcelSheetId
-            }
-            else {
-              excelId = this.fourthStageInput.formOneData?.excelSheetId 
-            }
-          } 
-          else{
-            if(localStorage.getItem('excelStat')==='true'){
-              excelId = `edited-${this.transferStepperTwo?.excelSheetId}`
-            }
-            else {
-              excelId = this.transferStepperTwo?.excelSheetId
-            }
-          }
-
           const payload = {
             excelSheet:'Assessment of Working Capital',
-            excelSheetId: excelId,
+            excelSheetId: this.excelSheetId,
             ...this.editedValues[0] 
           }
 
@@ -176,7 +179,7 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
             if(response.status){
               this.isExcelModified = true;
               this.createAssessmentDataSource(response);
-              this.assessmentSheetData.emit({status:true,result:response})
+              this.assessmentSheetData.emit({status:true,result:response, isExcelModified:this.isExcelModified})
             }
             else{
               this.assessmentSheetData.emit({status:false,error:response.error})
@@ -234,8 +237,7 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
     this.assessmentDataSource.splice(this.assessmentDataSource.findIndex((item:any) => item.Particulars.includes('Operating Liabilities')),0,{Particulars:"  "}) //push empty object for line break      
     this.assessmentDataSource.splice(this.assessmentDataSource.findIndex((item:any) => item.Particulars.includes('Net Operating Assets')),0,{Particulars:"  "}) //push empty object for line break      
     if(response?.modifiedFileName){
-      this.modifiedExcelSheetId=response.modifiedFileName;
-      localStorage.setItem('excelStat','true')
+      this.assessmentSheetData.emit({status:true,result:response, isExcelModified:this.isExcelModified})
     }
   }
 

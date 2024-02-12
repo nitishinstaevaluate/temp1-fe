@@ -48,7 +48,10 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
   isBSExcelModified=false;
   isAssessmentSheetModified=false;
   modifiedExcelSheetId='';
-  isExcelModified=false
+  isExcelModified=false;
+  isRuleELevenUaSheetModified = false;
+  assessmentSheet:any;
+  ruleElevenSheet:any;
   constructor(private valuationService:ValuationService,
     private formBuilder:FormBuilder,
     private calculationService:CalculationsService,
@@ -85,123 +88,41 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
       }
     }
   }
-  saveAndNext() {
-    let updatedPayload:any;
-    let fourthStageData:any;
-    if(!this.transferStepperTwo){
-      const formOneData = this.fourthStageInput?.formOneData;
-      const formThreeData = this.fourthStageInput?.formThreeData;
-      formThreeData.map((formThreeDetails:any)=>{
-        if(formThreeDetails.model === MODELS.FCFE && formOneData.model.includes(MODELS.FCFE)){
-          const {model ,formFillingStatus, ...rest} = formThreeDetails;
-          updatedPayload = {...formOneData,...rest,...updatedPayload}
-        }
-        if(formThreeDetails.model === MODELS.FCFF && formOneData.model.includes(MODELS.FCFF)){
-          const {model ,formFillingStatus, ...rest} = formThreeDetails;
-          updatedPayload = {...formOneData,...rest,...updatedPayload}
-        }
-        if(formThreeDetails.model === MODELS.EXCESS_EARNINGS && formOneData.model.includes(MODELS.EXCESS_EARNINGS)){
-          const {model ,formFillingStatus, ...rest} = formThreeDetails;
-          updatedPayload = {...formOneData,...rest,...updatedPayload}
-        }
-        if(formThreeDetails.model === MODELS.RELATIVE_VALUATION && formOneData.model.includes(MODELS.RELATIVE_VALUATION)){
-          const {model , formFillingStatus, ...rest} = formThreeDetails;
-          updatedPayload = {...formOneData,...rest,...updatedPayload}
-        }
-        if(formThreeDetails.model === MODELS.COMPARABLE_INDUSTRIES && formOneData.model.includes(MODELS.COMPARABLE_INDUSTRIES)){
-          const {model , formFillingStatus, ...rest} = formThreeDetails;
-          updatedPayload = {...formOneData,...rest,...updatedPayload}
-        }
-        if(formThreeDetails.model === MODELS.NAV && formOneData.model.includes(MODELS.NAV)){
-          const {model , formFillingStatus, ...rest} = formThreeDetails;
-          updatedPayload = {...formOneData,...rest,...updatedPayload}
-        }
-        if(formThreeDetails.model === MODELS.RULE_ELEVEN_UA && formOneData.model.includes(MODELS.RULE_ELEVEN_UA)){
-          const {model , formFillingStatus, ...rest} = formThreeDetails;
-          updatedPayload = {...formOneData,...rest,...updatedPayload}
-        }
-      })
-       const {status, industriesRatio, betaIndustry, preferenceCompanies,...rest} = updatedPayload;
-       fourthStageData = rest;
-    }
+  async saveAndNext() {
+    const fourthStageData = this.createUpdatePayload();
 
+    const {processStat, processStatStep} = this.updateFormStatus();
 
-    const payload = {
-      ...(!this.transferStepperTwo ? fourthStageData : this.transferStepperTwo ),
-      otherAdj:this.reviewForm.controls['otherAdj'].value && (this.isRelativeValuation('FCFE') || this.isRelativeValuation('FCFF')) ? this.reviewForm.controls['otherAdj'].value : null,
-      isExcelModified: localStorage.getItem('excelStat') === 'true' ? true: false,
-      modifiedExcelSheetId:localStorage.getItem('excelStat') === 'true' ? `edited-${(!this.transferStepperTwo ? fourthStageData :  this.transferStepperTwo).excelSheetId}` : '' 
-    }
-   
-
-    let processStat:any,processStatStep:any;
-    if(this.isRelativeValuation('FCFE') || this.isFcff('FCFF')){
-
-      if(this.reviewForm.controls['otherAdj'].valid){
-        this.calculationService.checkStepStatus.next({stepStatus:true,step:this.step})
-        localStorage.setItem('step',`5`);
-        localStorage.setItem('stepFourStats','true');
-        processStat = 4;
-        processStatStep = true;
-      }
-      else{
-        this.reviewForm.markAllAsTouched();
-        this.calculationService.checkStepStatus.next({stepStatus:false,step:this.step})
-        localStorage.setItem('step',`5`);
-        localStorage.setItem('stepFourStats','false');
-        processStat = 3;
-        processStatStep = false;
-      }
-    }
-    else{
-      this.calculationService.checkStepStatus.next({stepStatus:true,step:this.step})
-        localStorage.setItem('step',`5`);
-        localStorage.setItem('stepFourStats','true');
-        processStat = 4;
-        processStatStep = true;
-    }
-    if(payload.model.includes(MODELS.RULE_ELEVEN_UA)){
-      this.valuationService.ruleElevenValuation(payload,this.ruleElevenUaId).subscribe((elevenUaData:any)=>{
-        if(elevenUaData.status){
-          this.ruleElevenUaId = elevenUaData.data._id;
-          this.groupReviewControls.emit({appData:elevenUaData.data,valuationId:this.ruleElevenUaId});
-          const processStateModel ={
-            fourthStageInput:{
-              appData:elevenUaData.data,
-              isExcelModified: localStorage.getItem('excelStat') === 'true' ? true: false,
-              modifiedExcelSheetId:localStorage.getItem('excelStat') === 'true' ? `edited-${(!this.transferStepperTwo ? fourthStageData :  this.transferStepperTwo).excelSheetId}` : '',
-              formFillingStatus:processStatStep
-            },
-            step:processStat
-          }
-          this.processStateManager(processStateModel,localStorage.getItem('processStateId'));
-        }
-      })
-    }
-    else{
-    this.valuationService.submitForm(payload).subscribe((response)=>{
-      if(response?.valuationResult){
-        this.valuationData= response; 
-        this.groupReviewControls.emit({appData:this.valuationData,valuationId:response.reportId});
-        const processStateModel ={
-          fourthStageInput:{
-            appData:this.valuationData,
-            otherAdj:this.reviewForm.controls['otherAdj'].value && (this.isRelativeValuation('FCFE') || this.isRelativeValuation('FCFF')) ? this.reviewForm.controls['otherAdj'].value : null,
-            isExcelModified: localStorage.getItem('excelStat') === 'true' ? true: false,
-            modifiedExcelSheetId:localStorage.getItem('excelStat') === 'true' ? `edited-${(!this.transferStepperTwo ? fourthStageData :  this.transferStepperTwo).excelSheetId}` : '',
-            formFillingStatus:processStatStep
-          },
-          step:processStat
-        }
-        this.processStateManager(processStateModel,localStorage.getItem('processStateId'));
-      }
-    })
-    }
+    this.submitFinalPayload(processStat, processStatStep, fourthStageData)
   }
 
 
   previous(){
     this.previousPage.emit(true)
+  }
+
+  async constructFormPayload(fourthStageData: any) {
+    let payload: any = {
+        ...(!this.transferStepperTwo ? fourthStageData : this.transferStepperTwo),
+        otherAdj: this.reviewForm.controls['otherAdj'].value && (this.isRelativeValuation('FCFE') || this.isRelativeValuation('FCFF')) ? this.reviewForm.controls['otherAdj'].value : null,
+    };
+
+    if (this.isPAndLExcelModified || this.isBSExcelModified || this.isAssessmentSheetModified || this.isRuleELevenUaSheetModified) {
+        try {
+            const excelResponse: any = await this.processStatusManagerService.updateEditedExcelStatus(localStorage.getItem('processStateId')).toPromise();
+            payload.isExcelModified = excelResponse.isExcelModifiedStatus;
+            payload.modifiedExcelSheetId = excelResponse.modifiedExcelSheetId;
+        } catch (error) {
+          this.snackBar.open('Payload creation for valuation failed','ok',{
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+            duration: 3000,
+            panelClass: 'app-notification-error',
+          })
+        }
+    }
+
+    return payload;
   }
 
   profitLossData(data:any){
@@ -217,7 +138,7 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
       }
       else{
         this.profitLoss = data.result;
-        this.isExcelModified = data.isExcelModified;
+        this.isPAndLExcelModified = data.isExcelModified;
       }
     }
   }
@@ -235,7 +156,7 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
       }
       else{
         this.balanceSheet = data.result;
-        this.isExcelModified = data.isExcelModified;
+        this.isBSExcelModified = data.isExcelModified;
       }
     }
   }
@@ -252,8 +173,8 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
         })
       }
       else{
-        this.isExcelModified = data.isModified;
-        this.modifiedExcelSheetId = data.modifiedExcelSheetId;
+        this.isAssessmentSheetModified = data.isExcelModified;
+        this.assessmentSheet = data.result;
       }
     }
   }
@@ -270,31 +191,12 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
         })
       }
       else{
-        this.isExcelModified = data.isModified;
-        this.modifiedExcelSheetId = data.modifiedExcelSheetId;
+        this.isRuleELevenUaSheetModified = data.isExcelModified;
+        this.ruleElevenSheet = data.result;
       }
     }
   }
 
-  loadEditTable(){
-    if(!this.transferStepperTwo){
-      if(!this.fourthStageInput?.formOneData?.model.includes(MODELS.RULE_ELEVEN_UA)){
-        return this.isLoadingProfitLoss && this.isLoadingBalanceSheet && this.isLoadingAssessmentSheet; 
-      }
-      else{
-        return this.isLoadingRuleElevenSheet;
-      }
-    }
-    else{
-      if(!this.transferStepperTwo?.model.includes(MODELS.RULE_ELEVEN_UA)){
-        return this.isLoadingProfitLoss && this.isLoadingBalanceSheet && this.isLoadingAssessmentSheet; 
-      }
-      else{
-        return this.isLoadingRuleElevenSheet;
-      }
-    }
-    // return this.transferStepperTwo?.model.includes(value) ? true :false;
-  }
   isRelativeValuation(value:string){
     if(!this.transferStepperTwo){
       return this.fourthStageInput?.formOneData?.model.includes(value)
@@ -340,5 +242,114 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
         });
       }
     );
+  }
+
+  updateFormStatus(){
+    let processStat:any,processStatStep:any;
+
+    if(this.isRelativeValuation('FCFE') || this.isFcff('FCFF')){
+
+      if(this.reviewForm.controls['otherAdj'].valid){
+        this.calculationService.checkStepStatus.next({stepStatus:true,step:this.step})
+        localStorage.setItem('step',`5`);
+        localStorage.setItem('stepFourStats','true');
+        processStat = 4;
+        processStatStep = true;
+      }
+      else{
+        this.reviewForm.markAllAsTouched();
+        this.calculationService.checkStepStatus.next({stepStatus:false,step:this.step})
+        localStorage.setItem('step',`5`);
+        localStorage.setItem('stepFourStats','false');
+        processStat = 3;
+        processStatStep = false;
+      }
+    }
+    else{
+      this.calculationService.checkStepStatus.next({stepStatus:true,step:this.step})
+        localStorage.setItem('step',`5`);
+        localStorage.setItem('stepFourStats','true');
+        processStat = 4;
+        processStatStep = true;
+    }
+    return { processStat, processStatStep }
+  }
+
+ async submitFinalPayload(processStat:any, processStatStep:any, fourthStageData:any){
+   const payload =  await this.constructFormPayload(fourthStageData)
+
+   if(payload.model.includes(MODELS.RULE_ELEVEN_UA)){
+      this.valuationService.ruleElevenValuation(payload,this.ruleElevenUaId).subscribe((elevenUaData:any)=>{
+        if(elevenUaData.status){
+          this.ruleElevenUaId = elevenUaData.data._id;
+          this.groupReviewControls.emit({appData:elevenUaData.data,valuationId:this.ruleElevenUaId});
+          const processStateModel ={
+            fourthStageInput:{
+              appData:elevenUaData.data,
+              formFillingStatus:processStatStep
+            },
+            step:processStat
+          }
+          this.processStateManager(processStateModel,localStorage.getItem('processStateId'));
+        }
+      })
+    }
+    else{
+    this.valuationService.submitForm(payload).subscribe((response)=>{
+      if(response?.valuationResult){
+        this.valuationData= response; 
+        this.groupReviewControls.emit({appData:this.valuationData,valuationId:response.reportId});
+        const processStateModel ={
+          fourthStageInput:{
+            appData:this.valuationData,
+            otherAdj:this.reviewForm.controls['otherAdj'].value && (this.isRelativeValuation('FCFE') || this.isRelativeValuation('FCFF')) ? this.reviewForm.controls['otherAdj'].value : null,
+            formFillingStatus:processStatStep
+          },
+          step:processStat
+        }
+        this.processStateManager(processStateModel,localStorage.getItem('processStateId'));
+      }
+    })
+    }
+  }
+
+  createUpdatePayload(){
+    let updatedPayload:any;
+    if(!this.transferStepperTwo){
+      const formOneData = this.fourthStageInput?.formOneData;
+      const formThreeData = this.fourthStageInput?.formThreeData;
+      formThreeData.map((formThreeDetails:any)=>{
+        if(formThreeDetails.model === MODELS.FCFE && formOneData.model.includes(MODELS.FCFE)){
+          const {model ,formFillingStatus, ...rest} = formThreeDetails;
+          updatedPayload = {...formOneData,...rest,...updatedPayload}
+        }
+        if(formThreeDetails.model === MODELS.FCFF && formOneData.model.includes(MODELS.FCFF)){
+          const {model ,formFillingStatus, ...rest} = formThreeDetails;
+          updatedPayload = {...formOneData,...rest,...updatedPayload}
+        }
+        if(formThreeDetails.model === MODELS.EXCESS_EARNINGS && formOneData.model.includes(MODELS.EXCESS_EARNINGS)){
+          const {model ,formFillingStatus, ...rest} = formThreeDetails;
+          updatedPayload = {...formOneData,...rest,...updatedPayload}
+        }
+        if(formThreeDetails.model === MODELS.RELATIVE_VALUATION && formOneData.model.includes(MODELS.RELATIVE_VALUATION)){
+          const {model , formFillingStatus, ...rest} = formThreeDetails;
+          updatedPayload = {...formOneData,...rest,...updatedPayload}
+        }
+        if(formThreeDetails.model === MODELS.COMPARABLE_INDUSTRIES && formOneData.model.includes(MODELS.COMPARABLE_INDUSTRIES)){
+          const {model , formFillingStatus, ...rest} = formThreeDetails;
+          updatedPayload = {...formOneData,...rest,...updatedPayload}
+        }
+        if(formThreeDetails.model === MODELS.NAV && formOneData.model.includes(MODELS.NAV)){
+          const {model , formFillingStatus, ...rest} = formThreeDetails;
+          updatedPayload = {...formOneData,...rest,...updatedPayload}
+        }
+        if(formThreeDetails.model === MODELS.RULE_ELEVEN_UA && formOneData.model.includes(MODELS.RULE_ELEVEN_UA)){
+          const {model , formFillingStatus, ...rest} = formThreeDetails;
+          updatedPayload = {...formOneData,...rest,...updatedPayload}
+        }
+      })
+       const {status, industriesRatio, betaIndustry, preferenceCompanies,...rest} = updatedPayload;
+       return rest;
+    }
   }
 }

@@ -274,14 +274,9 @@ export class GroupModelControlsComponent implements OnInit {
       payload = this.recalculateFields(payload,keysToRemove)
     }
     // check if modified excel sheet id exist or not
-    if(localStorage.getItem('excelStat') === 'true' && !this.isExcelReupload){
-      payload['modifiedExcelSheetId']=  `edited-${this.modelValuation.controls['excelSheetId'].value}`;
-      payload['isExcelModified']= true;
-    }
-    else{
+    if(this.isExcelReupload) {
       payload['modifiedExcelSheetId']=  '';
       payload['isExcelModified']= false;
-      localStorage.setItem('excelStat','false')
     }
     
     payload['companyId'] = this.fetchCompanyId()?.companyId;

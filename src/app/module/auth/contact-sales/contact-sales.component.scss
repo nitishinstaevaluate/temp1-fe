@@ -131,13 +131,13 @@ label {
   color: #6200ee;
   top: 3%;
   transform: translateY(-50%) scale(0.8) !important;
-  background-image: linear-gradient(to bottom, rgb(232 232 232), rgb(255, 255, 255));
+  background-image: linear-gradient(to bottom,#4b6df333, rgb(255, 255, 255));
 }
 
 .new-inp:not(:placeholder-shown)+label {
   top: 3%;
   transform: translateY(-50%) scale(0.8) !important;
-  background-image: linear-gradient(to bottom, rgb(232 232 232), rgb(255, 255, 255));
+  background-image: linear-gradient(to bottom, #4b6df333, rgb(255, 255, 255));
 }
 
 .new-inp:not(:focus)::placeholder {
@@ -166,7 +166,7 @@ label {
   border-style: solid;
   border-width: 0px 0px 9px 0px;
   border-color: #3355dd;
-  background-image: linear-gradient(to right, rgb(232 232 232), #ffffff);
+  background-image: linear-gradient(to right, #4b6df333, #0bc58712);
 }
 .left-image{
   padding: 0px;
@@ -185,7 +185,6 @@ label {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('../../../../assets/images/contact-us.jpg');
   background-size: cover;
   background-position: center;
   padding: 20px;
@@ -204,7 +203,7 @@ label {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgb(232 232 232);
+  background-color: #4b6df333;
 }
 
 .contact-button{

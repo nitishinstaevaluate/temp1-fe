@@ -3,6 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { isSelected } from 'src/app/shared/enums/functions';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.service';
+import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
 
 @Component({
@@ -25,33 +26,28 @@ export class BalanceSheetDetailsComponent implements OnChanges {
   isExcelModified=false;
   modifiedExcelSheetId:string='';
   excelSheetId:string='';
+  excelErrorMsg = false;
+  loadExcelTable = false;
 
   constructor(private valuationService:ValuationService,
     private snackBar:MatSnackBar,
-    private excelAndReportService:ExcelAndReportService ){}
+    private excelAndReportService:ExcelAndReportService,
+    private processStateManagerService:ProcessStatusManagerService ){}
 
   ngOnChanges(){
-  //  this.fetchExcelData();
-  if(this.fourthStageInput?.formFourData?.isExcelModified){
-    this.excelSheetId = this.fourthStageInput?.formFourData.modifiedExcelSheetId;
-    this.fetchExcelData(this.excelSheetId);
-  }
-  else{
-    this.excelSheetId = this.transferStepperTwo?.excelSheetId;
-    this.fetchExcelData();
-  }
+   this.fetchExcelData();
   }
   ngOnInit(): void {
     // this.checkProcessState()
   }
 
-  checkProcessState(){
-    if(this.fourthStageInput){
-      const excelSheetId = this.fourthStageInput?.formFourData?.isExcelModified ?this.fourthStageInput?.formFourData.modifiedExcelSheetId :  this.fourthStageInput.formOneData.excelSheetId;
-      this.excelSheetId = excelSheetId;
-      this.fetchExcelData(excelSheetId)
-    }
-  }
+  // checkProcessState(){
+  //   if(this.fourthStageInput){
+  //     const excelSheetId = this.fourthStageInput?.formFourData?.isExcelModified ?this.fourthStageInput?.formFourData.modifiedExcelSheetId :  this.fourthStageInput.formOneData.excelSheetId;
+  //     this.excelSheetId = excelSheetId;
+  //     this.fetchExcelData(excelSheetId)
+  //   }
+  // }
 
   isRelativeValuation(modelName:string){
     if(!this.transferStepperTwo){
@@ -60,122 +56,50 @@ export class BalanceSheetDetailsComponent implements OnChanges {
     return (isSelected(modelName,this.transferStepperTwo?.model) && this.transferStepperTwo.model.length <= 1)
   }
 
-  // fetchExcelData(){
-  //   if(this.transferStepperTwo?.excelSheetId){
-  //     this.valuationService.getProfitLossSheet(this.transferStepperTwo.excelSheetId,'BS').subscribe(
-  //       (response:any)=>{
-  //         this.displayedColumns= response[0];
-  //         this.displayedColumns.map((val:any,index:any)=>{
-  //         if(index <=1){
-  //           this.displayedRelativeColumns.push(val);
-  //         }
-  //        })
-  //         response.splice(0,1);
-
-  //         if(this.isRelativeValuation('Relative_Valuation')){
-  //           const firstKey = this.displayedColumns[0];
-  //           const secondKey = this.displayedColumns[1];
-  //         response = response.map((value:any)=>{
-  //           return {
-  //             [firstKey]:value[firstKey],
-  //             [secondKey]:value[secondKey]
-  //           }
-  //         })
-  //       }
-  //         this.data = response;
-  //         this.balanceSheetData.emit({status:true,result:response});
-
-  //     },
-  //       (err)=>{
-  //         this.balanceSheetData.emit({status:false,error:err})
-  //       })
-  //   }
-  //   else{
-  //     this.balanceSheetData.emit({status:false})
-  //     this.snackBar.open('Data Retrieval Failed','Ok',{
-  //       horizontalPosition: 'center',
-  //       verticalPosition: 'bottom',
-  //       duration: 4000,
-  //       panelClass: 'app-notification-error'
-  //     })
-  //   }
-  // }
-  // checkType(ele:any){
-  //   if(typeof ele === 'string' && isNaN(parseFloat(ele)))
-  //    return true;
-  //   return false
-  // }
-
-  // isNumberOrEmpty(value: any): boolean {
-  //   return (typeof value === 'number' || value === '' || typeof value === 'string' || value === null || value === undefined) && !isNaN(value) ? true : false;
-  // }
-
-  // onInputChange(value: any, column: string,originalValue:any) {
-  //   // const spanContent = (value as HTMLInputElement).closest('mat-row').querySelector('span').textContent;
-  
-  //   const inputElement = value;
-  //   const closestRow = inputElement.closest('mat-row');
+  fetchExcelData(){
+    this.processStateManagerService.getExcelStatus(localStorage.getItem('processStateId')).subscribe((excelResponse:any)=>{
+      if(excelResponse.status){ 
+        this.isExcelModified = excelResponse.isExcelModifiedStatus;
+        this.excelSheetId = excelResponse.excelSheetId;
+        this.loadExcel();
+      }
+      else{
+        this.snackBar.open('Excel sheet Id not found, try reuploading', 'ok',{
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 3000,
+          panelClass: 'app-notification-error'
+        })
+      }
+    },(error)=>{
+      this.snackBar.open('Backend error - excel sheet fetch failed', 'ok',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 3000,
+        panelClass: 'app-notification-error'
+      })
+    })
     
-  //   if (closestRow) {
-  //     const spanElement = closestRow.querySelector('span');
-  //     const spanContent = spanElement ? spanElement.textContent : null;
-  //     if(value?.value !== originalValue || (originalValue === null && value.value === '')){
-  //       if(this.editedValues.some((item:any)=>item.subHeader == spanContent && item.columnName === column)){
-  //         this.editedValues.map((val:any)=>{
-  //           if(val.subHeader == spanContent && val.columnName === column){
-  //             val.newValue = value.value;
-  //           }
-  //         })
-  //       }
-  //       else{
-  //         let payload={
-  //           subHeader:spanContent,
-  //           originalValue,
-  //           newValue:value.value,
-  //           columnName:column
-  //         }
-  //         this.editedValues.push(payload)
-  //       }
-  //     }
-  //   }
-  //   // this.excelData.emit({ excelSheet:'P&L',editedValues: this.editedValues });
-  // }
+  }
 
-  // updateExcel(){
-  //   const payload = {
-  //     excelSheet:'BS',
-  //     excelSheetId:`${this.transferStepperTwo.excelSheetId}`,
-  //     editedValues: this.editedValues 
-  //   }
-  //   this.calculationService.modifyExcel(payload).subscribe((response:any)=>{
-  //     if(response.status){
-  //       this.isExcelModified = true;
-  //       this.snackBar.open('Successfully updated excel','Ok',{
-  //         horizontalPosition: 'right',
-  //         verticalPosition: 'top',
-  //         duration: 3000,
-  //         panelClass: 'app-notification-success'
-  //       })
-  //     }
-  //   })
-  // }
-
-  // convertIntoNumber(value:any){
-  //   return parseFloat(value)?.toFixed(2);
-  // }
-
-  fetchExcelData(alreadyProcessedSheetId?:any){
-    const balanceSheetExcelId = alreadyProcessedSheetId ? alreadyProcessedSheetId : localStorage.getItem('excelStat') === 'true' ? `edited-${this.transferStepperTwo?.excelSheetId ? this.transferStepperTwo?.excelSheetId : this.fourthStageInput.formOneData.excelSheetId}` :  (this.transferStepperTwo?.excelSheetId ? this.transferStepperTwo?.excelSheetId : this.fourthStageInput.formOneData.excelSheetId)
-    this.excelSheetId = balanceSheetExcelId;
-    this.valuationService.getProfitLossSheet(balanceSheetExcelId,'BS').subscribe((response:any)=>{
-     if(response.status){
-      this.createbalanceSheetDataSource(response);
-      this.balanceSheetData.emit({status:true, result:response})
-     }
+  loadExcel(){
+    this.loadExcelTable = true; 
+    this.valuationService.getProfitLossSheet(this.excelSheetId,'BS').subscribe((response:any)=>{
+      this.loadExcelTable = false; 
+      if(response.status){
+        this.excelErrorMsg = false;
+       this.createbalanceSheetDataSource(response);
+       this.balanceSheetData.emit({status:true, result:response,isExcelModified:this.isExcelModified})
+      }
+      else{
+        this.excelErrorMsg = true;
+      }
     },
     (error)=>{
-      this.balanceSheetData.emit({status:false, error:error})
-    })
+      this.loadExcelTable = false;
+       this.excelErrorMsg = true;
+       this.balanceSheetData.emit({status:false, error:error})
+     })
   }
 
   checkType(ele:any){
@@ -263,30 +187,9 @@ export class BalanceSheetDetailsComponent implements OnChanges {
       }
       this.editedValues.push(cellStructure);
 
-      let excelId;
-      if(!this.transferStepperTwo){
-        if(localStorage.getItem('excelStat')==='true'){
-          excelId = `edited-${this.fourthStageInput?.formOneData?.excelSheetId}`
-        }
-        else if(this.fourthStageInput?.formFourData?.isExcelModified){
-          excelId = this.fourthStageInput?.formFourData.modifiedExcelSheetId
-        }
-        else {
-          excelId = this.fourthStageInput.formOneData?.excelSheetId 
-        }
-      } 
-      else{
-        if(localStorage.getItem('excelStat')==='true'){
-          excelId = `edited-${this.transferStepperTwo?.excelSheetId}`
-        }
-        else {
-          excelId = this.transferStepperTwo?.excelSheetId
-        }
-      }
-
       const payload = {
         excelSheet:'BS',
-        excelSheetId:excelId,
+        excelSheetId:this.excelSheetId,
         ...this.editedValues[0] 
       }
 
@@ -296,7 +199,7 @@ export class BalanceSheetDetailsComponent implements OnChanges {
           if(response.status){
             this.isExcelModified = true;
             this.createbalanceSheetDataSource(response);
-            this.balanceSheetData.emit({status:true,result:response});
+            // this.balanceSheetData.emit({status:true,result:response});
           }
           else{
             this.balanceSheetData.emit({status:false,error:response.error});
@@ -365,9 +268,7 @@ export class BalanceSheetDetailsComponent implements OnChanges {
     // this.balanceSheetDataSource.splice(this.balanceSheetDataSource.findIndex((item:any) => item.Particulars.includes('Current Assets, Loans & Advances')),0,{Particulars:"  "}) //push empty object for line break      
          
     if(response?.modifiedFileName){
-      this.modifiedExcelSheetId=response.modifiedFileName;
-      // this.balanceSheetData.emit({modifiedExcelSheetId:this.modifiedExcelSheetId,isModified:true});
-      localStorage.setItem('excelStat','true')
+      this.balanceSheetData.emit({status:true,isExcelModified:this.isExcelModified});
     }
   }
 
