@@ -22,3 +22,17 @@
     <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
   </mat-table>
+
+  <div class="loader-overlay" *ngIf="loadExcelTable">
+    <mat-progress-spinner diameter="50" class="assessment-spinner"  mode="indeterminate"></mat-progress-spinner>
+  </div>
+  
+  <div class="error-container" *ngIf="excelErrorMsg">
+    <p class="error-message">Oops! No records found.</p>
+    <p class="try-again">Please try following instruction, if issue persist contact administrator.</p>
+    <ul class="instruction-list">
+      <li>Try traversing between different tabs (Go back and forth between different forms)</li>
+      <li>Check the uploaded Balance sheet and Profit & Loss sheet Excel, ensure the date format is correct</li>
+      <li>Try re-uploading your excel once again.</li>
+    </ul>
+  </div>

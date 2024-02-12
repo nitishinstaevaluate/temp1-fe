@@ -166,3 +166,62 @@ mat-header-cell{
   .increase-table-width {
     width: 1500px;
   }
+
+  .loader-overlay {
+    // position: absolute;
+    width: 100%;
+    height:400px;
+    // background: rgba(255, 255, 255, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1; 
+  }
+
+  .PandL-spinner{
+    transform: scale(.8);
+  }
+  
+  .PandL-spinner::ng-deep circle{
+    stroke: #32b624 !important;
+  }
+  .error-container {
+    font-family: 'AR One Sans', sans-serif;
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f3f3f3;
+  }
+  
+  .error-message {
+    font-size: 1.5em;
+    color: #0BC587; /* Green */
+  }
+  
+  .try-again {
+    font-size: 1.2em;
+    color: #4b6df3; /* Blue */
+    margin-bottom: 20px;
+  }
+  
+  .instruction-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0 auto;
+    max-width: 550px;
+  }
+  
+  .instruction-list li {
+    margin-bottom: 10px;
+    font-size: 1.1em;
+    background-color: #ffffff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .instruction-list li:hover {
+    transform: translateY(-3px);
+  }
+  

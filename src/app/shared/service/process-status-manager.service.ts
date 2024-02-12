@@ -30,4 +30,12 @@ export class ProcessStatusManagerService {
   getStageWiseDetails(processId:any, stage:any){
     return this.http.get(`${this.HOST}process-status-manager/retrieve-particular-stage/filter?processId=${processId}&stageDetails=${stage}`);
   }
+
+  getExcelStatus(processId:any){
+    return this.http.get(`${this.HOST}process-status-manager/excel-status/${processId}`);
+  }
+  
+  updateEditedExcelStatus(processId:any){
+    return this.http.put(`${this.HOST}process-status-manager/update-edited-excel-status/${processId}`,{});
+  }
 }

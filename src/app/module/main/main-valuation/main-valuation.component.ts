@@ -97,7 +97,9 @@ export class MainValuationComponent implements OnInit{
           this.loadStateByProcessId(processStateId);
         } else {
           localStorage.removeItem('processStateId')
-          this.isProcessExistLoader = false;
+          this.isProcessExistLoader = true;
+          this.processLoader = true
+          window.location.reload();
         }
       })
      
@@ -359,7 +361,8 @@ export class MainValuationComponent implements OnInit{
         // this.step = await this.fetchProcessActiveStage(processStateDetails._id)
 
         if(processStateDetails?.firstStageInput){
-          localStorage.setItem('stepOneStats',`${processStateDetails.firstStageInput.formFillingStatus}`)
+          // console.log(processStateDetails.firstStageInput.formFillingStatus,"form one stats")
+          // localStorage.setItem('stepOneStats',`${processStateDetails.firstStageInput.formFillingStatus}`)
           this.groupModelControls(processStateDetails.firstStageInput,true)
         }
 
