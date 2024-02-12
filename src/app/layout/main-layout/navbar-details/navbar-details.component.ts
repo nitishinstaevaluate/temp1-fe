@@ -28,7 +28,7 @@ export class NavbarDetailsComponent implements OnInit{
 
   ngOnInit(): void {
     // localStorage.setItem('step','1')
-    // localStorage.removeItem('stepOneStats')
+    localStorage.removeItem('stepOneStats')
     localStorage.removeItem('stepTwoStats')
     localStorage.removeItem('stepThreeStats')
     localStorage.removeItem('stepFourStats')
@@ -49,7 +49,7 @@ async checkProcessState(){
           const processStateDetails = processInfo.stateInfo;
           const step = processStateDetails.step;
           const modelsSelected = processStateDetails.firstStageInput.model;
-          // localStorage.setItem('stepOneStats',`${processStateDetails.firstStageInput.formFillingStatus}`)
+          localStorage.setItem('stepOneStats',`${processStateDetails.firstStageInput.formFillingStatus}`)
           if(modelsSelected.length){
             const modelInputStages = processStateDetails?.thirdStageInput;
             let formTwoFillingStatus = false;
@@ -108,9 +108,36 @@ async checkProcessState(){
       this.checkstepStat();
     }
   }
-  async selectMenuItem(route: string) {
+   selectMenuItem(route: string) {
     if (route === '2' && this.showBlackBox) {
       this.snackBar.open('Cannot select this tab', 'Ok', {
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 3000,
+        panelClass: 'app-notification-error'
+      });
+      return;
+    }
+    if(route === '3' && this.stepStatusOfOne !== 'true'){
+      this.snackBar.open('Please fill all the details in form 1', 'Ok', {
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 3000,
+        panelClass: 'app-notification-error'
+      });
+      return;
+    }
+    if(route === '4' && (this.stepStatusOfThree !== 'true' || this.stepStatusOfOne !== 'true')){
+      this.snackBar.open('Please check all details in form 1 and form 3', 'Ok', {
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 3000,
+        panelClass: 'app-notification-error'
+      });
+      return;
+    }
+    if(route === '5' && (this.stepStatusOfThree !== 'true' || this.stepStatusOfOne !== 'true' || this.stepStatusOfFour !== 'true')){
+      this.snackBar.open('Please check all details in Form 1,Form 3 and Form 4', 'Ok', {
         horizontalPosition: 'right',
         verticalPosition: 'top',
         duration: 3000,

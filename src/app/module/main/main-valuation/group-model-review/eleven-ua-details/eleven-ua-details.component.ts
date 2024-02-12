@@ -92,8 +92,7 @@ export class ElevenUaDetailsComponent {
       if(response.status){
         this.excelErrorMsg = false;
         this.createruleElevenUaDataSource(response)
-        this.ruleElevenData.emit({status:true,result:response,isExcelModified:this.isExcelModified});
-        this.ruleElevenSheetData.emit({status:true, result:response})
+        this.ruleElevenSheetData.emit({status:true,result:response,isExcelModified:this.isExcelModified});
       }
       else{
         this.excelErrorMsg = true;
@@ -201,7 +200,6 @@ export class ElevenUaDetailsComponent {
           if(response?.status){
             this.isExcelModified = true;
             this.createruleElevenUaDataSource(response);
-            this.ruleElevenSheetData.emit({status:true,result:response});
           }
           // else{  [please uncomment this once backend error handling is done]
           //    this.ruleElevenSheetData.emit({status:false,error:response.error});
@@ -267,7 +265,7 @@ export class ElevenUaDetailsComponent {
     // this.ruleElevenUaDataSource.splice(this.ruleElevenUaDataSource.findIndex((item:any) => item.Particulars.includes('Total Equity & Liabilities')),0,{Particulars:"  "}) //push empty object for line break      
 
     if(response?.modifiedFileName){
-      this.ruleElevenData.emit({status:true,result:response,isExcelModified:this.isExcelModified});
+      this.ruleElevenSheetData.emit({status:true,result:response,isExcelModified:this.isExcelModified});
     }
   }
 
