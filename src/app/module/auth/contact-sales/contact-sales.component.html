@@ -8,7 +8,7 @@
     </div>
   
   <div class="container content-wrapper">
-    <form (ngSubmit)="submitForm()">
+    <form (ngSubmit)="submitForm()" [formGroup]="contactForm">
         <div class="row sub-main-wrapper">
             <div class="col-xl-5 col-md-5 left-image">
                 <div class="background-image">
@@ -24,7 +24,7 @@
                 <div class="row" >
                     <div class="col-xl-12 col-md-12 field">
                         <div class="material-textfield">
-                            <input class="new-inp" placeholder="Enter First Name"/>
+                            <input class="new-inp" formControlName="name" placeholder="Enter First Name"/>
                             <label>Full Name*</label>
                         </div>
                     </div>
@@ -38,13 +38,13 @@
                 <div class="row">
                     <div class="col-xl-6 col-md-6 field">
                         <div class="material-textfield">
-                            <input class="new-inp" placeholder="Enter business email"/>
+                            <input class="new-inp" formControlName="email" placeholder="Enter business email"/>
                             <label>Business Email*</label>
                         </div>
                     </div>
                     <div class="col-xl-6 col-md-6 field">
                         <div class="material-textfield">
-                            <input class="new-inp" placeholder="Enter mobile number"/>
+                            <input formControlName="mobileNumber" class="new-inp" placeholder="Enter mobile number"/>
                             <label>Mobile No.*</label>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                     </div> -->
                     <div class="col-xl-12 col-md-12 field">
                         <div class="material-textfield">
-                            <input class="new-inp" placeholder="Enter company"/>
+                            <input formControlName="company" class="new-inp" placeholder="Enter company"/>
                             <label>Company*</label>
                         </div>
                     </div>
@@ -66,7 +66,7 @@
                 <div class="row">
                     <div class="col-xl-12 col-md-12 field">
                         <div class="material-textfield">
-                            <textarea rows="5" class="new-inp" placeholder="Enter descriptive comment"></textarea>
+                            <textarea formControlName="comment" rows="5" class="new-inp" placeholder="Enter descriptive comment"></textarea>
                             <label class="textarea-label">Business query...</label>
                         </div>
                     </div>
