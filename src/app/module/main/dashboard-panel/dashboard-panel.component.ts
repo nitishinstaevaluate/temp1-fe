@@ -13,6 +13,7 @@ import { ValuationService } from 'src/app/shared/service/valuation.service';
 })
 export class DashboardPanelComponent {
   totalRecords:any=[];
+  activeLink: string | null = null;
   constructor(private valuationService:ValuationService,
     private route:Router,
     private utilService:UtilService,
@@ -142,6 +143,10 @@ export class DashboardPanelComponent {
         panelClass: 'app-notification-error',
     })
     })
+  }
+
+  setActiveLink(linkId: string) {
+    this.activeLink = linkId;
   }
 }
 

@@ -4,8 +4,16 @@
     <div><p class="header">Hi, <span id="dynamicName">User</span></p></div>
     <div class="content-categories" style="padding-left: 4%;">
       <div class="label-wrapper">
-        <input class="nav-item" name="nav" type="radio" id="opt-1">
-        <label class="category" for="opt-1">All</label>
+        <label class="category" for="opt-1" (click)="setActiveLink('opt-1')" [class.active]="activeLink === 'opt-1'">All</label>
+      </div>
+      <div class="label-wrapper">
+        <label class="category" for="opt-2" (click)="setActiveLink('opt-2')" [class.active]="activeLink === 'opt-2'">Important</label>
+      </div>
+      <div class="label-wrapper">
+        <label class="category" for="opt-3" (click)="setActiveLink('opt-3')" [class.active]="activeLink === 'opt-3'">Notes</label>
+      </div>
+      <div class="label-wrapper">
+        <label class="category" for="opt-4" (click)="setActiveLink('opt-4')" [class.active]="activeLink === 'opt-4'">Links</label>
       </div>
     </div>
     <div class="tasks-wrapper" style="padding-top: 0%;">
