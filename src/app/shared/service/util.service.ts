@@ -19,4 +19,12 @@ export class UtilService {
   fuzzySearchCompanyName(companyName:any){
     return this.http.get(`${this.HOST}fuse-search/fuse-search-by-company-name/${companyName}`)
   }
+
+  generateUniqueLinkId(){
+    return this.http.get(`${this.HOST}util/generate-link-id`)
+  }
+
+  validateLinkId(linkId:any){
+    return this.http.get(`${this.HOST}util/validate-link-id/${linkId}`)
+  }
 }

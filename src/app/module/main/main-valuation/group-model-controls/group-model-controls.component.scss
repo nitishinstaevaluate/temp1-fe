@@ -291,6 +291,7 @@
 
 .c-decorated-header {
   position: relative;
+  padding-top: 2%;
 }
 
 .c-decorated-header h3 {
@@ -303,9 +304,6 @@
   cursor: pointer;
 }
 
-.c-decorated-header{
-  padding-top: 2%;
-}
 .c-decorated-header h3:after {
   content: "";
   height: 1px;
