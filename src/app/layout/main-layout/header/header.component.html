@@ -134,7 +134,7 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent-4" 
            >
             <div class="d-flex order-lg-2">
-              <div class="dropdown profile-dropdown">
+              <div class="dropdown profile-dropdown" *ngIf="isLoggedIn()">
                 <a href="javascript:void(0)" class="nav-link icon px-1" (mouseover)="toggleDropdown(true)" (mouseleave)="toggleDropdown(false)">
                   <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="img"
                     class="avatar brround" />
@@ -157,15 +157,15 @@
 
               <div class="dropdown header-sidebar">
                 <a  class="nav-link icon sidebar-right-mobile"
-                  data-bs-toggle="sidebar-right" data-bs-target=".sidebar-right">
+                  data-bs-toggle="sidebar-right" data-bs-target=".sidebar-right" *ngIf="isLoggedIn()">
                   <i class="bx bx-menu-alt-right header-icon"></i>
                 </a>
               </div>
             </div>
           </div>
         </div>
-        <div class="demo-icon nav-link icon" >
-          <i class="fe fe-settings fa-spin text_primary"></i>
+        <div class="demo-icon nav-link icon">
+          <i class="fe fe-settings fa-spin text_primary" *ngIf="isLoggedIn()"></i>
         </div>
         <!-- <div class="dropdown header-sidebar">
           <a  class="nav-link icon sidebar-right-mobile" data-bs-toggle="sidebar-right" data-bs-target=".sidebar-right">
