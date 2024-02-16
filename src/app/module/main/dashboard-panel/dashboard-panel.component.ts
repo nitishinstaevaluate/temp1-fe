@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { INCOME_APPROACH, MARKET_APPROACH, NET_ASSET_APPROACH } from 'src/app/shared/enums/constant';
 import { convertToNumberOrZero, formatNumber } from 'src/app/shared/enums/functions';
+import { UtilService } from 'src/app/shared/service/util.service';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
 
 @Component({
@@ -10,7 +13,11 @@ import { ValuationService } from 'src/app/shared/service/valuation.service';
 })
 export class DashboardPanelComponent {
   totalRecords:any=[];
-  constructor(private valuationService:ValuationService){this.fetchData()}
+  activeLink: string | null = null;
+  constructor(private valuationService:ValuationService,
+    private route:Router,
+    private utilService:UtilService,
+    private snackBar:MatSnackBar){this.fetchData()}
 
   fetchData(page:number=1,pageSize:number=10,query?:string): void { //inorder to increase the total count, increase the pageSize number 
     this.valuationService.getPaginatedValuations(page, pageSize,query)
@@ -113,6 +120,33 @@ export class DashboardPanelComponent {
 
   valuationModels(records:any){
     return records?.firstStageInput?.model
+  }
+
+  loadDataCheckListForm(){
+    this.utilService.generateUniqueLinkId().subscribe((response:any)=>{
+      if(response.status){
+        this.route.navigate(['dashboard/panel/data-checklist', response.uniqueLink]);
+      }
+      else{
+        this.snackBar.open('Unique link generation failed', 'Ok',{
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+            duration: 3000,
+            panelClass: 'app-notification-error',
+        })
+      }
+    },(error)=>{
+      this.snackBar.open('Backend error - Unique link generation failed', 'Ok',{
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+        duration: 3000,
+        panelClass: 'app-notification-error',
+    })
+    })
+  }
+
+  setActiveLink(linkId: string) {
+    this.activeLink = linkId;
   }
 }
 

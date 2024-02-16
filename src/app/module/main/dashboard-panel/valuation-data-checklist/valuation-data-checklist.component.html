@@ -1,0 +1,104 @@
+<div class="container-fluid main-outer-wrapper">
+    <div class="outer-wrapper">
+        <div class='c-decorated-header'>
+            <h3><span style="padding-left: 2%;">Valuation Related Details</span></h3>
+          </div>
+        <div class="row">
+            <div class="col-xl-4 col-md-4 field">
+                <div class="material-textfield">
+                    <input class="new-inp" placeholder="Enter valuation date"/>
+                    <label>Valuation Date*</label>
+                </div>
+            </div>
+            <div class="col-xl-4 col-md-4 field">
+                <div class="material-textfield">
+                    <input class="new-inp" placeholder="Enter tax rate"/>
+                    <label>Tax Rate*</label>
+                </div>
+            </div>
+            <div class="col-xl-4 col-md-4 field">
+                <div class="material-textfield">
+                    <input class="new-inp" placeholder="Enter number of outstanding shares"/>
+                    <label>Outstanding Shares*</label>
+                </div>
+            </div>
+        </div>
+        <div class='c-decorated-header c-decorated-header2'>
+            <h3><span style="padding-left: 2%;">Report related details</span></h3>
+          </div>
+        <div class="row">
+            <div class="col-xl-4 col-md-4 field">
+                <div class="material-textfield">
+                    <input type="date" class="new-inp" placeholder="Enter valuation date"/>
+                    <label>Date of report*</label>
+                </div>
+            </div>
+            <div class="col-xl-4 col-md-4 field">
+                <div class="material-textfield">
+                    <input class="new-inp" placeholder="Enter tax rate"/>
+                    <label>Appointing Authority*</label>
+                </div>
+            </div>
+            <div class="col-xl-4 col-md-4 field">
+                <div class="material-textfield">
+                    <input class="new-inp" placeholder="Enter number of outstanding shares"/>
+                    <label>Date of Appointment*</label>
+                </div>
+            </div>
+            <div class="col-xl-4 col-md-4 field">
+                <div class="material-textfield">
+                    <input class="new-inp" placeholder="Enter number of outstanding shares"/>
+                    <label>Company Address*</label>
+                </div>
+            </div>
+            <div class="col-xl-4 col-md-4 field">
+                <div class="material-textfield">
+                    <input class="new-inp" placeholder="Enter number of outstanding shares"/>
+                    <label>CIN Number*</label>
+                </div>
+            </div>
+            <div class="col-xl-4 col-md-4 field">
+                <div class="material-textfield">
+                    <input class="new-inp" placeholder="Enter number of outstanding shares"/>
+                    <label>Date of incorporation*</label>
+                </div>
+            </div>
+            <div class="col-xl-6 col-md-6 field">
+                <div class="material-textfield">
+                    <input class="new-inp" placeholder="Enter number of outstanding shares"/>
+                    <label>Purpose of report*</label>
+                </div>
+            </div>
+            <div class="col-xl-6 col-md-6 field">
+                <div class="material-textfield">
+                    <input class="new-inp" placeholder="Enter number of outstanding shares"/>
+                    <label>Nature of instrument*</label>
+                </div>
+            </div>
+        </div>
+        <div class="row field">
+            <div class="col-xl-9">
+              <span class="download-temp"><a [href]="downloadTemplate" target="_blank">Download Template</a></span>
+              <input
+                type="file"
+                hidden
+                #fileInput
+                accept="image/png, image/jpeg, .pdf, .xlsx"
+                (change)="onFileSelected($event)"
+              />
+              <button type="button" class="btn btn-primary upload-bt" (click)="fileInput.click()">
+                <span class="pos-upload-absolute" style="left: 16%;">
+                  <mat-icon>cloud_upload</mat-icon>
+                </span>
+                Upload file</button>
+              <span class="file-name" *ngIf="fileName">{{fileName}}</span>
+            </div>
+            <div class="col-xl-3" style="text-align: right;">
+                <button (click)="submiDataCheckListForm()" class="button-save-mat" mat-raised-button>
+                    Submit
+                    <span class="button-save"><mat-icon>send</mat-icon></span>
+                </button>
+            </div>
+          </div>
+    </div>
+</div>
