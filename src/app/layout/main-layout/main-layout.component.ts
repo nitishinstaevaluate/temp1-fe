@@ -7,4 +7,10 @@ import { Component } from '@angular/core';
 })
 export class MainLayoutComponent {
 
+  isLoggedIn(){
+    const access_token = localStorage.getItem('access_token');
+    if(!access_token)
+      return false;
+    return true;
+  }
 }

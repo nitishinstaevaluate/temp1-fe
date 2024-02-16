@@ -40,8 +40,8 @@
 
 <!-- new navbar -->
 
-<div class="app-sidebar__overlay" data-bs-toggle="sidebar" (click)="sidebarClose()"></div>
-<div class="sticky">
+<!-- <div class="app-sidebar__overlay" data-bs-toggle="sidebar" (click)="sidebarClose()"></div> -->
+<div class="sticky" *ngIf="isLoggedIn()">
   <aside class="app-sidebar sidebar-scroll new-aside">
     <div class="main-sidemenu" style="margin-top:40px">
       <ul class="side-menu">
