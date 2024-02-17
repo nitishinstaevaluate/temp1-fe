@@ -12,7 +12,7 @@ import { UtilService } from 'src/app/shared/service/util.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal-box/generic-modal-box.component';
-import { formatNumber } from 'src/app/shared/enums/functions';
+import { excludeDecimalFormatting } from 'src/app/shared/enums/functions';
 
 @Component({
   selector: 'app-screen-input-details',
@@ -68,7 +68,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   prevPageSize: any;
   selectAll: boolean = false;
   valuationDateNote = '';
-  formatNumber=formatNumber
+  formatNumber=excludeDecimalFormatting
 
   constructor(
     private fb:FormBuilder,

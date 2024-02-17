@@ -20,7 +20,7 @@
         <!-- //sidebar -->
         <app-sidebar appHoverEffectSidebar></app-sidebar>
         <div class="jumps-prevent" style="padding-top: 65px;"></div>
-        <div class="app-content main-content mt-0" style="margin-left: 111px;">
+        <div class="app-content main-content mt-0" [ngClass]="isLoggedIn() ? 'mg-left' : 'mg-none'">
           <div class="side-app"  [ngClass]="{ 'pt-60': true }">
             <div class="main-container container-fluid">
 

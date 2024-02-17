@@ -76,4 +76,11 @@ selectMenuItem(route: string): void {
   this.selectedMenuItem = route;
   this.route.navigate([`${route}`])
 }
+
+isLoggedIn(){
+  const access_token = localStorage.getItem('access_token');
+  if(!access_token)
+    return false;
+  return true;
+}
 }
