@@ -93,3 +93,26 @@ export function formatNumber(value: any) {
       return  value;
     }
 }
+
+export function excludeDecimalFormatting(value: any) {
+  if (!isNaN(value)  && typeof value === 'number') {
+    if(value && `${value}`.includes('-')){
+      let formattedNumber = value.toLocaleString(undefined, {
+        minimumIntegerDigits: 1
+      });
+      return `(${`${formattedNumber}`.replace(/-/g,'')})`;
+    }
+    else if(value){
+     const formatValue =  value.toLocaleString(undefined, {
+        minimumIntegerDigits: 1
+      })
+      return formatValue;
+    }
+    else{
+     return value;
+    }
+  }
+    else{
+      return  value;
+    }
+}
