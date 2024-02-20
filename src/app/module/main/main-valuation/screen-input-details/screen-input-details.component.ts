@@ -30,7 +30,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   hasError=hasError;
   modelControl=groupModelControl;
   ciqIndustryData:any;
-  ciqIndustryHead=['Company Id', 'Company Name', 'Market Cap', 'Outstanding Shares', 'City', 'Industry Description'];
+  ciqIndustryHead=['Company Id', 'Company Name', 'Ebit Da', 'Sales', 'Market Cap', 'Outstanding Shares', 'City', 'Industry Description'];
   mapIndustryBasedCompany:any = INDUSTRY_BASED_COMPANY;
   loader=false;
   levelThreeIndustry:any=[];
@@ -379,6 +379,9 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
             row.isSelected = this.selectedIndustries.some((selectedIndustriesRow: any) => {
               return selectedIndustriesRow.COMPANYID === row.COMPANYID;
             });
+            if(this.mainIndustries.length && !this.selectAll){
+              this.selectAll = true;
+            }            
           });
         }
         this.total = industryData.total;
@@ -576,7 +579,8 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       await this.removeUncheckedIndustry(data)
     }
     // event.stopPropagation();
-    this.selectAll = this.ciqIndustryData.every((row:any) => row.isSelected);
+    // this.selectAll = this.ciqIndustryData.every((row:any) => row.isSelected);
+    this.selectAll = true;
   }
 
   async createIndustryStructure(data:any){
