@@ -132,20 +132,22 @@
       <p class="total-rec" *ngIf="ciqIndustryData?.length">Showing {{ciqIndustryData?.length}} out of {{total}} records</p>
       <p class="sidenote" *ngIf="valuationDateNote"><i>*as on {{valuationDateNote | date:'MMM d, yyyy'}}</i></p>
     </div>
-    <table class="table-industry-based-company" *ngIf="!loader">
+    <div class="table-wrapper">
+    <table class="table-industry-based-company" *ngIf="!loader" style="width: 1380px;">
       <thead>
         <tr style="text-transform: capitalize;" class="header">
-          <th style="width: 7%;border: 1px solid #eeeeee">
+          <th style="width: 4%;border: 1px solid #eeeeee">
             <input type="checkbox" [(ngModel)]="selectAll" style="vertical-align: middle;" (change)="onSelectAllChange()"/>
             <i class="fa fa-filter" style="font-size:17px;vertical-align: middle;padding-left: 35%;"></i>
           </th>
-          <th style="border: 1px solid #eeeeee; height: 40px;" *ngFor="let columnName of ciqIndustryHead" class="make-bold" 
-          [ngStyle]="(columnName === 'Company Name') ? { 'width': '28%'} : 
-          (columnName === 'City') ? { 'width':'11%', 'padding-left':'2%' } : 
-          (columnName === 'Company Id') ? {'width':'10%'} : 
-          (columnName === 'Industry Description') ? { 'width':'18%' } : 
-          (columnName === 'Outstanding Shares') ? { 'width':'15%' } : 
-          (columnName === 'Market Cap') ? { 'width':'10%' } : { 'width':'auto' }">
+          <th style="border: 1px solid #eeeeee; height: 40px;" *ngFor="let columnName of ciqIndustryHead" class="make-bold"
+          [ngStyle]=" (columnName === 'Ebit Da') ? { 'width':'6%' } :
+          (columnName === 'Market Cap') ? { 'width':'8%' } :
+          (columnName === 'Sales') ? { 'width':'7%' } :
+          (columnName === 'Company Id') ? { 'width':'7%' } :
+          (columnName === 'City') ? { 'width':'7%' } :
+          {'width':'auto'} "
+          >
             {{ columnName }}
           </th>
         </tr>
@@ -154,28 +156,35 @@
         <div class="loader-overlay" *ngIf="loader">
         </div>
         <tr *ngFor="let row of ciqIndustryData; let i = index" class="content">
-          <td style="text-align: left;font-size: 14px;text-transform: capitalize;border: 1px solid #eeeeee" class="make-light">
-            <input type="checkbox" [id]="'checkbox_' + i" [(ngModel)]="row.isSelected" (change)="onIndustryCheck($event, row)"/>
+          <td class="make-light td-checkbox">
+            <input type="checkbox" style="transform: scale(.96) !important;" [id]="'checkbox_' + i" [(ngModel)]="row.isSelected" (change)="onIndustryCheck($event, row)"/>
           </td>
-          <td style="text-align: left;font-size: 14px;text-transform: capitalize;border: 1px solid #eeeeee;" class="make-light">{{row.COMPANYID}}</td>
-          <td style="text-align: justify;font-size: 14px;text-transform: capitalize;border: 1px solid #eeeeee" class="make-light" (click)="companyDetails(row)">{{row.COMPANYNAME}}</td>
-          <td style="font-size: 14px;text-transform: capitalize;border: 1px solid #eeeeee" [ngClass]="formatNumber(row.MARKETCAP) ? 'make-light' : 'add-padding-left'">
+          <td class="make-light company-id">{{row.COMPANYID}}</td>
+          <td class="make-light company-name" (click)="companyDetails(row)">{{row.COMPANYNAME}}</td>
+          <td [ngClass]="formatNumber(row.EBITDAVALUE) ? 'make-light td-ebitda' : 'add-padding-left td-ebitda'">
+            {{ formatNumber(row.EBITDAVALUE) ? formatNumber(row.EBITDAVALUE) : '-'}}
+          </td>
+          <td [ngClass]="formatNumber(row.SALESVALUE) ? 'make-light td-sales' : 'add-padding-left td-sales'">
+            {{ formatNumber(row.SALESVALUE) ? formatNumber(row.SALESVALUE) : '-'}}
+          </td>
+          <td [ngClass]="formatNumber(row.MARKETCAP) ? 'make-light td-market-cap' : 'add-padding-left td-market-cap'">
             {{ formatNumber(row.MARKETCAP) ? formatNumber(row.MARKETCAP) : '-' }}
           </td>
           <td style="font-size: 14px; text-transform: capitalize; border: 1px solid #eeeeee" [ngClass]="formatNumber(row.SHARESOUTSTANDING) ? 'make-light' : 'add-padding-left'">
             {{ formatNumber(row.SHARESOUTSTANDING) ? formatNumber(row.SHARESOUTSTANDING) : '-' }}
           </td>
           
-          <td style="text-align: left;font-size: 14px;text-transform: capitalize;padding-left: 2%;border: 1px solid #eeeeee" class="make-light" >{{row.CITY}}</td>
-          <td style="text-align: left;font-size: 14px;text-transform: capitalize;border: 1px solid #eeeeee" class="make-light">{{row.SIMPLEINDUSTRYDESCRIPTION}}</td>
+          <td class="make-light td-city" >{{row.CITY}}</td>
+          <td class="make-light td-industry-description">{{row.SIMPLEINDUSTRYDESCRIPTION}}</td>
         </tr>
         <tr *ngIf="!ciqIndustryData?.length">
-          <td colspan="7">
+          <td colspan="9">
             <p class="total-rec empty-ciqindustrydata" >No records were found, try changing screening parameters</p>
           </td>
         </tr>
       </tbody>
     </table>
+  </div>
     <div>
       <p class="total-count" *ngIf="ciqIndustryData?.length">{{mainIndustries?.length}} selected</p>
       <mat-paginator style="float: inline-end;" *ngIf="ciqIndustryData?.length" [length]="length"

@@ -574,7 +574,7 @@ label {
     color: #0f8a76 ;
     th{
       text-align: left;
-      padding-left: 2%;
+      padding-left: 1%;
       font-family: 'AR One Sans', sans-serif;
     }
   }
@@ -586,7 +586,7 @@ label {
     font-size: 13px !important;
     font-weight: 500;
     font-family: 'AR One Sans', sans-serif !important;
-    padding-left: 2% !important;
+    padding-left: 1% !important;
     text-align: left !important;
     }
 
@@ -596,7 +596,7 @@ label {
     font-weight: 500;
     font-family: 'AR One Sans', sans-serif !important;
     text-align: left !important;
-    padding-left: 2% !important;
+    padding-left: 1% !important;
     }
   }
 
@@ -1046,7 +1046,7 @@ font-size: 1rem !important;
     color: #bbccbb;
 }
 .add-padding-left{
-  padding-left: 4% !important;
+  padding-left: 3% !important;
   font-weight: bold;
 }
 .sidenote{
@@ -1056,4 +1056,36 @@ font-size: 1rem !important;
   color: #b1b1b1;
   font-size: 13px;
 }
-  
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.table-industry-based-company {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-industry-based-company th,
+.table-industry-based-company td {
+  border: 1px solid #eeeeee;
+  padding: 10px;
+  white-space: nowrap;
+  text-align: left;
+  padding-left: 1%;
+  padding-right: 1%;
+}
+
+.td-checkbox, .company-id, .company-name, .td-ebitda, .td-sales, .td-market-cap, .td-industry-description, .td-city{
+  text-align: left;
+  font-size: 14px;
+  text-transform: capitalize;
+  border: 1px solid #eeeeee;
+}
+.company-name{
+  text-align: justify;
+}
+.td-city{
+  text-transform: capitalize;
+  padding-left: 2%;
+}

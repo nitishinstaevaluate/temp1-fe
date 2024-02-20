@@ -58,7 +58,7 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
     private processStatusManagerService:ProcessStatusManagerService,
   private snackBar:MatSnackBar){
     this.reviewForm=this.formBuilder.group({
-      otherAdj:['',[Validators.required]],
+      otherAdj:[0,[Validators.required]],
     })
 
   }
@@ -104,7 +104,7 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
   async constructFormPayload(fourthStageData: any) {
     let payload: any = {
         ...(!this.transferStepperTwo ? fourthStageData : this.transferStepperTwo),
-        otherAdj: this.reviewForm.controls['otherAdj'].value && (this.isRelativeValuation('FCFE') || this.isRelativeValuation('FCFF')) ? this.reviewForm.controls['otherAdj'].value : null,
+        otherAdj: this.reviewForm.controls['otherAdj'].value && (this.isRelativeValuation('FCFE') || this.isRelativeValuation('FCFF')) ? this.reviewForm.controls['otherAdj'].value : 0,
     };
 
     if (this.isPAndLExcelModified || this.isBSExcelModified || this.isAssessmentSheetModified || this.isRuleELevenUaSheetModified) {
@@ -302,7 +302,7 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
         const processStateModel ={
           fourthStageInput:{
             appData:this.valuationData,
-            otherAdj:this.reviewForm.controls['otherAdj'].value && (this.isRelativeValuation('FCFE') || this.isRelativeValuation('FCFF')) ? this.reviewForm.controls['otherAdj'].value : null,
+            otherAdj:this.reviewForm.controls['otherAdj'].value && (this.isRelativeValuation('FCFE') || this.isRelativeValuation('FCFF')) ? this.reviewForm.controls['otherAdj'].value : 0,
             formFillingStatus:processStatStep
           },
           step:processStat
