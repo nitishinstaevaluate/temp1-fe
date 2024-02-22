@@ -27,7 +27,7 @@
                         </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
                       </span>
                         <span class="company-list-rmve" *ngIf="modelValuation.controls['company']?.value && !companyListLoader">
-                          <mat-icon class="company-list-rmve-icon" (click)="clearCompanyInput()">close</mat-icon>
+                          <mat-icon class="company-list-rmve-icon" (click)="clearInput('company')">close</mat-icon>
                         </span>
                       <span class="outercmpny-spinner" *ngIf="companyListLoader">
                         <mat-progress-spinner style="vertical-align: middle" class="company-list-spinner" mode="indeterminate" diameter="20"></mat-progress-spinner>
@@ -52,24 +52,59 @@
               </div>
 
                 <!--valuation date  -->
-                <div class="col-md-6 field" style="padding-top: 2%;">
-                    <div class="material-textfield">
+                <div class="col-md-6 field" style="padding-top: 0%;">
+                    <!-- <div class="material-textfield">
                       <input class="new-inp" formControlName="valuationDate" [placeholder]="modelControl.modelValuation.options.valuationDate.placeholder" type="date" />
                       <label>Valuation Date</label>
-                    </div>
-                    <span *ngIf="modelValuation.controls['valuationDate'].touched && modelValuation.controls['valuationDate'].errors">
-                      <span *ngIf="hasError('valuationDate','required',modelValuation)" class="error-text">Please select valuation date</span>
-                    </span>
+                      <mat-form-field>
+                        <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
+                    </div> -->
+                    <div class="material-textfield">
+                      <mat-form-field appearance="fill" class="company-l val-date" style="width: 100%;">
+                        <mat-label>Valuation Date</mat-label>
+                        <span class="company-list-rmve" *ngIf="modelValuation.controls['valuationDate']?.value">
+                          <mat-icon class="company-list-rmve-icon" (click)="clearInput('valuationDate')">close</mat-icon>
+                        </span>
+                          <input matInput [matDatepicker]="picker" formControlName="valuationDate" (click)="picker.open()" placeholder="Choose a date" class="company-list-inp">
+                          <span class="company-info-span" *ngIf="modelValuation.controls['valuationDate']?.value">
+                            <svg matTooltipClass='form-one-tooltip' [matTooltip]="helperText.valuationDate" matTooltipPosition="right" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
+                              <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:32px;" 
+                              fill="#ff0000"></path>
+                              <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px;">
+                              </polyline><line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px;">
+                            </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
+                          </span>
+                          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                          <mat-datepicker #picker></mat-datepicker>
+                          <mat-error class="company-list-error" *ngIf="modelValuation.controls['valuationDate'].touched && modelValuation.controls['valuationDate'].errors">
+                            <span *ngIf="hasError('valuationDate','required',modelValuation)" class="error-text" style="padding-left: 0%;">Please select valuation date</span>
+                        </mat-error>
+                      </mat-form-field>
+                  </div>
                 </div>
 
                 <!-- Reporting unit -->
-                <div class="col-md-6 field" style="padding-top: 1%;">
+                <div class="col-md-6 field" style="padding-top: 0%;">
                   <div class="material-textfield">
-                    <select id="reportingUnit" class="new-inp" formControlName="reportingUnit">
+                    <!-- <select id="reportingUnit" class="new-inp" formControlName="reportingUnit">
                       <option value="" disabled selected>Select reporting unit</option>
                       <option *ngFor="let doc of modelControl.reportDetails.options.reportingUnit"  [value]="doc.value">{{ doc.name }}</option>
                     </select>
-                    <label for="reportingUnit">Units</label>
+                    <label for="reportingUnit">Units</label> -->
+                      <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                          <mat-label>Units*</mat-label>
+                          <span class="company-list-rmve" *ngIf="modelValuation.controls['reportingUnit']?.value" style="right:7%;">
+                          <mat-icon class="company-list-rmve-icon" (click)="clearInput('reportingUnit')">close</mat-icon>
+                          </span>
+                          <mat-select formControlName="reportingUnit" class="new-inp company-list-inp nature-of-instrument">
+                          <mat-option *ngFor="let doc of modelControl.reportDetails.options.reportingUnit" class="auto-class" [value]="doc.value">
+                              {{ doc.name }}
+                          </mat-option>
+                          </mat-select>
+                      </mat-form-field>
                   </div>
                   <span *ngIf="modelValuation.controls['reportingUnit'].touched && modelValuation.controls['reportingUnit'].errors">
                     <span *ngIf="hasError('reportingUnit','required',modelValuation)" class="error-text">Please select reporting unit</span>
@@ -77,13 +112,24 @@
               </div>
 
               <!-- currency unit -->
-              <div class="col-md-6 field" style="padding-top: 1%;">
+              <div class="col-md-6 field" style="padding-top: 0%;">
                 <div class="material-textfield">
-                  <select id="currencyUnit" class="new-inp" formControlName="currencyUnit">
+                  <!-- <select id="currencyUnit" class="new-inp" formControlName="currencyUnit">
                     <option value="" disabled selected>Select currency</option>
                     <option *ngFor="let doc of modelControl.reportDetails.options.currencyUnit"  [value]="doc.value">{{ doc.name }}</option>
                   </select>
-                  <label for="currencyUnit">Currency</label>
+                  <label for="currencyUnit">Currency</label> -->
+                  <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                    <mat-label>Currency*</mat-label>
+                    <span class="company-list-rmve" *ngIf="modelValuation.controls['currencyUnit']?.value" style="right:7%;">
+                    <mat-icon class="company-list-rmve-icon" (click)="clearInput('currencyUnit')">close</mat-icon>
+                    </span>
+                    <mat-select formControlName="currencyUnit" class="new-inp company-list-inp nature-of-instrument">
+                    <mat-option *ngFor="let doc of modelControl.reportDetails.options.currencyUnit" class="auto-class" [value]="doc.value">
+                        {{ doc.name }}
+                    </mat-option>
+                    </mat-select>
+                </mat-form-field>
                 </div>
                 <span *ngIf="modelValuation.controls['currencyUnit'].touched && modelValuation.controls['currencyUnit'].errors">
                   <span *ngIf="hasError('currencyUnit','required',modelValuation)" class="error-text">Please select currency unit</span>
@@ -91,14 +137,36 @@
             </div>
 
                 <!-- location -->
-                <div class="col-md-6 field">
-                    <div class="material-textfield">
+                <div class="col-md-6 field" style="padding-top: 0%;">
+                    <!-- <div class="material-textfield">
                       <input class="new-inp"  formControlName="location" [type]="modelControl.modelValuation.options.location.type" [placeholder]="modelControl.modelValuation.options.location.placeholder"/>
                       <label>Location</label>
-                    </div>
-                    <span *ngIf="modelValuation.controls['location'].touched && modelValuation.controls['location'].errors">
-                      <span *ngIf="hasError('location','required',modelValuation)" class="error-text">Please enter location</span>
-                    </span>
+                    </div> -->
+                    <div class="material-textfield">
+                      <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                          <input type="text" matInput formControlName="location" class="company-list-inp" placeholder="Enter Location">
+                          <span class="company-info-span" *ngIf="modelValuation.controls['location']?.value" style="left: 13%;">
+                            <svg matTooltipClass='form-one-tooltip' [matTooltip]="helperText.location" matTooltipPosition="right" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
+                              <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:32px;" 
+                              fill="#ff0000"></path>
+                              <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px;">
+                              </polyline><line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px;">
+                            </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
+                          </span>
+                            <span class="company-list-rmve" *ngIf="modelValuation.controls['location']?.value">
+                              <mat-icon class="company-list-rmve-icon" (click)="clearInput('location')">close</mat-icon>
+                            </span>
+                          <mat-label>
+                            Location
+                          </mat-label>
+                          
+                          <mat-error class="company-list-error" *ngIf="modelValuation.controls['location'].touched && modelValuation.controls['location'].errors">
+                            <span *ngIf="hasError('location','required',modelValuation)">
+                              Please enter location.
+                            </span>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
                 </div>
     
                 <!--industry  -->
@@ -130,14 +198,38 @@
               </div> -->
 
                 <!-- outstanding shares -->
-                <div class="col-md-6 field" >
-                      <div class="material-textfield">
+                <div class="col-md-6 field" style="padding-top: 0%;">
+                      <!-- <div class="material-textfield">
                         <input class="new-inp" [type]="modelControl.modelValuation.options.outstandingShares.type"  formControlName="outstandingShares" [placeholder]="modelControl.modelValuation.options.outstandingShares.placeholder"/>
                         <label>Outstanding Shares</label>
-                  </div>
-                  <span *ngIf="modelValuation.controls['outstandingShares'].touched && modelValuation.controls['outstandingShares'].errors">
+                  </div> -->
+                  <div class="material-textfield">
+                    <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                        <input type="text" matInput formControlName="outstandingShares" class="company-list-inp" placeholder="Enter outstanding shares">
+                        <span class="company-info-span" *ngIf="modelValuation.controls['outstandingShares']?.value" style="left: 26%;">
+                          <svg matTooltipClass='form-one-tooltip' [matTooltip]="helperText.outstandingShares" matTooltipPosition="right" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
+                            <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:32px;" 
+                            fill="#ff0000"></path>
+                            <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px;">
+                            </polyline><line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px;">
+                          </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
+                        </span>
+                          <span class="company-list-rmve" *ngIf="modelValuation.controls['outstandingShares']?.value">
+                            <mat-icon class="company-list-rmve-icon" (click)="clearInput('outstandingShares')">close</mat-icon>
+                          </span>
+                        <mat-label>
+                          Outstanding shares
+                        </mat-label>
+                        <mat-error class="company-list-error" *ngIf="modelValuation.controls['outstandingShares'].touched && modelValuation.controls['outstandingShares'].errors">
+                          <span *ngIf="hasError('outstandingShares','required',modelValuation)">
+                            Please enter outstanding shares.
+                          </span>
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  <!-- <span *ngIf="modelValuation.controls['outstandingShares'].touched && modelValuation.controls['outstandingShares'].errors">
                     <span *ngIf="hasError('outstandingShares','required',modelValuation)" class="error-text">Please enter outstanding shares</span>
-                  </span>
+                  </span> -->
               </div>
 
               <!-- sub-industry -->
@@ -155,14 +247,28 @@
                 </div> -->
 
                 <!-- tax rate -->
-                <div class="col-md-6 field" *ngIf="isNotRuleElevenUaAndNav()">
+                <div class="col-md-6 field" *ngIf="isNotRuleElevenUaAndNav()" style="padding-top: 0px;">
                     <div class="material-textfield">
-                      <select id="subIndustry" class="new-inp"formControlName="taxRateType" (change)="onTaxRateChange($event)">
+                      <!-- <select id="subIndustry" class="new-inp"formControlName="taxRateType" (change)="onTaxRateChange($event)">
                         <option value="25.17" selected>Default</option>
                         <option *ngFor="let doc of taxRate" [value]="doc.type">{{doc.label}}</option>
                       </select>
-                      <label for="subIndustry">Tax Rate</label>
-                      <mat-hint *ngIf="taxRateModelBox" class="taxrate-hint">Tax rate is {{taxRateModelBox}}%</mat-hint>
+                      <label for="subIndustry">Tax Rate</label> -->
+                      <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                        <mat-label>Tax Rate*</mat-label>
+                        <span class="company-list-rmve" *ngIf="modelValuation.controls['taxRateType']?.value" style="right:7%;">
+                        <mat-icon class="company-list-rmve-icon" (click)="clearInput('taxRateType')">close</mat-icon>
+                        </span>
+                        <mat-select formControlName="taxRateType" class="new-inp company-list-inp nature-of-instrument" (selectionChange)="onTaxRateChange($event)">
+                        <mat-option value="25.17" selected class="auto-class" >
+                            Default
+                        </mat-option>
+                        <mat-option *ngFor="let doc of taxRate" class="auto-class" [value]="doc.type">
+                            {{ doc.label }}
+                        </mat-option>
+                      </mat-select>
+                      <mat-hint *ngIf="taxRateModelBox" class="taxrate-hint" style="padding-left: 0px;margin-left: -1%;">Tax rate is {{taxRateModelBox}}%</mat-hint>
+                    </mat-form-field>
                     </div>
                 </div>            
             </div>

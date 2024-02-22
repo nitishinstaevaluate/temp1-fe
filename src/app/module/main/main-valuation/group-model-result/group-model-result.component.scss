@@ -349,20 +349,9 @@
   }
 
  
-
-// .mat-mdc-snack-bar-container {
-//   --mat-mdc-snack-bar-button-color: #f23a2f;
-  
-//   &.app-notification-error {
-//       --mdc-snackbar-supporting-text-color: red;
-//       --mdc-snackbar-container-color: #fff;
-//   }
-  
-//   &.app-notification-success {
-//       --mdc-snackbar-supporting-text-color: #0cd18f;
-//       --mdc-snackbar-container-color: #fff;
-//   }
-  
-// }
+  ::ng-deep .units .mat-mdc-select-trigger .mat-mdc-select-value{
+    padding-top: 0% !important;
+    padding-left: 2%;
+  }
   // new scss ends
   
