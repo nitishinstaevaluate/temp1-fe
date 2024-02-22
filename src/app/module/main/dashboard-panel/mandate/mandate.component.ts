@@ -23,7 +23,8 @@ export class MandateComponent implements OnInit{
   reportPurposeDataChips:any=[];
   separatorKeysCodes: number[] = [ENTER, COMMA];
   reportObjectives:any= REPORT_OBJECTIVE;
-  reportObjective:any=''
+  reportObjective:any='';
+  loader = false;
   constructor(
     private excelAndReportService: ExcelAndReportService,
     private utilService: UtilService,
@@ -49,6 +50,7 @@ export class MandateComponent implements OnInit{
       })
     }
     submitMandateCheckListForm(){
+      this.loader = true; 
     const lastUrlSegment = this.router.url.split('/').pop();
 
     this.utilService.postMandateChecklistDetails(lastUrlSegment, this.mandateForm.value).subscribe((response:any)=>{
@@ -60,11 +62,13 @@ export class MandateComponent implements OnInit{
           panelClass: 'app-notification-success'
         })
         this.excelAndReportService.generateMandateReport(response.uniqueLinkId).subscribe((response:any)=>{
+          this.loader = false;
           if(response){
             console.log("pdf generated successfully")
             saveAs(response, `${this.mandateForm.value.companyName}.pdf`);
           }
         },(error)=>{
+          this.loader = false;
           this.snackbar.open('Backend error - Mandate pdf generation failed', 'Ok',{
             horizontalPosition: 'right',
             verticalPosition: 'top',
@@ -72,9 +76,10 @@ export class MandateComponent implements OnInit{
             panelClass: 'app-notification-error'
           })
         })
-
+        
       }
       else{
+        this.loader = false;
         this.snackbar.open('Mandate pdf not generated', 'Ok',{
           horizontalPosition: 'right',
           verticalPosition: 'top',
@@ -83,6 +88,7 @@ export class MandateComponent implements OnInit{
         })
       }
     },(error)=>{
+      this.loader = false;
       this.snackbar.open('Backend error - Mandate pdf not generated', 'Ok',{
         horizontalPosition: 'right',
         verticalPosition: 'top',
