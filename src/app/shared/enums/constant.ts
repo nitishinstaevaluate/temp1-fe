@@ -247,6 +247,9 @@ export const ALL_MODELS = {
     valuationDate: `The valuation date represents the specific point in time used for assessing the financial worth or value of an asset, investment, or company.`,
     location: `The location, or geographic presence, of a company is considered during valuation to assess factors such as market demand, competition, regulatory environment, and operational costs, all of which can influence the company's worth.`,
     outstandingShares: `Outstanding shares are pivotal in valuation, serving as the basis for calculating key metrics like earnings per share and market capitalization.`,
+    reportingUnit:`Reporting units in valuation are used to normalize financial figures, facilitating comparisons across different scales such as millions, lakhs, crores, or thousands, ensuring consistent analysis and decision-making.`,
+    currencyUnit:`In valuation, a currency unit represents the monetary denomination used to express financial figures, aiding in the comparison and understanding of financial data across different currencies.`,
+    taxRate:`Tax rate in valuation is the percentage applied to assess the tax liability or expense on taxable income, influencing the after-tax cash flows used in financial analysis.`
   }
 
   export const CHECKLIST_TYPES = {

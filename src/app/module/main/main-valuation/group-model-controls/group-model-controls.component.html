@@ -99,6 +99,18 @@
                           <span class="company-list-rmve" *ngIf="modelValuation.controls['reportingUnit']?.value" style="right:7%;">
                           <mat-icon class="company-list-rmve-icon" (click)="clearInput('reportingUnit')">close</mat-icon>
                           </span>
+                          <span class="company-info-span" *ngIf="modelValuation.controls['reportingUnit']?.value"  style="z-index: 1;left: 10%;">
+                            <svg matTooltipClass='form-one-tooltip' [matTooltip]="helperText.reportingUnit" matTooltipPosition="right" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
+                              <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:32px;" 
+                                fill="#ff0000"></path>
+                              <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px;">
+                              </polyline>
+                              <line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px;">
+                              </line>
+                              <path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path>
+                            </svg>
+                          </span>
+                          
                           <mat-select formControlName="reportingUnit" class="new-inp company-list-inp nature-of-instrument">
                           <mat-option *ngFor="let doc of modelControl.reportDetails.options.reportingUnit" class="auto-class" [value]="doc.value">
                               {{ doc.name }}
@@ -123,6 +135,17 @@
                     <mat-label>Currency*</mat-label>
                     <span class="company-list-rmve" *ngIf="modelValuation.controls['currencyUnit']?.value" style="right:7%;">
                     <mat-icon class="company-list-rmve-icon" (click)="clearInput('currencyUnit')">close</mat-icon>
+                    </span>
+                    <span class="company-info-span" *ngIf="modelValuation.controls['currencyUnit']?.value" style="z-index: 1;left: 14%;">
+                      <svg matTooltipClass='form-one-tooltip' [matTooltip]="helperText.currencyUnit" matTooltipPosition="right" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
+                        <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:32px;" 
+                          fill="#ff0000"></path>
+                        <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px;">
+                        </polyline>
+                        <line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px;">
+                        </line>
+                        <path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path>
+                      </svg>
                     </span>
                     <mat-select formControlName="currencyUnit" class="new-inp company-list-inp nature-of-instrument">
                     <mat-option *ngFor="let doc of modelControl.reportDetails.options.currencyUnit" class="auto-class" [value]="doc.value">
@@ -258,6 +281,17 @@
                         <mat-label>Tax Rate*</mat-label>
                         <span class="company-list-rmve" *ngIf="modelValuation.controls['taxRateType']?.value" style="right:7%;">
                         <mat-icon class="company-list-rmve-icon" (click)="clearInput('taxRateType')">close</mat-icon>
+                        </span>
+                        <span class="company-info-span" *ngIf="modelValuation.controls['taxRateType']?.value" style="z-index: 1;left: 14%;">
+                          <svg matTooltipClass='form-one-tooltip' [matTooltip]="helperText.taxRate" matTooltipPosition="right" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
+                            <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:32px;" 
+                              fill="#ff0000"></path>
+                            <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px;">
+                            </polyline>
+                            <line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px;">
+                            </line>
+                            <path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path>
+                          </svg>
                         </span>
                         <mat-select formControlName="taxRateType" class="new-inp company-list-inp nature-of-instrument" (selectionChange)="onTaxRateChange($event)">
                         <mat-option value="25.17" selected class="auto-class" >
