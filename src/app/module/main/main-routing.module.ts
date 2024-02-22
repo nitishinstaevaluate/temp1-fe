@@ -5,8 +5,9 @@ import { ValuationComponent } from './valuation/valuation.component';
 import { MainValuationComponent } from './main-valuation/main-valuation.component';
 import { DashboardPanelComponent } from './dashboard-panel/dashboard-panel.component';
 import { ValuationDataChecklistComponent } from './dashboard-panel/valuation-data-checklist/valuation-data-checklist.component';
-import { DataChecklistIdGuard } from 'src/app/shared/guard/data-checklist-id.guard';
+import { ChecklistIdGuard } from 'src/app/shared/guard/checklist-id.guard';
 import { AuthenticateUserGuard } from 'src/app/shared/guard/authenticate-user.guard';
+import { MandateComponent } from './dashboard-panel/mandate/mandate.component';
 
 const routes: Routes = [
   // {
@@ -27,7 +28,12 @@ const routes: Routes = [
   {
     path : "panel/data-checklist/:linkId",
     component : ValuationDataChecklistComponent,
-    canActivate:[DataChecklistIdGuard]
+    canActivate:[ChecklistIdGuard]
+  },
+  {
+    path : "panel/mandate/:linkId",
+    component : MandateComponent,
+    canActivate:[ChecklistIdGuard]
   },
   {
     path : "activity",

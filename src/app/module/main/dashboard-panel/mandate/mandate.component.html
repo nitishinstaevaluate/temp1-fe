@@ -1,0 +1,129 @@
+<div class="container-fluid main-outer-wrapper">
+    <div class="outer-wrapper">
+        <div class='c-decorated-header'>
+            <h3><span style="padding-left: 2%;">Mandate pdf Details</span></h3>
+          </div>
+        <div class="row" [formGroup]="mandateForm">
+            <div class="col-xl-6 col-md-6 field">
+                <div class="material-textfield">
+                    <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                        <input type="text" matInput formControlName="companyName" class="company-list-inp" placeholder="Enter company name">
+                          <span class="company-list-rmve" *ngIf="mandateForm.controls['companyName']?.value">
+                            <mat-icon class="company-list-rmve-icon" (click)="clearInput('companyName')">close</mat-icon>
+                          </span>
+                        <mat-label>
+                          Company Name*
+                        </mat-label>
+                      </mat-form-field>
+                </div>
+            </div>
+           
+            <div class="col-xl-6 col-md-6 field">
+                <div class="material-textfield">
+                    <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                        <input type="text" matInput formControlName="companyAddress" class="company-list-inp" placeholder="Enter company address">
+                          <span class="company-list-rmve" *ngIf="mandateForm.controls['companyAddress']?.value">
+                            <mat-icon class="company-list-rmve-icon" (click)="clearInput('companyAddress')">close</mat-icon>
+                          </span>
+                        <mat-label>
+                          Company Address*
+                        </mat-label>
+                      </mat-form-field>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 field">
+                <div class="material-textfield">
+                        <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                            <input type="text" matInput formControlName="totalFees" class="company-list-inp" placeholder="Enter total fees">
+                              <span class="company-list-rmve" *ngIf="mandateForm.controls['totalFees']?.value">
+                                <mat-icon class="company-list-rmve-icon" (click)="clearInput('totalFees')">close</mat-icon>
+                              </span>
+                            <mat-label>
+                              Total Fees*
+                            </mat-label>
+                        </mat-form-field>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 field">
+                <div class="material-textfield">
+                        <mat-form-field appearance="fill" class="company-l val-date" style="width: 100%;">
+                        <mat-label>Appointment Date*</mat-label>
+                        <span class="company-list-rmve" *ngIf="mandateForm.controls['dateOfAppointment']?.value">
+                            <mat-icon class="company-list-rmve-icon" (click)="clearInput('dateOfAppointment')">close</mat-icon>
+                        </span>
+                        <input matInput [matDatepicker]="picker" formControlName="dateOfAppointment" (click)="picker.open()" placeholder="Choose a date" class="company-list-inp">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 field">
+                <div class="material-textfield">
+                        <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                            <mat-label>Nature Of Instrument*</mat-label>
+                            <span class="company-list-rmve" *ngIf="mandateForm.controls['natureOfInstrument']?.value" style="right:5%;">
+                            <mat-icon class="company-list-rmve-icon" (click)="clearInput('natureOfInstrument')">close</mat-icon>
+                            </span>
+                            <mat-select formControlName="natureOfInstrument" class="new-inp company-list-inp nature-of-instrument">
+                            <mat-option *ngFor="let doc of modelControl.reportDetails.options.natureOfInstrument" class="auto-class" [value]="doc.value">
+                                {{ doc.name }}
+                            </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 field">
+                <div class="material-textfield">
+                        <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                            <mat-label>Purpose Of Report*</mat-label>
+                            <span class="company-list-rmve" *ngIf="mandateForm.controls['purposeOfReport']?.value" style="right:5%;">
+                            <mat-icon class="company-list-rmve-icon" (click)="clearInput('purposeOfReport')">close</mat-icon>
+                            </span>
+                            <mat-select formControlName="purposeOfReport" class="new-inp company-list-inp nature-of-instrument" multiple>
+                            <mat-option *ngFor="let doc of modelControl.reportDetails.options.reportPurpose" class="auto-class report-option-class" [value]="doc.value">
+                                {{ doc.name }}
+                            </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+            </div>
+
+            <div class="col-xl-12 col-md-12 field">
+                <div class="material-textfield">
+                          <mat-form-field appearance="fill" class="section-chip" style="width: 100%;" >
+                            <mat-label>Section/Regulation Reference*</mat-label>
+                            <mat-chip-grid #chipGrid>
+                              <mat-chip-row *ngFor="let purpose of reportPurposeDataChips;let sectionIndex= index" class="section-chipset" (removed)="remove(sectionIndex)">
+                                {{purpose}}
+                                <button matChipRemove [attr.aria-label]="'remove ' + purpose">
+                                  <mat-icon>cancel</mat-icon>
+                                </button>
+                              </mat-chip-row>
+                            </mat-chip-grid>
+                            <input #purposeInput 
+                              [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+                              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                              (matChipInputTokenEnd)="add($event)"/>
+                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)" >
+                              <mat-option *ngFor="let purpose of reportPurposeData " [value]="purpose.section + ' - ' + purpose.Description">
+                                {{ purpose.section }} - {{ purpose.Description }}
+                              </mat-option>
+                            </mat-autocomplete>
+                          </mat-form-field>
+                    </div>
+            </div>
+        </div>
+        <div class="row field">
+            <div class="col-xl-12" style="text-align: right;">
+                <button (click)="submitMandateCheckListForm()" class="button-save-mat" mat-raised-button>
+                    Submit
+                    <span class="button-save"><mat-icon>send</mat-icon></span>
+                </button>
+            </div>
+          </div>
+    </div>
+</div>

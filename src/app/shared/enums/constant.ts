@@ -243,7 +243,15 @@ export const ALL_MODELS = {
     comparableTransactionModelLabel: `Estimate the value of a company by analyzing the values paid in similar mergers and acquisitions transactions, and using those values as a basis for estimating the value of the company. This method is particularly useful when there are no comparable public companies or when the company's financials are not publicly available.`,
     marketPriceModelLabel: `Estimate the value of a company by comparing its market price to its financial metrics, such as earnings, revenue, or book value`,
     ruleElevenModelLabel: `Estimate the value of a company for the purpose of mergers and acquisitions, takeovers, and other financial transactions. It is a judicial approach that is based on the principles of the Indian Companies Act, 1956, and the Securities and Exchange Board of India (SEBI) regulations.`,
-    companyName:`Please select name of the company for valuation analysis.`
+    companyName:`The company name is a unique identifier used to distinguish and refer to a specific organization within a particular context, such as business operations, financial transactions, or legal documents.`,
+    valuationDate: `The valuation date represents the specific point in time used for assessing the financial worth or value of an asset, investment, or company.`,
+    location: `The location, or geographic presence, of a company is considered during valuation to assess factors such as market demand, competition, regulatory environment, and operational costs, all of which can influence the company's worth.`,
+    outstandingShares: `Outstanding shares are pivotal in valuation, serving as the basis for calculating key metrics like earnings per share and market capitalization.`,
+  }
+
+  export const CHECKLIST_TYPES = {
+    mandateChecklist:"mandatechecklist",
+    dataCheckList: "datachecklist"
   }
 
   export const INCOME_APPROACH = ['FCFE','FCFF','Excess_Earnings'];
