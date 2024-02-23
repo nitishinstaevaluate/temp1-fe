@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { INCOME_APPROACH, MARKET_APPROACH, NET_ASSET_APPROACH } from 'src/app/shared/enums/constant';
+import { CHECKLIST_TYPES, INCOME_APPROACH, MARKET_APPROACH, NET_ASSET_APPROACH } from 'src/app/shared/enums/constant';
 import { convertToNumberOrZero, formatNumber } from 'src/app/shared/enums/functions';
 import { UtilService } from 'src/app/shared/service/util.service';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
@@ -123,9 +123,33 @@ export class DashboardPanelComponent {
   }
 
   loadDataCheckListForm(){
-    this.utilService.generateUniqueLinkId().subscribe((response:any)=>{
+    this.utilService.generateUniqueLinkId(CHECKLIST_TYPES.dataCheckList).subscribe((response:any)=>{
       if(response.status){
         this.route.navigate(['dashboard/panel/data-checklist', response.uniqueLink]);
+      }
+      else{
+        this.snackBar.open('Unique link generation failed', 'Ok',{
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+            duration: 3000,
+            panelClass: 'app-notification-error',
+        })
+      }
+    },(error)=>{
+      this.snackBar.open('Backend error - Unique link generation failed', 'Ok',{
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+        duration: 3000,
+        panelClass: 'app-notification-error',
+    })
+    })
+  }
+
+  loadMandateForm(){
+    this.utilService.generateUniqueLinkId(CHECKLIST_TYPES.mandateChecklist).subscribe((response:any)=>{
+      console.log(response,"response")
+      if(response.status){
+        this.route.navigate(['dashboard/panel/mandate', response.uniqueLink]);
       }
       else{
         this.snackBar.open('Unique link generation failed', 'Ok',{

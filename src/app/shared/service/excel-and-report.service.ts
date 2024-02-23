@@ -55,4 +55,10 @@ export class ExcelAndReportService {
   previewSebiReport(reportId:any){
     return this.http.get(`${this.HOST}report/preview-sebi-report/${reportId}`);
   }
+
+  generateMandateReport(reportId:any){
+    return this.http.get(`${this.HOST}report/mandate-report/${reportId}`,{
+      responseType: 'blob'
+    });
+  }
 }

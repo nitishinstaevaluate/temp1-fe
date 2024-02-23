@@ -20,7 +20,20 @@
       <div style="padding-left: 1%;">
         <div class="left-header">Upcoming Valuation Tasks</div>
       </div>
-
+      <div class="row task-list-wrapper">
+        <div class="col-xl-6">
+          <div class="form-check">
+            <label class="dashboard-left-label" for="flexRadioDefault3">
+              Mandate form - <span class="item-label-info">Generate Mandate PDF</span>
+            </label>
+          </div>
+        </div>
+        <div class="col-xl-6 dashboard-right-label">
+          <p> 
+            <span class="item-list-tag start-item" (click)="loadMandateForm()">Start</span>
+          </p>
+        </div>
+      </div>
         <div class="row task-list-wrapper">
           <div class="col-xl-6">
             <div class="form-check">
@@ -94,6 +107,7 @@
             </p>
           </div>
         </div>
+        
     </div>
   </div>
   <div class="right-bar">

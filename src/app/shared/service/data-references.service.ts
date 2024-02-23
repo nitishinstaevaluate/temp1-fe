@@ -62,8 +62,12 @@ export class DataReferencesService {
 //     return this.http.get(`${HOST}companies/${id}`);
 //   }
 
- getReportPurpose(reportObjective:string){
+ getReportPurpose(reportObjective:any){
   return this.http.get(`${HOST}reportPurpose/get?reportObjective=${reportObjective}`);
+ }
+
+ getMultiplePurpose(reportObjective:any){
+  return this.http.get(`${HOST}reportPurpose/get-multiple-purpose?reportObjective=${reportObjective}`);
  }
 
 //  getSPIndustryList(){
