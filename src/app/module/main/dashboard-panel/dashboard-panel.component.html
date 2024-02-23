@@ -17,6 +17,7 @@
       </div>
     </div>
     <div class="tasks-wrapper" style="padding-top: 0%;">
+      <div *ngIf="!loader">
       <div style="padding-left: 1%;">
         <div class="left-header">Upcoming Valuation Tasks</div>
       </div>
@@ -107,7 +108,10 @@
             </p>
           </div>
         </div>
-        
+      </div>
+        <div class="loader-overlay" *ngIf="loader">
+          <mat-progress-spinner diameter="40" class="table-spinner"  mode="indeterminate"></mat-progress-spinner>
+      </div>
     </div>
   </div>
   <div class="right-bar">

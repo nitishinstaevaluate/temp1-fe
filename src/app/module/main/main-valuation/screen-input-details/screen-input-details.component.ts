@@ -45,7 +45,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   companyType:any= [];
   levelFourIndustryDescription:any = [];
   companyStatusTypeDescription:any = [];
-  companyTypeDescription:any = [];
+  companyTypeDescription:any = ['Public Company'];
   levelThreeIndustryDescription:any='';
   selectedObjects: any = [];
   selectedLevelFourIndustry: any = [];
@@ -95,6 +95,16 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     // this.checkProcessExist(this.formOneData);
     this.onValueChange();
     this.loadTableAsPerValuationDate(changes);
+
+    // #region Default set company type as public company
+      this.selectedCompanyType = [{
+        _id: "6598f0370b042902bcf9b7fb",
+        companytypeid: 4,
+        companytypename: "Public Company",
+        isactive: true
+      }]
+      this.companyTypeDropdownValue = true;
+    // #end-region
   }
 
   loadForm(){
@@ -138,15 +148,16 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
         })
       }
 
-      if(formTwoData?.companyType){
-        this.selectedCompanyType = formTwoData.companyType.map((elements:any)=>{
-          this.companyTypeDescription.push(elements.companytypename);
-          return elements
-        })
-        if(formTwoData?.companyType.length){
-          this.companyTypeDropdownValue = true;
-        }
-      }
+      // On load, patch selected company type values
+      // if(formTwoData?.companyType){
+      //   this.selectedCompanyType = formTwoData.companyType.map((elements:any)=>{
+      //     this.companyTypeDescription.push(elements.companytypename);
+      //     return elements
+      //   })
+      //   if(formTwoData?.companyType.length){
+      //     this.companyTypeDropdownValue = true;
+      //   }
+      // }
 
       if(formTwoData?.companyStatus){
         this.selectedCompanyStatusType = formTwoData.companyStatus.map((elements:any)=>{

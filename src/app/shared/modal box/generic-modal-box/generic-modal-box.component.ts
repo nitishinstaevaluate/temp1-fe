@@ -142,6 +142,7 @@ loadModel(data:any){
     this.patchExistingRiskFreeRateDetails(data);
   }
   if(data.value === this.appValues.CIQ_COMPANY_DETAILS.value) return this.label = this.appValues.CIQ_COMPANY_DETAILS.name;
+  if(data.data?.value === this.appValues.CHECKLIST_TYPES.DATA_CHECKLIST.value) return this.label = this.appValues.CHECKLIST_TYPES.DATA_CHECKLIST.name;
   return '';
 }
 
@@ -243,6 +244,13 @@ modalData(data?:any,knownAs?:string) {
     case 'restoreSession':
       this.dialogRef.close({
         sessionRestoreFlag:data?.restoreSession
+      })
+      break;
+
+    case 'dataCheckList':
+      this.dialogRef.close({
+        emailId: data.emailId,
+        sendEmail: data.sendEmail
       })
       break;
       

@@ -14,4 +14,8 @@ export class EmailService {
   contactSalesEmail(payload:any){
     return this.http.post(`${this.HOST}email/send-email`, payload)
   }
+
+  dataCheckListEmail(payload:any){
+    return this.http.post(`${this.HOST}email/v2/send-data-checklist-email`, payload)
+  }
 }

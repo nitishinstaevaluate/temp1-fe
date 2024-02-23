@@ -34,7 +34,7 @@
             <mat-form-field appearance="fill" class="companyType" style="width: 100%;">
               <mat-label class="ind-4">{{modelControl.inputScreen.columns.companyType.label}}</mat-label>
               <mat-select [(ngModel)]="selectedCompanyType" [compareWith]="comparerCompany" (openedChange)="onDropdownFocus($event,'companyType')" (selectionChange)="onDropdownChange($event,'companyType')" formControlName="companyType" multiple class="new-inp company-type">
-                <mat-option *ngFor="let company of companyType" [value]="company">
+                <mat-option [disabled]="companyType.length" *ngFor="let company of companyType" [value]="company">
                   {{ company.companytypename }}
                 </mat-option>
               </mat-select>

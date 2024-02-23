@@ -3,80 +3,203 @@
         <div class='c-decorated-header'>
             <h3><span style="padding-left: 2%;">Valuation Related Details</span></h3>
           </div>
-        <div class="row">
+
+          <div class="row" [formGroup]="dataCheckListForm" *ngIf="!loader">
             <div class="col-xl-4 col-md-4 field">
                 <div class="material-textfield">
-                    <input class="new-inp" placeholder="Enter valuation date"/>
-                    <label>Valuation Date*</label>
-                </div>
+                        <mat-form-field appearance="fill" class="company-l val-date" style="width: 100%;">
+                        <mat-label>Valuation Date*</mat-label>
+                        <span class="company-list-rmve" *ngIf="dataCheckListForm.controls['valuationDate']?.value">
+                            <mat-icon class="company-list-rmve-icon" (click)="clearInput('valuationDate')">close</mat-icon>
+                        </span>
+                        <input matInput [matDatepicker]="valuationpicker" formControlName="valuationDate" (click)="valuationpicker.open()" placeholder="Choose valuation date" class="company-list-inp">
+                        <mat-datepicker-toggle matSuffix [for]="valuationpicker"></mat-datepicker-toggle>
+                        <mat-datepicker #valuationpicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
             </div>
+           
             <div class="col-xl-4 col-md-4 field">
                 <div class="material-textfield">
-                    <input class="new-inp" placeholder="Enter tax rate"/>
-                    <label>Tax Rate*</label>
+                    <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                        <input type="text" matInput formControlName="taxRate" class="company-list-inp" placeholder="Enter tax rate">
+                          <span class="company-list-rmve" *ngIf="dataCheckListForm.controls['taxRate']?.value">
+                            <mat-icon class="company-list-rmve-icon" (click)="clearInput('taxRate')">close</mat-icon>
+                          </span>
+                        <mat-label>
+                          Tax Rate*
+                        </mat-label>
+                      </mat-form-field>
                 </div>
             </div>
+
             <div class="col-xl-4 col-md-4 field">
                 <div class="material-textfield">
-                    <input class="new-inp" placeholder="Enter number of outstanding shares"/>
-                    <label>Outstanding Shares*</label>
+                        <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                            <input type="text" matInput formControlName="outstandingShares" class="company-list-inp" placeholder="Enter number of shares">
+                              <span class="company-list-rmve" *ngIf="dataCheckListForm.controls['outstandingShares']?.value">
+                                <mat-icon class="company-list-rmve-icon" (click)="clearInput('outstandingShares')">close</mat-icon>
+                              </span>
+                            <mat-label>
+                              Outstanding shares*
+                            </mat-label>
+                        </mat-form-field>
                 </div>
             </div>
-        </div>
-        <div class='c-decorated-header c-decorated-header2'>
-            <h3><span style="padding-left: 2%;">Report related details</span></h3>
-          </div>
-        <div class="row">
+
+            <div class="col-xl-12 col-md-12">
+                <div class='c-decorated-header c-decorated-header2'>
+                    <h3><span style="padding-left: 2%;">Report related details</span></h3>
+                  </div>
+            </div>
+
             <div class="col-xl-4 col-md-4 field">
                 <div class="material-textfield">
-                    <input type="date" class="new-inp" placeholder="Enter valuation date"/>
-                    <label>Date of report*</label>
-                </div>
+                        <mat-form-field appearance="fill" class="company-l val-date" style="width: 100%;">
+                        <mat-label>Date of report*</mat-label>
+                        <span class="company-list-rmve" *ngIf="dataCheckListForm.controls['dateOfReport']?.value">
+                            <mat-icon class="company-list-rmve-icon" (click)="clearInput('dateOfReport')">close</mat-icon>
+                        </span>
+                        <input matInput [matDatepicker]="reportDatePicker" formControlName="dateOfReport" (click)="reportDatePicker.open()" placeholder="Choose a report date" class="company-list-inp">
+                        <mat-datepicker-toggle matSuffix [for]="reportDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #reportDatePicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
             </div>
+
             <div class="col-xl-4 col-md-4 field">
                 <div class="material-textfield">
-                    <input class="new-inp" placeholder="Enter tax rate"/>
-                    <label>Appointing Authority*</label>
+                    <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                        <input type="text" matInput formControlName="appointingAuthority" class="company-list-inp" placeholder="Enter appointing authority's name">
+                          <span class="company-list-rmve" *ngIf="dataCheckListForm.controls['appointingAuthority']?.value">
+                            <mat-icon class="company-list-rmve-icon" (click)="clearInput('appointingAuthority')">close</mat-icon>
+                          </span>
+                        <mat-label>
+                          Appointing Authority*
+                        </mat-label>
+                      </mat-form-field>
                 </div>
             </div>
+
             <div class="col-xl-4 col-md-4 field">
                 <div class="material-textfield">
-                    <input class="new-inp" placeholder="Enter number of outstanding shares"/>
-                    <label>Date of Appointment*</label>
-                </div>
+                        <mat-form-field appearance="fill" class="company-l val-date" style="width: 100%;">
+                        <mat-label>Date of Appointment*</mat-label>
+                        <span class="company-list-rmve" *ngIf="dataCheckListForm.controls['dateOfAppointment']?.value">
+                            <mat-icon class="company-list-rmve-icon" (click)="clearInput('dateOfAppointment')">close</mat-icon>
+                        </span>
+                        <input matInput [matDatepicker]="appointmentDatePicker" formControlName="dateOfAppointment" (click)="appointmentDatePicker.open()" placeholder="Choose a appointment date" class="company-list-inp">
+                        <mat-datepicker-toggle matSuffix [for]="appointmentDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #appointmentDatePicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
             </div>
-            <div class="col-xl-4 col-md-4 field">
-                <div class="material-textfield">
-                    <input class="new-inp" placeholder="Enter number of outstanding shares"/>
-                    <label>Company Address*</label>
-                </div>
-            </div>
-            <div class="col-xl-4 col-md-4 field">
-                <div class="material-textfield">
-                    <input class="new-inp" placeholder="Enter number of outstanding shares"/>
-                    <label>CIN Number*</label>
-                </div>
-            </div>
-            <div class="col-xl-4 col-md-4 field">
-                <div class="material-textfield">
-                    <input class="new-inp" placeholder="Enter number of outstanding shares"/>
-                    <label>Date of incorporation*</label>
-                </div>
-            </div>
+
             <div class="col-xl-6 col-md-6 field">
                 <div class="material-textfield">
-                    <input class="new-inp" placeholder="Enter number of outstanding shares"/>
-                    <label>Purpose of report*</label>
+                    <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                        <input type="text" matInput formControlName="companyAddress" class="company-list-inp" placeholder="Enter company address">
+                          <span class="company-list-rmve" *ngIf="dataCheckListForm.controls['companyAddress']?.value">
+                            <mat-icon class="company-list-rmve-icon" (click)="clearInput('companyAddress')">close</mat-icon>
+                          </span>
+                        <mat-label>
+                          Company Address*
+                        </mat-label>
+                      </mat-form-field>
                 </div>
             </div>
+
             <div class="col-xl-6 col-md-6 field">
                 <div class="material-textfield">
-                    <input class="new-inp" placeholder="Enter number of outstanding shares"/>
-                    <label>Nature of instrument*</label>
+                    <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                        <input type="text" matInput formControlName="cinNumber" class="company-list-inp" placeholder="Enter CIN number">
+                          <span class="company-list-rmve" *ngIf="dataCheckListForm.controls['cinNumber']?.value">
+                            <mat-icon class="company-list-rmve-icon" (click)="clearInput('cinNumber')">close</mat-icon>
+                          </span>
+                        <mat-label>
+                          CIN No.*
+                        </mat-label>
+                      </mat-form-field>
                 </div>
             </div>
+
+            <div class="col-xl-6 col-md-6 field">
+                <div class="material-textfield">
+                        <mat-form-field appearance="fill" class="company-l val-date" style="width: 100%;">
+                        <mat-label>Date of Incorporation*</mat-label>
+                        <span class="company-list-rmve" *ngIf="dataCheckListForm.controls['dateOfIncorporation']?.value">
+                            <mat-icon class="company-list-rmve-icon" (click)="clearInput('dateOfIncorporation')">close</mat-icon>
+                        </span>
+                        <input matInput [matDatepicker]="incorporationDatePicker" formControlName="dateOfIncorporation" (click)="incorporationDatePicker.open()" placeholder="Choose date of incorporation" class="company-list-inp">
+                        <mat-datepicker-toggle matSuffix [for]="incorporationDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #incorporationDatePicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 field">
+                <div class="material-textfield">
+                        <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                            <mat-label>Nature Of Instrument*</mat-label>
+                            <span class="company-list-rmve" *ngIf="dataCheckListForm.controls['natureOfInstrument']?.value" style="right:5%;">
+                            <mat-icon class="company-list-rmve-icon" (click)="clearInput('natureOfInstrument')">close</mat-icon>
+                            </span>
+                            <mat-select formControlName="natureOfInstrument" class="new-inp company-list-inp nature-of-instrument">
+                            <mat-option *ngFor="let doc of modelControl.reportDetails.options.natureOfInstrument" class="auto-class" [value]="doc.value">
+                                {{ doc.name }}
+                            </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 field">
+                <div class="material-textfield">
+                        <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                            <mat-label>Purpose Of Report*</mat-label>
+                            <span class="company-list-rmve" *ngIf="dataCheckListForm.controls['purposeOfReport']?.value" style="right:5%;">
+                            <mat-icon class="company-list-rmve-icon" (click)="clearInput('purposeOfReport')">close</mat-icon>
+                            </span>
+                            <mat-select formControlName="purposeOfReport" class="new-inp company-list-inp nature-of-instrument" multiple>
+                            <mat-option *ngFor="let doc of modelControl.reportDetails.options.reportPurpose" class="auto-class report-option-class" [value]="doc.value">
+                                {{ doc.name }}
+                            </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+            </div>
+
+            <div class="col-xl-12 col-md-12 field" style="padding-top: 1%;">
+                <div class="material-textfield">
+                          <mat-form-field appearance="fill" class="section-chip" style="width: 100%;" >
+                            <mat-label>Section/Regulation Reference*</mat-label>
+                            <mat-chip-grid #chipGrid>
+                              <mat-chip-row *ngFor="let purpose of reportPurposeDataChips;let sectionIndex= index" class="section-chipset" (removed)="remove(sectionIndex)">
+                                {{purpose}}
+                                <button matChipRemove [attr.aria-label]="'remove ' + purpose">
+                                  <mat-icon>cancel</mat-icon>
+                                </button>
+                              </mat-chip-row>
+                            </mat-chip-grid>
+                            <input #purposeInput 
+                              [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+                              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                              (matChipInputTokenEnd)="add($event)"/>
+                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)" >
+                              <mat-option *ngFor="let purpose of reportPurposeData " [value]="purpose.section + ' - ' + purpose.Description">
+                                {{ purpose.section }} - {{ purpose.Description }}
+                              </mat-option>
+                            </mat-autocomplete>
+                          </mat-form-field>
+                    </div>
+            </div>
         </div>
-        <div class="row field">
+
+        <div class="loader-overlay" *ngIf="loader">
+            <mat-progress-spinner diameter="40" class="table-spinner"  mode="indeterminate"></mat-progress-spinner>
+        </div>
+        
+        <div class="row field" style="padding-top: 1%;padding-bottom: 2%;">
             <div class="col-xl-9">
               <span class="download-temp"><a [href]="downloadTemplate" target="_blank">Download Template</a></span>
               <input

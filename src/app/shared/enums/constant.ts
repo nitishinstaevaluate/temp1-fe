@@ -231,6 +231,12 @@ export const ALL_MODELS = {
     CIQ_COMPANY_DETAILS:{
       value:'ciqCompanyDetails',
       name:"CIQ Company Details"
+    },
+    CHECKLIST_TYPES:{
+      DATA_CHECKLIST:{
+        value:'dataCheckList',
+        name:'Data checklist form'
+      }
     }
   }
 
