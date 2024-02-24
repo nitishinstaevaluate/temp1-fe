@@ -3,7 +3,7 @@
         <div class='c-decorated-header'>
             <h3><span style="padding-left: 2%;">Mandate pdf Details</span></h3>
           </div>
-        <div class="row" [formGroup]="mandateForm">
+        <div class="row" [formGroup]="mandateForm" *ngIf="!loader">
             <div class="col-xl-6 col-md-6 field">
                 <div class="material-textfield">
                     <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
@@ -117,7 +117,10 @@
                     </div>
             </div>
         </div>
-        <div class="row field" style="padding-bottom: 2%;">
+        <div class="loader-overlay" *ngIf="loader">
+          <mat-progress-spinner diameter="40" class="table-spinner"  mode="indeterminate"></mat-progress-spinner>
+      </div>
+        <div class="row field" *ngIf="!loader" style="padding-bottom: 2%;">
             <div class="col-xl-12" style="text-align: right;">
                 <button (click)="submitMandateCheckListForm()" class="button-save-mat" mat-raised-button>
                     Submit

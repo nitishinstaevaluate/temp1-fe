@@ -179,8 +179,15 @@ export class GroupModelControlsComponent implements OnInit {
    this.modelValuation.controls['projectionYears'].setValue(data?.projectionYears?? '');
    this.modelValuation.controls['reportingUnit'].setValue(data?.reportingUnit?? '');
    this.modelValuation.controls['subIndustry'].setValue(data?.subIndustry?? '');
-   this.modelValuation.controls['taxRateType'].setValue(data?.taxRate?.split('%')[0]?? '25.17');
    this.modelValuation.controls['taxRate'].setValue(data?.taxRate?? '');
+   
+   if(data.taxRate === '25.17' || data.taxRate === '25.17%'){
+     this.modelValuation.controls['taxRateType'].setValue('25.17');
+    }else{
+      this.modelValuation.controls['taxRateType'].setValue(data.taxRateType);
+    }
+    this.taxRateModelBox = `${data.taxRate}`.includes('%') ? data?.taxRate?.split('%')[0] : data?.taxRate;
+
    this.modelValuation.controls['terminalGrowthRate'].setValue(data?.terminalGrowthRate?? '');
    this.modelValuation.controls['type'].setValue(data?.type?? 'industry');
    this.modelValuation.controls['industry'].setValue(data?.industry ?? '');
@@ -254,14 +261,18 @@ export class GroupModelControlsComponent implements OnInit {
     }
 
     // check if valuation date is empty
-    const valuationDate = this.modelValuation.get('valuationDate')?.value;
-    if (valuationDate) {
+    const valuationDateValue = this.modelValuation.value.valuationDate;
+    if (valuationDateValue) {
+      const valuationDate = new Date(valuationDateValue);
+      const year = valuationDate.getFullYear();
+      const month = valuationDate.getMonth() + 1;
+      const day = valuationDate.getDate();
+      
       const myDate = {
-        year: valuationDate.split("-")[0],
-        month: valuationDate.split("-")[1], // Note that months are zero-based
-        day: valuationDate.split("-")[2],
+        year: year,
+        month: month,
+        day: day
       };
-
       this.newDate = new Date(myDate.year, myDate.month - 1, myDate.day);
       payload['valuationDate'] = this.newDate.getTime();
     }
@@ -418,7 +429,7 @@ export class GroupModelControlsComponent implements OnInit {
 
   onTaxRateChange(event: any) {
     // Handle the change event here
-    const selectedValue = event.target.value;
+    const selectedValue = event.value;
     if (selectedValue === '25.17') {
       this.openDialog();
     } else {
@@ -610,8 +621,8 @@ export class GroupModelControlsComponent implements OnInit {
     return value || '';
   }
 
-  clearCompanyInput(){
-    this.modelValuation.controls['company'].setValue('');
+  clearInput(controlName:string){
+    this.modelValuation.controls[controlName].setValue('');
   }
 
   companyInputFocused(){

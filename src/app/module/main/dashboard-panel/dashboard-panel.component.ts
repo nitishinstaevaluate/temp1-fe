@@ -1,10 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, isDevMode } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { CHECKLIST_TYPES, INCOME_APPROACH, MARKET_APPROACH, NET_ASSET_APPROACH } from 'src/app/shared/enums/constant';
 import { convertToNumberOrZero, formatNumber } from 'src/app/shared/enums/functions';
+import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal-box/generic-modal-box.component';
+import { EmailService } from 'src/app/shared/service/email.service';
 import { UtilService } from 'src/app/shared/service/util.service';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-dashboard-panel',
@@ -14,10 +18,13 @@ import { ValuationService } from 'src/app/shared/service/valuation.service';
 export class DashboardPanelComponent {
   totalRecords:any=[];
   activeLink: string | null = null;
+  loader = false;
   constructor(private valuationService:ValuationService,
     private route:Router,
     private utilService:UtilService,
-    private snackBar:MatSnackBar){this.fetchData()}
+    private snackBar:MatSnackBar,
+    private dialog: MatDialog,
+    private emailService: EmailService){this.fetchData()}
 
   fetchData(page:number=1,pageSize:number=10,query?:string): void { //inorder to increase the total count, increase the pageSize number 
     this.valuationService.getPaginatedValuations(page, pageSize,query)
@@ -122,32 +129,80 @@ export class DashboardPanelComponent {
     return records?.firstStageInput?.model
   }
 
-  loadDataCheckListForm(){
-    this.utilService.generateUniqueLinkId(CHECKLIST_TYPES.dataCheckList).subscribe((response:any)=>{
-      if(response.status){
-        this.route.navigate(['dashboard/panel/data-checklist', response.uniqueLink]);
-      }
-      else{
-        this.snackBar.open('Unique link generation failed', 'Ok',{
-            horizontalPosition: 'center',
-            verticalPosition: 'bottom',
-            duration: 3000,
-            panelClass: 'app-notification-error',
-        })
-      }
-    },(error)=>{
-      this.snackBar.open('Backend error - Unique link generation failed', 'Ok',{
+  loadDataCheckListForm() {
+    const data = { value: 'dataCheckList' };
+    const dialogRef = this.dialog.open(GenericModalBoxComponent, { data: { data }, width: '30%' });
+
+    dialogRef.afterClosed().subscribe(result => {
+        if (!result) return;
+        result.sendEmail ? this.sendDataCheckListEmail(result.emailId) : this.generateAndNavigateUniqueLink();
+    });
+  }
+
+  sendDataCheckListEmail(emailId: string) {
+      this.loader = true;
+      this.utilService.generateUniqueLinkId(CHECKLIST_TYPES.dataCheckList).subscribe(
+          (response: any) => {
+            this.loader = false;
+            response.status
+              ? this.sendEmailWithUniqueLink(response.uniqueLink, emailId)
+              : this.handleError('data check list email send failed, try again')
+          },
+          (error:any) => {
+            this.loader = false;
+            this.handleError('Backend error - data checklist email not send');
+          }
+      );
+  }
+
+  generateAndNavigateUniqueLink() {
+      this.loader = true;
+      this.utilService.generateUniqueLinkId(CHECKLIST_TYPES.dataCheckList).subscribe(
+          (response: any) => {
+            this.loader = false;
+            response.status
+              ? this.route.navigate(['dashboard/panel/data-checklist', response.uniqueLink])
+              : this.handleError('Unique link generation failed');
+          },
+          (error:any) => {
+            this.loader = false;
+            this.handleError('Backend error - Unique link generation failed');
+          }
+      );
+  }
+
+  sendEmailWithUniqueLink(uniqueLink: string, emailId: string) {
+    this.loader = true;
+    const baseUrl = isDevMode() ? 'https://localhost:4200' : 'https://app.ifinworth.com';
+    const checkListUrl = `${baseUrl}/dashboard/panel/data-checklist/${uniqueLink}`;
+    this.emailService.dataCheckListEmail({ checkListUrl, emailId }).subscribe(
+      (response:any) => {
+            this.loader = false;
+            this.snackBar.open('Email sent successfully', 'OK', { 
+              horizontalPosition: 'center',
+              verticalPosition: 'bottom',
+              duration: 3000,
+              panelClass: 'app-notification-success' 
+            });
+          },
+          (error) => {
+            this.loader = false;
+            this.handleError('Backend error - Email sent failed');
+          }
+      );
+  }
+
+  handleError(message: string) {
+      this.snackBar.open(message, 'OK', { 
         horizontalPosition: 'center',
         verticalPosition: 'bottom',
         duration: 3000,
-        panelClass: 'app-notification-error',
-    })
-    })
+        panelClass: 'app-notification-error'
+      });
   }
 
   loadMandateForm(){
     this.utilService.generateUniqueLinkId(CHECKLIST_TYPES.mandateChecklist).subscribe((response:any)=>{
-      console.log(response,"response")
       if(response.status){
         this.route.navigate(['dashboard/panel/mandate', response.uniqueLink]);
       }

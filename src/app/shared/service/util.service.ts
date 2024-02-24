@@ -31,4 +31,8 @@ export class UtilService {
   postMandateChecklistDetails(id:any,payload:any){
     return this.http.put(`${this.HOST}util/update-mandate-checklist/${id}`, payload)
   }
+
+  postDataChecklistDetails(id:any,payload:any){
+    return this.http.put(`${this.HOST}util/update-data-checklist/${id}`, payload)
+  }
 }
