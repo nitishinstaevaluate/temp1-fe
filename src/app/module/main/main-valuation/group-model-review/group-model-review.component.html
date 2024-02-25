@@ -3,20 +3,30 @@
     <div class="outer-wrapper">
     <div>
         <div class="mat-tab-g">
-            <mat-tab-group mat-stretch-tabs="false" class="tab-group" mat-align-tabs="start" style="background-color: #ffffff;border-radius: 20px;">
+            <mat-tab-group mat-stretch-tabs="false" class="tab-group" mat-align-tabs="start" style="background-color: #ffffff;border-radius: 20px;" (selectedTabChange)="onTabChange($event)">
                 <mat-tab label="Profit & Loss" *ngIf="!hasSingleModel('ruleElevenUa') ">
-                    <app-profit-loss-data [transferStepperTwo]="transferStepperTwo" (profitLossData)="profitLossData($event)" [currentStepIndex]="step" [fourthStageInput]="fourthStageInput"></app-profit-loss-data>
+                    <ng-template matTabContent>
+                        <app-profit-loss-data *ngIf="selectedTab === 'Profit & Loss'" [transferStepperTwo]="transferStepperTwo" (profitLossData)="profitLossData($event)" [currentStepIndex]="step" [fourthStageInput]="fourthStageInput"></app-profit-loss-data>
+                    </ng-template>
                 </mat-tab>
                 <mat-tab label="Balance Sheet" *ngIf="!hasSingleModel('ruleElevenUa') ">
-                    <app-balance-sheet-details [transferStepperTwo]="transferStepperTwo" (balanceSheetData)="balanceSheetData($event)" [fourthStageInput]="fourthStageInput"></app-balance-sheet-details>
+                    <ng-template matTabContent>
+                        <app-balance-sheet-details *ngIf="selectedTab === 'Balance Sheet'" [transferStepperTwo]="transferStepperTwo" (balanceSheetData)="balanceSheetData($event)" [fourthStageInput]="fourthStageInput"></app-balance-sheet-details>
+                    </ng-template>
                 </mat-tab>
                 <mat-tab label="Assessment of Working Capital" *ngIf="hasSingleModel('FCFE') || hasSingleModel('FCFF') || hasSingleModel('Excess_Earnings') ">
-                    <app-assessment-details [transferStepperTwo]="transferStepperTwo" (assessmentSheetData)="assessmentSheetData($event)" [fourthStageInput]="fourthStageInput"></app-assessment-details>
+                    <ng-template matTabContent>
+                        <app-assessment-details *ngIf="selectedTab === 'Assessment of Working Capital'" [transferStepperTwo]="transferStepperTwo" (assessmentSheetData)="assessmentSheetData($event)" [fourthStageInput]="fourthStageInput"></app-assessment-details>
+                    </ng-template>
                 </mat-tab>
                 <mat-tab label="Rule 11 UA" *ngIf="hasSingleModel('ruleElevenUa')">
-                    <app-eleven-ua-details [transferStepperTwo]="transferStepperTwo" (ruleElevenSheetData)="ruleElevenSheetData($event)" [fourthStageInput]="fourthStageInput"></app-eleven-ua-details>
+                    <ng-template matTabContent>
+                        <app-eleven-ua-details *ngIf="selectedTab === 'Rule 11 UA'" [transferStepperTwo]="transferStepperTwo" (ruleElevenSheetData)="ruleElevenSheetData($event)" [fourthStageInput]="fourthStageInput"></app-eleven-ua-details>
+                    </ng-template>
                 </mat-tab>
             </mat-tab-group>
+            
+            
             <p class="currency-unit" *ngIf="fourthStageInput?.formOneData ? fourthStageInput?.formOneData?.excelSheetId : transferStepperTwo?.excelSheetId">Amount in {{fourthStageInput?.formOneData ? fourthStageInput?.formOneData?.currencyUnit : transferStepperTwo.currencyUnit}} ({{fourthStageInput?.formOneData ? fourthStageInput?.formOneData?.reportingUnit : transferStepperTwo.reportingUnit}})</p>
         </div>
         <div *ngIf="fourthStageInput?.formOneData ? !fourthStageInput?.formOneData?.excelSheetId :  !transferStepperTwo?.excelSheetId" style="margin-top: auto;margin-bottom: auto;">

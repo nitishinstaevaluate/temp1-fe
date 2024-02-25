@@ -44,14 +44,15 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
   ruleElevenUaId: any;
   updateExcel=false;
   editedExcel:any=[];
-  isPAndLExcelModified=false;
-  isBSExcelModified=false;
-  isAssessmentSheetModified=false;
+  // isPAndLExcelModified=false;
+  // isBSExcelModified=false;
+  // isAssessmentSheetModified=false;
   modifiedExcelSheetId='';
   isExcelModified=false;
   isRuleELevenUaSheetModified = false;
-  assessmentSheet:any;
+  // assessmentSheet:any;
   ruleElevenSheet:any;
+  selectedTab:any = 'Profit & Loss';
   constructor(private valuationService:ValuationService,
     private formBuilder:FormBuilder,
     private calculationService:CalculationsService,
@@ -78,6 +79,7 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
       const toggleIndustryOrCompany = this.transferStepperTwo?.preferenceRatioSelect === 'Company Based' ? true : false;
       this.tableData = {company,industry,status:toggleIndustryOrCompany};
     }
+    this.selectedTab = 'Profit & Loss';
   }
 
   checkProcessExist(){
@@ -107,11 +109,11 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
         otherAdj: this.reviewForm.controls['otherAdj'].value && (this.isRelativeValuation('FCFE') || this.isRelativeValuation('FCFF')) ? this.reviewForm.controls['otherAdj'].value : 0,
     };
 
-    if (this.isPAndLExcelModified || this.isBSExcelModified || this.isAssessmentSheetModified || this.isRuleELevenUaSheetModified) {
+    // if (this.isPAndLExcelModified || this.isBSExcelModified || this.isAssessmentSheetModified || this.isRuleELevenUaSheetModified) {
         try {
-            const excelResponse: any = await this.processStatusManagerService.updateEditedExcelStatus(localStorage.getItem('processStateId')).toPromise();
+            const excelResponse: any = await this.processStatusManagerService.getExcelStatus(localStorage.getItem('processStateId')).toPromise();
             payload.isExcelModified = excelResponse.isExcelModifiedStatus;
-            payload.modifiedExcelSheetId = excelResponse.modifiedExcelSheetId;
+            payload.modifiedExcelSheetId = excelResponse.excelSheetId;
         } catch (error) {
           this.snackBar.open('Payload creation for valuation failed','ok',{
             horizontalPosition: 'center',
@@ -120,81 +122,81 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
             panelClass: 'app-notification-error',
           })
         }
-    }
+    // }
 
     return payload;
   }
 
   profitLossData(data:any){
-    if(data){
-      this.isLoadingProfitLoss=false; 
-      if(data?.error){
-        this.snackBar.open('Profit and loss Sheet fetch fail','Ok',{
-          horizontalPosition: 'center',
-          verticalPosition: 'bottom',
-          duration: 3000,
-          panelClass: 'app-notification-error',
-        })
-      }
-      else{
-        this.profitLoss = data.result;
-        this.isPAndLExcelModified = data.isExcelModified;
-      }
-    }
+    // if(data){
+    //   this.isLoadingProfitLoss=false; 
+    //   if(data?.error){
+    //     this.snackBar.open('Profit and loss Sheet fetch fail','Ok',{
+    //       horizontalPosition: 'center',
+    //       verticalPosition: 'bottom',
+    //       duration: 3000,
+    //       panelClass: 'app-notification-error',
+    //     })
+    //   }
+    //   else{
+    //     this.profitLoss = data.result;
+    //     this.isPAndLExcelModified = data.isExcelModified;
+    //   }
+    // }
   }
 
   balanceSheetData(data:any){
-    if(data){
-      this.isLoadingBalanceSheet=false;
-      if(data?.error){
-        this.snackBar.open('Balance Sheet fetch fail','Ok',{
-          horizontalPosition: 'center',
-          verticalPosition: 'bottom',
-          duration: 3000,
-          panelClass: 'app-notification-error',
-        })
-      }
-      else{
-        this.balanceSheet = data.result;
-        this.isBSExcelModified = data.isExcelModified;
-      }
-    }
+    // if(data){
+    //   this.isLoadingBalanceSheet=false;
+    //   if(data?.error){
+    //     this.snackBar.open('Balance Sheet fetch fail','Ok',{
+    //       horizontalPosition: 'center',
+    //       verticalPosition: 'bottom',
+    //       duration: 3000,
+    //       panelClass: 'app-notification-error',
+    //     })
+    //   }
+    //   else{
+    //     this.balanceSheet = data.result;
+    //     this.isBSExcelModified = data.isExcelModified;
+    //   }
+    // }
   }
 
   assessmentSheetData(data:any){
-    if(data){
-      this.isLoadingAssessmentSheet=false;
-      if(data?.error){
-        this.snackBar.open('Assessment Sheet fetch fail','Ok',{
-          horizontalPosition: 'center',
-          verticalPosition: 'bottom',
-          duration: 3000,
-          panelClass: 'app-notification-error',
-        })
-      }
-      else{
-        this.isAssessmentSheetModified = data.isExcelModified;
-        this.assessmentSheet = data.result;
-      }
-    }
+    // if(data){
+    //   this.isLoadingAssessmentSheet=false;
+    //   if(data?.error){
+    //     this.snackBar.open('Assessment Sheet fetch fail','Ok',{
+    //       horizontalPosition: 'center',
+    //       verticalPosition: 'bottom',
+    //       duration: 3000,
+    //       panelClass: 'app-notification-error',
+    //     })
+    //   }
+    //   else{
+    //     this.isAssessmentSheetModified = data.isExcelModified;
+    //     this.assessmentSheet = data.result;
+    //   }
+    // }
   }
 
   ruleElevenSheetData(data:any){
-    if(data){
-      this.isLoadingRuleElevenSheet=false;
-      if(data?.error){
-        this.snackBar.open('Rule Eleven UA Sheet fetch fail','Ok',{
-          horizontalPosition: 'center',
-          verticalPosition: 'bottom',
-          duration: 3000,
-          panelClass: 'app-notification-error',
-        })
-      }
-      else{
-        this.isRuleELevenUaSheetModified = data.isExcelModified;
-        this.ruleElevenSheet = data.result;
-      }
-    }
+    // if(data){
+    //   this.isLoadingRuleElevenSheet=false;
+    //   if(data?.error){
+    //     this.snackBar.open('Rule Eleven UA Sheet fetch fail','Ok',{
+    //       horizontalPosition: 'center',
+    //       verticalPosition: 'bottom',
+    //       duration: 3000,
+    //       panelClass: 'app-notification-error',
+    //     })
+    //   }
+    //   else{
+    //     this.isRuleELevenUaSheetModified = data.isExcelModified;
+    //     this.ruleElevenSheet = data.result;
+    //   }
+    // }
   }
 
   isRelativeValuation(value:string){
@@ -351,5 +353,9 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
        const {status, industriesRatio, betaIndustry, preferenceCompanies,...rest} = updatedPayload;
        return rest;
     }
+  }
+
+  onTabChange(event: any) {
+    this.selectedTab = event.tab.textLabel;
   }
 }

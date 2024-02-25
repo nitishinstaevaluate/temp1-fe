@@ -89,7 +89,7 @@ export class BalanceSheetDetailsComponent implements OnChanges {
       if(response.status){
         this.excelErrorMsg = false;
        this.createbalanceSheetDataSource(response);
-       this.balanceSheetData.emit({status:true, result:response,isExcelModified:this.isExcelModified})
+      //  this.balanceSheetData.emit({status:true, result:response,isExcelModified:this.isExcelModified})
       }
       else{
         this.excelErrorMsg = true;
@@ -98,7 +98,7 @@ export class BalanceSheetDetailsComponent implements OnChanges {
     (error)=>{
       this.loadExcelTable = false;
        this.excelErrorMsg = true;
-       this.balanceSheetData.emit({status:false, error:error})
+      //  this.balanceSheetData.emit({status:false, error:error})
      })
   }
 
@@ -195,14 +195,15 @@ export class BalanceSheetDetailsComponent implements OnChanges {
 
       if(payload.newValue !== null && payload.newValue !== undefined){
         this.excelAndReportService.modifyExcel(payload).subscribe(
-          (response:any)=>{
+          async (response:any)=>{
           if(response.status){
             this.isExcelModified = true;
             this.createbalanceSheetDataSource(response);
+            const excelResponse: any = await this.processStateManagerService.updateEditedExcelStatus(localStorage.getItem('processStateId')).toPromise();
             // this.balanceSheetData.emit({status:true,result:response});
           }
           else{
-            this.balanceSheetData.emit({status:false,error:response.error});
+            // this.balanceSheetData.emit({status:false,error:response.error});
               this.snackBar.open(response.error,'Ok',{
               horizontalPosition: 'right',
               verticalPosition: 'top',
@@ -211,7 +212,7 @@ export class BalanceSheetDetailsComponent implements OnChanges {
             })
           }
         },(error)=>{
-          this.balanceSheetData.emit({status:false,error:error.message});
+          // this.balanceSheetData.emit({status:false,error:error.message});
           this.snackBar.open(error.message,'Ok',{
             horizontalPosition: 'right',
               verticalPosition: 'top',
@@ -267,9 +268,9 @@ export class BalanceSheetDetailsComponent implements OnChanges {
     // this.balanceSheetDataSource.splice(this.balanceSheetDataSource.findIndex((item:any) => item.Particulars.includes('Non-Current Assets')),0,{Particulars:"  "}) //push empty object for line break      
     // this.balanceSheetDataSource.splice(this.balanceSheetDataSource.findIndex((item:any) => item.Particulars.includes('Current Assets, Loans & Advances')),0,{Particulars:"  "}) //push empty object for line break      
          
-    if(response?.modifiedFileName){
-      this.balanceSheetData.emit({status:true,isExcelModified:this.isExcelModified});
-    }
+    // if(response?.modifiedFileName){
+    //   this.balanceSheetData.emit({status:true,isExcelModified:this.isExcelModified});
+    // }
   }
 
   formatNegativeAndPositiveValues(value:any){

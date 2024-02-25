@@ -196,9 +196,10 @@ export class ElevenUaDetailsComponent {
       }
       if(payload.newValue !== null && payload.newValue !== undefined){
         this.excelAndReportService.modifyExcel(payload).subscribe(
-          (response:any)=>{
+          async (response:any)=>{
           if(response?.status){
             this.isExcelModified = true;
+            const excelResponse: any = await this.processStateManagerService.updateEditedExcelStatus(localStorage.getItem('processStateId')).toPromise();
             this.createruleElevenUaDataSource(response);
           }
           // else{  [please uncomment this once backend error handling is done]
@@ -211,7 +212,7 @@ export class ElevenUaDetailsComponent {
           //   })
           // }
         },(error)=>{
-          this.ruleElevenSheetData.emit({status:false,error:error.message});
+          // this.ruleElevenSheetData.emit({status:false,error:error.message});
           this.snackBar.open(error.message,'Ok',{
             horizontalPosition: 'right',
               verticalPosition: 'top',
@@ -264,9 +265,9 @@ export class ElevenUaDetailsComponent {
     this.ruleElevenUaDataSource.splice(this.ruleElevenUaDataSource.findIndex((item:any) => item.Particulars.includes('Non-Current Liabilities')),0,{Particulars:"  "}) //push empty object for line break      
     // this.ruleElevenUaDataSource.splice(this.ruleElevenUaDataSource.findIndex((item:any) => item.Particulars.includes('Total Equity & Liabilities')),0,{Particulars:"  "}) //push empty object for line break      
 
-    if(response?.modifiedFileName){
-      this.ruleElevenSheetData.emit({status:true,result:response,isExcelModified:this.isExcelModified});
-    }
+    // if(response?.modifiedFileName){
+    //   this.ruleElevenSheetData.emit({status:true,result:response,isExcelModified:this.isExcelModified});
+    // }
   }
 
   formatNegativeAndPositiveValues(value:any){
