@@ -732,4 +732,27 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     }
   }
 
+  clearInput(controlName:string){
+    this.inputScreenForm.controls[controlName].setValue('');
+
+    this.clearControlRelatedInput(controlName);
+    this.loadCiqIndustryBasedLevelFour(this.createPayload());
+  }
+
+  clearControlRelatedInput(control:string){
+    switch(control){
+      case 'industryL3':
+        this.levelThreeIndustryDescription = '';
+      break;
+      case 'descriptor':
+        this.descriptorQuery = '';
+        break;
+      case 'companyType':
+        this.companyTypeDescription = [];
+        break;
+      case 'companyStatus':
+        this.companyStatusTypeDescription = [];
+        break;
+    }
+  }
 }
