@@ -95,7 +95,7 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
         this.excelErrorMsg = false;
        this.createprofitAndLossDataSource(response)
        this.profitLossData.emit({status:true,result:response,isExcelModified:this.isExcelModified});
-       this.profitAndLossSheetData.emit({status:true, result:response})
+      //  this.profitAndLossSheetData.emit({status:true, result:response})
      }
      else{
       this.excelErrorMsg = true;
@@ -104,7 +104,7 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
   ,(error)=>{
       this.excelErrorMsg = true;
       this.loadExcelTable = false;
-      this.profitAndLossSheetData.emit({status:true, error:error})
+      // this.profitAndLossSheetData.emit({status:true, error:error})
       this.profitLossData.emit({status:false,error:error});
   })
   }
@@ -198,14 +198,15 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
       }
       if(payload.newValue !== null && payload.newValue !== undefined){
         this.excelAndReportService.modifyExcel(payload).subscribe(
-          (response:any)=>{
+          async (response:any)=>{
           if(response.status){
             this.isExcelModified = true;
             this.createprofitAndLossDataSource(response);
+            const excelResponse: any = await this.processStateManagerService.updateEditedExcelStatus(localStorage.getItem('processStateId')).toPromise();
             // this.profitAndLossSheetData.emit({status:true,result:response,isExcelModified:this.isExcelModified});
           }
           else{
-             this.profitAndLossSheetData.emit({status:false,error:response.error});
+            //  this.profitAndLossSheetData.emit({status:false,error:response.error});
              this.snackBar.open(response.error,'Ok',{
               horizontalPosition: 'right',
               verticalPosition: 'top',
@@ -214,7 +215,7 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
             })
           }
         },(error)=>{
-          this.profitAndLossSheetData.emit({status:false,error:error.message});
+          // this.profitAndLossSheetData.emit({status:false,error:error.message});
           this.snackBar.open(error.message,'Ok',{
             horizontalPosition: 'right',
               verticalPosition: 'top',

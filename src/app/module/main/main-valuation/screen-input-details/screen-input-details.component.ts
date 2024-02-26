@@ -329,7 +329,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       }
     },
     (error)=>{
-      this.snackBar.open(`${error}`,'OK',{
+      this.snackBar.open(`${error?.message}`,'OK',{
           horizontalPosition: 'right',
           verticalPosition: 'top',
           duration: 3000,

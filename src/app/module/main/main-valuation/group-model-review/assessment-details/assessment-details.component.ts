@@ -79,7 +79,7 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
       if(response.status){
         this.excelErrorMsg = false;
         this.createAssessmentDataSource(response);
-        this.assessmentSheetData.emit({status:true,result:response, isExcelModified:this.isExcelModified})
+        // this.assessmentSheetData.emit({status:true,result:response, isExcelModified:this.isExcelModified})
       }else{
         this.excelErrorMsg = true;
       }
@@ -175,14 +175,15 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
           }
 
           this.excelAndReportService.modifyExcel(payload).subscribe(
-            (response:any)=>{
+            async (response:any)=>{
             if(response.status){
               this.isExcelModified = true;
               this.createAssessmentDataSource(response);
-              this.assessmentSheetData.emit({status:true,result:response, isExcelModified:this.isExcelModified})
+              const excelResponse: any = await this.processStateManagerService.updateEditedExcelStatus(localStorage.getItem('processStateId')).toPromise();
+              // this.assessmentSheetData.emit({status:true,result:response, isExcelModified:this.isExcelModified})
             }
             else{
-              this.assessmentSheetData.emit({status:false,error:response.error})
+              // this.assessmentSheetData.emit({status:false,error:response.error})
                this.snackbar.open(response.error,'Ok',{
                 horizontalPosition: 'right',
                 verticalPosition: 'top',
@@ -191,7 +192,7 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
               })
             }
           },(error)=>{
-            this.assessmentSheetData.emit({status:false,error:error.message})
+            // this.assessmentSheetData.emit({status:false,error:error.message})
             this.snackbar.open(error.message,'Ok',{
               horizontalPosition: 'right',
                 verticalPosition: 'top',
@@ -236,9 +237,9 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
     });
     this.assessmentDataSource.splice(this.assessmentDataSource.findIndex((item:any) => item.Particulars.includes('Operating Liabilities')),0,{Particulars:"  "}) //push empty object for line break      
     this.assessmentDataSource.splice(this.assessmentDataSource.findIndex((item:any) => item.Particulars.includes('Net Operating Assets')),0,{Particulars:"  "}) //push empty object for line break      
-    if(response?.modifiedFileName){
-      this.assessmentSheetData.emit({status:true,result:response, isExcelModified:this.isExcelModified})
-    }
+    // if(response?.modifiedFileName){
+    //   // this.assessmentSheetData.emit({status:true,result:response, isExcelModified:this.isExcelModified})
+    // }
   }
 
   formatNegativeAndPositiveValues(value:any){
