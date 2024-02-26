@@ -84,10 +84,7 @@ export class MainValuationComponent implements OnInit{
   
     const processStateId = localStorage.getItem('processStateId');
     const processExec = localStorage.getItem('execProcess');
-    if(processStateId && processExec === 'true'){
-      this.loadStateByProcessId(processStateId)
-    }
-    else if(processStateId && processExec === 'false'){
+    if(processStateId && (processExec === 'false' || processExec === null)){
       const data={
         value: 'restoreSession',
       }
@@ -103,6 +100,9 @@ export class MainValuationComponent implements OnInit{
         }
       })
      
+    }
+    else if(processStateId && processExec === 'true'){
+      this.loadStateByProcessId(processStateId)
     }
     else{
       this.isProcessExistLoader = false;

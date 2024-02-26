@@ -61,4 +61,10 @@ export class ExcelAndReportService {
       responseType: 'blob'
     });
   }
+
+  generateMrlReport(processStateId:any){
+    return this.http.get(`${this.HOST}report/mrl-report/${processStateId}`,{
+      responseType: 'blob'
+    });
+  }
 }

@@ -292,4 +292,21 @@ export class ActivityComponent {
     return 'MULTI_MODEL';
   }
 
+  downloadMrlReport(processStateId:any){
+    this.processLoader = true;
+    this.excelAndReportService.generateMrlReport(processStateId).subscribe((response)=>{
+      this.processLoader = false;
+      if(response){
+        saveAs(response, `MRL.pdf`);
+      }
+    },(error)=>{
+      this.processLoader = false;
+      this.snackBar.open('backend error - Mrl generation failed', 'OK', {
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 2000,
+        panelClass: 'app-notification-error',
+      });
+    })
+  }
 }
