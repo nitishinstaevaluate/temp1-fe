@@ -40,20 +40,33 @@
                     </button>
                   </td>
                   <td>
-                   
-                    <!-- <span>
-                      <button class="btn btn-success completed-doc-bt" style="padding-top: 0.3%;padding-bottom: 0.3%;font-size: 11px;width: 38%;border-radius: 5px;background-color: #2f97d7;color: #ffffff;">Edit
-                        <span class="completed-doc-icon" style="top: -6%;left: 60%;"><mat-icon>edit</mat-icon></span>
-                      </button>
-                    </span>
-                    <span style="padding-left: 3%;">
-                      <button class="btn btn-success completed-doc-bt" style="padding-top: 0.3%;padding-bottom: 0.3%;font-size: 11px;width:55%;border-radius: 5px;background-color: #2fd769;color: #ffffff;">Download
-                        <span class="completed-doc-icon" style="top: -6%;left: 72%;"><mat-icon> vertical_align_bottom</mat-icon></span>
-                      </button>
-                    </span> -->
 
-                    <span matTooltip="Resume valuation" matTooltipPosition="left" matTooltipClass='activity-resume-tooltip' (click)="loadProcess(item._id)"><img style="height: 20px;width: 20px;cursor: pointer;" src="../../../../assets/images/icons/report-edit.png" alt=""></span>
-                    <span matTooltip="Download valuation report" matTooltipPosition="above" matTooltipClass="activity-download-tooltip" (click)="downloadReport(item?.sixthStageInput,item?.firstStageInput?.model, item?.firstStageInput?.company)" style="padding-left: 30%;"><img style="height: 20px;width: 20px;cursor: pointer;" src="../../../../assets/images/icons/down-arrow.png" alt=""></span>
+                    <button mat-icon-button class="act" [matMenuTriggerFor]="menu">
+                      <span style="position: absolute;top: 0%;">
+                        <mat-icon style="transform: scale(0.9)">more_vert</mat-icon>
+                      </span>
+                    </button>
+                    
+                    <mat-menu #menu="matMenu" xPosition="before">
+                      <button mat-menu-item (click)="loadProcess(item._id)" class="action-button">
+                        <span matTooltip="Resume valuation" style="width: 150px;display: block;text-align: left;padding-left: 9%;" matTooltipPosition="left" class="resume-label" matTooltipClass='activity-resume-tooltip'>
+                          <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../assets/images/icons/report-edit.png" alt="">
+                        <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Resume</span>
+                      </span>
+                      </button>
+                      <button mat-menu-item (click)="downloadReport(item?.sixthStageInput,item?.firstStageInput?.model, item?.firstStageInput?.company)" class="action-button">
+                        <span matTooltip="Download valuation report" style="width: 150px;display: block;text-align: left;padding-left: 9%;" class="download-label" matTooltipPosition="left" matTooltipClass="activity-download-tooltip">
+                          <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../assets/images/icons/down-arrow.png" alt="">
+                        <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Download</span>
+                      </span>
+                      </button>
+                      <button mat-menu-item (click)="downloadMrlReport(item._id)" class="action-button" *ngIf="item?.sixthStageInput">
+                        <span matTooltip="Generate MRL pdf" style="width: 150px;display: block;text-align: left;padding-left: 9%;" class="mrl-label" matTooltipPosition="left" matTooltipClass="activity-mrl-tooltip">
+                          <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../assets/images/icons/mrl-pdf.png" alt="">
+                        <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Generate MRL</span>
+                        </span>
+                      </button>
+                    </mat-menu>
                   </td>
                 </tr>
               </table>
