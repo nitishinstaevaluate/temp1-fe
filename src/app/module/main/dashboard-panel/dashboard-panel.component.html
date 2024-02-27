@@ -113,6 +113,7 @@
         <table style="width: 100%;">
           <thead>
             <tr class="t-header">
+              <th>Link-Id</th>
               <th>Send From</th>
               <th>Send To</th>
               <th>Submitted Status</th>
@@ -123,15 +124,16 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of emailData" class="content">
-              <td style="text-align: center;font-size: 14px;padding: 1%;" class="make-light">{{ item.emailFrom }}</td>
-              <td style="text-align: center;font-size: 14px;padding: 1%;" class="make-light">{{ item.emailTo }}</td>
-              <td style="text-align: center;font-size: 14px;text-transform: capitalize;padding: 1%;" class="make-light">
+              <td style="text-align: center;font-size: 12px !important;padding: 1%;" class="make-light">{{ item.uniqueLinkId }}</td>
+              <td style="text-align: center;font-size: 13px !important;padding: 1%;" class="make-light">{{ item.emailFrom }}</td>
+              <td style="text-align: center;font-size: 13px !important;padding: 1%;" class="make-light">{{ item.emailTo }}</td>
+              <td style="text-align: center;font-size: 13px !important;text-transform: capitalize;padding: 1%;" class="make-light">
                 <p style="margin-bottom: 0%;"> 
-                  <span style="border-radius: 12px;" [ngClass]="item.isSubmitted ? 'item-list-tag review-item submitted-status' : 'item-list-tag start-item'">{{ item.isSubmitted }}</span>
+                  <span style="border-radius: 12px !important;" [ngClass]="item.isSubmitted ? 'item-list-tag review-item submitted-status' : 'item-list-tag start-item'">{{ item.isSubmitted }}</span>
                 </p>
               </td>
-              <td style="text-align: center;font-size: 14px;text-transform: capitalize;" class="make-light">{{ item.createdAt | date :'MMM d, yyyy h:mm a' }}</td>
-              <td style="text-align: center;font-size: 14px;text-transform: capitalize;" class="make-light">{{ item.expirationDate | date :'MMM d, yyyy h:mm a' }}</td>
+              <td style="text-align: center;font-size: 13px !important;text-transform: capitalize;" class="make-light">{{ item.createdAt | date :'MMM d, yyyy h:mm a' }}</td>
+              <td style="text-align: center;font-size: 13px !important;text-transform: capitalize;" class="make-light">{{ item.expirationDate | date :'MMM d, yyyy h:mm a' }}</td>
               <td>
                 <button mat-icon-button class="act" [matMenuTriggerFor]="menu">
                   <span style="position: absolute;top: 14%;">
