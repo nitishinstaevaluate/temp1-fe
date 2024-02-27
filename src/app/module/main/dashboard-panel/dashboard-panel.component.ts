@@ -17,14 +17,18 @@ import { environment } from 'src/environments/environment';
 })
 export class DashboardPanelComponent {
   totalRecords:any=[];
-  activeLink: string | null = null;
+  activeLink: string = 'opt-1';
   loader = false;
+  emailData:any=[];
   constructor(private valuationService:ValuationService,
     private route:Router,
     private utilService:UtilService,
     private snackBar:MatSnackBar,
     private dialog: MatDialog,
-    private emailService: EmailService){this.fetchData()}
+    private emailService: EmailService){
+      this.fetchData();
+      this.fetchAllDatachecklistEmails();
+    }
 
   fetchData(page:number=1,pageSize:number=10,query?:string): void { //inorder to increase the total count, increase the pageSize number 
     this.valuationService.getPaginatedValuations(page, pageSize,query)
@@ -141,7 +145,7 @@ export class DashboardPanelComponent {
 
   sendDataCheckListEmail(emailId: string) {
       this.loader = true;
-      this.utilService.generateUniqueLinkId(CHECKLIST_TYPES.dataCheckList).subscribe(
+      this.utilService.generateUniqueLinkId(this.constructChecklistPayload(emailId)).subscribe(
           (response: any) => {
             this.loader = false;
             response.status
@@ -157,7 +161,8 @@ export class DashboardPanelComponent {
 
   generateAndNavigateUniqueLink() {
       this.loader = true;
-      this.utilService.generateUniqueLinkId(CHECKLIST_TYPES.dataCheckList).subscribe(
+
+      this.utilService.generateUniqueLinkId(this.constructChecklistPayload()).subscribe(
           (response: any) => {
             this.loader = false;
             response.status
@@ -169,6 +174,13 @@ export class DashboardPanelComponent {
             this.handleError('Backend error - Unique link generation failed');
           }
       );
+  }
+
+  constructChecklistPayload(emailId?:any){
+    return {
+        checkList: CHECKLIST_TYPES.dataCheckList,
+        emailTo: emailId
+    }
   }
 
   sendEmailWithUniqueLink(uniqueLink: string, emailId: string) {
@@ -202,7 +214,10 @@ export class DashboardPanelComponent {
   }
 
   loadMandateForm(){
-    this.utilService.generateUniqueLinkId(CHECKLIST_TYPES.mandateChecklist).subscribe((response:any)=>{
+    const payload = {
+      checkList: CHECKLIST_TYPES.mandateChecklist
+    }
+    this.utilService.generateUniqueLinkId(payload).subscribe((response:any)=>{
       if(response.status){
         this.route.navigate(['dashboard/panel/mandate', response.uniqueLink]);
       }
@@ -226,6 +241,33 @@ export class DashboardPanelComponent {
 
   setActiveLink(linkId: string) {
     this.activeLink = linkId;
+  }
+
+  performAction(item: any) {
+    console.log('Action performed on:', item);
+  }
+
+  fetchAllDatachecklistEmails(){
+    this.utilService.fetchAllDataChecklistEmails().subscribe((emailData:any)=>{
+      if(emailData.status){
+        this.emailData = emailData.data;
+      }
+      else{
+        this.snackBar.open('Email list not found', 'Ok',{
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+          duration: 3000,
+          panelClass: 'app-notification-error',
+      })
+      }
+    },(error)=>{
+      this.snackBar.open('Backend error - email list fetch failed', 'Ok',{
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+        duration: 3000,
+        panelClass: 'app-notification-error',
+    })
+    })
   }
 }
 

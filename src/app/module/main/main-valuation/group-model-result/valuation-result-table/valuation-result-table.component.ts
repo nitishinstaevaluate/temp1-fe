@@ -343,7 +343,7 @@ formatNumber(value: any) {
     }
     else if(value){
      const formatValue =  value.toLocaleString(undefined, {
-        minimumIntegerDigits: 3,
+        minimumIntegerDigits: 1,
         minimumFractionDigits: 3,
         maximumFractionDigits: 3,
       })
