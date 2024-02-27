@@ -292,12 +292,12 @@ export class ActivityComponent {
     return 'MULTI_MODEL';
   }
 
-  downloadMrlReport(processStateId:any){
+  downloadMrlReport(processStateId:any, companyName:any){
     this.processLoader = true;
     this.excelAndReportService.generateMrlReport(processStateId).subscribe((response)=>{
       this.processLoader = false;
       if(response){
-        saveAs(response, `MRL.pdf`);
+        saveAs(response, `${companyName} - MRL.pdf`);
       }
     },(error)=>{
       this.processLoader = false;
