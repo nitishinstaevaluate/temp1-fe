@@ -20,8 +20,8 @@ export class UtilService {
     return this.http.get(`${this.HOST}fuse-search/fuse-search-by-company-name/${companyName}`)
   }
 
-  generateUniqueLinkId(checklistType:string){
-    return this.http.get(`${this.HOST}util/generate-link-id/${checklistType}`)
+  generateUniqueLinkId(payload:any){
+    return this.http.post(`${this.HOST}util/generate-link-id`, payload)
   }
 
   validateLinkId(linkId:any, checklistType:any){
@@ -34,5 +34,9 @@ export class UtilService {
 
   postDataChecklistDetails(id:any,payload:any){
     return this.http.put(`${this.HOST}util/update-data-checklist/${id}`, payload)
+  }
+
+  fetchAllDataChecklistEmails(){
+    return this.http.get(`${this.HOST}util/get-email-list`)
   }
 }

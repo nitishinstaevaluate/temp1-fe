@@ -336,21 +336,21 @@ formatNumber(value: any) {
     if(value && `${value}`.includes('-')){
       let formattedNumber = value.toLocaleString(undefined, {
         minimumIntegerDigits: 1,
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
+        minimumFractionDigits: 3,
+        maximumFractionDigits: 3,
       });
       return `(${`${formattedNumber}`.replace(/-/g,'')})`;
     }
     else if(value){
      const formatValue =  value.toLocaleString(undefined, {
         minimumIntegerDigits: 1,
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
+        minimumFractionDigits: 3,
+        maximumFractionDigits: 3,
       })
       return formatValue;
     }
     else{
-     return value.toFixed(2);
+     return value.toFixed(3);
     }
   }
     else{

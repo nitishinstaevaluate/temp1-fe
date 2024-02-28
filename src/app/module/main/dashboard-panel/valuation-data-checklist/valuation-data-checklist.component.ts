@@ -53,6 +53,7 @@ export class ValuationDataChecklistComponent implements OnInit{
       dateOfAppointment:['',Validators.required],
       natureOfInstrument:['',Validators.required],
       purposeOfReport:['',Validators.required],
+      companyInfo:['',Validators.required],
       section:['',Validators.required],
     })
   }

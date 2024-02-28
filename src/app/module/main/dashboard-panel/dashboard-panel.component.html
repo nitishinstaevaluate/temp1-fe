@@ -7,7 +7,7 @@
         <label class="category" for="opt-1" (click)="setActiveLink('opt-1')" [class.active]="activeLink === 'opt-1'">All</label>
       </div>
       <div class="label-wrapper">
-        <label class="category" for="opt-2" (click)="setActiveLink('opt-2')" [class.active]="activeLink === 'opt-2'">Important</label>
+        <label class="category" for="opt-2" (click)="setActiveLink('opt-2')" [class.active]="activeLink === 'opt-2'">Status</label>
       </div>
       <div class="label-wrapper">
         <label class="category" for="opt-3" (click)="setActiveLink('opt-3')" [class.active]="activeLink === 'opt-3'">Notes</label>
@@ -17,9 +17,9 @@
       </div>
     </div>
     <div class="tasks-wrapper" style="padding-top: 0%;">
-      <div *ngIf="!loader">
+      <div *ngIf="!loader && activeLink === 'opt-1'">
       <div style="padding-left: 1%;">
-        <div class="left-header">Upcoming Valuation Tasks</div>
+        <div class="left-header">Pre-valuation process</div>
       </div>
       <div class="row task-list-wrapper">
         <div class="col-xl-6">
@@ -94,7 +94,7 @@
             </p>
           </div>
         </div>
-        <div class="row task-list-wrapper">
+        <div class="row task-list-wrapper" style="padding-right: 0px;">
           <div class="col-xl-6">
             <div class="form-check">
               <label class="dashboard-left-label" for="flexRadioDefault3">
@@ -108,6 +108,57 @@
             </p>
           </div>
         </div>
+      </div>
+      <div *ngIf="activeLink === 'opt-2'">
+        <table style="width: 100%;">
+          <thead>
+            <tr class="t-header">
+              <th>Link-Id</th>
+              <th>Send From</th>
+              <th>Send To</th>
+              <th>Submitted Status</th>
+              <th>Sent On</th>
+              <th>Expiration Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of emailData" class="content">
+              <td style="text-align: center;font-size: 12px !important;padding: 1%;" class="make-light">{{ item.uniqueLinkId }}</td>
+              <td style="text-align: center;font-size: 13px !important;padding: 1%;" class="make-light">{{ item.emailFrom }}</td>
+              <td style="text-align: center;font-size: 13px !important;padding: 1%;" class="make-light">{{ item.emailTo }}</td>
+              <td style="text-align: center;font-size: 13px !important;text-transform: capitalize;padding: 1%;" class="make-light">
+                <p style="margin-bottom: 0%;"> 
+                  <span style="border-radius: 12px !important;" [ngClass]="item.isSubmitted ? 'item-list-tag review-item submitted-status' : 'item-list-tag start-item'">{{ item.isSubmitted }}</span>
+                </p>
+              </td>
+              <td style="text-align: center;font-size: 13px !important;text-transform: capitalize;" class="make-light">{{ item.createdAt | date :'MMM d, yyyy h:mm a' }}</td>
+              <td style="text-align: center;font-size: 13px !important;text-transform: capitalize;" class="make-light">{{ item.expirationDate | date :'MMM d, yyyy h:mm a' }}</td>
+              <td>
+                <button mat-icon-button class="act" [matMenuTriggerFor]="menu">
+                  <span style="position: absolute;top: 14%;">
+                    <mat-icon style="transform: scale(0.9)">more_vert</mat-icon>
+                  </span>
+                </button>
+                
+                <mat-menu #menu="matMenu" xPosition="before">
+                  <button mat-menu-item class="action-button">
+                    <span style="width: 155px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+                      <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../assets/images/icons/report-edit.png" alt="">
+                    <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Start Valuation</span>
+                  </span>
+                  </button>
+                  <button mat-menu-item class="action-button">
+                    <span style="width: 155px;display: block;text-align: left;padding-left: 9%;" class="download-label">
+                      <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../assets/images/icons/down-arrow.png" alt="">
+                    <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Send email</span>
+                  </span>
+                  </button>
+                </mat-menu>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
         <div class="loader-overlay" *ngIf="loader">
           <mat-progress-spinner diameter="40" class="table-spinner"  mode="indeterminate"></mat-progress-spinner>
