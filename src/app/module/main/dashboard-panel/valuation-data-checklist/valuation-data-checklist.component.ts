@@ -160,7 +160,7 @@ export class ValuationDataChecklistComponent implements OnInit{
     this.loader = true; 
     const lastUrlSegment = this.router.url.split('/').pop();
 
-    this.utilService.postDataChecklistDetails(lastUrlSegment, this.dataCheckListForm.value).subscribe((response:any)=>{
+    this.utilService.postDataChecklistDetails(lastUrlSegment, {...this.dataCheckListForm.value,excelSheetId:this.excelSheetId}).subscribe((response:any)=>{
       this.loader = false;
       if(response.status){
         this.snackbar.open('Data Checklist updated successfully', 'Ok',{

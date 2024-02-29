@@ -110,7 +110,7 @@
         </div>
       </div>
       <div *ngIf="activeLink === 'opt-2'">
-        <table style="width: 100%;">
+        <table style="width: 100%;" *ngIf="!loader">
           <thead>
             <tr class="t-header">
               <th>Link-Id</th>
@@ -142,13 +142,13 @@
                 </button>
                 
                 <mat-menu #menu="matMenu" xPosition="before">
-                  <button mat-menu-item class="action-button">
+                  <button mat-menu-item class="action-button" (click)="initiateValuation(item.uniqueLinkId)">
                     <span style="width: 155px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
                       <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../assets/images/icons/report-edit.png" alt="">
                     <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Start Valuation</span>
                   </span>
                   </button>
-                  <button mat-menu-item class="action-button">
+                  <button mat-menu-item class="action-button" (click)="resendEmail(item.uniqueLinkId, item.emailFrom)">
                     <span style="width: 155px;display: block;text-align: left;padding-left: 9%;" class="download-label">
                       <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../assets/images/icons/down-arrow.png" alt="">
                     <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Send email</span>
@@ -160,10 +160,10 @@
           </tbody>
         </table>
       </div>
-        <div class="loader-overlay" *ngIf="loader">
-          <mat-progress-spinner diameter="40" class="table-spinner"  mode="indeterminate"></mat-progress-spinner>
-      </div>
     </div>
+    <div class="loader-overlay" *ngIf="loader">
+      <mat-progress-spinner diameter="40" class="table-spinner"  mode="indeterminate"></mat-progress-spinner>
+  </div>
   </div>
   <div class="right-bar">
     <div class="header" style="padding-top: 30px;">Valuation Stats</div>

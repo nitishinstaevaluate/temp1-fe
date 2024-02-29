@@ -127,6 +127,8 @@ export class ActivityComponent {
 
   getModel(model:any){
     let str='';
+    if(!model?.length)
+      return '';
     if(model.length === 1)
       return `${this.getModelName[`${model[0]}`]}`;
 

@@ -40,7 +40,7 @@ export class ComparableIndustriesDetailsComponent implements OnChanges,OnInit {
     this.formOneData;
   }
   isRelativeValuation(value:string){
-    return this.formOneData?.model.includes(value) ? true :false;
+    return this.formOneData?.model?.includes(value) ? true :false;
   }
   ngOnInit(): void {
     this.loadFormControl();

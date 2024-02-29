@@ -194,7 +194,7 @@ export class GroupModelControlsComponent implements OnInit {
    this.modelValuation.controls['userId'].setValue( !data?.userId || data?.userId === "" ? '640a4783337b1b37d6fd04c7' : data?.userId);
    this.modelValuation.controls['excelSheetId'].setValue(data?.excelSheetId?? '');
    this.selectedIndustry = data?.selectedIndustry;
-   this.fileName = data?.fileName;
+   this.fileName = data?.fileName || data?.excelSheetId;
    
   const dateToSet = data?.valuationDate ? new Date(data?.valuationDate) : null;
   const formattedDate = dateToSet ? `${dateToSet.getFullYear()}-${(dateToSet.getMonth() + 1).toString().padStart(2, '0')}-${dateToSet.getDate().toString().padStart(2, '0')}` : '';

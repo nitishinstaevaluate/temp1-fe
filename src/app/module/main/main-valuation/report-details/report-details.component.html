@@ -1,7 +1,7 @@
 <div *ngIf="modelControl.reportDetails.type === 'reportDetails'">
     <h4 class="card-header">{{modelControl.reportDetails.header}}</h4>
     <form [formGroup]="reportForm" class="outer-wrapper">
-        <div class="row" style="padding-top: 3%;">
+        <div class="row" style="padding-top: 1%;">
             <!-- <div class="col-md-12 revalmodel">
                 <mat-label class="label" >Report Generation Date</mat-label>
                 <span class="mat-bullet"><mat-icon>fiber_manual_record</mat-icon></span>
@@ -18,88 +18,85 @@
 
                 <!-- date of report -->
                 <div class="col-md-6 field">
-                    <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
-                      <mat-label>Date Of Report</mat-label>  
-                      <input formControlName="reportDate" matInput [matDatepicker]="picker">
-                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                    </mat-form-field> -->
-                    <div class="material-textfield">
-                        <input class="new-inp" formControlName="reportDate" placeholder="Select valuation date" type="date" />
-                        <label>Date Of Report</label>
-                      </div>
-                      <span *ngIf="reportForm.controls['reportDate'].touched && reportForm.controls['reportDate'].errors">
-                        <span *ngIf="hasError('reportDate','required',reportForm)" class="error-text">Please select date of report</span>
-                      </span>
-                    <!-- <div class="material-textfield">
-                        <select id="subIndustry" class="new-inp" #subIndustryVal (change)="subIndustryChange(subIndustryVal.value)" formControlName="subIndustry">
-                          <option value="" disabled selected>Select sub-industry</option>
-                          <option *ngFor="let doc of subIndustries"  [value]="doc._id">{{doc.subIndustry}}</option>
-                        </select>
-                        <label for="subIndustry">Sub-Industry</label>
-                      </div> -->
-                </div>
-                <!-- <div class="col-md-12 revalmodel" style="border-top: 1px solid #ccdfe3">
-                    <mat-label class="label" >Appointment Details</mat-label>
-                    <span class="mat-bullet"><mat-icon>fiber_manual_record</mat-icon></span>
-                </div> -->
-                <div class="col-md-12" style="padding-top: 1%;padding-bottom: 1%;">
-                    <div class='c-decorated-header'>
-                        <h3><span style="padding-left: 2%;">Appointment Details</span></h3>
+                      <div class="material-textfield">
+                              <mat-form-field appearance="fill" class="company-l val-date" style="width: 100%;">
+                              <mat-label>Date of Report*</mat-label>
+                              <span class="company-list-rmve" *ngIf="reportForm.controls['reportDate']?.value">
+                                  <mat-icon class="company-list-rmve-icon" (click)="clearInput('reportDate')">close</mat-icon>
+                              </span>
+                              <input matInput [matDatepicker]="reportDate" formControlName="reportDate" (click)="reportDate.open()" placeholder="Choose date of report" class="company-list-inp">
+                              <mat-datepicker-toggle matSuffix [for]="reportDate"></mat-datepicker-toggle>
+                              <mat-datepicker #reportDate></mat-datepicker>
+                              <mat-error class="company-list-error" *ngIf="reportForm.controls['reportDate'].touched && reportForm.controls['reportDate'].errors" style="margin-left: -5%;">
+                                <span *ngIf="hasError('reportDate','required',reportForm)" class="error-text">
+                                  Please select date of report
+                                </span>
+                              </mat-error>
+                              </mat-form-field>
+                          </div>
+                    </div>
+
+
+                <div class="col-md-12" style="padding-top: 0%;padding-bottom: 0%;padding-left: 2%;">
+                    <div class='c-decorated-header' style="padding-top: 0%;">
+                        <h3><span style="padding-left: 1%;">Appointment Details</span></h3>
                         <div class='c-decorated-header_link-view-more'>
                         </div>
                       </div>
                 </div>
-                <div class="col-md-6 field">
-                    <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
-                        <mat-label>Name of Appointing Authority</mat-label>
-                        <input formControlName="appointingAuthorityName" matInput>
-                        
-                    </mat-form-field> -->
-                    <div class="material-textfield">
-                        <input class="new-inp" formControlName="appointingAuthorityName" placeholder="Enter appointing authority name" type="text" />
-                        <label>Name of Appointing Authority</label>
-                      </div>
-                      <span *ngIf="reportForm.controls['appointingAuthorityName'].touched && reportForm.controls['appointingAuthorityName'].errors">
-                        <span *ngIf="hasError('appointingAuthorityName','required',reportForm)" class="error-text">Please enter appointment authority name</span>
-                      </span>
-                </div>
 
                 <div class="col-md-6 field">
-                    <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
-                      <mat-label>Date Of Appointment</mat-label>  
-                      <input formControlName="dateOfAppointment" matInput [matDatepicker]="appointmentDate">
-                        <mat-datepicker-toggle matIconSuffix [for]="appointmentDate"></mat-datepicker-toggle>
-                        <mat-datepicker #appointmentDate></mat-datepicker>
-                    </mat-form-field> -->
                     <div class="material-textfield">
-                        <input class="new-inp" formControlName="dateOfAppointment" placeholder="Select appointment date" type="date" />
-                        <label>Date Of Appointment</label>
+                      <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                          <input type="text" matInput formControlName="appointingAuthorityName" class="company-list-inp" placeholder="Enter tax rate">
+                            <span class="company-list-rmve" *ngIf="reportForm.controls['appointingAuthorityName']?.value">
+                              <mat-icon class="company-list-rmve-icon" (click)="clearInput('appointingAuthorityName')">close</mat-icon>
+                            </span>
+                          <mat-label>
+                            Appointing Authority*
+                          </mat-label>
+                          <mat-error class="company-list-error" *ngIf="reportForm.controls['appointingAuthorityName'].touched && reportForm.controls['appointingAuthorityName'].errors" style="margin-left: -5%;">
+                            <span *ngIf="hasError('appointingAuthorityName','required',reportForm)" class="error-text">
+                              Please enter appointment authority name
+                            </span>
+                          </mat-error>
+                        </mat-form-field>
+                    </div>
+                  </div>
+
+
+                    <div class="col-md-6 field">
+                      <div class="material-textfield">
+                              <mat-form-field appearance="fill" class="company-l val-date" style="width: 100%;">
+                              <mat-label>Date Of Appointment*</mat-label>
+                              <span class="company-list-rmve" *ngIf="reportForm.controls['dateOfAppointment']?.value">
+                                  <mat-icon class="company-list-rmve-icon" (click)="clearInput('dateOfAppointment')">close</mat-icon>
+                              </span>
+                              <input matInput [matDatepicker]="dateOfAppointment" formControlName="dateOfAppointment" (click)="dateOfAppointment.open()" placeholder="Choose date of appointment" class="company-list-inp">
+                              <mat-datepicker-toggle matSuffix [for]="dateOfAppointment"></mat-datepicker-toggle>
+                              <mat-datepicker #dateOfAppointment></mat-datepicker>
+                              <mat-error class="company-list-error" *ngIf="reportForm.controls['dateOfAppointment'].touched && reportForm.controls['dateOfAppointment'].errors" style="margin-left: -5%;">
+                                <span *ngIf="hasError('dateOfAppointment','required',reportForm)" class="error-text">
+                                  Please select date of appointment
+                                </span>
+                              </mat-error>
+                              </mat-form-field>
+                          </div>
                       </div>
-                      <span *ngIf="reportForm.controls['dateOfAppointment'].touched && reportForm.controls['dateOfAppointment'].errors">
-                        <span *ngIf="hasError('dateOfAppointment','required',reportForm)" class="error-text">Please enter date of appointment</span>
-                      </span> 
-                </div>
-                <div class="col-md-4 field"></div>
 
 
-                <div class="col-md-12 revalmodel" style="padding-top: 2%;position: relative;">
-                    <mat-label class="label">Registered Valuer Details</mat-label>
-                    <span style="position: absolute;top: 48%;">
+                <div class="col-md-12 revalmodel" style="padding-top: 0%;">
+                  <div class="label-toggle-container">
+                      <mat-label class="t-label">Registered Valuer Details</mat-label>
                       <mat-slide-toggle
-                        class="example-margin"
-                        [color]="'primary'"
-                        style="transform: scale(0.8);"
-                        formControlName="useExistingValuer"
-                        (change)="onSlideToggleChange($event)">
-                    </mat-slide-toggle>
-                    </span>
-                </div>
-
-                <!-- <div class="col-md-12 revalmodel" style="border-top: 1px solid #ccdfe3">
-                    <mat-label class="label" >Purpose Of Report</mat-label>
-                    <span class="mat-bullet"><mat-icon>fiber_manual_record</mat-icon></span>
-                </div> -->
+                          class="example-margin"
+                          [color]="'primary'"
+                          style="transform: scale(0.8);"
+                          formControlName="useExistingValuer"
+                          (change)="onSlideToggleChange($event)">
+                      </mat-slide-toggle>
+                  </div>
+              </div>
 
                 <div class="col-xl-12" style="padding-left: 3%;" *ngIf="reportForm.controls['useExistingValuer'].value === true">
                   <div class="card" style="margin: 0px !important;">
@@ -128,54 +125,131 @@
                 </div>
 
                 <!-- Cin number  -->
-                <div class="col-md-6 field" style="padding-top: 3%;">
+                <div class="col-md-6 field" style="padding-top: 0%;">
+
                   <div class="material-textfield">
+                    <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                        <input type="text" matInput formControlName="cinNumber" class="company-list-inp" placeholder="Enter CIN number">
+                          <span class="company-list-rmve" *ngIf="reportForm.controls['cinNumber']?.value">
+                            <mat-icon class="company-list-rmve-icon" (click)="clearInput('cinNumber')">close</mat-icon>
+                          </span>
+                        <mat-label>
+                          CIN number*
+                        </mat-label>
+                        <mat-error class="company-list-error" *ngIf="reportForm.controls['cinNumber'].touched && reportForm.controls['cinNumber'].errors" style="margin-left: -5%;">
+                          <span *ngIf="hasError('cinNumber','required',reportForm)" class="error-text">
+                            Please enter CIN number
+                          </span>
+                        </mat-error>
+                      </mat-form-field>
+                  </div>
+                  <!-- <div class="material-textfield">
                       <input class="new-inp" formControlName="cinNumber" placeholder="Enter CIN number" type="text" />
                       <label>CIN Number</label>
-                    </div>
+                    </div> -->
               </div>
 
               <!-- Date of incorporation  -->
-              <div class="col-md-6 field" style="padding-top: 3%;">
+              <div class="col-md-6 field" style="padding-top: 0%;">
                 <div class="material-textfield">
+                  <mat-form-field appearance="fill" class="company-l val-date" style="width: 100%;">
+                  <mat-label>Date Of Incorporation*</mat-label>
+                  <span class="company-list-rmve" *ngIf="reportForm.controls['dateOfIncorporation']?.value">
+                      <mat-icon class="company-list-rmve-icon" (click)="clearInput('dateOfIncorporation')">close</mat-icon>
+                  </span>
+                  <input matInput [matDatepicker]="dateOfIncorporation" formControlName="dateOfIncorporation" (click)="dateOfIncorporation.open()" placeholder="Choose date of incorporation" class="company-list-inp">
+                  <mat-datepicker-toggle matSuffix [for]="dateOfIncorporation"></mat-datepicker-toggle>
+                  <mat-datepicker #dateOfIncorporation></mat-datepicker>
+                  <mat-error class="company-list-error" *ngIf="reportForm.controls['dateOfIncorporation'].touched && reportForm.controls['dateOfIncorporation'].errors" style="margin-left: -5%;">
+                    <span *ngIf="hasError('dateOfIncorporation','required',reportForm)" class="error-text">
+                      Please select date of incorporation
+                    </span>
+                  </mat-error>
+                  </mat-form-field>
+              </div>
+                <!-- <div class="material-textfield">
                     <input class="new-inp" formControlName="dateOfIncorporation" placeholder="Select date of incorporation" type="date" />
                     <label>Date Of Incorporation</label>
-                  </div>
+                  </div> -->
             </div>
 
               <!-- company Address -->
-                <div class="col-md-6 field" style="padding-top: 4%;">
+                <div class="col-md-6 field" style="padding-top: 0%;">
                   <div class="material-textfield">
+                    <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                        <input type="text" matInput formControlName="companyAddress" class="company-list-inp" placeholder="Enter CIN number">
+                          <span class="company-list-rmve" *ngIf="reportForm.controls['companyAddress']?.value">
+                            <mat-icon class="company-list-rmve-icon" (click)="clearInput('companyAddress')">close</mat-icon>
+                          </span>
+                        <mat-label>
+                          Company Address*
+                        </mat-label>
+                        <mat-error class="company-list-error" *ngIf="reportForm.controls['companyAddress'].touched && reportForm.controls['companyAddress'].errors" style="margin-left: -5%;">
+                          <span *ngIf="hasError('companyAddress','required',reportForm)" class="error-text">
+                            Please enter CIN number
+                          </span>
+                        </mat-error>
+                      </mat-form-field>
+                  </div>
+                  <!-- <div class="material-textfield">
                       <input class="new-inp" formControlName="companyAddress" placeholder="Enter company address" type="textarea" />
                       <label>Company's Address</label>
-                    </div>
+                    </div> -->
               </div>
 
               <!-- nature of instrument -->
-                <div class="col-md-6 field" style="padding-top: 4%;">
-                    <div class="material-textfield">
-                      <select id="natureOfInstrument" class="new-inp" formControlName="natureOfInstrument">
-                        <option value="" disabled selected>Select nature of instrument</option>
-                        <option *ngFor="let doc of modelControl.reportDetails.options.natureOfInstrument"  [value]="doc.value">{{doc.name}}</option>
-                      </select>
-                      <label for="natureOfInstrument">Nature Of Instrument</label>
-                    </div>
-                    <span *ngIf="reportForm.controls['natureOfInstrument'].touched && reportForm.controls['natureOfInstrument'].errors">
-                      <span *ngIf="hasError('natureOfInstrument','required',reportForm)" class="error-text">Please select nature of instrument</span>
-                    </span>
+                <div class="col-md-6 field" style="padding-top: 0%;">
+
+                  <div class="material-textfield">
+                    <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                        <mat-label>Nature Of Instrument*</mat-label>
+                        <span class="company-list-rmve" *ngIf="reportForm.controls['natureOfInstrument']?.value" style="right:7%;">
+                        <mat-icon class="company-list-rmve-icon" (click)="clearInput('natureOfInstrument')">close</mat-icon>
+                        </span>
+                        <mat-select formControlName="natureOfInstrument" class="new-inp company-list-inp nature-of-instrument">
+                        <mat-option *ngFor="let doc of modelControl.reportDetails.options.natureOfInstrument" class="auto-class" [value]="doc.value">
+                            {{ doc.name }}
+                        </mat-option>
+                        </mat-select>
+                        <mat-error class="company-list-error" *ngIf="reportForm.controls['natureOfInstrument'].touched && reportForm.controls['natureOfInstrument'].errors" style="margin-left: -5%;">
+                          <span *ngIf="hasError('natureOfInstrument','required',reportForm)" class="error-text">
+                            Please select nature of instrument
+                          </span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
               </div>
               
 
               <!-- Company Information -->
-              <div class="col-md-6 field" style="padding-top: 4%;">
+              <div class="col-md-6 field" style="padding-top: 2%;">
                 <div class="material-textfield">
                     <textarea class="new-inp" formControlName="companyInfo" placeholder="Enter company information" ></textarea>
                     <label>Company Info</label>
                   </div>
             </div>
 
-                <div class="col-md-6 field" style="padding-top: 4%;">
-                      <div class="material-textfield">
+                <!-- purpose of report -->
+                <div class="col-md-6 field" style="padding-top: 0%;">
+                  <div class="material-textfield">
+                    <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                        <mat-label>Purpose Of Report*</mat-label>
+                        <span class="company-list-rmve" *ngIf="reportForm.controls['reportPurpose']?.value?.length && selectedReportPurpose?.length" style="right:7%;">
+                        <mat-icon class="company-list-rmve-icon" (click)="clearInput('reportPurpose')">close</mat-icon>
+                        </span>
+                        <mat-select [(ngModel)]="selectedReportPurpose" [compareWith]="comparerReportPurpose" formControlName="reportPurpose" (selectionChange)="onReportPurposeChange($event)" class="new-inp company-list-inp nature-of-instrument" multiple>
+                        <mat-option *ngFor="let doc of modelControl.reportDetails.options.reportPurpose" class="auto-class report-option-class" [value]="doc">
+                            {{ doc.name }}
+                        </mat-option>
+                        </mat-select>
+                        <mat-error class="company-list-error" *ngIf="reportForm.controls['reportPurpose'].touched && reportForm.controls['reportPurpose'].errors" style="margin-left: -5%;">
+                          <span *ngIf="hasError('reportPurpose','required',reportForm)" class="error-text">
+                            Please select purpose of report
+                          </span>
+                        </mat-error>
+                    </mat-form-field>
+                  </div>
+                      <!-- <div class="material-textfield">
                         <select id="reportingPurpose" class="new-inp" formControlName="reportPurpose">
                           <option value="" disabled selected>Select report purpose</option>
                           <option *ngFor="let doc of modelControl.reportDetails.options.reportPurpose"  [value]="doc.value">{{ doc.name }}</option>
@@ -184,11 +258,11 @@
                       </div>
                       <span *ngIf="reportForm.controls['reportPurpose'].touched && reportForm.controls['reportPurpose'].errors">
                         <span *ngIf="hasError('reportPurpose','required',reportForm)" class="error-text">Please select purpose of report</span>
-                      </span>
+                      </span> -->
                 </div>
 
-                <div class="col-md-6" style="padding-top: 3.5%;">
-                    <div class="row" >
+                <div class="col-md-12" style="padding-top: 2%;padding-left: 2.5%;padding-right: 2.5%;">
+                    <!-- <div class="row" >
                         <div *ngIf="shouldShowReportPurpose" style="padding-top: 1%;padding-left: 4%;" class="col-md-12 field">
                               <mat-form-field class="full-width-input mat-relative-val" style="position: relative;"  appearance="outline">
                                 <mat-label>Section/Regulation Reference</mat-label>
@@ -212,7 +286,31 @@
                                 <span *ngIf="!regulationPrefSelectionStatus" class="error-text-regulation">Please add regulations reference</span>
                               </mat-form-field>
                         </div>
-                    </div>
+                    </div> -->
+
+                    <div class="material-textfield">
+                      <mat-form-field appearance="fill" class="section-chip" style="width: 100%;" >
+                        <mat-label>Section/Regulation Reference*</mat-label>
+                        <mat-chip-grid #chipGrid>
+                          <mat-chip-row *ngFor="let purpose of reportPurposeDataChips;let sectionIndex= index" class="section-chipset" (removed)="remove(sectionIndex)">
+                            {{purpose}}
+                            <button matChipRemove [attr.aria-label]="'remove ' + purpose">
+                              <mat-icon>cancel</mat-icon>
+                            </button>
+                          </mat-chip-row>
+                        </mat-chip-grid>
+                        <input #purposeInput 
+                          [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+                          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                          (matChipInputTokenEnd)="add($event)"/>
+                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)" >
+                          <mat-option *ngFor="let purpose of reportPurposeData " [value]="purpose.section + ' - ' + purpose.Description">
+                            {{ purpose.section }} - {{ purpose.Description }}
+                          </mat-option>
+                        </mat-autocomplete>
+                        <!-- <span *ngIf="!reportPurposeDataChips?.length" class="error-text-regulation">Please add regulations reference</span> -->
+                      </mat-form-field>
+                </div>
                 </div>
 
         <div class="col-md-12 btn-prop">
