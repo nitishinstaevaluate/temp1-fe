@@ -49,6 +49,7 @@ async checkProcessState(){
           const processStateDetails = processInfo.stateInfo;
           const step = processStateDetails.step;
           const modelsSelected = processStateDetails.firstStageInput.model;
+          if(modelsSelected){
           localStorage.setItem('stepOneStats',`${processStateDetails.firstStageInput.formFillingStatus}`)
           if(modelsSelected.length){
             const modelInputStages = processStateDetails?.thirdStageInput;
@@ -96,6 +97,7 @@ async checkProcessState(){
           const stateSixDetails  = processStateDetails?.sixthStageInput?.formFillingStatus;
           if(stateSixDetails){
             localStorage.setItem('stepSixStats',`${stateSixDetails}`)
+          }
           }
           this.checkstepStat()
           this.selectedMenuItem = step

@@ -194,7 +194,7 @@ export class GroupModelControlsComponent implements OnInit {
    this.modelValuation.controls['userId'].setValue( !data?.userId || data?.userId === "" ? '640a4783337b1b37d6fd04c7' : data?.userId);
    this.modelValuation.controls['excelSheetId'].setValue(data?.excelSheetId?? '');
    this.selectedIndustry = data?.selectedIndustry;
-   this.fileName = data?.fileName;
+   this.fileName = data?.fileName || data?.excelSheetId;
    
   const dateToSet = data?.valuationDate ? new Date(data?.valuationDate) : null;
   const formattedDate = dateToSet ? `${dateToSet.getFullYear()}-${(dateToSet.getMonth() + 1).toString().padStart(2, '0')}-${dateToSet.getDate().toString().padStart(2, '0')}` : '';
@@ -591,14 +591,14 @@ export class GroupModelControlsComponent implements OnInit {
       if(data?.companyDetails?.length){
         this.options = data.companyDetails;
       }
-      else{
-        this.snackBar.open('Company not found', 'Ok',{
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-          duration: 3000,
-          panelClass: 'app-notification-error',
-        })
-      }
+      // else{
+      //   this.snackBar.open('Company not found', 'Ok',{
+      //     horizontalPosition: 'right',
+      //     verticalPosition: 'top',
+      //     duration: 3000,
+      //     panelClass: 'app-notification-error',
+      //   })
+      // }
     },(error)=>{
       this.companyListLoader = false
       this.snackBar.open('Backend error - company details not found', 'Ok',{

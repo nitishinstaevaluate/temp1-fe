@@ -6,6 +6,7 @@ import { CHECKLIST_TYPES, INCOME_APPROACH, MARKET_APPROACH, NET_ASSET_APPROACH }
 import { convertToNumberOrZero, formatNumber } from 'src/app/shared/enums/functions';
 import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal-box/generic-modal-box.component';
 import { EmailService } from 'src/app/shared/service/email.service';
+import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { UtilService } from 'src/app/shared/service/util.service';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
 import { environment } from 'src/environments/environment';
@@ -25,7 +26,8 @@ export class DashboardPanelComponent {
     private utilService:UtilService,
     private snackBar:MatSnackBar,
     private dialog: MatDialog,
-    private emailService: EmailService){
+    private emailService: EmailService,
+    private processStatusManagerService: ProcessStatusManagerService){
       this.fetchData();
       this.fetchAllDatachecklistEmails();
     }
@@ -268,6 +270,72 @@ export class DashboardPanelComponent {
         panelClass: 'app-notification-error',
     })
     })
+  }
+
+  resendEmail(id:any,emailFrom:any){
+    this.loader = true;
+    this.utilService.resendDataChecklist(id).subscribe((response:any)=>{
+      this.loader = false;
+      response.status ? 
+      this.sendEmailWithUniqueLink(response.uniqueLinkId, emailFrom) :
+      this.handleError(`${response.error}`);
+    },(error)=>{
+      this.loader = false;
+      this.handleError(`backend error - resend datachecklist failed`);
+    })
+  }
+
+  initiateValuation(linkId:any){
+    this.utilService.fetchDataChecklistById(linkId).subscribe((datachecklistResponse:any)=>{
+      if(datachecklistResponse.status){
+        const data = datachecklistResponse.data;
+        const payload = {
+          firstStageInput:{
+            taxRateType:data.taxRate === '25.17' ? '25.17' : 'Normal_Tax_Rate',
+            taxRate:data.taxRate,
+            valuationDate:data.valuationDate,
+            excelSheetId:data.excelSheetId,
+            outstandingShares:data.outstandingShares,
+            isExcelModified:false
+          },
+          sixthStageInput:{
+            cinNumber:data.cinNumber,
+            companyAddress:data.companyAddress,
+            companyInfo:data.companyInfo,
+            dateOfAppointment:data.dateOfAppointment,
+            dateOfIncorporation:data.dateOfIncorporation,
+            reportDate:data.dateOfReport,
+            natureOfInstrument:data.natureOfInstrument,
+            reportPurpose:data.purposeOfReport,
+            reportSection:data.section
+          },
+          step:0,
+          uniqueLinkId:data.uniqueLinkId
+        }
+
+        this.processStateManager(payload, null)
+      }
+    })
+  }
+
+  processStateManager(process:any, processId:any){
+    this.processStatusManagerService.instantiateProcess(process, processId).subscribe(
+      (processStatusDetails: any) => {
+        if (processStatusDetails.status) {
+          localStorage.setItem('execProcess',`true`);
+          localStorage.setItem('processStateId', processStatusDetails.processId);
+          this.route.navigate(['/dashboard/valuation']);
+        }
+      },
+      (error) => {
+        this.snackBar.open(`${error.message}`, 'OK', {
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+          duration: 3000,
+          panelClass: 'app-notification-error',
+        });
+      }
+    );
   }
 }
 

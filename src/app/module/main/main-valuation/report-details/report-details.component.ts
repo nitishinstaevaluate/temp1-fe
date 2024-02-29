@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import groupModelControl from '../../../../shared/enums/group-model-controls.json'
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
@@ -17,6 +17,7 @@ import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.s
 
 
 @Component({
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-report-details',
   templateUrl: './report-details.component.html',
   styleUrls: ['./report-details.component.scss']
@@ -45,6 +46,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
   reportPurposeDataChips:any=[];
   separatorKeysCodes: number[] = [ENTER, COMMA];
   reportGenerate = false;
+  selectedReportPurpose:any=[];
   
   constructor(private fb : FormBuilder,
     private calculationService:CalculationsService,
@@ -55,10 +57,9 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     private ngxLoaderService:NgxUiLoaderService,
     private excelAdnReportService:ExcelAndReportService,
     private processStatusManagerService:ProcessStatusManagerService){}
-  ngOnInit(): void {
+    ngOnInit(): void {
     this.loadForm();
     this.checkProcessExist()
-    this.onValueChangeControl()
   }
   
   ngOnChanges(changes:SimpleChanges){
@@ -77,26 +78,8 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
         this.reportForm.controls['cinNumber'].setValue(this.sixthStageInput?.formSixData?.cinNumber);
         this.reportForm.controls['dateOfIncorporation'].setValue(this.sixthStageInput?.formSixData?.dateOfIncorporation);
         this.reportForm.controls['companyAddress'].setValue(this.sixthStageInput?.formSixData?.companyAddress);
-        if(this.sixthStageInput?.formSixData?.reportPurpose){
-          this.reportForm.controls['reportPurpose'].setValue(this.sixthStageInput?.formSixData?.reportPurpose);
-          this.dataReferenceService.getReportPurpose(this.sixthStageInput?.formSixData?.reportPurpose).subscribe((reportPurposeData:any)=>{
-            this.reportPurposeData = reportPurposeData?.reportPurpose;
-            this.reportObjective = this.reportObjectives[`${this.sixthStageInput?.formSixData?.reportPurpose}`];
-            if(this.reportPurposeData.length>0){
-              this.shouldShowReportPurpose=true;
-            }
-            else{
-              this.shouldShowReportPurpose=false;
-            }
-          },
-          (error)=>{
-            this.shouldShowReportPurpose=false;
-          })
-        }
-        if(this.sixthStageInput?.formSixData?.reportSection){
-          this.reportPurposeDataChips = this.sixthStageInput?.formSixData?.reportSection
-          this.reportForm.controls['reportSection'].setValue(this.sixthStageInput?.formSixData?.reportSection);
-        }
+        this.reportForm.controls['companyInfo'].setValue(this.sixthStageInput?.formSixData?.companyInfo);
+        this.handleReportPurposeData()
         this.registeredValuerDetails.controls['registeredValuerName'].setValue(this.sixthStageInput?.formSixData?.registeredValuerName)
         this.registeredValuerDetails.controls['registeredValuerEmailId'].setValue(this.sixthStageInput?.formSixData?.registeredValuerEmailId)
         this.registeredValuerDetails.controls['registeredValuerIbbiId'].setValue(this.sixthStageInput?.formSixData?.registeredValuerIbbiId)
@@ -122,6 +105,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       cinNumber:['',[Validators.required]],
       dateOfIncorporation:['',[Validators.required]],
       companyAddress:['',[Validators.required]],
+      companyInfo:['',[Validators.required]],
     })
     this.registeredValuerDetails=this.fb.group({
       registeredValuerName:['',[Validators.required]],
@@ -135,27 +119,18 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     })
   }
 
-  onValueChangeControl(){
-    this.reportForm.controls['reportPurpose'].valueChanges.subscribe((value:any)=>{
-      if(!value) return;
-      this.dataReferenceService.getReportPurpose(value).subscribe((reportPurposeData:any)=>{
-        this.reportPurposeData = reportPurposeData?.reportPurpose;
-        this.reportObjective = this.reportObjectives[`${value}`];
-        if(this.reportPurposeData.length>0){
-          this.shouldShowReportPurpose=true;
-          this.reportPurposeDataChips=[];
-          this.reportForm.controls['reportSection'].setValue([]);
-        }
-        else{
-          this.shouldShowReportPurpose=false;
-        }
-      },
-      (error)=>{
-        this.shouldShowReportPurpose=false;
-      })
+  onReportPurposeChange(event: any) {
+    const selectedValue = event.value;
+    if(!selectedValue.length) {
+      this.reportForm.controls['reportSection'].setValue([]);
+      this.reportPurposeData = [];
+      return;
+    };
+    const onlyPurpose = selectedValue.map((element:any)=>{
+      return element.value
     })
+    this.fetchReportPurposeData(onlyPurpose);
   }
-
 
   generateReport(){
     const controls = this.getFilteredControls();
@@ -210,6 +185,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     return {
       ...this.reportForm.value,
       ...this.registeredValuerDetails.value,
+      reportPurpose:this.reportForm.controls['reportPurpose'].value.map((element:any)=>{return element.value}),
       reportId: this.transferStepperFour?.formFourData?.appData?.reportId || this.transferStepperFour?.formFourData?.appData?._id,
       reportDate: this.reportForm.controls['reportDate'].value,
       finalWeightedAverage: this.transferStepperFour?.formFiveData || this.transferStepperFour?.totalWeightageModel,
@@ -378,8 +354,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     const value = (event.value || '').trim();
     let emptySection = [];
     if (value) {
-      const truncatedString = this.truncateStringPipe.transform(value,30);
-      this.reportPurposeDataChips.push(truncatedString);
+      this.reportPurposeDataChips.push(value);
       this.regulationPrefSelectionStatus = true;
       const reportSectionValue:any = this.reportForm.controls['reportSection'].value;
       emptySection.push(value);
@@ -400,12 +375,8 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
 
   selected(event:any): void {
     let emptySection = [];
-    let truncatedString; 
-    if(event.option.viewValue.length > 10){
-       truncatedString = this.truncateStringPipe.transform(event.option.viewValue,30)
-    }
 
-    this.reportPurposeDataChips.push(truncatedString !== '' ? truncatedString : event.option.viewValue);
+    this.reportPurposeDataChips.push(event.option.viewValue);
     this.regulationPrefSelectionStatus = true;
     this.purposeInput.nativeElement.value = '';
     emptySection.push(event.option.viewValue);
@@ -448,6 +419,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     elevenUaPreviewReport(response:any){
       const payload = this.constructPayload();
       this.excelAdnReportService.previewElevenUaReport(response).subscribe((reportData:any)=>{
+        this.reportGenerate = false;
         if (reportData) {
           const dataSet={
             value: 'previewDoc',
@@ -456,7 +428,6 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
             companyName:this.transferStepperFour?.formOneAndThreeData?.company
           }
           const dialogRef =  this.dialog.open(GenericModalBoxComponent, {data:dataSet,width:'80%',disableClose: true});
-          this.reportGenerate = false;
           const {reportId,...rest} = payload;
           const processStateModel ={
             sixthStageInput:{...rest,formFillingStatus:false,valuationReportId:response,valuationResultId:reportId},
@@ -479,6 +450,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     basicReportPreview(response:any, approach:any){
       const payload = this.constructPayload();
       this.excelAdnReportService.previewReport(response,approach).subscribe((reportData:any)=>{
+        this.reportGenerate = false;
         if (reportData) {
           const dataSet={
             value: 'previewDoc',
@@ -487,7 +459,6 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
             companyName:this.transferStepperFour?.formOneAndThreeData?.company
           }
           const dialogRef =  this.dialog.open(GenericModalBoxComponent, {data:dataSet,width:'80%',disableClose: true});
-          this.reportGenerate = false;
           const {reportId,...rest} = payload;
           const processStateModel ={
             sixthStageInput:{...rest,formFillingStatus:false,valuationReportId:response,valuationResultId:reportId},
@@ -575,10 +546,9 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
 
     generateSebiReport(response:any){
       const payload = this.constructPayload();
+      this.reportGenerate = false;
       this.excelAdnReportService.generateSebiReport(response).subscribe((reportData:any)=>{
         if (reportData instanceof Blob) {
-          console.log("sebi function called")
-          this.reportGenerate = false;
           this.snackBar.open('Report generated successfully', 'OK', {
             horizontalPosition: 'right',
             verticalPosition: 'top',
@@ -611,6 +581,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     previewSebiReport(response:any){
       const payload = this.constructPayload();
       this.excelAdnReportService.previewSebiReport(response).subscribe((reportData:any)=>{
+        this.reportGenerate = false;
         if (reportData) {
           const dataSet={
             value: 'previewDoc',
@@ -619,7 +590,6 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
             companyName:this.transferStepperFour?.formOneAndThreeData?.company
           }
           const dialogRef =  this.dialog.open(GenericModalBoxComponent, {data:dataSet,width:'80%',disableClose: true});
-          this.reportGenerate = false;
           const {reportId,...rest} = payload;
           const processStateModel ={
             sixthStageInput:{...rest,formFillingStatus:false,valuationReportId:response,valuationResultId:reportId},
@@ -637,5 +607,49 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
           panelClass: 'app-notification-error',
         });
       })
+    }
+
+    clearInput(controlName:string){
+      this.reportForm.controls[controlName].setValue('');
+    }
+
+    handleReportPurposeData() {
+      if (this.sixthStageInput?.formSixData?.reportPurpose) {
+        const actualReportPurpose = this.sixthStageInput?.formSixData?.reportPurpose || [];
+        this.selectedReportPurpose = this.modelControl.reportDetails.options.reportPurpose.filter((allReportPurpose: any) => {
+          return actualReportPurpose.includes(allReportPurpose.value);
+        });
+    
+        this.fetchReportPurposeData(actualReportPurpose);
+      }
+    
+      if (this.sixthStageInput?.formSixData?.reportSection) {
+        this.reportPurposeDataChips = this.sixthStageInput?.formSixData?.reportSection;
+        this.reportForm.controls['reportSection'].setValue(this.sixthStageInput?.formSixData?.reportSection);
+      }
+    }
+    
+    fetchReportPurposeData(reportPurpose: string[]) {
+      this.dataReferenceService.getMultiplePurpose(reportPurpose.join(',')).subscribe(
+        (reportPurposeData: any) => {
+          this.reportPurposeData = reportPurposeData?.reportPurposes;
+        },
+        (error) => {
+          this.handleReportPurposeError(error);
+        }
+      );
+    }
+    
+    handleReportPurposeError(error: any) {
+      this.snackBar.open(`Backend error - Purpose for ${this.sixthStageInput?.formSixData?.reportPurpose} not found`, 'Ok', {
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 3000,
+        panelClass: 'app-notification-error'
+      });
+    }
+  
+    comparerReportPurpose(o1: any, o2: any): boolean {
+      return o1 && o2 ? o1?.name  === o2?.name  : o2 === o2;
     }
 }

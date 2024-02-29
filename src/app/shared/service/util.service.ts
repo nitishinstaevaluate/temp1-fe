@@ -39,4 +39,12 @@ export class UtilService {
   fetchAllDataChecklistEmails(){
     return this.http.get(`${this.HOST}util/get-email-list`)
   }
+
+  fetchDataChecklistById(id:any){
+    return this.http.get(`${this.HOST}util/get-data-checklist/${id}`)
+  }
+
+  resendDataChecklist(id:any){
+    return this.http.get(`${this.HOST}util/resend-data-checklist/${id}`)
+  }
 }

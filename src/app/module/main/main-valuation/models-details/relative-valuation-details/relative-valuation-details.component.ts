@@ -46,7 +46,7 @@ export class RelativeValuationDetailsComponent implements OnInit,OnChanges {
   }
 
   isRelativeValuation(value:string){
-    return this.formOneData?.model.includes(value) ? true :false;
+    return this.formOneData?.model?.includes(value) ? true :false;
   }
   ngOnInit(): void {
     // this.loadFormControl();

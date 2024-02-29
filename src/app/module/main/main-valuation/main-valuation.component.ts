@@ -243,9 +243,12 @@ export class MainValuationComponent implements OnInit{
   }
 
   async nextModelSelection(data?:any){
-    const model = this.formOneData.model;
+    const model = this.formOneData?.model;
 
-    const currentModel =this.formOneData?.model[model.indexOf(data)+1];
+    if(!model)
+      return
+
+    const currentModel =this.formOneData?.model[model?.indexOf(data)+1];
       switch (currentModel) {
         case 'FCFE':
           this.next = 1;
