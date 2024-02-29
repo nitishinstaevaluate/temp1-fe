@@ -77,6 +77,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
         this.reportForm.controls['cinNumber'].setValue(this.sixthStageInput?.formSixData?.cinNumber);
         this.reportForm.controls['dateOfIncorporation'].setValue(this.sixthStageInput?.formSixData?.dateOfIncorporation);
         this.reportForm.controls['companyAddress'].setValue(this.sixthStageInput?.formSixData?.companyAddress);
+        this.reportForm.controls['companyInfo'].setValue(this.sixthStageInput?.formSixData?.companyInfo);
         if(this.sixthStageInput?.formSixData?.reportPurpose){
           this.reportForm.controls['reportPurpose'].setValue(this.sixthStageInput?.formSixData?.reportPurpose);
           this.dataReferenceService.getReportPurpose(this.sixthStageInput?.formSixData?.reportPurpose).subscribe((reportPurposeData:any)=>{
@@ -122,6 +123,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       cinNumber:['',[Validators.required]],
       dateOfIncorporation:['',[Validators.required]],
       companyAddress:['',[Validators.required]],
+      companyInfo:['',[Validators.required]],
     })
     this.registeredValuerDetails=this.fb.group({
       registeredValuerName:['',[Validators.required]],
