@@ -591,14 +591,14 @@ export class GroupModelControlsComponent implements OnInit {
       if(data?.companyDetails?.length){
         this.options = data.companyDetails;
       }
-      else{
-        this.snackBar.open('Company not found', 'Ok',{
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-          duration: 3000,
-          panelClass: 'app-notification-error',
-        })
-      }
+      // else{
+      //   this.snackBar.open('Company not found', 'Ok',{
+      //     horizontalPosition: 'right',
+      //     verticalPosition: 'top',
+      //     duration: 3000,
+      //     panelClass: 'app-notification-error',
+      //   })
+      // }
     },(error)=>{
       this.companyListLoader = false
       this.snackBar.open('Backend error - company details not found', 'Ok',{
