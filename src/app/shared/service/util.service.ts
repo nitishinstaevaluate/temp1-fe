@@ -36,8 +36,8 @@ export class UtilService {
     return this.http.put(`${this.HOST}util/update-data-checklist/${id}`, payload)
   }
 
-  fetchAllDataChecklistEmails(){
-    return this.http.get(`${this.HOST}util/get-email-list`)
+  fetchAllDataChecklistEmails(page: number, pageSize: number){
+    return this.http.get(`${this.HOST}util/get-all-datachecklist/paginate?page=${page}&pageSize=${pageSize}`)
   }
 
   fetchDataChecklistById(id:any){

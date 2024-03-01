@@ -2,7 +2,7 @@ import { Component, isDevMode } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { CHECKLIST_TYPES, INCOME_APPROACH, MARKET_APPROACH, NET_ASSET_APPROACH } from 'src/app/shared/enums/constant';
+import { CHECKLIST_TYPES, INCOME_APPROACH, MARKET_APPROACH, NET_ASSET_APPROACH, PAGINATION_VAL } from 'src/app/shared/enums/constant';
 import { convertToNumberOrZero, formatNumber } from 'src/app/shared/enums/functions';
 import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal-box/generic-modal-box.component';
 import { EmailService } from 'src/app/shared/service/email.service';
@@ -21,6 +21,9 @@ export class DashboardPanelComponent {
   activeLink: string = 'opt-1';
   loader = false;
   emailData:any=[];
+  pageSize: number = 10;
+  length: number =0;
+  pageSizeOptions = PAGINATION_VAL;
   constructor(private valuationService:ValuationService,
     private route:Router,
     private utilService:UtilService,
@@ -249,10 +252,11 @@ export class DashboardPanelComponent {
     console.log('Action performed on:', item);
   }
 
-  fetchAllDatachecklistEmails(){
-    this.utilService.fetchAllDataChecklistEmails().subscribe((emailData:any)=>{
-      if(emailData.status){
-        this.emailData = emailData.data;
+  fetchAllDatachecklistEmails(page:number=1,pageSize:number=10){
+    this.utilService.fetchAllDataChecklistEmails(page, pageSize).subscribe((emailData:any)=>{
+      if(emailData.response.length){
+        this.emailData = emailData.response;
+        this.length = emailData.pagination.totalElements;
       }
       else{
         this.snackBar.open('Email list not found', 'Ok',{
@@ -276,9 +280,13 @@ export class DashboardPanelComponent {
     this.loader = true;
     this.utilService.resendDataChecklist(id).subscribe((response:any)=>{
       this.loader = false;
-      response.status ? 
-      this.sendEmailWithUniqueLink(response.uniqueLinkId, emailFrom) :
-      this.handleError(`${response.error}`);
+      if(response.status) {
+        this.sendEmailWithUniqueLink(response.uniqueLinkId, emailFrom);
+        this.fetchAllDatachecklistEmails()
+      }
+      else{
+        this.handleError(`${response.error}`);
+      }
     },(error)=>{
       this.loader = false;
       this.handleError(`backend error - resend datachecklist failed`);
@@ -336,6 +344,15 @@ export class DashboardPanelComponent {
         });
       }
     );
+  }
+
+  refreshData(){
+    this.fetchAllDatachecklistEmails();
+  }
+
+  onPageChange(event: any): void {
+    const { pageIndex, pageSize } = event;
+    this.fetchAllDatachecklistEmails(pageIndex + 1, pageSize);
   }
 }
 
