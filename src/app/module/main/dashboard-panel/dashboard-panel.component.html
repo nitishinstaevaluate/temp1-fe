@@ -1,25 +1,25 @@
 <div class="task-manager" style="background-color: #fcf8fe;padding: 1%;">
-  <div class="page-content left-content" style="margin:0px">
+  <div class="page-content left-content" style="margin:0px;padding-bottom: 1%;">
     <!-- <div class="header">Hey, Sanket</div> -->
     <div><p class="header">Hi, <span id="dynamicName">User</span></p></div>
     <div class="content-categories" style="padding-left: 4%;">
-      <div class="label-wrapper">
+      <div class="label-wrapper d-nav">
         <label class="category" for="opt-1" (click)="setActiveLink('opt-1')" [class.active]="activeLink === 'opt-1'">All</label>
       </div>
-      <div class="label-wrapper">
-        <label class="category" for="opt-2" (click)="setActiveLink('opt-2')" [class.active]="activeLink === 'opt-2'">Status</label>
+      <div class="label-wrapper d-nav">
+        <label class="category" for="opt-2" (click)="setActiveLink('opt-2')" [class.active]="activeLink === 'opt-2'">Pre-valuation</label>
       </div>
-      <div class="label-wrapper">
-        <label class="category" for="opt-3" (click)="setActiveLink('opt-3')" [class.active]="activeLink === 'opt-3'">Notes</label>
+      <div class="label-wrapper d-nav">
+        <label class="category" for="opt-3" (click)="setActiveLink('opt-3')" [class.active]="activeLink === 'opt-3'">Valuation</label>
       </div>
-      <div class="label-wrapper">
-        <label class="category" for="opt-4" (click)="setActiveLink('opt-4')" [class.active]="activeLink === 'opt-4'">Links</label>
+      <div class="label-wrapper d-nav">
+        <label class="category" for="opt-4" (click)="setActiveLink('opt-4')" [class.active]="activeLink === 'opt-4'">Post-valuation</label>
       </div>
     </div>
-    <div class="tasks-wrapper" style="padding-top: 0%;">
+    <div class="tasks-wrapper" style="padding-top: 0%;padding-bottom: 0%;">
       <div *ngIf="!loader && activeLink === 'opt-1'">
       <div style="padding-left: 1%;">
-        <div class="left-header">Pre-valuation process</div>
+        <div class="left-header">Valuation Tasks</div>
       </div>
       <div class="row task-list-wrapper">
         <div class="col-xl-6">
@@ -32,6 +32,20 @@
         <div class="col-xl-6 dashboard-right-label">
           <p> 
             <span class="item-list-tag start-item" (click)="loadMandateForm()">Start</span>
+          </p>
+        </div>
+      </div>
+      <div class="row task-list-wrapper" style="padding-right: 0px;">
+        <div class="col-xl-6">
+          <div class="form-check">
+            <label class="dashboard-left-label" for="flexRadioDefault3">
+              Data Checklist Form
+            </label>
+          </div>
+        </div>
+        <div class="col-xl-6 dashboard-right-label">
+          <p> 
+            <span class="item-list-tag start-item" (click)="loadDataCheckListForm()">Start</span>
           </p>
         </div>
       </div>
@@ -94,24 +108,11 @@
             </p>
           </div>
         </div>
-        <div class="row task-list-wrapper" style="padding-right: 0px;">
-          <div class="col-xl-6">
-            <div class="form-check">
-              <label class="dashboard-left-label" for="flexRadioDefault3">
-                Data Checklist Form
-              </label>
-            </div>
-          </div>
-          <div class="col-xl-6 dashboard-right-label">
-            <p> 
-              <span class="item-list-tag start-item" (click)="loadDataCheckListForm()">Start</span>
-            </p>
-          </div>
-        </div>
+       
       </div>
       <div *ngIf="activeLink === 'opt-2'">
-        <table style="width: 100%;" *ngIf="!loader">
-          <thead>
+        <table *ngIf="!loader">
+          <thead class="sticky-header">
             <tr class="t-header">
               <th>Link-Id</th>
               <th>Send From</th>
@@ -124,16 +125,16 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of emailData" class="content">
-              <td style="text-align: center;font-size: 12px !important;padding: 1%;" class="make-light">{{ item.uniqueLinkId }}</td>
-              <td style="text-align: center;font-size: 13px !important;padding: 1%;" class="make-light">{{ item.emailFrom }}</td>
-              <td style="text-align: center;font-size: 13px !important;padding: 1%;" class="make-light">{{ item.emailTo }}</td>
-              <td style="text-align: center;font-size: 13px !important;text-transform: capitalize;padding: 1%;" class="make-light">
+              <td style="text-align: center;font-size: 11px !important;padding: 1%;" class="make-light">{{ item.uniqueLinkId }}</td>
+              <td style="text-align: center;font-size: 11px !important;padding: 1%;" class="make-light"><a href="mailto:{{ item.emailFrom }}" target="_blank">{{ item.emailFrom }}</a></td>
+              <td style="text-align: center;font-size: 11px !important;padding: 1%;" class="make-light"><a href="mailto:{{ item.emailTo }}" target="_blank">{{ item.emailTo }}</a></td>
+              <td style="text-align: center;font-size: 11px !important;text-transform: capitalize;padding: 1%;" class="make-light">
                 <p style="margin-bottom: 0%;"> 
-                  <span style="border-radius: 12px !important;" [ngClass]="item.isSubmitted ? 'item-list-tag review-item submitted-status' : 'item-list-tag start-item'">{{ item.isSubmitted }}</span>
+                  <span style="border-radius: 12px !important;font-size: 11px !important;" [ngClass]="item.isSubmitted ? 'item-list-tag review-item submitted-status' : 'item-list-tag start-item'">{{ item.isSubmitted }}</span>
                 </p>
               </td>
-              <td style="text-align: center;font-size: 13px !important;text-transform: capitalize;" class="make-light">{{ item.createdAt | date :'MMM d, yyyy h:mm a' }}</td>
-              <td style="text-align: center;font-size: 13px !important;text-transform: capitalize;" class="make-light">{{ item.expirationDate | date :'MMM d, yyyy h:mm a' }}</td>
+              <td style="text-align: center;font-size: 11px !important;text-transform: capitalize;" class="make-light">{{ item.createdAt | date :'MMM d, yyyy h:mm a' }}</td>
+              <td style="text-align: center;font-size: 11px !important;text-transform: capitalize;" class="make-light">{{ item.expirationDate | date :'MMM d, yyyy h:mm a' }}</td>
               <td>
                 <button mat-icon-button class="act" [matMenuTriggerFor]="menu">
                   <span style="position: absolute;top: 14%;">
@@ -159,6 +160,19 @@
             </tr>
           </tbody>
         </table>
+        <div class="paginator-container">
+          <button mat-icon-button (click)="refreshData()" aria-label="Refresh" class="refresh-button act">
+            <mat-icon class="datachecklist-refresh-icon">refresh</mat-icon>
+          </button>
+          <mat-paginator [length]="length"
+                         [pageSize]="pageSize"
+                         [pageSizeOptions]="pageSizeOptions"
+                         (page)="onPageChange($event)"
+                         aria-label="Select page"
+                         class="d-table-paginator"
+                         #paginatorRef>
+          </mat-paginator>
+        </div>
       </div>
     </div>
     <div class="loader-overlay" *ngIf="loader">
@@ -166,7 +180,7 @@
   </div>
   </div>
   <div class="right-bar">
-    <div class="header" style="padding-top: 30px;">Valuation Stats</div>
+    <div class="header" style="padding-top: 30px;">Recent Valuation</div>
     <div class="right-content">
       <div *ngFor="let records of totalRecords">
         <div class="task-box yellow">
