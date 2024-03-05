@@ -177,7 +177,7 @@
                 <div class="col-md-6 field" style="padding-top: 0%;">
                   <div class="material-textfield">
                     <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
-                        <input type="text" matInput formControlName="companyAddress" class="company-list-inp" placeholder="Enter CIN number">
+                        <input type="text" matInput formControlName="companyAddress" class="company-list-inp" placeholder="Enter company address">
                           <span class="company-list-rmve" *ngIf="reportForm.controls['companyAddress']?.value">
                             <mat-icon class="company-list-rmve-icon" (click)="clearInput('companyAddress')">close</mat-icon>
                           </span>
@@ -186,7 +186,7 @@
                         </mat-label>
                         <mat-error class="company-list-error" *ngIf="reportForm.controls['companyAddress'].touched && reportForm.controls['companyAddress'].errors" style="margin-left: -5%;">
                           <span *ngIf="hasError('companyAddress','required',reportForm)" class="error-text">
-                            Please enter CIN number
+                            Please enter company address
                           </span>
                         </mat-error>
                       </mat-form-field>

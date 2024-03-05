@@ -457,6 +457,8 @@ contentIsBig(data:any){
 }
 
 setTableWidth(){
+  if(!this.fcfe || !this.fcff)
+    return
   const tableElement = this.dynamicTable.nativeElement;
   const totalColumns = tableElement.getElementsByTagName('th').length;
   const columnWidth = 100 / totalColumns;

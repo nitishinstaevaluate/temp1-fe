@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges, ViewChild } from '@angular/core';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
 import groupModelControl from '../../../../shared/enums/group-model-controls.json';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -67,6 +67,12 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
     this.checkProcessExist();
   }
   ngOnChanges(): void {
+    const modelValue = this.transferStepperTwo?.model || this.fourthStageInput?.formOneData?.model;
+    if(modelValue?.length && modelValue.includes(MODELS.RULE_ELEVEN_UA)){
+      this.selectedTab = 'Rule 11 UA';
+    }else{
+      this.selectedTab = 'Profit & Loss';
+    }
     if(this.transferStepperTwo){
       this.isLoadingBalanceSheet=true;
       this.isLoadingProfitLoss=true;
@@ -79,7 +85,6 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
       const toggleIndustryOrCompany = this.transferStepperTwo?.preferenceRatioSelect === 'Company Based' ? true : false;
       this.tableData = {company,industry,status:toggleIndustryOrCompany};
     }
-    this.selectedTab = 'Profit & Loss';
   }
 
   checkProcessExist(){
@@ -209,9 +214,6 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
     return this.transferStepperTwo?.model.includes(value) ? true :false;
   }
   hasSingleModel(modelName:string){
-    if(modelName === MODELS.RULE_ELEVEN_UA){
-      this.selectedTab = 'Rule 11 UA'
-    }
     if(!this.transferStepperTwo){
       if(this.fourthStageInput?.formOneData?.model.includes(modelName)){
         return true;

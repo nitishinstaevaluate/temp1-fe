@@ -216,7 +216,7 @@ loadOnChangeValue(){
 
 loadFormControl(){
     this.fcfeForm=this.formBuilder.group({
-    discountRate:[null,[Validators.required]],
+    discountRate:['Cost_Of_Equity',[Validators.required]],
     discountingPeriod:['',[Validators.required]],
     betaType:['',[Validators.required]],
     coeMethod:['',[Validators.required]],
@@ -238,11 +238,6 @@ loadFormControl(){
 }
 
 getDocList(doc: any) {
-  if (this.formOneData?.model.length>0 && this.formOneData?.model.includes('FCFE')) {
-    this.fcfeForm.controls['discountRate'].setValue('Cost_Of_Equity');
-  } else if (this.formOneData?.model.length>0 && this.formOneData?.model.includes('FCFF')) {
-    this.fcfeForm.controls['discountRate'].setValue('Cost_Of_Equity'); //temporary set value as cost of equity ,change later
-  }
     return doc.type;
 }
  
@@ -446,18 +441,19 @@ onRadioButtonChange(event:any){
 }
 
 betaChange(event:any){
-if(event?.target?.value){
-  if(event?.target?.value.includes('unlevered') || event?.target?.value.includes('levered')){
-    this.calculateBeta(BETA_SUB_TYPE[0]);
+  const selectedValue = event.value;
+  if(selectedValue){
+    if(selectedValue.includes('unlevered') || selectedValue.includes('levered')){
+      this.calculateBeta(BETA_SUB_TYPE[0]);
+    }
+    else if(selectedValue.includes('stock_beta')){
+      this.calculateStockBeta();
+    }
+    else{
+      this.selectedSubBetaType = '';
+      this.fcfeForm.controls['beta'].setValue(1);
+    }
   }
-  else if(event?.target?.value.includes('stock_beta')){
-    this.calculateStockBeta();
-  }
-  else{
-    this.selectedSubBetaType = '';
-    this.fcfeForm.controls['beta'].setValue(1);
-  }
-}
 }
 
 stockBetaCheck(current:any, previous:any){
@@ -595,6 +591,25 @@ calculateStockBeta(){
     }
 
     return betaDropdownValues;
+  }
+
+  clearInput(controlName:string){
+    this.fcfeForm.controls[controlName].setValue('');
+    this.clearRelatedControls(controlName);
+  }
+
+  clearRelatedControls(controls:any){
+    switch(controls){
+      case 'riskFreeRateYears':
+        this.fcfeForm.controls['riskFreeRate'].setValue('');
+      break;
+      case 'expMarketReturnType':
+        this.fcfeForm.controls['expMarketReturn'].setValue('');
+      break;
+      case 'betaType':
+        this.fcfeForm.controls['beta'].setValue('');
+      break;
+    }
   }
 // patchFcfeDetails(){
 //   const processStateId = localStorage.getItem('processStateId');
