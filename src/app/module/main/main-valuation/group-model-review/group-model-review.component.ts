@@ -209,6 +209,9 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
     return this.transferStepperTwo?.model.includes(value) ? true :false;
   }
   hasSingleModel(modelName:string){
+    if(modelName === MODELS.RULE_ELEVEN_UA){
+      this.selectedTab = 'Rule 11 UA'
+    }
     if(!this.transferStepperTwo){
       if(this.fourthStageInput?.formOneData?.model.includes(modelName)){
         return true;

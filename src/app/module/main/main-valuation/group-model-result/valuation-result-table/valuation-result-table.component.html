@@ -10,7 +10,7 @@
       <div class="table-container">
         <!-- fcfe table starts -->
       <div class="scroll-container">
-        <table [ngClass]="contentIsBig(dataSourceFcfe) ? 'increase-table-width' : ''" >
+        <table [ngClass]="contentIsBig(dataSourceFcfe) ? 'increase-table-width' : ''" #dynamicTable>
           <thead>
             <tr style="text-transform: capitalize;" class="header">
               <th *ngFor="let columnName of fcfeColumn" [ngClass]="columnName === 'particulars' ?  contentIsBig(dataSourceFcfe) ? 'sticky-header' : '' : ''">{{ columnName }}</th>
@@ -35,7 +35,7 @@
     </div>
     <div>
       <!-- <h5 class="company-head-fcff">FCFF Result</h5> -->
-      <div class="table-container">
+      <div class="table-container" #dynamicTable>
         <!-- table fcff  starts -->
         <table [ngClass]="contentIsBig(dataSourceFcff) ? 'increase-table-width' : ''">
           <thead>
