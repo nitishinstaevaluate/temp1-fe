@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {  MatTableDataSource } from '@angular/material/table';
 import { COMMON_COLUMN, EXCESS_EARNING_COLUMN, FCFE_COLUMN, FCFF_COLUMN, MODELS} from 'src/app/shared/enums/constant';
@@ -14,6 +14,7 @@ import { environment } from 'src/environments/environment';
 })
 export class ValuationResultTableComponent implements OnInit, OnChanges{
 @Input() transferStepperthree:any;
+@ViewChild('dynamicTable') dynamicTable!: ElementRef;
 
 HOST = environment.baseUrl
 
@@ -59,6 +60,11 @@ this.dataSourceNav=this.dataSourceNav[0];
 this.dataSourceNav.splice(this.dataSourceNav.findIndex((item:any) => item?.fieldName === 'Net Current Assets'),0,{fieldName:''})
 this.dataSourceNav.splice(this.dataSourceNav.findIndex((item:any) => item?.fieldName === 'Firm Value'),0,{fieldName:''})
 }
+
+ngAfterViewInit(): void {
+  this.setTableWidth();
+}
+
 ngOnInit(): void {}
 
 constructor(private excelAndReportService:ExcelAndReportService,
@@ -448,6 +454,21 @@ contentIsBig(data:any){
   if(data && data[0].length > 7)
     return true;
   return false
+}
+
+setTableWidth(){
+  const tableElement = this.dynamicTable.nativeElement;
+  const totalColumns = tableElement.getElementsByTagName('th').length;
+  const columnWidth = 100 / totalColumns;
+  const labelWidth = 20;
+  const columns = tableElement.querySelectorAll('th, td');
+  columns.forEach((column: HTMLElement, index: number) => {
+    if (index === 0) {
+      column.style.width = `${labelWidth}%`;
+    } else {
+      column.style.width = `${columnWidth}%`;
+    }
+  });
 }
 }
 
