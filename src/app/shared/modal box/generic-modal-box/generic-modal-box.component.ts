@@ -5,7 +5,7 @@ import groupModelControl from '../../enums/group-model-controls.json'
 import WebViewer, { Core } from '@pdftron/webviewer';
 import PDFNet  from '@pdftron/webviewer';
 import { environment } from 'src/environments/environment';
-import { GET_TEMPLATE } from '../../enums/functions';
+import { GET_TEMPLATE, convertToNumberOrZero, formatNumber } from '../../enums/functions';
 import { ValuationService } from '../../service/valuation.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Form, FormControl, Validators } from '@angular/forms';
@@ -87,17 +87,10 @@ fileUploadStatus:boolean=true;
 projectionSelectionStatus:boolean=true;
 hasError=hasError
 helperText = helperText;
+hasLeveredBeta = false;
+hasPreferredEquity = false;
 
-  // Quill toolbar options
-  quillModules = {
-    toolbar: [
-    ['bold', 'italic', 'underline', 'strike'], // Basic formatting
-    [{ 'list': 'ordered'}, { 'list': 'bullet' }], // Lists
-    [{ 'align': [] }], // Text alignment
-    ['link', 'image'], // Links and images
-    ['clean'], // Remove formatting
-  ]
-}
+formatNumber = formatNumber;
 
 constructor(@Inject(MAT_DIALOG_DATA) public data: any,
 private dialogRef:MatDialogRef<GenericModalBoxComponent>,
@@ -144,6 +137,11 @@ loadModel(data:any){
   if( data?.value === this.appValues.VALUATION_METHOD.value) {
     this.patchExistingValue(data);
     return this.label = this.appValues.VALUATION_METHOD.name;
+  }
+  if(data?.value === this.appValues.BETA_CALCULATION.value) {
+    this.hasLeveredBeta = this.data?.coreBetaWorking.some((item:any) => item.leveredBeta !== undefined);
+    this.hasPreferredEquity = this.data?.coreBetaWorking.some((item:any) => item.totalBookValueOfPreferredEquity !== undefined);
+    return this.label = this.appValues.BETA_CALCULATION.name;
   }
   if(data?.value == this.appValues.RISK_FREE_RATE.value){
     this.patchExistingRiskFreeRateDetails(data);

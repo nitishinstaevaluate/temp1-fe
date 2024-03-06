@@ -49027,3 +49027,7 @@ a.text-dark:focus {
     max-width: 100% !important;
 }
 /*# sourceMappingURL=style.css.map */
+
+.custom-dialog-container {
+  overflow-y: auto;
+}

@@ -53,6 +53,8 @@ export class FcfeDetailsComponent implements OnChanges,OnInit{
   stockBetaChecker = false;
   @ViewChild('countElement', { static: false }) countElement!: ElementRef;
   @ViewChild(MatStepper, { static: false }) stepper!: MatStepper;
+  coreBetaWorking = []
+  betaMeanMedianWorking = []
   
 constructor(private valuationService:ValuationService,
   private dataReferenceService: DataReferencesService,
@@ -486,6 +488,8 @@ calculateBeta(betaSubType:any){
       this.betaLoader = false;
       this.fcfeForm.controls['beta'].setValue(betaData.total);
       this.selectedSubBetaType = betaSubType;
+      this.coreBetaWorking = betaData.coreBetaWorking;
+      this.betaMeanMedianWorking = betaData.betaMeanMedianWorking;
       this.calculateCoeAndAdjustedCoe();
     }
     else{
@@ -609,6 +613,28 @@ calculateStockBeta(){
       case 'betaType':
         this.fcfeForm.controls['beta'].setValue('');
       break;
+    }
+  }
+
+  loadBetaCalculation(){
+    const data={
+      value:'betaCalculation',
+      coreBetaWorking: this.coreBetaWorking,
+      betaMeanMedianWorking: this.betaMeanMedianWorking
+    }
+    const dialogPrev = this.dialog.open(GenericModalBoxComponent,{data:data, width:'90%',maxHeight: '90vh',panelClass: 'custom-dialog-container'})
+  }
+
+  handleBetaClick() {
+    if (this.fcfeForm.controls['betaType'].value === 'market_beta' || this.fcfeForm.controls['betaType'].value === 'stock_beta') {
+      this.snackBar.open('Workings available for relevered and unlevered beta only', 'Ok',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 5000,
+        panelClass: 'app-notification-error'
+      })
+    } else {
+      this.loadBetaCalculation();
     }
   }
 // patchFcfeDetails(){
