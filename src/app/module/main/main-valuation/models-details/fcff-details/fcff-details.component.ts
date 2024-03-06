@@ -112,6 +112,13 @@ checkProcessExist(){
         this.fcffForm.controls['riskPremium'].setValue(stateThreeDetails?.riskPremium); 
         this.fcffForm.controls['costOfDebt'].setValue(stateThreeDetails?.costOfDebt);
         this.fcffForm.controls['capitalStructureType'].setValue(stateThreeDetails?.capitalStructureType);
+        if(stateThreeDetails?.capitalStructure){
+          this.targetCapitalStructureForm.controls['equityProportion'].setValue(stateThreeDetails.capitalStructure?.equityProp);
+          this.targetCapitalStructureForm.controls['preferenceProportion'].setValue(stateThreeDetails.capitalStructure?.prefProp);
+          this.targetCapitalStructureForm.controls['debtProportion'].setValue(stateThreeDetails.capitalStructure?.debtProp);
+          this.targetCapitalStructureForm.controls['totalCapital'].setValue(stateThreeDetails.capitalStructure?.totalCapital);
+          this.totalCapital = this.targetCapitalStructureForm.controls['totalCapital'].value;
+        }
         this.fcffForm.controls['copShareCapital'].setValue(stateThreeDetails?.copShareCapital);
         this.specificRiskPremiumModalForm.controls['companySize'].setValue(stateThreeDetails?.alpha.companySize)
         this.specificRiskPremiumModalForm.controls['marketPosition'].setValue(stateThreeDetails?.alpha.marketPosition)
@@ -138,8 +145,8 @@ loadValues(){
         this.equityM = resp[DROPDOWN.EQUITY];
         this.indianTreasuryY = resp[DROPDOWN.INDIANTREASURYYIELDS],
         this.rPremium = resp[DROPDOWN.PREMIUM];
-        this.cStructure = resp[DROPDOWN.CAPTIAL_STRUCTURE],
-        this.cStructure.push({type:'Target_Based',label:'Target Capital Structure'});
+        this.cStructure = resp[DROPDOWN.CAPTIAL_STRUCTURE]
+        // this.cStructure.push({type:'Target_Based',label:'Target Capital Structure'});
       });
 }
 
@@ -212,10 +219,13 @@ loadOnChangeValue(){
         this.getWaccIndustryOrCompanyBased();
       } else {
         const data={
-          data: 'targetCapitalStructure',
-          width:'30%',
+          value: 'targetCapitalStructure',
+          debtProp: this.targetCapitalStructureForm.controls['debtProportion'].value,
+          equityProp: this.targetCapitalStructureForm.controls['equityProportion'].value,
+          prefProp: this.targetCapitalStructureForm.controls['preferenceProportion'].value,
+          totalCapital: this.targetCapitalStructureForm.controls['totalCapital'].value
         }
-        const dialogRef = this.dialog.open(GenericModalBoxComponent,data);
+        const dialogRef = this.dialog.open(GenericModalBoxComponent,{data:data, width:'30%'});
 
         dialogRef.afterClosed().subscribe((result)=>{
           if(result){
@@ -237,7 +247,7 @@ loadOnChangeValue(){
 
           }
           else {
-            this.fcffForm.controls['capitalStructureType'].reset();
+            // this.fcffForm.controls['capitalStructureType'].reset();
 
             this.snackBar.open('Target Capital Structure Not Saved','OK',{
               horizontalPosition: 'right',
@@ -585,11 +595,12 @@ onRadioButtonChange(event:any){
 }
 
 betaChange(event:any){
-if(event?.target?.value){
-if(event?.target?.value.includes('unlevered') || event?.target?.value.includes('levered')){
+  const selectedValue = event.value;
+if(selectedValue){
+if(selectedValue.includes('unlevered') || selectedValue.includes('levered')){
   this.calculateBeta(BETA_SUB_TYPE[0]);
 }
-else if(event?.target?.value.includes('stock_beta')){
+else if(selectedValue.includes('stock_beta')){
   this.calculateStockBeta();
 }
 else{
@@ -753,5 +764,24 @@ calculateStockBeta(){
     }
 
     return betaDropdownValues;
+  }
+
+  clearInput(controlName:string){
+    this.fcffForm.controls[controlName].setValue('');
+    this.clearRelatedControls(controlName);
+  }
+
+  clearRelatedControls(controls:any){
+    switch(controls){
+      case 'riskFreeRateYears':
+        this.fcffForm.controls['riskFreeRate'].setValue('');
+      break;
+      case 'expMarketReturnType':
+        this.fcffForm.controls['expMarketReturn'].setValue('');
+      break;
+      case 'betaType':
+        this.fcffForm.controls['beta'].setValue('');
+      break;
+    }
   }
 }

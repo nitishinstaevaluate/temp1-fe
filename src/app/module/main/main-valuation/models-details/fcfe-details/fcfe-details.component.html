@@ -170,7 +170,7 @@
                 <div class="col-md-4 field" style="padding-top: 2%;">
                   <div class="material-textfield">
                     <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
-                        <input (click)="onSlideToggleChange($event)" type="text" matInput formControlName="riskPremium" class="company-list-inp" placeholder="Enter CIN number">
+                        <input (click)="onSlideToggleChange($event)" type="text" matInput formControlName="riskPremium" class="company-list-inp" placeholder="Enter specific risk premium">
                           <span class="company-list-rmve" *ngIf="fcfeForm.controls['riskPremium']?.value" style="right: 3%;">
                             <mat-icon class="company-list-rmve-icon" (click)="clearInput('riskPremium')">close</mat-icon>
                           </span>

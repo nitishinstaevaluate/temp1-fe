@@ -46,6 +46,10 @@ export class GenericModalBoxComponent implements OnInit {
   registeredValuerGeneralAddress: FormControl = new FormControl('');
   registeredValuerQualifications: FormControl = new FormControl('');
 
+  equityProp: FormControl = new FormControl('');
+  prefProp: FormControl = new FormControl('');
+  debtProp: FormControl = new FormControl('');
+
 label:string='';
 appValues= GLOBAL_VALUES;
 floatLabelType:any = 'never';
@@ -132,7 +136,10 @@ loadModel(data:any){
     this.patchValuerDetails(data.data);
     return this.label = this.appValues.REGISTERED_VALUER_DETAILS.name;
   }
-  if( data === this.appValues.TARGET_CAPITAL_STRUCTURE.value) return this.label = this.appValues.TARGET_CAPITAL_STRUCTURE.name;
+  if( data?.value === this.appValues.TARGET_CAPITAL_STRUCTURE.value){
+    this.patchExistingCapitalStructure(data);
+    return this.label = this.appValues.TARGET_CAPITAL_STRUCTURE.name;
+  } 
   if( data?.value === this.appValues.PREVIEW_DOC.value) return this.label = this.appValues.PREVIEW_DOC.name;
   if( data?.value === this.appValues.VALUATION_METHOD.value) {
     this.patchExistingValue(data);
@@ -260,9 +267,8 @@ modalData(data?:any,knownAs?:string) {
   }
 }
 
-onTargetCapitalChange(control:string,value:string){
-  this.totalCapital[`${control}`] = +value;
-  this.summationTargetCaps = this.totalCapital.equityProp + this.totalCapital.prefProp + this.totalCapital.debtProp;
+onTargetCapitalChange(){
+  this.summationTargetCaps = (+this.equityProp.value) + (+this.prefProp.value) + (+this.debtProp.value);
 }
 
 createModelControl(modelName:string,approach:string){
@@ -586,6 +592,21 @@ get downloadTemplate() {
   patchExistingRiskFreeRateDetails(data:any){
     if(data?.riskFreeRate){
       this.riskFreeRate.setValue(data.riskFreeRate)
+    }
+  }
+
+  patchExistingCapitalStructure(data:any){
+    if(data?.equityProp){
+      this.equityProp.setValue(data.equityProp)
+    }
+    if(data?.debtProp){
+      this.debtProp.setValue(data.debtProp);
+    }
+    if(data?.prefProp){
+      this.prefProp.setValue(data.prefProp)
+    }
+    if(data?.totalCapital){
+      this.summationTargetCaps  = data.totalCapital
     }
   }
   processStateManager(process:any, processId:any){

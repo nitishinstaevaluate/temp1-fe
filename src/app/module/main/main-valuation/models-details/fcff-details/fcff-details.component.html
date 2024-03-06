@@ -10,234 +10,241 @@
                   </div>
             </div>
               <!-- discount rate -->
-              <div class="col-md-4 field" style="padding-top: 1%;">
-                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
-                    <mat-label>Discount Rate</mat-label>        
-                    <mat-select formControlName="discountRate" class="mat-select-value">
-                        <mat-option *ngFor="let doc of discountR"  [value]="getDocList(doc)">{{doc.label}}</mat-option>
-                        </mat-select>
-                  </mat-form-field> -->
-
-                  <div class="material-textfield">
-                    <select id="discountRate" class="new-inp" formControlName="discountRate">
-                      <option value="" disabled selected>Select discount Rate</option>
-                      <option *ngFor="let doc of discountR" [ngValue]="getDocList(doc)">{{ doc.label }}</option>
-                    </select>
-                    <label for="discountRate">Discount Rate</label>
+              <div class="col-md-4 field" style="padding-top: 0%;">
+                    <div class="material-textfield">
+                      <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                          <mat-label>Discount Rate*</mat-label>
+                          <span class="company-list-rmve" *ngIf="fcffForm.controls['discountRate']?.value" style="right:9%;z-index: 0;">
+                          <mat-icon class="company-list-rmve-icon" (click)="clearInput('discountRate')">close</mat-icon>
+                          </span>
+                          <mat-select formControlName="discountRate" class="new-inp company-list-inp fcfe-list nature-of-instrument">
+                          <mat-option [disabled]="discountR.length" *ngFor="let doc of discountR" class="auto-class" [value]="getDocList(doc)">
+                              {{ doc.label }}
+                          </mat-option>
+                          </mat-select>
+                          <mat-error class="company-list-error" *ngIf="fcffForm.controls['discountRate'].touched && fcffForm.controls['discountRate'].errors" style="margin-left: -5%;">
+                            <span *ngIf="hasError('discountRate','required',fcffForm)" class="error-text">
+                              Please select discount rate
+                            </span>
+                          </mat-error>
+                      </mat-form-field>
                   </div>
-                  <span *ngIf="fcffForm.controls['discountRate'].touched && fcffForm.controls['discountRate'].errors">
-                    <span *ngIf="hasError('discountRate','required',fcffForm)" class="error-text">Please select discount rate</span>
-                  </span>
             </div>
 
             <!-- discount period -->
-            <div class="col-md-4 field" style="padding-top: 1%;">
-                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
-                    <mat-label>Discount Period</mat-label>
-                    <mat-select formControlName="discountingPeriod" class="mat-select-value">
-                    <mat-option *ngFor="let doc of modelControl.fcff.options.discountPeriod.options"  [value]="doc.name">{{doc.name}}</mat-option>
-                    </mat-select>
-                  </mat-form-field> -->
-
+            <div class="col-md-4 field" style="padding-top: 0%;">
                   <div class="material-textfield">
-                    <select id="discountingPeriod" class="new-inp" formControlName="discountingPeriod">
-                      <option value="" disabled selected>Select discount period</option>
-                      <option *ngFor="let doc of modelControl.fcff.options.discountPeriod.options" [ngValue]="doc.name">{{ doc.name }}</option>
-                    </select>
-                    <label for="discountingPeriod">Discount Period</label>
-                  </div>
-                  <span *ngIf="fcffForm.controls['discountingPeriod'].touched && fcffForm.controls['discountingPeriod'].errors">
-                    <span *ngIf="hasError('discountingPeriod','required',fcffForm)" class="error-text">Please select discounting period</span>
-                  </span>
+                    <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                        <mat-label>Discount Period*</mat-label>
+                        <span class="company-list-rmve" *ngIf="fcffForm.controls['discountingPeriod']?.value" style="right:9%;">
+                        <mat-icon class="company-list-rmve-icon" (click)="clearInput('discountingPeriod')">close</mat-icon>
+                        </span>
+                        <mat-select placeholder="Select Discount Period" formControlName="discountingPeriod" class="new-inp company-list-inp fcfe-list nature-of-instrument">
+                        <mat-option *ngFor="let doc of modelControl.fcff.options.discountPeriod.options" class="auto-class" [value]="doc.name">
+                            {{ doc.name }}
+                        </mat-option>
+                        </mat-select>
+                        <mat-error class="company-list-error" *ngIf="fcffForm.controls['discountingPeriod'].touched && fcffForm.controls['discountingPeriod'].errors" style="margin-left: -5%;">
+                          <span *ngIf="hasError('discountingPeriod','required',fcffForm)" class="error-text">
+                            Please select discounting period
+                          </span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
             </div>
 
             <!-- cost of equity -->
-            <div class="col-md-4 field" style="padding-top: 1%;">
-                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
-                    <mat-label>Cost Of Equity</mat-label>
-                    <mat-select formControlName="coeMethod" class="mat-select-value">
-                    <mat-option *ngFor="let doc of equityM"  [value]="doc.type">{{doc.label}}</mat-option>
-                    </mat-select>
-                  </mat-form-field> -->
-
+            <div class="col-md-4 field" style="padding-top: 0%;">
                   <div class="material-textfield">
-                    <select id="coeMethod" class="new-inp" formControlName="coeMethod">
-                      <option value="" disabled selected>Select cost of equity</option>
-                      <option *ngFor="let doc of equityM"  [ngValue]="doc.type">{{ doc.label }}</option>
-                    </select>
-                    <label for="coeMethod">Cost Of Equity</label>
-                  </div>
-                  <span *ngIf="fcffForm.controls['coeMethod'].touched && fcffForm.controls['coeMethod'].errors">
-                    <span *ngIf="hasError('coeMethod','required',fcffForm)" class="error-text">Please select cost of equity</span>
-                  </span>
+                    <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                        <mat-label>Cost Of Equity*</mat-label>
+                        <span class="company-list-rmve" *ngIf="fcffForm.controls['coeMethod']?.value" style="right:9%;">
+                        <mat-icon class="company-list-rmve-icon" (click)="clearInput('coeMethod')">close</mat-icon>
+                        </span>
+                        <mat-select placeholder="Select cost of equity method" formControlName="coeMethod" class="new-inp company-list-inp fcfe-list nature-of-instrument">
+                        <mat-option *ngFor="let doc of equityM" class="auto-class" [value]="doc.type">
+                            {{ doc.label }}
+                        </mat-option>
+                        </mat-select>
+                        <mat-error class="company-list-error" *ngIf="fcffForm.controls['coeMethod'].touched && fcffForm.controls['coeMethod'].errors" style="margin-left: -5%;">
+                          <span *ngIf="hasError('coeMethod','required',fcffForm)" class="error-text">
+                            Please select cost of equity method
+                          </span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
             </div>
 
             <!-- risk free rate -->
-            <div class="col-md-4 field">
-                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
-                    <mat-label>Risk Free Rate</mat-label>
-                    <mat-select formControlName="riskFreeRate" class="mat-select-value">
-                    <mat-option *ngFor="let doc of indianTreasuryY"  [value]="doc.latest">Yield on {{ doc.maturityInYrs }} Years Indian Treasury Bond</mat-option>
-                    </mat-select>
-                    <mat-hint *ngIf="fcffForm.controls['riskFreeRate'].value" class="taxrate-hint">Risk-Free rate is {{fcffForm.controls['riskFreeRate'].value}}%</mat-hint>
-                  </mat-form-field> -->
-
+            <div class="col-md-4 field" style="padding-top: 0%;">
                   <div class="material-textfield">
-                    <select id="riskFreeRate" class="new-inp" formControlName="riskFreeRateYears">
-                      <option value="" disabled selected>Select risk free rate</option>
-                      <option value="customRiskFreeRate">Custom</option>
-                      <option *ngFor="let doc of modelControl.fcff.options.riskFreeRate.options"  [ngValue]="doc.maturityInYrs">Yield on {{ doc.maturityInYrs }} Years Indian Treasury Bond</option>
-                    </select>
-                    <label for="riskFreeRate">Risk Free Rate</label>
-                  <mat-hint *ngIf="fcffForm.controls['riskFreeRate'].value" class="taxrate-hint">Risk-Free rate is {{fcffForm.controls['riskFreeRate'].value}}%</mat-hint>
-                  </div>
-                  <span *ngIf="fcffForm.controls['riskFreeRate'].touched && fcffForm.controls['riskFreeRate'].errors">
-                    <span *ngIf="hasError('riskFreeRate','required',fcffForm)" class="error-text">Please select risk free rate</span>
-                  </span>
+                    <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                        <mat-label>Risk free rate*</mat-label>
+                        <span class="company-list-rmve" *ngIf="fcffForm.controls['riskFreeRateYears']?.value" style="right:8%;">
+                        <mat-icon class="company-list-rmve-icon" (click)="clearInput('riskFreeRateYears')">close</mat-icon>
+                        </span>
+                        <mat-select placeholder="Select risk free rate" formControlName="riskFreeRateYears" class="new-inp company-list-inp fcfe-list nature-of-instrument">
+                        <mat-option  class="auto-class" value="customRiskFreeRate">
+                            Custom
+                        </mat-option>
+                        <mat-option *ngFor="let doc of modelControl.fcff.options.riskFreeRate.options" class="auto-class" [value]="doc.maturityInYrs">
+                          Yield on {{ doc.maturityInYrs }} Years Indian Treasury Bond
+                        </mat-option>
+                        </mat-select>
+                        <mat-hint *ngIf="fcffForm.controls['riskFreeRate'].value" class="taxrate-hint" style="padding-left: 0px;">Risk-Free rate is {{fcffForm.controls['riskFreeRate'].value}}%</mat-hint>
+                        <mat-error class="company-list-error" *ngIf="fcffForm.controls['riskFreeRateYears'].touched && fcffForm.controls['riskFreeRateYears'].errors" style="margin-left: -5%;">
+                          <span *ngIf="hasError('riskFreeRateYears','required',fcffForm)" class="error-text">
+                            Please select risk free rate
+                          </span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
             </div>
 
             <!-- expected market return -->
-            <div class="col-md-4 field">
-                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
-                    <mat-label>Expected Market Return</mat-label>
-                    <mat-select formControlName="expMarketReturnType" class="mat-select-value">
-                    <mat-option *ngFor="let doc of modelControl.fcff.options.expMarketReturnType.options"  [value]="doc">{{doc.name}}</mat-option>
-                    </mat-select>
-                    <mat-hint *ngIf="fcffForm.controls['expMarketReturn'].value" class="taxrate-hint">Expected Market Return is {{fcffForm.controls['expMarketReturn'].value.toFixed(2)}}%</mat-hint>
-                  </mat-form-field> -->
-
+            <div class="col-md-4 field" style="padding-top: 0%;">
                   <div class="material-textfield">
-                    <select id="expMarketReturnType" class="new-inp" formControlName="expMarketReturnType">
-                      <option value="" disabled selected>Select expected market return</option>
-                      <option *ngFor="let doc of modelControl.fcff.options.expMarketReturnType.options" [ngValue]="doc.name">{{doc.name}}</option>
-                    </select>
-                    <label for="expMarketReturnType">Expected Market Return</label>
-                  <mat-hint *ngIf="fcffForm.controls['expMarketReturn'].value" class="taxrate-hint">Expected Market Return is {{fcffForm.controls['expMarketReturn'].value.toFixed(2)}}%</mat-hint>
-                  </div>
-                  <span *ngIf="fcffForm.controls['expMarketReturnType'].touched && fcffForm.controls['expMarketReturnType'].errors">
-                    <span *ngIf="hasError('expMarketReturnType','required',fcffForm)" class="error-text">Please select expected market return</span>
-                  </span>
+                    <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                        <mat-label>Expected Market Return*</mat-label>
+                        <span class="company-list-rmve" *ngIf="fcffForm.controls['expMarketReturnType']?.value" style="right:8%;">
+                        <mat-icon class="company-list-rmve-icon" (click)="clearInput('expMarketReturnType')">close</mat-icon>
+                        </span>
+                        <mat-select placeholder="Select expected market return" formControlName="expMarketReturnType" class="new-inp company-list-inp fcfe-list nature-of-instrument">
+                        <mat-option *ngFor="let doc of modelControl.fcff.options.expMarketReturnType.options" class="auto-class" [value]="doc.name">
+                          {{doc.name}}
+                        </mat-option>
+                        </mat-select>
+                        <mat-hint *ngIf="fcffForm.controls['expMarketReturn'].value" class="taxrate-hint">Expected Market Return is {{fcffForm.controls['expMarketReturn'].value?.toFixed(2)}}%</mat-hint>
+                        <mat-error class="company-list-error" *ngIf="fcffForm.controls['expMarketReturnType'].touched && fcffForm.controls['expMarketReturnType'].errors" style="margin-left: -5%;">
+                          <span *ngIf="hasError('expMarketReturnType','required',fcffForm)" class="error-text">
+                            Please select expected market return
+                          </span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
             </div>
 
             <!-- beta -->
-            <div class="col-md-4 field">
-                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
-                    <mat-label>Beta</mat-label>
-                    <mat-select formControlName="betaType" class="mat-select-value">
-                    <mat-option [disabled]="!formOneData?.industry" *ngFor="let doc of modelControl.fcff.options.betaType.options"  [value]="doc.value" >{{doc.name}}</mat-option>
-                </mat-select>
-                <mat-hint *ngIf="fcffForm.controls['beta'].value" class="taxrate-hint">Beta is {{fcffForm.controls['beta'].value.toFixed(2)}}</mat-hint>
-                  </mat-form-field> -->
-
+            <div class="col-md-4 field" style="padding-top: 0%;">
                   <div class="material-textfield">
-                    <select id="betaType" class="new-inp" formControlName="betaType" (change)="betaChange($event)">
-                      <option value="" disabled selected>Select beta</option>
-                      <option *ngFor="let doc of loadBetaDropdown()"  [ngValue]="doc.value">{{doc.name}}</option>
-                    </select>
-                    <label for="betaType">Beta</label>
-                  <!-- <mat-hint *ngIf="fcffForm.controls['beta'].value" class="taxrate-hint">Beta is {{fcffForm.controls['beta'].value.toFixed(2)}}</mat-hint> -->
-                  </div>
-                  <span *ngIf="fcffForm.controls['betaType'].touched && fcffForm.controls['betaType'].errors">
-                    <span *ngIf="hasError('betaType','required',fcffForm)" class="error-text">Please select beta</span>
-                  </span>
-                  <div style="display: flex; align-items: center;padding-left: 2%;padding-top: 1%;height: 30px;">
-                    <span style="width: 90%;" *ngIf="fcffForm.controls['betaType'].value">
-                      <span *ngIf="fcffForm.controls['betaType'].value !== 'market_beta' && fcffForm.controls['betaType'].value !== 'stock_beta'">
-                        <input type="radio" style="vertical-align: middle;" [checked]="selectedSubBetaType === 'meanBeta'" (change)="onRadioButtonChange($event)" value="meanBeta" name="betaRadio" id="betaRadio">
-                        <span class="reset-ind3" style="vertical-align: middle;">Mean</span>
-                      </span>
-
-                      <span style="padding-left: 14%;" *ngIf="fcffForm.controls['betaType'].value !== 'market_beta' && fcffForm.controls['betaType'].value !== 'stock_beta'">
-                        <input type="radio" style="vertical-align: middle;" [checked]="selectedSubBetaType === 'medianBeta'" (change)="onRadioButtonChange($event)" value="medianBeta" name="betaRadio" id="betaRadio">
-                        <span class="reset-ind3" style="vertical-align: middle;">Median</span>
-                      </span>
-                      <span [ngClass]="(fcffForm.controls['betaType'].value === 'market_beta' || fcffForm.controls['betaType'].value === 'stock_beta') ? '' :  'add-padding-beta'">
-                        <mat-hint *ngIf="fcffForm.controls['beta'].value && !betaLoader" style="vertical-align: middle;font-size: 11px;color: #1915bb;" class="reset-ind3">Beta is {{fcffForm.controls['beta'].value?.toFixed(2)}}</mat-hint>
-                      </span>
-                    </span>
-                    <span>
-                      <mat-progress-spinner style="vertical-align: middle" *ngIf="betaLoader" class="beta-spin" mode="indeterminate" diameter="20"></mat-progress-spinner>
-                    </span>
-                  </div>
+                    <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                        <mat-label>Beta*</mat-label>
+                        <span class="company-list-rmve" *ngIf="fcffForm.controls['betaType']?.value" style="right:8%;">
+                        <mat-icon class="company-list-rmve-icon" (click)="clearInput('betaType')">close</mat-icon>
+                        </span>
+                        <mat-select placeholder="Select beta" formControlName="betaType" class="new-inp company-list-inp fcfe-list nature-of-instrument" (selectionChange)="betaChange($event)">
+                        <mat-option *ngFor="let doc of loadBetaDropdown()" class="auto-class" [value]="doc.value">
+                          {{doc.name}}
+                        </mat-option>
+                        </mat-select>
+                        <mat-error class="company-list-error" *ngIf="fcffForm.controls['betaType'].touched && fcffForm.controls['betaType'].errors" style="margin-left: -5%;">
+                          <span *ngIf="hasError('betaType','required',fcffForm)" class="error-text">
+                            Please select Beta
+                          </span>
+                        </mat-error>
+                        <mat-hint style="width: 100%;display: flex; align-items: center;">
+                          <span style="width: 100%;" *ngIf="fcffForm.controls['betaType'].value">
+                            <span *ngIf="fcffForm.controls['betaType'].value !== 'market_beta' && fcffForm.controls['betaType'].value !== 'stock_beta'">
+                              <input type="radio" style="vertical-align: middle;" [checked]="selectedSubBetaType === 'meanBeta'" (change)="onRadioButtonChange($event)" value="meanBeta" name="betaRadio" id="betaRadio">
+                              <span class="reset-ind3" style="vertical-align: middle;">Mean</span>
+                            </span>
+                            <span style="padding-left: 14%;" *ngIf="fcffForm.controls['betaType'].value !== 'market_beta' && fcffForm.controls['betaType'].value !== 'stock_beta'">
+                              <input type="radio" style="vertical-align: middle;" [checked]="selectedSubBetaType === 'medianBeta'" (change)="onRadioButtonChange($event)" value="medianBeta" name="betaRadio" id="betaRadio">
+                              <span class="reset-ind3" style="vertical-align: middle;">Median</span>
+                            </span>
+                            <span [ngClass]="(fcffForm.controls['betaType'].value === 'market_beta' || fcffForm.controls['betaType'].value === 'stock_beta') ? '' :  'add-padding-beta'">
+                              <span *ngIf="fcffForm.controls['beta'].value && !betaLoader" style="vertical-align: middle;font-size: 11px;color: #1915bb;" class="reset-ind3">Beta is {{fcffForm.controls['beta'].value?.toFixed(2)}}</span>
+                            </span>
+                          </span>
+                          <span>
+                            <mat-progress-spinner style="vertical-align: middle" *ngIf="betaLoader" class="beta-spin" mode="indeterminate" diameter="20"></mat-progress-spinner>
+                          </span>
+                        </mat-hint>
+                    </mat-form-field>
+                </div>
             </div>
 
-            <!-- <div class="col-md-4 field">
-                <mat-form-field class="full-width-input" [floatLabel]="floatLabelType" >
-                    <mat-select formControlName="riskPremium" [placeholder]="modelControl.fcfe.options.riskPremium.placeholder">
-                        <mat-option *ngFor="let doc of rPremium"  [value]="doc.riskPremium">{{doc.riskPremium}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div> -->
-            
             <!-- risk premium -->
             <div class="col-md-4 field" style="padding-top: 1%;">
-                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
-                    <mat-label>Specific Risk Premium</mat-label>
-                    <input (mousedown)="onSlideToggleChange($event)" formControlName="riskPremium" [type]="modelControl.fcff.options.riskPremium.type" matInput>
-                </mat-form-field> -->
-
                 <div class="material-textfield">
-                  <input class="new-inp" (click)="onSlideToggleChange($event)" formControlName="riskPremium" [type]="modelControl.fcff.options.riskPremium.type" placeholder="Enter risk premium"/>
-                  <label>Specific Risk Premium</label>
-            </div>
-            <span *ngIf="fcffForm.controls['riskPremium'].touched && fcffForm.controls['riskPremium'].errors">
-              <span *ngIf="hasError('riskPremium','required',fcffForm)" class="error-text">Please add specific risk premium</span>
-            </span>
+                  <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                      <input (click)="onSlideToggleChange($event)" type="text" matInput formControlName="riskPremium" class="company-list-inp" placeholder="Enter specific risk premium">
+                        <span class="company-list-rmve" *ngIf="fcffForm.controls['riskPremium']?.value" style="right: 3%;">
+                          <mat-icon class="company-list-rmve-icon" (click)="clearInput('riskPremium')">close</mat-icon>
+                        </span>
+                      <mat-label>
+                        Specific Risk Premium*
+                      </mat-label>
+                      <mat-error class="company-list-error" *ngIf="fcffForm.controls['riskPremium'].touched && fcffForm.controls['riskPremium'].errors" style="margin-left: -5%;">
+                        <span *ngIf="hasError('riskPremium','required',fcffForm)" class="error-text">
+                          Please add specific risk premium
+                        </span>
+                      </mat-error>
+                    </mat-form-field>
                 </div>
+            </div>
 
             <!--cost of debt  -->
             <div class="col-md-4 field" style="padding-top: 1%;">
-                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
-                    <mat-label>Cost Of Debt</mat-label>
-                    <input formControlName="costOfDebt" type="text" matInput>
-                </mat-form-field> -->
-
                 <div class="material-textfield">
-                  <input class="new-inp" formControlName="costOfDebt" [type]="modelControl.fcff.options.riskPremium.type" placeholder="Enter cost of debt"/>
-                  <label>Cost Of Debt</label>
-            </div>
-            <span *ngIf="fcffForm.controls['costOfDebt'].touched && fcffForm.controls['costOfDebt'].errors">
-              <span *ngIf="hasError('costOfDebt','required',fcffForm)" class="error-text">Please enter cost of debt</span>
-            </span>
+                  <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                      <input type="text" matInput formControlName="costOfDebt" class="company-list-inp" placeholder="Enter cost of debt">
+                        <span class="company-list-rmve" *ngIf="fcffForm.controls['costOfDebt']?.value" style="right: 3%;">
+                          <mat-icon class="company-list-rmve-icon" (click)="clearInput('costOfDebt')">close</mat-icon>
+                        </span>
+                      <mat-label>
+                        Cost of debt*
+                      </mat-label>
+                      <mat-error class="company-list-error" *ngIf="fcffForm.controls['costOfDebt'].touched && fcffForm.controls['costOfDebt'].errors" style="margin-left: -5%;">
+                        <span *ngIf="hasError('costOfDebt','required',fcffForm)" class="error-text">
+                          Please enter cost of debt
+                        </span>
+                      </mat-error>
+                    </mat-form-field>
                 </div>
+            </div>
 
             <!-- capital structure -->
             <div class="col-md-4 field" style="padding-top: 1%;">
-                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
-                    <mat-label>Capital Structure</mat-label>
-                    <mat-select formControlName="capitalStructureType" class="mat-select-value">
-                    <mat-option *ngFor="let doc of cStructure"  [value]="doc.type">{{doc.label}}</mat-option>
+              <div class="material-textfield">
+                <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                    <mat-label>Capital structure*</mat-label>
+                    <span class="company-list-rmve" *ngIf="fcffForm.controls['capitalStructureType']?.value" style="right:8%;">
+                    <mat-icon class="company-list-rmve-icon" (click)="clearInput('capitalStructureType')">close</mat-icon>
+                    </span>
+                    <mat-select placeholder="Select capital structure" formControlName="capitalStructureType" class="new-inp company-list-inp fcfe-list nature-of-instrument">
+                    <mat-option *ngFor="let doc of cStructure" class="auto-class" [value]="doc.type">
+                      {{doc.label}}
+                    </mat-option>
                     </mat-select>
-                <mat-hint *ngIf="totalCapital" class="taxrate-hint">Target Capital Structure is {{totalCapital}}%</mat-hint>
-                  </mat-form-field> -->
-
-                  <div class="material-textfield">
-                    <select id="capitalStructureType" class="new-inp" formControlName="capitalStructureType">
-                      <option value="" disabled selected>Select capital structure</option>
-                      <option  *ngFor="let doc of cStructure"  [ngValue]="doc.type">{{doc.label}}</option>
-                    </select>
-                    <label for="capitalStructureType">Capital Structure</label>
-                  <mat-hint *ngIf="totalCapital" class="taxrate-hint">Target Capital Structure is {{totalCapital}}%</mat-hint>
-                  </div>
-                  <span *ngIf="fcffForm.controls['capitalStructureType'].touched && fcffForm.controls['capitalStructureType'].errors">
-                    <span *ngIf="hasError('capitalStructureType','required',fcffForm)" class="error-text">Please select capital structure</span>
-                  </span>
+                    <mat-hint *ngIf="totalCapital" class="taxrate-hint" style="padding-left: 0px;">Target Capital Structure is {{totalCapital}}%</mat-hint>
+                    <mat-error class="company-list-error" *ngIf="fcffForm.controls['capitalStructureType'].touched && fcffForm.controls['capitalStructureType'].errors" style="margin-left: -5%;">
+                      <span *ngIf="hasError('capitalStructureType','required',fcffForm)" class="error-text">
+                        Please select capital structure
+                      </span>
+                    </mat-error>
+                </mat-form-field>
+              </div>
             </div>
 
             <!-- cop share capital -->
-            <div class="col-md-4 field">
-                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
-                    <mat-label>Cost Of Preference</mat-label>
-                    <input formControlName="copShareCapital" [type]="modelControl.fcff.options.copShareCapital.type" matInput>
-                </mat-form-field> -->
-
+            <div class="col-md-4 field" style="padding-top: 0%;">
                 <div class="material-textfield">
-                  <input class="new-inp" formControlName="copShareCapital" [type]="modelControl.fcff.options.copShareCapital.type" placeholder="Enter cost of preference"/>
-                  <label>Cost Of Preference</label>
-            </div>
-            <span *ngIf="fcffForm.controls['copShareCapital'].touched && fcffForm.controls['copShareCapital'].errors">
-              <span *ngIf="hasError('copShareCapital','required',fcffForm)" class="error-text">Please enter cost of preference</span>
-            </span>
+                  <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                      <input type="text" matInput formControlName="copShareCapital" class="company-list-inp" placeholder="Enter cost of cost of preference">
+                        <span class="company-list-rmve" *ngIf="fcffForm.controls['copShareCapital']?.value" style="right: 3%;">
+                          <mat-icon class="company-list-rmve-icon" (click)="clearInput('copShareCapital')">close</mat-icon>
+                        </span>
+                      <mat-label>
+                        Cost of preference*
+                      </mat-label>
+                      <mat-error class="company-list-error" *ngIf="fcffForm.controls['copShareCapital'].touched && fcffForm.controls['copShareCapital'].errors" style="margin-left: -5%;">
+                        <span *ngIf="hasError('copShareCapital','required',fcffForm)" class="error-text">
+                          Please enter cost of preference
+                        </span>
+                      </mat-error>
+                    </mat-form-field>
+                </div>
             </div>
             
 

@@ -182,7 +182,7 @@
   </div>
 
   <!-- Target Capital Structure Details -->
-  <div class="container-fluid" *ngIf="data === appValues.TARGET_CAPITAL_STRUCTURE.value">
+  <div class="container-fluid" *ngIf="data?.value === appValues.TARGET_CAPITAL_STRUCTURE.value">
     <div class="row" >
       <div class="col-md-12 revalmodel" style="text-align: center;">
         <mat-label class="label" >{{label}}</mat-label>
@@ -193,19 +193,19 @@
       <!-- discount rate -->
       <div class="col-md-12 field" style="padding-top: 3%;padding-bottom: 3%;">
             <div class="material-textfield">
-              <input class="new-inp" type="text" placeholder="Enter debt proportion" #debtProp (keyup)="onTargetCapitalChange('debtProp',debtProp.value)"/>
+              <input class="new-inp" type="text" placeholder="Enter debt proportion" [formControl]="debtProp" (keyup)="onTargetCapitalChange()"/>
               <label class="going-concern-label">{{appValues.TARGET_CAPITAL_STRUCTURE.options.debtProp.name}}</label>
             </div>
         </div>
       <div class="col-md-12 field" style="padding-top: 3%;padding-bottom: 3%;">
           <div class="material-textfield">
-            <input class="new-inp" #equityProp placeholder="Enter equity proportion" type="text" (keyup)="onTargetCapitalChange('equityProp',equityProp.value)"/>
+            <input class="new-inp" placeholder="Enter equity proportion" type="text" [formControl]="equityProp" (keyup)="onTargetCapitalChange()"/>
             <label class="going-concern-label">{{appValues.TARGET_CAPITAL_STRUCTURE.options.equityProp.name}}</label>
           </div>
       </div>
       <div class="col-md-12 field" style="padding-top: 3%;padding-bottom: 3%;">
           <div class="material-textfield">
-            <input class="new-inp" #prefProp placeholder="Enter pref proportion" type="text" (keyup)="onTargetCapitalChange('prefProp',prefProp.value)"/>
+            <input class="new-inp" [formControl]="prefProp" placeholder="Enter pref proportion" type="text" (keyup)="onTargetCapitalChange()"/>
             <label class="going-concern-label">{{appValues.TARGET_CAPITAL_STRUCTURE.options.prefProp.name}}</label>
           </div>
       </div>
