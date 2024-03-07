@@ -5,7 +5,7 @@ import groupModelControl from '../../enums/group-model-controls.json'
 import WebViewer, { Core } from '@pdftron/webviewer';
 import PDFNet  from '@pdftron/webviewer';
 import { environment } from 'src/environments/environment';
-import { GET_TEMPLATE } from '../../enums/functions';
+import { GET_TEMPLATE, convertToNumberOrZero, formatNumber } from '../../enums/functions';
 import { ValuationService } from '../../service/valuation.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Form, FormControl, Validators } from '@angular/forms';
@@ -46,6 +46,10 @@ export class GenericModalBoxComponent implements OnInit {
   registeredValuerGeneralAddress: FormControl = new FormControl('');
   registeredValuerQualifications: FormControl = new FormControl('');
 
+  equityProp: FormControl = new FormControl('');
+  prefProp: FormControl = new FormControl('');
+  debtProp: FormControl = new FormControl('');
+
 label:string='';
 appValues= GLOBAL_VALUES;
 floatLabelType:any = 'never';
@@ -83,17 +87,10 @@ fileUploadStatus:boolean=true;
 projectionSelectionStatus:boolean=true;
 hasError=hasError
 helperText = helperText;
+hasLeveredBeta = false;
+hasPreferredEquity = false;
 
-  // Quill toolbar options
-  quillModules = {
-    toolbar: [
-    ['bold', 'italic', 'underline', 'strike'], // Basic formatting
-    [{ 'list': 'ordered'}, { 'list': 'bullet' }], // Lists
-    [{ 'align': [] }], // Text alignment
-    ['link', 'image'], // Links and images
-    ['clean'], // Remove formatting
-  ]
-}
+formatNumber = formatNumber;
 
 constructor(@Inject(MAT_DIALOG_DATA) public data: any,
 private dialogRef:MatDialogRef<GenericModalBoxComponent>,
@@ -132,11 +129,19 @@ loadModel(data:any){
     this.patchValuerDetails(data.data);
     return this.label = this.appValues.REGISTERED_VALUER_DETAILS.name;
   }
-  if( data === this.appValues.TARGET_CAPITAL_STRUCTURE.value) return this.label = this.appValues.TARGET_CAPITAL_STRUCTURE.name;
+  if( data?.value === this.appValues.TARGET_CAPITAL_STRUCTURE.value){
+    this.patchExistingCapitalStructure(data);
+    return this.label = this.appValues.TARGET_CAPITAL_STRUCTURE.name;
+  } 
   if( data?.value === this.appValues.PREVIEW_DOC.value) return this.label = this.appValues.PREVIEW_DOC.name;
   if( data?.value === this.appValues.VALUATION_METHOD.value) {
     this.patchExistingValue(data);
     return this.label = this.appValues.VALUATION_METHOD.name;
+  }
+  if(data?.value === this.appValues.BETA_CALCULATION.value) {
+    this.hasLeveredBeta = this.data?.coreBetaWorking.some((item:any) => item.leveredBeta !== undefined);
+    this.hasPreferredEquity = this.data?.coreBetaWorking.some((item:any) => item.totalBookValueOfPreferredEquity !== undefined);
+    return this.label = this.appValues.BETA_CALCULATION.name;
   }
   if(data?.value == this.appValues.RISK_FREE_RATE.value){
     this.patchExistingRiskFreeRateDetails(data);
@@ -260,9 +265,8 @@ modalData(data?:any,knownAs?:string) {
   }
 }
 
-onTargetCapitalChange(control:string,value:string){
-  this.totalCapital[`${control}`] = +value;
-  this.summationTargetCaps = this.totalCapital.equityProp + this.totalCapital.prefProp + this.totalCapital.debtProp;
+onTargetCapitalChange(){
+  this.summationTargetCaps = (+this.equityProp.value) + (+this.prefProp.value) + (+this.debtProp.value);
 }
 
 createModelControl(modelName:string,approach:string){
@@ -586,6 +590,21 @@ get downloadTemplate() {
   patchExistingRiskFreeRateDetails(data:any){
     if(data?.riskFreeRate){
       this.riskFreeRate.setValue(data.riskFreeRate)
+    }
+  }
+
+  patchExistingCapitalStructure(data:any){
+    if(data?.equityProp){
+      this.equityProp.setValue(data.equityProp)
+    }
+    if(data?.debtProp){
+      this.debtProp.setValue(data.debtProp);
+    }
+    if(data?.prefProp){
+      this.prefProp.setValue(data.prefProp)
+    }
+    if(data?.totalCapital){
+      this.summationTargetCaps  = data.totalCapital
     }
   }
   processStateManager(process:any, processId:any){

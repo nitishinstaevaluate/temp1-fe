@@ -112,6 +112,13 @@ checkProcessExist(){
         this.fcffForm.controls['riskPremium'].setValue(stateThreeDetails?.riskPremium); 
         this.fcffForm.controls['costOfDebt'].setValue(stateThreeDetails?.costOfDebt);
         this.fcffForm.controls['capitalStructureType'].setValue(stateThreeDetails?.capitalStructureType);
+        if(stateThreeDetails?.capitalStructure){
+          this.targetCapitalStructureForm.controls['equityProportion'].setValue(stateThreeDetails.capitalStructure?.equityProp);
+          this.targetCapitalStructureForm.controls['preferenceProportion'].setValue(stateThreeDetails.capitalStructure?.prefProp);
+          this.targetCapitalStructureForm.controls['debtProportion'].setValue(stateThreeDetails.capitalStructure?.debtProp);
+          this.targetCapitalStructureForm.controls['totalCapital'].setValue(stateThreeDetails.capitalStructure?.totalCapital);
+          this.totalCapital = this.targetCapitalStructureForm.controls['totalCapital'].value;
+        }
         this.fcffForm.controls['copShareCapital'].setValue(stateThreeDetails?.copShareCapital);
         this.specificRiskPremiumModalForm.controls['companySize'].setValue(stateThreeDetails?.alpha.companySize)
         this.specificRiskPremiumModalForm.controls['marketPosition'].setValue(stateThreeDetails?.alpha.marketPosition)
@@ -138,8 +145,8 @@ loadValues(){
         this.equityM = resp[DROPDOWN.EQUITY];
         this.indianTreasuryY = resp[DROPDOWN.INDIANTREASURYYIELDS],
         this.rPremium = resp[DROPDOWN.PREMIUM];
-        this.cStructure = resp[DROPDOWN.CAPTIAL_STRUCTURE],
-        this.cStructure.push({type:'Target_Based',label:'Target Capital Structure'});
+        this.cStructure = resp[DROPDOWN.CAPTIAL_STRUCTURE]
+        // this.cStructure.push({type:'Target_Based',label:'Target Capital Structure'});
       });
 }
 
@@ -212,10 +219,13 @@ loadOnChangeValue(){
         this.getWaccIndustryOrCompanyBased();
       } else {
         const data={
-          data: 'targetCapitalStructure',
-          width:'30%',
+          value: 'targetCapitalStructure',
+          debtProp: this.targetCapitalStructureForm.controls['debtProportion'].value,
+          equityProp: this.targetCapitalStructureForm.controls['equityProportion'].value,
+          prefProp: this.targetCapitalStructureForm.controls['preferenceProportion'].value,
+          totalCapital: this.targetCapitalStructureForm.controls['totalCapital'].value
         }
-        const dialogRef = this.dialog.open(GenericModalBoxComponent,data);
+        const dialogRef = this.dialog.open(GenericModalBoxComponent,{data:data, width:'30%'});
 
         dialogRef.afterClosed().subscribe((result)=>{
           if(result){
@@ -237,7 +247,7 @@ loadOnChangeValue(){
 
           }
           else {
-            this.fcffForm.controls['capitalStructureType'].reset();
+            // this.fcffForm.controls['capitalStructureType'].reset();
 
             this.snackBar.open('Target Capital Structure Not Saved','OK',{
               horizontalPosition: 'right',
@@ -302,7 +312,7 @@ loadOnChangeValue(){
 
 loadFormControl(){
     this.fcffForm=this.formBuilder.group({
-    discountRate:[null,[Validators.required]],
+    discountRate:['Cost_Of_Equity',[Validators.required]],
     discountingPeriod:['',[Validators.required]],
     betaType:['',[Validators.required]],
     coeMethod:['',[Validators.required]],
@@ -335,11 +345,6 @@ loadFormControl(){
 }
 
 getDocList(doc: any) {
-  if (this.formOneData?.model.length>0 && this.formOneData?.model.includes('FCFE')) {
-    this.fcffForm.controls['discountRate'].setValue('Cost_Of_Equity');
-  } else if (this.formOneData?.model.length>0 && this.formOneData?.model.includes('FCFF')) {
-    this.fcffForm.controls['discountRate'].setValue('Cost_Of_Equity'); //temporary set value as cost of equity ,change later
-  }
     return doc.type;
 }
 
@@ -585,11 +590,12 @@ onRadioButtonChange(event:any){
 }
 
 betaChange(event:any){
-if(event?.target?.value){
-if(event?.target?.value.includes('unlevered') || event?.target?.value.includes('levered')){
+  const selectedValue = event.value;
+if(selectedValue){
+if(selectedValue.includes('unlevered') || selectedValue.includes('levered')){
   this.calculateBeta(BETA_SUB_TYPE[0]);
 }
-else if(event?.target?.value.includes('stock_beta')){
+else if(selectedValue.includes('stock_beta')){
   this.calculateStockBeta();
 }
 else{
@@ -630,6 +636,27 @@ this.ciqSpService.calculateSPindustryBeta(betaPayload).subscribe((betaData:any)=
     this.fcffForm.controls['beta'].setValue(betaData.total);
     this.deRatio = betaData.deRatio
     this.selectedSubBetaType = betaSubType;
+
+    this.processStatusManagerService.fetchProcessIdentifierId(localStorage.getItem('processStateId')).subscribe(async (processManagerDetails:any)=>{
+      this.betaLoader = false;
+        if(processManagerDetails){
+          const payload = {
+            coreBetaWorking:betaData.coreBetaWorking,
+            betaMeanMedianWorking: betaData.betaMeanMedianWorking,
+            processIdentifierId: processManagerDetails.processIdentifierId
+          }
+          await this.ciqSpService.upsertBetaWorking(payload).toPromise();
+        }
+      },(error)=>{
+        this.betaLoader = false;
+        this.snackBar.open(`Beta upsertion failed`, 'OK', {
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+          duration: 3000,
+          panelClass: 'app-notification-error',
+        });
+      })
+
     this.calculateCoeAndAdjustedCoe();
   }
   else{
@@ -753,5 +780,68 @@ calculateStockBeta(){
     }
 
     return betaDropdownValues;
+  }
+
+  clearInput(controlName:string){
+    this.fcffForm.controls[controlName].setValue('');
+    this.clearRelatedControls(controlName);
+  }
+
+  clearRelatedControls(controls:any){
+    switch(controls){
+      case 'riskFreeRateYears':
+        this.fcffForm.controls['riskFreeRate'].setValue('');
+      break;
+      case 'expMarketReturnType':
+        this.fcffForm.controls['expMarketReturn'].setValue('');
+      break;
+      case 'betaType':
+        this.fcffForm.controls['beta'].setValue('');
+      break;
+    }
+  }
+
+  handleBetaClick() {
+    if (this.fcffForm.controls['betaType'].value === 'market_beta' || this.fcffForm.controls['betaType'].value === 'stock_beta') {
+      this.snackBar.open('Workings available for relevered and unlevered beta only', 'Ok',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 5000,
+        panelClass: 'app-notification-error'
+      })
+    } else {
+      this.loadBetaCalculation();
+    }
+  }
+
+  async loadBetaCalculation(){
+    const processManagerDetails:any = await this.processStatusManagerService.fetchProcessIdentifierId(localStorage.getItem('processStateId')).toPromise();
+    if(processManagerDetails?.processIdentifierId){
+      this.ciqSpService.fetchBetaWorking(processManagerDetails?.processIdentifierId).subscribe((betaWorkingResponse:any)=>{
+        if(betaWorkingResponse.status){
+          const data={
+            value:'betaCalculation',
+            coreBetaWorking: betaWorkingResponse.data.coreBetaWorking,
+            betaMeanMedianWorking: betaWorkingResponse.data.betaMeanMedianWorking
+          }
+          const dialogPrev = this.dialog.open(GenericModalBoxComponent,{data:data, width:'90%',maxHeight: '90vh',panelClass: 'custom-dialog-container'})
+        }
+        else{
+          this.snackBar.open('beta working not found, try again', 'Ok',{
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+            duration: 3000,
+            panelClass: 'app-notification-error',
+          })
+        }
+      },(error)=>{
+        this.snackBar.open('backend error - beta working not found, try again', 'Ok',{
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+          duration: 3000,
+          panelClass: 'app-notification-error',
+        })
+      })
+    }
   }
 }

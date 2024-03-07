@@ -51,7 +51,15 @@ export class CiqSPService {
     return this.http.get(`${this.HOST}ciq-elastic-search/ciq-elastic-search-company-details/${companyId}`)
    }
 
-   calculateStockBeta(payload:any){
-    return this.http.post(`${this.HOST}ciq-sp/calculate-sp-stock-beta`,payload)
-   }
+    calculateStockBeta(payload:any){
+     return this.http.post(`${this.HOST}ciq-sp/calculate-sp-stock-beta`,payload);
+    }
+  
+    upsertBetaWorking(payload:any){
+     return this.http.put(`${this.HOST}ciq-sp/beta-working`,payload);
+    }
+
+    fetchBetaWorking(processId:any){
+     return this.http.get(`${this.HOST}ciq-sp/fetch-beta-working/${processId}`);
+    }
 }

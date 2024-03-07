@@ -447,7 +447,7 @@ export class GroupModelControlsComponent implements OnInit {
         fileName:this.fileName,
         value:'valuationMethod'
       }
-     const dialogRef = this.dialog.open(GenericModalBoxComponent,{data:data,width:'50%', height:'90%'});
+     const dialogRef = this.dialog.open(GenericModalBoxComponent,{data:data,width:'50%', maxHeight:'90vh', panelClass:'custom-dialog-container'});
   
      dialogRef.afterClosed().subscribe((result) => {
       if (result) {

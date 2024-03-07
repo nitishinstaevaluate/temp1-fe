@@ -218,7 +218,7 @@ loadOnChangeValue(){
 
 loadFormControl(){
     this.excessEarningForm=this.formBuilder.group({
-    discountRate:['',[Validators.required]],
+    discountRate:['Cost_Of_Equity',[Validators.required]],
     discountingPeriod:['',[Validators.required]],
     betaType:['',[Validators.required]],
     coeMethod:['',[Validators.required]],
@@ -241,11 +241,6 @@ loadFormControl(){
 }
 
 getDocList(doc: any) {
-  if (this.formOneData?.model.length>0 && this.formOneData?.model.includes('FCFE')) {
-    this.excessEarningForm.controls['discountRate'].setValue('Cost_Of_Equity');
-  } else if (this.formOneData?.model.length>0 && this.formOneData?.model.includes('FCFF')) {
-    this.excessEarningForm.controls['discountRate'].setValue('Cost_Of_Equity'); //temporary set value as cost of equity ,change later
-  }
     return doc.type;
 }
 
@@ -459,11 +454,12 @@ onRadioButtonChange(event:any){
 }
 
 betaChange(event:any){
-if(event?.target?.value){
-  if(event?.target?.value.includes('unlevered') || event?.target?.value.includes('levered')){
+  const selectedValue = event.value;
+if(selectedValue){
+  if(selectedValue.includes('unlevered') || selectedValue.includes('levered')){
     this.calculateBeta(BETA_SUB_TYPE[0]);
   }
-  else if(event?.target?.value.includes('stock_beta')){
+  else if(selectedValue.includes('stock_beta')){
     this.calculateStockBeta();
   }
   else{
@@ -503,6 +499,27 @@ calculateBeta(betaSubType:any){
       this.betaLoader = false;
       this.excessEarningForm.controls['beta'].setValue(betaData.total);
       this.selectedSubBetaType = betaSubType;
+
+      this.processStatusManagerService.fetchProcessIdentifierId(localStorage.getItem('processStateId')).subscribe(async (processManagerDetails:any)=>{
+        this.betaLoader = false;
+          if(processManagerDetails){
+            const payload = {
+              coreBetaWorking:betaData.coreBetaWorking,
+              betaMeanMedianWorking: betaData.betaMeanMedianWorking,
+              processIdentifierId: processManagerDetails.processIdentifierId
+            }
+            await this.ciqSpService.upsertBetaWorking(payload).toPromise();
+          }
+        },(error)=>{
+          this.betaLoader = false;
+          this.snackBar.open(`Beta upsertion failed`, 'OK', {
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+            duration: 3000,
+            panelClass: 'app-notification-error',
+          });
+        })
+
       this.calculateCoeAndAdjustedCoe();
     }
     else{
@@ -608,6 +625,69 @@ calculateStockBeta(){
     }
 
     return betaDropdownValues;
+  }
+
+  clearInput(controlName:string){
+    this.excessEarningForm.controls[controlName].setValue('');
+    this.clearRelatedControls(controlName);
+  }
+
+  clearRelatedControls(controls:any){
+    switch(controls){
+      case 'riskFreeRateYears':
+        this.excessEarningForm.controls['riskFreeRate'].setValue('');
+      break;
+      case 'expMarketReturnType':
+        this.excessEarningForm.controls['expMarketReturn'].setValue('');
+      break;
+      case 'betaType':
+        this.excessEarningForm.controls['beta'].setValue('');
+      break;
+    }
+  }
+
+  handleBetaClick() {
+    if (this.excessEarningForm.controls['betaType'].value === 'market_beta' || this.excessEarningForm.controls['betaType'].value === 'stock_beta') {
+      this.snackBar.open('Workings available for relevered and unlevered beta only', 'Ok',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 5000,
+        panelClass: 'app-notification-error'
+      })
+    } else {
+      this.loadBetaCalculation();
+    }
+  }
+
+  async loadBetaCalculation(){
+    const processManagerDetails:any = await this.processStatusManagerService.fetchProcessIdentifierId(localStorage.getItem('processStateId')).toPromise();
+    if(processManagerDetails?.processIdentifierId){
+      this.ciqSpService.fetchBetaWorking(processManagerDetails?.processIdentifierId).subscribe((betaWorkingResponse:any)=>{
+        if(betaWorkingResponse.status){
+          const data={
+            value:'betaCalculation',
+            coreBetaWorking: betaWorkingResponse.data.coreBetaWorking,
+            betaMeanMedianWorking: betaWorkingResponse.data.betaMeanMedianWorking
+          }
+          const dialogPrev = this.dialog.open(GenericModalBoxComponent,{data:data, width:'90%',maxHeight: '90vh',panelClass: 'custom-dialog-container'})
+        }
+        else{
+          this.snackBar.open('beta working not found, try again', 'Ok',{
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+            duration: 3000,
+            panelClass: 'app-notification-error',
+          })
+        }
+      },(error)=>{
+        this.snackBar.open('backend error - beta working not found, try again', 'Ok',{
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+          duration: 3000,
+          panelClass: 'app-notification-error',
+        })
+      })
+    }
   }
 }
 

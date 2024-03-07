@@ -155,8 +155,16 @@
                                   <span class="reset-ind3" style="vertical-align: middle;">Median</span>
                                 </span>
                                 <span [ngClass]="(fcfeForm.controls['betaType'].value === 'market_beta' || fcfeForm.controls['betaType'].value === 'stock_beta') ? '' :  'add-padding-beta'">
-                                  <span *ngIf="fcfeForm.controls['beta'].value && !betaLoader" style="vertical-align: middle;font-size: 11px;color: #1915bb;" class="reset-ind3">Beta is {{fcfeForm.controls['beta'].value?.toFixed(2)}}</span>
+                                  <span *ngIf="fcfeForm.controls['beta'].value && !betaLoader" style="vertical-align: middle;font-size: 11px;color: #1915bb;" class="reset-ind3">
+                                    <a target="_blank" class="beta-val"  (click)="handleBetaClick()">
+                                      Beta is {{fcfeForm.controls['beta'].value?.toFixed(2)}} 
+                                      <span style="vertical-align: middle;">
+                                        <mat-icon>settings</mat-icon>
+                                      </span>
+                                    </a>
+                                  </span>
                                 </span>
+                                <!-- <span><a style="font-size: 10px;" target="_blank">See Workings</a></span> -->
                               </span>
                               <span>
                                 <mat-progress-spinner style="vertical-align: middle" *ngIf="betaLoader" class="beta-spin" mode="indeterminate" diameter="20"></mat-progress-spinner>
@@ -170,7 +178,7 @@
                 <div class="col-md-4 field" style="padding-top: 2%;">
                   <div class="material-textfield">
                     <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
-                        <input (click)="onSlideToggleChange($event)" type="text" matInput formControlName="riskPremium" class="company-list-inp" placeholder="Enter CIN number">
+                        <input (click)="onSlideToggleChange($event)" type="text" matInput formControlName="riskPremium" class="company-list-inp" placeholder="Enter specific risk premium">
                           <span class="company-list-rmve" *ngIf="fcfeForm.controls['riskPremium']?.value" style="right: 3%;">
                             <mat-icon class="company-list-rmve-icon" (click)="clearInput('riskPremium')">close</mat-icon>
                           </span>

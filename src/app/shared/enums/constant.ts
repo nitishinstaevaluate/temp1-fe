@@ -237,6 +237,10 @@ export const ALL_MODELS = {
         value:'dataCheckList',
         name:'Data checklist form'
       }
+    },
+    BETA_CALCULATION:{
+      value:'betaCalculation',
+      name:'Beta Computation'
     }
   }
 

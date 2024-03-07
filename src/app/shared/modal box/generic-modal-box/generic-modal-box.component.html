@@ -182,7 +182,7 @@
   </div>
 
   <!-- Target Capital Structure Details -->
-  <div class="container-fluid" *ngIf="data === appValues.TARGET_CAPITAL_STRUCTURE.value">
+  <div class="container-fluid" *ngIf="data?.value === appValues.TARGET_CAPITAL_STRUCTURE.value">
     <div class="row" >
       <div class="col-md-12 revalmodel" style="text-align: center;">
         <mat-label class="label" >{{label}}</mat-label>
@@ -193,19 +193,19 @@
       <!-- discount rate -->
       <div class="col-md-12 field" style="padding-top: 3%;padding-bottom: 3%;">
             <div class="material-textfield">
-              <input class="new-inp" type="text" placeholder="Enter debt proportion" #debtProp (keyup)="onTargetCapitalChange('debtProp',debtProp.value)"/>
+              <input class="new-inp" type="text" placeholder="Enter debt proportion" [formControl]="debtProp" (keyup)="onTargetCapitalChange()"/>
               <label class="going-concern-label">{{appValues.TARGET_CAPITAL_STRUCTURE.options.debtProp.name}}</label>
             </div>
         </div>
       <div class="col-md-12 field" style="padding-top: 3%;padding-bottom: 3%;">
           <div class="material-textfield">
-            <input class="new-inp" #equityProp placeholder="Enter equity proportion" type="text" (keyup)="onTargetCapitalChange('equityProp',equityProp.value)"/>
+            <input class="new-inp" placeholder="Enter equity proportion" type="text" [formControl]="equityProp" (keyup)="onTargetCapitalChange()"/>
             <label class="going-concern-label">{{appValues.TARGET_CAPITAL_STRUCTURE.options.equityProp.name}}</label>
           </div>
       </div>
       <div class="col-md-12 field" style="padding-top: 3%;padding-bottom: 3%;">
           <div class="material-textfield">
-            <input class="new-inp" #prefProp placeholder="Enter pref proportion" type="text" (keyup)="onTargetCapitalChange('prefProp',prefProp.value)"/>
+            <input class="new-inp" [formControl]="prefProp" placeholder="Enter pref proportion" type="text" (keyup)="onTargetCapitalChange()"/>
             <label class="going-concern-label">{{appValues.TARGET_CAPITAL_STRUCTURE.options.prefProp.name}}</label>
           </div>
       </div>
@@ -747,4 +747,58 @@
       Send Email
     </button>
   </div>
+  </div>
+
+  <div class="container-fluid" *ngIf="data?.value === appValues.BETA_CALCULATION.value" style="padding: 1%;">
+    <div class="col-md-12 revalmodel" style="text-align: center;padding-top: 1%;">
+      <mat-label class="label" >{{this.label}}</mat-label>
+      <span><mat-icon class="close-modal-valuer" (click)="modalData()" style="padding-right: 3%;">close</mat-icon></span>
+    </div>
+    <div class="container-fluid" style="padding-top: 1%;">
+      <table class="beta-table">
+        <thead class="sticky-header">
+          <tr class="t-header">
+            <th colspan="2"></th>
+            <th colspan="2" class="enhance-beta-label" style="padding-left: 4% !important;">Book Value of</th>
+            <th colspan="2" class="enhance-beta-label" style="padding-left: 2% !important;">Market Value of</th>
+            <th colspan="4"></th>
+          </tr>
+          <tr class="t-header">
+            <th>Company Id</th>
+            <th>Company Name</th>
+            <th>Debt</th>
+            <th>Preferred Equity</th>
+            <th>Equity</th>
+            <th>Capital</th>
+            <th>Debt to capital</th>
+            <th>Equity to capital</th>
+            <th *ngIf="hasLeveredBeta">Levered Beta</th>
+            <th>Unlevered Beta</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data?.coreBetaWorking" class="content">
+            <td style="font-size: 11px !important;padding: 1%;" class="make-light">{{ item.companyId }}</td>
+            <td style="font-size: 11px !important;padding: 1%;width: 13%;" class="make-light"><a  target="_blank">{{ item.companyName || '-'}}</a></td>
+            <td style=" font-size: 11px !important; padding: 1%;" class="make-light">
+              <a target="_blank">{{ item.totalBookValueOfDebt ? formatNumber(item.totalBookValueOfDebt) : '-' }}</a>
+            </td>            
+            <td style="font-size: 11px !important;padding: 1%;" class="make-light" [ngStyle]="!hasPreferredEquity ? { 'width':'auto'} : {'width':'7%'}">{{ item.totalBookValueOfPreferredEquity ? formatNumber(item.totalBookValueOfPreferredEquity) : '-' }}</td>
+            <td style="font-size: 11px !important;padding: 1%;" class="make-light">{{ item.totalMarketValueOfEquity ? formatNumber(item.totalMarketValueOfEquity) : '-' }}</td>
+            <td style="font-size: 11px !important;padding: 1%;" class="make-light">{{ item.totalMarketValueOfCapital ? formatNumber(item.totalMarketValueOfCapital) : '-' }}</td>
+            <td style="font-size: 11px !important;padding: 1%;padding-left: 4% !important;" class="make-light">{{ item.debtToCapital ? formatNumber(item.debtToCapital) : '-' }}</td>
+            <td style="font-size: 11px !important;padding: 1%;padding-left: 4% !important;" class="make-light">{{ item.equityToCapital ? formatNumber(item.equityToCapital) : '-' }}</td>
+            <td style="font-size: 11px !important;padding: 1%;padding-left: 4% !important;" class="make-light" *ngIf="hasLeveredBeta">{{ item.leveredBeta  ? formatNumber(item.leveredBeta) : '-' }}</td>
+            <td style="font-size: 11px !important;padding: 1%;padding-left: 4% !important;" class="make-light">{{ item.unleveredBeta ? formatNumber(item.unleveredBeta) : '-' }}</td>
+          </tr>
+          <tr class="content" *ngFor="let item of data?.betaMeanMedianWorking">
+            <td style="font-size: 11px !important;padding: 1%;text-align: center;" class="make-bold" colspan="6">{{ item.betaType === 'meanBeta' ? 'Average' : 'Median' }}</td>
+            <td style="font-size: 11px !important;padding: 1%;padding-left: 4% !important;" class="make-bold">{{ formatNumber(item.debtToCapital) }}%</td>
+            <td style="font-size: 11px !important;padding: 1%;padding-left: 4% !important;" class="make-bold">{{ formatNumber(item.equityToCapital) }}%</td>
+            <td style="font-size: 11px !important;padding: 1%;padding-left: 4% !important;" class="make-bold" *ngIf="hasLeveredBeta">{{ formatNumber(item.leveredBeta) }}</td>
+            <td style="font-size: 11px !important;padding: 1%;padding-left: 4% !important;" class="make-bold">{{ formatNumber(item.unleveredBeta) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
