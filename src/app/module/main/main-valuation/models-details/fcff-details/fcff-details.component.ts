@@ -312,7 +312,7 @@ loadOnChangeValue(){
 
 loadFormControl(){
     this.fcffForm=this.formBuilder.group({
-    discountRate:[null,[Validators.required]],
+    discountRate:['Cost_Of_Equity',[Validators.required]],
     discountingPeriod:['',[Validators.required]],
     betaType:['',[Validators.required]],
     coeMethod:['',[Validators.required]],
@@ -345,11 +345,6 @@ loadFormControl(){
 }
 
 getDocList(doc: any) {
-  if (this.formOneData?.model.length>0 && this.formOneData?.model.includes('FCFE')) {
-    this.fcffForm.controls['discountRate'].setValue('Cost_Of_Equity');
-  } else if (this.formOneData?.model.length>0 && this.formOneData?.model.includes('FCFF')) {
-    this.fcffForm.controls['discountRate'].setValue('Cost_Of_Equity'); //temporary set value as cost of equity ,change later
-  }
     return doc.type;
 }
 
@@ -641,6 +636,27 @@ this.ciqSpService.calculateSPindustryBeta(betaPayload).subscribe((betaData:any)=
     this.fcffForm.controls['beta'].setValue(betaData.total);
     this.deRatio = betaData.deRatio
     this.selectedSubBetaType = betaSubType;
+
+    this.processStatusManagerService.fetchProcessIdentifierId(localStorage.getItem('processStateId')).subscribe(async (processManagerDetails:any)=>{
+      this.betaLoader = false;
+        if(processManagerDetails){
+          const payload = {
+            coreBetaWorking:betaData.coreBetaWorking,
+            betaMeanMedianWorking: betaData.betaMeanMedianWorking,
+            processIdentifierId: processManagerDetails.processIdentifierId
+          }
+          await this.ciqSpService.upsertBetaWorking(payload).toPromise();
+        }
+      },(error)=>{
+        this.betaLoader = false;
+        this.snackBar.open(`Beta upsertion failed`, 'OK', {
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+          duration: 3000,
+          panelClass: 'app-notification-error',
+        });
+      })
+
     this.calculateCoeAndAdjustedCoe();
   }
   else{
@@ -782,6 +798,50 @@ calculateStockBeta(){
       case 'betaType':
         this.fcffForm.controls['beta'].setValue('');
       break;
+    }
+  }
+
+  handleBetaClick() {
+    if (this.fcffForm.controls['betaType'].value === 'market_beta' || this.fcffForm.controls['betaType'].value === 'stock_beta') {
+      this.snackBar.open('Workings available for relevered and unlevered beta only', 'Ok',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 5000,
+        panelClass: 'app-notification-error'
+      })
+    } else {
+      this.loadBetaCalculation();
+    }
+  }
+
+  async loadBetaCalculation(){
+    const processManagerDetails:any = await this.processStatusManagerService.fetchProcessIdentifierId(localStorage.getItem('processStateId')).toPromise();
+    if(processManagerDetails?.processIdentifierId){
+      this.ciqSpService.fetchBetaWorking(processManagerDetails?.processIdentifierId).subscribe((betaWorkingResponse:any)=>{
+        if(betaWorkingResponse.status){
+          const data={
+            value:'betaCalculation',
+            coreBetaWorking: betaWorkingResponse.data.coreBetaWorking,
+            betaMeanMedianWorking: betaWorkingResponse.data.betaMeanMedianWorking
+          }
+          const dialogPrev = this.dialog.open(GenericModalBoxComponent,{data:data, width:'90%',maxHeight: '90vh',panelClass: 'custom-dialog-container'})
+        }
+        else{
+          this.snackBar.open('beta working not found, try again', 'Ok',{
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+            duration: 3000,
+            panelClass: 'app-notification-error',
+          })
+        }
+      },(error)=>{
+        this.snackBar.open('backend error - beta working not found, try again', 'Ok',{
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+          duration: 3000,
+          panelClass: 'app-notification-error',
+        })
+      })
     }
   }
 }

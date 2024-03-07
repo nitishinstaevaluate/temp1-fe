@@ -53,8 +53,6 @@ export class FcfeDetailsComponent implements OnChanges,OnInit{
   stockBetaChecker = false;
   @ViewChild('countElement', { static: false }) countElement!: ElementRef;
   @ViewChild(MatStepper, { static: false }) stepper!: MatStepper;
-  coreBetaWorking = []
-  betaMeanMedianWorking = []
   
 constructor(private valuationService:ValuationService,
   private dataReferenceService: DataReferencesService,
@@ -485,11 +483,28 @@ calculateBeta(betaSubType:any){
   this.betaLoader = true;
   this.ciqSpService.calculateSPindustryBeta(betaPayload).subscribe((betaData:any)=>{
     if(betaData.status){
-      this.betaLoader = false;
       this.fcfeForm.controls['beta'].setValue(betaData.total);
       this.selectedSubBetaType = betaSubType;
-      this.coreBetaWorking = betaData.coreBetaWorking;
-      this.betaMeanMedianWorking = betaData.betaMeanMedianWorking;
+
+      this.processStatusManagerService.fetchProcessIdentifierId(localStorage.getItem('processStateId')).subscribe(async (processManagerDetails:any)=>{
+      this.betaLoader = false;
+        if(processManagerDetails){
+          const payload = {
+            coreBetaWorking:betaData.coreBetaWorking,
+            betaMeanMedianWorking: betaData.betaMeanMedianWorking,
+            processIdentifierId: processManagerDetails.processIdentifierId
+          }
+          await this.ciqSpService.upsertBetaWorking(payload).toPromise();
+        }
+      },(error)=>{
+        this.betaLoader = false;
+        this.snackBar.open(`Beta upsertion failed`, 'OK', {
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+          duration: 3000,
+          panelClass: 'app-notification-error',
+        });
+      })
       this.calculateCoeAndAdjustedCoe();
     }
     else{
@@ -616,13 +631,35 @@ calculateStockBeta(){
     }
   }
 
-  loadBetaCalculation(){
-    const data={
-      value:'betaCalculation',
-      coreBetaWorking: this.coreBetaWorking,
-      betaMeanMedianWorking: this.betaMeanMedianWorking
+  async loadBetaCalculation(){
+    const processManagerDetails:any = await this.processStatusManagerService.fetchProcessIdentifierId(localStorage.getItem('processStateId')).toPromise();
+    if(processManagerDetails?.processIdentifierId){
+      this.ciqSpService.fetchBetaWorking(processManagerDetails?.processIdentifierId).subscribe((betaWorkingResponse:any)=>{
+        if(betaWorkingResponse.status){
+          const data={
+            value:'betaCalculation',
+            coreBetaWorking: betaWorkingResponse.data.coreBetaWorking,
+            betaMeanMedianWorking: betaWorkingResponse.data.betaMeanMedianWorking
+          }
+          const dialogPrev = this.dialog.open(GenericModalBoxComponent,{data:data, width:'90%',maxHeight: '90vh',panelClass: 'custom-dialog-container'})
+        }
+        else{
+          this.snackBar.open('beta working not found, try again', 'Ok',{
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+            duration: 3000,
+            panelClass: 'app-notification-error',
+          })
+        }
+      },(error)=>{
+        this.snackBar.open('backend error - beta working not found, try again', 'Ok',{
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+          duration: 3000,
+          panelClass: 'app-notification-error',
+        })
+      })
     }
-    const dialogPrev = this.dialog.open(GenericModalBoxComponent,{data:data, width:'90%',maxHeight: '90vh',panelClass: 'custom-dialog-container'})
   }
 
   handleBetaClick() {

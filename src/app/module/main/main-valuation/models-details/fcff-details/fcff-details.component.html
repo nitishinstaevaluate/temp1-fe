@@ -153,7 +153,14 @@
                               <span class="reset-ind3" style="vertical-align: middle;">Median</span>
                             </span>
                             <span [ngClass]="(fcffForm.controls['betaType'].value === 'market_beta' || fcffForm.controls['betaType'].value === 'stock_beta') ? '' :  'add-padding-beta'">
-                              <span *ngIf="fcffForm.controls['beta'].value && !betaLoader" style="vertical-align: middle;font-size: 11px;color: #1915bb;" class="reset-ind3">Beta is {{fcffForm.controls['beta'].value?.toFixed(2)}}</span>
+                              <span *ngIf="fcffForm.controls['beta'].value && !betaLoader" style="vertical-align: middle;font-size: 11px;color: #1915bb;" class="reset-ind3">
+                                <a target="_blank" class="beta-val"  (click)="handleBetaClick()">
+                                  Beta is {{fcffForm.controls['beta'].value?.toFixed(2)}} 
+                                  <span style="vertical-align: middle;">
+                                    <mat-icon>settings</mat-icon>
+                                  </span>
+                                </a>
+                              </span>
                             </span>
                           </span>
                           <span>

@@ -10,156 +10,192 @@
                     </div>
                   </div>
             </div>
-            <!-- discount rate -->
-            <div class="col-md-4 field" style="padding-top:1%">
-                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
-                    <mat-label>Discount Rate</mat-label>    
-                    <mat-select class="mat-select-value" formControlName="discountRate">
-                        <mat-option *ngFor="let doc of discountR"  [value]="getDocList(doc)">{{doc.label}}</mat-option>
-                        </mat-select>
-                  </mat-form-field> -->
 
-                  <div class="material-textfield">
-                    <select id="discountRate" class="new-inp" formControlName="discountRate">
-                      <option value="" disabled selected>Select discount Rate</option>
-                      <option *ngFor="let doc of discountR" [ngValue]="getDocList(doc)">{{ doc.label }}</option>
-                    </select>
-                    <label for="discountRate">Discount Rate</label>
-                  </div>
-                  <span *ngIf="excessEarningForm.controls['discountRate'].touched && excessEarningForm.controls['discountRate'].errors">
-                    <span *ngIf="hasError('discountRate','required',excessEarningForm)" class="error-text">Please select discount rate</span>
-                  </span>
+            <!-- discount rate -->
+            <div class="col-md-4 field" style="padding-top:0%">
+              <div class="material-textfield">
+                <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                    <mat-label>Discount Rate*</mat-label>
+                    <span class="company-list-rmve" *ngIf="excessEarningForm.controls['discountRate']?.value" style="right:9%;z-index: 0;">
+                    <mat-icon class="company-list-rmve-icon" (click)="clearInput('discountRate')">close</mat-icon>
+                    </span>
+                    <mat-select formControlName="discountRate" class="new-inp company-list-inp fcfe-list nature-of-instrument">
+                    <mat-option [disabled]="discountR.length" *ngFor="let doc of discountR" class="auto-class" [value]="getDocList(doc)">
+                        {{ doc.label }}
+                    </mat-option>
+                    </mat-select>
+                    <mat-error class="company-list-error" *ngIf="excessEarningForm.controls['discountRate'].touched && excessEarningForm.controls['discountRate'].errors" style="margin-left: -5%;">
+                      <span *ngIf="hasError('discountRate','required',excessEarningForm)" class="error-text">
+                        Please select discount rate
+                      </span>
+                    </mat-error>
+                </mat-form-field>
+              </div>
             </div>
 
             <!-- discount period -->
-            <div class="col-md-4 field" style="padding-top:1%">
-                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType">
-                    <mat-label>Discount Period</mat-label>
-                    <mat-select class="mat-select-value" formControlName="discountingPeriod">
-                    <mat-option *ngFor="let doc of modelControl.excessEarning.options.discountPeriod.options"  [value]="doc.name">{{doc.name}}</mat-option>
+            <div class="col-md-4 field" style="padding-top:0%">
+              <div class="material-textfield">
+                <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                    <mat-label>Discount Period*</mat-label>
+                    <span class="company-list-rmve" *ngIf="excessEarningForm.controls['discountingPeriod']?.value" style="right:9%;">
+                    <mat-icon class="company-list-rmve-icon" (click)="clearInput('discountingPeriod')">close</mat-icon>
+                    </span>
+                    <mat-select placeholder="Select Discount Period" formControlName="discountingPeriod" class="new-inp company-list-inp fcfe-list nature-of-instrument">
+                    <mat-option *ngFor="let doc of modelControl.excessEarning.options.discountPeriod.options" class="auto-class" [value]="doc.name">
+                        {{ doc.name }}
+                    </mat-option>
                     </mat-select>
-                  </mat-form-field> -->
-
-                  <div class="material-textfield">
-                    <select id="discountingPeriod" class="new-inp" formControlName="discountingPeriod">
-                      <option value="" disabled selected>Select discount period</option>
-                      <option *ngFor="let doc of modelControl.excessEarning.options.discountPeriod.options" [ngValue]="doc.name">{{ doc.name }}</option>
-                    </select>
-                    <label for="discountingPeriod">Discount Period</label>
-                  </div>
-                  <span *ngIf="excessEarningForm.controls['discountingPeriod'].touched && excessEarningForm.controls['discountingPeriod'].errors">
-                    <span *ngIf="hasError('discountingPeriod','required',excessEarningForm)" class="error-text">Please select discounting period</span>
-                  </span>
+                    <mat-error class="company-list-error" *ngIf="excessEarningForm.controls['discountingPeriod'].touched && excessEarningForm.controls['discountingPeriod'].errors" style="margin-left: -5%;">
+                      <span *ngIf="hasError('discountingPeriod','required',excessEarningForm)" class="error-text">
+                        Please select discounting period
+                      </span>
+                    </mat-error>
+                </mat-form-field>
+              </div>
             </div>
 
             <!-- cost of equity -->
-            <div class="col-md-4 field" style="padding-top:1%">
-                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
-                    <mat-label>Cost Of Equity</mat-label>
-                    <mat-select class="mat-select-value" formControlName="coeMethod">
-                    <mat-option *ngFor="let doc of equityM"  [value]="doc.type">{{doc.label}}</mat-option>
+            <div class="col-md-4 field" style="padding-top:0%">
+              <div class="material-textfield">
+                <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                    <mat-label>Cost Of Equity*</mat-label>
+                    <span class="company-list-rmve" *ngIf="excessEarningForm.controls['coeMethod']?.value" style="right:9%;">
+                    <mat-icon class="company-list-rmve-icon" (click)="clearInput('coeMethod')">close</mat-icon>
+                    </span>
+                    <mat-select placeholder="Select cost of equity method" formControlName="coeMethod" class="new-inp company-list-inp fcfe-list nature-of-instrument">
+                    <mat-option *ngFor="let doc of equityM" class="auto-class" [value]="doc.type">
+                        {{ doc.label }}
+                    </mat-option>
                     </mat-select>
-                  </mat-form-field> -->
-
-                  <div class="material-textfield">
-                    <select id="coeMethod" class="new-inp" formControlName="coeMethod">
-                      <option value="" disabled selected>Select cost of equity</option>
-                      <option *ngFor="let doc of equityM"  [ngValue]="doc.type">{{ doc.label }}</option>
-                    </select>
-                    <label for="coeMethod">Cost Of Equity</label>
-                  </div>
-                  <span *ngIf="excessEarningForm.controls['coeMethod'].touched && excessEarningForm.controls['coeMethod'].errors">
-                    <span *ngIf="hasError('coeMethod','required',excessEarningForm)" class="error-text">Please select cost of equity</span>
-                  </span>
+                    <mat-error class="company-list-error" *ngIf="excessEarningForm.controls['coeMethod'].touched && excessEarningForm.controls['coeMethod'].errors" style="margin-left: -5%;">
+                      <span *ngIf="hasError('coeMethod','required',excessEarningForm)" class="error-text">
+                        Please select cost of equity method
+                      </span>
+                    </mat-error>
+                </mat-form-field>
+              </div>
             </div>
 
             <!-- risk free rate -->
-            <div class="col-md-4 field">
-                <!-- <mat-form-field class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" >
-                    <mat-label>Risk Free Rate</mat-label>
-                    <mat-select class="mat-select-value" formControlName="riskFreeRate">
-                    <mat-option *ngFor="let doc of indianTreasuryY"  [value]="doc.latest">Yield on {{ doc.maturityInYrs }} Years Indian Treasury Bond</mat-option>
-                </mat-select>
-                <mat-hint *ngIf="excessEarningForm.controls['riskFreeRate'].value" class="taxrate-hint">Risk-Free rate is {{excessEarningForm.controls['riskFreeRate'].value}}%</mat-hint>
-                </mat-form-field> -->
-
+            <div class="col-md-4 field" style="padding-top: 0%;">
                 <div class="material-textfield">
-                  <select id="riskFreeRate" class="new-inp" formControlName="riskFreeRateYears">
-                    <option value="" disabled selected>Select risk free rate</option>
-                    <option value="customRiskFreeRate">Custom</option>
-                    <option *ngFor="let doc of modelControl.excessEarning.options.riskFreeRate.options"  [ngValue]="doc.maturityInYrs">Yield on {{ doc.maturityInYrs }} Years Indian Treasury Bond</option>
-                  </select>
-                  <label for="riskFreeRate">Risk Free Rate</label>
-                <mat-hint *ngIf="excessEarningForm.controls['riskFreeRate'].value" class="taxrate-hint">Risk-Free rate is {{excessEarningForm.controls['riskFreeRate'].value }}%</mat-hint>
-                </div>
-                <span *ngIf="excessEarningForm.controls['riskFreeRate'].touched && excessEarningForm.controls['riskFreeRate'].errors">
-                  <span *ngIf="hasError('riskFreeRate','required',excessEarningForm)" class="error-text">Please select risk free rate</span>
-                </span>
+                  <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                      <mat-label>Risk free rate*</mat-label>
+                      <span class="company-list-rmve" *ngIf="excessEarningForm.controls['riskFreeRateYears']?.value" style="right:8%;">
+                      <mat-icon class="company-list-rmve-icon" (click)="clearInput('riskFreeRateYears')">close</mat-icon>
+                      </span>
+                      <mat-select placeholder="Select risk free rate" formControlName="riskFreeRateYears" class="new-inp company-list-inp fcfe-list nature-of-instrument">
+                      <mat-option  class="auto-class" value="customRiskFreeRate">
+                          Custom
+                      </mat-option>
+                      <mat-option *ngFor="let doc of modelControl.excessEarning.options.riskFreeRate.options" class="auto-class" [value]="doc.maturityInYrs">
+                        Yield on {{ doc.maturityInYrs }} Years Indian Treasury Bond
+                      </mat-option>
+                      </mat-select>
+                      <mat-hint *ngIf="excessEarningForm.controls['riskFreeRate'].value" class="taxrate-hint" style="padding-left: 0px;">Risk-Free rate is {{excessEarningForm.controls['riskFreeRate'].value}}%</mat-hint>
+                      <mat-error class="company-list-error" *ngIf="excessEarningForm.controls['riskFreeRateYears'].touched && excessEarningForm.controls['riskFreeRateYears'].errors" style="margin-left: -5%;">
+                        <span *ngIf="hasError('riskFreeRateYears','required',excessEarningForm)" class="error-text">
+                          Please select risk free rate
+                        </span>
+                      </mat-error>
+                  </mat-form-field>
+              </div>
             </div>
 
             <!-- expected market return -->
-            <div class="col-md-4 field">
-                  <div class="material-textfield">
-                    <select id="expMarketReturnType" class="new-inp" formControlName="expMarketReturnType">
-                      <option value="" disabled selected>Select expected market return</option>
-                      <option *ngFor="let doc of modelControl.excessEarning.options.expMarketReturnType.options" [ngValue]="doc.name">{{doc.name}}</option>
-                    </select>
-                    <label for="expMarketReturnType">Expected Market Return</label>
-                  <mat-hint *ngIf="excessEarningForm.controls['expMarketReturn'].value" class="taxrate-hint">Expected Market Return is {{excessEarningForm.controls['expMarketReturn'].value.toFixed(2)}}%</mat-hint>
-                  </div>
-                  <span *ngIf="excessEarningForm.controls['expMarketReturnType'].touched && excessEarningForm.controls['expMarketReturnType'].errors">
-                    <span *ngIf="hasError('expMarketReturnType','required',excessEarningForm)" class="error-text">Please select expected market return</span>
-                  </span>
+            <div class="col-md-4 field" style="padding-top: 0%;">
+              <div class="material-textfield">
+                <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                    <mat-label>Expected Market Return*</mat-label>
+                    <span class="company-list-rmve" *ngIf="excessEarningForm.controls['expMarketReturnType']?.value" style="right:8%;">
+                    <mat-icon class="company-list-rmve-icon" (click)="clearInput('expMarketReturnType')">close</mat-icon>
+                    </span>
+                    <mat-select placeholder="Select expected market return" formControlName="expMarketReturnType" class="new-inp company-list-inp fcfe-list nature-of-instrument">
+                    <mat-option *ngFor="let doc of modelControl.excessEarning.options.expMarketReturnType.options" class="auto-class" [value]="doc.name">
+                      {{doc.name}}
+                    </mat-option>
+                    </mat-select>
+                    <mat-hint *ngIf="excessEarningForm.controls['expMarketReturn'].value" class="taxrate-hint">Expected Market Return is {{excessEarningForm.controls['expMarketReturn'].value?.toFixed(2)}}%</mat-hint>
+                    <mat-error class="company-list-error" *ngIf="excessEarningForm.controls['expMarketReturnType'].touched && excessEarningForm.controls['expMarketReturnType'].errors" style="margin-left: -5%;">
+                      <span *ngIf="hasError('expMarketReturnType','required',excessEarningForm)" class="error-text">
+                        Please select expected market return
+                      </span>
+                    </mat-error>
+                </mat-form-field>
+              </div>
             </div>
 
             <!-- beta -->
-            <div class="col-md-4 field">
-                  <div class="material-textfield">
-                    <select id="betaType" class="new-inp" formControlName="betaType" (change)="betaChange($event)">
-                      <option value="" disabled selected>Select beta</option>
-                      <option *ngFor="let doc of loadBetaDropdown()"  [ngValue]="doc.value">{{doc.name}}</option>
-                    </select>
-                    <label for="betaType">Beta</label>
-                  <!-- <mat-hint *ngIf="excessEarningForm.controls['beta'].value" class="taxrate-hint">Beta is {{excessEarningForm.controls['beta'].value.toFixed(2)}}</mat-hint> -->
-                  </div>
-                  <span *ngIf="excessEarningForm.controls['betaType'].touched && excessEarningForm.controls['betaType'].errors">
-                    <span *ngIf="hasError('betaType','required',excessEarningForm)" class="error-text">Please select beta</span>
-                  </span>
-                  <div style="display: flex; align-items: center;padding-left: 2%;padding-top: 1%;height: 30px;">
-                    <span style="width: 90%;" *ngIf="excessEarningForm.controls['betaType'].value">
-                      <span *ngIf="excessEarningForm.controls['betaType'].value !== 'market_beta' && excessEarningForm.controls['betaType'].value !== 'stock_beta'">
-                        <input type="radio" style="vertical-align: middle;" [checked]="selectedSubBetaType === 'meanBeta'" (change)="onRadioButtonChange($event)" value="meanBeta" name="betaRadio" id="betaRadio">
-                        <span class="reset-ind3" style="vertical-align: middle;">Mean</span>
+            <div class="col-md-4 field" style="padding-top: 0%;">
+              <div class="material-textfield">
+                <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                    <mat-label>Beta*</mat-label>
+                    <span class="company-list-rmve" *ngIf="excessEarningForm.controls['betaType']?.value" style="right:8%;">
+                    <mat-icon class="company-list-rmve-icon" (click)="clearInput('betaType')">close</mat-icon>
+                    </span>
+                    <mat-select placeholder="Select beta" formControlName="betaType" class="new-inp company-list-inp fcfe-list nature-of-instrument" (selectionChange)="betaChange($event)">
+                    <mat-option *ngFor="let doc of loadBetaDropdown()" class="auto-class" [value]="doc.value">
+                      {{doc.name}}
+                    </mat-option>
+                    </mat-select>
+                    <mat-error class="company-list-error" *ngIf="excessEarningForm.controls['betaType'].touched && excessEarningForm.controls['betaType'].errors" style="margin-left: -5%;">
+                      <span *ngIf="hasError('betaType','required',excessEarningForm)" class="error-text">
+                        Please select Beta
                       </span>
+                    </mat-error>
 
-                      <span style="padding-left: 14%;" *ngIf="excessEarningForm.controls['betaType'].value !== 'market_beta' && excessEarningForm.controls['betaType'].value !== 'stock_beta'">
-                        <input type="radio" style="vertical-align: middle;" [checked]="selectedSubBetaType === 'medianBeta'" (change)="onRadioButtonChange($event)" value="medianBeta" name="betaRadio" id="betaRadio">
-                        <span class="reset-ind3" style="vertical-align: middle;">Median</span>
+                    <mat-hint style="width: 100%;display: flex; align-items: center;">
+                      <span style="width: 100%;" *ngIf="excessEarningForm.controls['betaType'].value">
+                        <span *ngIf="excessEarningForm.controls['betaType'].value !== 'market_beta' && excessEarningForm.controls['betaType'].value !== 'stock_beta'">
+                          <input type="radio" style="vertical-align: middle;" [checked]="selectedSubBetaType === 'meanBeta'" (change)="onRadioButtonChange($event)" value="meanBeta" name="betaRadio" id="betaRadio">
+                          <span class="reset-ind3" style="vertical-align: middle;">Mean</span>
+                        </span>
+                        <span style="padding-left: 14%;" *ngIf="excessEarningForm.controls['betaType'].value !== 'market_beta' && excessEarningForm.controls['betaType'].value !== 'stock_beta'">
+                          <input type="radio" style="vertical-align: middle;" [checked]="selectedSubBetaType === 'medianBeta'" (change)="onRadioButtonChange($event)" value="medianBeta" name="betaRadio" id="betaRadio">
+                          <span class="reset-ind3" style="vertical-align: middle;">Median</span>
+                        </span>
+                        <span [ngClass]="(excessEarningForm.controls['betaType'].value === 'market_beta' || excessEarningForm.controls['betaType'].value === 'stock_beta') ? '' :  'add-padding-beta'">
+                          <span *ngIf="excessEarningForm.controls['beta'].value && !betaLoader" style="vertical-align: middle;font-size: 11px;color: #1915bb;" class="reset-ind3">
+                            <a target="_blank" class="beta-val"  (click)="handleBetaClick()">
+                              Beta is {{excessEarningForm.controls['beta'].value?.toFixed(2)}} 
+                              <span style="vertical-align: middle;">
+                                <mat-icon>settings</mat-icon>
+                              </span>
+                            </a>
+                          </span>
+                        </span>
+                        <!-- <span><a style="font-size: 10px;" target="_blank">See Workings</a></span> -->
                       </span>
-                      <span [ngClass]="(excessEarningForm.controls['betaType'].value === 'market_beta' || excessEarningForm.controls['betaType'].value === 'stock_beta') ? '' :  'add-padding-beta'">
-                        <mat-hint *ngIf="excessEarningForm.controls['beta'].value && !betaLoader" style="vertical-align: middle;font-size: 11px;color: #1915bb;" class="reset-ind3">Beta is {{excessEarningForm.controls['beta'].value?.toFixed(2)}}</mat-hint>
+                      <span>
+                        <mat-progress-spinner style="vertical-align: middle" *ngIf="betaLoader" class="beta-spin" mode="indeterminate" diameter="20"></mat-progress-spinner>
                       </span>
-                    </span>
-                    <span>
-                      <mat-progress-spinner style="vertical-align: middle" *ngIf="betaLoader" class="beta-spin" mode="indeterminate" diameter="20"></mat-progress-spinner>
-                    </span>
-                  </div>
+                    </mat-hint>
+                </mat-form-field>
+              </div>
             </div>
             
             <!-- risk premium -->
-            <div class="col-md-4 field" style="padding-top: 1%;">
-                <div class="material-textfield">
-                  <input class="new-inp" (click)="onSlideToggleChange($event)" formControlName="riskPremium" [type]="modelControl.excessEarning.options.riskPremium.type" placeholder="Enter risk premium"/>
-                  <label>Specific Risk Premium</label>
+            <div class="col-md-4 field" style="padding-top: 0%;">
+              <div class="material-textfield">
+                <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                    <input (click)="onSlideToggleChange($event)" type="text" matInput formControlName="riskPremium" class="company-list-inp" placeholder="Enter specific risk premium">
+                      <span class="company-list-rmve" *ngIf="excessEarningForm.controls['riskPremium']?.value" style="right: 3%;">
+                        <mat-icon class="company-list-rmve-icon" (click)="clearInput('riskPremium')">close</mat-icon>
+                      </span>
+                    <mat-label>
+                      Specific Risk Premium*
+                    </mat-label>
+                    <mat-error class="company-list-error" *ngIf="excessEarningForm.controls['riskPremium'].touched && excessEarningForm.controls['riskPremium'].errors" style="margin-left: -5%;">
+                      <span *ngIf="hasError('riskPremium','required',excessEarningForm)" class="error-text">
+                        Please add specific risk premium
+                      </span>
+                    </mat-error>
+                  </mat-form-field>
                 </div>
-              <span *ngIf="excessEarningForm.controls['riskPremium'].touched && excessEarningForm.controls['riskPremium'].errors">
-                <span *ngIf="hasError('riskPremium','required',excessEarningForm)" class="error-text">Please add specific risk premium</span>
-              </span>
               </div>
-            
 
             <div class="col-md-12" *ngIf="(adjCoe !== null && adjCoe !== 0)   && (coe !== null && coe !== 0)">
-                   
                 <div class='c-decorated-header-coe'>
                     <h3><span style="padding-left: 2%;">Estimated Cost of Equity</span></h3>
                     <div class='c-decorated-header_link-view-more'>

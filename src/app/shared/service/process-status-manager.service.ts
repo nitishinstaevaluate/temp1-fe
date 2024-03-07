@@ -38,4 +38,8 @@ export class ProcessStatusManagerService {
   updateEditedExcelStatus(processId:any){
     return this.http.put(`${this.HOST}process-status-manager/update-edited-excel-status/${processId}`,{});
   }
+  
+  fetchProcessIdentifierId(obId:any){
+    return this.http.get(`${this.HOST}process-status-manager/fetch-process-identifier-id/${obId}`);
+  }
 }

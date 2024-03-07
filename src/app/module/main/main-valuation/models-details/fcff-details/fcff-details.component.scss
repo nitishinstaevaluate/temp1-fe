@@ -462,7 +462,7 @@ label {
   stroke: #666666 !important;
   }
 .add-padding-beta{
-  padding-left: 25%;
+  padding-left: 18%;
 }
 
 ::ng-deep .company-l .mdc-text-field .mat-mdc-form-field-focus-overlay, ::ng-deep .company-l .mat-mdc-text-field-wrapper{
@@ -564,4 +564,10 @@ label {
 
 ::ng-deep .company-l .mat-mdc-form-field-subscript-wrapper .mat-mdc-form-field-hint-wrapper {
   padding-left: 5px;
+}
+
+.beta-val:hover{
+  text-underline-position: below;
+  border-bottom: 1px solid #1934be;
+  cursor: pointer;
 }
