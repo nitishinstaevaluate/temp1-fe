@@ -24,10 +24,10 @@ export class AuthService {
 
   loginWithEmail(email: string, password: string) {
     const payload = {
-      username:email,
+      userName:email,
       password
     }
-    this.token =  this.http.post(`${environment.baseUrl}authentication/login`,payload).pipe(
+    this.token =  this.http.post(`${environment.baseUrl}authentication/v2/login`,payload).pipe(
       switchMap((authToken:any)=>{
         if(authToken.access_token)
           // this.loginStatus.next(true);

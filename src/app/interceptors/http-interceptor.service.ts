@@ -11,7 +11,7 @@ export class HttpInterceptorService {
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const accessToken = localStorage.getItem('access_token');
     if (accessToken) {
-      req = req.clone({ setHeaders: { Authorization: 'Bearer ' + accessToken } });
+      req = req.clone({ setHeaders: { Authorization: accessToken } });
     }
     return next.handle(req);
   }
