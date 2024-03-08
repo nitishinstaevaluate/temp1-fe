@@ -754,7 +754,7 @@
       <mat-label class="label" >{{this.label}}</mat-label>
       <span><mat-icon class="close-modal-valuer" (click)="modalData()" style="padding-right: 3%;">close</mat-icon></span>
     </div>
-    <div class="container-fluid" style="padding-top: 1%;">
+    <div class="container-fluid beta-table-container">
       <table class="beta-table">
         <thead class="sticky-header">
           <tr class="t-header">
@@ -776,7 +776,7 @@
             <th>Unlevered Beta</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="beta-scrollable">
           <tr *ngFor="let item of data?.coreBetaWorking" class="content">
             <td style="font-size: 11px !important;padding: 1%;" class="make-light">{{ item.companyId }}</td>
             <td style="font-size: 11px !important;padding: 1%;width: 13%;" class="make-light"><a  target="_blank">{{ item.companyName || '-'}}</a></td>
@@ -791,6 +791,8 @@
             <td style="font-size: 11px !important;padding: 1%;padding-left: 4% !important;" class="make-light" *ngIf="hasLeveredBeta">{{ item.leveredBeta  ? formatNumber(item.leveredBeta) : '-' }}</td>
             <td style="font-size: 11px !important;padding: 1%;padding-left: 4% !important;" class="make-light">{{ item.unleveredBeta ? formatNumber(item.unleveredBeta) : '-' }}</td>
           </tr>
+        </tbody>
+        <tfoot class="beta-metric">
           <tr class="content" *ngFor="let item of data?.betaMeanMedianWorking">
             <td style="font-size: 11px !important;padding: 1%;text-align: center;" class="make-bold" colspan="6">{{ item.betaType === 'meanBeta' ? 'Average' : 'Median' }}</td>
             <td style="font-size: 11px !important;padding: 1%;padding-left: 4% !important;" class="make-bold">{{ formatNumber(item.debtToCapital) }}%</td>
@@ -798,7 +800,7 @@
             <td style="font-size: 11px !important;padding: 1%;padding-left: 4% !important;" class="make-bold" *ngIf="hasLeveredBeta">{{ formatNumber(item.leveredBeta) }}</td>
             <td style="font-size: 11px !important;padding: 1%;padding-left: 4% !important;" class="make-bold">{{ formatNumber(item.unleveredBeta) }}</td>
           </tr>
-        </tbody>
+        </tfoot> 
       </table>
     </div>
   </div>

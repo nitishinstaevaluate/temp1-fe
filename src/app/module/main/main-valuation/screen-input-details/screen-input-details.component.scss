@@ -1044,6 +1044,7 @@ font-size: 1rem !important;
     font-size: 13px;
     font-family: 'AR One Sans', sans-serif;
     color: #bbccbb;
+    width: 25%;
 }
 .add-padding-left{
   padding-left: 3% !important;
@@ -1142,4 +1143,21 @@ background: #bdf8de !important;
 
 .display-label-flex{
   display: flex;
+}
+
+.screening-beta-val:hover{
+  color: #1bcc4a !important;
+  cursor: pointer;
+}
+
+.screening-beta-val{
+  padding-left: 4%;
+  font-size: 10px;
+  color: #1934be !important;
+  transition: 0.4s color;
+  vertical-align: middle;
+  span mat-icon{
+    vertical-align: middle;
+    transform: scale(0.5);
+  }
 }
