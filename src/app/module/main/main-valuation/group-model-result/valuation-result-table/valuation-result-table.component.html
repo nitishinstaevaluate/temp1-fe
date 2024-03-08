@@ -18,7 +18,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let row of dataSourceFcfe;let i = index" class="content">
-              <td style="text-align: center;font-size: 14px;text-transform: capitalize;" [ngClass]="checkVal(cellValue,'fcfe') ? contentIsBig(dataSourceFcfe) ?  (i % 2 === 0  ? 'make-bold line-item-even' : 'make-light line-item-odd')  : 'make-light': 'make-light'" *ngFor="let cellValue of row">{{ formatNumber(cellValue) }}</td>
+              <td style="text-align: center;font-size: 14px;text-transform: capitalize;" [ngClass]="checkVal(cellValue,'fcfe') ? contentIsBig(dataSourceFcfe) ?  (i % 2 === 0  ? 'make-bold line-item-even' : 'make-light line-item-odd')  : 'make-light': 'make-light'" *ngFor="let cellValue of row">{{isDiscountingFactor(row) ?  formatNumber(cellValue, true) : formatNumber(cellValue)}}</td>
             </tr>
           </tbody>
         </table>
@@ -45,7 +45,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let row of dataSourceFcff;let i = index" class="content">
-              <td style="text-align: center;font-size: 14px;text-transform: capitalize;" [ngClass]="checkVal(cellValue,'fcff') ? contentIsBig(dataSourceFcff) ?  (i % 2 === 0  ? 'make-bold line-item-even' : 'make-light line-item-odd')  : 'make-light' : 'make-light'" *ngFor="let cellValue of row">{{ formatNumber(cellValue) }}</td>
+              <td style="text-align: center;font-size: 14px;text-transform: capitalize;" [ngClass]="checkVal(cellValue,'fcff') ? contentIsBig(dataSourceFcff) ?  (i % 2 === 0  ? 'make-bold line-item-even' : 'make-light line-item-odd')  : 'make-light' : 'make-light'" *ngFor="let cellValue of row">{{ isDiscountingFactor(row) ?  formatNumber(cellValue, true) : formatNumber(cellValue) }}</td>
             </tr>
           </tbody>
         </table>
@@ -71,7 +71,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let row of dataSourceExcessEarn" class="content">
-            <td style="text-align: center;font-size: 14px;text-transform: capitalize;" [ngClass]="checkVal(cellValue,'Excess_Earnings') ? 'make-bold' : 'make-light'" *ngFor="let cellValue of row">{{ formatNumber(cellValue) }}</td>
+            <td style="text-align: center;font-size: 14px;text-transform: capitalize;" [ngClass]="checkVal(cellValue,'Excess_Earnings') ? 'make-bold' : 'make-light'" *ngFor="let cellValue of row">{{ isDiscountingFactor(row) ?  formatNumber(cellValue, true) : formatNumber(cellValue) }}</td>
           </tr>
         </tbody>
       </table>
