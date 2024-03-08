@@ -114,7 +114,7 @@
         <table *ngIf="!loader">
           <thead class="sticky-header">
             <tr class="t-header">
-              <th>Link-Id</th>
+              <th>Id</th>
               <th>Send From</th>
               <th>Send To</th>
               <th>Submitted Status</th>
@@ -125,11 +125,11 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of emailData" class="content">
-              <td style="text-align: center;font-size: 11px !important;padding: 1%;" class="make-light">{{ item.uniqueLinkId }}</td>
+              <td style="text-align: center;font-size: 11px !important;padding: 1%;width: 7%;" class="make-light">{{ item.dataChecklistIdentifierId }}</td>
               <td style="text-align: center;font-size: 11px !important;padding: 1%;" class="make-light"><a href="mailto:{{ item.emailFrom }}" target="_blank">{{ item.emailFrom }}</a></td>
               <td style="text-align: center;font-size: 11px !important;padding: 1%;" class="make-light"><a href="mailto:{{ item.emailTo }}" target="_blank">{{ item.emailTo }}</a></td>
               <td style="text-align: center;font-size: 11px !important;text-transform: capitalize;padding: 1%;" class="make-light">
-                <p style="margin-bottom: 0%;"> 
+                <p style="margin-bottom: 0%;padding-left: 8%;"> 
                   <span style="border-radius: 12px !important;font-size: 11px !important;" [ngClass]="item.isSubmitted ? 'item-list-tag review-item submitted-status' : 'item-list-tag start-item'">{{ item.isSubmitted }}</span>
                 </p>
               </td>
