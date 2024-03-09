@@ -189,7 +189,14 @@
     </table>
   </div>
     <div>
-      <p class="total-count" *ngIf="ciqIndustryData?.length">{{mainIndustries?.length}} selected</p>
+      <p class="total-count" *ngIf="ciqIndustryData?.length">{{mainIndustries?.length}} selected
+        <a target="_blank" class="screening-beta-val"  (click)="loadBetaWorking()">
+          See beta working
+          <span>
+            <mat-icon>settings</mat-icon>
+          </span>
+        </a>
+      </p>
       <mat-paginator style="float: inline-end;" *ngIf="ciqIndustryData?.length" [length]="length"
       [pageSize]="pageSize"
       [pageSizeOptions]="pageSizeOptions"

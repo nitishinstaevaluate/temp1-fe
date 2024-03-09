@@ -337,26 +337,26 @@ checkIndustryOrCompany(){
   return this.transferStepperthree.formOneAndThreeData?.preferenceRatioSelect === 'Company Based' ? true :false;
 }
 
-formatNumber(value: any) {
+formatNumber(value: any, threeDecimalNeeded?:any) {
   if (!isNaN(value)  && typeof value === 'number') {
     if(value && `${value}`.includes('-')){
       let formattedNumber = value.toLocaleString(undefined, {
         minimumIntegerDigits: 1,
-        minimumFractionDigits: 3,
-        maximumFractionDigits: 3,
+        minimumFractionDigits: threeDecimalNeeded ? 3 : 2,
+        maximumFractionDigits: threeDecimalNeeded ? 3 : 2,
       });
       return `(${`${formattedNumber}`.replace(/-/g,'')})`;
     }
     else if(value){
      const formatValue =  value.toLocaleString(undefined, {
         minimumIntegerDigits: 1,
-        minimumFractionDigits: 3,
-        maximumFractionDigits: 3,
+        minimumFractionDigits: threeDecimalNeeded ? 3 : 2,
+        maximumFractionDigits: threeDecimalNeeded ? 3 : 2,
       })
       return formatValue;
     }
     else{
-     return value.toFixed(3);
+     return '-';
     }
   }
     else{
@@ -370,6 +370,13 @@ checkVal(value:string,model:any){
   if(model === 'fcff') return !!this.displayFcffColumn.includes(value);
   if(model === 'Excess_Earnings') return !!this.displayExcessEarnColumn.includes(value);
   return;
+}
+
+isDiscountingFactor(value:string){
+  if(value.includes('Discounting Factor')){
+    return true;
+  }
+  return false;
 }
 
 formatDate(epochTimestamp:any) {

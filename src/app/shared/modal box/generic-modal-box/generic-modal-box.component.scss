@@ -1107,3 +1107,20 @@ tr:hover {
   font-family: 'AR One Sans', sans-serif;
   box-shadow: 1px 2px 10px #f0ebeb;
 }
+.beta-table-container {
+  overflow-y: auto;
+  max-height: 500px;
+}
+
+.beta-metric {
+  position: sticky;
+  bottom: 0;
+  background-color: #ffffff;
+  padding: 4px;
+  box-shadow: 0px -4px 10px rgba(116, 116, 116, 0.1);
+}
+
+.beta-scollable {
+  overflow-y: auto;
+  max-height: calc(100vh - 50px);
+}

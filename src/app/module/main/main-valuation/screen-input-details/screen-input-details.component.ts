@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { hasError } from 'src/app/shared/enums/errorMethods';
 import groupModelControl from '../../../../shared/enums/group-model-controls.json';
 import { CiqSPService } from 'src/app/shared/service/ciq-sp.service';
-import { INDUSTRY_BASED_COMPANY, MODELS, PAGINATION_VAL } from 'src/app/shared/enums/constant';
+import { BETA_SUB_TYPE, INDUSTRY_BASED_COMPANY, MODELS, PAGINATION_VAL } from 'src/app/shared/enums/constant';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -754,5 +754,106 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
         this.companyStatusTypeDescription = [];
         break;
     }
+  }
+
+  loadBetaWorking() {
+    this.loader = true;
+    this.calculateSPindustryBeta(this.createBetaPayload());
+  }
+  
+  createBetaPayload() {
+    return {
+      industryAggregateList: this.mainIndustries,
+      betaSubType: BETA_SUB_TYPE[0],
+      taxRate: this.formOneData.taxRate,
+      betaType: 'levered',
+      valuationDate: this.formOneData.valuationDate
+    };
+  }
+  
+  calculateSPindustryBeta(betaPayload: any) {
+    this.ciqSpService.calculateSPindustryBeta(betaPayload).subscribe(
+      (betaData: any) => {
+        if (betaData.status) {
+          this.processBetaData(betaData);
+        } else {
+          this.handleError('Beta not found');
+        }
+      },
+      (error) => {
+        this.handleError('Beta calculation failed, please retry');
+      }
+    );
+  }
+  
+  processBetaData(betaData: any) {
+    this.processStatusManagerService.fetchProcessIdentifierId(localStorage.getItem('processStateId')).subscribe(
+      async (processManagerDetails: any) => {
+        if (processManagerDetails) {
+          this.upsertBetaWorking(betaData, processManagerDetails.processIdentifierId);
+        } else {
+          this.handleError('Beta upsertion failed');
+        }
+      },
+      (error) => {
+        this.loader = false;
+        this.handleError('Beta upsertion failed');
+      }
+    );
+  }
+  
+  upsertBetaWorking(betaData: any, processIdentifierId: string) {
+    const payload = {
+      coreBetaWorking: betaData.coreBetaWorking,
+      betaMeanMedianWorking: betaData.betaMeanMedianWorking,
+      processIdentifierId: processIdentifierId
+    };
+    this.ciqSpService.upsertBetaWorking(payload).subscribe(
+      async (upsertionStat: any) => {
+        if (upsertionStat.status) {
+          this.fetchBetaWorking(upsertionStat.processIdentifierId);
+        } else {
+          this.handleError('Beta working upsertion failed');
+        }
+      },
+      (error) => {
+        this.handleError('Beta working upsertion failed');
+      }
+    );
+  }
+  
+  fetchBetaWorking(processIdentifierId: string) {
+    this.ciqSpService.fetchBetaWorking(processIdentifierId).subscribe(
+      (betaWorkingResponse: any) => {
+        if (betaWorkingResponse.status) {
+          this.openBetaWorkingDialog(betaWorkingResponse.data);
+        } else {
+          this.handleError('Beta working not found');
+        }
+      },
+      (error) => {
+        this.handleError('Backend error - Beta working not found');
+      }
+    );
+  }
+  
+  openBetaWorkingDialog(betaData: any) {
+    this.loader = false;
+    const data = {
+      value: 'betaCalculation',
+      coreBetaWorking: betaData.coreBetaWorking,
+      betaMeanMedianWorking: betaData.betaMeanMedianWorking
+    };
+    this.dialog.open(GenericModalBoxComponent, { data: data, width: '90%', maxHeight: '90vh', panelClass: 'custom-dialog-container' });
+  }
+  
+  handleError(errorMessage: string) {
+    this.loader = false;
+    this.snackBar.open(errorMessage, 'OK', {
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+      duration: 3000,
+      panelClass: 'app-notification-error'
+    });
   }
 }
