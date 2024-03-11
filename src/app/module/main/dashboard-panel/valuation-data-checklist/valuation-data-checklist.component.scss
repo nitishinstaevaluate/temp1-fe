@@ -560,3 +560,15 @@ label {
 .table-spinner::ng-deep circle{
   stroke: #666666 !important;
   }
+
+  ::ng-deep .dc-unit .mat-mdc-select-trigger .mat-mdc-select-arrow-wrapper{
+    padding-right: 2%;
+    padding-top: 5%;
+  }
+
+  .error-text{
+    padding-left: 3%;
+    color: red;
+    font-size: 10px;
+    font-family: 'AR One Sans';
+  }

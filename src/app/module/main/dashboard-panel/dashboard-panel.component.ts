@@ -304,7 +304,9 @@ export class DashboardPanelComponent {
             valuationDate:data.valuationDate,
             excelSheetId:data.excelSheetId,
             outstandingShares:data.outstandingShares,
-            isExcelModified:false
+            isExcelModified:false,
+            company:data.company,
+            reportingUnit:data.reportingUnit
           },
           sixthStageInput:{
             cinNumber:data.cinNumber,

@@ -5,6 +5,77 @@
           </div>
 
           <div class="row" [formGroup]="dataCheckListForm" *ngIf="!loader">
+            <div class="col-md-4 col-xl-4 field" style="padding-top: 0%;">
+              <div class="material-textfield">
+                <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                    <input type="text" matInput formControlName="company" class="company-list-inp" (focus)="companyInputFocused()" (blur)="companyInputBlurred()" (keyup)="filterByBusinessDescriptor($event)" [matAutocomplete]="autoCompanyList" placeholder="Enter company name">
+                    <span class="company-info-span" *ngIf="dataCheckListForm.controls['company']?.value">
+                      <svg matTooltipClass='form-one-tooltip' [matTooltip]="helperText.companyName" matTooltipPosition="right" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
+                        <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:32px;" 
+                        fill="#ff0000"></path>
+                        <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px;">
+                        </polyline><line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px;">
+                      </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
+                    </span>
+                      <span class="company-list-rmve" *ngIf="dataCheckListForm.controls['company']?.value && !companyListLoader">
+                        <mat-icon class="company-list-rmve-icon" (click)="clearInput('company')">close</mat-icon>
+                      </span>
+                    <span class="outercmpny-spinner" *ngIf="companyListLoader">
+                      <mat-progress-spinner style="vertical-align: middle" class="company-list-spinner" mode="indeterminate" diameter="20"></mat-progress-spinner>
+                    </span>
+                    <mat-label class="companylist">
+                      Company Name
+                    </mat-label>
+                    <mat-autocomplete #autoCompanyList="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onOptionSelection($event)" class="mat-auto">
+                      <mat-option *ngFor="let option of options" [value]="option.COMPANYNAME" style="text-transform: capitalize;" class="company-list">
+                        {{ option.COMPANYNAME }}
+                      </mat-option>
+                    </mat-autocomplete>
+                    <mat-error class="company-list-error" *ngIf="dataCheckListForm.controls['company'].touched && dataCheckListForm.controls['company'].errors">
+                      <span *ngIf="hasError('company','required',dataCheckListForm)">
+                        Please provide a valid company name.
+                      </span>
+                  </mat-error>
+                  </mat-form-field>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-xl-4 field" style="padding-top: 0%;">
+              <div class="material-textfield">
+                <!-- <select id="reportingUnit" class="new-inp" formControlName="reportingUnit">
+                  <option value="" disabled selected>Select reporting unit</option>
+                  <option *ngFor="let doc of modelControl.reportDetails.options.reportingUnit"  [value]="doc.value">{{ doc.name }}</option>
+                </select>
+                <label for="reportingUnit">Units</label> -->
+                  <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                      <mat-label>Units*</mat-label>
+                      <span class="company-list-rmve" *ngIf="dataCheckListForm.controls['reportingUnit']?.value" style="right:7%;">
+                      <mat-icon class="company-list-rmve-icon" (click)="clearInput('reportingUnit')">close</mat-icon>
+                      </span>
+                      <span class="company-info-span" *ngIf="dataCheckListForm.controls['reportingUnit']?.value"  style="z-index: 1;left: 10%;">
+                        <svg matTooltipClass='form-one-tooltip' [matTooltip]="helperText.reportingUnit" matTooltipPosition="right" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
+                          <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:32px;" 
+                            fill="#ff0000"></path>
+                          <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px;">
+                          </polyline>
+                          <line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px;">
+                          </line>
+                          <path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path>
+                        </svg>
+                      </span>
+                      
+                      <mat-select formControlName="reportingUnit" class="new-inp company-list-inp nature-of-instrument dc-unit">
+                      <mat-option *ngFor="let doc of modelControl.reportDetails.options.reportingUnit" class="auto-class" [value]="doc.value">
+                          {{ doc.name }}
+                      </mat-option>
+                      </mat-select>
+                      <mat-error class="company-list-error" *ngIf="dataCheckListForm.controls['reportingUnit'].touched && dataCheckListForm.controls['reportingUnit'].errors">
+                        <span *ngIf="hasError('reportingUnit','required',dataCheckListForm)" class="error-text" style="padding-left: 0%;">Please select reporting unit</span>
+                    </mat-error>
+                  </mat-form-field>
+              </div>
+          </div>
+
             <div class="col-xl-4 col-md-4 field">
                 <div class="material-textfield">
                         <mat-form-field appearance="fill" class="company-l val-date" style="width: 100%;">
@@ -12,9 +83,20 @@
                         <span class="company-list-rmve" *ngIf="dataCheckListForm.controls['valuationDate']?.value">
                             <mat-icon class="company-list-rmve-icon" (click)="clearInput('valuationDate')">close</mat-icon>
                         </span>
+                        <span class="company-info-span" *ngIf="dataCheckListForm.controls['valuationDate']?.value">
+                          <svg matTooltipClass='form-one-tooltip' [matTooltip]="helperText.valuationDate" matTooltipPosition="right" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
+                            <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:32px;" 
+                            fill="#ff0000"></path>
+                            <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px;">
+                            </polyline><line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px;">
+                          </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
+                        </span>
                         <input matInput [matDatepicker]="valuationpicker" formControlName="valuationDate" (click)="valuationpicker.open()" placeholder="Choose valuation date" class="company-list-inp">
                         <mat-datepicker-toggle matSuffix [for]="valuationpicker"></mat-datepicker-toggle>
                         <mat-datepicker #valuationpicker></mat-datepicker>
+                        <mat-error class="company-list-error" *ngIf="dataCheckListForm.controls['valuationDate'].touched && dataCheckListForm.controls['valuationDate'].errors">
+                          <span *ngIf="hasError('valuationDate','required',dataCheckListForm)" class="error-text" style="padding-left: 0%;">Please select valuation date</span>
+                      </mat-error>
                         </mat-form-field>
                     </div>
             </div>
@@ -29,6 +111,9 @@
                         <mat-label>
                           Tax Rate*
                         </mat-label>
+                        <mat-error class="company-list-error" *ngIf="dataCheckListForm.controls['taxRate'].touched && dataCheckListForm.controls['taxRate'].errors">
+                          <span *ngIf="hasError('taxRate','required',dataCheckListForm)" class="error-text" style="padding-left: 0%;">Please select tax rate</span>
+                      </mat-error>
                       </mat-form-field>
                 </div>
             </div>
@@ -43,6 +128,9 @@
                             <mat-label>
                               Outstanding shares*
                             </mat-label>
+                            <mat-error class="company-list-error" *ngIf="dataCheckListForm.controls['outstandingShares'].touched && dataCheckListForm.controls['outstandingShares'].errors">
+                              <span *ngIf="hasError('outstandingShares','required',dataCheckListForm)" class="error-text" style="padding-left: 0%;">Please select outstanding shares</span>
+                          </mat-error>
                         </mat-form-field>
                 </div>
             </div>
@@ -63,6 +151,9 @@
                         <input matInput [matDatepicker]="reportDatePicker" formControlName="dateOfReport" (click)="reportDatePicker.open()" placeholder="Choose a report date" class="company-list-inp">
                         <mat-datepicker-toggle matSuffix [for]="reportDatePicker"></mat-datepicker-toggle>
                         <mat-datepicker #reportDatePicker></mat-datepicker>
+                        <mat-error class="company-list-error" *ngIf="dataCheckListForm.controls['dateOfReport'].touched && dataCheckListForm.controls['dateOfReport'].errors">
+                          <span *ngIf="hasError('dateOfReport','required',dataCheckListForm)" class="error-text" style="padding-left: 0%;">Please select date of report</span>
+                      </mat-error>
                         </mat-form-field>
                     </div>
             </div>
@@ -77,6 +168,9 @@
                         <mat-label>
                           Appointing Authority*
                         </mat-label>
+                        <mat-error class="company-list-error" *ngIf="dataCheckListForm.controls['appointingAuthority'].touched && dataCheckListForm.controls['appointingAuthority'].errors">
+                          <span *ngIf="hasError('appointingAuthority','required',dataCheckListForm)" class="error-text" style="padding-left: 0%;">Please enter appointing authority</span>
+                      </mat-error>
                       </mat-form-field>
                 </div>
             </div>
@@ -91,6 +185,9 @@
                         <input matInput [matDatepicker]="appointmentDatePicker" formControlName="dateOfAppointment" (click)="appointmentDatePicker.open()" placeholder="Choose a appointment date" class="company-list-inp">
                         <mat-datepicker-toggle matSuffix [for]="appointmentDatePicker"></mat-datepicker-toggle>
                         <mat-datepicker #appointmentDatePicker></mat-datepicker>
+                        <mat-error class="company-list-error" *ngIf="dataCheckListForm.controls['dateOfAppointment'].touched && dataCheckListForm.controls['dateOfAppointment'].errors">
+                          <span *ngIf="hasError('dateOfAppointment','required',dataCheckListForm)" class="error-text" style="padding-left: 0%;">Please select date of appointment</span>
+                      </mat-error>
                         </mat-form-field>
                     </div>
             </div>
@@ -105,6 +202,9 @@
                         <mat-label>
                           Company Address*
                         </mat-label>
+                        <mat-error class="company-list-error" *ngIf="dataCheckListForm.controls['companyAddress'].touched && dataCheckListForm.controls['companyAddress'].errors">
+                          <span *ngIf="hasError('companyAddress','required',dataCheckListForm)" class="error-text" style="padding-left: 0%;">Please enter company address</span>
+                      </mat-error>
                       </mat-form-field>
                 </div>
             </div>
@@ -119,6 +219,9 @@
                         <mat-label>
                           CIN No.*
                         </mat-label>
+                        <mat-error class="company-list-error" *ngIf="dataCheckListForm.controls['cinNumber'].touched && dataCheckListForm.controls['cinNumber'].errors">
+                          <span *ngIf="hasError('cinNumber','required',dataCheckListForm)" class="error-text" style="padding-left: 0%;">Please enter CIN number</span>
+                      </mat-error>
                       </mat-form-field>
                 </div>
             </div>
@@ -133,6 +236,9 @@
                         <input matInput [matDatepicker]="incorporationDatePicker" formControlName="dateOfIncorporation" (click)="incorporationDatePicker.open()" placeholder="Choose date of incorporation" class="company-list-inp">
                         <mat-datepicker-toggle matSuffix [for]="incorporationDatePicker"></mat-datepicker-toggle>
                         <mat-datepicker #incorporationDatePicker></mat-datepicker>
+                        <mat-error class="company-list-error" *ngIf="dataCheckListForm.controls['dateOfIncorporation'].touched && dataCheckListForm.controls['dateOfIncorporation'].errors">
+                          <span *ngIf="hasError('dateOfIncorporation','required',dataCheckListForm)" class="error-text" style="padding-left: 0%;">Please select date of incorporation</span>
+                      </mat-error>
                         </mat-form-field>
                     </div>
             </div>
@@ -149,6 +255,9 @@
                                 {{ doc.name }}
                             </mat-option>
                             </mat-select>
+                            <mat-error class="company-list-error" *ngIf="dataCheckListForm.controls['natureOfInstrument'].touched && dataCheckListForm.controls['natureOfInstrument'].errors">
+                              <span *ngIf="hasError('natureOfInstrument','required',dataCheckListForm)" class="error-text" style="padding-left: 0%;">Please select nature of instrument</span>
+                          </mat-error>
                         </mat-form-field>
                     </div>
             </div>
@@ -165,6 +274,9 @@
                                 {{ doc.name }}
                             </mat-option>
                             </mat-select>
+                            <mat-error class="company-list-error" *ngIf="dataCheckListForm.controls['purposeOfReport'].touched && dataCheckListForm.controls['purposeOfReport'].errors">
+                              <span *ngIf="hasError('purposeOfReport','required',dataCheckListForm)" class="error-text" style="padding-left: 0%;">Please select report purpose</span>
+                          </mat-error>
                         </mat-form-field>
                     </div>
             </div>
@@ -179,6 +291,9 @@
                       <mat-label>
                         Company Information*
                       </mat-label>
+                      <mat-error class="company-list-error" *ngIf="dataCheckListForm.controls['companyInfo'].touched && dataCheckListForm.controls['companyInfo'].errors">
+                        <span *ngIf="hasError('companyInfo','required',dataCheckListForm)" class="error-text" style="padding-left: 0%;">Please add company background</span>
+                    </mat-error>
                     </mat-form-field>
               </div>
           </div>
@@ -196,15 +311,18 @@
                               </mat-chip-row>
                             </mat-chip-grid>
                             <input #purposeInput 
-                              [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+                              [matChipInputFor]="chipGrid" [matAutocomplete]="autoSection"
                               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                               (matChipInputTokenEnd)="add($event)"/>
-                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)" >
+                            <mat-autocomplete #autoSection="matAutocomplete" (optionSelected)="selected($event)" >
                               <mat-option *ngFor="let purpose of reportPurposeData " [value]="purpose.section + ' - ' + purpose.Description">
                                 {{ purpose.section }} - {{ purpose.Description }}
                               </mat-option>
                             </mat-autocomplete>
                           </mat-form-field>
+                          <mat-error class="company-list-error" *ngIf="showSectionError">
+                            <span class="error-text">Please add sections/regulations</span>
+                          </mat-error>
                     </div>
             </div>
         </div>
