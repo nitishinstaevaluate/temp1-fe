@@ -10,7 +10,7 @@ export class AuthenticateUserGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      const accessToken = localStorage.getItem('access_token');
+      const accessToken = sessionStorage.getItem('access_token');
       if(!accessToken){
         this.router.navigate(['../'])
         return false

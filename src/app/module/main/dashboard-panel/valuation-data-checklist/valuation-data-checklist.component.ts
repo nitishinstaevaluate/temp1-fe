@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { GET_TEMPLATE } from 'src/app/shared/enums/functions';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import { REPORT_OBJECTIVE } from 'src/app/shared/enums/constant';
+import { REPORT_OBJECTIVE, helperText } from 'src/app/shared/enums/constant';
 import { DataReferencesService } from 'src/app/shared/service/data-references.service';
 import groupModelControl from '../../../../shared/enums/group-model-controls.json';
 import { UtilService } from 'src/app/shared/service/util.service';
 import { Router } from '@angular/router';
+import { Subject, debounceTime, distinctUntilChanged, switchMap, throttleTime } from 'rxjs';
+import { hasError } from 'src/app/shared/enums/errorMethods';
 
 @Component({
   selector: 'app-valuation-data-checklist',
@@ -27,6 +29,14 @@ export class ValuationDataChecklistComponent implements OnInit{
   reportObjectives:any= REPORT_OBJECTIVE;
   reportObjective:any='';
   loader = false;
+  helperText = helperText;
+  companyInput=false;
+  companyQuery:any;
+  searchByCompanyName = new Subject<string>();
+  options:any=[];
+  companyListLoader=false;
+  hasError = hasError;
+  showSectionError = false;
   constructor(private valuationService:ValuationService,
   private snackBar:MatSnackBar,
   private fb: FormBuilder,
@@ -36,11 +46,19 @@ export class ValuationDataChecklistComponent implements OnInit{
   private router: Router){this.loadFormControl()}
 
   ngOnInit(){
-    this.onValueChangeControl()
+    this.onValueChangeControl();
+    this.searchByCompanyName.pipe(
+      debounceTime(600),
+      distinctUntilChanged(),
+      throttleTime(600),
+      switchMap(async () => this.fetchCompanyNames())
+    ).subscribe();
   }
 
   loadFormControl(){
     this.dataCheckListForm = this.fb.group({
+      company:['',Validators.required],
+      reportingUnit:['',Validators.required],
       valuationDate:['',Validators.required],
       taxRate:['',Validators.required],
       outstandingShares:['',Validators.required],
@@ -157,10 +175,24 @@ export class ValuationDataChecklistComponent implements OnInit{
   }
 
   submiDataCheckListForm(){
+    const controls = this.getFilteredControls()
+    const validatedReportForm = this.validateControls(controls);
+
+    if (!validatedReportForm) {
+      this.dataCheckListForm.markAllAsTouched();
+    }
+    if(!this.reportPurposeData?.length){
+      this.showSectionError = true;
+    }
+
     this.loader = true; 
     const lastUrlSegment = this.router.url.split('/').pop();
 
-    this.utilService.postDataChecklistDetails(lastUrlSegment, {...this.dataCheckListForm.value,excelSheetId:this.excelSheetId}).subscribe((response:any)=>{
+    const companyDetails = {
+      companyId: this.fetchCompanyId()?.companyId,
+      companyType: this.fetchCompanyId()?.companyTypeId
+    }
+    this.utilService.postDataChecklistDetails(lastUrlSegment, {...this.dataCheckListForm.value,excelSheetId:this.excelSheetId, ...companyDetails}).subscribe((response:any)=>{
       this.loader = false;
       if(response.status){
         this.snackbar.open('Data Checklist updated successfully', 'Ok',{
@@ -190,4 +222,92 @@ export class ValuationDataChecklistComponent implements OnInit{
     })
   }
 
+  companyInputFocused(){
+    this.companyInput = true;
+  }
+
+  companyInputBlurred(){
+    this.companyInput = false;
+  }
+
+  filterByBusinessDescriptor(event:any){
+    if(event.target.value && this.companyQuery !== event.target.value){
+      this.companyQuery = event.target.value;
+      this.searchByCompanyName.next(this.companyQuery);
+    }
+  }
+  
+  onOptionSelection(event:any){
+    if(event?.option?.value){
+      this.companyQuery = event.option.value;
+      this.fetchCompanyNames();
+    }
+  }
+
+  displayFn(value: string): string {
+    return value || '';
+  }
+
+  fetchCompanyNames(){
+    this.companyListLoader = true
+    this.utilService.fuzzySearchCompanyName(this.companyQuery).subscribe((data:any)=>{
+      this.companyListLoader = false
+      if(data?.companyDetails?.length){
+        this.options = data.companyDetails;
+      }
+      // else{
+      //   this.snackBar.open('Company not found', 'Ok',{
+      //     horizontalPosition: 'right',
+      //     verticalPosition: 'top',
+      //     duration: 3000,
+      //     panelClass: 'app-notification-error',
+      //   })
+      // }
+    },(error)=>{
+      this.companyListLoader = false
+      this.snackBar.open('Backend error - company details not found', 'Ok',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 3000,
+        panelClass: 'app-notification-error',
+      })
+    })
+  }
+
+  fetchCompanyId(){
+    const foundElement = this.options.find((element: any) => {
+      return element.COMPANYNAME === this.dataCheckListForm.controls['company'].value;
+    });
+    
+    if (foundElement) {
+        return {
+            companyId: foundElement.COMPANYID,
+            companyTypeId: '6598f0370b042902bcf9b7fb' // hardcoded company type as public company
+        };
+    }
+    
+    return null;
+  }
+
+  validateControls(controlArray: { [key: string]: FormControl }){
+    let allControlsFilled = true;
+      for (const controlName in controlArray) {
+        if (controlArray.hasOwnProperty(controlName)) {
+          const control = controlArray[controlName];
+          if (control.value === null || control.value === '' || !control.value?.length) {
+            allControlsFilled = false;
+            break;
+          }
+         
+        }
+      }
+      return allControlsFilled
+    }
+
+    getFilteredControls() {
+      const controls = { ...this.dataCheckListForm.controls };
+      const propertiesToRemove = ['section'];
+      propertiesToRemove.forEach(property => delete controls[property]);
+      return controls;
+    }
 }

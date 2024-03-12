@@ -135,6 +135,61 @@
       <p class="total-rec" ><span *ngIf="ciqIndustryData?.length">Showing {{ciqIndustryData?.length}} out of {{total}} records</span></p>
       <p class="sidenote" *ngIf="valuationDateNote"><i>*as on {{valuationDateNote | date:'MMM d, yyyy'}}</i></p>
     </div>
+    
+    <div class="table-wrapper" *ngIf="mainIndustries?.length && !loader" style="padding-bottom: 1%;">
+      <div class="header-container" (click)="toggleCollapse()" style="width: 1380px;">
+        <h2 class="sel-companies">
+          <button class="collapse-button">
+            <span *ngIf="collapsed">▶</span>
+            <span *ngIf="!collapsed">▼</span>
+          </button>
+          Selected companies
+        </h2>
+        
+      </div>
+      <table *ngIf="!collapsed" class="table-industry-based-company" style="width: 1380px;">
+        <thead>
+          <tr style="text-transform: capitalize;" class="header">
+           
+            <th style="border: 1px solid #eeeeee; height: 40px;" *ngFor="let columnName of ciqIndustryHead" class="make-bold"
+            [ngStyle]=" (columnName === 'EBITDA Margin %') ? { 'width':'10%' } :
+            (columnName === 'Market Cap') ? { 'width':'8%' } :
+            (columnName === 'Sales') ? { 'width':'7%' } :
+            (columnName === 'Company Id') ? { 'width':'7%' } :
+            (columnName === 'City') ? { 'width':'7%' } :
+            {'width':'auto'} "
+            >
+              {{ columnName }}
+            </th>
+          </tr>
+        </thead>
+        <tbody style="position: relative;">
+          <div class="loader-overlay" *ngIf="loader">
+          </div>
+          <tr *ngFor="let row of mainIndustries; let i = index" class="content">
+           
+            <td class="make-light company-id">{{row.COMPANYID}}</td>
+            <td class="make-light company-name" (click)="companyDetails(row)">{{row.COMPANYNAME}}</td>
+            <td [ngClass]="formatNumber(row.EBITDAVALUE) ? 'make-light td-ebitda' : 'add-padding-left td-ebitda'">
+              {{ formatNumber(row.EBITDAVALUE) ? formatNumber(row.EBITDAVALUE) : '-'}}
+            </td>
+            <td [ngClass]="formatNumber(row.SALESVALUE) ? 'make-light td-sales' : 'add-padding-left td-sales'">
+              {{ formatNumber(row.SALESVALUE) ? formatNumber(row.SALESVALUE) : '-'}}
+            </td>
+            <td [ngClass]="formatNumber(row.MARKETCAP) ? 'make-light td-market-cap' : 'add-padding-left td-market-cap'">
+              {{ formatNumber(row.MARKETCAP) ? formatNumber(row.MARKETCAP) : '-' }}
+            </td>
+            <td style="font-size: 14px; text-transform: capitalize; border: 1px solid #eeeeee" [ngClass]="formatNumber(row.SHARESOUTSTANDING) ? 'make-light' : 'add-padding-left'">
+              {{ formatNumber(row.SHARESOUTSTANDING) ? formatNumber(row.SHARESOUTSTANDING) : '-' }}
+            </td>
+            
+            <td class="make-light td-city" >{{row.CITY}}</td>
+            <td class="make-light td-industry-description">{{row.SIMPLEINDUSTRYDESCRIPTION}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
     <div class="table-wrapper">
     <table class="table-industry-based-company" *ngIf="!loader" style="width: 1380px;">
       <thead>
@@ -190,8 +245,8 @@
   </div>
     <div>
       <p class="total-count" *ngIf="ciqIndustryData?.length">{{mainIndustries?.length}} selected
-        <a target="_blank" class="screening-beta-val"  (click)="loadBetaWorking()">
-          See beta working
+        <a *ngIf="mainIndustries?.length" target="_blank" class="screening-beta-val"  (click)="loadBetaWorking()">
+          View beta working
           <span>
             <mat-icon>settings</mat-icon>
           </span>

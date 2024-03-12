@@ -572,6 +572,9 @@ calculateStockBeta(){
       if(!response.isStockBetaPositive && !response.total){
         this.fcfeForm.controls['beta'].setValue(response.negativeBeta);
       }
+      if(!response.total){
+        this.fcfeForm.controls['beta'].setValue(response.total);
+      }
       this.calculateCoeAndAdjustedCoe();
     }
     else{

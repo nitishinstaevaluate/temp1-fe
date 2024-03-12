@@ -78,7 +78,7 @@ selectMenuItem(route: string): void {
 }
 
 isLoggedIn(){
-  const access_token = localStorage.getItem('access_token');
+  const access_token = sessionStorage.getItem('access_token');
   if(!access_token)
     return false;
   return true;

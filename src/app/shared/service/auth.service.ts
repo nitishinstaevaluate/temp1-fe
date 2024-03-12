@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { of, switchMap } from 'rxjs';
+import { map, of, switchMap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 // import { AngularFireAuth } from '@angular/fire/compat/auth';
 
@@ -31,7 +31,8 @@ export class AuthService {
       switchMap((authToken:any)=>{
         if(authToken.access_token)
           // this.loginStatus.next(true);
-          localStorage.setItem('access_token', authToken.access_token);
+          sessionStorage.setItem('access_token', authToken.access_token);
+          sessionStorage.setItem('session_state', authToken.session_state);
           // localStorage.setItem('loginStatus','1')
         return of(authToken);
       })
@@ -54,6 +55,13 @@ export class AuthService {
   //   }
   // }
 
+  refreshToken(){
+    return this.http.get<any>(`${environment.baseUrl}authentication/refresh-token`).pipe(
+      switchMap(response => {
+        return of(response)
+      })
+    );
+  }
   extractUser(){
     return this.http.get(`${environment.baseUrl}authentication/extractUser`)
   }

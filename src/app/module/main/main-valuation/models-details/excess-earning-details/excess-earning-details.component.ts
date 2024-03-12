@@ -587,6 +587,9 @@ calculateStockBeta(){
       if(!response.isStockBetaPositive && !response.total){
         this.excessEarningForm.controls['beta'].setValue(response.negativeBeta);
       }
+      if(!response.total){
+        this.excessEarningForm.controls['beta'].setValue(response.total);
+      }
       this.calculateCoeAndAdjustedCoe();
     }
     else{

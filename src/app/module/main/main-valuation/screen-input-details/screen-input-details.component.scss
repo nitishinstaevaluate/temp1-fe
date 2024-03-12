@@ -579,6 +579,31 @@ label {
     }
   }
 
+  .sel-companies{
+    font-family: 'AR One Sans', sans-serif !important;
+    font-size: 14px !important;
+    transition: 0.1s ease-out !important;
+    font-family: 'AR One Sans', sans-serif !important;
+    padding-top: 1% !important;
+    padding-bottom: 1% !important;
+    width: 100%;
+    padding-left: 2%;
+    box-shadow: 1px 2px 10px #eeeeee !important;
+    background-color: #e7faf4;
+    color: #0c6e5e;
+  }
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+  }
+
+  .collapse-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
   .content{
     height: 28px;
     .make-bold{
@@ -1152,10 +1177,14 @@ background: #bdf8de !important;
 
 .screening-beta-val{
   padding-left: 4%;
-  font-size: 10px;
-  color: #1934be !important;
   transition: 0.4s color;
   vertical-align: middle;
+  font-size: 13px !important;
+  transition: 0.1s ease-out !important;
+  font-family: 'AR One Sans', sans-serif !important;
+  width: 100%;
+  padding-left: 2%;
+  color: #124c42 !important;
   span mat-icon{
     vertical-align: middle;
     transform: scale(0.5);
