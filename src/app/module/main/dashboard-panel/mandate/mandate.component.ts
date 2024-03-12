@@ -25,6 +25,8 @@ export class MandateComponent implements OnInit{
   reportObjectives:any= REPORT_OBJECTIVE;
   reportObjective:any='';
   loader = false;
+  updatedValuedEntity='';
+  enitySameAsCompany = false;
   constructor(
     private excelAndReportService: ExcelAndReportService,
     private utilService: UtilService,
@@ -41,6 +43,7 @@ export class MandateComponent implements OnInit{
     loadFormControl(){
       this.mandateForm = this.fb.group({
         companyName:['',Validators.required],
+        valuedEntity:['',Validators.required],
         companyAddress:['',Validators.required],
         totalFees:['',Validators.required],
         dateOfAppointment:['',Validators.required],
@@ -163,5 +166,21 @@ export class MandateComponent implements OnInit{
         })
       })
     })
+  }
+
+  entityChange(event: any){
+    if (event.target.checked) {
+      this.enitySameAsCompany = true;
+      this.updatedValuedEntity = this.mandateForm.controls['companyName'].value
+    } else {
+      this.enitySameAsCompany = false;
+      this.updatedValuedEntity = '';
+    }
+  }
+
+  updateEntityInput(value:any){
+    if(this.enitySameAsCompany){
+      this.updatedValuedEntity = value;
+    }
   }
 }

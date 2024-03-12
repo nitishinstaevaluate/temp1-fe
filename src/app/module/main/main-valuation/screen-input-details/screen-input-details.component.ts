@@ -68,7 +68,8 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   prevPageSize: any;
   selectAll: boolean = false;
   valuationDateNote = '';
-  formatNumber=excludeDecimalFormatting
+  formatNumber=excludeDecimalFormatting;
+  collapsed = true;
 
   constructor(
     private fb:FormBuilder,
@@ -855,5 +856,9 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       duration: 3000,
       panelClass: 'app-notification-error'
     });
+  }
+
+  toggleCollapse() {
+    this.collapsed = !this.collapsed;
   }
 }

@@ -70,7 +70,7 @@ export class ValuationDataChecklistComponent implements OnInit{
       companyAddress:['',Validators.required],
       dateOfAppointment:['',Validators.required],
       natureOfInstrument:['',Validators.required],
-      purposeOfReport:[[],Validators.required],
+      purposeOfReport:['',Validators.required],
       companyInfo:['',Validators.required],
       section:['',Validators.required],
     })

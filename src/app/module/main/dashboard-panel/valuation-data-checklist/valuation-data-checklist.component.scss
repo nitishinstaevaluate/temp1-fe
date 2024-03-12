@@ -572,3 +572,17 @@ label {
     font-size: 10px;
     font-family: 'AR One Sans';
   }
+
+  .template-label{
+    font-size: 1rem;
+    outline: none;
+    border: 1px solid #e4e4e4;
+    border-radius: 10px;
+    color: #6d6d6d;
+    transition: 0.1s ease-out;
+    font-family: 'AR One Sans', sans-serif;
+    width: 100%;
+    padding: 1%;
+    padding-left: 2%;
+    margin-bottom: 3px;
+  }

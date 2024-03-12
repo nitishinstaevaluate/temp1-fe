@@ -7,13 +7,33 @@
             <div class="col-xl-6 col-md-6 field">
                 <div class="material-textfield">
                     <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
-                        <input type="text" matInput formControlName="companyName" class="company-list-inp" placeholder="Enter company name">
+                        <input (input)="updateEntityInput(mandateForm.controls['companyName'].value)" type="text" matInput formControlName="companyName" class="company-list-inp" placeholder="Enter">
                           <span class="company-list-rmve" *ngIf="mandateForm.controls['companyName']?.value">
                             <mat-icon class="company-list-rmve-icon" (click)="clearInput('companyName')">close</mat-icon>
                           </span>
                         <mat-label>
-                          Company Name*
+                          Name of appointing entity*
                         </mat-label>
+                      </mat-form-field>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 field">
+                <div class="material-textfield">
+                    <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                        <input type="text" matInput formControlName="valuedEntity" class="company-list-inp" placeholder="Enter" [(ngModel)]="updatedValuedEntity" >
+                          <span class="company-list-rmve" *ngIf="mandateForm.controls['valuedEntity']?.value">
+                            <mat-icon class="company-list-rmve-icon" (click)="clearInput('valuedEntity')">close</mat-icon>
+                          </span>
+                        <mat-label>
+                          Name of entity to be valued*
+                        </mat-label>
+                        <mat-hint style="width: 100%;display: flex; align-items: center;margin-left: -1%;">
+                          <span style="width: 100%;">
+                              <input style="vertical-align: middle;" type="checkbox" (change)="entityChange($event)">
+                              <span style="vertical-align: middle;padding-left: 1%;">Same as appointing entity</span>
+                          </span>
+                      </mat-hint>
                       </mat-form-field>
                 </div>
             </div>
@@ -21,12 +41,12 @@
             <div class="col-xl-6 col-md-6 field">
                 <div class="material-textfield">
                     <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
-                        <input type="text" matInput formControlName="companyAddress" class="company-list-inp" placeholder="Enter company address">
+                        <input type="text" matInput formControlName="companyAddress" class="company-list-inp" placeholder="Enter">
                           <span class="company-list-rmve" *ngIf="mandateForm.controls['companyAddress']?.value">
                             <mat-icon class="company-list-rmve-icon" (click)="clearInput('companyAddress')">close</mat-icon>
                           </span>
                         <mat-label>
-                          Company Address*
+                          Address of appointing entity*
                         </mat-label>
                       </mat-form-field>
                 </div>
@@ -35,7 +55,7 @@
             <div class="col-xl-6 col-md-6 field">
                 <div class="material-textfield">
                         <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
-                            <input type="text" matInput formControlName="totalFees" class="company-list-inp" placeholder="Enter total fees">
+                            <input type="text" matInput formControlName="totalFees" class="company-list-inp" placeholder="Enter">
                               <span class="company-list-rmve" *ngIf="mandateForm.controls['totalFees']?.value">
                                 <mat-icon class="company-list-rmve-icon" (click)="clearInput('totalFees')">close</mat-icon>
                               </span>

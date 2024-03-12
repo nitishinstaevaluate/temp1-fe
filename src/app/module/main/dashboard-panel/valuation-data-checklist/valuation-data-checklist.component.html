@@ -42,11 +42,6 @@
 
             <div class="col-md-4 col-xl-4 field" style="padding-top: 0%;">
               <div class="material-textfield">
-                <!-- <select id="reportingUnit" class="new-inp" formControlName="reportingUnit">
-                  <option value="" disabled selected>Select reporting unit</option>
-                  <option *ngFor="let doc of modelControl.reportDetails.options.reportingUnit"  [value]="doc.value">{{ doc.name }}</option>
-                </select>
-                <label for="reportingUnit">Units</label> -->
                   <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
                       <mat-label>Units*</mat-label>
                       <span class="company-list-rmve" *ngIf="dataCheckListForm.controls['reportingUnit']?.value" style="right:7%;">
@@ -333,7 +328,7 @@
         
         <div class="row field" style="padding-top: 1%;padding-bottom: 2%;">
             <div class="col-xl-9">
-              <span class="download-temp"><a [href]="downloadTemplate" target="_blank">Download Template</a></span>
+              <span class="download-temp"><a [href]="downloadTemplate" target="_blank">Download Excel Template</a></span>
               <input
                 type="file"
                 hidden
@@ -341,19 +336,51 @@
                 accept="image/png, image/jpeg, .pdf, .xlsx"
                 (change)="onFileSelected($event)"
               />
-              <button type="button" class="btn btn-primary upload-bt" (click)="fileInput.click()">
-                <span class="pos-upload-absolute" style="left: 16%;">
-                  <mat-icon>cloud_upload</mat-icon>
-                </span>
-                Upload file</button>
-              <span class="file-name" *ngIf="fileName">{{fileName}}</span>
+              <!-- <input
+                type="file"
+                hidden
+                #auditInput
+                accept=".docx , .pdf, .xlsx"
+                (change)="onFileSelected($event)"
+              /> -->
+              <span>
+                <button type="button" class="btn btn-primary upload-bt" (click)="fileInput.click()">
+                  <span class="pos-upload-absolute" style="left: 10%;">
+                    <mat-icon>cloud_upload</mat-icon>
+                  </span>
+                  Upload excel file
+                  <span matTooltipClass='form-one-tooltip' [matTooltip]="helperText.uploadTemplate" matTooltipPosition="right" class="pos-upload-absolute" style="left: 85%;">
+                    <mat-icon>info</mat-icon>
+                  </span>
+                </button>
+              </span>
+              <!-- <span style="padding-left: 3%;">
+                <button type="button" class="btn btn-primary upload-bt" style="background-color: #2abfa2;" (click)="auditInput.click()">
+                  <span class="pos-upload-absolute" style="left: 10%;">
+                    <mat-icon>cloud_upload</mat-icon>
+                  </span>
+                  Upload Audited financial
+                  <span matTooltipClass='form-one-tooltip' [matTooltip]="helperText.uploadAuditedTemplate" matTooltipPosition="right" class="pos-upload-absolute" style="left: 90%;">
+                    <mat-icon>info</mat-icon>
+                  </span>
+                </button>
+              </span> -->
             </div>
+            
             <div class="col-xl-3" style="text-align: right;">
                 <button (click)="submiDataCheckListForm()" class="button-save-mat" mat-raised-button>
                     Submit
                     <span class="button-save"><mat-icon>send</mat-icon></span>
                 </button>
             </div>
+          </div>
+          <div>
+            <p class="template-label" *ngIf="fileName">
+              Excel Filename - <span class="file-name">{{fileName}}</span>
+            </p>
+            <!-- <p class="template-label" *ngIf="fileName">
+              Audited financials - <span class="file-name" *ngIf="fileName">{{fileName}}</span>
+            </p> -->
           </div>
     </div>
 </div>
