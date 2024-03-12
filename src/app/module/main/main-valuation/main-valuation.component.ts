@@ -60,7 +60,7 @@ export class MainValuationComponent implements OnInit{
     private route:Router
     ){    }
   ngOnInit() {
-    if(!localStorage.getItem('access_token')){
+    if(!sessionStorage.getItem('access_token')){
       this.snackBar.open('Unauthorised Signatory','Sign-in',{
         horizontalPosition: 'right',
         verticalPosition: 'top',
