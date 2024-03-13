@@ -77,7 +77,8 @@ export class ValuationDataChecklistComponent implements OnInit{
   }
 
   get downloadTemplate() {
-    return GET_TEMPLATE('1', 'default');
+    const valuationDate = this.dataCheckListForm.controls['valuationDate'].value
+    return GET_TEMPLATE('1', 'default', `${valuationDate ? new Date(valuationDate).getTime() : ''}`);
   }
 
   onFileSelected(event: any) {
