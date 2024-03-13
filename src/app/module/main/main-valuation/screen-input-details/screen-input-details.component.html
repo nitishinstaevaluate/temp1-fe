@@ -174,7 +174,9 @@
       <table *ngIf="!collapsed" class="table-industry-based-company" style="width: 1380px;">
         <thead>
           <tr style="text-transform: capitalize;" class="header">
-           
+            <th style="width: 4%;border: 1px solid #eeeeee">
+              <i class="fa fa-filter" style="font-size:17px;vertical-align: middle;padding-left: 35%;"></i>
+            </th>
             <th style="border: 1px solid #eeeeee; height: 40px;" *ngFor="let columnName of ciqIndustryHead" class="make-bold"
             [ngStyle]=" (columnName === 'EBITDA Margin %') ? { 'width':'10%' } :
             (columnName === 'Market Cap') ? { 'width':'8%' } :
@@ -191,7 +193,9 @@
           <div class="loader-overlay" *ngIf="loader">
           </div>
           <tr *ngFor="let row of mainIndustries; let i = index" class="content">
-           
+            <td class="make-light td-checkbox">
+              <input type="checkbox" style="transform: scale(.96) !important;" [id]="'checkbox_' + i" [(ngModel)]="row.isSelected" (change)="onSelectedChange(row)"/>
+            </td>
             <td class="make-light company-id">{{row.COMPANYID}}</td>
             <td class="make-light company-name" (click)="companyDetails(row)">{{row.COMPANYNAME}}</td>
             <td [ngClass]="formatNumber(row.EBITDAVALUE) ? 'make-light td-ebitda' : 'add-padding-left td-ebitda'">

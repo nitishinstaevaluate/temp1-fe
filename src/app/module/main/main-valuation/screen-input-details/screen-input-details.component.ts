@@ -916,4 +916,11 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       this.loadCiqIndustryBasedLevelFour(this.createPayload())
     }
   }
+
+  onSelectedChange(row:any){
+    const indexSelected = this.mainIndustries.findIndex((ele:any)=> ele.COMPANYID === row.COMPANYID);
+    if(indexSelected !== -1){
+      this.mainIndustries.splice(indexSelected, 1)
+    }
+  }
 }
