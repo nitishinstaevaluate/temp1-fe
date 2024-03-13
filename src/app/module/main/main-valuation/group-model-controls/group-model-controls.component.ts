@@ -445,7 +445,8 @@ export class GroupModelControlsComponent implements OnInit {
         projectionYears:this.modelValuation.controls['projectionYears'].value,
         excelSheetId:this.modelValuation.controls['excelSheetId'].value,
         fileName:this.fileName,
-        value:'valuationMethod'
+        value:'valuationMethod',
+        valuationDate:this.modelValuation.controls['valuationDate'].value
       }
      const dialogRef = this.dialog.open(GenericModalBoxComponent,{data:data,width:'50%', maxHeight:'90vh', panelClass:'custom-dialog-container'});
   

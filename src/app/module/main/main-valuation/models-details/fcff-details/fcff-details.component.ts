@@ -62,6 +62,7 @@ export class FcffDetailsComponent implements OnInit{
   betaLoader=false;
   selectedSubBetaType:any = BETA_SUB_TYPE[0];
   stockBetaChecker = false;  
+  betaMeanMedianWorking:any;
 constructor(private valuationService:ValuationService,
   private dataReferenceService: DataReferencesService,
   private formBuilder:FormBuilder,
@@ -203,15 +204,11 @@ loadOnChangeValue(){
     }
   );
   this.fcffForm.controls['capitalStructureType'].valueChanges.subscribe(
-    (val:any) => {
+  (val:any) => {
       if(!val) return;
-      if (val == 'Industry_Based' || val === 'Company_Based') {
-        // this.deRatio = parseFloat(this.formOneData?.betaIndustry?.deRatio);
-        // this.debtProp = this.debtRatio/this.totalCapital;
-        // this.equityProp = 1 - this.debtProp;
-        // this.prefProp = 1 - this.debtProp - this.equityProp;
-        // this.totalCapital = 1 + this.debtRatio;
-        // this.deRatio = parseFloat();
+      if (val == 'Industry_Based') {
+       this.loadIndustryBasedDeRatioAndEquityRatio();
+      } else if(val === 'Company_Based'){
         this.debtProp = null;
         this.equityProp = null;
         this.prefProp = null;
@@ -601,6 +598,7 @@ else if(selectedValue.includes('stock_beta')){
 else{
   this.selectedSubBetaType = '';
   this.fcffForm.controls['beta'].setValue(1);
+  this.calculateCoeAndAdjustedCoe();
 }
 }
 }
@@ -634,7 +632,6 @@ this.ciqSpService.calculateSPindustryBeta(betaPayload).subscribe((betaData:any)=
   if(betaData.status){
     this.betaLoader = false;
     this.fcffForm.controls['beta'].setValue(betaData.total);
-    this.deRatio = betaData.deRatio
     this.selectedSubBetaType = betaSubType;
 
     this.processStatusManagerService.fetchProcessIdentifierId(localStorage.getItem('processStateId')).subscribe(async (processManagerDetails:any)=>{
@@ -645,7 +642,9 @@ this.ciqSpService.calculateSPindustryBeta(betaPayload).subscribe((betaData:any)=
             betaMeanMedianWorking: betaData.betaMeanMedianWorking,
             processIdentifierId: processManagerDetails.processIdentifierId
           }
+          this.computeIndustryRatios(betaData.betaMeanMedianWorking);
           await this.ciqSpService.upsertBetaWorking(payload).toPromise();
+          this.calculateCoeAndAdjustedCoe();
         }
       },(error)=>{
         this.betaLoader = false;
@@ -656,8 +655,6 @@ this.ciqSpService.calculateSPindustryBeta(betaPayload).subscribe((betaData:any)=
           panelClass: 'app-notification-error',
         });
       })
-
-    this.calculateCoeAndAdjustedCoe();
   }
   else{
     this.betaLoader = false;
@@ -845,6 +842,49 @@ calculateStockBeta(){
           panelClass: 'app-notification-error',
         })
       })
+    }
+  }
+
+  async loadIndustryBasedDeRatioAndEquityRatio(){
+    const processManagerDetails:any = await this.processStatusManagerService.fetchProcessIdentifierId(localStorage.getItem('processStateId')).toPromise();
+    if(processManagerDetails?.processIdentifierId){
+      this.ciqSpService.fetchBetaWorking(processManagerDetails?.processIdentifierId).subscribe((betaWorkingResponse:any)=>{
+        if(betaWorkingResponse.status){
+          const betaMeanMedian = betaWorkingResponse.data.betaMeanMedianWorking
+          this.computeIndustryRatios(betaMeanMedian);
+          }
+          else{
+            this.snackBar.open('beta working not found, try again', 'Ok',{
+              horizontalPosition: 'center',
+              verticalPosition: 'bottom',
+              duration: 3000,
+              panelClass: 'app-notification-error',
+            })
+          }
+          this.getWaccIndustryOrCompanyBased();
+      },(error)=>{
+        this.snackBar.open('backend error - beta working not found, try again', 'Ok',{
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+          duration: 3000,
+          panelClass: 'app-notification-error',
+        })
+      })
+    }
+  }
+
+  computeIndustryRatios(betaMeanMedian:any){
+    if(this.fcffForm.controls['capitalStructureType'].value === 'Industry_Based'){
+      betaMeanMedian.map((indRatios:any)=>{
+        if(this.selectedSubBetaType === indRatios.betaType){
+          this.deRatio = indRatios.debtToCapital;
+          this.equityProp = indRatios.equityToCapital;
+        }
+      })
+    }
+    else{
+      this.deRatio = 0;
+      this.equityProp = 0;
     }
   }
 }

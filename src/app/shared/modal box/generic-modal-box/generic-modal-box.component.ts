@@ -91,6 +91,7 @@ hasLeveredBeta = false;
 hasPreferredEquity = false;
 
 formatNumber = formatNumber;
+valuationDate:any='';
 
 constructor(@Inject(MAT_DIALOG_DATA) public data: any,
 private dialogRef:MatDialogRef<GenericModalBoxComponent>,
@@ -447,7 +448,7 @@ clearModelRadioButton(modelName:string){
 }
 
 get downloadTemplate() {
-  return GET_TEMPLATE(this.projectionYears,this.ruleElevenApproachModels.length ? 'ruleElevenUa' : 'default');
+  return GET_TEMPLATE(this.yearOfProjection.value,this.ruleElevenApproachModels.length ? 'ruleElevenUa' : 'default',`${this.valuationDate ? new Date(this.valuationDate).getTime() : ''}`);
   }
 
   onFileSelected(event: any) {
@@ -549,6 +550,9 @@ get downloadTemplate() {
     }
     if(data?.excelSheetId){
       this.excelSheetId = data.excelSheetId;
+    }
+    if(data?.valuationDate){
+      this.valuationDate = data.valuationDate;
     }
   }
 

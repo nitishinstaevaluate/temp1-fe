@@ -16,11 +16,11 @@ export function  isSelected(value: string,checkList:Array<any>): boolean {
       return checkedItems;
     }
 }
-export function GET_TEMPLATE(value:string,modelName:string){
+export function GET_TEMPLATE(value:string, modelName:string, valuationDate:string){
     return (
     environment.baseUrl +
-    `download/template/` +
-    (value || '1') + '/' + `${modelName}`
+    `download/template?projectionYears=` +
+    (value || '1') + '&modelName=' + `${modelName}` + '&valuationDate=' + `${valuationDate}`
   )
 }
 
