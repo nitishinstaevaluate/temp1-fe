@@ -452,6 +452,7 @@ betaChange(event:any){
     else{
       this.selectedSubBetaType = '';
       this.fcfeForm.controls['beta'].setValue(1);
+      this.calculateCoeAndAdjustedCoe();
     }
   }
 }

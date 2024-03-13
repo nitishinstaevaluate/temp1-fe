@@ -465,6 +465,7 @@ if(selectedValue){
   else{
     this.selectedSubBetaType = '';
     this.excessEarningForm.controls['beta'].setValue(1);
+    this.calculateCoeAndAdjustedCoe();
   }
 }
 }

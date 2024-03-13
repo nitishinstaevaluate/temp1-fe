@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { hasError } from 'src/app/shared/enums/errorMethods';
 import groupModelControl from '../../../../shared/enums/group-model-controls.json';
 import { CiqSPService } from 'src/app/shared/service/ciq-sp.service';
-import { BETA_SUB_TYPE, INDUSTRY_BASED_COMPANY, MODELS, PAGINATION_VAL } from 'src/app/shared/enums/constant';
+import { BETA_SUB_TYPE, INDUSTRY_BASED_COMPANY, MODELS, PAGINATION_VAL, helperText } from 'src/app/shared/enums/constant';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -70,6 +70,11 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   valuationDateNote = '';
   formatNumber=excludeDecimalFormatting;
   collapsed = true;
+  companyInput = false;
+  companyQuery: any;
+  searchByCompanyName = new Subject<string>();
+  companyList: any = [];
+  helperText = helperText;
 
   constructor(
     private fb:FormBuilder,
@@ -89,6 +94,12 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       debounceTime(1300),
       throttleTime(1000),
       switchMap(async () => this.loadCiqIndustryBasedLevelFour(this.createPayload()))
+    ).subscribe();
+    this.searchByCompanyName.pipe(
+      debounceTime(600),
+      distinctUntilChanged(),
+      throttleTime(600),
+      switchMap(async () => this.fetchCompanyNames())
     ).subscribe();
   }
    ngOnChanges(changes:SimpleChanges) {
@@ -115,6 +126,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       descriptor:['', [Validators.required]],
       industryL3:['', [Validators.required]],
       industryL4:[[], [Validators.required]],
+      companyName:['', [Validators.required]],
     });
   }
 
@@ -570,14 +582,16 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     return {
       levelFourIndustries: this.levelFourIndustryDescription,
       companyStatusType: this.companyStatusTypeDescription,
-      companyType: this.companyTypeDescription,
+      // companyType: this.companyTypeDescription,
+      companyType: ["Public Company"], //use the above companyTypeDescription to automate the value of company type 
       industryName: this.levelThreeIndustryDescription,
       businessDescriptor: this.descriptorQuery,
       location: this.formOneData?.location || this.secondStageInput?.formOneData?.location,
       processStateId:localStorage.getItem('processStateId'),
       pageStart: this.pageStart,
       size: this.pageSize,
-      valuationDate: this.formOneData?.valuationDate
+      valuationDate: this.formOneData?.valuationDate,
+      companyName: this.companyQuery
     };
   }
 
@@ -754,6 +768,9 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       case 'companyStatus':
         this.companyStatusTypeDescription = [];
         break;
+      case 'companyName':
+        this.companyQuery = '';
+        break;
     }
   }
 
@@ -860,5 +877,43 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
 
   toggleCollapse() {
     this.collapsed = !this.collapsed;
+  }
+
+  companyInputFocused(){
+    this.companyInput = true;
+  }
+
+  companyInputBlurred(){
+    this.companyInput = false;
+  }
+
+  filterByCompanyName(event:any){
+    if(event.target.value && this.companyQuery !== event.target.value){
+      this.companyQuery = event.target.value;
+      this.searchByCompanyName.next(this.companyQuery);
+    }
+  }
+
+  fetchCompanyNames(){
+    this.utilService.fuzzySearchCompanyName(this.companyQuery).subscribe((data:any)=>{
+      if(data?.companyDetails?.length){
+        this.companyList = data.companyDetails;
+      }
+    },(error)=>{
+      this.snackBar.open('Backend error - company details not found', 'Ok',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 3000,
+        panelClass: 'app-notification-error',
+      })
+    })
+  }
+
+  onCompanySelection(event:any){
+    if(event?.option?.value){
+      this.companyQuery = event.option.value;
+      this.fetchCompanyNames();
+      this.loadCiqIndustryBasedLevelFour(this.createPayload())
+    }
   }
 }

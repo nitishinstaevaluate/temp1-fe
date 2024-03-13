@@ -940,6 +940,13 @@
                 "type":"text",
                 "tooltip":"Level 4 Industries",
                 "label":"Industry Name (Level-4)"
+            },
+            "companyName":{
+                "name":"companyName",
+                "placeholder":"Enter company name",
+                "type":"text",
+                "tooltip":"search company",
+                "label":"Company Name"
             }
         }
     },
