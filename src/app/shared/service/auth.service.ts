@@ -56,11 +56,7 @@ export class AuthService {
   // }
 
   refreshToken(){
-    return this.http.get<any>(`${environment.baseUrl}authentication/refresh-token`).pipe(
-      switchMap(response => {
-        return of(response)
-      })
-    );
+    return this.http.get<any>(`${environment.baseUrl}authentication/refresh-token`);
   }
   extractUser(){
     return this.http.get(`${environment.baseUrl}authentication/extractUser`)
