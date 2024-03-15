@@ -211,7 +211,7 @@
               {{ formatNumber(row.SHARESOUTSTANDING) ? formatNumber(row.SHARESOUTSTANDING) : '-' }}
             </td>
             
-            <td class="make-light td-city" >{{row.CITY}}</td>
+            <!-- <td class="make-light td-city" >{{row.CITY}}</td> -->
             <td class="make-light td-industry-description">{{row.SIMPLEINDUSTRYDESCRIPTION}}</td>
           </tr>
         </tbody>
@@ -260,7 +260,7 @@
             {{ formatNumber(row.SHARESOUTSTANDING) ? formatNumber(row.SHARESOUTSTANDING) : '-' }}
           </td>
           
-          <td class="make-light td-city" >{{row.CITY}}</td>
+          <!-- <td class="make-light td-city" >{{row.CITY}}</td> -->
           <td class="make-light td-industry-description">{{row.SIMPLEINDUSTRYDESCRIPTION}}</td>
         </tr>
         <tr *ngIf="!ciqIndustryData?.length">
