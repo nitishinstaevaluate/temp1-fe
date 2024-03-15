@@ -414,7 +414,7 @@ export class MainValuationComponent implements OnInit{
           }) 
           this.formFiveData = {formOneAndThreeData : updatedPayload,formFourData:processStateDetails.fourthStageInput,formFiveData:processStateDetails?.fifthStageInput?.totalWeightageModel};
         }
-        if(processStateDetails?.fifthStageInput){
+        if(processStateDetails?.fifthStageInput || processStateDetails?.sixthStageInput){
           this.formSixData = {...this.formFiveData,formFiveData : processStateDetails.fifthStageInput?.totalWeightageModel,formSixData:processStateDetails?.sixthStageInput}
         }
 

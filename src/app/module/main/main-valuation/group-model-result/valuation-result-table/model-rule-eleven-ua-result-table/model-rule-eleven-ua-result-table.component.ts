@@ -116,14 +116,14 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
   }
 
   calculateAll() {
-      return  (this.totalCalculationA+ this.totalCalculationB + this.totalCalculationC + this.totalCalculationD - this.totalCalculationL).toFixed(2);
+      return  (convertToNumberOrZero(this.totalCalculationA)+ convertToNumberOrZero(this.totalCalculationB) + convertToNumberOrZero(this.totalCalculationC) + convertToNumberOrZero(this.totalCalculationD) - convertToNumberOrZero(this.totalCalculationL)).toFixed(2);
   }
   
   calculateFairMarketValue(){
     const phaseValue = !isNaN(parseFloat(this.formData?.formFourData?.appData?.inputData?.phaseValue)) ? parseFloat(this.formData?.formFourData?.appData?.inputData?.phaseValue) : 1;
     const paidUpCapital = !isNaN(parseFloat(this.formData?.formFourData?.appData?.paidUpCapital)) ? parseFloat(this.formData?.formFourData?.appData?.paidUpCapital) : 1;
 
-    const totalSum = this.totalCalculationA + this.totalCalculationB + this.totalCalculationC + this.totalCalculationD - this.totalCalculationL;
+    const totalSum = convertToNumberOrZero(this.totalCalculationA) + convertToNumberOrZero(this.totalCalculationB) + convertToNumberOrZero(this.totalCalculationC) + convertToNumberOrZero(this.totalCalculationD) - convertToNumberOrZero(this.totalCalculationL);
 
     let result;
 

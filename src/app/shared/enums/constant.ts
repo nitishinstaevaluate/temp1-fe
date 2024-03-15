@@ -261,7 +261,8 @@ export const ALL_MODELS = {
     currencyUnit:`In valuation, a currency unit represents the monetary denomination used to express financial figures, aiding in the comparison and understanding of financial data across different currencies.`,
     taxRate:`Tax rate in valuation is the percentage applied to assess the tax liability or expense on taxable income, influencing the after-tax cash flows used in financial analysis.`,
     uploadTemplate:`Upload provisional statement for Profit & Loss and Balance Sheet as per template. Make sure the template format is as per the the provided excel template.`,
-    uploadAuditedTemplate:`Upload audited template.`
+    uploadAuditedTemplate:`Upload audited template.`,
+    discountRateValue:`Less discount rate.`
   }
 
   export const CHECKLIST_TYPES = {

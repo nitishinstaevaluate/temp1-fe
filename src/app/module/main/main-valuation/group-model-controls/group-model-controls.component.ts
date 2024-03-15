@@ -117,7 +117,7 @@ export class GroupModelControlsComponent implements OnInit {
       taxRate:['',[Validators.required]],
       terminalGrowthRate:['',[Validators.required]],
       discountRateType: ['WACC'],                                  // removed as required field
-      discountRateValue: [20],
+      // discountRateValue: [20],
       reportingUnit:['',[Validators.required]],
       currencyUnit:['INR',[Validators.required]],
     })
@@ -168,7 +168,7 @@ export class GroupModelControlsComponent implements OnInit {
     }
    this.modelValuation.controls['currencyUnit'].setValue(data?.currencyUnit ?? 'INR');
    this.modelValuation.controls['discountRateType'].setValue(data?.discountRateType === ""  ?  'WACC' : data?.discountRateType);
-   this.modelValuation.controls['discountRateValue'].setValue(data?.discountRateValue === "" ? 20 : data?.discountRateValue);
+  //  this.modelValuation.controls['discountRateValue'].setValue(data?.discountRateValue === "" ? 20 : data?.discountRateValue);
 
    this.preferenceCompanies = data.preferenceCompanies ?? [];
    this.modelValuation.controls['industry'].setValue(data?.industry?? '');
@@ -277,11 +277,11 @@ export class GroupModelControlsComponent implements OnInit {
       payload['valuationDate'] = this.newDate.getTime();
     }
     if(this.modelValuation.controls['model'].value.includes(MODELS.NAV) && this.modelValuation.controls['model'].value.length=== 1){
-      const keysToRemove = ['taxRate', 'taxRateType', 'terminalGrowthRate', 'preferenceCompanies','projectionYears','projectionYearSelect','industriesRatio','industry','discountRateType','discountRateValue'];
+      const keysToRemove = ['taxRate', 'taxRateType', 'terminalGrowthRate', 'preferenceCompanies','projectionYears','projectionYearSelect','industriesRatio','industry','discountRateType'];
       payload = this.recalculateFields(payload,keysToRemove)
     }
     else if(this.modelValuation.controls['model'].value.includes(MODELS.RULE_ELEVEN_UA) && this.modelValuation.controls['model'].value.length=== 1){
-      const keysToRemove = ['taxRate', 'taxRateType', 'terminalGrowthRate', 'preferenceCompanies','projectionYears','projectionYearSelect','industriesRatio','industry','discountRateType','discountRateValue'];
+      const keysToRemove = ['taxRate', 'taxRateType', 'terminalGrowthRate', 'preferenceCompanies','projectionYears','projectionYearSelect','industriesRatio','industry','discountRateType'];
       payload = this.recalculateFields(payload,keysToRemove)
     }
     // check if modified excel sheet id exist or not
@@ -324,7 +324,7 @@ export class GroupModelControlsComponent implements OnInit {
       delete control.projectionYearSelect;
       delete control.industry;
       delete control.discountRateType;
-      delete control.discountRateValue;
+      // delete control.discountRateValue;
     }
     delete control.industry;
     
