@@ -625,6 +625,42 @@
                 "placeholder":"Company Based",
                 "toolTip":"Select Company"
             },
+            "subItems":{
+                "name":"subItems",
+                "placeholder":"Sub-category items",
+                "toolTip":"Add sub-items"
+            },
+            "discountRateValue":{
+                "name":"discountRateValue",
+                "placeholder":"discount rate",
+                "toolTip":"Add discount rate",
+                "options":[
+                    {
+                        "name":"0%",
+                        "value":0
+                    },
+                    {
+                        "name":"10%",
+                        "value":10
+                    },
+                    {
+                        "name":"20%",
+                        "value":20
+                    },
+                    {
+                        "name":"30%",
+                        "value":30
+                    },
+                    {
+                        "name":"40%",
+                        "value":40
+                    },
+                    {
+                        "name":"50%",
+                        "value":50
+                    }
+                ]
+            },
             "industryBasedSelection":{
                 "name":"industryBasedSelection",
                 "placeholder":"Industry Based",

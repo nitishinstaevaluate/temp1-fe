@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import groupModelControl from '../../../../../shared/enums/group-model-controls.json';
 import { FormArray, FormBuilder,FormControl,Validators } from '@angular/forms';
-import { MODELS } from 'src/app/shared/enums/constant';
+import { MODELS, helperText } from 'src/app/shared/enums/constant';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { CiqSPService } from 'src/app/shared/service/ciq-sp.service';
+import { hasError } from 'src/app/shared/enums/errorMethods';
 
 
 @Component({
@@ -31,6 +32,8 @@ export class RelativeValuationDetailsComponent implements OnInit,OnChanges {
   meanMedianList:any = [];
 
   floatLabelType:any='never';
+  helperText = helperText;
+  hasError = hasError;
   constructor(private formBuilder:FormBuilder,
     private processStatusManagerService:ProcessStatusManagerService,
     private snackBar:MatSnackBar,
@@ -51,21 +54,14 @@ export class RelativeValuationDetailsComponent implements OnInit,OnChanges {
   ngOnInit(): void {
     // this.loadFormControl();
     // this.loadFormControl();
-    // this.checkProcessExist();
+    this.checkProcessExist();
   }
 
   checkProcessExist(){
     if(this.thirdStageInput){
       this.thirdStageInput.map((stateThreeDetails:any)=>{
         if(stateThreeDetails.model === MODELS.RELATIVE_VALUATION && this.formOneData.model.includes(MODELS.RELATIVE_VALUATION)){
-          stateThreeDetails?.companies.map((companyDetails:any,i:number)=>{
-            this.selectedIndustry?.map((prefCompany:any,prefCompanyIndex:number)=>{
-              if(prefCompany.COMPANYNAME === companyDetails.COMPANYNAME){
-                this.addInput();
-                this.Companies.controls[i]?.setValue(this.selectedIndustry[prefCompanyIndex]);
-              }
-            })
-          })
+          this.relativeValuation.controls['discountRateValue'].setValue(stateThreeDetails.discountRateValue)
         }
       })
     }
@@ -75,7 +71,8 @@ loadFormControl(){
     this.relativeValuation=this.formBuilder.group({
       preferenceRatioSelect:['Company Based',[Validators.required]],
       companies:this.formBuilder.array([]),
-      industries:this.formBuilder.array([])
+      industries:this.formBuilder.array([]),
+      discountRateValue:['',[Validators.required]]
     })
   }
 
@@ -217,4 +214,7 @@ loadFormControl(){
     })
   }
   
+  clearInput(formControl:string){
+    this.relativeValuation.controls[formControl].setValue('');
+  }
 }
