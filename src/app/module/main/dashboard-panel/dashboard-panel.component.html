@@ -1,8 +1,8 @@
 <div class="task-manager" style="background-color: #fcf8fe;padding: 1%;">
   <div class="page-content left-content" style="margin:0px;padding-bottom: 1%;">
     <!-- <div class="header">Hey, Sanket</div> -->
-    <div><p class="header">Hi, <span id="dynamicName">User</span></p></div>
-    <div class="content-categories" style="padding-left: 4%;">
+    <div><p class="header" style="margin-bottom: 0px;">Hi, <span id="dynamicName">User</span></p></div>
+    <div class="content-categories" style="padding-left: 4%;padding-bottom: 10px;">
       <div class="label-wrapper d-nav">
         <label class="category" for="opt-1" (click)="setActiveLink('opt-1')" [class.active]="activeLink === 'opt-1'">Get started</label>
       </div>
@@ -114,13 +114,13 @@
         <table *ngIf="!loader">
           <thead class="sticky-header">
             <tr class="t-header">
-              <th>Id</th>
-              <th>Send From</th>
-              <th>Send To</th>
-              <th>Submitted Status</th>
-              <th>Sent On</th>
-              <th>Expiration Date</th>
-              <th>Action</th>
+              <th style="padding: 1%;">Id</th>
+              <th style="padding: 1%;">Send From</th>
+              <th style="padding: 1%;">Send To</th>
+              <th style="padding: 1%;">Submitted Status</th>
+              <th style="padding: 1%;">Sent On</th>
+              <th style="padding: 1%;">Expiration Date</th>
+              <th style="padding: 1%;">Action</th>
             </tr>
           </thead>
           <tbody>
