@@ -118,9 +118,13 @@ checkProcessExist(){
           this.targetCapitalStructureForm.controls['preferenceProportion'].setValue(stateThreeDetails.capitalStructure?.prefProp);
           this.targetCapitalStructureForm.controls['debtProportion'].setValue(stateThreeDetails.capitalStructure?.debtProp);
           this.targetCapitalStructureForm.controls['totalCapital'].setValue(stateThreeDetails.capitalStructure?.totalCapital);
+          this.debtProp = stateThreeDetails.capitalStructure.debtProp;
+          this.equityProp = stateThreeDetails.capitalStructure.equityProp;
+          this.prefProp = stateThreeDetails.capitalStructure.prefProp;
           this.totalCapital = this.targetCapitalStructureForm.controls['totalCapital'].value;
         }
         this.fcffForm.controls['copShareCapital'].setValue(stateThreeDetails?.copShareCapital);
+        this.bse500Value = stateThreeDetails?.bse500Value;
         this.specificRiskPremiumModalForm.controls['companySize'].setValue(stateThreeDetails?.alpha.companySize)
         this.specificRiskPremiumModalForm.controls['marketPosition'].setValue(stateThreeDetails?.alpha.marketPosition)
         this.specificRiskPremiumModalForm.controls['liquidityFactor'].setValue(stateThreeDetails?.alpha.liquidityFactor)
@@ -883,8 +887,8 @@ calculateStockBeta(){
       })
     }
     else{
-      this.deRatio = 0;
-      this.equityProp = 0;
+      // this.deRatio = 0;  
+      // this.equityProp = 0;
     }
   }
 }
