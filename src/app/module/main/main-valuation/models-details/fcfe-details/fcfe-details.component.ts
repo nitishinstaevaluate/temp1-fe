@@ -101,6 +101,7 @@ if(this.thirdStageInput){
       this.fcfeForm.controls['expMarketReturn'].setValue(stateTwoDetails?.expMarketReturn);
       this.fcfeForm.controls['specificRiskPremium'].setValue(stateTwoDetails?.specificRiskPremium); 
       this.fcfeForm.controls['riskPremium'].setValue(stateTwoDetails?.riskPremium); 
+      this.bse500Value = stateTwoDetails?.bse500Value;
       this.specificRiskPremiumModalForm.controls['companySize'].setValue(stateTwoDetails?.alpha.companySize)
       this.specificRiskPremiumModalForm.controls['marketPosition'].setValue(stateTwoDetails?.alpha.marketPosition)
       this.specificRiskPremiumModalForm.controls['liquidityFactor'].setValue(stateTwoDetails?.alpha.liquidityFactor)

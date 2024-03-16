@@ -96,6 +96,7 @@ checkProcessExist(){
             expectedMarketReturnData = response
           }
         })
+        this.bse500Value = stateTwoDetails?.bse500Value;
         this.excessEarningForm.controls['expMarketReturnType'].setValue(expectedMarketReturnData.name);
         this.excessEarningForm.controls['expMarketReturn'].setValue(stateTwoDetails?.expMarketReturn);
         this.excessEarningForm.controls['specificRiskPremium'].setValue(stateTwoDetails?.specificRiskPremium); 

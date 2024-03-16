@@ -150,14 +150,14 @@
                                   <input type="radio" style="vertical-align: middle;" [checked]="selectedSubBetaType === 'meanBeta'" (change)="onRadioButtonChange($event)" value="meanBeta" name="betaRadio" id="betaRadio">
                                   <span class="reset-ind3" style="vertical-align: middle;">Mean</span>
                                 </span>
-                                <span style="padding-left: 14%;" *ngIf="fcfeForm.controls['betaType'].value !== 'market_beta' && fcfeForm.controls['betaType'].value !== 'stock_beta'">
+                                <span style="padding-left: 7%;" *ngIf="fcfeForm.controls['betaType'].value !== 'market_beta' && fcfeForm.controls['betaType'].value !== 'stock_beta'">
                                   <input type="radio" style="vertical-align: middle;" [checked]="selectedSubBetaType === 'medianBeta'" (change)="onRadioButtonChange($event)" value="medianBeta" name="betaRadio" id="betaRadio">
                                   <span class="reset-ind3" style="vertical-align: middle;">Median</span>
                                 </span>
                                 <span [ngClass]="(fcfeForm.controls['betaType'].value === 'market_beta' || fcfeForm.controls['betaType'].value === 'stock_beta') ? '' :  'add-padding-beta'">
                                   <span *ngIf="!betaLoader" style="vertical-align: middle;font-size: 11px;color: #1915bb;" class="reset-ind3">
                                     <a target="_blank" class="beta-val"  (click)="handleBetaClick()">
-                                      Beta is {{fcfeForm.controls['beta'].value === null ? 'not available' : fcfeForm.controls['beta'].value?.toFixed(2)}} 
+                                      Beta {{fcfeForm.controls['beta'].value === null ? 'not found' : fcfeForm.controls['beta'].value?.toFixed(2)}} 
                                       <span style="vertical-align: middle;">
                                         <mat-icon>settings</mat-icon>
                                       </span>
