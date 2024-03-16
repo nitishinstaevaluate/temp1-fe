@@ -53,6 +53,8 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
   // assessmentSheet:any;
   ruleElevenSheet:any;
   selectedTab:any = 'Profit & Loss';
+  reportingUnit = '';
+  currencyUnit = '';
   constructor(private valuationService:ValuationService,
     private formBuilder:FormBuilder,
     private calculationService:CalculationsService,
@@ -67,6 +69,7 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
     this.checkProcessExist();
   }
   ngOnChanges(): void {
+    this.reportingUnit = this.transferStepperTwo?.reportingUnit ||  this.fourthStageInput?.formOneData?.reportingUnit;
     const modelValue = this.transferStepperTwo?.model || this.fourthStageInput?.formOneData?.model;
     if(modelValue?.length && modelValue.includes(MODELS.RULE_ELEVEN_UA)){
       this.selectedTab = 'Rule 11 UA';

@@ -27,7 +27,9 @@
             </mat-tab-group>
             
             
-            <p class="currency-unit" *ngIf="fourthStageInput?.formOneData ? fourthStageInput?.formOneData?.excelSheetId : transferStepperTwo?.excelSheetId">Amount in {{fourthStageInput?.formOneData ? fourthStageInput?.formOneData?.currencyUnit : transferStepperTwo.currencyUnit}} ({{fourthStageInput?.formOneData ? fourthStageInput?.formOneData?.reportingUnit : transferStepperTwo.reportingUnit}})</p>
+            <p class="currency-unit" *ngIf="fourthStageInput?.formOneData ? fourthStageInput?.formOneData?.excelSheetId : transferStepperTwo?.excelSheetId">Amount in 
+                {{fourthStageInput?.formOneData ? fourthStageInput?.formOneData?.currencyUnit : transferStepperTwo.currencyUnit}}
+                {{reportingUnit === 'absolute' ? '' : (reportingUnit)}}</p>
         </div>
         <div *ngIf="fourthStageInput?.formOneData ? !fourthStageInput?.formOneData?.excelSheetId :  !transferStepperTwo?.excelSheetId" style="margin-top: auto;margin-bottom: auto;">
             <p style="padding: 2% !important;

@@ -74,7 +74,7 @@
                 <span class="company-list-rmve" *ngIf="relativeValuation.controls['discountRateValue']?.value" style="right:9%;">
                 <mat-icon class="company-list-rmve-icon" (click)="clearInput('discountRateValue')">close</mat-icon>
                 </span>
-                <span class="company-info-span" *ngIf="relativeValuation.controls['discountRateValue']?.value"  style="z-index: 1;left: 10%;">
+                <!-- <span class="company-info-span" *ngIf="relativeValuation.controls['discountRateValue']?.value"  style="z-index: 1;left: 10%;">
                   <svg matTooltipClass='form-one-tooltip' [matTooltip]="helperText.discountRateValue" matTooltipPosition="right" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
                     <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:32px;" 
                       fill="#ff0000"></path>
@@ -84,7 +84,7 @@
                     </line>
                     <path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path>
                   </svg>
-                </span>
+                </span> -->
                 
                 <mat-select formControlName="discountRateValue" class="new-inp company-list-inp nature-of-instrument rel-val-label" placeholder="Select less discount rate">
                 <mat-option *ngFor="let doc of modelControl.relativeValuation.options.discountRateValue.options" class="auto-class" [value]="doc.value">
