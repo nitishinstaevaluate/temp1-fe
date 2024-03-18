@@ -616,7 +616,7 @@ label {
     }
 
     .make-light{
-      color: #666666 !important;
+      color: #666666;
     font-size: 13px !important;
     font-weight: 500;
     font-family: 'AR One Sans', sans-serif !important;
@@ -1188,5 +1188,12 @@ background: #bdf8de !important;
   span mat-icon{
     vertical-align: middle;
     transform: scale(0.5);
+  }
+}
+
+.highlight-row{
+  background-color: #aee2ff82 !important;
+  td{
+    color: #004e67 !important;
   }
 }
