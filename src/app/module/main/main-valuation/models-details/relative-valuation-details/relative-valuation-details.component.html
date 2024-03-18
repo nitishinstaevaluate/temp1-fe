@@ -70,8 +70,8 @@
       <div class="col-md-4 col-xl-4 field" style="padding-top: 0%;">
         <div class="material-textfield">
             <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
-                <mat-label>Less:discount Rate*</mat-label>
-                <span class="company-list-rmve" *ngIf="relativeValuation.controls['discountRateValue']?.value" style="right:9%;">
+                <mat-label>Discount Rate*</mat-label>
+                <span class="company-list-rmve" *ngIf="relativeValuation.controls['discountRateValue']?.value" style="right:3%;">
                 <mat-icon class="company-list-rmve-icon" (click)="clearInput('discountRateValue')">close</mat-icon>
                 </span>
                 <!-- <span class="company-info-span" *ngIf="relativeValuation.controls['discountRateValue']?.value"  style="z-index: 1;left: 10%;">
@@ -86,13 +86,14 @@
                   </svg>
                 </span> -->
                 
-                <mat-select formControlName="discountRateValue" class="new-inp company-list-inp nature-of-instrument rel-val-label" placeholder="Select less discount rate">
+                <!-- <mat-select formControlName="discountRateValue" class="new-inp company-list-inp nature-of-instrument rel-val-label" placeholder="Add">
                 <mat-option *ngFor="let doc of modelControl.relativeValuation.options.discountRateValue.options" class="auto-class" [value]="doc.value">
                     {{ doc.name }}
                 </mat-option>
-                </mat-select>
+                </mat-select> -->
+                <input type="text" matInput formControlName="discountRateValue" class="company-list-inp" placeholder="Add">
                 <mat-error class="company-list-error" *ngIf="relativeValuation.controls['discountRateValue'].touched && relativeValuation.controls['discountRateValue'].errors">
-                  <span *ngIf="hasError('discountRateValue','required',relativeValuation)" class="error-text" style="padding-left: 0%;">Please select discount rate</span>
+                  <span *ngIf="hasError('discountRateValue','required',relativeValuation)" class="error-text" style="padding-left: 0%;">Please add discount rate</span>
               </mat-error>
             </mat-form-field>
         </div>
