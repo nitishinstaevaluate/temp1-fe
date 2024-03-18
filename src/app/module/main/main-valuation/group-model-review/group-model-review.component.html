@@ -28,7 +28,8 @@
             
             
             <p class="currency-unit" *ngIf="fourthStageInput?.formOneData ? fourthStageInput?.formOneData?.excelSheetId : transferStepperTwo?.excelSheetId">Amount in 
-                {{fourthStageInput?.formOneData ? fourthStageInput?.formOneData?.currencyUnit : transferStepperTwo.currencyUnit}}
+                <!-- {{fourthStageInput?.formOneData ? fourthStageInput?.formOneData?.currencyUnit : transferStepperTwo.currencyUnit}} -->
+                INR
                 {{reportingUnit === 'absolute' ? '' : (reportingUnit)}}</p>
         </div>
         <div *ngIf="fourthStageInput?.formOneData ? !fourthStageInput?.formOneData?.excelSheetId :  !transferStepperTwo?.excelSheetId" style="margin-top: auto;margin-bottom: auto;">

@@ -90,6 +90,11 @@ export class BalanceSheetDetailsComponent implements OnChanges {
         this.excelErrorMsg = false;
        this.createbalanceSheetDataSource(response);
       //  this.balanceSheetData.emit({status:true, result:response,isExcelModified:this.isExcelModified})
+      
+      //  Calling assessment api so that when new excel is generated in backend it also has assessment sheet
+      this.valuationService.getProfitLossSheet(this.excelSheetId, 'Assessment of Working Capital').subscribe((assessmentResponse)=>{
+        //Do nothing for now
+       })
       }
       else{
         this.excelErrorMsg = true;

@@ -95,6 +95,11 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
         this.excelErrorMsg = false;
        this.createprofitAndLossDataSource(response)
        this.profitLossData.emit({status:true,result:response,isExcelModified:this.isExcelModified});
+
+      //  Calling assessment api so that when new excel is generated in backend it also has assessment sheet
+       this.valuationService.getProfitLossSheet(this.excelSheetId, 'Assessment of Working Capital').subscribe((assessmentResponse)=>{
+        //Do nothing for now
+       })
       //  this.profitAndLossSheetData.emit({status:true, result:response})
      }
      else{
