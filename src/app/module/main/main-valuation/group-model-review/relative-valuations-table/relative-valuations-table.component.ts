@@ -124,10 +124,10 @@ export class RelativeValuationsTableComponent implements OnChanges {
 
   updateDecimal(data:any){
     if(typeof data === 'number'){
-      return data.toFixed(2)
+      return `${data.toFixed(2)}x`
     }
     else if(typeof data === 'string'){
-      return data;
+      return `${data}x`;
     }
     return '-'
   }

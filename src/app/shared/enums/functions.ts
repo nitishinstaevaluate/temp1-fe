@@ -116,3 +116,20 @@ export function excludeDecimalFormatting(value: any) {
       return  value;
     }
 }
+
+export function formatPositiveAndNegativeValues(value:any) {
+  const epsilonThreshold = 0.00001;
+
+  if (value !== undefined && value !== null && value !== '' &&  Math.abs(value) < epsilonThreshold) {
+    return '-';
+  }
+
+  let formattedValue = '';
+
+  if (value !== null && value !== undefined && value !== '') {
+    formattedValue = Math.abs(value) < 0.005 ? '0.00' : `${Math.abs(value).toFixed(2)}`;
+    formattedValue = Number(formattedValue).toLocaleString('en-IN');
+  }
+
+  return value < 0 ? `(${formattedValue})` : formattedValue;
+}

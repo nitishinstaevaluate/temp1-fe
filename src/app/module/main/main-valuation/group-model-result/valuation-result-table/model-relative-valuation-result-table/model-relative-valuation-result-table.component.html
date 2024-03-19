@@ -5,7 +5,13 @@
                 <tr class="header">
                   <th  colspan="4" style="border-right: none;text-align: left;padding-left:3.3%;padding-top:1%;padding-bottom: 1%;">
                     Valuation of <span style="border-right: none;text-transform: uppercase;">{{formData?.formOneAndThreeData?.company}}</span> 
+                    <span style="float: right;padding-right: 2%;">
+                      Amount in INR {{formData?.formOneAndThreeData?.reportingUnit === 'absolute' ? '' : (formData?.formOneAndThreeData?.reportingUnit)}}
+                    </span>
                   </th>
+                  <!-- <th  colspan="2" style="border-left: none;text-align: right !important;">
+                    Amount in INR {{formData?.formOneAndThreeData?.reportingUnit === 'absolute' ? '' : (formData?.formOneAndThreeData?.reportingUnit)}}
+                  </th> -->
                   <!-- <th *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'" colspan="2" style="border-left: none;text-align: right !important;">
                     Amount in INR (Lakh)
                   </th>
@@ -53,13 +59,13 @@
                       <td></td>
                       <td class="td-label">P/B Ratio of Industry</td>
                       <td>{{ formatPositiveAndNegativeNumber(item.pbRatioAvg) }}</td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ formatPositiveAndNegativeNumber(item.pbRatioMed) ?? '-'}}</td>
+                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ item.pbRatioMed ? formatPositiveAndNegativeNumber(item.pbRatioMed) : '-'}}</td>
                     </tr>
                     <tr>
                       <td></td>
                       <td class="td-label" style="font-weight: bold;">Fair Value of Equity</td>
-                      <td style="font-weight: bold;">{{ formatPositiveAndNegativeNumber(item.pbMarketPriceAvg) ?? '-' }}</td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'" style="font-weight: bold;">{{ formatPositiveAndNegativeNumber(item.pbMarketPriceMed) }}</td>
+                      <td style="font-weight: bold;">{{ item.pbMarketPriceAvg ? formatPositiveAndNegativeNumber(item.pbMarketPriceAvg) : '-' }}</td>
+                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'" style="font-weight: bold;">{{ item.pbMarketPriceMed ? formatPositiveAndNegativeNumber(item.pbMarketPriceMed) : '-' }}</td>
                     </tr>
                     <tr style="height: 30px">
                       <td></td>
@@ -110,7 +116,7 @@
                     <tr>
                       <td></td>
                       <td class="td-label">EBITDA</td>
-                      <td>{{ formatPositiveAndNegativeNumber(formatPositiveAndNegativeNumber(item.ebitda)) }}</td>
+                      <td>{{ formatPositiveAndNegativeNumber(item.ebitda) }}</td>
                       <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ formatPositiveAndNegativeNumber(item.ebitda) }}</td>
                     </tr>
                     <tr>
@@ -130,6 +136,12 @@
                       <td class="td-label">Less : Value of Debt</td>
                       <td>{{ formatPositiveAndNegativeNumber(item.debtAvg) }}</td>
                       <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ formatPositiveAndNegativeNumber(item.debtMed) }}</td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td class="td-label">Cash and cash equivalent</td>
+                      <td>{{ formatPositiveAndNegativeNumber(item.cashEquivalent) }}</td>
+                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ formatPositiveAndNegativeNumber(item.cashEquivalent) }}</td>
                     </tr>
                     <tr>
                       <td></td>
@@ -207,10 +219,10 @@
                       <td>{{ formatPositiveAndNegativeNumber(item.avgPricePerShareAvg) }}</td>
                       <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ formatPositiveAndNegativeNumber(item.avgPricePerShareMed) }}</td>
                     </tr>
-                    <tr>
+                    <tr *ngIf="item.locAvg">
                       <td></td>
                       <td class="td-label">
-                        Illiquidity Discount
+                        Less:Discount
                       </td>
                       <td>{{ formatPositiveAndNegativeNumber(item.locAvg) }}</td>
                       <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ formatPositiveAndNegativeNumber(item.locMed) }}</td>

@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { convertToNumberOrZero } from 'src/app/shared/enums/functions';
+import { convertToNumberOrZero, formatNumber } from 'src/app/shared/enums/functions';
 
 @Component({
   selector: 'app-model-rule-eleven-ua-result-table',
@@ -14,6 +14,7 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
   totalCalculationD = 0;
   totalCalculationL = 0;
   jewelleryOrArtisticWork:any=[];
+  formatnumber = formatNumber;
   constructor(){}
 
   ngOnChanges(){
@@ -60,7 +61,7 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
       const totalIncomeTaxPaid = this.formData?.formFourData?.appData?.totalIncomeTaxPaid;
       const unamortisedAmountOfDeferredExpenditure = this.formData?.formFourData?.appData?.unamortisedAmountOfDeferredExpenditure;
       this.totalCalculationA = this.formData?.formFourData?.appData?.bookValueOfAllAssets -  (totalIncomeTaxPaid + unamortisedAmountOfDeferredExpenditure); 
-      return (this.formData?.formFourData?.appData?.bookValueOfAllAssets -  (totalIncomeTaxPaid + unamortisedAmountOfDeferredExpenditure));
+      return formatNumber(this.formData?.formFourData?.appData?.bookValueOfAllAssets -  (totalIncomeTaxPaid + unamortisedAmountOfDeferredExpenditure));
     }
     return '-'
   }
@@ -75,13 +76,13 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
       }
     }
     this.totalCalculationB = totalValue ? totalValue : 0;
-    return totalValue ? totalValue : '-';
+    return totalValue ? formatNumber(totalValue) : '-';
   }
 
   calculateTotalD(){
     if(this.formData){
       this.totalCalculationD = this.formData?.formFourData?.appData?.inputData?.fairValueImmovableProp ? parseFloat(this.formData.formFourData.appData.inputData.fairValueImmovableProp) : 0;
-      return this.formData?.formFourData?.appData?.inputData?.fairValueImmovableProp ? this.formData.formFourData.appData.inputData.fairValueImmovableProp : '-';
+      return this.formData?.formFourData?.appData?.inputData?.fairValueImmovableProp ? formatNumber(this.formData.formFourData.appData.inputData.fairValueImmovableProp) : '-';
     }
   }
 
@@ -100,7 +101,7 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
        convertToNumberOrZero(provisionForTaxation) + 
        convertToNumberOrZero(this.formData?.formFourData?.appData?.inputData?.contingentLiability) + 
        convertToNumberOrZero(this.formData?.formFourData?.appData?.inputData?.otherThanAscertainLiability)));
-      return (
+      return formatNumber(
         convertToNumberOrZero(this.formData?.formFourData?.appData?.bookValueOfLiabilities) - 
       (
         convertToNumberOrZero(paidUpCapital) + 
@@ -110,13 +111,13 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
         convertToNumberOrZero(this.formData?.formFourData?.appData?.inputData?.contingentLiability) + 
         convertToNumberOrZero(this.formData?.formFourData?.appData?.inputData?.otherThanAscertainLiability)
       )
-      ).toFixed(2);
+      );
     }
     return '-';
   }
 
   calculateAll() {
-      return  (convertToNumberOrZero(this.totalCalculationA)+ convertToNumberOrZero(this.totalCalculationB) + convertToNumberOrZero(this.totalCalculationC) + convertToNumberOrZero(this.totalCalculationD) - convertToNumberOrZero(this.totalCalculationL)).toFixed(2);
+      return  formatNumber(convertToNumberOrZero(this.totalCalculationA)+ convertToNumberOrZero(this.totalCalculationB) + convertToNumberOrZero(this.totalCalculationC) + convertToNumberOrZero(this.totalCalculationD) - convertToNumberOrZero(this.totalCalculationL));
   }
   
   calculateFairMarketValue(){
@@ -133,7 +134,7 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
         result = 0;
     }
 
-    return result.toFixed(2);
+    return formatNumber(result);
   }
 
   calculateTotalInvestmentSharesAndSecurities(){
@@ -145,6 +146,6 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
        investment =  investmentTotalFromExcel;
     }
     this.totalCalculationC = investment;
-    return investment;
+    return investment ? formatNumber(investment) : '-';
   }
 }

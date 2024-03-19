@@ -294,21 +294,40 @@ export class ActivityComponent {
     return 'MULTI_MODEL';
   }
 
-  downloadMrlReport(processStateId:any, companyName:any){
+  downloadMrlReport(processStateId:any, companyName:any, format:string){
     this.processLoader = true;
-    this.excelAndReportService.generateMrlReport(processStateId).subscribe((response)=>{
-      this.processLoader = false;
-      if(response){
-        saveAs(response, `${companyName} - MRL.pdf`);
-      }
-    },(error)=>{
-      this.processLoader = false;
-      this.snackBar.open('backend error - Mrl generation failed', 'OK', {
-        horizontalPosition: 'right',
-        verticalPosition: 'top',
-        duration: 2000,
-        panelClass: 'app-notification-error',
-      });
-    })
+
+    if(format === 'docx'){
+      this.excelAndReportService.generateMrlDocxReport(processStateId).subscribe((response)=>{
+        this.processLoader = false;
+        if(response){
+          saveAs(response, `${companyName} - MRL.docx`);
+        }
+      },(error)=>{
+        this.processLoader = false;
+        this.snackBar.open('backend error - Mrl generation failed', 'OK', {
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 2000,
+          panelClass: 'app-notification-error',
+        });
+      })
+    }
+    else{
+      this.excelAndReportService.generateMrlReport(processStateId).subscribe((response)=>{
+        this.processLoader = false;
+        if(response){
+          saveAs(response, `${companyName} - MRL.pdf`);
+        }
+      },(error)=>{
+        this.processLoader = false;
+        this.snackBar.open('backend error - Mrl generation failed', 'OK', {
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 2000,
+          panelClass: 'app-notification-error',
+        });
+      })
+    }
   }
 }
