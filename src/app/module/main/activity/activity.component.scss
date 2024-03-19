@@ -361,3 +361,7 @@ label {
 ::ng-deep .act .mdc-icon-button__ripple::before,::ng-deep .act .mat-mdc-button-ripple {
   display: none !important;
 }
+
+::ng-deep .remove-svg svg {
+   display: none;
+}

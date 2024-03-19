@@ -59,11 +59,26 @@
                         <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Download</span>
                       </span>
                       </button>
-                      <button mat-menu-item (click)="downloadMrlReport(item._id, item?.firstStageInput?.company)" class="action-button" *ngIf="item?.sixthStageInput">
-                        <span matTooltip="Generate MRL pdf" style="width: 150px;display: block;text-align: left;padding-left: 9%;" class="mrl-label" matTooltipPosition="left" matTooltipClass="activity-mrl-tooltip">
+                      <button mat-menu-item class="action-button remove-svg" *ngIf="item?.sixthStageInput" [matMenuTriggerFor]="mrlOptions">
+                        <span matTooltip="Generate MRL pdf" style="width: 150px;display: block;text-align: left;padding-left: 9%;" class="mrl-label" matTooltipPosition="below" matTooltipClass="activity-mrl-tooltip">
                           <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../assets/images/icons/mrl-pdf.png" alt="">
                         <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Generate MRL</span>
                         </span>
+                      </button>
+                    </mat-menu>
+
+                    <mat-menu #mrlOptions="matMenu" xPosition="before">
+                      <button mat-menu-item (click)="downloadMrlReport(item._id, item?.firstStageInput?.company, 'docx')" class="action-button">
+                        <span style="width: 150px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+                          <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../assets/images/icons/report-edit.png" alt="">
+                        <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Docx Format</span>
+                      </span>
+                      </button>
+                      <button mat-menu-item (click)="downloadMrlReport(item._id, item?.firstStageInput?.company, 'pdf')" class="action-button">
+                        <span style="width: 150px;display: block;text-align: left;padding-left: 9%;" class="download-label">
+                          <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../assets/images/icons/down-arrow.png" alt="">
+                        <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Pdf Format</span>
+                      </span>
                       </button>
                     </mat-menu>
                   </td>
