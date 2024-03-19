@@ -479,5 +479,13 @@ setTableWidth(){
     }
   });
 }
+
+isOnlyMarketApproach(){
+  const relativeModelCheck = this.transferStepperthree.formOneAndThreeData.model.includes(MODELS.COMPARABLE_INDUSTRIES) || this.transferStepperthree.formOneAndThreeData.model.includes(MODELS.RELATIVE_VALUATION);
+  if(relativeModelCheck && this.transferStepperthree.formOneAndThreeData.model.length === 1){
+    return true;
+  }
+  return false;
+}
 }
 

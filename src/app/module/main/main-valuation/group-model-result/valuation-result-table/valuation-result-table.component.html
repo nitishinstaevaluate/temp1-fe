@@ -138,7 +138,7 @@
     </div>
   </mat-tab>
 </mat-tab-group>
-<p class="currency-unit" *ngIf="transferStepperthree?.formOneAndThreeData?.excelSheetId">Amount in {{transferStepperthree?.formOneAndThreeData?.currencyUnit}} 
+<p class="currency-unit" *ngIf="transferStepperthree?.formOneAndThreeData?.excelSheetId && !isOnlyMarketApproach()">Amount in {{transferStepperthree?.formOneAndThreeData?.currencyUnit}} 
   {{transferStepperthree?.formOneAndThreeData?.reportingUnit === 'absolute' ? '' : (transferStepperthree?.formOneAndThreeData?.reportingUnit)}}</p>
 </div>
 <div class="loader-overlay" *ngIf="isLoader">
