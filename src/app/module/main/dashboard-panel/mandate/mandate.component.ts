@@ -56,6 +56,8 @@ export class MandateComponent implements OnInit{
       this.loader = true; 
     const lastUrlSegment = this.router.url.split('/').pop();
 
+    this.mandateForm.controls['section'].setValue(this.reportPurposeDataChips);
+
     this.utilService.postMandateChecklistDetails(lastUrlSegment, this.mandateForm.value).subscribe((response:any)=>{
       if(response.status){
         this.snackbar.open('Mandate pdf generated', 'Ok',{
@@ -115,21 +117,14 @@ export class MandateComponent implements OnInit{
   }
 
   selected(event:any): void {
-    let emptySection = [];
 
     this.reportPurposeDataChips.push(event.option.viewValue);
-    emptySection.push(event.option.viewValue);
-    this.mandateForm.controls['section'].setValue([...this.mandateForm.controls['section'].value,...emptySection]);
   }
 
   add(event: any): void {
     const value = (event.value || '').trim();
-    let emptySection = [];
     if (value) {
       this.reportPurposeDataChips.push(value);
-      const reportSectionValue:any = this.mandateForm.controls['section'].value;
-      emptySection.push(value);
-      this.mandateForm.controls['section'].setValue([...this.mandateForm.controls['section'].value,...emptySection]);
     }
 
     event.chipInput!.clear();
@@ -144,18 +139,7 @@ export class MandateComponent implements OnInit{
       };
       this.dataReferenceService.getMultiplePurpose(value).subscribe((reportPurposeData:any)=>{
         this.reportPurposeData = reportPurposeData?.reportPurposes;
-        if(this.reportPurposeData?.length){
-          this.reportPurposeDataChips=[];
-          this.mandateForm.controls['section'].setValue([]);
-        }
-        // else{
-        //   this.snackbar.open(`purpose for ${value} not found`, 'Ok',{
-        //     horizontalPosition: 'right',
-        //     verticalPosition: 'top',
-        //     duration: 3000,
-        //     panelClass: 'app-notification-error'
-        //   })
-        // }
+        this.reComputeSectionPreference();
       },
       (error)=>{
         this.snackbar.open(`backend error - purpose for ${value} not found`, 'Ok',{
@@ -183,4 +167,21 @@ export class MandateComponent implements OnInit{
       this.updatedValuedEntity = value;
     }
   }
+
+  reComputeSectionPreference(){
+    if (this.reportPurposeData.length) {
+      const newReportSections = [...this.reportPurposeDataChips];
+      const updatedReportPurposeDataChips = [];
+      
+      for (const indReportSections of newReportSections) {
+          const checkIfSelectedPurposeExist = this.reportPurposeData.findIndex((element: any) => indReportSections.includes(element.Description));
+          
+          if (checkIfSelectedPurposeExist !== -1) {
+              updatedReportPurposeDataChips.push(indReportSections);
+          }
+      }
+      
+      this.reportPurposeDataChips = updatedReportPurposeDataChips;
+  }
+}
 }

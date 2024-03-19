@@ -111,28 +111,17 @@ export class ValuationDataChecklistComponent implements OnInit{
   remove(sectionIndex: any): void {
     if (sectionIndex >= 0) {
       this.reportPurposeDataChips.splice(sectionIndex, 1);
-      const reportSectionValue = this.dataCheckListForm.controls['section'].value;
-      reportSectionValue.splice(sectionIndex,1)
-      this.dataCheckListForm.controls['section'].setValue(reportSectionValue);
     }
   }
 
   selected(event:any): void {
-    let emptySection = [];
-
     this.reportPurposeDataChips.push(event.option.viewValue);
-    emptySection.push(event.option.viewValue);
-    this.dataCheckListForm.controls['section'].setValue([...this.dataCheckListForm.controls['section'].value,...emptySection]);
   }
 
   add(event: any): void {
     const value = (event.value || '').trim();
-    let emptySection = [];
     if (value) {
       this.reportPurposeDataChips.push(value);
-      const reportSectionValue:any = this.dataCheckListForm.controls['section'].value;
-      emptySection.push(value);
-      this.dataCheckListForm.controls['section'].setValue([...this.dataCheckListForm.controls['section'].value,...emptySection]);
     }
 
     event.chipInput!.clear();
@@ -147,18 +136,7 @@ export class ValuationDataChecklistComponent implements OnInit{
       };
       this.dataReferenceService.getMultiplePurpose(value).subscribe((reportPurposeData:any)=>{
         this.reportPurposeData = reportPurposeData?.reportPurposes;
-        if(this.reportPurposeData?.length){
-          this.reportPurposeDataChips=[];
-          this.dataCheckListForm.controls['section'].setValue([]);
-        }
-        // else{
-        //   this.snackbar.open(`purpose for ${value} not found`, 'Ok',{
-        //     horizontalPosition: 'right',
-        //     verticalPosition: 'top',
-        //     duration: 3000,
-        //     panelClass: 'app-notification-error'
-        //   })
-        // }
+        this.reComputeSectionPreference();
       },
       (error)=>{
         this.snackbar.open(`backend error - purpose for ${value} not found`, 'Ok',{
@@ -188,6 +166,8 @@ export class ValuationDataChecklistComponent implements OnInit{
 
     this.loader = true; 
     const lastUrlSegment = this.router.url.split('/').pop();
+
+    this.dataCheckListForm.controls['section'].setValue(this.reportPurposeDataChips);
 
     const companyDetails = {
       companyId: this.fetchCompanyId()?.companyId,
@@ -310,5 +290,22 @@ export class ValuationDataChecklistComponent implements OnInit{
       const propertiesToRemove = ['section'];
       propertiesToRemove.forEach(property => delete controls[property]);
       return controls;
+    }
+
+    reComputeSectionPreference(){
+      if (this.reportPurposeData.length) {
+        const newReportSections = [...this.reportPurposeDataChips];
+        const updatedReportPurposeDataChips = [];
+        
+        for (const indReportSections of newReportSections) {
+            const checkIfSelectedPurposeExist = this.reportPurposeData.findIndex((element: any) => indReportSections.includes(element.Description));
+            
+            if (checkIfSelectedPurposeExist !== -1) {
+                updatedReportPurposeDataChips.push(indReportSections);
+            }
+        }
+        
+        this.reportPurposeDataChips = updatedReportPurposeDataChips;
+    }
     }
 }

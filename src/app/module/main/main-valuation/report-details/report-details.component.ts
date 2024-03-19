@@ -59,7 +59,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     private processStatusManagerService:ProcessStatusManagerService){}
     ngOnInit(): void {
     this.loadForm();
-    this.checkProcessExist()
+    this.checkProcessExist();
   }
   
   ngOnChanges(changes:SimpleChanges){
@@ -122,8 +122,6 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
   onReportPurposeChange(event: any) {
     const selectedValue = event.value;
     if(!selectedValue.length) {
-      this.reportForm.controls['reportSection'].setValue([]);
-      this.reportPurposeData = [];
       return;
     };
     const onlyPurpose = selectedValue.map((element:any)=>{
@@ -182,6 +180,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
   }
 
   constructPayload() {
+    this.reportForm.controls['reportSection'].setValue(this.reportPurposeDataChips);
     return {
       ...this.reportForm.value,
       ...this.registeredValuerDetails.value,
@@ -352,13 +351,9 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
 
   add(event: any): void {
     const value = (event.value || '').trim();
-    let emptySection = [];
     if (value) {
       this.reportPurposeDataChips.push(value);
       this.regulationPrefSelectionStatus = true;
-      const reportSectionValue:any = this.reportForm.controls['reportSection'].value;
-      emptySection.push(value);
-      this.reportForm.controls['reportSection'].setValue([...this.reportForm.controls['reportSection'].value,...emptySection]);
     }
 
     event.chipInput!.clear();
@@ -367,20 +362,16 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
   remove(sectionIndex: any): void {
     if (sectionIndex >= 0) {
       this.reportPurposeDataChips.splice(sectionIndex, 1);
-      const reportSectionValue = this.reportForm.controls['reportSection'].value;
-      reportSectionValue.splice(sectionIndex,1)
-      this.reportForm.controls['reportSection'].setValue(reportSectionValue);
     }
   }
 
   selected(event:any): void {
-    let emptySection = [];
-
-    this.reportPurposeDataChips.push(event.option.viewValue);
-    this.regulationPrefSelectionStatus = true;
-    this.purposeInput.nativeElement.value = '';
-    emptySection.push(event.option.viewValue);
-    this.reportForm.controls['reportSection'].setValue([...this.reportForm.controls['reportSection'].value,...emptySection]);
+    const checkIfExist = this.reportPurposeDataChips.indexOf(`${event.option.viewValue}`);
+    if(checkIfExist === -1){
+      this.reportPurposeDataChips.push(event.option.viewValue);
+      this.regulationPrefSelectionStatus = true;
+      this.purposeInput.nativeElement.value = '';
+    }
   }
 
   validateControls(controlArray: { [key: string]: FormControl }){
@@ -614,18 +605,17 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     }
 
     handleReportPurposeData() {
+      if (this.sixthStageInput?.formSixData?.reportSection) {
+        this.reportForm.controls['reportSection'].setValue(this.sixthStageInput?.formSixData?.reportSection);
+        this.reportPurposeDataChips = this.sixthStageInput?.formSixData?.reportSection;
+      }
+
       if (this.sixthStageInput?.formSixData?.reportPurpose) {
         const actualReportPurpose = this.sixthStageInput?.formSixData?.reportPurpose || [];
         this.selectedReportPurpose = this.modelControl.reportDetails.options.reportPurpose.filter((allReportPurpose: any) => {
           return actualReportPurpose.includes(allReportPurpose.value);
         });
-    
         this.fetchReportPurposeData(actualReportPurpose);
-      }
-    
-      if (this.sixthStageInput?.formSixData?.reportSection) {
-        this.reportPurposeDataChips = this.sixthStageInput?.formSixData?.reportSection;
-        this.reportForm.controls['reportSection'].setValue(this.sixthStageInput?.formSixData?.reportSection);
       }
     }
     
@@ -633,11 +623,29 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       this.dataReferenceService.getMultiplePurpose(reportPurpose.join(',')).subscribe(
         (reportPurposeData: any) => {
           this.reportPurposeData = reportPurposeData?.reportPurposes;
+          this.reComputeSectionPreference();
         },
         (error) => {
           this.handleReportPurposeError(error);
         }
       );
+    }
+
+    reComputeSectionPreference(){
+      if (this.reportPurposeData.length) {
+        const newReportSections = [...this.reportPurposeDataChips];
+        const updatedReportPurposeDataChips = [];
+        
+        for (const indReportSections of newReportSections) {
+            const checkIfSelectedPurposeExist = this.reportPurposeData.findIndex((element: any) => indReportSections.includes(element.Description));
+            
+            if (checkIfSelectedPurposeExist !== -1) {
+                updatedReportPurposeDataChips.push(indReportSections);
+            }
+        }
+        
+        this.reportPurposeDataChips = updatedReportPurposeDataChips;
+    }
     }
     
     handleReportPurposeError(error: any) {

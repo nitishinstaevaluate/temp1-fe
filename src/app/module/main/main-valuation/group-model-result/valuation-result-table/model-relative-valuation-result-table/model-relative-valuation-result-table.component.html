@@ -207,7 +207,7 @@
                       <td>{{ formatPositiveAndNegativeNumber(item.avgPricePerShareAvg) }}</td>
                       <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ formatPositiveAndNegativeNumber(item.avgPricePerShareMed) }}</td>
                     </tr>
-                    <tr>
+                    <tr *ngIf="item.locAvg">
                       <td></td>
                       <td class="td-label">
                         Illiquidity Discount
