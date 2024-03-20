@@ -34,6 +34,7 @@ export class RelativeValuationDetailsComponent implements OnInit,OnChanges {
   floatLabelType:any='never';
   helperText = helperText;
   hasError = hasError;
+  discountRateValue:any;
   constructor(private formBuilder:FormBuilder,
     private processStatusManagerService:ProcessStatusManagerService,
     private snackBar:MatSnackBar,
@@ -61,6 +62,7 @@ export class RelativeValuationDetailsComponent implements OnInit,OnChanges {
     if(this.thirdStageInput){
       this.thirdStageInput.map((stateThreeDetails:any)=>{
         if(stateThreeDetails.model === MODELS.RELATIVE_VALUATION && this.formOneData.model.includes(MODELS.RELATIVE_VALUATION)){
+          this.discountRateValue = stateThreeDetails.discountRateValue;
           this.relativeValuation.controls['discountRateValue'].setValue(stateThreeDetails.discountRateValue)
         }
       })

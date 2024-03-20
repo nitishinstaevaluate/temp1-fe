@@ -2,7 +2,7 @@
     <!-- <h5 [ngClass]="tableData?.tableClass ? 'result-table-head' : 'company-head'">Company Based</h5> -->
     <table mat-table [dataSource]="companyData" [ngClass]="tableData?.tableClass ? 'result-table': 'mat-elevation-z8 my-table'">
         <ng-container *ngFor="let column of companyColumn; let i = index" [matColumnDef]="column">
-          <th mat-header-cell *matHeaderCellDef [ngClass]="column === 'Company Name' ? 'inc-p' : ''">{{ column }}</th>
+          <th mat-header-cell *matHeaderCellDef [ngClass]="column === 'Company Name' ? 'inc-p' : ''">{{ column !== 'Company Name' ? column + ' (x)' : column }}</th>
           <!-- <td mat-cell *matCellDef="let element" [ngClass]="updateDecimal(element[companyColumnMap[column]]) === '-'? 'add-padding' : element[companyColumnMap[column]] === 'Average' || element[companyColumnMap[column]] === 'Median' ? 'make-bold' : companyColumnMap[column] !== 'company' ? 'remove-pad'  :  ''">{{ updateDecimal(element[companyColumnMap[column]]) }}</td> -->
           <td mat-cell *matCellDef="let element" [ngClass]="addStylingConditions(column, element)">{{ updateDecimal(element[companyColumnMap[column]]) }}</td>
         </ng-container>
@@ -15,7 +15,7 @@
     <!-- <h5 [ngClass]="tableData?.tableClass ? 'result-table-head' : 'industry-head'">Industry Based</h5> -->
     <table mat-table [dataSource]="industryData" [ngClass]="tableData?.tableClass ? 'result-table': 'mat-elevation-z8 my-table'">
         <ng-container *ngFor="let column of industryColumn; let i = index" [matColumnDef]="column">
-          <th mat-header-cell *matHeaderCellDef [ngClass]="column === 'Company Name' ? 'inc-p' : ''">{{ column }}</th>
+          <th mat-header-cell *matHeaderCellDef [ngClass]="column === 'Company Name' ? 'inc-p' : ''">{{ column !== 'Company Name' ? column + ' (x)' : column }}</th>
           <td mat-cell *matCellDef="let element" [ngClass]="addStylingConditions(column, element)">{{ updateDecimal(element[companyColumnMap[column]]) }}</td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="industryColumn"></tr>
