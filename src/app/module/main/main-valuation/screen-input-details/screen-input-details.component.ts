@@ -30,7 +30,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   hasError=hasError;
   modelControl=groupModelControl;
   ciqIndustryData:any;
-  ciqIndustryHead=['Company Id', 'Company Name', 'EBITDA Margin %', 'Sales', 'Market Cap', 'Outstanding Shares', 'Industry Description'];
+  ciqIndustryHead=['Company Id', 'Company Name', 'EBITDA Margin %', 'Sales', 'Market Cap (Mn)', 'Industry Description'];
   mapIndustryBasedCompany:any = INDUSTRY_BASED_COMPANY;
   loader=false;
   levelThreeIndustry:any=[];
@@ -921,6 +921,15 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     const indexSelected = this.mainIndustries.findIndex((ele:any)=> ele.COMPANYID === row.COMPANYID);
     if(indexSelected !== -1){
       this.mainIndustries.splice(indexSelected, 1)
+    }
+  }
+
+  isNotMarketApproach(){
+    if(this.formOneData && (this.formOneData?.model?.includes(MODELS.RELATIVE_VALUATION) || this.formOneData?.model?.includes(MODELS.COMPARABLE_INDUSTRIES)) && this.formOneData?.model?.length === 1){
+      return true;
+    }
+    else{
+      return false
     }
   }
 }

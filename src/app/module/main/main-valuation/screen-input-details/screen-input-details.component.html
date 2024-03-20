@@ -207,9 +207,9 @@
             <td [ngClass]="formatNumber(row.MARKETCAP) ? 'make-light td-market-cap' : 'add-padding-left td-market-cap'">
               {{ formatNumber(row.MARKETCAP) ? formatNumber(row.MARKETCAP) : '-' }}
             </td>
-            <td style="font-size: 14px; text-transform: capitalize; border: 1px solid #eeeeee" [ngClass]="formatNumber(row.SHARESOUTSTANDING) ? 'make-light' : 'add-padding-left'">
+            <!-- <td style="font-size: 14px; text-transform: capitalize; border: 1px solid #eeeeee" [ngClass]="formatNumber(row.SHARESOUTSTANDING) ? 'make-light' : 'add-padding-left'">
               {{ formatNumber(row.SHARESOUTSTANDING) ? formatNumber(row.SHARESOUTSTANDING) : '-' }}
-            </td>
+            </td> -->
             
             <!-- <td class="make-light td-city" >{{row.CITY}}</td> -->
             <td class="make-light td-industry-description">{{row.SIMPLEINDUSTRYDESCRIPTION}}</td>
@@ -256,9 +256,9 @@
           <td [ngClass]="formatNumber(row.MARKETCAP) ? 'make-light td-market-cap' : 'add-padding-left td-market-cap'">
             {{ formatNumber(row.MARKETCAP) ? formatNumber(row.MARKETCAP) : '-' }}
           </td>
-          <td style="font-size: 14px; text-transform: capitalize; border: 1px solid #eeeeee" [ngClass]="formatNumber(row.SHARESOUTSTANDING) ? 'make-light' : 'add-padding-left'">
+          <!-- <td style="font-size: 14px; text-transform: capitalize; border: 1px solid #eeeeee" [ngClass]="formatNumber(row.SHARESOUTSTANDING) ? 'make-light' : 'add-padding-left'">
             {{ formatNumber(row.SHARESOUTSTANDING) ? formatNumber(row.SHARESOUTSTANDING) : '-' }}
-          </td>
+          </td> -->
           
           <!-- <td class="make-light td-city" >{{row.CITY}}</td> -->
           <td class="make-light td-industry-description">{{row.SIMPLEINDUSTRYDESCRIPTION}}</td>
@@ -273,7 +273,7 @@
   </div>
     <div>
       <p class="total-count" *ngIf="ciqIndustryData?.length">{{mainIndustries?.length}} selected
-        <a *ngIf="mainIndustries?.length" target="_blank" class="screening-beta-val"  (click)="loadBetaWorking()">
+        <a *ngIf="mainIndustries?.length && !isNotMarketApproach()" target="_blank" class="screening-beta-val"  (click)="loadBetaWorking()">
           View beta working
           <span>
             <mat-icon>settings</mat-icon>

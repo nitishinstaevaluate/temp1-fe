@@ -2,6 +2,7 @@ import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChi
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {  MatTableDataSource } from '@angular/material/table';
 import { COMMON_COLUMN, EXCESS_EARNING_COLUMN, FCFE_COLUMN, FCFF_COLUMN, MODELS} from 'src/app/shared/enums/constant';
+import { formatPositiveAndNegativeValues } from 'src/app/shared/enums/functions';
 import { CustomDatePipe } from 'src/app/shared/pipe/date.pipe';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.service';
@@ -338,22 +339,14 @@ checkIndustryOrCompany(){
 }
 
 formatNumber(value: any, threeDecimalNeeded?:any) {
-  if (!isNaN(value)  && typeof value === 'number') {
+  if (!isNaN(parseFloat(value))) {
     if(value && `${value}`.includes('-')){
-      let formattedNumber = value.toLocaleString(undefined, {
-        minimumIntegerDigits: 1,
-        minimumFractionDigits: threeDecimalNeeded ? 3 : 2,
-        maximumFractionDigits: threeDecimalNeeded ? 3 : 2,
-      });
-      return `(${`${formattedNumber}`.replace(/-/g,'')})`;
+      let formattedNumber = this.computeDecimals(value, threeDecimalNeeded ? 3 : 2);
+      return formattedNumber;
     }
     else if(value){
-     const formatValue =  value.toLocaleString(undefined, {
-        minimumIntegerDigits: 1,
-        minimumFractionDigits: threeDecimalNeeded ? 3 : 2,
-        maximumFractionDigits: threeDecimalNeeded ? 3 : 2,
-      })
-      return formatValue;
+    let formattedNumber = this.computeDecimals(value, threeDecimalNeeded ? 3 : 2);
+      return formattedNumber;
     }
     else{
      return '-';
@@ -363,6 +356,23 @@ formatNumber(value: any, threeDecimalNeeded?:any) {
       return  value;
     }
   
+}
+
+computeDecimals(value:any,decimalPlaces:number) {
+  const epsilonThreshold = 0.00001;
+
+  if (value !== undefined && value !== null && value !== '' &&  Math.abs(value) < epsilonThreshold) {
+    return '-';
+  }
+
+  let formattedValue = '';
+
+  if (value !== null && value !== undefined && value !== '') {
+    formattedValue = Math.abs(value) < 0.005 ? '0.00' : `${Math.abs(value).toFixed(decimalPlaces)}`;
+    formattedValue = Number(formattedValue).toLocaleString('en-IN');
+  }
+
+  return value < 0 ? `(${formattedValue})` : formattedValue;
 }
 
 checkVal(value:string,model:any){
