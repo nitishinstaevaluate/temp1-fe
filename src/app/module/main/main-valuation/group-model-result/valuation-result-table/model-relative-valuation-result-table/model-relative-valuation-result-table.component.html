@@ -133,13 +133,13 @@
                     </tr>
                     <tr>
                       <td></td>
-                      <td class="td-label">Less : Value of Debt</td>
+                      <td class="td-label">Less:Value of Debt</td>
                       <td>{{ formatPositiveAndNegativeNumber(item.debtAvg) }}</td>
                       <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ formatPositiveAndNegativeNumber(item.debtMed) }}</td>
                     </tr>
                     <tr>
                       <td></td>
-                      <td class="td-label">Cash and cash equivalent</td>
+                      <td class="td-label">Add:Cash and cash equivalent</td>
                       <td>{{ formatPositiveAndNegativeNumber(item.cashEquivalent) }}</td>
                       <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ formatPositiveAndNegativeNumber(item.cashEquivalent) }}</td>
                     </tr>
@@ -236,8 +236,8 @@
                     <tr>
                       <td></td>
                       <td class="td-label">No. of Shares</td>
-                      <td>{{ item.outstandingShares | number : '1.0' }}</td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ item.outstandingShares | number : '1.0' }}</td>
+                      <td>{{ formatPositiveAndNegativeNumber(item.outstandingShares)}}</td>
+                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ formatPositiveAndNegativeNumber(item.outstandingShares) }}</td>
                     </tr>
                     <tr>
                       <td></td>

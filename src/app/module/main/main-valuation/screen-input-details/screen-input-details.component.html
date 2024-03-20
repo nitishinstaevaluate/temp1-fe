@@ -273,7 +273,7 @@
   </div>
     <div>
       <p class="total-count" *ngIf="ciqIndustryData?.length">{{mainIndustries?.length}} selected
-        <a *ngIf="mainIndustries?.length" target="_blank" class="screening-beta-val"  (click)="loadBetaWorking()">
+        <a *ngIf="mainIndustries?.length && !isNotMarketApproach()" target="_blank" class="screening-beta-val"  (click)="loadBetaWorking()">
           View beta working
           <span>
             <mat-icon>settings</mat-icon>

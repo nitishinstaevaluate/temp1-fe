@@ -448,7 +448,8 @@ clearModelRadioButton(modelName:string){
 }
 
 get downloadTemplate() {
-  return GET_TEMPLATE(this.yearOfProjection.value,this.ruleElevenApproachModels.length ? 'ruleElevenUa' : 'default',`${this.valuationDate ? new Date(this.valuationDate).getTime() : ''}`);
+  const modelName = this.ruleElevenApproachModels.length ? 'ruleElevenUa' : this.incomeApproachmodels.length ? 'default' : 'marketApproach'
+  return GET_TEMPLATE(this.yearOfProjection.value,modelName,`${this.valuationDate ? new Date(this.valuationDate).getTime() : ''}`);
   }
 
   onFileSelected(event: any) {

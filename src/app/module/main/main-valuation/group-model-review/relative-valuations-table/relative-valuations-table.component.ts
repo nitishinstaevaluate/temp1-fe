@@ -127,7 +127,7 @@ export class RelativeValuationsTableComponent implements OnChanges {
       return `${data.toFixed(2)}x`
     }
     else if(typeof data === 'string'){
-      return `${data}x`;
+      return `${data}`;
     }
     return '-'
   }

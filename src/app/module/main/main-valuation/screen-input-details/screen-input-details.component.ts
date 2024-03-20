@@ -923,4 +923,13 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       this.mainIndustries.splice(indexSelected, 1)
     }
   }
+
+  isNotMarketApproach(){
+    if(this.formOneData && (this.formOneData?.model?.includes(MODELS.RELATIVE_VALUATION) || this.formOneData?.model?.includes(MODELS.COMPARABLE_INDUSTRIES)) && this.formOneData?.model?.length === 1){
+      return true;
+    }
+    else{
+      return false
+    }
+  }
 }

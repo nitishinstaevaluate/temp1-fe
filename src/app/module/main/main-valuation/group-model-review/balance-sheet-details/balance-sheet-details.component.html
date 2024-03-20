@@ -48,12 +48,12 @@
     <mat-header-cell *matHeaderCellDef [ngClass]="column === 'Particulars' ? 'inc-width' : ''">{{ column }}</mat-header-cell>
     <mat-cell *matCellDef="let element" [ngClass]="checkHeader(element,columnIndex) ? 'highlight-header' :  checkSubHeader(element,columnIndex) ? 'label-highlight' : checkType(element[column]) && !isNumberOrEmpty(element[column]) ? 'label-c' : '' ">
       <ng-container *ngIf="checkType(element[column]) && columnIndex === 0">
-        <span>{{ formatNegativeAndPositiveValues(element[column]) }}</span>
+        <span>{{ element[column] }}</span>
       </ng-container>
       <ng-container *ngIf="ifOnlyNumber(element) && columnIndex !== 0 && !checkIfEditable(element)">
         <span style="font-size: 13px;font-weight: 500;color: #666666;">{{ formatNegativeAndPositiveValues(element[column])}}</span>
       </ng-container>
-        <input class="new-inp new-inp-auto" style="text-align: center;color: #666666 !important;font-weight: 500;" (blur)="onInputChange($event.target, column,element)" placeholder="-" type="text" [value]="element[column] | number : '1.2-2'" *ngIf="checkIfEditable(element) && columnIndex !== 0"/>
+        <input class="new-inp new-inp-auto" style="text-align: center;color: #666666 !important;font-weight: 500;" (blur)="onInputChange($event.target, column,element)" placeholder="-" type="text" [value]="formatNegativeAndPositiveValues(element[column])" *ngIf="checkIfEditable(element) && columnIndex !== 0"/>
     </mat-cell>
   </ng-container>
   <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
