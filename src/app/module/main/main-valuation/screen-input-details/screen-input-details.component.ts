@@ -30,7 +30,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   hasError=hasError;
   modelControl=groupModelControl;
   ciqIndustryData:any;
-  ciqIndustryHead=['Company Id', 'Company Name', 'EBITDA Margin %', 'Sales', 'Market Cap', 'Outstanding Shares', 'Industry Description'];
+  ciqIndustryHead=['Company Id', 'Company Name', 'EBITDA Margin %', 'Sales', 'Market Cap (Mn)', 'Industry Description'];
   mapIndustryBasedCompany:any = INDUSTRY_BASED_COMPANY;
   loader=false;
   levelThreeIndustry:any=[];
