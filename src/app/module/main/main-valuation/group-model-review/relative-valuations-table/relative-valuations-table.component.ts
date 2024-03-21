@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { RELATIVE_VALUATION_COMPANY_COLUMNS, RELATIVE_VALUATION_COMPANY_MAPPING, RELATIVE_VALUATION_INDUSTRY_COLUMNS, RELATIVE_VALUATION_INDUSTRY_MAPPING } from 'src/app/shared/enums/constant';
-import { IS_ARRAY_EMPTY_OR_NULL } from 'src/app/shared/enums/functions';
+import { IS_ARRAY_EMPTY_OR_NULL, formatPositiveAndNegativeValues } from 'src/app/shared/enums/functions';
 
 @Component({
   selector: 'app-relative-valuations-table',
@@ -11,6 +11,7 @@ import { IS_ARRAY_EMPTY_OR_NULL } from 'src/app/shared/enums/functions';
 export class RelativeValuationsTableComponent implements OnChanges {
   constructor(private changeDetectorRef: ChangeDetectorRef){}
   @Input() tableData : any = [];
+  @Input() formData : any;
 
   companyColumn = RELATIVE_VALUATION_COMPANY_COLUMNS;
   companyColumnMap = RELATIVE_VALUATION_COMPANY_MAPPING;
@@ -29,6 +30,34 @@ export class RelativeValuationsTableComponent implements OnChanges {
     // this.checkAverageExist(); // check if average object already exist or not in company array,if exist then splice and add new one,else create new
     // this.checkMedianExist(); // check if median object already exist or not in company array,if exist then splice and add new one,else create new one
     // }
+    this.loadPostDiscountMultiples()
+  }
+  loadPostDiscountMultiples(){
+    let postMultipleAverage:any = [], postMultipleMedian:any = [];
+    if(this.formData.formOneAndThreeData.discountRateValue){
+      this.companyData.map((indCompanyData:any)=>{  
+        if(indCompanyData.company === 'Average'){
+          console.log(indCompanyData,"company data")
+          postMultipleAverage = {
+            company: 'Post Discount Multiple (Average)',
+            peRatio: indCompanyData.peRatio.toFixed(2) * (1-this.formData.formOneAndThreeData.discountRateValue/100),
+            pbRatio: indCompanyData.pbRatio.toFixed(2) * (1-this.formData.formOneAndThreeData.discountRateValue/100),
+            ebitda: indCompanyData.ebitda.toFixed(2) * (1-this.formData.formOneAndThreeData.discountRateValue/100),
+            sales: indCompanyData.sales.toFixed(2) * (1-this.formData.formOneAndThreeData.discountRateValue/100)
+          }
+        }
+        if(indCompanyData.company === 'Median'){
+          postMultipleMedian = {
+            company: 'Post Discount Multiple (Median)',
+            peRatio: indCompanyData.peRatio.toFixed(2) * (1-this.formData.formOneAndThreeData.discountRateValue/100),
+            pbRatio: indCompanyData.pbRatio.toFixed(2) * (1-this.formData.formOneAndThreeData.discountRateValue/100),
+            ebitda: indCompanyData.ebitda.toFixed(2) * (1-this.formData.formOneAndThreeData.discountRateValue/100),
+            sales: indCompanyData.sales.toFixed(2) * (1-this.formData.formOneAndThreeData.discountRateValue/100)
+          }
+        }
+      })
+      this.companyData.push(postMultipleAverage, postMultipleMedian);
+    }
   }
 
   // checkAverageExist(){
@@ -137,9 +166,9 @@ export class RelativeValuationsTableComponent implements OnChanges {
 
     if (this.updateDecimal(value) === '-') {
       return 'add-padding';
-    } else if (value === 'Average' || value === 'Median' ) {
+    } else if (value === 'Average' || value === 'Median' || value === 'Post Discount Multiple (Average)' || value === 'Post Discount Multiple (Median)') {
       return 'make-bold';
-    } else if(element.company === 'Average' || element.company === 'Median') {
+    } else if(element.company === 'Average' || element.company === 'Median' || element.company === 'Post Discount Multiple (Average)' || element.company === 'Post Discount Multiple (Median)') {
       return 'make-bold remove-pad'
     } else if (RELATIVE_VALUATION_COMPANY_MAPPING[column] !== 'company') {
       return 'remove-pad';
