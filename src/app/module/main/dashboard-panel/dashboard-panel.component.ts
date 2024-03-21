@@ -1,4 +1,4 @@
-import { Component, isDevMode } from '@angular/core';
+import { Component, OnInit, isDevMode } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -7,6 +7,7 @@ import { convertToNumberOrZero, formatNumber } from 'src/app/shared/enums/functi
 import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal-box/generic-modal-box.component';
 import { EmailService } from 'src/app/shared/service/email.service';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
+import { UserService } from 'src/app/shared/service/user.service';
 import { UtilService } from 'src/app/shared/service/util.service';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
 import { environment } from 'src/environments/environment';
@@ -16,24 +17,30 @@ import { environment } from 'src/environments/environment';
   templateUrl: './dashboard-panel.component.html',
   styleUrls: ['./dashboard-panel.component.scss']
 })
-export class DashboardPanelComponent {
-  totalRecords:any=[];
+export class DashboardPanelComponent implements OnInit{
+  totalRecords: any = [];
   activeLink: string = 'opt-1';
   loader = false;
   emailData:any=[];
   pageSize: number = 10;
-  length: number =0;
+  length: number = 0;
   pageSizeOptions = PAGINATION_VAL;
+  userName: string = '';
   constructor(private valuationService:ValuationService,
     private route:Router,
     private utilService:UtilService,
     private snackBar:MatSnackBar,
     private dialog: MatDialog,
     private emailService: EmailService,
-    private processStatusManagerService: ProcessStatusManagerService){
+    private processStatusManagerService: ProcessStatusManagerService,
+    private userService: UserService){
       this.fetchData();
       this.fetchAllDatachecklistEmails();
     }
+
+  ngOnInit() {
+    this.fetchUser();
+  }
 
   fetchData(page:number=1,pageSize:number=10,query?:string): void { //inorder to increase the total count, increase the pageSize number 
     this.valuationService.getPaginatedValuations(page, pageSize,query)
@@ -355,6 +362,18 @@ export class DashboardPanelComponent {
   onPageChange(event: any): void {
     const { pageIndex, pageSize } = event;
     this.fetchAllDatachecklistEmails(pageIndex + 1, pageSize);
+  }
+
+  fetchUser(){
+    this.userService.getUser().subscribe((userResponse:any)=>{
+      if(userResponse){
+        this.userName = userResponse.given_name;
+      }else{
+        this.handleError('User not found')
+      }
+    },(error)=>{
+      this.handleError(`${error?.message}`);
+    })
   }
 }
 

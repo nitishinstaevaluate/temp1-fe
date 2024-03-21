@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { formatPositiveAndNegativeValues } from 'src/app/shared/enums/functions';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.service';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
@@ -244,19 +245,11 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
 
   formatNegativeAndPositiveValues(value:any){
     if(value && `${value}`.includes('-')){
-      let formattedNumber = value.toLocaleString(undefined, {
-        minimumIntegerDigits: 1,
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      });
-      return `(${`${formattedNumber}`.replace(/-/g,'')})`;
+      let formattedNumber = formatPositiveAndNegativeValues(value);
+      return formattedNumber;
     }
     else if(value){
-      return value.toLocaleString(undefined, {
-        minimumIntegerDigits: 1,
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      })
+      return formatPositiveAndNegativeValues(value);
     }
     return  null;
   }

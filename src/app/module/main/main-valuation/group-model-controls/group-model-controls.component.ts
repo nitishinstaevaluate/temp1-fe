@@ -28,6 +28,7 @@ export class GroupModelControlsComponent implements OnInit {
   @Output() saveAndNextEvent = new EventEmitter<void>();
   @Output() groupModelControls = new EventEmitter<any>();
   @Output() previousPage = new EventEmitter<any>();
+  @Output() refId = new EventEmitter<any>();
   @Input() step: any;
   @Input() firstStageInput: any;
 
@@ -155,6 +156,7 @@ export class GroupModelControlsComponent implements OnInit {
       throttleTime(600),
       switchMap(async () => this.fetchCompanyNames())
     ).subscribe();
+    this.fetchRefId();
     // this.loadCiqIndustryList()
   }
 
@@ -383,6 +385,7 @@ export class GroupModelControlsComponent implements OnInit {
     }
     
     this.processStateManager(processStateModel,localStorage.getItem('processStateId'));
+    this.fetchRefId();
 
       // submit final payload
       this.groupModelControls.emit(payload);
@@ -632,5 +635,12 @@ export class GroupModelControlsComponent implements OnInit {
 
   companyInputBlurred(){
     this.companyInput = false;
+  }
+
+  async fetchRefId(){
+    if(localStorage.getItem('processStateId')){
+      const processIdentifierDetails:any = await this.processStatusManagerService.fetchProcessIdentifierId(localStorage.getItem('processStateId')).toPromise();
+      this.refId.emit(processIdentifierDetails.processIdentifierId);
+    }
   }
 }

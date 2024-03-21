@@ -49,7 +49,9 @@
         <div class='c-decorated-header'>
           <h3><span style="padding-left: 2%;">Valuation of Company</span></h3>
           <div class='c-decorated-header_link-view-more'>
-            <a ><span style="border: #2dd79e;color: #2dd79e;"> Step {{step}} </span>of {{getTotalSteps() ? '6' : '5'}}</a>
+            <a ><span style="border: #2dd79e;color: #2dd79e;"> Step {{step}} </span>of {{getTotalSteps() ? '6' : '5'}}
+            <span style="font-size: 11px;color: #0d56e0;" *ngIf="uniqueProcessIdentifierId">(Working # {{uniqueProcessIdentifierId}})</span>
+            </a>
           </div>
         </div>
         <h4 style="text-align: center;padding-top: 1.5%;font-weight: 400;color:#858985;margin-bottom: 0px !important;">{{headerLabel}}</h4>
@@ -62,7 +64,7 @@
             <!-- Right Side Content -->
             <div class="col-md-10">
               <!-- <router-outlet></router-outlet> -->
-              <app-group-model-controls [step]="step" (groupModelControls)="groupModelControls($event)" [hidden]="step !== 1" [firstStageInput]="formOneData"></app-group-model-controls>
+              <app-group-model-controls [step]="step" (groupModelControls)="groupModelControls($event)" [hidden]="step !== 1" [firstStageInput]="formOneData" (refId)="refId($event)"></app-group-model-controls>
               <app-screen-input-details [hidden]="step !== 2" [step]="step" (previousPage)="previous($event)" (screenInputDetails)="screenInputDetails($event)" [formOneData]="formOneData" [secondStageInput]="formTwoData"></app-screen-input-details>
 
               <div [hidden]="step !== 3">

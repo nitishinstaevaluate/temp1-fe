@@ -117,7 +117,7 @@ export function excludeDecimalFormatting(value: any) {
     }
 }
 
-export function formatPositiveAndNegativeValues(value:any) {
+export function formatPositiveAndNegativeValues(value:any) {    //To be changed in case of location of user or on selection basis
   const epsilonThreshold = 0.00001;
 
   if (value !== undefined && value !== null && value !== '' &&  Math.abs(value) < epsilonThreshold) {

@@ -51,7 +51,7 @@ export class MainValuationComponent implements OnInit{
   next=0;
   isProcessExistLoader = true;
   processLoader=false;
-  
+  uniqueProcessIdentifierId:any;
   constructor(private _formBuilder : FormBuilder,
     private calculationService:CalculationsService,
     private processStatusManagerService: ProcessStatusManagerService,
@@ -501,5 +501,9 @@ export class MainValuationComponent implements OnInit{
       }
     })
     return totalSteps;
+  }
+
+  refId(refId:any){
+    this.uniqueProcessIdentifierId = refId;
   }
 }
