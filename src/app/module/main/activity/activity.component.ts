@@ -261,11 +261,37 @@ export class ActivityComponent {
     })
   }
 
+  generateNavReport(response:any, companyName:any){
+    this.excelAndReportService.generateNavReport(response).subscribe((reportData:any)=>{
+      if (reportData instanceof Blob) {
+        this.snackBar.open('Report generated successfully', 'OK', {
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 2000,
+          panelClass: 'app-notification-success',
+        });
+        saveAs(reportData, `${companyName}.pdf`);
+    }
+    },
+    (error)=>{
+      // this.reportGenerate = false;
+      this.snackBar.open('Something went wrong', 'OK', {
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 2000,
+        panelClass: 'app-notification-error',
+      });
+    })
+  }
+
   constructConditionalReportFunctioning(modelArray:any, reportPurpose:any){
     let reportService:any;
     switch (true) {
         case modelArray.includes(MODELS.RULE_ELEVEN_UA):
             reportService = this.generateElevenUaReport.bind(this);
+            break;
+        case modelArray.includes(MODELS.NAV) || modelArray.length === 1:
+            reportService = this.generateNavReport.bind(this);
             break;
         case reportPurpose === 'sebiRegulations':
             reportService = this.generateSebiReport.bind(this);
@@ -279,9 +305,9 @@ export class ActivityComponent {
   determineApproach(modelArray:any) {
     const model = modelArray;
 
-    if (model.includes('NAV') && model.length === 1) {
-      return 'NAV';
-    }
+    // if (model.includes('NAV') && model.length === 1) {
+    //   return 'NAV';
+    // }
     
     if ((model.includes('FCFF') || model.includes('FCFE')) && model.length === 1) {
       return 'DCF';

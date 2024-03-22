@@ -56,6 +56,10 @@ export class ExcelAndReportService {
     return this.http.get(`${this.HOST}report/preview-sebi-report/${reportId}`);
   }
 
+  previewNavReport(reportId:any){
+    return this.http.get(`${this.HOST}report/preview-nav-report/${reportId}`);
+  }
+
   generateMandateReport(reportId:any){
     return this.http.get(`${this.HOST}report/mandate-report/${reportId}`,{
       responseType: 'blob'
@@ -64,6 +68,12 @@ export class ExcelAndReportService {
 
   generateMrlReport(processStateId:any){
     return this.http.get(`${this.HOST}report/mrl-report/${processStateId}`,{
+      responseType: 'blob'
+    });
+  }
+
+  generateNavReport(processStateId:any){
+    return this.http.get(`${this.HOST}report/nav-report/${processStateId}`,{
       responseType: 'blob'
     });
   }

@@ -195,9 +195,9 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
   determineApproach() {
     const model = this.transferStepperFour?.formOneAndThreeData?.model;
 
-    if (model.includes('NAV') && model.length === 1) {
-      return 'NAV';
-    }
+    // if (model.includes('NAV') && model.length === 1) {
+    //   return 'NAV';
+    // }
     
     if ((model.includes('FCFF') || model.includes('FCFE')) && model.length === 1) {
       return 'DCF';
@@ -241,6 +241,9 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
         case this.transferStepperFour?.formOneAndThreeData?.model.includes(MODELS.RULE_ELEVEN_UA):
           reportService = this.generateElevenUaReport.bind(this);
             break;
+        case this.transferStepperFour?.formOneAndThreeData?.model.includes(MODELS.NAV) && this.transferStepperFour?.formOneAndThreeData?.model.length === 1:
+          reportService = this.generateNavReport.bind(this);
+            break;
         case this.reportForm.controls['reportPurpose'].value === 'sebiRegulations':
           reportService = this.generateSebiReport.bind(this);
             break;
@@ -255,6 +258,9 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     switch (true) {
         case this.transferStepperFour?.formOneAndThreeData?.model.includes(MODELS.RULE_ELEVEN_UA):
             reportService = this.elevenUaPreviewReport.bind(this);
+            break;
+        case this.transferStepperFour?.formOneAndThreeData?.model.includes(MODELS.NAV) && this.transferStepperFour?.formOneAndThreeData?.model.length === 1:
+            reportService = this.previewNavReport.bind(this);
             break;
         case this.reportForm.controls['reportPurpose'].value === 'sebiRegulations':
             reportService = this.previewSebiReport.bind(this);
@@ -437,6 +443,37 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
         });
       })
     }
+    
+    previewNavReport(response:any){
+      const payload = this.constructPayload();
+      this.excelAdnReportService.previewNavReport(response).subscribe((reportData:any)=>{
+        this.reportGenerate = false;
+        if (reportData) {
+          const dataSet={
+            value: 'previewDoc',
+            dataBlob:reportData,
+            reportId: response,
+            companyName:this.transferStepperFour?.formOneAndThreeData?.company
+          }
+          const dialogRef =  this.dialog.open(GenericModalBoxComponent, {data:dataSet,width:'80%',disableClose: true});
+          const {reportId,...rest} = payload;
+          const processStateModel ={
+            sixthStageInput:{...rest,formFillingStatus:false,valuationReportId:response,valuationResultId:reportId},
+            step:5
+          }
+          this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
+      }
+      },
+      (error)=>{
+        this.reportGenerate = false;
+        this.snackBar.open('Something went wrong', 'OK', {
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 2000,
+          panelClass: 'app-notification-error',
+        });
+      })
+    }
 
     basicReportPreview(response:any, approach:any){
       const payload = this.constructPayload();
@@ -508,6 +545,39 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
         if (reportData instanceof Blob) {
           this.reportGenerate = false;
           this.snackBar.open('Report generated successfully', 'OK', {
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 2000,
+            panelClass: 'app-notification-success',
+          });
+          saveAs(reportData, `${this.transferStepperFour?.formOneAndThreeData?.company}.pdf`);
+          localStorage.setItem('stepSixStats','true')
+          this.calculationService.checkStepStatus.next({status:true})
+          const {reportId,...rest} = payload;
+          const processStateModel ={
+            sixthStageInput:{...rest,formFillingStatus:true,valuationReportId:response,valuationResultId:reportId},
+            step:5
+          }
+          this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
+      }
+      },
+      (error)=>{
+        this.reportGenerate = false;
+        this.snackBar.open('Something went wrong', 'OK', {
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 2000,
+          panelClass: 'app-notification-error',
+        });
+      })
+    }
+
+    generateNavReport(response:any){
+      const payload = this.constructPayload();
+      this.excelAdnReportService.generateNavReport(response).subscribe((reportData:any)=>{
+        if (reportData instanceof Blob) {
+          this.reportGenerate = false;
+          this.snackBar.open('Nav report generated successfully', 'OK', {
             horizontalPosition: 'right',
             verticalPosition: 'top',
             duration: 2000,
