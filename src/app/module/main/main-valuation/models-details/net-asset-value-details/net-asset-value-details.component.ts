@@ -76,6 +76,8 @@ loadForm(){
     lessLongTermBorrowings:['book_value',[Validators.required]],//check in backend,names not same
     lessLongTermProvisions:['book_value',[Validators.required]],//check in backend,name not same
     shareApplicationMoney:['book_value',[Validators.required]],
+    contingentLiability:['book_value',[Validators.required]],
+    deferredTaxLiability:['book_value',[Validators.required]],
   })
 }
 
@@ -132,6 +134,11 @@ onSelectorChange(value:any,controlValue:any){
         this.navForm.controls[controlValue].setValue('');
       }
     break;
+    case 'deferredTaxLiability':
+      if(value==='market_value'){
+        this.navForm.controls[controlValue].setValue('');
+      }
+    break;
     case 'shortTermProvisions':
       if(value==='market_value'){
         this.navForm.controls[controlValue].setValue('');
@@ -163,6 +170,11 @@ onSelectorChange(value:any,controlValue:any){
       }
     break;
     case 'shareApplicationMoney':
+      if(value==='market_value'){
+        this.navForm.controls[controlValue].setValue('');
+      }
+    break;
+    case 'contingentLiability':
       if(value==='market_value'){
         this.navForm.controls[controlValue].setValue('');
       }
@@ -217,6 +229,11 @@ resetBookValue(value:any,controlName:any){
         this.navForm.controls[controlName].setValue(value);
       }
     break;
+    case 'deferredTaxLiability':
+      if(value==='book_value'){
+        this.navForm.controls[controlName].setValue(value);
+      }
+    break;
     case 'shortTermProvisions':
       if(value==='book_value'){
         this.navForm.controls[controlName].setValue(value);
@@ -248,6 +265,11 @@ resetBookValue(value:any,controlName:any){
       }
     break;
     case 'shareApplicationMoney':
+      if(value==='book_value'){
+        this.navForm.controls[controlName].setValue(value);
+      }
+    break;  
+    case 'contingentLiability':
       if(value==='book_value'){
         this.navForm.controls[controlName].setValue(value);
       }
