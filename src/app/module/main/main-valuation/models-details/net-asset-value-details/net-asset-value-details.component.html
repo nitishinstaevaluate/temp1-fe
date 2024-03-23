@@ -454,14 +454,7 @@
             </div>
 
             <!-- Deferred Tax Liability -->
-            <div class="col-md-8 field">
-                <!-- <mat-form-field *ngIf="navForm.controls['otherCurrentAssets'].value === 'book_value'" class="full-width-input" [floatLabel]="floatLabelType">
-                  <mat-label>Other Current Assets</mat-label>
-                  <mat-select #otherCurrentAssets formControlName="otherCurrentAssets" (selectionChange)="onSelectorChange(otherCurrentAssets.value,'otherCurrentAssets')" class="mat-select-value" [placeholder]="controls.NAV.options.columns.otherCurrentAssets.colHead">
-                  <mat-option *ngFor="let data of controls.NAV.options.netAssetValue.options"  [value]="data.value">{{data.name}}</mat-option>
-                  </mat-select>
-                </mat-form-field> -->
-
+            <!-- <div class="col-md-8 field">
                 <div class="material-textfield" *ngIf="navForm.controls['deferredTaxLiability'].value === 'book_value'" style="width: 75%;">
                   <select id="deferredTaxLiability" class="new-inp" formControlName="deferredTaxLiability" #deferredTaxLiability (change)="onSelectorChange(deferredTaxLiability.value,'deferredTaxLiability')">
                     <option value="" disabled>Select </option>
@@ -483,22 +476,7 @@
                   </mat-radio-group>
                   </div>
                  </div>
-
-
-                <!-- <div class="row" *ngIf="navForm.controls['otherCurrentAssets'].value !== 'book_value'">
-                  <div class="col-md-6">
-                    <mat-form-field  class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" [appearance]="appearance">
-                      <mat-label>Other Current Assets</mat-label>
-                      <input matInput formControlName="otherCurrentAssets">
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-2">
-                    <mat-radio-group>
-                      <mat-radio-button matTooltip="By clicking,Book-value will be selected" matTooltipPosition="above" value="market_value" [color]="'primary'" (change)="resetBookValue('book_value','otherCurrentAssets')"></mat-radio-button>
-                  </mat-radio-group>
-                  </div>
-                </div> -->
-            </div>
+            </div> -->
 
             
             <!-- Less:Short term Provisions -->
