@@ -453,6 +453,53 @@
                 </div> -->
             </div>
 
+            <!-- Deferred Tax Liability -->
+            <div class="col-md-8 field">
+                <!-- <mat-form-field *ngIf="navForm.controls['otherCurrentAssets'].value === 'book_value'" class="full-width-input" [floatLabel]="floatLabelType">
+                  <mat-label>Other Current Assets</mat-label>
+                  <mat-select #otherCurrentAssets formControlName="otherCurrentAssets" (selectionChange)="onSelectorChange(otherCurrentAssets.value,'otherCurrentAssets')" class="mat-select-value" [placeholder]="controls.NAV.options.columns.otherCurrentAssets.colHead">
+                  <mat-option *ngFor="let data of controls.NAV.options.netAssetValue.options"  [value]="data.value">{{data.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+
+                <div class="material-textfield" *ngIf="navForm.controls['deferredTaxLiability'].value === 'book_value'" style="width: 75%;">
+                  <select id="deferredTaxLiability" class="new-inp" formControlName="deferredTaxLiability" #deferredTaxLiability (change)="onSelectorChange(deferredTaxLiability.value,'deferredTaxLiability')">
+                    <option value="" disabled>Select </option>
+                    <option *ngFor="let data of controls.NAV.options.netAssetValue.options" [value]="data.value">{{ data.name }}</option>
+                  </select>
+                  <label for="deferredTaxLiability">Deferred Tax Liability</label>
+                </div>
+
+                <div class="row"  *ngIf="navForm.controls['deferredTaxLiability'].value !== 'book_value'">
+                  <div class="col-xl-9 col-md-9">
+                    <div class="material-textfield">
+                      <input class="new-inp" formControlName="deferredTaxLiability" type="text" placeholder="Enter market value"/>
+                      <label>Deferred Tax Liability</label>
+                    </div>
+                  </div>
+                  <div class="col-xl-2 col-md-2">
+                    <mat-radio-group >
+                      <mat-radio-button class="nav-radio-button" matTooltipClass="nav-tooltip" matTooltip="By choosing this, Book-value will be selected" matTooltipPosition="above" value="market_value" [color]="'primary'" (change)="resetBookValue('book_value','deferredTaxLiability')"></mat-radio-button>
+                  </mat-radio-group>
+                  </div>
+                 </div>
+
+
+                <!-- <div class="row" *ngIf="navForm.controls['otherCurrentAssets'].value !== 'book_value'">
+                  <div class="col-md-6">
+                    <mat-form-field  class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" [appearance]="appearance">
+                      <mat-label>Other Current Assets</mat-label>
+                      <input matInput formControlName="otherCurrentAssets">
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-2">
+                    <mat-radio-group>
+                      <mat-radio-button matTooltip="By clicking,Book-value will be selected" matTooltipPosition="above" value="market_value" [color]="'primary'" (change)="resetBookValue('book_value','otherCurrentAssets')"></mat-radio-button>
+                  </mat-radio-group>
+                  </div>
+                </div> -->
+            </div>
+
             
             <!-- Less:Short term Provisions -->
             <div class="col-md-8 field">
@@ -776,6 +823,53 @@
                   <div class="col-xl-2 col-md-2">
                     <mat-radio-group >
                       <mat-radio-button class="nav-radio-button" matTooltipClass="nav-tooltip" matTooltip="By choosing this, Book-value will be selected" matTooltipPosition="above" value="market_value" [color]="'primary'" (change)="resetBookValue('book_value','shareApplicationMoney')"></mat-radio-button>
+                  </mat-radio-group>
+                  </div>
+                 </div>
+
+
+                  <!-- <div class="row" *ngIf="navForm.controls['shareApplicationMoney'].value !== 'book_value'">
+                    <div class="col-md-6">
+                      <mat-form-field  class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" [appearance]="appearance">
+                        <mat-label>Less:Share Applicable Money</mat-label>
+                        <input matInput formControlName="shareApplicationMoney">
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-2">
+                      <mat-radio-group>
+                        <mat-radio-button matTooltip="By clicking,Book-value will be selected" matTooltipPosition="above" value="market_value" [color]="'primary'" (change)="resetBookValue('book_value','shareApplicationMoney')"></mat-radio-button>
+                    </mat-radio-group>
+                    </div>
+                  </div> -->
+            </div>
+
+            <!-- Less:Contingent Liability -->
+            <div class="col-md-8 field">
+                <!-- <mat-form-field *ngIf="navForm.controls['shareApplicationMoney'].value === 'book_value'" class="full-width-input" [floatLabel]="floatLabelType">
+                  <mat-label>Less:Share Applicable Money</mat-label>
+                  <mat-select #shareApplicationMoney formControlName="shareApplicationMoney" (selectionChange)="onSelectorChange(shareApplicationMoney.value,'shareApplicationMoney')" class="mat-select-value" [placeholder]="controls.NAV.options.columns.lessShareApplicableMoney.colHead">
+                   <mat-option *ngFor="let data of controls.NAV.options.netAssetValue.options"  [value]="data.value">{{data.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+
+                <div class="material-textfield" *ngIf="navForm.controls['contingentLiability'].value === 'book_value'" style="width: 75%;">
+                  <select id="contingentLiability" class="new-inp" formControlName="contingentLiability" #contingentLiability (change)="onSelectorChange(contingentLiability.value,'contingentLiability')">
+                    <option value="" disabled>Select</option>
+                    <option *ngFor="let data of controls.NAV.options.netAssetValue.options" [value]="data.value">{{ data.name }}</option>
+                  </select>
+                  <label for="contingentLiability">Less:Contingent Liability</label>
+                </div>
+
+                <div class="row"  *ngIf="navForm.controls['contingentLiability'].value !== 'book_value'">
+                  <div class="col-xl-9 col-md-9">
+                    <div class="material-textfield">
+                      <input class="new-inp" formControlName="contingentLiability" type="text" placeholder="Enter market value"/>
+                      <label>Less:Contingent Liability</label>
+                    </div>
+                  </div>
+                  <div class="col-xl-2 col-md-2">
+                    <mat-radio-group >
+                      <mat-radio-button class="nav-radio-button" matTooltipClass="nav-tooltip" matTooltip="By choosing this, Book-value will be selected" matTooltipPosition="above" value="market_value" [color]="'primary'" (change)="resetBookValue('book_value','contingentLiability')"></mat-radio-button>
                   </mat-radio-group>
                   </div>
                  </div>

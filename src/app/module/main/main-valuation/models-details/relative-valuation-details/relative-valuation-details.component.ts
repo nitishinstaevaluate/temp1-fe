@@ -42,9 +42,6 @@ export class RelativeValuationDetailsComponent implements OnInit,OnChanges {
     private ciqSpService: CiqSPService){}
 
   ngOnChanges(changes:SimpleChanges){
-    // if(this.next !== 3)
-    //   return;
-    
     this.loadFormControl();
     this.checkPreviousAndCurrentValue(changes);
   }
@@ -53,8 +50,6 @@ export class RelativeValuationDetailsComponent implements OnInit,OnChanges {
     return this.formOneData?.model?.includes(value) ? true :false;
   }
   ngOnInit(): void {
-    // this.loadFormControl();
-    // this.loadFormControl();
     this.checkProcessExist();
   }
 
@@ -104,9 +99,6 @@ loadFormControl(){
 
 
   saveAndNext(){
-    // if (this.isRelativeValuation(this.MODEL.RELATIVE_VALUATION)) {
-    //   this.industries = this.formOneData?.industriesRatio;
-    // }
     localStorage.setItem('stepThreeStats','true')
 
     this.calculateMeanMedianRatio()
@@ -158,25 +150,7 @@ loadFormControl(){
             this.Companies.controls[prefCompanyIndex]?.setValue(this.companyList[prefCompanyIndex]);
           })
     }
-      // else if(this.thirdStageInput && this.thirdStageInput?.length > 0){
-      //   const checkRelativeValuation = this.thirdStageInput.some((data:any)=>data.model === MODELS.RELATIVE_VALUATION);
-      //   if(checkRelativeValuation){
-      //     this.thirdStageInput.map((stateThreeDetails:any)=>{
-      //       if(stateThreeDetails.model === MODELS.RELATIVE_VALUATION && this.formOneData.model.includes(MODELS.RELATIVE_VALUATION)){
-      //         stateThreeDetails?.companies.map((dbCompanyList:any,i:number)=>{
-      //           this.companyList.map((cmpnyList:any,prefCompanyIndex:number)=>{
-      //              console.log(dbCompanyList,"db company ist")
-      //              if(cmpnyList.COMPANYNAME === dbCompanyList.COMPANYNAME){
-      //                this.addInput();
-      //                this.Companies.controls[i]?.setValue(this.companyList[prefCompanyIndex]);
-      //              }
-      //            })
-      //          })
-      //         }
-      //       })
-      //     }
-      //     console.log(this.formOneData,"form one data", this.companyList,"company list")
-      //  }
+    this.relativeValuation.controls['discountRateValue'].setValue(this.discountRateValue)
       
   }
 
@@ -186,6 +160,7 @@ loadFormControl(){
       ratioType: 'Company Based'
     }
     
+    this.discountRateValue = this.relativeValuation.controls['discountRateValue'].value;
     this.ciqSpService.calculateSPCompaniesMeanMedianRatio(payload).subscribe((response:any)=>{
       if(response.status){
         this.meanMedianList = response.data 
