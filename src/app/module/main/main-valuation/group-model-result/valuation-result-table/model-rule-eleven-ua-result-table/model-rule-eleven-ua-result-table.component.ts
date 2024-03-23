@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { convertToNumberOrZero, formatNumber } from 'src/app/shared/enums/functions';
+import { convertToNumberOrZero, formatNumber, formatPositiveAndNegativeValues } from 'src/app/shared/enums/functions';
 
 @Component({
   selector: 'app-model-rule-eleven-ua-result-table',
@@ -14,7 +14,7 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
   totalCalculationD = 0;
   totalCalculationL = 0;
   jewelleryOrArtisticWork:any=[];
-  formatnumber = formatNumber;
+  formatnumber = formatPositiveAndNegativeValues;
   constructor(){}
 
   ngOnChanges(){
@@ -38,7 +38,7 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
             const obj = {
               index:romanNumeral,
               label:jewelleryAndArtisticWorkArray[i]?.name,
-              value:jewelleryAndArtisticWorkArray[i]?.value ? jewelleryAndArtisticWorkArray[i].value : '-' 
+              value:jewelleryAndArtisticWorkArray[i]?.value ? formatPositiveAndNegativeValues(jewelleryAndArtisticWorkArray[i].value) : '-' 
             }
             this.jewelleryOrArtisticWork.push(obj);
           }
@@ -61,7 +61,7 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
       const totalIncomeTaxPaid = this.formData?.formFourData?.appData?.totalIncomeTaxPaid;
       const unamortisedAmountOfDeferredExpenditure = this.formData?.formFourData?.appData?.unamortisedAmountOfDeferredExpenditure;
       this.totalCalculationA = this.formData?.formFourData?.appData?.bookValueOfAllAssets -  (totalIncomeTaxPaid + unamortisedAmountOfDeferredExpenditure); 
-      return formatNumber(this.formData?.formFourData?.appData?.bookValueOfAllAssets -  (totalIncomeTaxPaid + unamortisedAmountOfDeferredExpenditure));
+      return formatPositiveAndNegativeValues(this.formData?.formFourData?.appData?.bookValueOfAllAssets -  (totalIncomeTaxPaid + unamortisedAmountOfDeferredExpenditure));
     }
     return '-'
   }
@@ -76,7 +76,7 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
       }
     }
     this.totalCalculationB = totalValue ? totalValue : 0;
-    return totalValue ? formatNumber(totalValue) : '-';
+    return totalValue ? formatPositiveAndNegativeValues(totalValue) : '-';
   }
 
   calculateTotalD(){
@@ -101,7 +101,7 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
        convertToNumberOrZero(provisionForTaxation) + 
        convertToNumberOrZero(this.formData?.formFourData?.appData?.inputData?.contingentLiability) + 
        convertToNumberOrZero(this.formData?.formFourData?.appData?.inputData?.otherThanAscertainLiability)));
-      return formatNumber(
+      return formatPositiveAndNegativeValues(
         convertToNumberOrZero(this.formData?.formFourData?.appData?.bookValueOfLiabilities) - 
       (
         convertToNumberOrZero(paidUpCapital) + 
@@ -117,7 +117,7 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
   }
 
   calculateAll() {
-      return  formatNumber(convertToNumberOrZero(this.totalCalculationA)+ convertToNumberOrZero(this.totalCalculationB) + convertToNumberOrZero(this.totalCalculationC) + convertToNumberOrZero(this.totalCalculationD) - convertToNumberOrZero(this.totalCalculationL));
+      return  formatPositiveAndNegativeValues(convertToNumberOrZero(this.totalCalculationA)+ convertToNumberOrZero(this.totalCalculationB) + convertToNumberOrZero(this.totalCalculationC) + convertToNumberOrZero(this.totalCalculationD) - convertToNumberOrZero(this.totalCalculationL));
   }
   
   calculateFairMarketValue(){
@@ -128,13 +128,13 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
 
     let result;
 
-    if (!isNaN(totalSum) && !isNaN(paidUpCapital) && totalSum > 0 && paidUpCapital > 0) {
+    if (!isNaN(totalSum) && !isNaN(paidUpCapital) ) {
         result = (totalSum * phaseValue) / paidUpCapital;
     } else {
         result = 0;
     }
 
-    return formatNumber(result);
+    return formatPositiveAndNegativeValues(result);
   }
 
   calculateTotalInvestmentSharesAndSecurities(){
@@ -146,6 +146,6 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
        investment =  investmentTotalFromExcel;
     }
     this.totalCalculationC = investment;
-    return investment ? formatNumber(investment) : '-';
+    return investment ? formatPositiveAndNegativeValues(investment) : '-';
   }
 }
