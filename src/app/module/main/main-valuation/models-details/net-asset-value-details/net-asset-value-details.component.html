@@ -475,7 +475,7 @@
                   <div class="col-xl-9 col-md-9">
                     <div class="material-textfield">
                       <input class="new-inp" formControlName="shortTermProvisions" type="text" placeholder="Enter market value"/>
-                      <label>Short Term Provisions</label>
+                      <label>Less:Short Term Provisions</label>
                     </div>
                   </div>
                   <div class="col-xl-2 col-md-2">
@@ -716,14 +716,14 @@
                     <option value="" disabled>Select short term borrowings</option>
                     <option *ngFor="let data of controls.NAV.options.netAssetValue.options" [value]="data.value">{{ data.name }}</option>
                   </select>
-                  <label for="lessLongTermProvisions">Less:Short Term Provisions</label>
+                  <label for="lessLongTermProvisions">Less:Long Term Provisions</label>
                 </div>
 
                 <div class="row"  *ngIf="navForm.controls['lessLongTermProvisions'].value !== 'book_value'">
                   <div class="col-xl-9 col-md-9">
                     <div class="material-textfield">
                       <input class="new-inp" formControlName="lessLongTermProvisions" type="text" placeholder="Enter market value"/>
-                      <label>Less:Short Term Provisions</label>
+                      <label>Less:Long Term Provisions</label>
                     </div>
                   </div>
                   <div class="col-xl-2 col-md-2">
