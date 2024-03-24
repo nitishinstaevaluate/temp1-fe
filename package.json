@@ -1,6 +1,6 @@
 {
-  "name": "valuation-mvp",
-  "version": "0.0.0",
+  "name": "valuation-beta",
+  "version": "0.1.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

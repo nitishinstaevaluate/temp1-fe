@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Valuation_MVP": {
+    "Valuation_Beta": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/valuation-mvp",
+            "outputPath": "dist/valuation-beta",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -75,11 +75,11 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "Valuation_MVP:build:production",
+              "browserTarget": "Valuation_Beta:build:production",
               "proxyConfig": "proxy.conf.js"
             },
             "development": {
-              "browserTarget": "Valuation_MVP:build:development"
+              "browserTarget": "Valuation_Beta:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -87,7 +87,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Valuation_MVP:build"
+            "browserTarget": "Valuation_Beta:build"
           }
         },
         "test": {
