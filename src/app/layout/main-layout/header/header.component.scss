@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Rubik&display=swap');
 .dropbtn {
     background-color: #f1f1f1;
     color: black;
@@ -49,3 +50,41 @@
   .drop-d:hover{
     color: #26879d;
   }
+
+  .nav-h {
+    cursor: pointer;
+    position: relative;
+    padding-bottom: 5px;
+    outline: none;
+    color: #664f4f;
+    transition: 0.1s ease-out;
+    height: 33px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+.nav-h::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px; 
+  background-color: #17c996;
+  transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
+}
+
+.nav-h:hover::after {
+  width: 100%;
+  left: 0;
+}
+.nav-h.active::after {
+  width: 100%;
+  left: 0;
+}
+.download-label:hover{
+  span{
+    color: #175ac5 !important;
+  }
+}

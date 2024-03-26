@@ -14,4 +14,8 @@ export class UserService {
   getUser(){
     return this.http.get(`${this.HOST}users/fetch-user`);
   }
+
+  create(payload:any){
+    return this.http.post(`${this.HOST}users/create-user`, payload);
+  }
 }

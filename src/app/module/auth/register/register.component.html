@@ -1,0 +1,140 @@
+<div class="outer-wrapper">
+    <div class="registration-wrapper container">
+        <div class="row" [formGroup]="registrationForm">
+           <div class="col-xl-12 col-md-12">
+            <div class="text-center">
+                <h3 class="reg-h">Registration Form</h3>
+              </div>
+           </div>
+
+           <!-- Username -->
+            <div class="col-xl-6 col-md-6">
+                <div class="material-textfield reg-field">
+                    <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                        <input [type]="authJson.authOptions.register.options.username.type" matInput formControlName="username" class="company-list-inp" [placeholder]="authJson.authOptions.register.options.username.placeholder">
+                          <span class="company-list-rmve" *ngIf="registrationForm.controls['username']?.value">
+                            <mat-icon class="company-list-rmve-icon" (click)="clearInput('username')">close</mat-icon>
+                          </span>
+                        <mat-label>
+                          {{authJson.authOptions.register.options.username.label}}
+                        </mat-label>
+                        <mat-error class="company-list-error" *ngIf="registrationForm.controls['username'].touched && registrationForm.controls['username'].errors">
+                          <span *ngIf="hasError('username','required',registrationForm)" class="error-text" style="padding-left: 0%;">Username is required</span>
+                      </mat-error>
+                      </mat-form-field>
+                </div>
+            </div>
+            
+            <!-- Email -->
+            <div class="col-xl-6 col-md-6">
+                <div class="material-textfield reg-field">
+                    <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                        <input [type]="authJson.authOptions.register.options.email.type" matInput formControlName="email" class="company-list-inp" [placeholder]="authJson.authOptions.register.options.email.placeholder">
+                        <span class="company-list-rmve" *ngIf="registrationForm.controls['email']?.value">
+                            <mat-icon class="company-list-rmve-icon" (click)="clearInput('email')">close</mat-icon>
+                        </span>
+                        <mat-label>
+                        {{authJson.authOptions.register.options.email.label}}
+                        </mat-label>
+                        <mat-error class="company-list-error" *ngIf="registrationForm.controls['email'].touched && registrationForm.controls['email'].errors">
+                        <span *ngIf="hasError('email','required',registrationForm)" class="error-text" style="padding-left: 0%;">Email-id is required</span>
+                    </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <!-- First Name -->
+            <div class="col-xl-6 col-md-6">
+                <div class="material-textfield reg-field">
+                    <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                        <input [type]="authJson.authOptions.register.options.firstName.type" matInput formControlName="firstName" class="company-list-inp" [placeholder]="authJson.authOptions.register.options.firstName.placeholder">
+                        <span class="company-list-rmve" *ngIf="registrationForm.controls['firstName']?.value">
+                            <mat-icon class="company-list-rmve-icon" (click)="clearInput('firstName')">close</mat-icon>
+                        </span>
+                        <mat-label>
+                        {{authJson.authOptions.register.options.firstName.label}}
+                        </mat-label>
+                        <mat-error class="company-list-error" *ngIf="registrationForm.controls['firstName'].touched && registrationForm.controls['firstName'].errors">
+                        <span *ngIf="hasError('firstName','required',registrationForm)" class="error-text" style="padding-left: 0%;">First Name is required</span>
+                    </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <!-- Last Name -->
+            <div class="col-xl-6 col-md-6">
+                <div class="material-textfield reg-field">
+                    <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                        <input [type]="authJson.authOptions.register.options.lastName.type" matInput formControlName="lastName" class="company-list-inp" [placeholder]="authJson.authOptions.register.options.lastName.placeholder">
+                        <span class="company-list-rmve" *ngIf="registrationForm.controls['lastName']?.value">
+                            <mat-icon class="company-list-rmve-icon" (click)="clearInput('lastName')">close</mat-icon>
+                        </span>
+                        <mat-label>
+                        {{authJson.authOptions.register.options.lastName.label}}
+                        </mat-label>
+                        <mat-error class="company-list-error" *ngIf="registrationForm.controls['lastName'].touched && registrationForm.controls['lastName'].errors">
+                        <span *ngIf="hasError('lastName','required',registrationForm)" class="error-text" style="padding-left: 0%;">Last Name is required</span>
+                    </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <!-- Password -->
+            <div class="col-xl-6 col-md-6">
+                <div class="material-textfield reg-field">
+                    <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                        <input [type]="showPassword ? 'text' : 'password'" matInput formControlName="password" class="company-list-inp" [placeholder]="authJson.authOptions.register.options.password.placeholder">
+                        <span class="company-list-rmve" *ngIf="registrationForm.controls['password']?.value" style="right: 7%;">
+                            <mat-icon [style.color]="showPassword ? '#1852be' : '#6d6d6d'" (click)="togglePasswordVisibility()" class="show-pass">remove_red_eye</mat-icon>
+                        </span>
+                        <span class="company-list-rmve" *ngIf="registrationForm.controls['password']?.value">
+                            <mat-icon class="company-list-rmve-icon" (click)="clearInput('password')">close</mat-icon>
+                        </span>
+                        <mat-label>
+                        {{authJson.authOptions.register.options.password.label}}
+                        </mat-label>
+                        <mat-error class="company-list-error" *ngIf="registrationForm.controls['password'].touched && registrationForm.controls['password'].errors">
+                        <span *ngIf="hasError('password','required',registrationForm)" class="error-text" style="padding-left: 0%;">Password is required</span>
+                    </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <!-- Confirm password -->
+            <div class="col-xl-6 col-md-6">
+                <div class="material-textfield reg-field">
+                    <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                        <input [type]="authJson.authOptions.register.options.confirmPassword.type" matInput formControlName="confirmPassword" class="company-list-inp" [placeholder]="authJson.authOptions.register.options.confirmPassword.placeholder">
+                        <span class="company-list-rmve" *ngIf="registrationForm.controls['confirmPassword']?.value">
+                            <mat-icon class="company-list-rmve-icon" (click)="clearInput('confirmPassword')">close</mat-icon>
+                        </span>
+                        <mat-label>
+                        {{authJson.authOptions.register.options.confirmPassword.label}}
+                        </mat-label>
+                        <mat-error class="company-list-error" *ngIf="registrationForm.controls['confirmPassword'].touched && registrationForm.controls['confirmPassword'].errors">
+                        <span *ngIf="hasError('confirmPassword','required',registrationForm) || hasError('confirmPassword','mismatch',registrationForm)" class="error-text" style="padding-left: 0%;">Please confirm your password</span>
+                    </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="padding-top: 1%;padding-bottom: 2%;">
+            <div class="col-xl-3" style="display: flex; align-items: center;">
+                <span>
+                    <a routerLink="../" style="display: flex; align-items: center; text-decoration: none;">
+                        <mat-icon style="transform: scale(0.6);">keyboard_backspace</mat-icon>
+                        <span style="margin-left: 0px;">Back to login</span>
+                    </a>
+                </span>
+            </div>
+            
+            <div class="col-xl-9" style="text-align: right;">
+                <button class="reg-button-save-mat" mat-raised-button (click)="submit()">
+                    Create account
+                    <span class="button-save"><mat-icon>send</mat-icon></span>
+                </button>
+            </div>
+          </div>
+    </div>
+</div>
