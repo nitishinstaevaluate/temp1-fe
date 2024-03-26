@@ -130,6 +130,37 @@
             </a>
   
         </div> -->
+        
+        <div class="demo-icon nav-link icon" *ngIf="isLoggedIn()">
+          <span style="width: 70px;display: block;text-align: left;padding-left: 2%;" class="download-label nav-h" routerLink="dashboard/">
+            <img style="height: 19px;width: 19px;cursor: pointer;" src="../../../../assets/images/icons/home.png" alt="">
+          <span style="font-size: 15px;padding-left: 4%;font-family: 'AR One Sans', sans-serif !important;">Home</span>
+        </span>
+        </div>
+        <div class="demo-icon nav-link icon">
+          <span style="width: 115px;display: block;text-align: left;padding-left: 2%;" class="download-label nav-h" routerLink="contact-sales">
+            <img style="height: 19px;width: 19px;cursor: pointer;" src="../../../../assets/images/icons/contactus.png" alt="">
+          <span style="font-size: 15px;padding-left: 4%;font-family: 'AR One Sans', sans-serif !important;">Contact Us</span>
+        </span>
+        </div>
+        <div class="demo-icon nav-link icon">
+          <span style="width: 90px;display: block;text-align: left;padding-left: 2%;" class="download-label nav-h">
+            <img style="height: 19px;width: 19px;cursor: pointer;" src="../../../../assets/images/icons/cloud.png" alt="">
+          <span style="font-size: 15px;padding-left: 4%;font-family: 'AR One Sans', sans-serif !important;">Services</span>
+        </span>
+        </div>
+        <div class="demo-icon nav-link icon" *ngIf="!isLoggedIn()">
+          <span style="width: 70px;display: block;text-align: left;padding-left: 2%;" class="download-label nav-h" routerLink="../">
+            <img style="height: 17px;width: 17px;cursor: pointer;" src="../../../../assets/images/icons/signup.png" alt="">
+          <span style="font-size: 15px;padding-left: 7%;font-family: 'AR One Sans', sans-serif !important;">Login</span>
+        </span>
+        </div>
+        <div class="demo-icon nav-link icon">
+          <span style="width: 90px;display: block;text-align: left;padding-left: 2%;" class="download-label nav-h" routerLink="register">
+            <img style="height: 17px;width: 17px;cursor: pointer;" src="../../../../assets/images/icons/register.png" alt="">
+          <span style="font-size: 15px;padding-left: 5%;font-family: 'AR One Sans', sans-serif !important;">Register</span>
+        </span>
+        </div>
         <div class="navbar navbar-expand-lg navbar-nav-right responsive-navbar navbar-dark p-0">
           <div class="collapse navbar-collapse" id="navbarSupportedContent-4" 
            >
@@ -167,6 +198,7 @@
         <div class="demo-icon nav-link icon">
           <i class="fe fe-settings fa-spin text_primary" *ngIf="isLoggedIn()"></i>
         </div>
+        
         <!-- <div class="dropdown header-sidebar">
           <a  class="nav-link icon sidebar-right-mobile" data-bs-toggle="sidebar-right" data-bs-target=".sidebar-right">
               <i class="bx bx-menu-alt-right header-icon"></i>

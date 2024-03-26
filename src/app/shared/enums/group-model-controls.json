@@ -1061,5 +1061,48 @@
                 "label":"Face Value"
             }
         }
+    },
+    "auth":{
+        "type":"auth",
+        "header":"User Authentication",
+        "authOptions":{
+            "type":"authOptions",
+            "register":{
+                "name":"register",
+                "label":"Registration",
+                "options":{
+                    "username":{
+                        "type":"text",
+                        "placeholder":"Enter username",
+                        "label":"Username*"
+                    },
+                    "email":{
+                        "type":"text",
+                        "placeholder":"Enter email-id",
+                        "label":"Email-id*"
+                    },
+                    "firstName":{
+                        "type":"text",
+                        "placeholder":"Enter first name",
+                        "label":"First Name*"
+                    },
+                    "lastName":{
+                        "type":"text",
+                        "placeholder":"Enter last name",
+                        "label":"Last Name*"
+                    },
+                    "password":{
+                        "type":"password",
+                        "placeholder":"Create password",
+                        "label":"Password*"
+                    },
+                    "confirmPassword":{
+                        "type":"password",
+                        "placeholder":"Confirm your password",
+                        "label":"Confirm Password*"
+                    }
+                }
+            }
+        }
     }
 }

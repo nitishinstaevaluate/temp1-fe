@@ -6,12 +6,14 @@ import { LoginComponent } from './login/login.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ContactSalesComponent } from './contact-sales/contact-sales.component';
 import { MainLayoutModule } from 'src/app/layout/main-layout/main-layout.module';
+import { RegisterComponent } from './register/register.component';
 
 
 @NgModule({
   declarations: [
     LoginComponent,
     ContactSalesComponent,
+    RegisterComponent,
   ],
   imports: [
     CommonModule,
