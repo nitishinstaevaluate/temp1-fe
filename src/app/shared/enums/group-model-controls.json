@@ -299,6 +299,22 @@
                 "type":"text",
                 "toolTip":"Enter Other Adjustments"
             },
+            "financialBasis":{
+                "name":"financialBasis",
+                "placeholder":"Select financial basis",
+                "type":"text",
+                "toolTip":"Enter basis of financials",
+                "options":[
+                    {
+                        "name":"Audited",
+                        "value":"audited"
+                    },
+                    {
+                        "name":"Management Certified",
+                        "value":"managementCertified"
+                    }
+                ]
+            },
             "riskPremium":{
                 "name":"riskPremium",
                 "placeholder":"Company Specific Risk Premium",
@@ -1100,6 +1116,27 @@
                         "type":"password",
                         "placeholder":"Confirm your password",
                         "label":"Confirm Password*"
+                    }
+                }
+            },
+            "forgetPassword":{
+                "name":"forgetPassword",
+                "label":"Reset Password Form",
+                "options":{
+                    "email":{
+                        "type":"text",
+                        "placeholder":"Enter registered email-id",
+                        "label":"Registered Email-id*"
+                    },
+                    "confirmPassword":{
+                        "type":"password",
+                        "placeholder":"Enter password again",
+                        "label":"Confirm password*"
+                    },
+                    "newPassword":{
+                        "type":"password",
+                        "placeholder":"Create new password",
+                        "label":"Create password*"
                     }
                 }
             }

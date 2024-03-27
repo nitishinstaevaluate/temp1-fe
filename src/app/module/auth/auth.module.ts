@@ -7,6 +7,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { ContactSalesComponent } from './contact-sales/contact-sales.component';
 import { MainLayoutModule } from 'src/app/layout/main-layout/main-layout.module';
 import { RegisterComponent } from './register/register.component';
+import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 
 
 @NgModule({
@@ -14,6 +15,7 @@ import { RegisterComponent } from './register/register.component';
     LoginComponent,
     ContactSalesComponent,
     RegisterComponent,
+    ForgetPasswordComponent,
   ],
   imports: [
     CommonModule,
