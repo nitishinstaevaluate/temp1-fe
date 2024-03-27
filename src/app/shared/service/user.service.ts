@@ -18,4 +18,8 @@ export class UserService {
   create(payload:any){
     return this.http.post(`${this.HOST}users/create-user`, payload);
   }
+
+  resetUserPassword(payload:any){
+    return this.http.post(`${this.HOST}users/reset-password`, payload);
+  }
 }

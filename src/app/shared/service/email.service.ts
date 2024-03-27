@@ -18,4 +18,12 @@ export class EmailService {
   dataCheckListEmail(payload:any){
     return this.http.post(`${this.HOST}email/v2/send-data-checklist-email`, payload)
   }
+
+  sendOtp(payload:any){
+    return this.http.post(`${this.HOST}email/send-email-otp`, payload)
+  }
+
+  verifyOtp(payload:any){
+    return this.http.post(`${this.HOST}email/verify-email-otp`, payload)
+  }
 }

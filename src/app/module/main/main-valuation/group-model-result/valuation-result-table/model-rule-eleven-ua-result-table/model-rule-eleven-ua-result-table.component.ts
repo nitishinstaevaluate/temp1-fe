@@ -148,4 +148,11 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
     this.totalCalculationC = investment;
     return investment ? formatPositiveAndNegativeValues(investment) : '-';
   }
+
+  financialBasis(){
+    if(this.formData?.formFourData?.appData?.inputData?.financialBasis === 'audited'){
+      return 'Audited';
+    }
+    return 'Management Certified';
+  }
 }

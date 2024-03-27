@@ -62,6 +62,7 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
   private snackBar:MatSnackBar){
     this.reviewForm=this.formBuilder.group({
       otherAdj:[0,[Validators.required]],
+      financialBasis:['',[Validators.required]],
     })
 
   }
@@ -95,6 +96,7 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
       const formFourData = this.fourthStageInput.formFourData;
       if(formFourData){
         this.reviewForm.controls['otherAdj'].setValue(formFourData.otherAdj);
+        this.reviewForm.controls['financialBasis'].setValue(formFourData.financialBasis || formFourData?.appData.inputData?.financialBasis);
       }
     }
   }
@@ -115,6 +117,7 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
     let payload: any = {
         ...(!this.transferStepperTwo ? fourthStageData : this.transferStepperTwo),
         otherAdj: this.reviewForm.controls['otherAdj'].value && (this.isRelativeValuation('FCFE') || this.isRelativeValuation('FCFF')) ? this.reviewForm.controls['otherAdj'].value : 0,
+        financialBasis: this.reviewForm.value.financialBasis
     };
 
     // if (this.isPAndLExcelModified || this.isBSExcelModified || this.isAssessmentSheetModified || this.isRuleELevenUaSheetModified) {
@@ -313,6 +316,7 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
           fourthStageInput:{
             appData:this.valuationData,
             otherAdj:this.reviewForm.controls['otherAdj'].value && (this.isRelativeValuation('FCFE') || this.isRelativeValuation('FCFF')) ? this.reviewForm.controls['otherAdj'].value : 0,
+            financialBasis: this.reviewForm.value.financialBasis,
             formFillingStatus:processStatStep
           },
           step:processStat
@@ -365,5 +369,9 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
 
   onTabChange(event: any) {
     this.selectedTab = event.tab.textLabel;
+  }
+
+  clearInput(controlName:string){
+    this.reviewForm.controls[controlName].setValue('');
   }
 }

@@ -111,23 +111,43 @@
         </div>
        </div> -->
        <!-- other adjustments -->
-       <div class="container-fluid" *ngIf="isRelativeValuation('FCFE') || isRelativeValuation('FCFF')" style="padding-top: 2%;">
-        <!-- <div class="row"> -->
-            <!-- <div class="col-md-6 field">
-                <mat-form-field class="full-width-input" [floatLabel]="floatLabelType">
-                    <input formControlName="otherAdj" [type]="modelControl.fcfe.options.otherAdj.type" matInput  [placeholder]="modelControl.fcfe.options.otherAdj.placeholder">
-                </mat-form-field>
-            </div> -->
-            <div class="col-md-6 field" style="padding-top: 1%;">
+       <div class="container-fluid" style="padding-top: 2%;">
+        <div class="row">
+            <div class="col-md-6 field col-xl-6" *ngIf="isRelativeValuation('FCFE') || isRelativeValuation('FCFF')">
                 <div class="material-textfield">
-                  <input class="new-inp" formControlName="otherAdj" [type]="modelControl.fcfe.options.otherAdj.type" [placeholder]="modelControl.fcfe.options.otherAdj.placeholder"/>
-                  <label>Add other adjustments</label>
+                    <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                        <input [type]="modelControl.fcfe.options.otherAdj.type" matInput formControlName="otherAdj" class="company-list-inp" placeholder="Enter other adjustments">
+                          <span class="company-list-rmve" *ngIf="reviewForm.controls['otherAdj']?.value">
+                            <mat-icon class="company-list-rmve-icon" (click)="clearInput('otherAdj')">close</mat-icon>
+                          </span>
+                        <mat-label>
+                          Add other adjustments*
+                        </mat-label>
+                        <mat-error class="company-list-error" *ngIf="reviewForm.controls['otherAdj'].touched && reviewForm.controls['otherAdj'].errors">
+                          <span *ngIf="hasError('otherAdj','required',reviewForm)" class="error-text" style="padding-left: 0%;">Please enter other adjustments</span>
+                      </mat-error>
+                      </mat-form-field>
                 </div>
-                <span *ngIf="reviewForm.controls['otherAdj'].errors && reviewForm.controls['otherAdj'].touched">
-                    <span *ngIf="hasError('otherAdj','required',reviewForm)" class="error-text">Please add other adjustments</span>
-                </span>
             </div>
-        <!-- </div> -->
+            <div class="col-xl-6 col-md-6 field" *ngIf="hasSingleModel('ruleElevenUa')">
+                <div class="material-textfield">
+                    <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                        <mat-label>Basis of Financials*</mat-label>
+                        <span class="company-list-rmve" *ngIf="reviewForm.controls['financialBasis']?.value" style="right:6%;">
+                        <mat-icon class="company-list-rmve-icon" (click)="clearInput('financialBasis')">close</mat-icon>
+                        </span>
+                        <mat-select formControlName="financialBasis" class="new-inp company-list-inp financialBasis">
+                        <mat-option *ngFor="let doc of modelControl.fcfe.options.financialBasis.options" class="auto-class" [value]="doc.value">
+                            {{ doc.name }}
+                        </mat-option>
+                        </mat-select>
+                        <mat-error class="company-list-error" *ngIf="reviewForm.controls['financialBasis'].touched && reviewForm.controls['financialBasis'].errors">
+                            <span *ngIf="hasError('financialBasis','required',reviewForm)" class="error-text" style="padding-left: 0%;">Please select financial basis</span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
        <!-- </div> -->
     </div>
     <!--Modify parameter set in ends  -->
