@@ -238,6 +238,7 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
     });
     this.assessmentDataSource.splice(this.assessmentDataSource.findIndex((item:any) => item.Particulars.includes('Operating Liabilities')),0,{Particulars:"  "}) //push empty object for line break      
     this.assessmentDataSource.splice(this.assessmentDataSource.findIndex((item:any) => item.Particulars.includes('Net Operating Assets')),0,{Particulars:"  "}) //push empty object for line break      
+    this.assessmentDataSource.splice(this.assessmentDataSource.findIndex((item:any) => item.Particulars.includes('Short Term Investments')),1) //removing short term investments 
     // if(response?.modifiedFileName){
     //   // this.assessmentSheetData.emit({status:true,result:response, isExcelModified:this.isExcelModified})
     // }
