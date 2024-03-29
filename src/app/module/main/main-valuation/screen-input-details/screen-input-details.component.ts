@@ -251,6 +251,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     const formOneDataPreviousChanges = changes['formOneData']?.previousValue;
 
     if(formOneDataCurrentChanges && formOneDataPreviousChanges && (formOneDataCurrentChanges?.valuationDate !== formOneDataPreviousChanges?.valuationDate || !formOneDataCurrentChanges?.valuationDate)){
+      this.mainIndustries = [];
       this.loadCiqIndustryBasedLevelFour(this.createPayload());
     }
   }

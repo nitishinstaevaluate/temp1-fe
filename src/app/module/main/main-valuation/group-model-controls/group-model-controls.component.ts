@@ -90,7 +90,7 @@ export class GroupModelControlsComponent implements OnInit {
   options:any=[];
   companyListLoader=false;
   companyInput=false;
-  
+
 
   constructor(private formBuilder: FormBuilder,
     private valuationService: ValuationService,
@@ -643,4 +643,31 @@ export class GroupModelControlsComponent implements OnInit {
       this.refId.emit(processIdentifierDetails.processIdentifierId);
     }
   }
+
+  // Commented function can be used to reupload the excel directly from modelcontrol form,
+  // instead of again opening the model selection popup and reuploading the excel there 
+  // reUploadFile(event:any){
+  //   if (event && event.target.files && event.target.files.length > 0) {
+  //     this.files = event.target.files;
+  //     this.fileName = this.files[0].name;
+  //   }
+  
+  //   if (this.files.length === 0) {
+  //     return;
+  //   }
+  
+  //   const formData = new FormData();
+  //   formData.append('file', this.files[0]);
+  //   this.valuationService.fileUpload(formData).subscribe((res: any) => {
+  //     this.modelValuation.controls['excelSheetId'].setValue(res.excelSheetId); 
+  //     if(res.excelSheetId){
+  //       this.snackBar.open('File has been uploaded successfully','Ok',{
+  //         horizontalPosition: 'center',
+  //         verticalPosition: 'bottom',
+  //         duration: 3000,
+  //         panelClass: 'app-notification-success'
+  //       })
+  //     }
+  //   })
+  // }
 }
