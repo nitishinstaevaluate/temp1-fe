@@ -64,10 +64,12 @@ loadForm(){
     longTermLoansAdvances:['book_value',[Validators.required]],
     nonCurrentInvestment:['book_value',[Validators.required]],
     deferredTaxAsset:['book_value',[Validators.required]],
+    otherNonCurrentAsset:['book_value',[Validators.required]],
     inventories:['book_value',[Validators.required]],
     shortTermLoanAdvances:['book_value',[Validators.required]],
     tradeReceivables:['book_value',[Validators.required]],
     cash:['book_value',[Validators.required]],
+    shortTermInvestment:['book_value',[Validators.required]],
     otherCurrentAssets:['book_value',[Validators.required]],
     shortTermProvisions:['book_value',[Validators.required]],
     shortTermBorrowings:['book_value',[Validators.required]],
@@ -109,6 +111,11 @@ onSelectorChange(value:any,controlValue:any){
         this.navForm.controls[controlValue].setValue('');
       }
     break;
+    case 'otherNonCurrentAsset':
+      if(value==='market_value'){
+        this.navForm.controls[controlValue].setValue('');
+      }
+    break;
     case 'inventories':
       if(value==='market_value'){
         this.navForm.controls[controlValue].setValue('');
@@ -125,6 +132,11 @@ onSelectorChange(value:any,controlValue:any){
       }
     break;
     case 'cash':
+      if(value==='market_value'){
+        this.navForm.controls[controlValue].setValue('');
+      }
+    break;
+    case 'shortTermInvestment':
       if(value==='market_value'){
         this.navForm.controls[controlValue].setValue('');
       }
@@ -204,6 +216,11 @@ resetBookValue(value:any,controlName:any){
         this.navForm.controls[controlName].setValue(value);
       }
     break;
+    case 'otherNonCurrentAsset':
+      if(value==='book_value'){
+        this.navForm.controls[controlName].setValue(value);
+      }
+    break;
     case 'inventories':
       if(value==='book_value'){
         this.navForm.controls[controlName].setValue(value);
@@ -220,6 +237,11 @@ resetBookValue(value:any,controlName:any){
       }
     break;
     case 'cash':
+      if(value==='book_value'){
+        this.navForm.controls[controlName].setValue(value);
+      }
+    break;
+    case 'shortTermInvestment':
       if(value==='book_value'){
         this.navForm.controls[controlName].setValue(value);
       }

@@ -210,6 +210,47 @@
                 </div> -->
             </div>
 
+
+            <!-- Other Non Current Asset -->
+            <div class="col-md-8 field">
+                <div class="material-textfield" *ngIf="navForm.controls['otherNonCurrentAsset'].value === 'book_value'" style="width: 75%;">
+                  <select id="otherNonCurrentAsset" class="new-inp" formControlName="otherNonCurrentAsset" #otherNonCurrentAsset (change)="onSelectorChange(otherNonCurrentAsset.value,'otherNonCurrentAsset')">
+                    <option value="" disabled>Select asset type</option>
+                    <option *ngFor="let data of controls.NAV.options.netAssetValue.options" [value]="data.value">{{ data.name }}</option>
+                  </select>
+                  <label for="otherNonCurrentAsset">Other Non-Current Assets</label>
+                </div>
+
+                <div class="row"  *ngIf="navForm.controls['otherNonCurrentAsset'].value !== 'book_value'">
+                  <div class="col-xl-9 col-md-9">
+                    <div class="material-textfield">
+                      <input class="new-inp" formControlName="otherNonCurrentAsset" type="text" placeholder="Enter market value"/>
+                      <label>Other Non-Current Assets</label>
+                    </div>
+                    
+                  </div>
+                  <div class="col-xl-2 col-md-2">
+                    <mat-radio-group >
+                      <mat-radio-button class="nav-radio-button" matTooltipClass="nav-tooltip" matTooltip="By choosing this, Book-value will be selected" matTooltipPosition="above" value="market_value" [color]="'primary'" (change)="resetBookValue('book_value','otherNonCurrentAsset')"></mat-radio-button>
+                  </mat-radio-group>
+                  </div>
+                 </div>
+
+                <!-- <div class="row" *ngIf="navForm.controls['deferredTaxAsset'].value !== 'book_value'">
+                  <div class="col-md-6">
+                    <mat-form-field  class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" [appearance]="appearance">
+                      <mat-label>Deffered Tax Assets</mat-label>
+                      <input matInput formControlName="deferredTaxAsset">
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-2">
+                    <mat-radio-group>
+                      <mat-radio-button matTooltip="By clicking,Book-value will be selected" matTooltipPosition="above" value="market_value" [color]="'primary'" (change)="resetBookValue('book_value','deferredTaxAsset')"></mat-radio-button>
+                  </mat-radio-group>
+                  </div>
+                </div> -->
+            </div>
+
             <!-- <div class="col-md-12 revalmodel" style="border-top: 1px solid #ccdfe3">
               <mat-label class="label" >{{controls.NAV.options.columns.netCurrentAssets.colHead}}</mat-label>
               <span class="mat-bullet"><mat-icon>fiber_manual_record</mat-icon></span>
@@ -387,6 +428,45 @@
                   <div class="col-xl-2 col-md-2">
                     <mat-radio-group >
                       <mat-radio-button class="nav-radio-button" matTooltipClass="nav-tooltip" matTooltip="By choosing this, Book-value will be selected" matTooltipPosition="above" value="market_value" [color]="'primary'" (change)="resetBookValue('book_value','cash')"></mat-radio-button>
+                  </mat-radio-group>
+                  </div>
+                 </div>
+
+                <!-- <div class="row" *ngIf="navForm.controls['cash'].value !== 'book_value'">
+                  <div class="col-md-6">
+                    <mat-form-field  class="full-width-input mat-relative-val" [floatLabel]="floatLabelType" [appearance]="appearance">
+                      <mat-label>Cash</mat-label>
+                      <input matInput formControlName="cash">
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-2">
+                    <mat-radio-group>
+                      <mat-radio-button matTooltip="By clicking,Book-value will be selected" matTooltipPosition="above" value="market_value" [color]="'primary'" (change)="resetBookValue('book_value','cash')"></mat-radio-button>
+                  </mat-radio-group>
+                  </div>
+                </div> -->
+            </div>
+
+            <!-- Short Term Investment -->
+            <div class="col-md-8 field">
+                <div class="material-textfield" *ngIf="navForm.controls['shortTermInvestment'].value === 'book_value'" style="width: 75%;">
+                  <select id="shortTermInvestment" class="new-inp" formControlName="shortTermInvestment" #shortTermInvestment (change)="onSelectorChange(shortTermInvestment.value,'shortTermInvestment')">
+                    <option value="" disabled>Select shortTermInvestment</option>
+                    <option *ngFor="let data of controls.NAV.options.netAssetValue.options" [value]="data.value">{{ data.name }}</option>
+                  </select>
+                  <label for="shortTermInvestment">Short Term Investment</label>
+                </div>
+
+                <div class="row"  *ngIf="navForm.controls['shortTermInvestment'].value !== 'book_value'">
+                  <div class="col-xl-9 col-md-9">
+                    <div class="material-textfield">
+                      <input class="new-inp" formControlName="shortTermInvestment" type="text" placeholder="Enter market value"/>
+                      <label>Short Term Investment</label>
+                    </div>
+                  </div>
+                  <div class="col-xl-2 col-md-2">
+                    <mat-radio-group >
+                      <mat-radio-button class="nav-radio-button" matTooltipClass="nav-tooltip" matTooltip="By choosing this, Book-value will be selected" matTooltipPosition="above" value="market_value" [color]="'primary'" (change)="resetBookValue('book_value','shortTermInvestment')"></mat-radio-button>
                   </mat-radio-group>
                   </div>
                  </div>
