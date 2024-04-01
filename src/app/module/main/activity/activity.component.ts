@@ -11,7 +11,7 @@ import { saveAs } from 'file-saver';
 import { Subject, debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.service';
-import { formatNumber } from 'src/app/shared/enums/functions';
+import { convertToNumberOrZero, formatNumber } from 'src/app/shared/enums/functions';
 
 @Component({
   selector: 'app-activity',
@@ -29,7 +29,7 @@ export class ActivityComponent {
     'Date',
     'Company Name',
     'Model',
-    'Valuation',
+    'Valuation (per share)',
     'Status',
     'Action',
   ];
@@ -164,14 +164,28 @@ export class ActivityComponent {
   getValuation(modelArray:string,processData:any){
     if(processData.fourthStageInput || processData.fifthStageInput){
 
-      if(modelArray.length === 1 && (modelArray.includes(MODELS.FCFE) || modelArray.includes(MODELS.FCFF) || modelArray.includes(MODELS.EXCESS_EARNINGS) || modelArray.includes(MODELS.NAV))){
-        return `${processData.firstStageInput.currencyUnit} ${formatNumber(processData?.fourthStageInput?.appData?.valuationResult[0].valuation ? processData?.fourthStageInput?.appData?.valuationResult[0].valuation : '-')}`;
+      if(modelArray.length === 1 && (modelArray.includes(MODELS.FCFE) || modelArray.includes(MODELS.FCFF) || modelArray.includes(MODELS.EXCESS_EARNINGS))){
+        const dcfApproachValuation = processData?.fourthStageInput?.appData?.valuationResult[0].valuationData;
+        // Here for DCF valuation, we have value value per share in the second last element of the second array
+        return `${processData.firstStageInput.currencyUnit} ${formatNumber(dcfApproachValuation[1][dcfApproachValuation[1].length - 1] ? dcfApproachValuation[1][dcfApproachValuation[1].length - 1] : '-')}`;
       }
       else if(modelArray.length === 1 && (modelArray.includes(MODELS.COMPARABLE_INDUSTRIES) || modelArray.includes(MODELS.RELATIVE_VALUATION))){
-        return `${processData.firstStageInput.currencyUnit} ${formatNumber(processData.fourthStageInput.appData.valuationResult[0].valuation?.finalPriceAvg ? processData.fourthStageInput.appData.valuationResult[0].valuation?.finalPriceAvg : '-')}`;
+        const valuePerShare = processData.fourthStageInput.appData.valuationResult[0]?.valuationData?.valuation;
+        let marketApproachValuePerShare;
+        valuePerShare.map((indElements:any)=>{
+          if(indElements.particular === 'result'){
+            marketApproachValuePerShare = indElements.fairValuePerShareAvg;
+          }
+        })
+        return `${processData.firstStageInput.currencyUnit} ${formatNumber(marketApproachValuePerShare ? marketApproachValuePerShare : '-')}`;
+      }
+      else if(modelArray.length === 1 && modelArray.includes(MODELS.NAV)){
+        const navAprroachValuation = processData?.fourthStageInput?.appData?.valuationResult[0].valuationData;
+        return `${processData.firstStageInput.currencyUnit} ${formatNumber(navAprroachValuation?.valuePerShare?.bookValue ? navAprroachValuation?.valuePerShare?.bookValue : '-')}`;
       }
       else if(processData.fifthStageInput?.totalWeightageModel){
-        return `${processData.firstStageInput.currencyUnit} ${formatNumber(processData.fifthStageInput.totalWeightageModel?.weightedVal ? processData.fifthStageInput.totalWeightageModel?.weightedVal : '-')}`;
+        const outstandingShares = convertToNumberOrZero(processData.firstStageInput.outstandingShares);
+        return `${processData.firstStageInput.currencyUnit} ${formatNumber(processData.fifthStageInput.totalWeightageModel?.weightedVal ? processData.fifthStageInput.totalWeightageModel?.weightedVal/outstandingShares : '-')}`;
       }
       else{
         return '-';

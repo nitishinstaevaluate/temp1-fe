@@ -68,13 +68,9 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
 
   calculateTotalB(){
     let totalValue = 0;
-    if(this.formData){
-      for(let i= 0; i< this.jewelleryOrArtisticWork.length; i++){
-        if(this.jewelleryOrArtisticWork[i]?.value && this.jewelleryOrArtisticWork[i]?.value !== '-'){
-          totalValue += parseFloat(this.jewelleryOrArtisticWork[i].value)
-        }
-      }
-    }
+    const jewellery = this.formData?.formFourData?.appData?.inputData?.fairValueJewellery;
+    const artisticWork = this.formData?.formFourData?.appData?.inputData?.fairValueArtistic;
+    totalValue = convertToNumberOrZero(jewellery) + convertToNumberOrZero(artisticWork);
     this.totalCalculationB = totalValue ? totalValue : 0;
     return totalValue ? formatPositiveAndNegativeValues(totalValue) : '-';
   }
