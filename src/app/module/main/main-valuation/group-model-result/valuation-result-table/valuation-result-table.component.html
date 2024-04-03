@@ -1,10 +1,45 @@
 <div class="mat-tab-g">
   <mat-tab-group style="padding-bottom: 1% !important;background-color: #ffffff;border-radius: 20px;" class="tab-group" mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="selectedTabIndex" (selectedTabChange)="onTabSelectionChange()">
   <mat-tab label="FCFE" *ngIf = "fcfe">
-    <div class="btn" style="text-align: right;width: 100%;">
-      <button mat-stroked-button class="exp">
-        <a class="exp-a" [href]="HOST + 'upload/generate/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/FCFE/' + 'true'" download>Export</a>
-      </button>
+    <div style="display: flex; align-items: center; justify-content: space-between;padding: 1%;">
+      <div style="display: flex; align-items: center;width: 85%;">
+        <div style="display: inline-block; align-items: center;width: 66%;">
+          <input type="radio" id="tvCashFlow" name="radios" style="vertical-align: text-top;" [checked]="terminalValueSelectedType === 'tvCashFlowBased'" (click)="terminalValueOptions('tvCashFlowBased')">
+          <label for="tvCashFlow" class="remove-bottom-margin terminal-working-options" style="padding-right: 4%;">
+            
+            <span class="tool-class" style="vertical-align: sub;">
+              <svg [matTooltip]="helperText.tvCashFlowBased" matTooltipPosition="above" matTooltipClass='model-tooltip' xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
+                <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:37px" 
+                fill="#ff0000"></path>
+                <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px">
+                </polyline><line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px">
+              </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
+            </span>
+            Terminal Value based on last year Cash Flow
+          </label>
+          <input type="radio" id="tvLastYearPat" name="radios" style="vertical-align: text-top;" [checked]="terminalValueSelectedType === 'tvPatBased'" (click)="terminalValueOptions('tvPatBased')">
+          <label for="tvLastYearPat" class="remove-bottom-margin terminal-working-options">
+            
+            <span class="tool-class" style="vertical-align: sub;">
+              <svg [matTooltip]="helperText.tvPatBased" matTooltipPosition="above" matTooltipClass='model-tooltip' xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
+                <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:37px" 
+                fill="#ff0000"></path>
+                <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px">
+                </polyline><line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px">
+              </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
+            </span>
+            Terminal Value based on last year PAT
+          </label>
+        </div>
+        <button mat-stroked-button class="terminal-working-button" style="width: 20%;" (click)="loadTerminalValueWorking()">
+         View Terminal Working
+        </button>
+      </div> 
+      <div style="display: flex;width: 15%;">
+        <button mat-stroked-button class="exp" style="margin-left: auto;width: 60%;">
+          <a class="exp-a" [href]="HOST + 'upload/generate/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/FCFE/' + 'true'" download>Export</a>
+        </button>
+      </div>
     </div>
     <div>
       <div class="table-container">
@@ -96,11 +131,11 @@
     </div>  
   </mat-tab>
   <mat-tab label="Net Asset Value" *ngIf="nav">
-    <div class="btn" style="text-align: right;width: 100%;">
+    <!-- <div class="btn" style="text-align: right;width: 100%;">
       <button mat-stroked-button class="exp">
         <a class="exp-a" [href]="HOST + 'upload/generate/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + '/NAV/' + 'true'" download>Export</a>
       </button>
-    </div>
+    </div> -->
     <div>
       <!-- <h5 class="head-nav">NAV Result</h5> -->
       <div class="table-container">
@@ -126,11 +161,11 @@
     </div>
   </mat-tab>
   <mat-tab label="Rule 11 UA" *ngIf="ruleElevenUa">
-    <div class="btn" style="text-align: right;width: 100%;">
+    <!-- <div class="btn" style="text-align: right;width: 100%;">
       <button mat-stroked-button class="exp">
         <a class="exp-a" [href]="HOST + 'upload/generate/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + '/ruleElevenUa/' + 'true'" download>Export</a>
       </button>
-    </div>
+    </div> -->
     <div>
       <div class="table-container" style="display: block;">
         <app-model-rule-eleven-ua-result-table [formData]="transferStepperthree"></app-model-rule-eleven-ua-result-table>

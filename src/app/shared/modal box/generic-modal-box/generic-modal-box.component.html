@@ -749,6 +749,7 @@
   </div>
   </div>
 
+  <!-- Beta working table -->
   <div class="container-fluid" *ngIf="data?.value === appValues.BETA_CALCULATION.value" style="padding: 1%;">
     <div class="col-md-12 revalmodel" style="text-align: center;padding-top: 1%;">
       <mat-label class="label" >{{this.label}}</mat-label>
@@ -803,4 +804,159 @@
         </tfoot> 
       </table>
     </div>
+  </div>
+
+  <!-- Terminal Year Working table -->
+  <div class="container-fluid" *ngIf="data?.value === appValues.TERMINAL_VALUE_WORKING.value" style="padding: 1%;">
+    <div class="col-md-12 revalmodel" style="text-align: center;padding-top: 1%;">
+      <mat-label class="label" >{{this.label}}</mat-label>
+      <span><mat-icon class="close-modal-valuer" (click)="modalData()" style="padding-right: 3%;">close</mat-icon></span>
+    </div>
+
+    <!-- condition 2 table  -->
+   <ng-container *ngIf="data.terminalValueSelectedType === 'tvPatBased'">
+    <div class="container-fluid beta-table-container">
+      <p class="terminal-working-header"><span class="terminal-value-bullet">&bull;</span>{{appValues.TERMINAL_VALUE_WORKING.terminalValuePatBased.nameOne}}</p>
+      <table class="beta-table">
+        <thead class="sticky-header">
+          <tr class="t-header">
+            <th style="width: 70%;">Particulars</th>
+            <th style="text-align: center !important;">Amount {{loadUnits(data?.formOneAndThreeData)}}</th>
+          </tr>
+        </thead>
+        <tbody class="beta-scrollable">
+          <tr class="content">
+            <td style="font-size: 11px !important;padding: 1%;" class="make-light">Pat (Profit After Tax)</td>
+            <td style="font-size: 11px !important;padding: 1%;text-align: center;" class="make-light">
+              <a  target="_blank">
+                {{ data?.terminalYearWorking?.pat ? formatNumber(data?.terminalYearWorking?.pat) : '-'}}
+              </a>
+            </td>
+          </tr>
+          <tr class="content">
+            <td style="font-size: 11px !important;padding: 1%;" class="make-light">Depn And Amortisation</td>
+            <td style="font-size: 11px !important;padding: 1%;text-align: center;" class="make-light"><a  target="_blank">{{ data?.terminalYearWorking?.depAndAmortisation ? formatNumber(data?.terminalYearWorking?.depAndAmortisation) : '-'}}</a></td>
+          </tr>
+          <tr class="content">
+            <td style="font-size: 11px !important;padding: 1%;" class="make-light">Other Non-Cash Item</td>
+            <td style="font-size: 11px !important;padding: 1%;text-align: center;" class="make-light"><a  target="_blank">{{ data?.terminalYearWorking?.onCashItems ? formatNumber(data?.terminalYearWorking?.onCashItems) : '-'}}</a></td>
+          </tr>
+          <tr class="content">
+            <td style="font-size: 11px !important;padding: 1%;" class="make-light">Change In NCA</td>
+            <td style="font-size: 11px !important;padding: 1%;text-align: center;" class="make-light"><a  target="_blank">{{ data?.terminalYearWorking?.nca ? formatNumber(data?.terminalYearWorking?.nca) : '-'}}</a></td>
+          </tr>
+          <tr class="content">
+            <td style="font-size: 11px !important;padding: 1%;" class="make-light">Change In Borrowings</td>
+            <td style="font-size: 11px !important;padding: 1%;text-align: center;" class="make-light"><a  target="_blank">{{ data?.terminalYearWorking?.changeInBorrowings ? formatNumber(data?.terminalYearWorking?.changeInBorrowings) : '-'}}</a></td>
+          </tr>
+          <tr class="content">
+            <td style="font-size: 11px !important;padding: 1%;" class="make-light">Add/Less Deferred Tax Assets (Net)</td>
+            <td style="font-size: 11px !important;padding: 1%;text-align: center;" class="make-light"><a  target="_blank">{{ data?.terminalYearWorking?.defferedTaxAssets ? formatNumber(data?.terminalYearWorking?.defferedTaxAssets) : '-'}}</a></td>
+          </tr>
+          <tr class="content">
+            <td style="font-size: 11px !important;padding: 1%;" class="make-light">Net Cash Flow</td>
+            <td style="font-size: 11px !important;padding: 1%;text-align: center;" class="make-light"><a  target="_blank">{{ data?.terminalYearWorking?.netCashFlow ? formatNumber(data?.terminalYearWorking?.netCashFlow) : '-'}}</a></td>
+          </tr>
+          <tr class="content">
+            <td style="font-size: 11px !important;padding: 1%;" class="make-light">Change in Fixed Assets</td>
+            <td style="font-size: 11px !important;padding: 1%;text-align: center;" class="make-light"><a  target="_blank">{{ data?.terminalYearWorking?.fixedAssets ? formatNumber(data?.terminalYearWorking?.fixedAssets) : '-'}}</a></td>
+          </tr>
+          <tr class="content">
+            <td style="font-size: 11px !important;padding: 1%;" class="make-light">FCFE</td>
+            <td style="font-size: 11px !important;padding: 1%;text-align: center;" class="make-light"><a  target="_blank">{{ data?.terminalYearWorking?.fcff ? formatNumber(data?.terminalYearWorking?.fcff) : '-'}}</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="container-fluid beta-table-container" style="padding-top: 3%;padding-bottom: 3%;">
+      <p class="terminal-working-header"><span class="terminal-value-bullet">&bull;</span>{{appValues.TERMINAL_VALUE_WORKING.terminalValuePatBased.nameTwo}}</p>
+      <table class="beta-table">
+        <thead class="sticky-header">
+          <tr class="t-header">
+            <th style="width: 70%;">Particulars</th>
+            <th style="text-align: center !important;">Amount {{loadUnits(data?.formOneAndThreeData)}}</th>
+          </tr>
+        </thead>
+        <tbody class="beta-scrollable">
+          <tr class="content">
+            <td style="font-size: 11px !important;padding: 1%;" class="make-light">Terminal Year Cash Flow</td>
+            <td style="font-size: 11px !important;padding: 1%;text-align: center;" class="make-light">
+              <a  target="_blank">
+                {{ data?.terminalYearCashFlowSection?.freeCashFlow ? formatNumber(data?.terminalYearCashFlowSection?.freeCashFlow) : '-'}}
+              </a>
+            </td>
+          </tr>
+          <tr class="content">
+            <td style="font-size: 11px !important;padding: 1%;" class="make-light">Growth Rate</td>
+            <td style="font-size: 11px !important;padding: 1%;text-align: center;" class="make-light"><a  target="_blank">{{ data?.terminalYearCashFlowSection?.terminalGrowthRate ? (formatNumber(data?.terminalYearCashFlowSection?.terminalGrowthRate) + '%') : '-'}}</a></td>
+          </tr>
+          <tr class="content">
+            <td style="font-size: 11px !important;padding: 1%;" class="make-light">{{data.isFcfe ? 'Discount Factor (KE)' : 'Discount Factor (WACC)'}}</td>
+            <td style="font-size: 11px !important;padding: 1%;text-align: center;" class="make-light"><a  target="_blank">
+              {{ 
+                data.isFcfe ? 
+                (data?.formOneAndThreeData?.adjustedCostOfEquity ? (formatNumber(data?.formOneAndThreeData?.adjustedCostOfEquity) + '%') : '-') : 
+                (data?.formOneAndThreeData?.wacc ? (formatNumber(data?.formOneAndThreeData?.wacc) + '%') : '-')
+              }}
+            </a></td>
+          </tr>
+          <tr class="content">
+            <td style="font-size: 11px !important;padding: 1%;" class="make-light">Terminal Value</td>
+            <td style="font-size: 11px !important;padding: 1%;text-align: center;" class="make-light"><a  target="_blank">{{ data?.terminalYearCashFlowSection?.terminalYearValue ? formatNumber(data?.terminalYearCashFlowSection?.terminalYearValue) : '-'}}</a></td>
+          </tr>
+          <!-- <tr class="content">
+            <td style="font-size: 11px !important;padding: 1%;" class="make-light">PV Factor</td>
+            <td style="font-size: 11px !important;padding: 1%;text-align: center;" class="make-light"><a  target="_blank">{{ data?.terminalYearCashFlowSection?.pvFactor ? formatNumber(data?.terminalYearCashFlowSection?.pvFactor) : '-'}}</a></td>
+          </tr>
+          <tr class="content">
+            <td style="font-size: 11px !important;padding: 1%;" class="make-light">PV Of Terminal Year</td>
+            <td style="font-size: 11px !important;padding: 1%;text-align: center;" class="make-light"><a  target="_blank">{{ data?.terminalYearCashFlowSection?.pvTerminalValue ? formatNumber(data?.terminalYearCashFlowSection?.pvTerminalValue) : '-'}}</a></td>
+          </tr> -->
+        </tbody>
+      </table>
+    </div>
+   </ng-container>
+
+   <!-- condition 1 table -->
+   <ng-container *ngIf="data.terminalValueSelectedType === 'tvCashFlowBased'">
+    <div class="container-fluid beta-table-container" style="padding-bottom: 3%;">
+      <p class="terminal-working-header"><span class="terminal-value-bullet">&bull;</span>{{appValues.TERMINAL_VALUE_WORKING.terminalValueCashFlowBased.name}}</p>
+      <table class="beta-table">
+        <thead class="sticky-header">
+          <tr class="t-header">
+            <th style="width: 70%;">Particulars</th>
+            <th style="text-align: center !important;">Amount {{loadUnits(data?.formOneAndThreeData)}}</th>
+          </tr>
+        </thead>
+        <tbody class="beta-scrollable">
+          <tr class="content">
+            <td style="font-size: 11px !important;padding: 1%;" class="make-light">Free
+              Cash Flows at end of FY</td>
+            <td style="font-size: 11px !important;padding: 1%;text-align: center;" class="make-light">
+              <a  target="_blank">
+                {{ data?.terminalYearWorking?.finalYearfreeCashFlow ? formatNumber(data?.terminalYearWorking?.finalYearfreeCashFlow) : '-'}}
+              </a>
+            </td>
+          </tr>
+          <tr class="content">
+            <td style="font-size: 11px !important;padding: 1%;" class="make-light">Terminal Growth Rate</td>
+            <td style="font-size: 11px !important;padding: 1%;text-align: center;" class="make-light"><a  target="_blank">{{ data?.terminalYearCashFlowSection?.terminalGrowthRate ? (formatNumber(data?.terminalYearCashFlowSection?.terminalGrowthRate) + '%') : '-'}}</a></td>
+          </tr>
+          <tr class="content">
+            <td style="font-size: 11px !important;padding: 1%;" class="make-light">{{data.isFcfe ? 'Discount Rate' : 'Wacc Rate'}}</td>
+            <td style="font-size: 11px !important;padding: 1%;text-align: center;" class="make-light"><a  target="_blank">{{ 
+              data.isFcfe ? 
+              (data?.formOneAndThreeData?.adjustedCostOfEquity ? (formatNumber(data?.formOneAndThreeData?.adjustedCostOfEquity) + '%') : '-') : 
+              (data?.formOneAndThreeData?.wacc ? (formatNumber(data?.formOneAndThreeData?.wacc) + '%') : '-')
+            }}</a></td>
+          </tr>
+          <tr class="content">
+            <td style="font-size: 11px !important;padding: 1%;" class="make-light">Terminal Value</td>
+            <td style="font-size: 11px !important;padding: 1%;text-align: center;" class="make-light"><a  target="_blank">{{ data?.terminalYearWorking?.terminalValueBasedOnLastYear ? formatNumber(data?.terminalYearWorking?.terminalValueBasedOnLastYear) : '-' }}</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+   </ng-container>
   </div>

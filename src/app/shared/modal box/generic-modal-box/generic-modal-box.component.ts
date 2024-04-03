@@ -149,6 +149,7 @@ loadModel(data:any){
   }
   if(data.value === this.appValues.CIQ_COMPANY_DETAILS.value) return this.label = this.appValues.CIQ_COMPANY_DETAILS.name;
   if(data.data?.value === this.appValues.CHECKLIST_TYPES.DATA_CHECKLIST.value) return this.label = this.appValues.CHECKLIST_TYPES.DATA_CHECKLIST.name;
+  if(data.value === this.appValues.TERMINAL_VALUE_WORKING.value) return this.label = this.appValues.TERMINAL_VALUE_WORKING.name;
   return '';
 }
 
@@ -628,5 +629,11 @@ get downloadTemplate() {
         });
       }
     );
+  }
+
+  loadUnits(formOneAndThreeData:any){
+    if(formOneAndThreeData.reportingUnit !== 'absolute')
+      return `in ${formOneAndThreeData.currencyUnit} (${formOneAndThreeData.reportingUnit})`;
+    return `in ${formOneAndThreeData.currencyUnit}`;
   }
 }

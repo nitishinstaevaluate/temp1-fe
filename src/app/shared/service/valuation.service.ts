@@ -50,5 +50,9 @@ export class ValuationService {
   ruleElevenValuation(payload:any,ruleElevenUaId?:string){
     return this.http.put(`${HOST}eleven-ua/init-elevenUa-valuation?ruleElevenUaId=${ruleElevenUaId}`,payload)
   }
+
+  terminalValueWorking(processId:any){
+    return this.http.get(`${HOST}valuations/calculate-terminal-value?id=${processId}`)
+  }
   }
 

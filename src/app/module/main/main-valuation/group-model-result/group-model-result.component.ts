@@ -45,8 +45,8 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
   navMaxValue: number=100;
   maxModelValue: any;
   totalModelWeightageValue: any
-  isNotRuleElevenUaAndNav=isNotRuleElevenUaAndNav
-  
+  isNotRuleElevenUaAndNav=isNotRuleElevenUaAndNav;
+  terminalValueSelectedType:any = '';
   constructor(private calculationsService:CalculationsService,
     private snackBar:MatSnackBar,
     private processStatusManagerService:ProcessStatusManagerService){
@@ -207,7 +207,9 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
       return false
     }
   }
-  
+  terminalValueType(terminalValueType:any){
+    this.terminalValueSelectedType = terminalValueType;
+  }
   saveAndNext(){
     let processStateStep,processCompleteState=false;
     if(this.transferStepperthree.formOneAndThreeData.model.length>1){
@@ -228,7 +230,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
       localStorage.setItem('stepFiveStats','true');
     }
     const processStateModel ={
-      fifthStageInput:{valuationResultReportId:this.transferStepperthree?.formFourData.valuationId,totalWeightageModel:this.totalModelWeightageValue,formFillingStatus:processCompleteState},
+      fifthStageInput:{valuationResultReportId:this.transferStepperthree?.formFourData.valuationId,totalWeightageModel:this.totalModelWeightageValue,formFillingStatus:processCompleteState,terminalValueSelectedType:this.terminalValueSelectedType},
       step:processStateStep
     }
   

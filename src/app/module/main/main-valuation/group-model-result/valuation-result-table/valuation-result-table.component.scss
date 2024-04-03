@@ -212,6 +212,18 @@
     padding-top: 0%;
     font-family: 'AR One Sans', sans-serif
   }
+
+  .terminal-working-button {
+    background-color: #1ecf73;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    padding-left: 0%;
+    padding-right: 0%;
+    padding-top: 0%;
+    font-family: 'AR One Sans', sans-serif;
+    font-size: 13px;
+  }
   .exp-a{
     font-size: 14px;
     color: white;
@@ -220,6 +232,13 @@
   /* Add hover effect for a polished look */
   .exp:hover {
     background-color: #0056b3; /* Slightly darker blue on hover */
+  }
+
+  .terminal-working-options{
+    color: #666666 !important;
+    font-size: 13px !important;
+    font-family: 'AR One Sans', sans-serif !important;
+    padding-left: 1%;
   }
 
   // loader css starts
@@ -380,4 +399,43 @@
     left: 0;
     z-index: 1;
   }
+  .remove-bottom-margin{
+    margin-bottom: 0px;
+  }
+
+  .tool-class svg {
+    cursor: pointer !important;
+    .path-svg{
+      stroke:#27d69b !important;
+      stroke-width:45px !important;
+      transition: ease-out 0.3s !important;
+      cursor: pointer !important;
+    }
+    .model-polyline{
+      stroke:#27d69b !important;
+      transition: ease-out 0.3s !important;
+      cursor: pointer !important;
+    }
+    line{
+      stroke:#27d69b !important;
+      transition: ease-out 0.3s !important;
+      cursor: pointer !important;
+    }
+  }
+
+  ::ng-deep .model-tooltip .mdc-tooltip__surface {
+    max-width: 500px !important;
+    font-size: 14px !important;
+    outline: none;
+    border: 1px solid #b4b4b4 !important;
+    border-radius: 8px !important;
+    color:#004e67 !important;
+    transition: 0.1s ease-out !important;
+    font-family: 'AR One Sans', sans-serif !important;
+    line-height: 165% !important;
+    padding:2% !important;
+    box-shadow: 1px 2px 10px #eeeeee !important;
+    background-color:#eeeeee !important;
+    text-align:justify !important;
+}
   // new scss ends

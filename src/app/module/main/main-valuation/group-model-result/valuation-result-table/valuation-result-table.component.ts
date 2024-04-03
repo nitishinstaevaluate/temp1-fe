@@ -1,11 +1,15 @@
-import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {  MatTableDataSource } from '@angular/material/table';
-import { COMMON_COLUMN, EXCESS_EARNING_COLUMN, FCFE_COLUMN, FCFF_COLUMN, MODELS} from 'src/app/shared/enums/constant';
+import { COMMON_COLUMN, EXCESS_EARNING_COLUMN, FCFE_COLUMN, FCFF_COLUMN, MODELS, helperText} from 'src/app/shared/enums/constant';
 import { formatPositiveAndNegativeValues } from 'src/app/shared/enums/functions';
+import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal-box/generic-modal-box.component';
 import { CustomDatePipe } from 'src/app/shared/pipe/date.pipe';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.service';
+import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
+import { ValuationService } from 'src/app/shared/service/valuation.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -15,6 +19,7 @@ import { environment } from 'src/environments/environment';
 })
 export class ValuationResultTableComponent implements OnInit, OnChanges{
 @Input() transferStepperthree:any;
+@Output() terminalValueType = new EventEmitter<any>();
 @ViewChild('dynamicTable') dynamicTable!: ElementRef;
 
 HOST = environment.baseUrl
@@ -44,6 +49,9 @@ isLoader=false;
 displayFcfeColumn=FCFE_COLUMN;
 displayFcffColumn=FCFF_COLUMN;
 displayExcessEarnColumn=EXCESS_EARNING_COLUMN;
+helperText=helperText;
+terminalValueSelectedType='';
+terminalYearWorking:any;
 getKeys(navData:any){
 this.dataSourceNav =[navData].map((response:any)=>{
   let obj = Object.values(response);
@@ -70,15 +78,20 @@ ngOnInit(): void {}
 
 constructor(private excelAndReportService:ExcelAndReportService,
   private snackbar:MatSnackBar,
-  private customDatePipe:CustomDatePipe){}
+  private customDatePipe:CustomDatePipe,
+  private dialog: MatDialog,
+  private processManagerService: ProcessStatusManagerService,
+  private valuationService: ValuationService){}
 
 ngOnChanges(changes:SimpleChanges): void {
   let equityValuationDate:any;
   this.formData = this.transferStepperthree;
+  this.loadStageFiveDetails();
   if(this.transferStepperthree?.formOneAndThreeData && !this.transferStepperthree?.formOneAndThreeData?.model?.includes(MODELS.RULE_ELEVEN_UA)){
     this.transferStepperthree?.formFourData?.appData?.valuationResult.map((response:any)=>{
     if(response.model === 'FCFE'){
       this.fcfeColumn = response?.columnHeader;
+      this.terminalYearWorking = response.terminalYearWorking;
       this.dataSourceFcfe = (this.transposeData(response.valuationData))?.slice(1);
 
       equityValuationDate = this.customDatePipe.transform(response?.provisionalDate);
@@ -99,11 +112,11 @@ ngOnChanges(changes:SimpleChanges): void {
       this.dataSourceFcfe = this.dataSourceFcfe.map((subArray: any, index: any) => {
       
         if(checkIfKeyExistInResult){
-          const stubIndex = 17;
-        const equityValueIndex = 18;
+          const stubIndex = 18;
+        const equityValueIndex = 19;
           
         if (!checkIfStubExistInColumnHeaders) {
-          this.displayFcfeColumn.splice(16, 1, `Equity Value on ${equityValuationDate}`);
+          this.displayFcfeColumn.splice(17, 1, `Equity Value on ${equityValuationDate}`);
           
           if (!this.displayFcfeColumn.includes('Add:Stub Period Adjustment')) {
             this.displayFcfeColumn.splice(stubIndex, 0, 'Add:Stub Period Adjustment');
@@ -132,13 +145,13 @@ ngOnChanges(changes:SimpleChanges): void {
               return item;
             });
           }
-            this.displayFcfeColumn.splice(16, 1, `Equity Value on ${equityValuationDate}`);
+            this.displayFcfeColumn.splice(17, 1, `Equity Value on ${equityValuationDate}`);
         }
     
         return [this.displayFcfeColumn[index], ...subArray.slice(1)];
         }
         else{
-          this.displayFcfeColumn.splice(16, 1, `Equity Value on ${this.formatDate(this.transferStepperthree.formOneAndThreeData.valuationDate)}`);
+          this.displayFcfeColumn.splice(17, 1, `Equity Value on ${this.formatDate(this.transferStepperthree.formOneAndThreeData.valuationDate)}`);
           const indexOfEquity = this.displayFcfeColumn.findIndex(item => item.includes('Equity Value as on'));
           const indexOfStub = this.displayFcfeColumn.findIndex(item => item.includes('Add:Stub Period Adjustment'));
           if (indexOfEquity !== -1) {
@@ -178,11 +191,11 @@ ngOnChanges(changes:SimpleChanges): void {
       
       this.dataSourceFcff = this.dataSourceFcff.map((subArray: any, index: any) => {
         if(checkIfKeyExistInResult){
-          const stubIndex = 18;
-          const equityValueIndex = 19;
+          const stubIndex = 19;
+          const equityValueIndex = 20;
       
           if (!checkIfStubExistInColumnHeaders) {
-          this.displayFcffColumn.splice(17, 1, `Equity Value on ${equityValuationDate}`);    
+          this.displayFcffColumn.splice(18, 1, `Equity Value on ${equityValuationDate}`);    
             if (!this.displayFcffColumn.includes('Add:Stub Period Adjustment')) {
                   this.displayFcffColumn.splice(stubIndex, 0, 'Add:Stub Period Adjustment');
               }
@@ -210,13 +223,13 @@ ngOnChanges(changes:SimpleChanges): void {
                       return item;
                   });
               }
-          this.displayFcffColumn.splice(17, 1, `Equity Value on ${equityValuationDate}`);
+          this.displayFcffColumn.splice(18, 1, `Equity Value on ${equityValuationDate}`);
           }
           return [this.displayFcffColumn[index], ...subArray.slice(1)];
           
         }
         else{
-          this.displayFcffColumn.splice(17, 1, `Equity Value on ${this.formatDate(this.transferStepperthree?.formOneAndThreeData?.valuationDate)}`);
+          this.displayFcffColumn.splice(18, 1, `Equity Value on ${this.formatDate(this.transferStepperthree?.formOneAndThreeData?.valuationDate)}`);
           const indexOfEquity = this.displayFcffColumn.findIndex(item => item.includes('Equity Value as on'));
           const indexOfStub = this.displayFcffColumn.findIndex(item => item.includes('Add:Stub Period Adjustment'));
           if (indexOfEquity !== -1) {
@@ -496,6 +509,58 @@ isOnlyMarketApproach(){
     return true;
   }
   return false;
+}
+
+terminalValueOptions(options:string){
+  if(options === 'tvCashFlowBased'){
+    this.terminalValueSelectedType = options;
+  }else{
+    this.terminalValueSelectedType = options;
+  }
+  this.terminalValueType.emit(options);
+}
+
+async loadTerminalValueWorking(){
+  if(!this.terminalValueSelectedType)
+    return this.snackbar.open('Terminal value basis is required for viewing terminal workings', 'Ok',{
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+      duration: 4000,
+      panelClass: 'app-notification-error'
+  })
+  // calculating terminal value cash flow section
+  let terminalYearCashFlowSection:any;
+  try{
+    terminalYearCashFlowSection = await this.valuationService.terminalValueWorking(localStorage.getItem('processStateId')).toPromise();
+  }
+  catch(error){
+    throw error;
+  }
+
+  const isFcfe = this.transferStepperthree?.formOneAndThreeData.model.includes(MODELS.FCFE);
+  const data = {
+    terminalValueSelectedType:this.terminalValueSelectedType,
+    value:'terminalValueWorking',
+    terminalYearWorking:this.terminalYearWorking,
+    terminalYearCashFlowSection: terminalYearCashFlowSection.terminalValueWorking,
+    formOneAndThreeData:this.transferStepperthree?.formOneAndThreeData,
+    isFcfe
+  }
+
+  this.dialog.open(GenericModalBoxComponent, {data,width:'50%',maxHeight:'90vh', panelClass:'custom-dialog-container'});
+  return;
+}
+
+loadStageFiveDetails(){
+  this.processManagerService.getStageWiseDetails(localStorage.getItem('processStateId'), 'fifthStageInput').subscribe((response:any)=>{
+    if(response.status){
+      const fifthStageDetails = response.data.fifthStageInput;
+      if(fifthStageDetails.terminalValueSelectedType){
+        this.terminalValueSelectedType = fifthStageDetails.terminalValueSelectedType
+        this.terminalValueType.emit(fifthStageDetails.terminalValueSelectedType);
+      }
+    }
+  })
 }
 }
 
