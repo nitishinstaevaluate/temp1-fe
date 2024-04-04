@@ -78,7 +78,7 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
   calculateTotalD(){
     if(this.formData){
       this.totalCalculationD = this.formData?.formFourData?.appData?.inputData?.fairValueImmovableProp ? parseFloat(this.formData.formFourData.appData.inputData.fairValueImmovableProp) : 0;
-      return this.formData?.formFourData?.appData?.inputData?.fairValueImmovableProp ? formatNumber(this.formData.formFourData.appData.inputData.fairValueImmovableProp) : '-';
+      return this.formData?.formFourData?.appData?.inputData?.fairValueImmovableProp && this.formData?.formFourData?.appData?.inputData?.fairValueImmovableProp !== '0' ? formatNumber(this.formData.formFourData.appData.inputData.fairValueImmovableProp) : '-';
     }
   }
 
