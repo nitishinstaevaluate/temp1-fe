@@ -244,7 +244,7 @@ export const ALL_MODELS = {
     },
     TERMINAL_VALUE_WORKING:{
       value:'terminalValueWorking',
-      name:"Calculation of terminal value",
+      name:"Terminal value working",
       terminalValueCashFlowBased:{
         value:'terminalValueCashFlowBased',
         name:"Calculation of terminal value"
@@ -252,7 +252,7 @@ export const ALL_MODELS = {
       terminalValuePatBased:{
         value:'terminalValuePatBased',
         nameOne:"Calculation of Terminal Year Cash Flows",
-        nameTwo:"Terminal Year Cash Flow"
+        nameTwo:"Calculation of terminal value"
       }
     }
   }
