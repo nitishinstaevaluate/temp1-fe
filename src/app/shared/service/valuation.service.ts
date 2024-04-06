@@ -54,5 +54,9 @@ export class ValuationService {
   terminalValueWorking(processId:any){
     return this.http.get(`${HOST}valuations/calculate-terminal-value?id=${processId}`)
   }
+
+  revaluationProcess(processId:any, type:any){
+    return this.http.get(`${HOST}valuations/re-valuation/${processId}/${type}`)
+  }
   }
 

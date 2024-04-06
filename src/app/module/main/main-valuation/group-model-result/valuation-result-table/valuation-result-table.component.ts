@@ -50,8 +50,9 @@ displayFcfeColumn=FCFE_COLUMN;
 displayFcffColumn=FCFF_COLUMN;
 displayExcessEarnColumn=EXCESS_EARNING_COLUMN;
 helperText=helperText;
-terminalValueSelectedType='';
+terminalValueSelectedType='tvCashFlowBased';
 terminalYearWorking:any;
+dcfLoader = false;
 getKeys(navData:any){
 this.dataSourceNav =[navData].map((response:any)=>{
   let obj = Object.values(response);
@@ -84,9 +85,17 @@ constructor(private excelAndReportService:ExcelAndReportService,
   private valuationService: ValuationService){}
 
 ngOnChanges(changes:SimpleChanges): void {
-  let equityValuationDate:any;
   this.formData = this.transferStepperthree;
   this.loadStageFiveDetails();
+  this.onTabSelectionChange();
+}
+  
+transposeData(data: any[][]): any[][] {
+  return data[0].map((_, columnIndex) => data.map((row) => row[columnIndex]));
+}
+
+loadValuationTable(){
+  let equityValuationDate:any;
   if(this.transferStepperthree?.formOneAndThreeData && !this.transferStepperthree?.formOneAndThreeData?.model?.includes(MODELS.RULE_ELEVEN_UA)){
     this.transferStepperthree?.formFourData?.appData?.valuationResult.map((response:any)=>{
     if(response.model === 'FCFE'){
@@ -167,6 +176,7 @@ ngOnChanges(changes:SimpleChanges): void {
     }
     if(response.model === 'FCFF'){
       this.fcffColumn=response?.columnHeader;
+      this.terminalYearWorking = response.terminalYearWorking;
       this.dataSourceFcff = (this.transposeData(response.valuationData))?.slice(1);
       
          equityValuationDate = this.customDatePipe.transform(response?.provisionalDate);
@@ -340,11 +350,6 @@ this.valuationDataReport && (this.transferStepperthree?.formOneAndThreeData?.mod
 this.dataSourceExcessEarn && this.transferStepperthree?.formOneAndThreeData?.model.includes('Excess_Earnings') ? this.excessEarn = true : this.excessEarn = false;
 this.dataSourceNav && this.transferStepperthree?.formOneAndThreeData?.model.includes('NAV') ? this.nav = true : this.nav = false;
 this.transferStepperthree?.formFourData?.appData && this.transferStepperthree?.formOneAndThreeData?.model.includes(MODELS.RULE_ELEVEN_UA) ? this.ruleElevenUa = true : this.ruleElevenUa = false;
-  this.onTabSelectionChange();
-}
-  
-transposeData(data: any[][]): any[][] {
-  return data[0].map((_, columnIndex) => data.map((row) => row[columnIndex]));
 }
 
 checkIndustryOrCompany(){
@@ -511,13 +516,65 @@ isOnlyMarketApproach(){
   return false;
 }
 
-terminalValueOptions(options:string){
+async terminalValueOptions(options:string){
+  this.dcfLoader = true;
+  const snackBarRef = this.snackbar.open('Valuation Recalculating, please wait...', 'ok', {
+    horizontalPosition: 'right',
+    verticalPosition: 'top',
+    duration: -1,
+    panelClass: 'app-notification-success',
+  });
   if(options === 'tvCashFlowBased'){
-    this.terminalValueSelectedType = options;
-  }else{
+    this.terminalValueSelectedType = options;  
+  }
+  else{
     this.terminalValueSelectedType = options;
   }
+  await this.delay(1000);
+  this.valuationService.revaluationProcess(localStorage.getItem('processStateId'), options).subscribe((response:any)=>{
+    if(response.success){
+        this.dcfLoader = false;
+        snackBarRef.dismiss();
+        const modifiedAppData = {
+          reportId: response.reportId,
+          valuationResult: response.valuationResult
+        }
+        this.transferStepperthree.formFourData.appData = modifiedAppData;
+        this.loadValuationTable()
+        this.snackbar.open('Valuation has been recalculated', 'Ok',{
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+          duration: 4000,
+          panelClass: 'app-notification-success',
+        })
+      }
+      if(!response.status && !response.success){
+        this.snackbar.open('Valuation recalculation failed - try submitting valuation again', 'Ok',{
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+          duration: 7000,
+          panelClass: 'app-notification-error',
+        })
+      }
+    },(error)=>{
+      snackBarRef.dismiss();
+      this.dcfLoader = false;
+      this.snackbar.open('Valuation recalculation failed', 'Ok',{
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+        duration: 7000,
+        panelClass: 'app-notification-error',
+      })
+    })
   this.terminalValueType.emit(options);
+}
+
+delay(ms: number): Promise<void> {
+  return new Promise<void>((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, ms);
+  });
 }
 
 async loadTerminalValueWorking(){
@@ -558,6 +615,11 @@ loadStageFiveDetails(){
       if(fifthStageDetails.terminalValueSelectedType){
         this.terminalValueSelectedType = fifthStageDetails.terminalValueSelectedType
         this.terminalValueType.emit(fifthStageDetails.terminalValueSelectedType);
+      }
+      if(this.transferStepperthree?.formOneAndThreeData?.model?.includes(MODELS.FCFE) || this.transferStepperthree?.formOneAndThreeData?.model?.includes(MODELS.FCFF)){
+        this.terminalValueOptions(fifthStageDetails.terminalValueSelectedType || this.terminalValueSelectedType);
+      }else{
+        this.loadValuationTable()
       }
     }
   })
