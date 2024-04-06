@@ -1124,3 +1124,11 @@ tr:hover {
   overflow-y: auto;
   max-height: calc(100vh - 50px);
 }
+
+.table-borderless td{
+  padding: 0.75rem;
+  background-color: #ffffff;
+}
+.table-borderless td:hover{
+  background-color:white;
+}
