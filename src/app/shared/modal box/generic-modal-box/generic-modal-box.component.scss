@@ -1137,3 +1137,11 @@ tr:hover {
   padding-right: 3px;
   color: #24b888;
 }
+
+.table-borderless td{
+  padding: 0.75rem;
+  background-color: #ffffff;
+}
+.table-borderless td:hover{
+  background-color:white;
+}
