@@ -625,7 +625,7 @@ loadStageFiveDetails(){
         this.terminalValueSelectedType = fifthStageDetails.terminalValueSelectedType
       }
       if(this.transferStepperthree?.formOneAndThreeData?.model?.includes(MODELS.FCFE) || this.transferStepperthree?.formOneAndThreeData?.model?.includes(MODELS.FCFF)){
-        this.terminalValueOptions(fifthStageDetails.terminalValueSelectedType || this.terminalValueSelectedType);
+        this.terminalValueOptions(fifthStageDetails?.terminalValueSelectedType || this.terminalValueSelectedType);
       }else{
         this.loadValuationTable()
       }
