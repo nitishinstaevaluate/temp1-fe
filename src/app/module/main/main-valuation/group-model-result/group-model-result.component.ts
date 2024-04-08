@@ -210,6 +210,41 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
   terminalValueType(terminalValueType:any){
     this.terminalValueSelectedType = terminalValueType;
   }
+  formFourAppData(appData:any){
+    if(appData?.valuationResult){
+      appData.valuationResult.map((response:any)=>{
+        if(response.model === 'FCFE'){
+          this.fcfeValuation =  response.valuation;
+          const fcfeIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "FCFE")
+          if(fcfeIndex === -1)
+          {
+            this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.fcfeValuation,weightage:this.fcfeSlider});
+          }
+          else{
+            this.calculateModelWeigtagePayload.results.splice(fcfeIndex,1,{model:response.model,value:this.fcfeValuation,weightage:this.fcfeSlider})
+          }
+        }
+        else if(response.model === 'FCFF'){
+          this.fcffValuation = response.valuation;
+          const fcffIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "FCFF");
+          if(fcffIndex === -1)
+          {
+            this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.fcffValuation,weightage:this.fcffSlider});
+          }
+          else{
+            this.calculateModelWeigtagePayload.results.splice(fcffIndex,1,{model:response.model,value:this.fcffValuation,weightage:this.fcffSlider});
+          }
+        }
+      });
+      this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
+        if(response.status){
+          this.totalModelWeightageValue = response.result;
+          this.data = response?.result?.modelValue;
+          this.finalWeightedValue = response?.result?.weightedVal ?? 0;
+        }
+      })
+    }
+  }
   saveAndNext(){
     let processStateStep,processCompleteState=false;
     if(this.transferStepperthree.formOneAndThreeData.model.length>1){

@@ -20,6 +20,7 @@ import { environment } from 'src/environments/environment';
 export class ValuationResultTableComponent implements OnInit, OnChanges{
 @Input() transferStepperthree:any;
 @Output() terminalValueType = new EventEmitter<any>();
+@Output() formFourAppData= new EventEmitter<any>();
 @ViewChild('dynamicTable') dynamicTable!: ElementRef;
 
 HOST = environment.baseUrl
@@ -87,6 +88,7 @@ constructor(private excelAndReportService:ExcelAndReportService,
 ngOnChanges(changes:SimpleChanges): void {
   this.formData = this.transferStepperthree;
   this.loadStageFiveDetails();
+  this.loadValuationTable()
   this.onTabSelectionChange();
 }
   
@@ -540,6 +542,7 @@ async terminalValueOptions(options:string){
           valuationResult: response.valuationResult
         }
         this.transferStepperthree.formFourData.appData = modifiedAppData;
+        this.formFourAppData.emit(this.transferStepperthree.formFourData.appData);
         this.loadValuationTable()
         this.snackbar.open('Valuation has been recalculated', 'Ok',{
           horizontalPosition: 'center',
@@ -549,6 +552,8 @@ async terminalValueOptions(options:string){
         })
       }
       if(!response.status && !response.success){
+        snackBarRef.dismiss();
+        this.dcfLoader = false;
         this.snackbar.open('Valuation recalculation failed - try submitting valuation again', 'Ok',{
           horizontalPosition: 'center',
           verticalPosition: 'bottom',
@@ -612,9 +617,8 @@ loadStageFiveDetails(){
   this.processManagerService.getStageWiseDetails(localStorage.getItem('processStateId'), 'fifthStageInput').subscribe((response:any)=>{
     if(response.status){
       const fifthStageDetails = response.data.fifthStageInput;
-      if(fifthStageDetails.terminalValueSelectedType){
+      if(fifthStageDetails?.terminalValueSelectedType){
         this.terminalValueSelectedType = fifthStageDetails.terminalValueSelectedType
-        this.terminalValueType.emit(fifthStageDetails.terminalValueSelectedType);
       }
       if(this.transferStepperthree?.formOneAndThreeData?.model?.includes(MODELS.FCFE) || this.transferStepperthree?.formOneAndThreeData?.model?.includes(MODELS.FCFF)){
         this.terminalValueOptions(fifthStageDetails.terminalValueSelectedType || this.terminalValueSelectedType);
