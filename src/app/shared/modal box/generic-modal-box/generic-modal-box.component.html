@@ -932,7 +932,7 @@
         <tbody class="beta-scrollable">
           <tr class="content">
             <td style="font-size: 11px !important;padding: 1%;" class="make-light">Free
-              Cash Flows at end of FY</td>
+              Cash Flows at end of FY {{data?.terminalYearWorking?.explicitYear ? "(" + data?.terminalYearWorking?.explicitYear + ")" : ''}}</td>
             <td style="font-size: 11px !important;padding: 1%;text-align: center;" class="make-light">
               <a  target="_blank">
                 {{ data?.terminalYearWorking?.finalYearfreeCashFlow ? formatNumber(data?.terminalYearWorking?.finalYearfreeCashFlow) : '-'}}
