@@ -160,17 +160,16 @@
       <p class="sidenote" *ngIf="valuationDateNote"><i>*as on {{valuationDateNote | date:'MMM d, yyyy'}}</i></p>
     </div>
     
+    <div class="header-container" *ngIf="mainIndustries?.length && !loader" (click)="toggleCollapse()">
+      <h2 class="sel-companies">
+        <button class="collapse-button">
+          <span *ngIf="collapsed">▶</span>
+          <span *ngIf="!collapsed">▼</span>
+        </button>
+        Selected companies
+      </h2>
+    </div>
     <div class="table-wrapper" *ngIf="mainIndustries?.length && !loader" style="padding-bottom: 1%;">
-      <div class="header-container" (click)="toggleCollapse()" style="width: 1380px;">
-        <h2 class="sel-companies">
-          <button class="collapse-button">
-            <span *ngIf="collapsed">▶</span>
-            <span *ngIf="!collapsed">▼</span>
-          </button>
-          Selected companies
-        </h2>
-        
-      </div>
       <table *ngIf="!collapsed" class="table-industry-based-company" style="width: 1380px;">
         <thead>
           <tr style="text-transform: capitalize;" class="header">
