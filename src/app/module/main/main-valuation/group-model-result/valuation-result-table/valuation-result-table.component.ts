@@ -544,7 +544,9 @@ async terminalValueOptions(options:string){
           valuationResult: response.valuationResult
         }
         this.transferStepperthree.formFourData.appData = modifiedAppData;
-        this.formFourAppData.emit(this.transferStepperthree.formFourData.appData);
+        if(this.transferStepperthree?.formOneAndThreeData?.model?.includes(MODELS.FCFF) || this.transferStepperthree?.formOneAndThreeData?.model?.includes(MODELS.FCFE) && this.transferStepperthree?.formOneAndThreeData?.model?.length > 1){
+          this.formFourAppData.emit(this.transferStepperthree.formFourData.appData);
+        }
         this.loadValuationTable()
         this.snackbar.open('Valuation has been recalculated', 'Ok',{
           horizontalPosition: 'center',
