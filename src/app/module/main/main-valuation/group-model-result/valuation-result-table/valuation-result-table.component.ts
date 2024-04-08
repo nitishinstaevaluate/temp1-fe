@@ -54,6 +54,7 @@ helperText=helperText;
 terminalValueSelectedType='tvCashFlowBased';
 terminalYearWorking:any;
 dcfLoader = false;
+processStateId:any;
 getKeys(navData:any){
 this.dataSourceNav =[navData].map((response:any)=>{
   let obj = Object.values(response);
@@ -86,6 +87,7 @@ constructor(private excelAndReportService:ExcelAndReportService,
   private valuationService: ValuationService){}
 
 ngOnChanges(changes:SimpleChanges): void {
+  this.processStateId = localStorage.getItem('processStateId');
   this.formData = this.transferStepperthree;
   this.loadStageFiveDetails();
   this.loadValuationTable()
