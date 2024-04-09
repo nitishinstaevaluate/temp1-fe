@@ -444,16 +444,34 @@ onRadioButtonChange(event:any){
 betaChange(event:any){
   const selectedValue = event.value;
   if(selectedValue){
-    if(selectedValue.includes('unlevered') || selectedValue.includes('levered')){
-      this.calculateBeta(BETA_SUB_TYPE[0]);
-    }
-    else if(selectedValue.includes('stock_beta')){
-      this.calculateStockBeta();
+  if(this.formTwoData?.formTwoData?.betaFrom !== 'aswathDamodaran'){
+      if(selectedValue.includes('unlevered') || selectedValue.includes('levered')){
+        this.calculateBeta(BETA_SUB_TYPE[0]);
+      }
+      else if(selectedValue.includes('stock_beta')){
+        this.calculateStockBeta();
+      }
+      else{
+        this.selectedSubBetaType = '';
+        this.fcfeForm.controls['beta'].setValue(1);
+        this.calculateCoeAndAdjustedCoe();
+      }
     }
     else{
-      this.selectedSubBetaType = '';
-      this.fcfeForm.controls['beta'].setValue(1);
-      this.calculateCoeAndAdjustedCoe();
+      const aswathDamodaranSelectedBetaObj = this.formTwoData?.formTwoData?.aswathDamodaranSelectedBetaObj;
+      if(selectedValue.includes('unlevered')){
+        this.fcfeForm.controls['beta'].setValue(aswathDamodaranSelectedBetaObj?.unleveredBeta);
+        this.calculateCoeAndAdjustedCoe();
+      }
+      else if(selectedValue.includes('levered')){
+        this.fcfeForm.controls['beta'].setValue(aswathDamodaranSelectedBetaObj?.beta);
+        this.calculateCoeAndAdjustedCoe();
+      }
+      else{
+        this.selectedSubBetaType = '';
+        this.fcfeForm.controls['beta'].setValue(1);
+        this.calculateCoeAndAdjustedCoe();
+      }
     }
   }
 }

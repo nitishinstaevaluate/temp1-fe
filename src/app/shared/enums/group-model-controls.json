@@ -993,6 +993,13 @@
                 "tooltip":"Level 4 Industries",
                 "label":"Industry Name (Level-4)"
             },
+            "industryAD":{
+                "name":"industryAD",
+                "placeholder":"Select industry",
+                "type":"text",
+                "tooltip":"Industries from Aswath Damodaran",
+                "label":"Industry"
+            },
             "companyName":{
                 "name":"companyName",
                 "placeholder":"Enter company name",
