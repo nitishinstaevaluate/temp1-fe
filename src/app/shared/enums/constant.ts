@@ -241,6 +241,19 @@ export const ALL_MODELS = {
     BETA_CALCULATION:{
       value:'betaCalculation',
       name:'Beta Computation'
+    },
+    TERMINAL_VALUE_WORKING:{
+      value:'terminalValueWorking',
+      name:"Terminal value working",
+      terminalValueCashFlowBased:{
+        value:'terminalValueCashFlowBased',
+        name:"Calculation of terminal value"
+      },
+      terminalValuePatBased:{
+        value:'terminalValuePatBased',
+        nameOne:"Calculation of Terminal Year Cash Flows",
+        nameTwo:"Calculation of terminal value"
+      }
     }
   }
 
@@ -262,7 +275,9 @@ export const ALL_MODELS = {
     taxRate:`Tax rate in valuation is the percentage applied to assess the tax liability or expense on taxable income, influencing the after-tax cash flows used in financial analysis.`,
     uploadTemplate:`Upload provisional statement for Profit & Loss and Balance Sheet as per template. Make sure the template format is as per the the provided excel template.`,
     uploadAuditedTemplate:`Upload audited template.`,
-    discountRateValue:`Less discount rate.`
+    discountRateValue:`Less discount rate.`,
+    tvCashFlowBased:`Estimation of a company's worth beyond the forecast period, based on its last year cash flow, discount rate, and long-term growth rate. It represents the perpetual value of the company assuming constant growth.`,
+    tvPatBased:`Estimation of company value at the end of a forecast period, calculated based on the last year's Profit After Tax, discount rate, and long-term growth rate. It signifies the perpetual value of the company considering profit figures.`
   }
 
   export const CHECKLIST_TYPES = {
@@ -338,7 +353,8 @@ export const FCFE_COLUMN = [
  'Discounting Period',
  'Discounting Factor',
  'Present Value of FCFE',
- 'Sum of Discounted Cash Flows',
+ 'Sum of Discounted Cash Flows (Explicit Period)',
+ 'Present Value of Terminal Value',
  'Add: Cash & Cash Equivalents',
  'Add: Surplus Assets/Investments',
  'Add/Less: Other Adjustments(if any)',
@@ -359,7 +375,8 @@ export const FCFF_COLUMN = [
   'Discounting Period',
   'Discounting Factor',
   'Present Value of FCFF',
-  'Sum of Discounted Cash Flows',
+  'Sum of Discounted Cash Flows (Explicit Period)',
+  'Present Value of Terminal Value',
   'Less: Debt as on Date',
   'Add: Cash & Cash Equivalents',
   'Add: Surplus Assets/Investments',

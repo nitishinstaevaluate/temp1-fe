@@ -14,7 +14,7 @@
 <div>
     <!-- <h4 class="card-header">Valuations Results</h4> -->
    <div >
-    <app-valuation-result-table [transferStepperthree]="transferStepperthree"></app-valuation-result-table>
+    <app-valuation-result-table (formFourAppData)="formFourAppData($event)" [transferStepperthree]="transferStepperthree" (terminalValueType)="terminalValueType($event)"></app-valuation-result-table>
    </div>
 </div>
 <!-- valuation results ends -->

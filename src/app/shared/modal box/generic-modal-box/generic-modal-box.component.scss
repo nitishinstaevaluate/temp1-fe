@@ -1124,6 +1124,19 @@ tr:hover {
   overflow-y: auto;
   max-height: calc(100vh - 50px);
 }
+.terminal-working-header{
+  color: #666666 !important;
+  font-size: 13px !important;
+  font-weight: 500;
+  font-family: 'AR One Sans', sans-serif !important;
+  margin-bottom: 0px;
+}
+.terminal-value-bullet{
+  font-size: 23px;
+  vertical-align: middle;
+  padding-right: 3px;
+  color: #24b888;
+}
 
 .table-borderless td{
   padding: 0.75rem;
