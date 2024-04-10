@@ -986,7 +986,14 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   }
 
   loadAswathDamodaranBetaIndustries(){
-    this.datareferenceService.getBetaIndustries().subscribe((betaResponse:any)=>{
+    this.datareferenceService.getIndianBetaIndustries().subscribe((betaResponse:any)=>{
+      if(!betaResponse?.length)
+        return this.snackBar.open('Indian Beta Industries not found', 'Ok',{
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 3000,
+          panelClass: 'app-notification-error',
+        })
       betaResponse.sort((a:any, b:any) => {
         const industryA = a.industry.toLowerCase();
         const industryB = b.industry.toLowerCase();
@@ -997,8 +1004,25 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
             return 1;
         }
         return 0;
-    });
+      });
       this.aswathDamodaranIndustries = betaResponse;
+      return;
+    }, (error)=>{
+      this.snackBar.open('Backend error - Indian Beta Industries not found', 'Ok',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 3000,
+        panelClass: 'app-notification-error',
+      })
     })
+  }
+
+  isOnlyDcfApproach(){
+    if(this.formOneData && (this.formOneData?.model?.includes(MODELS.FCFE) || this.formOneData?.model?.includes(MODELS.FCFF) || this.formOneData?.model?.includes(MODELS.EXCESS_EARNINGS)) && this.formOneData?.model?.length === 1){
+      return true;
+    }
+    else{
+      return false
+    }
   }
 }

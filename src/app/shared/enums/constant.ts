@@ -423,3 +423,8 @@ export const REPORT_OBJECTIVE = {
 export const INDUSTRY_BASED_COMPANY = ['COMPANYID', 'COMPANYNAME', 'SIMPLEINDUSTRYID', 'SIMPLEINDUSTRYDESCRIPTION'];
 
 export const BETA_SUB_TYPE = ['meanBeta', 'medianBeta'];
+
+export const BETA_FROM_TYPE = {
+  ASWATHDAMODARAN:'aswathDamodaran',
+  CAPITALIQ:'capitalIqBeta'
+}

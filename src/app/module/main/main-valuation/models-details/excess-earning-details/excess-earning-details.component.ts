@@ -13,7 +13,7 @@ import { MatStepper } from '@angular/material/stepper';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { hasError } from 'src/app/shared/enums/errorMethods';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
-import { BETA_SUB_TYPE, MODELS } from 'src/app/shared/enums/constant';
+import { BETA_FROM_TYPE, BETA_SUB_TYPE, MODELS } from 'src/app/shared/enums/constant';
 import { CiqSPService } from 'src/app/shared/service/ciq-sp.service';
 import { formatNumber } from 'src/app/shared/enums/functions';
 
@@ -457,7 +457,7 @@ onRadioButtonChange(event:any){
 betaChange(event:any){
   const selectedValue = event.value;
 if(selectedValue){
-  if(this.formTwoData?.formTwoData?.betaFrom !== 'aswathDamodaran'){
+  if(this.formTwoData?.formTwoData?.betaFrom !== BETA_FROM_TYPE.ASWATHDAMODARAN){
     if(selectedValue.includes('unlevered') || selectedValue.includes('levered')){
       this.calculateBeta(BETA_SUB_TYPE[0]);
     }
@@ -670,6 +670,15 @@ calculateStockBeta(){
   }
 
   handleBetaClick() {
+    if(this.formTwoData?.formTwoData?.betaFrom === BETA_FROM_TYPE.ASWATHDAMODARAN){
+      this.snackBar.open('Workings available for Capital Iq database only', 'Ok',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 5000,
+        panelClass: 'app-notification-error'
+      })
+      return;
+    }
     if (this.excessEarningForm.controls['betaType'].value === 'market_beta' || this.excessEarningForm.controls['betaType'].value === 'stock_beta') {
       this.snackBar.open('Workings available for relevered and unlevered beta only', 'Ok',{
         horizontalPosition: 'right',

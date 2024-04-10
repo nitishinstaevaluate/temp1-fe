@@ -11,7 +11,7 @@ import groupModelControl from '../../../../../shared/enums/group-model-controls.
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { hasError } from 'src/app/shared/enums/errorMethods';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
-import { BETA_SUB_TYPE, MODELS } from 'src/app/shared/enums/constant';
+import { BETA_FROM_TYPE, BETA_SUB_TYPE, MODELS } from 'src/app/shared/enums/constant';
 import { CiqSPService } from 'src/app/shared/service/ciq-sp.service';
 import { convertToNumberOrZero, formatNumber } from 'src/app/shared/enums/functions';
 
@@ -211,7 +211,7 @@ loadOnChangeValue(){
   (val:any) => {
       if(!val) return;
       if (val == 'Industry_Based') {
-        if(this.formTwoData.formTwoData.betaFrom !== 'aswathDamodaran'){
+        if(this.formTwoData.formTwoData.betaFrom !== BETA_FROM_TYPE.ASWATHDAMODARAN){
           this.loadIndustryBasedDeRatioAndEquityRatio();
         }
         else{
@@ -614,7 +614,7 @@ onRadioButtonChange(event:any){
 betaChange(event:any){
   const selectedValue = event.value;
 if(selectedValue){
-  if(this.formTwoData?.formTwoData?.betaFrom !== 'aswathDamodaran'){
+  if(this.formTwoData?.formTwoData?.betaFrom !== BETA_FROM_TYPE.ASWATHDAMODARAN){
     if(selectedValue.includes('unlevered') || selectedValue.includes('levered')){
       this.calculateBeta(BETA_SUB_TYPE[0]);
     }
@@ -845,6 +845,15 @@ calculateStockBeta(){
   }
 
   handleBetaClick() {
+    if(this.formTwoData?.formTwoData?.betaFrom === BETA_FROM_TYPE.ASWATHDAMODARAN){
+      this.snackBar.open('Workings available for Capital Iq database only', 'Ok',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: -1,
+        panelClass: 'app-notification-error'
+      })
+      return;
+    }
     if (this.fcffForm.controls['betaType'].value === 'market_beta' || this.fcffForm.controls['betaType'].value === 'stock_beta') {
       this.snackBar.open('Workings available for relevered and unlevered beta only', 'Ok',{
         horizontalPosition: 'right',

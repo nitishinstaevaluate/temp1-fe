@@ -6,7 +6,7 @@
       </div>
     </div>
     <form [formGroup]="inputScreenForm" class="inputscrn">
-      <div class="beta-container">
+      <div class="beta-container" *ngIf="isOnlyDcfApproach()">
         <span class="text">Select beta from:</span>
         <div class="radio-group">
           <span>
