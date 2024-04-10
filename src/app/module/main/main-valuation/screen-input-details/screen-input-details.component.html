@@ -6,8 +6,46 @@
       </div>
     </div>
     <form [formGroup]="inputScreenForm" class="inputscrn">
-      <div class="row">
-
+      <div class="beta-container" *ngIf="isOnlyDcfApproach()">
+        <span class="text">Select beta from:</span>
+        <div class="radio-group">
+          <span>
+            <input type="radio" formControlName="betaFrom" value="capitalIqBeta" (click)="betaSelection($event)">
+            Capital IQ(S&P) 
+            <span class="tool-class" style="vertical-align: sub;padding-left: 4px;">
+              <svg [matTooltip]="helperText.capitalIqBetaDesc" matTooltipPosition="above" matTooltipClass='model-tooltip' xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
+                <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:37px" 
+                fill="#ff0000"></path>
+                <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px">
+                </polyline><line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px">
+              </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
+            </span>
+          </span>
+          <span class="next-beta-radio">
+            <input type="radio" formControlName="betaFrom" value="aswathDamodaran" (click)="betaSelection($event)">
+            Aswath Damodaran
+            <span class="tool-class" style="vertical-align: sub;padding-left: 4px;">
+              <svg [matTooltip]="helperText.aswathDamodaranBetaDesc" matTooltipPosition="above" matTooltipClass='model-tooltip' xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
+                <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:37px" 
+                fill="#ff0000"></path>
+                <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px">
+                </polyline><line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px">
+              </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
+            </span>
+          </span>
+        </div>
+      </div>
+      <ng-container *ngIf="showCapitalIqField">
+        <!-- Great header starts -->
+        <!-- <div class="capital-iq-header">
+          <h1 class="header__text">
+            <span class="header__text-inner">Capital Iq Beta Reference</span>
+          </h1>
+          <div class="header__underline"></div>
+        </div> -->
+        <!-- Great header ends -->
+        
+        <div class="row">
         <!-- industry Name level-3 -->
         <div class="col-md-6 field" style="padding-top: 0%;padding-left: 1.5%;">
           <div class="material-textfield">
@@ -150,7 +188,39 @@
           </div>
         </div> -->
       </div>
-    </form>   
+    </ng-container>
+    <ng-container *ngIf="showAswathDamodaranField">
+      <div class="row">
+
+        <!--  Beta Industry -->
+        <div class="col-md-6 field" style="padding-top: 0%;padding-left: 1.5%;">
+          <div class="material-textfield">
+
+            <div class="material-textfield">
+              <mat-form-field appearance="fill" class="companyStatus" style="width: 100%;">
+                <mat-label class="ind-4">{{modelControl.inputScreen.columns.industryAD.label}}</mat-label>
+                <span class="company-list-rmve" *ngIf="inputScreenForm.controls['industryAD']?.value" style="right:5%;top: 44%;">
+                  <mat-icon class="company-list-rmve-icon" (click)="clearInput('industryAD')">close</mat-icon>
+                  </span>
+                <mat-select formControlName="industryAD" class="new-inp company-stat" [placeholder]="modelControl.inputScreen.columns.industryAD.placeholder">
+                  <mat-option *ngFor="let doc of aswathDamodaranIndustries" [value]="doc.industry" class="auto-class">
+                    {{ doc.industry }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <span class="tool-class">
+                <svg [matTooltip]="modelControl.inputScreen.columns.industryAD.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
+                  <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
+                  <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
+                  <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
+              </span>
+          </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    </form>  
+    <ng-container *ngIf="showCapitalIqField"> 
     <div class="loader-overlay" *ngIf="loader">
       <mat-progress-spinner diameter="40" class="table-spinner"  mode="indeterminate"></mat-progress-spinner>
   </div>
@@ -288,7 +358,7 @@
       #paginatorRef>
     </mat-paginator>
     </div>
-    </div>
+    </ng-container>
 
     <div class="col-md-12 btn-prop" *ngIf="!loader">
         <button (click)="previous()" mat-raised-button class="button-back-mat">

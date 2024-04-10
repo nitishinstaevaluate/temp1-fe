@@ -12,7 +12,7 @@ import { MatStepper } from '@angular/material/stepper';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { hasError } from 'src/app/shared/enums/errorMethods';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
-import { BETA_SUB_TYPE, MODELS } from 'src/app/shared/enums/constant';
+import { BETA_FROM_TYPE, BETA_SUB_TYPE, MODELS } from 'src/app/shared/enums/constant';
 import { CiqSPService } from 'src/app/shared/service/ciq-sp.service';
 import { formatNumber } from 'src/app/shared/enums/functions';
 
@@ -444,16 +444,34 @@ onRadioButtonChange(event:any){
 betaChange(event:any){
   const selectedValue = event.value;
   if(selectedValue){
-    if(selectedValue.includes('unlevered') || selectedValue.includes('levered')){
-      this.calculateBeta(BETA_SUB_TYPE[0]);
-    }
-    else if(selectedValue.includes('stock_beta')){
-      this.calculateStockBeta();
+  if(this.formTwoData?.formTwoData?.betaFrom !== BETA_FROM_TYPE.ASWATHDAMODARAN){
+      if(selectedValue.includes('unlevered') || selectedValue.includes('levered')){
+        this.calculateBeta(BETA_SUB_TYPE[0]);
+      }
+      else if(selectedValue.includes('stock_beta')){
+        this.calculateStockBeta();
+      }
+      else{
+        this.selectedSubBetaType = '';
+        this.fcfeForm.controls['beta'].setValue(1);
+        this.calculateCoeAndAdjustedCoe();
+      }
     }
     else{
-      this.selectedSubBetaType = '';
-      this.fcfeForm.controls['beta'].setValue(1);
-      this.calculateCoeAndAdjustedCoe();
+      const aswathDamodaranSelectedBetaObj = this.formTwoData?.formTwoData?.aswathDamodaranSelectedBetaObj;
+      if(selectedValue.includes('unlevered')){
+        this.fcfeForm.controls['beta'].setValue(aswathDamodaranSelectedBetaObj?.unleveredBeta);
+        this.calculateCoeAndAdjustedCoe();
+      }
+      else if(selectedValue.includes('levered')){
+        this.fcfeForm.controls['beta'].setValue(aswathDamodaranSelectedBetaObj?.beta);
+        this.calculateCoeAndAdjustedCoe();
+      }
+      else{
+        this.selectedSubBetaType = '';
+        this.fcfeForm.controls['beta'].setValue(1);
+        this.calculateCoeAndAdjustedCoe();
+      }
     }
   }
 }
@@ -668,6 +686,15 @@ calculateStockBeta(){
   }
 
   handleBetaClick() {
+    if(this.formTwoData?.formTwoData?.betaFrom === BETA_FROM_TYPE.ASWATHDAMODARAN){
+      this.snackBar.open('Workings available for Capital Iq database only', 'Ok',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 5000,
+        panelClass: 'app-notification-error'
+      })
+      return;
+    }
     if (this.fcfeForm.controls['betaType'].value === 'market_beta' || this.fcfeForm.controls['betaType'].value === 'stock_beta') {
       this.snackBar.open('Workings available for relevered and unlevered beta only', 'Ok',{
         horizontalPosition: 'right',

@@ -1197,3 +1197,156 @@ background: #bdf8de !important;
     color: #004e67 !important;
   }
 }
+.beta-tool-class svg{
+    cursor: pointer !important;
+    .path-svg{
+      stroke:#27d69b !important;
+      stroke-width:45px !important;
+      transition: ease-out 0.3s !important;
+      cursor: pointer !important;
+    }
+    .model-polyline{
+      stroke:#27d69b !important;
+      transition: ease-out 0.3s !important;
+      cursor: pointer !important;
+    }
+    line{
+      stroke:#27d69b !important;
+      transition: ease-out 0.3s !important;
+      cursor: pointer !important;
+    }
+}
+
+.terminal-working-options{
+  color: #666666 !important;
+  font-size: 13px !important;
+  font-family: 'AR One Sans', sans-serif !important;
+  padding-left: 1%;
+}
+
+.beta-container {
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  padding: 10px 20px;
+  border-radius: 5px;
+  // box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.text {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 16px;
+  color: #333;
+  margin-right: 20px;
+}
+
+.radio-group {
+  display: flex;
+  align-items: center;
+}
+
+.radio-group span {
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  color: #666666;
+  font-size: 13px;
+  font-family: 'AR One Sans', sans-serif;
+}
+.next-beta-radio{
+  margin-left:12px;
+}
+
+.radio-group input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid #999;
+  outline: none;
+  margin-right: 5px;
+  transition: border-color 0.2s ease-in-out;
+}
+
+.radio-group input[type="radio"]:checked {
+  border-color: #4caf50;
+}
+
+.radio-group input[type="radio"]:after {
+  content: "";
+  display: block;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background-color: #4caf50;
+  margin: 1px;
+  transform: scale(0);
+  transition: transform 0.2s ease-in-out;
+}
+
+.radio-group input[type="radio"]:checked:after {
+  transform: scale(1);
+}
+
+
+// Great header starts
+// .capital-iq-header{
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   margin-bottom: 1rem;
+//   padding-top: 1%;
+// }
+
+// .header__text {
+//   font-family: 'AR One Sans', sans-serif;
+//   font-size: 1.5rem;
+//   font-weight: 600;
+//   color: #333;
+//   text-transform: uppercase;
+//   letter-spacing: 1px;
+//   position: relative;
+//   margin: 0;
+// }
+
+// .header__text-inner {
+//   display: inline-block;
+//   padding: 0.25rem 0.5rem;
+//   background-color: #fff;
+//   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+//   border-radius: 3px;
+//   animation: slide-up 0.3s ease-out;
+// }
+
+// .header__underline {
+//   width: 50px;
+//   height: 2px;
+//   background-color: #3dda9b;
+//   border-radius: 1px;
+//   margin-top: 0.5rem;
+//   animation: slide-in 0.3s ease-out;
+// }
+
+// @keyframes slide-up {
+//   0% {
+//     transform: translateY(30px);
+//     opacity: 0;
+//   }
+//   100% {
+//     transform: translateY(0);
+//     opacity: 1;
+//   }
+// }
+
+// @keyframes slide-in {
+//   0% {
+//     transform: scaleX(0);
+//   }
+//   100% {
+//     transform: scaleX(1);
+//   }
+// }
+
+// // Great header ends

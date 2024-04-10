@@ -292,7 +292,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     if (event) {
       if(!event.checked){
           this.registeredValuerDetails.reset();
-          this.reportForm.controls['useExistingValuer'].reset();
+          this.reportForm.controls['useExistingValuer'].setValue(false);
           return;
       }
       const data = {
@@ -315,7 +315,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
           });
         } else {
           this.registeredValuerDetails.reset();
-          this.reportForm.controls['useExistingValuer'].reset();
+          this.reportForm.controls['useExistingValuer'].setValue(false);
           this.snackBar.open('Valuer was not added', 'OK', {
             horizontalPosition: 'right',
             verticalPosition: 'top',

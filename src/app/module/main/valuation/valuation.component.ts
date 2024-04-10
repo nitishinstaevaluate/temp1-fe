@@ -481,7 +481,7 @@ export class ValuationComponent implements OnInit {
     
     forkJoin([this._valuationService.getValuationDropdown(),this._dataReferencesService.getIndianTreasuryYields(),
     this._dataReferencesService.getHistoricalReturns(),
-    this._dataReferencesService.getBetaIndustries(),
+    // this._dataReferencesService.getBetaIndustries(),
     // this._dataReferencesService.getBetaIndustriesById(),
     // this._dataReferencesService.getIndustriesRatio()
   ])

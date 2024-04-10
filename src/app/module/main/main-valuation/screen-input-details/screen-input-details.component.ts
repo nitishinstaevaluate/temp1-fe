@@ -13,6 +13,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal-box/generic-modal-box.component';
 import { excludeDecimalFormatting } from 'src/app/shared/enums/functions';
+import { DataReferencesService } from 'src/app/shared/service/data-references.service';
 
 @Component({
   selector: 'app-screen-input-details',
@@ -75,7 +76,11 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   searchByCompanyName = new Subject<string>();
   companyList: any = [];
   helperText = helperText;
-
+  showCapitalIqField = false;
+  showAswathDamodaranField = false;
+  aswathDamodaranIndustries:any = [];
+  aswathDamodaranSelectedIndustry:any;
+  betaFrom='capitalIqBeta';
   constructor(
     private fb:FormBuilder,
     private ciqSpService:CiqSPService,
@@ -83,7 +88,8 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     private processStatusManagerService: ProcessStatusManagerService,
     private snackBar: MatSnackBar,
     private utilService: UtilService,
-    private dialog:MatDialog){}
+    private dialog:MatDialog,
+    private datareferenceService: DataReferencesService){}
 
   ngOnInit(){
     this.loadForm();
@@ -101,6 +107,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       throttleTime(600),
       switchMap(async () => this.fetchCompanyNames())
     ).subscribe();
+    this.betaSelection(this.betaFrom);
   }
    ngOnChanges(changes:SimpleChanges) {
     this.loadForm();
@@ -127,6 +134,9 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       industryL3:['', [Validators.required]],
       industryL4:[[], [Validators.required]],
       companyName:['', [Validators.required]],
+      betaFrom:['', [Validators.required]],
+      industryAD:['', [Validators.required]],
+      aswathDamodaranSelectedBetaObj:['',[Validators.required]]
     });
   }
 
@@ -134,6 +144,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     this.loadCiqIndustryList();
     this.loadCiqCompanyStatusType();
     this.loadCiqCompanyType();
+    this.loadAswathDamodaranBetaIndustries();
   }
 
   checkProcessExist(data:any){
@@ -171,7 +182,12 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       //     this.companyTypeDropdownValue = true;
       //   }
       // }
-
+      if(formTwoData?.betaFrom){
+        this.betaFrom = formTwoData.betaFrom;
+      }
+      if(formTwoData?.industryAD){
+        this.aswathDamodaranSelectedIndustry = formTwoData.industryAD;
+      }
       if(formTwoData?.companyStatus){
         this.selectedCompanyStatusType = formTwoData.companyStatus.map((elements:any)=>{
           this.companyStatusTypeDescription.push(elements.companystatustypename)
@@ -227,6 +243,21 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       this.loadCiqIndustryBasedLevelFour(this.createPayload());
       }
     });
+    this.inputScreenForm.controls['industryAD'].valueChanges.subscribe((val:any) => {
+        if (!val) return;
+        this.aswathDamodaranIndustries.map((betaIndustry:any)=>{
+          if(betaIndustry.industry === val){
+            this.inputScreenForm.controls['aswathDamodaranSelectedBetaObj'].setValue(betaIndustry);
+            this.aswathDamodaranSelectedIndustry = betaIndustry.industry;
+          }
+        })
+    });
+    if(this.betaFrom){
+      this.inputScreenForm.controls['betaFrom'].setValue(this.betaFrom);
+    }
+    if(this.aswathDamodaranSelectedIndustry){
+      this.inputScreenForm.controls['industryAD'].setValue(this.aswathDamodaranSelectedIndustry);
+    }
     if(this.descriptorQuery){
       this.inputScreenForm.get('descriptor').setValue(this.descriptorQuery);
     }
@@ -678,8 +709,13 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
               previousIndustries?.COMPANYID === newIndustries?.COMPANYID
             )
           );
+          const industryAD = response.data.secondStageInput?.industryAD;
+          const betaFrom = response.data.secondStageInput?.betaFrom;
     
         if (!areIndustriesEqual) {
+          this.calculationService.betaChangeDetector.next({ status: true });
+        }
+        if(industryAD !== this.aswathDamodaranSelectedIndustry || betaFrom !== this.betaFrom){
           this.calculationService.betaChangeDetector.next({ status: true });
         }
     
@@ -927,6 +963,62 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
 
   isNotMarketApproach(){
     if(this.formOneData && (this.formOneData?.model?.includes(MODELS.RELATIVE_VALUATION) || this.formOneData?.model?.includes(MODELS.COMPARABLE_INDUSTRIES)) && this.formOneData?.model?.length === 1){
+      return true;
+    }
+    else{
+      return false
+    }
+  }
+
+  betaSelection(betaFrom:any){
+    const betaFromType = betaFrom?.target?.value || betaFrom;
+    if(betaFrom?.target?.value){
+      this.betaFrom = betaFromType;
+    }
+    if(betaFromType === 'capitalIqBeta'){
+      this.showCapitalIqField = true;
+      this.showAswathDamodaranField = false;
+    }
+    else{
+      this.showAswathDamodaranField = true;
+      this.showCapitalIqField = false;
+    }
+  }
+
+  loadAswathDamodaranBetaIndustries(){
+    this.datareferenceService.getIndianBetaIndustries().subscribe((betaResponse:any)=>{
+      if(!betaResponse?.length)
+        return this.snackBar.open('Indian Beta Industries not found', 'Ok',{
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 3000,
+          panelClass: 'app-notification-error',
+        })
+      betaResponse.sort((a:any, b:any) => {
+        const industryA = a.industry.toLowerCase();
+        const industryB = b.industry.toLowerCase();
+        if (industryA < industryB) {
+            return -1;
+        }
+        if (industryA > industryB) {
+            return 1;
+        }
+        return 0;
+      });
+      this.aswathDamodaranIndustries = betaResponse;
+      return;
+    }, (error)=>{
+      this.snackBar.open('Backend error - Indian Beta Industries not found', 'Ok',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 3000,
+        panelClass: 'app-notification-error',
+      })
+    })
+  }
+
+  isOnlyDcfApproach(){
+    if(this.formOneData && (this.formOneData?.model?.includes(MODELS.FCFE) || this.formOneData?.model?.includes(MODELS.FCFF) || this.formOneData?.model?.includes(MODELS.EXCESS_EARNINGS)) && this.formOneData?.model?.length === 1){
       return true;
     }
     else{

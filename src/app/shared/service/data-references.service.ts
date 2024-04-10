@@ -30,8 +30,12 @@ export class DataReferencesService {
     return this.http.get(`${HOST}historicalreturns/bse500?baseYrs=${baseYears}&asOnDate=${asOnDate}`);
   }
 
-  getBetaIndustries(): Observable<any> {
-    return this.http.get(`${HOST}betaindustries`);
+  // getBetaIndustries(): Observable<any> {
+  //   return this.http.get(`${HOST}betaindustries`);
+  // }
+  
+  getIndianBetaIndustries(): Observable<any> {
+    return this.http.get(`${HOST}betaindustries/fetch-indian-beta-industry-list`);
   }
 
   getBetaIndustriesById(id: any): Observable<any> {
