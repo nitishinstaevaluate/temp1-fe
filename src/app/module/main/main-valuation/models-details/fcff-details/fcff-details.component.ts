@@ -849,7 +849,7 @@ calculateStockBeta(){
       this.snackBar.open('Workings available for Capital Iq database only', 'Ok',{
         horizontalPosition: 'right',
         verticalPosition: 'top',
-        duration: -1,
+        duration: 5000,
         panelClass: 'app-notification-error'
       })
       return;
