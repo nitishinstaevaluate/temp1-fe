@@ -83,4 +83,16 @@ export class ExcelAndReportService {
       responseType: 'blob'
     });
   }
+  
+  generateElevenUaMrlReport(processStateId:any){
+    return this.http.get(`${this.HOST}report/rule-eleven-mrl-report/${processStateId}`,{
+      responseType: 'blob'
+    });
+  }
+  
+  generateElevenUaMrlDocxReport(processStateId:any){
+    return this.http.get(`${this.HOST}report/rule-eleven-mrl-docx-report/${processStateId}`,{
+      responseType: 'blob'
+    });
+  }
 }

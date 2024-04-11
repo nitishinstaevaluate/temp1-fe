@@ -338,40 +338,88 @@ export class ActivityComponent {
     return 'MULTI_MODEL';
   }
 
-  downloadMrlReport(processStateId:any, companyName:any, format:string){
+  downloadMrlReport(processStateId:any, companyName:any, format:string, model:any){
     this.processLoader = true;
 
     if(format === 'docx'){
-      this.excelAndReportService.generateMrlDocxReport(processStateId).subscribe((response)=>{
-        this.processLoader = false;
-        if(response){
-          saveAs(response, `${companyName} - MRL.docx`);
-        }
-      },(error)=>{
-        this.processLoader = false;
-        this.snackBar.open('backend error - Mrl generation failed', 'OK', {
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-          duration: 2000,
-          panelClass: 'app-notification-error',
-        });
-      })
+      this.downloadMrlDocxVariations(model, processStateId, companyName);
     }
     else{
-      this.excelAndReportService.generateMrlReport(processStateId).subscribe((response)=>{
-        this.processLoader = false;
-        if(response){
-          saveAs(response, `${companyName} - MRL.pdf`);
-        }
-      },(error)=>{
-        this.processLoader = false;
-        this.snackBar.open('backend error - Mrl generation failed', 'OK', {
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-          duration: 2000,
-          panelClass: 'app-notification-error',
-        });
-      })
+      this.downloadMrlPdfVariations(model, processStateId, companyName);
+    }
+  }
+
+  downloadMrlDocxVariations(model:string, processStateId:any, companyName:any){
+    switch(true){
+      case model.includes(MODELS.RULE_ELEVEN_UA):
+        this.excelAndReportService.generateElevenUaMrlDocxReport(processStateId).subscribe((response)=>{
+          this.processLoader = false;
+          if(response){
+            saveAs(response, `${companyName} - MRL.docx`);
+          }
+        }, (error)=>{
+          this.processLoader = false;
+          this.snackBar.open('backend error - Mrl generation for Eleven Ua failed', 'OK', {
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 5000,
+            panelClass: 'app-notification-error',
+          });
+        })
+      break;
+
+      default:
+        this.excelAndReportService.generateMrlDocxReport(processStateId).subscribe((response)=>{
+          this.processLoader = false;
+          if(response){
+            saveAs(response, `${companyName} - MRL.docx`);
+          }
+        },(error)=>{
+          this.processLoader = false;
+          this.snackBar.open('backend error - Mrl generation failed', 'OK', {
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 5000,
+            panelClass: 'app-notification-error',
+          });
+        })
+    }
+  }
+
+  downloadMrlPdfVariations(model:string, processStateId:any, companyName:any){
+    switch(true){
+      case model.includes(MODELS.RULE_ELEVEN_UA):
+        this.excelAndReportService.generateElevenUaMrlReport(processStateId).subscribe((response)=>{
+          this.processLoader = false;
+          if(response){
+            saveAs(response, `${companyName} - MRL.pdf`);
+          }
+        },(error)=>{
+          this.processLoader = false;
+          this.snackBar.open('backend error - Mrl generation for Eleven Ua failed', 'OK', {
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 5000,
+            panelClass: 'app-notification-error',
+          });
+        })
+      break;
+
+      default:
+        this.excelAndReportService.generateMrlReport(processStateId).subscribe((response)=>{
+          this.processLoader = false;
+          if(response){
+            saveAs(response, `${companyName} - MRL.pdf`);
+          }
+        },(error)=>{
+          this.processLoader = false;
+          this.snackBar.open('backend error - Mrl generation failed', 'OK', {
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 5000,
+            panelClass: 'app-notification-error',
+          });
+        })
     }
   }
 }
