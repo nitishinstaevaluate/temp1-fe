@@ -55,6 +55,7 @@ terminalValueSelectedType='tvCashFlowBased';
 terminalYearWorking:any;
 dcfLoader = false;
 processStateId:any;
+isDropdownOpen = false;
 getKeys(navData:any){
 this.dataSourceNav =[navData].map((response:any)=>{
   let obj = Object.values(response);
