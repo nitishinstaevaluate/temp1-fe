@@ -11,7 +11,7 @@ import { saveAs } from 'file-saver';
 import { Subject, debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.service';
-import { convertToNumberOrZero, formatNumber } from 'src/app/shared/enums/functions';
+import { convertToNumberOrZero, formatNumber, formatPositiveAndNegativeValues } from 'src/app/shared/enums/functions';
 
 @Component({
   selector: 'app-activity',
@@ -182,6 +182,10 @@ export class ActivityComponent {
       else if(modelArray.length === 1 && modelArray.includes(MODELS.NAV)){
         const navAprroachValuation = processData?.fourthStageInput?.appData?.valuationResult[0].valuationData;
         return `${processData.firstStageInput.currencyUnit} ${formatNumber(navAprroachValuation?.valuePerShare?.bookValue ? navAprroachValuation?.valuePerShare?.bookValue : '-')}`;
+      }
+      else if(modelArray.length === 1 && modelArray.includes(MODELS.RULE_ELEVEN_UA)){
+        const ruleElevenUaAprroachValuation = processData?.fourthStageInput?.appData?.computations?.valuePerShare;
+        return `${processData.firstStageInput.currencyUnit} ${formatNumber(ruleElevenUaAprroachValuation ? formatPositiveAndNegativeValues(ruleElevenUaAprroachValuation) : '0')}`;
       }
       else if(processData.fifthStageInput?.totalWeightageModel){
         const outstandingShares = convertToNumberOrZero(processData.firstStageInput.outstandingShares);
