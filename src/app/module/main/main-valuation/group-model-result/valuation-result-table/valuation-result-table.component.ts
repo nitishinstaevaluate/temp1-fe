@@ -150,14 +150,16 @@ loadValuationTable(){
             });
           }
   
-          const equityValueString = `Equity Value as on ${this.formatDate(this.transferStepperthree.formOneAndThreeData.valuationDate)}`;
-          if (this.displayFcfeColumn.includes(equityValueString)) {
-            this.displayFcfeColumn = this.displayFcfeColumn.map((item: string) => {
-              if (item.includes('Equity Value as on')) {
-                return item.replace(item, equityValueString);
-              }
-              return item;
+          const equityValueString = `Equity Value as on`;
+          const isPresent = this.displayFcfeColumn.some(item => item.trim().toLowerCase().includes(equityValueString.toLowerCase()));
+          if(isPresent){
+            const indexOfEquityValueAsOn = this.displayFcfeColumn.findIndex(item => {
+              return item.trim().toLowerCase().includes(equityValueString.toLowerCase());
             });
+            if(indexOfEquityValueAsOn !== -1){
+              const newEquityValueString = `Equity Value as on ${this.formatDate(this.transferStepperthree.formOneAndThreeData.valuationDate)}`;
+              this.displayFcfeColumn.splice(indexOfEquityValueAsOn, 1, newEquityValueString)
+            }
           }
             this.displayFcfeColumn.splice(17, 1, `Equity Value on ${equityValuationDate}`);
         }
@@ -229,14 +231,16 @@ loadValuationTable(){
                   });
               }
       
-              const equityValueString = `Equity Value as on ${this.formatDate(this.transferStepperthree.formOneAndThreeData.valuationDate)}`;
-              if (this.displayFcffColumn.includes(equityValueString)) {
-                  this.displayFcffColumn = this.displayFcffColumn.map((item: string) => {
-                      if (item.includes('Equity Value as on')) {
-                          return item.replace(item, equityValueString);
-                      }
-                      return item;
-                  });
+              const equityValueString = `Equity Value as on`;
+              const isPresent = this.displayFcffColumn.some(item => item.trim().toLowerCase().includes(equityValueString.toLowerCase()));
+              if(isPresent){
+                const indexOfEquityValueAsOn = this.displayFcffColumn.findIndex(item => {
+                  return item.trim().toLowerCase().includes(equityValueString.toLowerCase());
+                });
+                if(indexOfEquityValueAsOn !== -1){
+                  const newEquityValueString = `Equity Value as on ${this.formatDate(this.transferStepperthree.formOneAndThreeData.valuationDate)}`;
+                  this.displayFcffColumn.splice(indexOfEquityValueAsOn, 1, newEquityValueString)
+                }
               }
           this.displayFcffColumn.splice(18, 1, `Equity Value on ${equityValuationDate}`);
           }
@@ -315,14 +319,16 @@ loadValuationTable(){
               });
             }
     
-            const equityValueString = `Equity Value as on ${this.formatDate(this.transferStepperthree.formOneAndThreeData.valuationDate)}`;
-            if (this.displayExcessEarnColumn.includes(equityValueString)) {
-                this.displayExcessEarnColumn = this.displayExcessEarnColumn.map((item: string) => {
-                    if (item.includes('Equity Value as on')) {
-                        return item.replace(item, equityValueString);
-                    }
-                    return item;
-                });
+            const equityValueString = `Equity Value as on`;
+            const isPresent = this.displayExcessEarnColumn.some(item => item.trim().toLowerCase().includes(equityValueString.toLowerCase()));
+            if(isPresent){
+              const indexOfEquityValueAsOn = this.displayExcessEarnColumn.findIndex(item => {
+                return item.trim().toLowerCase().includes(equityValueString.toLowerCase());
+              });
+              if(indexOfEquityValueAsOn !== -1){
+                const newEquityValueString = `Equity Value as on ${this.formatDate(this.transferStepperthree.formOneAndThreeData.valuationDate)}`;
+                this.displayExcessEarnColumn.splice(indexOfEquityValueAsOn, 1, newEquityValueString)
+              }
             }
           this.displayExcessEarnColumn.splice(9, 1, `Equity Value on ${equityValuationDate}`);
         }

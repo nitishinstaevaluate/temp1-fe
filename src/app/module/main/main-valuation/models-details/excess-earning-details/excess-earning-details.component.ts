@@ -433,6 +433,8 @@ checkPreviousAndCurrentValue(changes:any){
     if((current?.valuationDate && previous?.valuationDate) && current.valuationDate !== previous.valuationDate){
       this.excessEarningForm.controls['expMarketReturnType'].setValue('');
       this.excessEarningForm.controls['expMarketReturn'].reset();
+      this.excessEarningForm.controls['betaType'].setValue('');
+      this.excessEarningForm.controls['beta'].reset();
       this.calculateRiskFreeRate(this.excessEarningForm.controls['riskFreeRateYears'].value)
     }
 
