@@ -205,6 +205,9 @@ export class BalanceSheetDetailsComponent implements OnChanges {
             this.isExcelModified = true;
             this.createbalanceSheetDataSource(response);
             const excelResponse: any = await this.processStateManagerService.updateEditedExcelStatus(localStorage.getItem('processStateId')).toPromise();
+            if(excelResponse?.modifiedExcelSheetId){
+              this.excelSheetId = excelResponse.modifiedExcelSheetId;
+            }
             // this.balanceSheetData.emit({status:true,result:response});
           }
           else{
