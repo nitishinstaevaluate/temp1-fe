@@ -311,7 +311,7 @@
                 </div>
                 </div>
 
-        <div class="col-md-12 btn-prop">
+        <div class="col-md-12 btn-prop" style="padding-bottom: 2%;">
           <button (click)="previous()" mat-raised-button class="button-back-mat">
             <span class="button-back"><mat-icon>send</mat-icon></span>
               Back
@@ -322,11 +322,23 @@
               <mat-icon>drafts</mat-icon>
             </span>
         </button>
-        <button (click)="generateReport()" class="button-save-mat" style="padding-right: 3%;" mat-raised-button>
-            Submit
+          <button mat-stroked-button class="button-save-mat" style="padding-right: 3%;width: 18%;" [matMenuTriggerFor]="menu">
+            Generate Report
             <span class="button-save"><mat-icon>send</mat-icon></span>
         </button>
-  </div>
+        <mat-menu #menu="matMenu" style="padding: 0px;">
+          <button class="dropdown-item export" mat-menu-item (click)="generatePdfReport('PDF')">
+            <a target="_blank" style="font-size: 14px;">
+              Export as PDF
+            </a>
+          </button>
+          <button class="dropdown-item export" mat-menu-item (click)="generatePdfReport('DOCX')">
+            <a target="_blank" style="font-size: 14px;">
+              Export as DOCX
+            </a>
+          </button>
+        </mat-menu>
+        </div>
         </div>
       </form>  
 </div>

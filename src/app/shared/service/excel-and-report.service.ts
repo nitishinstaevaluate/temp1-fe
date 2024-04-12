@@ -26,8 +26,8 @@ export class ExcelAndReportService {
   postReportData(payload:any){
     return this.http.post(`${this.HOST}report/generateReport`,payload);
   }
-  generateReport(reportId:string,approach:string){
-    return this.http.get(`${this.HOST}report/getReport/${approach}/${reportId}`,{
+  generateReport(reportId:string,approach:string, formatType:string){
+    return this.http.get(`${this.HOST}report/getReport/${approach}/${reportId}/${formatType}`,{
       responseType: 'blob'
     });
   }
@@ -36,8 +36,8 @@ export class ExcelAndReportService {
     return this.http.get(`${this.HOST}report/previewReport/${approach}/${reportId}`);
   }
 
-  generateElevenUaReport(reportId:string){
-    return this.http.get(`${this.HOST}report/rule-eleven-ua-report/${reportId}`,{
+  generateElevenUaReport(reportId:string, formatType:string){
+    return this.http.get(`${this.HOST}report/rule-eleven-ua-report/${reportId}/${formatType}`,{
       responseType: 'blob'
     });
   }
@@ -46,8 +46,8 @@ export class ExcelAndReportService {
     return this.http.get(`${this.HOST}report/preview-rule-eleven-ua-report/${reportId}`);
   }
 
-  generateSebiReport(reportId:any){
-    return this.http.get(`${this.HOST}report/sebi-report/${reportId}`,{
+  generateSebiReport(reportId:any, formatType:string){
+    return this.http.get(`${this.HOST}report/sebi-report/${reportId}/${formatType}`,{
       responseType: 'blob'
     });
   }
@@ -72,8 +72,8 @@ export class ExcelAndReportService {
     });
   }
 
-  generateNavReport(processStateId:any){
-    return this.http.get(`${this.HOST}report/nav-report/${processStateId}`,{
+  generateNavReport(processStateId:any, formatType:string){
+    return this.http.get(`${this.HOST}report/nav-report/${processStateId}/${formatType}`,{
       responseType: 'blob'
     });
   }

@@ -213,7 +213,7 @@ export class ActivityComponent {
   }
 
   generateElevenUaReport(response:any,companyName:any){
-    this.excelAndReportService.generateElevenUaReport(response).subscribe((reportData:any)=>{
+    this.excelAndReportService.generateElevenUaReport(response, 'PDF').subscribe((reportData:any)=>{
       if (reportData instanceof Blob) {
         this.snackBar.open('Report generated successfully', 'OK', {
           horizontalPosition: 'right',
@@ -235,7 +235,7 @@ export class ActivityComponent {
   }
 
   generateBasicReport(response:any, approach:any, companyName:any){
-    this.excelAndReportService.generateReport(response,approach).subscribe((reportData:any)=>{
+    this.excelAndReportService.generateReport(response,approach, 'PDF').subscribe((reportData:any)=>{
       if (reportData instanceof Blob) {
         this.snackBar.open('Report generated successfully', 'OK', {
           horizontalPosition: 'right',
@@ -257,7 +257,7 @@ export class ActivityComponent {
   }
 
   generateSebiReport(response:any, companyName:any){
-    this.excelAndReportService.generateSebiReport(response).subscribe((reportData:any)=>{
+    this.excelAndReportService.generateSebiReport(response, 'PDF').subscribe((reportData:any)=>{
       if (reportData instanceof Blob) {
         this.snackBar.open('Report generated successfully', 'OK', {
           horizontalPosition: 'right',
@@ -280,7 +280,7 @@ export class ActivityComponent {
   }
 
   generateNavReport(response:any, companyName:any){
-    this.excelAndReportService.generateNavReport(response).subscribe((reportData:any)=>{
+    this.excelAndReportService.generateNavReport(response, 'PDF').subscribe((reportData:any)=>{
       if (reportData instanceof Blob) {
         this.snackBar.open('Report generated successfully', 'OK', {
           horizontalPosition: 'right',
@@ -308,10 +308,10 @@ export class ActivityComponent {
         case modelArray.includes(MODELS.RULE_ELEVEN_UA):
             reportService = this.generateElevenUaReport.bind(this);
             break;
-        case modelArray.includes(MODELS.NAV) || modelArray.length === 1:
+        case modelArray.includes(MODELS.NAV) && modelArray.length === 1:
             reportService = this.generateNavReport.bind(this);
             break;
-        case reportPurpose === 'sebiRegulations':
+        case reportPurpose.includes('sebiRegulations'):
             reportService = this.generateSebiReport.bind(this);
             break;
         default:
