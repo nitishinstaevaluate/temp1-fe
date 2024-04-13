@@ -854,7 +854,7 @@
                     <option value="" disabled>Select share money applicable</option>
                     <option *ngFor="let data of controls.NAV.options.netAssetValue.options" [value]="data.value">{{ data.name }}</option>
                   </select>
-                  <label for="shareApplicationMoney">Less:Share Applicable Money</label>
+                  <label for="shareApplicationMoney">Less:Share Application Money</label>
                 </div>
 
                 <div class="row"  *ngIf="navForm.controls['shareApplicationMoney'].value !== 'book_value'">
