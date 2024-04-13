@@ -47,7 +47,8 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   reportGenerate = false;
   selectedReportPurpose:any=[];
-  
+  isDropdownOpen = false;
+  formatType = 'PDF';
   constructor(private fb : FormBuilder,
     private calculationService:CalculationsService,
     private dialog:MatDialog,
@@ -130,7 +131,8 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     this.fetchReportPurposeData(onlyPurpose);
   }
 
-  generateReport(){
+  generatePdfReport(formatType:any){
+    this.formatType = formatType;
     const controls = this.getFilteredControls();
     const validatedReportForm = this.validateControls(controls);
 
@@ -244,7 +246,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
         case this.transferStepperFour?.formOneAndThreeData?.model.includes(MODELS.NAV) && this.transferStepperFour?.formOneAndThreeData?.model.length === 1:
           reportService = this.generateNavReport.bind(this);
             break;
-        case this.reportForm.controls['reportPurpose'].value === 'sebiRegulations':
+        case this.reportForm.controls['reportPurpose'].value.some((item:any)=> item?.value.includes('sebiRegulations')):
           reportService = this.generateSebiReport.bind(this);
             break;
         default:
@@ -262,7 +264,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
         case this.transferStepperFour?.formOneAndThreeData?.model.includes(MODELS.NAV) && this.transferStepperFour?.formOneAndThreeData?.model.length === 1:
             reportService = this.previewNavReport.bind(this);
             break;
-        case this.reportForm.controls['reportPurpose'].value === 'sebiRegulations':
+        case this.reportForm.controls['reportPurpose'].value.some((item:any)=> item?.value.includes('sebiRegulations')):
             reportService = this.previewSebiReport.bind(this);
             break;
         default:
@@ -508,7 +510,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
 
     generateElevenUaReport(response:any){
       const payload = this.constructPayload();
-      this.excelAdnReportService.generateElevenUaReport(response).subscribe((reportData:any)=>{
+      this.excelAdnReportService.generateElevenUaReport(response, this.formatType).subscribe((reportData:any)=>{
         if (reportData instanceof Blob) {
           this.reportGenerate = false;
           this.snackBar.open('Report generated successfully', 'OK', {
@@ -517,7 +519,11 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
             duration: 2000,
             panelClass: 'app-notification-success',
           });
-          saveAs(reportData, `${this.transferStepperFour?.formOneAndThreeData?.company}.pdf`);
+          if(this.formatType === 'PDF'){
+            saveAs(reportData, `${this.transferStepperFour?.formOneAndThreeData?.company}.pdf`);
+          }else{
+            saveAs(reportData, `${this.transferStepperFour?.formOneAndThreeData?.company}.docx`);
+          }
           localStorage.setItem('stepSixStats','true')
           this.calculationService.checkStepStatus.next({status:true})
           const {reportId,...rest} = payload;
@@ -541,7 +547,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
 
     generateBasicReport(response:any, approach:any){
       const payload = this.constructPayload();
-      this.excelAdnReportService.generateReport(response,approach).subscribe((reportData:any)=>{
+      this.excelAdnReportService.generateReport(response, approach, this.formatType).subscribe((reportData:any)=>{
         if (reportData instanceof Blob) {
           this.reportGenerate = false;
           this.snackBar.open('Report generated successfully', 'OK', {
@@ -550,7 +556,12 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
             duration: 2000,
             panelClass: 'app-notification-success',
           });
-          saveAs(reportData, `${this.transferStepperFour?.formOneAndThreeData?.company}.pdf`);
+          if(this.formatType === 'PDF'){
+            saveAs(reportData, `${this.transferStepperFour?.formOneAndThreeData?.company}.pdf`);
+          }
+          else{
+            saveAs(reportData, `${this.transferStepperFour?.formOneAndThreeData?.company}.docx`);
+          }
           localStorage.setItem('stepSixStats','true')
           this.calculationService.checkStepStatus.next({status:true})
           const {reportId,...rest} = payload;
@@ -574,7 +585,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
 
     generateNavReport(response:any){
       const payload = this.constructPayload();
-      this.excelAdnReportService.generateNavReport(response).subscribe((reportData:any)=>{
+      this.excelAdnReportService.generateNavReport(response, this.formatType).subscribe((reportData:any)=>{
         if (reportData instanceof Blob) {
           this.reportGenerate = false;
           this.snackBar.open('Nav report generated successfully', 'OK', {
@@ -583,7 +594,11 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
             duration: 2000,
             panelClass: 'app-notification-success',
           });
-          saveAs(reportData, `${this.transferStepperFour?.formOneAndThreeData?.company}.pdf`);
+          if(this.formatType === 'PDF'){
+            saveAs(reportData, `${this.transferStepperFour?.formOneAndThreeData?.company}.pdf`);
+          }else{
+            saveAs(reportData, `${this.transferStepperFour?.formOneAndThreeData?.company}.docx`);
+          }
           localStorage.setItem('stepSixStats','true')
           this.calculationService.checkStepStatus.next({status:true})
           const {reportId,...rest} = payload;
@@ -607,8 +622,8 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
 
     generateSebiReport(response:any){
       const payload = this.constructPayload();
-      this.reportGenerate = false;
-      this.excelAdnReportService.generateSebiReport(response).subscribe((reportData:any)=>{
+      this.excelAdnReportService.generateSebiReport(response, this.formatType).subscribe((reportData:any)=>{
+        this.reportGenerate = false;
         if (reportData instanceof Blob) {
           this.snackBar.open('Report generated successfully', 'OK', {
             horizontalPosition: 'right',
@@ -616,7 +631,12 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
             duration: 2000,
             panelClass: 'app-notification-success',
           });
-          saveAs(reportData, `${this.transferStepperFour?.formOneAndThreeData?.company}.pdf`);
+          if(this.formatType === 'PDF'){
+            saveAs(reportData, `${this.transferStepperFour?.formOneAndThreeData?.company}.pdf`);
+          }
+          else{
+            saveAs(reportData, `${this.transferStepperFour?.formOneAndThreeData?.company}.docx`);
+          }
           localStorage.setItem('stepSixStats','true')
           this.calculationService.checkStepStatus.next({status:true})
           const {reportId,...rest} = payload;

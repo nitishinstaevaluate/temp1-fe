@@ -74,7 +74,7 @@ export class ElevenUAComponent implements OnInit, OnChanges{
   }
 
   saveAndNext(){
-    localStorage.setItem('stepTwoStats','true')
+    localStorage.setItem('stepThreeStats','true')
     const processStateModel ={
       thirdStageInput:[{model:MODELS.RULE_ELEVEN_UA,...this.ruleElevenUaForm.value,formFillingStatus:true,status:MODELS.RULE_ELEVEN_UA}],
       step:3

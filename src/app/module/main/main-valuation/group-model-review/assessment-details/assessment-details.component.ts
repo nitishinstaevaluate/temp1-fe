@@ -181,6 +181,9 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
               this.isExcelModified = true;
               this.createAssessmentDataSource(response);
               const excelResponse: any = await this.processStateManagerService.updateEditedExcelStatus(localStorage.getItem('processStateId')).toPromise();
+              if(excelResponse?.modifiedExcelSheetId){
+                this.excelSheetId = excelResponse.modifiedExcelSheetId;
+              }
               // this.assessmentSheetData.emit({status:true,result:response, isExcelModified:this.isExcelModified})
             }
             else{

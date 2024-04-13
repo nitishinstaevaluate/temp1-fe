@@ -11,7 +11,7 @@ import { saveAs } from 'file-saver';
 import { Subject, debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.service';
-import { convertToNumberOrZero, formatNumber } from 'src/app/shared/enums/functions';
+import { convertToNumberOrZero, formatNumber, formatPositiveAndNegativeValues } from 'src/app/shared/enums/functions';
 
 @Component({
   selector: 'app-activity',
@@ -183,6 +183,10 @@ export class ActivityComponent {
         const navAprroachValuation = processData?.fourthStageInput?.appData?.valuationResult[0].valuationData;
         return `${processData.firstStageInput.currencyUnit} ${formatNumber(navAprroachValuation?.valuePerShare?.bookValue ? navAprroachValuation?.valuePerShare?.bookValue : '-')}`;
       }
+      else if(modelArray.length === 1 && modelArray.includes(MODELS.RULE_ELEVEN_UA)){
+        const ruleElevenUaAprroachValuation = processData?.fourthStageInput?.appData?.computations?.valuePerShare;
+        return `${processData.firstStageInput.currencyUnit} ${formatNumber(ruleElevenUaAprroachValuation ? formatPositiveAndNegativeValues(ruleElevenUaAprroachValuation) : '0')}`;
+      }
       else if(processData.fifthStageInput?.totalWeightageModel){
         const outstandingShares = convertToNumberOrZero(processData.firstStageInput.outstandingShares);
         return `${processData.firstStageInput.currencyUnit} ${formatNumber(processData.fifthStageInput.totalWeightageModel?.weightedVal ? processData.fifthStageInput.totalWeightageModel?.weightedVal/outstandingShares : '-')}`;
@@ -209,7 +213,7 @@ export class ActivityComponent {
   }
 
   generateElevenUaReport(response:any,companyName:any){
-    this.excelAndReportService.generateElevenUaReport(response).subscribe((reportData:any)=>{
+    this.excelAndReportService.generateElevenUaReport(response, 'PDF').subscribe((reportData:any)=>{
       if (reportData instanceof Blob) {
         this.snackBar.open('Report generated successfully', 'OK', {
           horizontalPosition: 'right',
@@ -231,7 +235,7 @@ export class ActivityComponent {
   }
 
   generateBasicReport(response:any, approach:any, companyName:any){
-    this.excelAndReportService.generateReport(response,approach).subscribe((reportData:any)=>{
+    this.excelAndReportService.generateReport(response,approach, 'PDF').subscribe((reportData:any)=>{
       if (reportData instanceof Blob) {
         this.snackBar.open('Report generated successfully', 'OK', {
           horizontalPosition: 'right',
@@ -253,7 +257,7 @@ export class ActivityComponent {
   }
 
   generateSebiReport(response:any, companyName:any){
-    this.excelAndReportService.generateSebiReport(response).subscribe((reportData:any)=>{
+    this.excelAndReportService.generateSebiReport(response, 'PDF').subscribe((reportData:any)=>{
       if (reportData instanceof Blob) {
         this.snackBar.open('Report generated successfully', 'OK', {
           horizontalPosition: 'right',
@@ -276,7 +280,7 @@ export class ActivityComponent {
   }
 
   generateNavReport(response:any, companyName:any){
-    this.excelAndReportService.generateNavReport(response).subscribe((reportData:any)=>{
+    this.excelAndReportService.generateNavReport(response, 'PDF').subscribe((reportData:any)=>{
       if (reportData instanceof Blob) {
         this.snackBar.open('Report generated successfully', 'OK', {
           horizontalPosition: 'right',
@@ -304,10 +308,10 @@ export class ActivityComponent {
         case modelArray.includes(MODELS.RULE_ELEVEN_UA):
             reportService = this.generateElevenUaReport.bind(this);
             break;
-        case modelArray.includes(MODELS.NAV) || modelArray.length === 1:
+        case modelArray.includes(MODELS.NAV) && modelArray.length === 1:
             reportService = this.generateNavReport.bind(this);
             break;
-        case reportPurpose === 'sebiRegulations':
+        case reportPurpose.includes('sebiRegulations'):
             reportService = this.generateSebiReport.bind(this);
             break;
         default:
@@ -334,40 +338,88 @@ export class ActivityComponent {
     return 'MULTI_MODEL';
   }
 
-  downloadMrlReport(processStateId:any, companyName:any, format:string){
+  downloadMrlReport(processStateId:any, companyName:any, format:string, model:any){
     this.processLoader = true;
 
     if(format === 'docx'){
-      this.excelAndReportService.generateMrlDocxReport(processStateId).subscribe((response)=>{
-        this.processLoader = false;
-        if(response){
-          saveAs(response, `${companyName} - MRL.docx`);
-        }
-      },(error)=>{
-        this.processLoader = false;
-        this.snackBar.open('backend error - Mrl generation failed', 'OK', {
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-          duration: 2000,
-          panelClass: 'app-notification-error',
-        });
-      })
+      this.downloadMrlDocxVariations(model, processStateId, companyName);
     }
     else{
-      this.excelAndReportService.generateMrlReport(processStateId).subscribe((response)=>{
-        this.processLoader = false;
-        if(response){
-          saveAs(response, `${companyName} - MRL.pdf`);
-        }
-      },(error)=>{
-        this.processLoader = false;
-        this.snackBar.open('backend error - Mrl generation failed', 'OK', {
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-          duration: 2000,
-          panelClass: 'app-notification-error',
-        });
-      })
+      this.downloadMrlPdfVariations(model, processStateId, companyName);
+    }
+  }
+
+  downloadMrlDocxVariations(model:string, processStateId:any, companyName:any){
+    switch(true){
+      case model.includes(MODELS.RULE_ELEVEN_UA):
+        this.excelAndReportService.generateElevenUaMrlDocxReport(processStateId).subscribe((response)=>{
+          this.processLoader = false;
+          if(response){
+            saveAs(response, `${companyName} - MRL.docx`);
+          }
+        }, (error)=>{
+          this.processLoader = false;
+          this.snackBar.open('backend error - Mrl generation for Eleven Ua failed', 'OK', {
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 5000,
+            panelClass: 'app-notification-error',
+          });
+        })
+      break;
+
+      default:
+        this.excelAndReportService.generateMrlDocxReport(processStateId).subscribe((response)=>{
+          this.processLoader = false;
+          if(response){
+            saveAs(response, `${companyName} - MRL.docx`);
+          }
+        },(error)=>{
+          this.processLoader = false;
+          this.snackBar.open('backend error - Mrl generation failed', 'OK', {
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 5000,
+            panelClass: 'app-notification-error',
+          });
+        })
+    }
+  }
+
+  downloadMrlPdfVariations(model:string, processStateId:any, companyName:any){
+    switch(true){
+      case model.includes(MODELS.RULE_ELEVEN_UA):
+        this.excelAndReportService.generateElevenUaMrlReport(processStateId).subscribe((response)=>{
+          this.processLoader = false;
+          if(response){
+            saveAs(response, `${companyName} - MRL.pdf`);
+          }
+        },(error)=>{
+          this.processLoader = false;
+          this.snackBar.open('backend error - Mrl generation for Eleven Ua failed', 'OK', {
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 5000,
+            panelClass: 'app-notification-error',
+          });
+        })
+      break;
+
+      default:
+        this.excelAndReportService.generateMrlReport(processStateId).subscribe((response)=>{
+          this.processLoader = false;
+          if(response){
+            saveAs(response, `${companyName} - MRL.pdf`);
+          }
+        },(error)=>{
+          this.processLoader = false;
+          this.snackBar.open('backend error - Mrl generation failed', 'OK', {
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 5000,
+            panelClass: 'app-notification-error',
+          });
+        })
     }
   }
 }

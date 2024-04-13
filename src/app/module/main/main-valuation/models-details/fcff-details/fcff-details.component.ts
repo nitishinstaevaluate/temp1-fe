@@ -587,6 +587,8 @@ checkPreviousAndCurrentValue(changes:any){
     if((current?.valuationDate && previous?.valuationDate) && current.valuationDate !== previous.valuationDate){
       this.fcffForm.controls['expMarketReturnType'].setValue('');
       this.fcffForm.controls['expMarketReturn'].reset();
+      this.fcffForm.controls['betaType'].setValue('');
+      this.fcffForm.controls['beta'].reset();
       this.calculateRiskFreeRate(this.fcffForm.controls['riskFreeRateYears'].value)
     }
 

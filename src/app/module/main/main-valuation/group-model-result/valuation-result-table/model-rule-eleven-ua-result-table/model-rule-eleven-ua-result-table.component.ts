@@ -19,130 +19,139 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
 
   ngOnChanges(){
     if(this.formData){
-      this.jewelleryOrArtisticWork=[];
-      const jewellery = this.formData?.formFourData?.appData?.inputData?.fairValueJewellery;
-      const artisticWork = this.formData?.formFourData?.appData?.inputData?.fairValueArtistic;
-      const jewelleryAndArtisticWorkArray = [
-        {
-          name:"Jewellery",
-          value:jewellery
-        },
-        {
-          name:"Artistic Value",
-          value:artisticWork
-        }
-      ]
-      for(let i = 0; i <= jewelleryAndArtisticWorkArray.length; i++){
-        if(jewelleryAndArtisticWorkArray[i]?.name){
-            const romanNumeral = this.convertToRomanNumeral(i);
-            const obj = {
-              index:romanNumeral,
-              label:jewelleryAndArtisticWorkArray[i]?.name,
-              value:jewelleryAndArtisticWorkArray[i]?.value ? formatPositiveAndNegativeValues(jewelleryAndArtisticWorkArray[i].value) : '-' 
-            }
-            this.jewelleryOrArtisticWork.push(obj);
-          }
-        }
+      // this.jewelleryOrArtisticWork=[];
+      // const jewellery = this.formData?.formFourData?.appData?.inputData?.fairValueJewellery;
+      // const artisticWork = this.formData?.formFourData?.appData?.inputData?.fairValueArtistic;
+      // const jewelleryAndArtisticWorkArray = [
+      //   {
+      //     name:"Jewellery",
+      //     value:jewellery
+      //   },
+      //   {
+      //     name:"Artistic Value",
+      //     value:artisticWork
+      //   }
+      // ]
+      // for(let i = 0; i <= jewelleryAndArtisticWorkArray.length; i++){
+      //   if(jewelleryAndArtisticWorkArray[i]?.name){
+      //       const romanNumeral = this.convertToRomanNumeral(i);
+      //       const obj = {
+      //         index:romanNumeral,
+      //         label:jewelleryAndArtisticWorkArray[i]?.name,
+      //         value:jewelleryAndArtisticWorkArray[i]?.value ? formatPositiveAndNegativeValues(jewelleryAndArtisticWorkArray[i].value) : '-' 
+      //       }
+      //       this.jewelleryOrArtisticWork.push(obj);
+      //     }
+      //   }
+      this.jewelleryOrArtisticWork = this.formData?.formFourData?.appData?.computations?.jewelleryOrArtisticArray;
       }
   }
 
-  convertToRomanNumeral(num:any) {
-    const romanNumerals = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x'];
+  // convertToRomanNumeral(num:any) {
+  //   const romanNumerals = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x'];
   
-    if (num === undefined || num === null || num > romanNumerals.length) {
-      return '';
-    }
+  //   if (num === undefined || num === null || num > romanNumerals.length) {
+  //     return '';
+  //   }
   
-    return romanNumerals[num];
-  }
+  //   return romanNumerals[num];
+  // }
 
   calculateTotalA(){
     if(this.formData){
-      const totalIncomeTaxPaid = this.formData?.formFourData?.appData?.totalIncomeTaxPaid;
-      const unamortisedAmountOfDeferredExpenditure = this.formData?.formFourData?.appData?.unamortisedAmountOfDeferredExpenditure;
-      this.totalCalculationA = this.formData?.formFourData?.appData?.bookValueOfAllAssets -  (totalIncomeTaxPaid + unamortisedAmountOfDeferredExpenditure); 
-      return formatPositiveAndNegativeValues(this.formData?.formFourData?.appData?.bookValueOfAllAssets -  (totalIncomeTaxPaid + unamortisedAmountOfDeferredExpenditure));
+      // const totalIncomeTaxPaid = this.formData?.formFourData?.appData?.totalIncomeTaxPaid;
+      // const unamortisedAmountOfDeferredExpenditure = this.formData?.formFourData?.appData?.unamortisedAmountOfDeferredExpenditure;
+      // this.totalCalculationA = this.formData?.formFourData?.appData?.bookValueOfAllAssets -  (totalIncomeTaxPaid + unamortisedAmountOfDeferredExpenditure); 
+      // return formatPositiveAndNegativeValues(this.formData?.formFourData?.appData?.bookValueOfAllAssets -  (totalIncomeTaxPaid + unamortisedAmountOfDeferredExpenditure));
+      return this.formData?.formFourData?.appData?.computations?.calculationAtA ? formatPositiveAndNegativeValues(this.formData?.formFourData?.appData?.computations?.calculationAtA) : '-';
     }
     return '-'
   }
 
   calculateTotalB(){
-    let totalValue = 0;
-    const jewellery = this.formData?.formFourData?.appData?.inputData?.fairValueJewellery;
-    const artisticWork = this.formData?.formFourData?.appData?.inputData?.fairValueArtistic;
-    totalValue = convertToNumberOrZero(jewellery) + convertToNumberOrZero(artisticWork);
-    this.totalCalculationB = totalValue ? totalValue : 0;
-    return totalValue ? formatPositiveAndNegativeValues(totalValue) : '-';
+    // let totalValue = 0;
+    // const jewellery = this.formData?.formFourData?.appData?.inputData?.fairValueJewellery;
+    // const artisticWork = this.formData?.formFourData?.appData?.inputData?.fairValueArtistic;
+    // totalValue = convertToNumberOrZero(jewellery) + convertToNumberOrZero(artisticWork);
+    // this.totalCalculationB = totalValue ? totalValue : 0;
+    // return totalValue ? formatPositiveAndNegativeValues(totalValue) : '-';
+    return this.formData?.formFourData?.appData?.computations?.calculationAtB ? formatPositiveAndNegativeValues(this.formData?.formFourData?.appData?.computations?.calculationAtB) : '-';
   }
 
   calculateTotalD(){
     if(this.formData){
-      this.totalCalculationD = this.formData?.formFourData?.appData?.inputData?.fairValueImmovableProp ? parseFloat(this.formData.formFourData.appData.inputData.fairValueImmovableProp) : 0;
-      return this.formData?.formFourData?.appData?.inputData?.fairValueImmovableProp && this.formData?.formFourData?.appData?.inputData?.fairValueImmovableProp !== '0' ? formatNumber(this.formData.formFourData.appData.inputData.fairValueImmovableProp) : '-';
+      // this.totalCalculationD = this.formData?.formFourData?.appData?.inputData?.fairValueImmovableProp ? parseFloat(this.formData.formFourData.appData.inputData.fairValueImmovableProp) : 0;
+      // return this.formData?.formFourData?.appData?.inputData?.fairValueImmovableProp && this.formData?.formFourData?.appData?.inputData?.fairValueImmovableProp !== '0' ? formatNumber(this.formData.formFourData.appData.inputData.fairValueImmovableProp) : '-';
+      return this.formData?.formFourData?.appData?.computations?.calculationAtD ? formatPositiveAndNegativeValues(this.formData?.formFourData?.appData?.computations?.calculationAtD) : '-';
     }
+    return '-'
   }
 
   calculateTotalL(){
     if(this.formData){
-      const paidUpCapital = this.formData?.formFourData?.appData?.paidUpCapital;
-      const paymentDividends = this.formData?.formFourData?.appData?.paymentDividends;
-      const reservAndSurplus = this.formData?.formFourData?.appData?.reserveAndSurplus;
-      const provisionForTaxation = this.formData?.formFourData?.appData?.provisionForTaxation;
-      // const contingentLiabilities = isNaN(parseFloat(this.formData?.formFourData?.appData?.inputData?.contingentLiability)) ? 0 : parseFloat(this.formData?.formFourData?.appData?.inputData?.contingentLiability);
-      // const otherThanAscertainLiability = isNaN(parseFloat(this.formData?.formFourData?.appData?.inputData?.otherThanAscertainLiability)) ? 0 : parseFloat(this.formData?.formFourData?.appData?.inputData?.otherThanAscertainLiability);
-      this.totalCalculationL = (convertToNumberOrZero(this.formData?.formFourData?.appData?.bookValueOfLiabilities) - 
-      (convertToNumberOrZero(paidUpCapital) +
-       convertToNumberOrZero(paymentDividends) + 
-       convertToNumberOrZero(reservAndSurplus) + 
-       convertToNumberOrZero(provisionForTaxation) + 
-       convertToNumberOrZero(this.formData?.formFourData?.appData?.inputData?.contingentLiability) + 
-       convertToNumberOrZero(this.formData?.formFourData?.appData?.inputData?.otherThanAscertainLiability)));
-      return formatPositiveAndNegativeValues(
-        convertToNumberOrZero(this.formData?.formFourData?.appData?.bookValueOfLiabilities) - 
-      (
-        convertToNumberOrZero(paidUpCapital) + 
-        convertToNumberOrZero(paymentDividends) + 
-        convertToNumberOrZero(reservAndSurplus) + 
-        convertToNumberOrZero(provisionForTaxation) + 
-        convertToNumberOrZero(this.formData?.formFourData?.appData?.inputData?.contingentLiability) + 
-        convertToNumberOrZero(this.formData?.formFourData?.appData?.inputData?.otherThanAscertainLiability)
-      )
-      );
+      // const paidUpCapital = this.formData?.formFourData?.appData?.paidUpCapital;
+      // const paymentDividends = this.formData?.formFourData?.appData?.paymentDividends;
+      // const reservAndSurplus = this.formData?.formFourData?.appData?.reserveAndSurplus;
+      // const provisionForTaxation = this.formData?.formFourData?.appData?.provisionForTaxation;
+      // // const contingentLiabilities = isNaN(parseFloat(this.formData?.formFourData?.appData?.inputData?.contingentLiability)) ? 0 : parseFloat(this.formData?.formFourData?.appData?.inputData?.contingentLiability);
+      // // const otherThanAscertainLiability = isNaN(parseFloat(this.formData?.formFourData?.appData?.inputData?.otherThanAscertainLiability)) ? 0 : parseFloat(this.formData?.formFourData?.appData?.inputData?.otherThanAscertainLiability);
+      // this.totalCalculationL = (convertToNumberOrZero(this.formData?.formFourData?.appData?.bookValueOfLiabilities) - 
+      // (convertToNumberOrZero(paidUpCapital) +
+      //  convertToNumberOrZero(paymentDividends) + 
+      //  convertToNumberOrZero(reservAndSurplus) + 
+      //  convertToNumberOrZero(provisionForTaxation) + 
+      //  convertToNumberOrZero(this.formData?.formFourData?.appData?.inputData?.contingentLiability) + 
+      //  convertToNumberOrZero(this.formData?.formFourData?.appData?.inputData?.otherThanAscertainLiability)));
+      // return formatPositiveAndNegativeValues(
+      //   convertToNumberOrZero(this.formData?.formFourData?.appData?.bookValueOfLiabilities) - 
+      // (
+      //   convertToNumberOrZero(paidUpCapital) + 
+      //   convertToNumberOrZero(paymentDividends) + 
+      //   convertToNumberOrZero(reservAndSurplus) + 
+      //   convertToNumberOrZero(provisionForTaxation) + 
+      //   convertToNumberOrZero(this.formData?.formFourData?.appData?.inputData?.contingentLiability) + 
+      //   convertToNumberOrZero(this.formData?.formFourData?.appData?.inputData?.otherThanAscertainLiability)
+      // )
+      // );
+      return this.formData?.formFourData?.appData?.computations?.calculationAtL ? formatPositiveAndNegativeValues(this.formData?.formFourData?.appData?.computations?.calculationAtL) : '-';
     }
     return '-';
   }
 
   calculateAll() {
-      return  formatPositiveAndNegativeValues(convertToNumberOrZero(this.totalCalculationA)+ convertToNumberOrZero(this.totalCalculationB) + convertToNumberOrZero(this.totalCalculationC) + convertToNumberOrZero(this.totalCalculationD) - convertToNumberOrZero(this.totalCalculationL));
+    // return  formatPositiveAndNegativeValues(convertToNumberOrZero(this.totalCalculationA)+ convertToNumberOrZero(this.totalCalculationB) + convertToNumberOrZero(this.totalCalculationC) + convertToNumberOrZero(this.totalCalculationD) - convertToNumberOrZero(this.totalCalculationL));
+    return this.formData?.formFourData?.appData?.computations?.totalCalculation ? formatPositiveAndNegativeValues(this.formData?.formFourData?.appData?.computations?.totalCalculation) : '-';
   }
   
   calculateFairMarketValue(){
-    const phaseValue = !isNaN(parseFloat(this.formData?.formFourData?.appData?.inputData?.phaseValue)) ? parseFloat(this.formData?.formFourData?.appData?.inputData?.phaseValue) : 1;
-    const paidUpCapital = !isNaN(parseFloat(this.formData?.formFourData?.appData?.paidUpCapital)) ? parseFloat(this.formData?.formFourData?.appData?.paidUpCapital) : 1;
+    // const phaseValue = !isNaN(parseFloat(this.formData?.formFourData?.appData?.inputData?.phaseValue)) ? parseFloat(this.formData?.formFourData?.appData?.inputData?.phaseValue) : 1;
+    // const paidUpCapital = !isNaN(parseFloat(this.formData?.formFourData?.appData?.paidUpCapital)) ? parseFloat(this.formData?.formFourData?.appData?.paidUpCapital) : 1;
 
-    const totalSum = convertToNumberOrZero(this.totalCalculationA) + convertToNumberOrZero(this.totalCalculationB) + convertToNumberOrZero(this.totalCalculationC) + convertToNumberOrZero(this.totalCalculationD) - convertToNumberOrZero(this.totalCalculationL);
+    // const totalSum = convertToNumberOrZero(this.totalCalculationA) + convertToNumberOrZero(this.totalCalculationB) + convertToNumberOrZero(this.totalCalculationC) + convertToNumberOrZero(this.totalCalculationD) - convertToNumberOrZero(this.totalCalculationL);
 
-    let result;
+    // let result;
 
-    if (!isNaN(totalSum) && !isNaN(paidUpCapital) ) {
-        result = (totalSum * phaseValue) / paidUpCapital;
-    } else {
-        result = 0;
-    }
+    // if (!isNaN(totalSum) && !isNaN(paidUpCapital) ) {
+    //     result = (totalSum * phaseValue) / paidUpCapital;
+    // } else {
+    //     result = 0;
+    // }
 
-    return formatPositiveAndNegativeValues(result);
+    // return formatPositiveAndNegativeValues(result);
+    return this.formData?.formFourData?.appData?.computations?.valuePerShare ? formatPositiveAndNegativeValues(this.formData?.formFourData?.appData?.computations?.valuePerShare) : '-';
   }
 
   calculateTotalInvestmentSharesAndSecurities(){
-    let investment=0;
-    const investmentTotalFromExcel = this.formData?.formFourData?.appData.totalInvestmentSharesAndSecurities;
-    const elevenUaInvestment = this.formData?.formFourData.appData.inputData.fairValueinvstShareSec;
-    investment = elevenUaInvestment;
-    if(!elevenUaInvestment){
-       investment =  investmentTotalFromExcel;
-    }
-    this.totalCalculationC = investment;
-    return investment ? formatPositiveAndNegativeValues(investment) : '-';
+    // let investment=0;
+    // const investmentTotalFromExcel = this.formData?.formFourData?.appData.totalInvestmentSharesAndSecurities;
+    // const elevenUaInvestment = this.formData?.formFourData.appData.inputData.fairValueinvstShareSec;
+    // investment = elevenUaInvestment;
+    // if(!elevenUaInvestment){
+    //    investment =  investmentTotalFromExcel;
+    // }
+    // this.totalCalculationC = investment;
+    // return investment ? formatPositiveAndNegativeValues(investment) : '-';
+    return this.formData?.formFourData?.appData?.computations?.calculationAtC ? formatPositiveAndNegativeValues(this.formData?.formFourData?.appData?.computations?.calculationAtC) : '-';
   }
 
   financialBasis(){

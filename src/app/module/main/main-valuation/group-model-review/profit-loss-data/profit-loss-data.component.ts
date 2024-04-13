@@ -208,6 +208,9 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
             this.isExcelModified = true;
             this.createprofitAndLossDataSource(response);
             const excelResponse: any = await this.processStateManagerService.updateEditedExcelStatus(localStorage.getItem('processStateId')).toPromise();
+            if(excelResponse?.modifiedExcelSheetId){
+              this.excelSheetId = excelResponse.modifiedExcelSheetId;
+            }
             // this.profitAndLossSheetData.emit({status:true,result:response,isExcelModified:this.isExcelModified});
           }
           else{

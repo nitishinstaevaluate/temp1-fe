@@ -420,6 +420,8 @@ processStateManager(process:any, processId:any){
     if((current?.valuationDate && previous?.valuationDate) && current.valuationDate !== previous.valuationDate){
       this.fcfeForm.controls['expMarketReturnType'].setValue('');
       this.fcfeForm.controls['expMarketReturn'].reset();
+      this.fcfeForm.controls['betaType'].setValue('');
+      this.fcfeForm.controls['beta'].reset();
       this.calculateRiskFreeRate(this.fcfeForm.controls['riskFreeRateYears'].value)
     }
 
