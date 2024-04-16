@@ -539,6 +539,8 @@ calculateCoeAndAdjustedCoe() {
 
 getWaccIndustryOrCompanyBased(){
 
+  if(!this.fcffForm.controls['capitalStructureType'].value)
+      return;
   if(this.fcffForm.controls['capitalStructureType'].value=== 'Target_Based'){
     // console.log()
     const waccPayload={

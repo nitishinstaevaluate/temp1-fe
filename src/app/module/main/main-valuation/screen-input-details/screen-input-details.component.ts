@@ -715,7 +715,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
         if (!areIndustriesEqual) {
           this.calculationService.betaChangeDetector.next({ status: true });
         }
-        if(industryAD !== this.aswathDamodaranSelectedIndustry || betaFrom !== this.betaFrom){
+        if(((this.aswathDamodaranSelectedIndustry && industryAD) && (industryAD !== this.aswathDamodaranSelectedIndustry)) || betaFrom !== this.betaFrom){
           this.calculationService.betaChangeDetector.next({ status: true });
         }
     
