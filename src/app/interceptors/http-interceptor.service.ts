@@ -51,7 +51,8 @@ export class HttpInterceptorService {
             }
         }
         else {
-          if (!error.error.status && accessToken && sessionState) {
+          // !error.error.status
+          if (error.error.msg.includes('Invalid access token') && accessToken && sessionState) {
               return this.authService.refreshToken().pipe(
                 switchMap((refreshTokenDetails: any) => {
                   sessionStorage.setItem('access_token', refreshTokenDetails.accessToken);
