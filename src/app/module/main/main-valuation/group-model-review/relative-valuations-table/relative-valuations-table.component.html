@@ -1,24 +1,78 @@
-<div *ngIf="!isArrayEmptyOrNull(companyData) && tableData.status">
-    <!-- <h5 [ngClass]="tableData?.tableClass ? 'result-table-head' : 'company-head'">Company Based</h5> -->
+<!-- <div *ngIf="!isArrayEmptyOrNull(companyData) && tableData.status">
     <table mat-table [dataSource]="companyData" [ngClass]="tableData?.tableClass ? 'result-table': 'mat-elevation-z8 my-table'">
         <ng-container *ngFor="let column of companyColumn; let i = index" [matColumnDef]="column">
           <th mat-header-cell *matHeaderCellDef [ngClass]="column === 'Company Name' ? 'inc-p' : ''">{{ column !== 'Company Name' ? column + ' (x)' : column }}</th>
-          <!-- <td mat-cell *matCellDef="let element" [ngClass]="updateDecimal(element[companyColumnMap[column]]) === '-'? 'add-padding' : element[companyColumnMap[column]] === 'Average' || element[companyColumnMap[column]] === 'Median' ? 'make-bold' : companyColumnMap[column] !== 'company' ? 'remove-pad'  :  ''">{{ updateDecimal(element[companyColumnMap[column]]) }}</td> -->
           <td mat-cell *matCellDef="let element" [ngClass]="addStylingConditions(column, element)">{{ updateDecimal(element[companyColumnMap[column]]) }}</td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="companyColumn"></tr>
         <tr mat-row *matRowDef="let row; columns: companyColumn;"></tr>
     </table>
+</div> -->
+
+<div *ngIf="!isArrayEmptyOrNull(companyData) && tableData.status" style="position: relative;">
+  <table [ngClass]="tableData?.tableClass ? 'result-table': 'mat-elevation-z8 my-table'">
+      <thead>
+          <tr>
+              <th style="background-color: #e7faf4;"  class="inc-p">Company Name</th>
+              <th style="background-color: #e7faf4;" (click)="selectCompany(0, true, 'peSelection')">
+                <input type="checkbox" style="transform: scale(.96) !important;vertical-align: middle;" [(ngModel)]="peSelection" />
+                P/E(x)
+              </th>
+              <th style="background-color: #e7faf4;" (click)="selectCompany(0, true, 'pbSelection')">
+                <input type="checkbox" style="transform: scale(.96) !important;vertical-align: middle;" [(ngModel)]="pbSelection" />
+                P/B(x)
+              </th>
+              <th style="background-color: #e7faf4;" (click)="selectCompany(0, true, 'psSelection')">
+                <input type="checkbox" style="transform: scale(.96) !important;vertical-align: middle;" [(ngModel)]="psSelection" />
+                P/S(x)
+              </th>
+              <th style="background-color: #e7faf4;" (click)="selectCompany(0, true, 'evEbitdaSelection')">
+                <input type="checkbox" style="transform: scale(.96) !important;vertical-align: middle;" [(ngModel)]="evEbitdaSelection" />
+                EV/EBITDA(x)
+              </th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let row of companyData;let i = index" [ngClass]="row.isSelected ? 'content highlight-row' : 'content remove-higlight-row'">
+              <td style="padding-left: 2%;" (click)="selectCompany(i)">
+                <input type="checkbox" style="transform: scale(.96) !important;vertical-align: middle;" [id]="'checkbox_' + i" [(ngModel)]="row.isSelected" />
+                <span style="padding-left: 2%;font-size: 14px;">
+                  {{ row.company }}
+                </span>
+              </td>
+              <td [ngClass]="peSelection === false ? 'remove-pad disable-multiple' : 'remove-pad'">
+                {{ updateDecimal(row.peRatio) }}
+              </td>
+              <td [ngClass]="pbSelection === false ? 'remove-pad disable-multiple' : 'remove-pad'">{{ updateDecimal(row.pbRatio) }}</td>
+              <td [ngClass]="psSelection === false ? 'remove-pad disable-multiple' : 'remove-pad'">{{ updateDecimal(row.sales) }}</td>
+              <td [ngClass]="evEbitdaSelection === false ? 'remove-pad disable-multiple' : 'remove-pad'">{{ updateDecimal(row.ebitda) }}</td>
+          </tr>
+          <tr *ngFor="let row of averageMedianData" style="font-weight: bold;">
+              <td>{{ row?.company }}</td>
+              <td [ngClass]="peSelection === false ? 'remove-pad disable-multiple' : 'remove-pad'">{{ updateDecimal(row?.peRatio) }}</td>
+              <td [ngClass]="pbSelection === false ? 'remove-pad disable-multiple' : 'remove-pad'">{{ updateDecimal(row?.pbRatio) }}</td>
+              <td [ngClass]="psSelection === false ? 'remove-pad disable-multiple' : 'remove-pad'">{{ updateDecimal(row?.sales) }}</td>
+              <td [ngClass]="evEbitdaSelection === false ? 'remove-pad disable-multiple' : 'remove-pad'">{{ updateDecimal(row?.ebitda) }}</td>
+          </tr>
+      </tbody>
+  </table>
+  <div class="ccm-loader-overlay" *ngIf="ccmCompanyTableLoader">
+    <div class="ccm-loader-container">
+      <div class="ccm-loader">
+        <div class="ccm-spinner"></div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="mt-4" *ngIf="!isArrayEmptyOrNull(industryData) && !tableData.status">
-    <!-- <h5 [ngClass]="tableData?.tableClass ? 'result-table-head' : 'industry-head'">Industry Based</h5> -->
+
+<!-- <div class="mt-4" *ngIf="!isArrayEmptyOrNull(industryData) && !tableData.status">
     <table mat-table [dataSource]="industryData" [ngClass]="tableData?.tableClass ? 'result-table': 'mat-elevation-z8 my-table'">
         <ng-container *ngFor="let column of industryColumn; let i = index" [matColumnDef]="column">
           <th mat-header-cell *matHeaderCellDef [ngClass]="column === 'Company Name' ? 'inc-p' : ''">{{ column !== 'Company Name' ? column + ' (x)' : column }}</th>
-          <td mat-cell *matCellDef="let element" [ngClass]="addStylingConditions(column, element)">{{ updateDecimal(element[companyColumnMap[column]]) }}</td>
+          <td mat-cell *matCellDef="let element" [ngClass]="addStylingConditions(element)">{{ updateDecimal(element[companyColumnMap[column]]) }}</td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="industryColumn"></tr>
         <tr mat-row *matRowDef="let row; columns: industryColumn;"></tr>
     </table>
-</div>
+</div> -->

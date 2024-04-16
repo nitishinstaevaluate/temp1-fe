@@ -35,10 +35,10 @@
                 </tr>
               </thead>
               <tbody>
-                <ng-container *ngFor="let item of dataSource">
-                  <ng-container *ngIf="item.particular == 'pbRatio'">
+                <ng-container *ngFor="let item of dataSource,let i = index">
+                  <ng-container *ngIf="item.particular == 'pbRatio' && pbSelection">
                     <tr>
-                      <td>1</td>
+                      <td>{{ i + 1 }}</td>
                       <td class="td-label-h"><b>P/B Ratio</b></td>
                       <td></td>
                       <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'"></td>
@@ -74,9 +74,9 @@
                       <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'"></td>
                     </tr>
                   </ng-container>
-                  <ng-container *ngIf="item.particular == 'peRatio'">
+                  <ng-container *ngIf="item.particular == 'peRatio' && peSelection">
                     <tr>
-                      <td>2</td>
+                      <td>{{ i + 1 }}</td>
                       <td class="td-label-h"><b>P/E Ratio</b></td>
                       <td></td>
                       <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'"></td>
@@ -106,9 +106,9 @@
                       <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'"></td>
                     </tr>
                   </ng-container>
-                  <ng-container *ngIf="item.particular == 'ebitda'">
+                  <ng-container *ngIf="item.particular == 'ebitda' && evEbitdaSelection">
                     <tr style="height: 30px">
-                      <td>3</td>
+                      <td>{{ i + 1 }}</td>
                       <td class="td-label-h"><b>EV/EBITDA</b></td>
                       <td></td>
                       <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'"></td>
@@ -162,9 +162,9 @@
                       <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'"></td>
                     </tr>
                   </ng-container>
-                  <ng-container *ngIf="item.particular == 'sales'">
+                  <ng-container *ngIf="item.particular == 'sales' && psSelection">
                     <tr>
-                      <td>4</td>
+                      <td>{{ i + 1 }}</td>
                       <td class="td-label-h"><b>Price to Sales</b></td>
                       <td></td>
                       <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'"></td>

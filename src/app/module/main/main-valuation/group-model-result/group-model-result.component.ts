@@ -245,6 +245,33 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
       })
     }
   }
+
+  formFourAppDataCCM(appData:any){
+    if(appData?.valuationResult){
+      appData.valuationResult.map((response:any)=>{
+        if(response.model === MODELS.RELATIVE_VALUATION){
+
+          this.relativeValuation = response.valuation?.finalPriceMed;
+          const relativeValuationIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "Relative_Valuation");
+          if(relativeValuationIndex === -1)
+          {
+            this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.relativeValuation,weightage:this.relativeValSlider});
+          }
+          else{
+            this.calculateModelWeigtagePayload.results.splice(relativeValuationIndex,1,{model:response.model,value:this.relativeValuation,weightage:this.relativeValSlider});
+          }
+        }
+      });
+      this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
+        if(response.status){
+          this.totalModelWeightageValue = response.result;
+          this.data = response?.result?.modelValue;
+          this.finalWeightedValue = response?.result?.weightedVal ?? 0;
+        }
+      })
+    }
+  }
+  
   saveAndNext(){
     let processStateStep,processCompleteState=false;
     if(this.transferStepperthree.formOneAndThreeData.model.length>1){
