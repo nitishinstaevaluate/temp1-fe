@@ -578,7 +578,7 @@ getWaccIndustryOrCompanyBased(){
         this.wacc = response?.result?.wacc;
       }
       if(!response?.result){
-        this.snackBar.open(`Wacc calculation failed (excel not found), please reupload excel template and try again`, 'OK', {
+        this.snackBar.open(`Wacc calculation failed (excel not found), please reupload excel template or traverse back from review form and try again`, 'OK', {
           horizontalPosition: 'center',
           verticalPosition: 'bottom',
           duration: 5000,
