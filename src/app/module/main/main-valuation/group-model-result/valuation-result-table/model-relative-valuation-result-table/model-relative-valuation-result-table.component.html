@@ -38,7 +38,7 @@
                 <ng-container *ngFor="let item of dataSource,let i = index">
                   <ng-container *ngIf="item.particular == 'pbRatio' && pbSelection">
                     <tr>
-                      <td>{{ i + 1 }}</td>
+                      <td>{{ item?.serialNo }}</td>
                       <td class="td-label-h"><b>P/B Ratio</b></td>
                       <td></td>
                       <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'"></td>
@@ -76,7 +76,7 @@
                   </ng-container>
                   <ng-container *ngIf="item.particular == 'peRatio' && peSelection">
                     <tr>
-                      <td>{{ i + 1 }}</td>
+                      <td>{{ item.serialNo }}</td>
                       <td class="td-label-h"><b>P/E Ratio</b></td>
                       <td></td>
                       <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'"></td>
@@ -108,7 +108,7 @@
                   </ng-container>
                   <ng-container *ngIf="item.particular == 'ebitda' && evEbitdaSelection">
                     <tr style="height: 30px">
-                      <td>{{ i + 1 }}</td>
+                      <td>{{ item.serialNo }}</td>
                       <td class="td-label-h"><b>EV/EBITDA</b></td>
                       <td></td>
                       <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'"></td>
@@ -164,7 +164,7 @@
                   </ng-container>
                   <ng-container *ngIf="item.particular == 'sales' && psSelection">
                     <tr>
-                      <td>{{ i + 1 }}</td>
+                      <td>{{ item.serialNo }}</td>
                       <td class="td-label-h"><b>Price to Sales</b></td>
                       <td></td>
                       <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'"></td>

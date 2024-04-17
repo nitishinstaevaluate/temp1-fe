@@ -60,6 +60,10 @@ export class RelativeValuationsTableComponent implements OnChanges, OnInit {
         this.evEbitdaSelection = this.multiples.evEbitdaSelection;
         this.calculationService.multiplesSelector.next(this.multiples);
       }
+      else{
+        this.resetMultiples();
+        this.calculationService.multiplesSelector.next(this.multiples);
+      }
 
       const isSelectedExists = this.tableData?.company.some((indCompanies: any) => 'isSelected' in indCompanies);
 
@@ -186,12 +190,18 @@ export class RelativeValuationsTableComponent implements OnChanges, OnInit {
     const structure = {
       companyList: this.companyData,
       multiplesSelection:{
-        peSelection:this.peSelection,
-        psSelection:this.psSelection,
         pbSelection:this.pbSelection,
-        evEbitdaSelection:this.evEbitdaSelection
+        peSelection:this.peSelection,
+        evEbitdaSelection:this.evEbitdaSelection,
+        psSelection:this.psSelection,
       }
     } 
     this.recalculateCcmValuation.emit(structure);
+}
+resetMultiples(){
+  this.pbSelection = true;
+  this.peSelection = true; 
+  this.evEbitdaSelection = true;
+  this.psSelection = true;
 }
 }
