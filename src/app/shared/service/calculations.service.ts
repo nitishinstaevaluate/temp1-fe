@@ -15,6 +15,8 @@ export class CalculationsService {
   checkStepStatus: BehaviorSubject<any> = new BehaviorSubject({status:false});
   checkModel: BehaviorSubject<any> = new BehaviorSubject({status:true});
   betaChangeDetector: BehaviorSubject<any> = new BehaviorSubject({status:false});
+  ccmValuationDetector: BehaviorSubject<any> = new BehaviorSubject({status:false});
+  multiplesSelector: BehaviorSubject<any> = new BehaviorSubject(null);
   
   getCostOfEquity(payload:any){
     return this.http.get(`${HOST}coe/adjcoe/?riskFreeRate=${payload.riskFreeRate}&expMarketReturn=${payload.expMarketReturn}&beta=${payload.beta}&riskPremium=${payload.riskPremium}&coeMethod=${payload.coeMethod}`)

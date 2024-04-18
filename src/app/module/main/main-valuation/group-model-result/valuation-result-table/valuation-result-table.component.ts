@@ -20,7 +20,8 @@ import { environment } from 'src/environments/environment';
 export class ValuationResultTableComponent implements OnInit, OnChanges{
 @Input() transferStepperthree:any;
 @Output() terminalValueType = new EventEmitter<any>();
-@Output() formFourAppData= new EventEmitter<any>();
+@Output() formFourAppData = new EventEmitter<any>();
+@Output() formFourAppDataCCM = new EventEmitter<any>();
 @ViewChild('dynamicTable') dynamicTable!: ElementRef;
 
 HOST = environment.baseUrl
@@ -32,6 +33,7 @@ excessEarn = false;
 nav=false;
 ruleElevenUa=false;
 tableData:any;
+multiples:any;
 valuationDataReport:any=[];
 columnName = COMMON_COLUMN;
 dataSourceFcfe:any;
@@ -56,6 +58,7 @@ terminalYearWorking:any;
 dcfLoader = false;
 processStateId:any;
 isDropdownOpen = false;
+ccmCompanyTableLoader = false;
 getKeys(navData:any){
 this.dataSourceNav =[navData].map((response:any)=>{
   let obj = Object.values(response);
@@ -85,7 +88,8 @@ constructor(private excelAndReportService:ExcelAndReportService,
   private customDatePipe:CustomDatePipe,
   private dialog: MatDialog,
   private processManagerService: ProcessStatusManagerService,
-  private valuationService: ValuationService){}
+  private valuationService: ValuationService,
+  private calculationService: CalculationsService){}
 
 ngOnChanges(changes:SimpleChanges): void {
   this.processStateId = localStorage.getItem('processStateId');
@@ -269,6 +273,7 @@ loadValuationTable(){
       const toggleIndustryOrCompany = this.checkIndustryOrCompany();
       this.tableData = {company,industry,status:toggleIndustryOrCompany,tableClass:true};
       this.valuationDataReport = response?.valuationData?.valuation;
+      this.multiples = response?.valuationData?.multiples;
     }
     
     if(response.model === 'Excess_Earnings'){
@@ -637,6 +642,64 @@ loadStageFiveDetails(){
         this.loadValuationTable()
       }
     }
+  })
+}
+
+recalculateCcmValuation(companyData:any){
+  this.ccmCompanyTableLoader = true;
+  const snackBarRef = this.snackbar.open('Valuation Recalculating, please wait...', 'ok', {
+    horizontalPosition: 'right',
+    verticalPosition: 'top',
+    duration: -1,
+    panelClass: 'app-notification-success',
+  });
+  const payload = {
+    companies:companyData.companyList,
+    processStateId: localStorage.getItem('processStateId'),
+    multiples: companyData.multiplesSelection
+  }
+  this.valuationService.ccmRevaluationProcess(payload).subscribe((revaluationData:any)=>{
+    this.ccmCompanyTableLoader = false;
+    snackBarRef.dismiss();
+    this.calculationService.ccmValuationDetector.next({status:true});
+    if(revaluationData.status){
+      revaluationData.valuationResult.map((individualValuation:any)=>{
+        if(individualValuation.model === MODELS.RELATIVE_VALUATION || individualValuation.model === MODELS.COMPARABLE_INDUSTRIES){
+          const company = individualValuation?.valuationData?.companies;
+          const industry = individualValuation?.valuationData?.industries;
+          const toggleIndustryOrCompany = this.checkIndustryOrCompany();
+          this.tableData = {company,industry,status:toggleIndustryOrCompany,tableClass:true};
+          this.valuationDataReport = individualValuation?.valuationData?.valuation;
+          this.multiples = individualValuation?.valuationData?.multiples;
+        }
+      })
+      const modifiedAppData = {
+        reportId: revaluationData.reportId,
+        valuationResult: revaluationData.valuationResult
+      }
+      this.transferStepperthree.formFourData.appData = modifiedAppData;
+
+      if(this.transferStepperthree?.formOneAndThreeData?.model?.includes(MODELS.RELATIVE_VALUATION)  && this.transferStepperthree?.formOneAndThreeData?.model?.length > 1){
+        this.formFourAppDataCCM.emit(this.transferStepperthree.formFourData.appData);
+      }
+
+      this.snackbar.open('Valuation has been recalculated', 'Ok',{
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+        duration: 4000,
+        panelClass: 'app-notification-success',
+      })
+    }
+  },(error)=>{
+    this.ccmCompanyTableLoader = false;
+    snackBarRef.dismiss();
+    this.calculationService.ccmValuationDetector.next({status:true});
+    this.snackbar.open('Re-Valuation for CCM has failed', 'Ok',{
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+      duration: 4000,
+      panelClass: 'app-notification-success',
+    })
   })
 }
 }

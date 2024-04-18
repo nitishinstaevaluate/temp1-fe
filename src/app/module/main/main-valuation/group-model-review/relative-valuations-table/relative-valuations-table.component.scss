@@ -62,7 +62,7 @@ table {
     background-color: #ebebeb;
     cursor: pointer;
   }
-  .result-table .mat-mdc-header-row .mat-mdc-header-cell{
+  .result-table .mat-mdc-header-row .mat-mdc-header-cell, thead tr th{
       font-size: 15px;
       font-weight: 500;
       background-color: #e7faf4 ;
@@ -99,8 +99,142 @@ table {
     padding-left: 3%;
   }
   .remove-pad{
-    padding-left: 1% !important;
+    padding-left: 1%;
   }
   .make-bold{
     font-weight: 600 !important;
   }
+
+  .checkbox-container {
+    display: block;
+    position: relative;
+    padding-left: 28px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* Hide the browser's default checkbox */
+  .checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: #eee;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+
+  .content{
+    height: 28px;
+    .make-bold{
+      color: #666666 !important;
+    font-size: 13px !important;
+    font-weight: 500;
+    font-family: 'AR One Sans', sans-serif !important;
+    padding-left: 1% !important;
+    text-align: left !important;
+    }
+
+    .make-light{
+      color: #666666;
+    font-size: 13px !important;
+    font-weight: 500;
+    font-family: 'AR One Sans', sans-serif !important;
+    text-align: left !important;
+    padding-left: 1% !important;
+    }
+  }
+
+  td{
+    transition: background-color 0.3s ease-in-out;
+  }
+  .highlight-row {
+    background-color: #0CCE8D !important;
+  }
+  
+  .highlight-row td {
+    color: #FFFFFF;
+  }
+  
+  .highlight-row:hover td {
+    background-color: #0CCE8D;
+    cursor: pointer;
+  }
+
+  .remove-higlight-row td {
+    color: #666666 !important;
+  }
+  
+  .remove-higlight-row:hover td {
+    background-color: #D8D8D8 !important;
+    cursor: pointer;
+  }
+  
+  .remove-higlight-row{
+  background-color: #D8D8D8 !important;
+}
+
+
+.ccm-loader-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(125 125 125 / 50%);
+  z-index: 9998;
+}
+
+.ccm-loader-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+}
+
+.ccm-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ccm-spinner {
+  border: 4px solid rgb(255 255 255 / 68%);
+  border-top: 4px solid #28bc7f;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.disable-multiple{
+  background-color: #bebbba !important;
+  color: rgb(59, 59, 59) !important;
+  font-weight: 500 !important;
+}
+
+.disable-multiple:hover{
+  background-color: #a6a3a3 !important;
+  color: rgb(243, 14, 14) !important;
+}

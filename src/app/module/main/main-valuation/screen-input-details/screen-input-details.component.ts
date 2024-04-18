@@ -282,7 +282,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     const formOneDataPreviousChanges = changes['formOneData']?.previousValue;
 
     if(formOneDataCurrentChanges && formOneDataPreviousChanges && (formOneDataCurrentChanges?.valuationDate !== formOneDataPreviousChanges?.valuationDate || !formOneDataCurrentChanges?.valuationDate)){
-      this.mainIndustries = [];
+      //   this.mainIndustries = [];
       this.loadCiqIndustryBasedLevelFour(this.createPayload());
     }
   }
@@ -439,6 +439,9 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
               this.selectAll = true;
             }            
           });
+          this.mainIndustries = this.ciqIndustryData.filter((individualData:any)=>{
+            return individualData.isSelected === true 
+          })
         }
         this.total = industryData.total;
         this.length = industryData.total;

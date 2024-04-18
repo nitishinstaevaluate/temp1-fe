@@ -540,7 +540,7 @@ calculateCoeAndAdjustedCoe() {
 getWaccIndustryOrCompanyBased(){
 
   if(!this.fcffForm.controls['capitalStructureType'].value)
-    return;
+      return;
   if(this.fcffForm.controls['capitalStructureType'].value=== 'Target_Based'){
     // console.log()
     const waccPayload={
@@ -576,6 +576,14 @@ getWaccIndustryOrCompanyBased(){
       if(response.status){
         this.adjCoe = response?.result?.adjCOE;
         this.wacc = response?.result?.wacc;
+      }
+      if(!response?.result){
+        this.snackBar.open(`Wacc calculation failed (excel not found), please reupload excel template or traverse back from review form and try again`, 'OK', {
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+          duration: 5000,
+          panelClass: 'app-notification-error',
+        });
       }
     })
   }
@@ -933,7 +941,7 @@ calculateStockBeta(){
     if(this.fcffForm.controls['capitalStructureType'].value === 'Industry_Based'){
       betaMeanMedian.map((indRatios:any)=>{        
         if(this.selectedSubBetaType === indRatios.betaType){
-          this.deRatio = convertToNumberOrZero(indRatios.debtToCapital)/convertToNumberOrZero(indRatios.equityToCapital);
+          this.deRatio = (convertToNumberOrZero(indRatios.debtToCapital)/convertToNumberOrZero(indRatios.equityToCapital)) * 100;
           this.equityProp = indRatios.equityToCapital;
         }
       })

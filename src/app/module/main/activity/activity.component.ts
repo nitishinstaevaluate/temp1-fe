@@ -163,7 +163,6 @@ export class ActivityComponent {
 
   getValuation(modelArray:string,processData:any){
     if(processData.fourthStageInput || processData.fifthStageInput){
-
       if(modelArray.length === 1 && (modelArray.includes(MODELS.FCFE) || modelArray.includes(MODELS.FCFF) || modelArray.includes(MODELS.EXCESS_EARNINGS))){
         const dcfApproachValuation = processData?.fourthStageInput?.appData?.valuationResult[0].valuationData;
         // Here for DCF valuation, we have value value per share in the second last element of the second array

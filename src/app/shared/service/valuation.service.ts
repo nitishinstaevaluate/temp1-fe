@@ -56,7 +56,11 @@ export class ValuationService {
   }
 
   revaluationProcess(processId:any, type:any){
-    return this.http.get(`${HOST}valuations/re-valuation/${processId}/${type}`)
+    return this.http.get(`${HOST}valuations/dcf-re-valuation/${processId}/${type}`)
+  }
+
+  ccmRevaluationProcess(payload:any){
+    return this.http.post(`${HOST}valuations/ccm-re-valuation`, payload)
   }
   }
 
