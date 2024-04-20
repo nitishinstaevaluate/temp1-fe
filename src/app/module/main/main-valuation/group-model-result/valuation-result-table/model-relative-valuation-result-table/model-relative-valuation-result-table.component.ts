@@ -31,6 +31,12 @@ export class ModelRelativeValuationResultTableComponent implements OnChanges, On
         this.pbSelection = multipleSelectData.pbSelection;
         this.evEbitdaSelection = multipleSelectData.evEbitdaSelection;
       }
+      else{
+        this.peSelection = true;
+        this.psSelection = true;
+        this.pbSelection = true;
+        this.evEbitdaSelection = true;
+      }
     })
   }
 
