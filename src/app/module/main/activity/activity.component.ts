@@ -164,23 +164,53 @@ export class ActivityComponent {
   getValuation(modelArray:string,processData:any){
     if(processData.fourthStageInput || processData.fifthStageInput){
       if(modelArray.length === 1 && (modelArray.includes(MODELS.FCFE) || modelArray.includes(MODELS.FCFF) || modelArray.includes(MODELS.EXCESS_EARNINGS))){
-        const dcfApproachValuation = processData?.fourthStageInput?.appData?.valuationResult[0].valuationData;
-        // Here for DCF valuation, we have value value per share in the second last element of the second array
-        return `${processData.firstStageInput.currencyUnit} ${formatNumber(dcfApproachValuation[1][dcfApproachValuation[1].length - 1] ? dcfApproachValuation[1][dcfApproachValuation[1].length - 1] : '-')}`;
-      }
-      else if(modelArray.length === 1 && (modelArray.includes(MODELS.COMPARABLE_INDUSTRIES) || modelArray.includes(MODELS.RELATIVE_VALUATION))){
-        const valuePerShare = processData.fourthStageInput.appData.valuationResult[0]?.valuationData?.valuation;
-        let marketApproachValuePerShare;
-        valuePerShare.map((indElements:any)=>{
-          if(indElements.particular === 'result'){
-            marketApproachValuePerShare = indElements.fairValuePerShareAvg;
+        let dcfApproachValuation:any = [];
+        processData?.fourthStageInput?.appData?.valuationResult.map((indValuation:any)=>{
+          if(indValuation.model === MODELS.FCFE || indValuation.model === MODELS.FCFF || indValuation.model === MODELS.EXCESS_EARNINGS){
+            dcfApproachValuation = indValuation.valuationData;
           }
         })
-        return `${processData.firstStageInput.currencyUnit} ${formatNumber(marketApproachValuePerShare ? marketApproachValuePerShare : '-')}`;
+        // Here for DCF valuation, we have value value per share in the second last element of the second array
+        if(dcfApproachValuation?.length){
+          return `${processData.firstStageInput.currencyUnit} ${formatNumber(dcfApproachValuation[1][dcfApproachValuation[1].length - 1] ? dcfApproachValuation[1][dcfApproachValuation[1].length - 1] : '-')}`;
+        }
+        else{
+          return `${processData.firstStageInput.currencyUnit} -`;
+        }
+      }
+      else if(modelArray.length === 1 && (modelArray.includes(MODELS.COMPARABLE_INDUSTRIES) || modelArray.includes(MODELS.RELATIVE_VALUATION))){
+        let ccmValuation:any = [];
+        let marketApproachValuePerShare;
+        processData?.fourthStageInput?.appData?.valuationResult.map((indValuation:any)=>{
+          if(indValuation.model === MODELS.COMPARABLE_INDUSTRIES || indValuation.model === MODELS.RELATIVE_VALUATION){
+            ccmValuation = indValuation?.valuationData?.valuation;
+          }
+        })
+        if(ccmValuation?.length){
+          ccmValuation.map((indElements:any)=>{
+            if(indElements.particular === 'result'){
+              marketApproachValuePerShare = indElements.fairValuePerShareAvg;
+            }
+          })
+          return `${processData.firstStageInput.currencyUnit} ${formatNumber(marketApproachValuePerShare ? marketApproachValuePerShare : '-')}`;
+        }
+        else{
+          return `${processData.firstStageInput.currencyUnit} -`;
+        }
       }
       else if(modelArray.length === 1 && modelArray.includes(MODELS.NAV)){
-        const navAprroachValuation = processData?.fourthStageInput?.appData?.valuationResult[0].valuationData;
-        return `${processData.firstStageInput.currencyUnit} ${formatNumber(navAprroachValuation?.valuePerShare?.bookValue ? navAprroachValuation?.valuePerShare?.bookValue : '-')}`;
+        let navValuation: any = [];
+        processData?.fourthStageInput?.appData?.valuationResult.map((indValuation:any)=>{
+          if(indValuation.model === MODELS.NAV){
+            navValuation = indValuation?.valuationData;
+          }
+        })
+        if(navValuation){
+          return `${processData.firstStageInput.currencyUnit} ${formatNumber(navValuation?.valuePerShare?.bookValue ? navValuation?.valuePerShare?.bookValue : '-')}`;
+        }
+        else{
+          return `${processData.firstStageInput.currencyUnit} -`;
+        }
       }
       else if(modelArray.length === 1 && modelArray.includes(MODELS.RULE_ELEVEN_UA)){
         const ruleElevenUaAprroachValuation = processData?.fourthStageInput?.appData?.computations?.valuePerShare;
