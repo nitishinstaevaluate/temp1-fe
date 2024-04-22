@@ -223,8 +223,11 @@
               <div class="col-md-6 field" style="padding-top: 2%;">
                 <div class="material-textfield">
                     <textarea class="new-inp" formControlName="companyInfo" placeholder="Enter company information" ></textarea>
-                    <label>Company Info</label>
+                    <label>Company Info*</label>
                   </div>
+                  <span *ngIf="reportForm.controls['companyInfo'].touched && reportForm.controls['companyInfo'].errors">
+                    <span *ngIf="hasError('companyInfo','required',reportForm)" class="error-text">Please add company info</span>
+                  </span> 
             </div>
 
                 <!-- purpose of report -->
