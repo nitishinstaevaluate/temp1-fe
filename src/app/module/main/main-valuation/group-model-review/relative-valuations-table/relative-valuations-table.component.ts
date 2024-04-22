@@ -129,19 +129,19 @@ export class RelativeValuationsTableComponent implements OnChanges, OnInit {
     if(indCompanyData.company === 'Average'){
       postMultipleAverage = {
         company: 'Post Discount Multiple (Average)',
-        peRatio: indCompanyData.peRatio.toFixed(2) * (1-this.formData.formOneAndThreeData.discountRateValue/100),
-        pbRatio: indCompanyData.pbRatio.toFixed(2) * (1-this.formData.formOneAndThreeData.discountRateValue/100),
-        ebitda: indCompanyData.ebitda.toFixed(2) * (1-this.formData.formOneAndThreeData.discountRateValue/100),
-        sales: indCompanyData.sales.toFixed(2) * (1-this.formData.formOneAndThreeData.discountRateValue/100)
+        peRatio: indCompanyData.peRatio ? indCompanyData.peRatio.toFixed(2) * (1-this.formData.formOneAndThreeData.discountRateValue/100) : 0,
+        pbRatio: indCompanyData.pbRatio ? indCompanyData.pbRatio.toFixed(2) * (1-this.formData.formOneAndThreeData.discountRateValue/100) : 0,
+        ebitda: indCompanyData.ebitda ?  indCompanyData.ebitda.toFixed(2) * (1-this.formData.formOneAndThreeData.discountRateValue/100) : 0,
+        sales: indCompanyData.sales ? indCompanyData.sales.toFixed(2) * (1-this.formData.formOneAndThreeData.discountRateValue/100) : 0
       }
     }
     if(indCompanyData.company === 'Median'){
       postMultipleMedian = {
         company: 'Post Discount Multiple (Median)',
-        peRatio: indCompanyData.peRatio.toFixed(2) * (1-this.formData.formOneAndThreeData.discountRateValue/100),
-        pbRatio: indCompanyData.pbRatio.toFixed(2) * (1-this.formData.formOneAndThreeData.discountRateValue/100),
-        ebitda: indCompanyData.ebitda.toFixed(2) * (1-this.formData.formOneAndThreeData.discountRateValue/100),
-        sales: indCompanyData.sales.toFixed(2) * (1-this.formData.formOneAndThreeData.discountRateValue/100)
+        peRatio: indCompanyData.peRatio ? indCompanyData.peRatio.toFixed(2) * (1-this.formData.formOneAndThreeData.discountRateValue/100) : 0,
+        pbRatio: indCompanyData.pbRatio ? indCompanyData.pbRatio.toFixed(2) * (1-this.formData.formOneAndThreeData.discountRateValue/100) : 0,
+        ebitda: indCompanyData.ebitda ? indCompanyData.ebitda.toFixed(2) * (1-this.formData.formOneAndThreeData.discountRateValue/100) : 0,
+        sales: indCompanyData.sales ? indCompanyData.sales.toFixed(2) * (1-this.formData.formOneAndThreeData.discountRateValue/100) : 0
       }
     }
   })
