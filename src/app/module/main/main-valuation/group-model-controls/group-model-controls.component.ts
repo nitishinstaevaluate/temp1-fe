@@ -121,6 +121,7 @@ export class GroupModelControlsComponent implements OnInit {
       // discountRateValue: [20],
       reportingUnit:['',[Validators.required]],
       currencyUnit:['INR',[Validators.required]],
+      faceValue:['',[Validators.required]]
     })
     this.modelSpecificCalculation=this.formBuilder.group({
       discountRate:[null,[Validators.required]],
@@ -182,6 +183,7 @@ export class GroupModelControlsComponent implements OnInit {
    this.modelValuation.controls['reportingUnit'].setValue(data?.reportingUnit?? '');
    this.modelValuation.controls['subIndustry'].setValue(data?.subIndustry?? '');
    this.modelValuation.controls['taxRate'].setValue(data?.taxRate?? '');
+   this.modelValuation.controls['faceValue'].setValue(data?.faceValue?? '');
    
    if(data.taxRate === '25.17' || data.taxRate === '25.17%'){
      this.modelValuation.controls['taxRateType'].setValue('25.17');
@@ -315,6 +317,10 @@ export class GroupModelControlsComponent implements OnInit {
       delete control.projectionYearSelect
       delete control.terminalGrowthRate
       delete control.projectionYears
+    }
+    
+    if(!isSelected('NAV', this.modelValuation.controls['model'].value)){
+      delete control.faceValue;
     }
 
     if((payload.model.includes(MODELS.RULE_ELEVEN_UA) || payload.model.includes(MODELS.NAV)) && payload.model.length === 1){
@@ -579,6 +585,12 @@ export class GroupModelControlsComponent implements OnInit {
     else{
       this.calculationService.checkModel.next({status:true})
     }
+  }
+  isNav(){
+    if(this.modelValuation.controls['model'].value?.length && this.modelValuation.controls['model'].value?.includes(MODELS.NAV)){
+      return true;
+    }
+    return false;
   }
 
   filterByBusinessDescriptor(event:any){

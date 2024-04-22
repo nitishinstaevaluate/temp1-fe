@@ -279,7 +279,8 @@ export const ALL_MODELS = {
     tvCashFlowBased:`Estimation of a company's worth beyond the forecast period, based on its last year cash flow, discount rate, and long-term growth rate. It represents the perpetual value of the company assuming constant growth.`,
     tvPatBased:`Estimation of company value at the end of a forecast period, calculated based on the last year's Profit After Tax, discount rate, and long-term growth rate. It signifies the perpetual value of the company considering profit figures.`,
     capitalIqBetaDesc:`Capital IQ is used to calculate beta for valuation due to its extensive financial data coverage, aiding in the analysis of a stock's volatility relative to the market.`,
-    aswathDamodaranBetaDesc:`Aswath Damodaran's methodologies are utilized for beta calculation due to their robustness and insight into market dynamics, ensuring accurate risk assessment relative to the market.`
+    aswathDamodaranBetaDesc:`Aswath Damodaran's methodologies are utilized for beta calculation due to their robustness and insight into market dynamics, ensuring accurate risk assessment relative to the market.`,
+    faceValue:`Face value`
   }
 
   export const CHECKLIST_TYPES = {

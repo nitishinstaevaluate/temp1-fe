@@ -272,11 +272,6 @@
                 <!-- tax rate -->
                 <div class="col-md-6 field" *ngIf="isNotRuleElevenUaAndNav()" style="padding-top: 0px;">
                     <div class="material-textfield">
-                      <!-- <select id="subIndustry" class="new-inp"formControlName="taxRateType" (change)="onTaxRateChange($event)">
-                        <option value="25.17" selected>Default</option>
-                        <option *ngFor="let doc of taxRate" [value]="doc.type">{{doc.label}}</option>
-                      </select>
-                      <label for="subIndustry">Tax Rate</label> -->
                       <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
                         <mat-label>Tax Rate*</mat-label>
                         <span class="company-list-rmve" *ngIf="modelValuation.controls['taxRateType']?.value" style="right:7%;">
@@ -303,6 +298,33 @@
                       </mat-select>
                       <mat-hint *ngIf="taxRateModelBox" class="taxrate-hint" style="padding-left: 5px;margin-left: -1%;">Tax rate is {{taxRateModelBox}}%</mat-hint>
                     </mat-form-field>
+                    </div>
+                </div>            
+                <!-- Face Value -->
+                <div class="col-md-6 field" *ngIf="isNav()" style="padding-top: 0px;">
+                    <div class="material-textfield">
+                      <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                        <input type="text" matInput formControlName="faceValue" class="company-list-inp" placeholder="Enter outstanding shares">
+                        <span class="company-info-span" *ngIf="modelValuation.controls['faceValue']?.value" style="left: 16%;">
+                          <svg matTooltipClass='form-one-tooltip' [matTooltip]="helperText.faceValue" matTooltipPosition="right" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
+                            <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:32px;" 
+                            fill="#ff0000"></path>
+                            <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px;">
+                            </polyline><line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px;">
+                          </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
+                        </span>
+                          <span class="company-list-rmve" *ngIf="modelValuation.controls['faceValue']?.value">
+                            <mat-icon class="company-list-rmve-icon" (click)="clearInput('faceValue')">close</mat-icon>
+                          </span>
+                        <mat-label>
+                          Face Value
+                        </mat-label>
+                        <mat-error class="company-list-error" *ngIf="modelValuation.controls['faceValue'].touched && modelValuation.controls['faceValue'].errors">
+                          <span *ngIf="hasError('faceValue','required',modelValuation)">
+                            Please enter face value.
+                          </span>
+                        </mat-error>
+                      </mat-form-field>
                     </div>
                 </div>            
             </div>

@@ -62,4 +62,8 @@ export class CiqSPService {
     fetchBetaWorking(processId:any){
      return this.http.get(`${this.HOST}ciq-sp/fetch-beta-working/${processId}`);
     }
+
+    updateCompaniesList(data:any){
+      return this.http.post(`${this.HOST}ciq-elastic-search/update-selected-companies`,data)
+     }
 }
