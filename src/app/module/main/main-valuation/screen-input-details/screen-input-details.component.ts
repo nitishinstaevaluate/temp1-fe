@@ -284,6 +284,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     if(formOneDataCurrentChanges && formOneDataPreviousChanges && (formOneDataCurrentChanges?.valuationDate !== formOneDataPreviousChanges?.valuationDate || !formOneDataCurrentChanges?.valuationDate)){
       //   this.mainIndustries = [];
       this.loadCiqIndustryBasedLevelFour(this.createPayload());
+      this.updateSelectedIndustriesData();
     }
   }
 
@@ -439,9 +440,14 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
               this.selectAll = true;
             }            
           });
+          if(this.selectedIndustries.length){
+            this.mainIndustries = this.selectedIndustries;
+          }
+          else{
           this.mainIndustries = this.ciqIndustryData.filter((individualData:any)=>{
             return individualData.isSelected === true 
           })
+          }
         }
         this.total = industryData.total;
         this.length = industryData.total;
@@ -653,6 +659,11 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     const isCompanyExist = checkIfIndustryExist.some((elements:any)=>{elements?.COMPANYID === data.COMPANYID})
     if(!isCompanyExist){
       this.mainIndustries.push(data)
+      this.ciqIndustryData.forEach((row: any) => {
+        if(row.COMPANYID === data.COMPANYID){
+          row.isSelected = true
+        }        
+      });
     }
   }
 
@@ -662,6 +673,11 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
 
   async removeUncheckedIndustry(data:any){
     this.mainIndustries.splice(this.mainIndustries.findIndex((element:any) => element.COMPANYID === data.COMPANYID),1);
+    this.ciqIndustryData.forEach((row: any) => {
+      if(row.COMPANYID === data.COMPANYID){
+        row.isSelected = false
+      }        
+    });
   }
 
   removeMultiSelectIndustryStructure(){
@@ -960,7 +976,12 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   onSelectedChange(row:any){
     const indexSelected = this.mainIndustries.findIndex((ele:any)=> ele.COMPANYID === row.COMPANYID);
     if(indexSelected !== -1){
-      this.mainIndustries.splice(indexSelected, 1)
+      this.mainIndustries.splice(indexSelected, 1);
+      this.ciqIndustryData.forEach((ciqInd: any) => {
+        if(ciqInd.COMPANYID === row.COMPANYID){
+          ciqInd.isSelected = false
+        }        
+      });
     }
   }
 
@@ -1027,5 +1048,43 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     else{
       return false
     }
+  }
+  updateSelectedIndustriesData(){
+    let companyIdArray:any = []; 
+    this.selectedIndustries.map((indC:any)=>{
+      companyIdArray.push({COMPANYID: indC.COMPANYID})
+    })
+    const payload = {
+      industryAggregateList: companyIdArray,
+      valuationDate: this.formOneData?.valuationDate
+    }
+    this.ciqSpService.updateCompaniesList(payload).subscribe((updatedCiqIndustryList:any)=>{
+      const companyList = updatedCiqIndustryList?.data;
+      if(updatedCiqIndustryList?.status && companyList?.length){
+        this.mainIndustries.map((mainIndustry: any)=>{
+          companyList.map((companyData: any)=>{
+            if(companyData.COMPANYID === mainIndustry.COMPANYID){
+              mainIndustry.EBITDAVALUE = companyData.EBITDAVALUE;
+              mainIndustry.SALESVALUE = companyData.SALESVALUE;
+              mainIndustry.MARKETCAP = companyData.MARKETCAP;
+            }
+          })
+        })
+      }else{
+        this.snackBar.open('Data not found for reupating company list', 'Ok',{
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 5000,
+          panelClass: 'app-notification-error',
+        })
+      }
+    },(error)=>{
+      this.snackBar.open('Selected companies updation failed', 'Ok',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 5000,
+        panelClass: 'app-notification-error',
+      })
+    })
   }
 }
