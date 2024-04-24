@@ -39,7 +39,7 @@ export class HttpInterceptorService {
               return EMPTY;
             }
             else{
-              this.snackbar.open('Refresh token expired, Please login again', 'Ok', {
+              this.snackbar.open('Session expired, login again', 'Ok', {
                 horizontalPosition: 'right',
                 verticalPosition: 'top',
                 duration: 10000,
