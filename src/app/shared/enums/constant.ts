@@ -288,6 +288,15 @@ export const ALL_MODELS = {
     dataCheckList: "datachecklist"
   }
 
+  export const GET_MULTIPLIER_UNITS:any = {
+    absolute:1,
+    Hundreds:100,
+    Thousands:1000,
+    Lakhs:100000,
+    Millions:1000000,
+    Crores:10000000
+}
+
   export const INCOME_APPROACH = ['FCFE','FCFF','Excess_Earnings'];
 
   export const NET_ASSET_APPROACH = ['NAV'];

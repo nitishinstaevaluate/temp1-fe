@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { ValuationService } from '../../../shared/service/valuation.service';
 import { environment } from 'src/environments/environment';
-import { ALL_MODELS, MODELS, PAGINATION_VAL } from 'src/app/shared/enums/constant';
+import { ALL_MODELS, GET_MULTIPLIER_UNITS, MODELS, PAGINATION_VAL } from 'src/app/shared/enums/constant';
 import { AuthService } from 'src/app/shared/service/auth.service';
 import { Router } from '@angular/router';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
@@ -227,7 +227,9 @@ export class ActivityComponent {
       }
       else if(processData.fifthStageInput?.totalWeightageModel){
         const outstandingShares = convertToNumberOrZero(processData.firstStageInput.outstandingShares);
-        return `${processData.firstStageInput.currencyUnit} ${formatNumber(processData.fifthStageInput.totalWeightageModel?.weightedVal ? processData.fifthStageInput.totalWeightageModel?.weightedVal/outstandingShares : '-')}`;
+        const reportingUnit = processData.firstStageInput?.reportingUnit;
+        const multiplier = GET_MULTIPLIER_UNITS[`${reportingUnit}`] || 100000; //In default case, setting multiplier to 1 lakh
+        return `${processData.firstStageInput.currencyUnit} ${formatNumber(processData.fifthStageInput.totalWeightageModel?.weightedVal ? processData.fifthStageInput.totalWeightageModel?.weightedVal * multiplier/outstandingShares : '-')}`;
       }
       else{
         return '-';
