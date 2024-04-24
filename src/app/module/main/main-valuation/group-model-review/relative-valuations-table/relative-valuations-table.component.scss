@@ -160,10 +160,11 @@ table {
   }
 
   td{
-    transition: background-color 0.3s ease-in-out;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
   }
   .highlight-row {
-    background-color: #0CCE8D !important;
+    // #0CCE8D
+    background-color: #0c66ce9e !important;
   }
   
   .highlight-row td {
@@ -171,8 +172,9 @@ table {
   }
   
   .highlight-row:hover td {
-    background-color: #0CCE8D;
+    background-color: #40e2ab;
     cursor: pointer;
+    color: #535353;
   }
 
   .remove-higlight-row td {
