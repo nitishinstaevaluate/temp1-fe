@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { ValuationService } from '../../../shared/service/valuation.service';
 import { environment } from 'src/environments/environment';
-import { ALL_MODELS, MODELS, PAGINATION_VAL } from 'src/app/shared/enums/constant';
+import { ALL_MODELS, GET_MULTIPLIER_UNITS, MODELS, PAGINATION_VAL } from 'src/app/shared/enums/constant';
 import { AuthService } from 'src/app/shared/service/auth.service';
 import { Router } from '@angular/router';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
@@ -165,11 +165,14 @@ export class ActivityComponent {
     if(processData.fourthStageInput || processData.fifthStageInput){
       if(modelArray.length === 1 && (modelArray.includes(MODELS.FCFE) || modelArray.includes(MODELS.FCFF) || modelArray.includes(MODELS.EXCESS_EARNINGS))){
         let dcfApproachValuation:any = [];
-        processData?.fourthStageInput?.appData?.valuationResult.map((indValuation:any)=>{
+        const valuation = processData?.fourthStageInput?.appData?.valuationResult;
+        if(valuation?.length){
+         valuation.map((indValuation:any)=>{
           if(indValuation.model === MODELS.FCFE || indValuation.model === MODELS.FCFF || indValuation.model === MODELS.EXCESS_EARNINGS){
             dcfApproachValuation = indValuation.valuationData;
           }
         })
+        }
         // Here for DCF valuation, we have value value per share in the second last element of the second array
         if(dcfApproachValuation?.length){
           return `${processData.firstStageInput.currencyUnit} ${formatNumber(dcfApproachValuation[1][dcfApproachValuation[1].length - 1] ? dcfApproachValuation[1][dcfApproachValuation[1].length - 1] : '-')}`;
@@ -181,11 +184,14 @@ export class ActivityComponent {
       else if(modelArray.length === 1 && (modelArray.includes(MODELS.COMPARABLE_INDUSTRIES) || modelArray.includes(MODELS.RELATIVE_VALUATION))){
         let ccmValuation:any = [];
         let marketApproachValuePerShare;
-        processData?.fourthStageInput?.appData?.valuationResult.map((indValuation:any)=>{
+        const valuation = processData?.fourthStageInput?.appData?.valuationResult;
+        if(valuation?.length){
+        valuation.map((indValuation:any)=>{
           if(indValuation.model === MODELS.COMPARABLE_INDUSTRIES || indValuation.model === MODELS.RELATIVE_VALUATION){
             ccmValuation = indValuation?.valuationData?.valuation;
           }
         })
+        }
         if(ccmValuation?.length){
           ccmValuation.map((indElements:any)=>{
             if(indElements.particular === 'result'){
@@ -200,11 +206,14 @@ export class ActivityComponent {
       }
       else if(modelArray.length === 1 && modelArray.includes(MODELS.NAV)){
         let navValuation: any = [];
-        processData?.fourthStageInput?.appData?.valuationResult.map((indValuation:any)=>{
+        const valuation = processData?.fourthStageInput?.appData?.valuationResult;
+        if(valuation?.length){
+        valuation.map((indValuation:any)=>{
           if(indValuation.model === MODELS.NAV){
             navValuation = indValuation?.valuationData;
           }
         })
+        }
         if(navValuation){
           return `${processData.firstStageInput.currencyUnit} ${formatNumber(navValuation?.valuePerShare?.bookValue ? navValuation?.valuePerShare?.bookValue : '-')}`;
         }
@@ -218,7 +227,9 @@ export class ActivityComponent {
       }
       else if(processData.fifthStageInput?.totalWeightageModel){
         const outstandingShares = convertToNumberOrZero(processData.firstStageInput.outstandingShares);
-        return `${processData.firstStageInput.currencyUnit} ${formatNumber(processData.fifthStageInput.totalWeightageModel?.weightedVal ? processData.fifthStageInput.totalWeightageModel?.weightedVal/outstandingShares : '-')}`;
+        const reportingUnit = processData.firstStageInput?.reportingUnit;
+        const multiplier = GET_MULTIPLIER_UNITS[`${reportingUnit}`] || 100000; //In default case, setting multiplier to 1 lakh
+        return `${processData.firstStageInput.currencyUnit} ${formatNumber(processData.fifthStageInput.totalWeightageModel?.weightedVal ? processData.fifthStageInput.totalWeightageModel?.weightedVal * multiplier/outstandingShares : '-')}`;
       }
       else{
         return '-';

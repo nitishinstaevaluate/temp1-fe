@@ -283,6 +283,7 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
 
     if(formOneDataCurrentChanges && formOneDataPreviousChanges && (formOneDataCurrentChanges?.valuationDate !== formOneDataPreviousChanges?.valuationDate || !formOneDataCurrentChanges?.valuationDate)){
       //   this.mainIndustries = [];
+      this.companyQuery = '';
       this.loadCiqIndustryBasedLevelFour(this.createPayload());
       this.updateSelectedIndustriesData();
     }
@@ -440,14 +441,17 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
               this.selectAll = true;
             }            
           });
-          if(this.selectedIndustries.length){
             this.mainIndustries = this.selectedIndustries;
           }
           else{
-          this.mainIndustries = this.ciqIndustryData.filter((individualData:any)=>{
-            return individualData.isSelected === true 
-          })
-          }
+          this.ciqIndustryData.forEach((row: any) => {
+            row.isSelected = this.mainIndustries.some((selectedIndustriesRow: any) => {
+              return selectedIndustriesRow.COMPANYID === row.COMPANYID;
+            });
+            if(this.mainIndustries.length && !this.selectAll){
+              this.selectAll = true;
+            }            
+          });
         }
         this.total = industryData.total;
         this.length = industryData.total;
@@ -1051,13 +1055,21 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   }
   updateSelectedIndustriesData(){
     let companyIdArray:any = []; 
-    this.selectedIndustries.map((indC:any)=>{
-      companyIdArray.push({COMPANYID: indC.COMPANYID})
-    })
+    if(this.selectedIndustries?.length){
+      this.selectedIndustries.map((indC:any)=>{
+        companyIdArray.push({COMPANYID: indC.COMPANYID})
+      })
+    }
+    else{
+      this.mainIndustries.map((indC:any)=>{
+        companyIdArray.push({COMPANYID: indC.COMPANYID})
+      })      
+    }
     const payload = {
       industryAggregateList: companyIdArray,
       valuationDate: this.formOneData?.valuationDate
     }
+    if(!companyIdArray?.length) return;
     this.ciqSpService.updateCompaniesList(payload).subscribe((updatedCiqIndustryList:any)=>{
       const companyList = updatedCiqIndustryList?.data;
       if(updatedCiqIndustryList?.status && companyList?.length){
