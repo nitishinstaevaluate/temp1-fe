@@ -192,8 +192,16 @@ loadOnChangeValue(){
         this.dataReferenceService.getBSE500(expectedMarketReturnData?.years,this.formOneData?.valuationDate).subscribe(
           (response) => {
             if (response.status) {
-              this.fcffForm.controls['expMarketReturn'].value = response?.result;
-              this.bse500Value=response?.close?.Close.toFixed(2);
+              this.fcffForm.controls['expMarketReturn'].setValue(response?.result || 0);
+              if(!response?.result){
+                this.snackBar.open('Expected market return not found', 'Ok',{
+                  horizontalPosition: 'center',
+                  verticalPosition: 'bottom',
+                  duration: 5000,
+                  panelClass: 'app-notification-error',
+                })
+              }
+              this.bse500Value=response?.close?.Close ? response?.close?.Close.toFixed(2) : 0;
               
             }
             this.calculateCoeAndAdjustedCoe();
