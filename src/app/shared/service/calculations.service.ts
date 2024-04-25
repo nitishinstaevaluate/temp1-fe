@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 const HOST = environment.baseUrl;
 
@@ -17,6 +17,7 @@ export class CalculationsService {
   betaChangeDetector: BehaviorSubject<any> = new BehaviorSubject({status:false});
   ccmValuationDetector: BehaviorSubject<any> = new BehaviorSubject({status:false});
   multiplesSelector: BehaviorSubject<any> = new BehaviorSubject(null);
+  issuanceOfSharesDetector = new Subject<{ status: boolean }>();;
   
   getCostOfEquity(payload:any){
     return this.http.get(`${HOST}coe/adjcoe/?riskFreeRate=${payload.riskFreeRate}&expMarketReturn=${payload.expMarketReturn}&beta=${payload.beta}&riskPremium=${payload.riskPremium}&coeMethod=${payload.coeMethod}`)

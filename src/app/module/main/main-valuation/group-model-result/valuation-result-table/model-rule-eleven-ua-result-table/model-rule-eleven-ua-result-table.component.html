@@ -50,6 +50,7 @@
             <td colspan="4">Total (A)</td>
             <td colspan="1">{{calculateTotalA()}}</td>
         </tr>
+        <ng-container *ngIf="isIssuanceOfShares()">
         <tr style="background-color: #f5f5f5;">
             <td colspan="2">B.</td>
             <td colspan="1" style="text-align: left;">The price which the jewellery and artistic work would fetch if sold in the open:</td>
@@ -111,6 +112,7 @@
             <td colspan="4">Total (D)</td>
             <td colspan="1">{{calculateTotalD()}}</td>
         </tr>
+    </ng-container>
         <tr style="background-color: #f5f5f5;">
             <td colspan="2">L</td>
             <td colspan="1" style="text-align: left;">Book Value of liabilities shown in the balance sheet, but not including in the following:</td>
@@ -177,7 +179,8 @@
             <td colspan="1">{{calculateTotalL()}}</td>
         </tr>
         <tr class="alltotal">
-            <td colspan="4">A + B + C + D - L</td>
+            <td colspan="4">
+                {{isIssuanceOfShares() ? 'A + B + C + D - L' : 'A - L'}}</td>
             <td colspan="1">{{calculateAll()}}</td>
         </tr>
         <tr>
@@ -194,7 +197,7 @@
         </tr>
         <tr class="total" style="background-color: #f5f5f5;">
             <td colspan="4" style="text-align: left;padding-left: 13.5%;">
-                Fair market value of unquoted equity shares = (A + B + C + D - L) X (PV) / (PE) (&#8377;)
+                Fair market value of unquoted equity shares = {{isIssuanceOfShares() ? '(A + B + C + D - L)' : '(A - L)'}} X (PV) / (PE) (&#8377;)
             </td>
             <td colspan="1">{{calculateFairMarketValue()}}</td>
         </tr>

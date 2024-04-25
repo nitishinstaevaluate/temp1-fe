@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
+import { MODELS } from 'src/app/shared/enums/constant';
 import { convertToNumberOrZero, formatNumber, formatPositiveAndNegativeValues } from 'src/app/shared/enums/functions';
 
 @Component({
@@ -159,5 +160,13 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
       return 'Audited';
     }
     return 'Management Certified';
+  }
+
+  isIssuanceOfShares(){
+    const data = this.formData?.formFourData?.appData?.inputData;
+    if(data.model?.length && data.issuanceOfShares && data?.model?.includes(MODELS.RULE_ELEVEN_UA)){
+      return false;
+    }
+    return true;
   }
 }

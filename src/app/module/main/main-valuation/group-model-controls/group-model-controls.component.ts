@@ -121,7 +121,8 @@ export class GroupModelControlsComponent implements OnInit {
       // discountRateValue: [20],
       reportingUnit:['',[Validators.required]],
       currencyUnit:['INR',[Validators.required]],
-      faceValue:['',[Validators.required]]
+      faceValue:['',[Validators.required]],
+      issuanceOfShares:[false,[Validators.required]]
     })
     this.modelSpecificCalculation=this.formBuilder.group({
       discountRate:[null,[Validators.required]],
@@ -184,6 +185,11 @@ export class GroupModelControlsComponent implements OnInit {
    this.modelValuation.controls['subIndustry'].setValue(data?.subIndustry?? '');
    this.modelValuation.controls['taxRate'].setValue(data?.taxRate?? '');
    this.modelValuation.controls['faceValue'].setValue(data?.faceValue?? '');
+   this.modelValuation.controls['issuanceOfShares'].setValue(data?.issuanceOfShares?? '');
+
+   if(data?.model?.length && data?.model?.includes(MODELS.RULE_ELEVEN_UA)){
+    this.issuanceOfShares()
+   }
    
    if(data.taxRate === '25.17' || data.taxRate === '25.17%'){
      this.modelValuation.controls['taxRateType'].setValue('25.17');
@@ -288,6 +294,10 @@ export class GroupModelControlsComponent implements OnInit {
       const keysToRemove = ['taxRate', 'taxRateType', 'terminalGrowthRate', 'preferenceCompanies','projectionYears','projectionYearSelect','industriesRatio','industry','discountRateType'];
       payload = this.recalculateFields(payload,keysToRemove)
     }
+    if(!this.isElevenUa()){
+      const keysToRemove = ['issuanceOfShares'];
+      payload = this.recalculateFields(payload,keysToRemove)
+    }
     // check if modified excel sheet id exist or not
     if(this.isExcelReupload) {
       payload['modifiedExcelSheetId']=  '';
@@ -321,6 +331,9 @@ export class GroupModelControlsComponent implements OnInit {
     
     if(!isSelected('NAV', this.modelValuation.controls['model'].value)){
       delete control.faceValue;
+    }
+    if(!isSelected(MODELS.RULE_ELEVEN_UA, this.modelValuation.controls['model'].value)){
+      delete control.issuanceOfShares;
     }
 
     if((payload.model.includes(MODELS.RULE_ELEVEN_UA) || payload.model.includes(MODELS.NAV)) && payload.model.length === 1){
@@ -379,6 +392,11 @@ export class GroupModelControlsComponent implements OnInit {
       if(!checkModel){
         localStorage.setItem('step', '2')
         processStep = 2
+      }
+      const isRuleElevenUa = this.isElevenUa();
+      if(isRuleElevenUa && this.modelValuation.controls['issuanceOfShares']?.value){
+        localStorage.setItem('step', '3');
+        processStep = 3;
       }
 
     localStorage.setItem('stepOneStats',`${allControlsFilled}`)
@@ -455,7 +473,8 @@ export class GroupModelControlsComponent implements OnInit {
         excelSheetId:this.modelValuation.controls['excelSheetId'].value,
         fileName:this.fileName,
         value:'valuationMethod',
-        valuationDate:this.modelValuation.controls['valuationDate'].value
+        valuationDate:this.modelValuation.controls['valuationDate'].value,
+        issuanceOfShares:this.modelValuation.controls['issuanceOfShares'].value
       }
      const dialogRef = this.dialog.open(GenericModalBoxComponent,{data:data,width:'50%', maxHeight:'90vh', panelClass:'custom-dialog-container'});
   
@@ -478,6 +497,9 @@ export class GroupModelControlsComponent implements OnInit {
         this.fileName = result?.fileName;
         this.evaluateNumberOfSteps()
         this.isNotRuleElevenUaAndNav()
+
+        this.modelValuation.controls['issuanceOfShares']?.setValue(result?.issuanceCheckbox);
+        this.issuanceOfShares();
         
         this.snackBar.open('Valuation models are added successfully','OK',{
           horizontalPosition: 'center',
@@ -592,6 +614,12 @@ export class GroupModelControlsComponent implements OnInit {
     }
     return false;
   }
+  isElevenUa(){
+    if(this.modelValuation.controls['model'].value?.length && this.modelValuation.controls['model'].value?.includes(MODELS.RULE_ELEVEN_UA)){
+      return true;
+    }
+    return false;
+  }
 
   filterByBusinessDescriptor(event:any){
     if(event.target.value && this.companyQuery !== event.target.value){
@@ -653,6 +681,15 @@ export class GroupModelControlsComponent implements OnInit {
     if(localStorage.getItem('processStateId')){
       const processIdentifierDetails:any = await this.processStatusManagerService.fetchProcessIdentifierId(localStorage.getItem('processStateId')).toPromise();
       this.refId.emit(processIdentifierDetails.processIdentifierId);
+    }
+  }
+
+  issuanceOfShares(){
+    if(this.modelValuation.controls['model']?.value.length && this.modelValuation.controls['issuanceOfShares']?.value && this.modelValuation.controls['model']?.value.includes(MODELS.RULE_ELEVEN_UA)){
+      this.calculationService.issuanceOfSharesDetector.next({status:true})
+    }
+    else{
+      this.calculationService.issuanceOfSharesDetector.next({status:false})
     }
   }
 

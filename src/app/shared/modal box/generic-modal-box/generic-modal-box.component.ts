@@ -50,6 +50,9 @@ export class GenericModalBoxComponent implements OnInit {
   prefProp: FormControl = new FormControl('');
   debtProp: FormControl = new FormControl('');
 
+  issuanceCheckbox = new FormControl(false);
+  transferCheckbox = new FormControl(false);
+
 label:string='';
 appValues= GLOBAL_VALUES;
 floatLabelType:any = 'never';
@@ -373,6 +376,17 @@ submitModelValuation(){
         return;
     }
   }
+  if(this.ruleElevenUaSelectedModel){
+    if(!this.issuanceCheckbox.value && !this.transferCheckbox.value){
+      this.snackBar.open('Please select the rule eleven UA options','Ok',{
+        horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+            duration: 3000,
+            panelClass: 'app-notification-error'
+      })
+      return;
+    }
+  }
 
   if(!this.excelSheetId){
     this.fileUploadStatus = false;
@@ -394,7 +408,8 @@ submitModelValuation(){
       terminalGrowthRate:this.terminalGrowthRateControl.value ?? '',
       projectionYears:this.yearOfProjection.value ?? '',
       excelSheetId:this.excelSheetId ?? '',
-      fileName:this.fileName ?? ''
+      fileName:this.fileName ?? '',
+      issuanceOfShares: this.issuanceCheckbox.value 
     },
     step:0
   }
@@ -407,7 +422,8 @@ submitModelValuation(){
     terminalGrowthRate:this.terminalGrowthRateControl.value ?? '',
     projectionYears:this.yearOfProjection.value ?? '',
     excelSheetId:this.excelSheetId ?? '',
-    fileName:this.fileName ?? ''
+    fileName:this.fileName ?? '',
+    issuanceCheckbox: this.issuanceCheckbox.value 
   })
 }
 
@@ -556,6 +572,14 @@ get downloadTemplate() {
     if(data?.valuationDate){
       this.valuationDate = data.valuationDate;
     }
+    if(data?.issuanceOfShares){
+        this.issuanceCheckbox.setValue(true);
+        this.transferCheckbox.setValue(false);
+      }
+      else{
+        this.transferCheckbox.setValue(true)
+        this.issuanceCheckbox.setValue(false)
+      }
   }
 
   patchValuerDetails(data:any){
@@ -635,5 +659,13 @@ get downloadTemplate() {
     if(formOneAndThreeData.reportingUnit !== 'absolute')
       return `in ${formOneAndThreeData.currencyUnit} (${formOneAndThreeData.reportingUnit})`;
     return `in ${formOneAndThreeData.currencyUnit}`;
+  }
+
+  onElevenUaCheckboxChange(checkboxNumber: number) {
+    if (checkboxNumber === 1) {
+      this.transferCheckbox.setValue(false);
+    } else {
+      this.issuanceCheckbox.setValue(false);
+    }
   }
 }
