@@ -553,6 +553,10 @@
             </p>
           </div>
         </div>
+        <div class="col-xl-7 d-flex align-items-center" *ngIf="ruleElevenApproachModels?.length">
+          <mat-checkbox class="issuanceCheckbox company-list-inp" [formControl]="issuanceCheckbox" (change)="onElevenUaCheckboxChange(1)" style="transform: scale(0.75);padding-left: 3%;padding-right: 5%;width: auto !important;"><span style="font-size: 19px;color: #6d6d6d;font-family: 'AR One Sans', sans-serif !important;">Issuance </span></mat-checkbox>
+          <mat-checkbox class="issuanceCheckbox company-list-inp" [formControl]="transferCheckbox" (change)="onElevenUaCheckboxChange(2)" style="transform: scale(0.75);padding-left: 3%;padding-right: 5%;width: auto !important;"><span style="font-size: 19px;color: #6d6d6d;font-family: 'AR One Sans', sans-serif !important;">Transfer</span></mat-checkbox>
+        </div>
         <!-- <div class="col-xl-7 hp-text-r11a">
           <p class="rm-pad"> 
             <span class="tool-class">

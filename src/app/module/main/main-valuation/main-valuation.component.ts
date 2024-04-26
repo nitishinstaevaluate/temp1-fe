@@ -145,6 +145,7 @@ export class MainValuationComponent implements OnInit{
     this.transferSteppertwo = data;
     this.formOneData = data;
     this.modelArray=this.formOneData?.model;
+    this.onStepChange()
     // this.stepper.next();
     const currentStep:any = localStorage.getItem('step')
     //  const currentStep:any = await  this.fetchProcessActiveStage(localStorage.getItem('processStateId'));
@@ -176,6 +177,7 @@ export class MainValuationComponent implements OnInit{
 
   async screenInputDetails(data:any){
     this.formTwoData = {formOneData: this.formOneData, formTwoData: data};
+    this.onStepChange();
     const currentStep:any = localStorage.getItem('step')
     this.step = parseInt(currentStep) + 1;
     localStorage.setItem('step',`${this.step}`);
@@ -290,6 +292,9 @@ export class MainValuationComponent implements OnInit{
 
     if(isProcessState){
       currentModel = this.formOneData?.model[this.formOneData.model.length-1]
+      if(this.formOneData.model?.length && this.formOneData?.issuanceOfShares && this.formOneData?.model.includes(MODELS.RULE_ELEVEN_UA)){
+        currentModel = '';
+      }
     }
   
      switch (currentModel) {
@@ -319,6 +324,9 @@ export class MainValuationComponent implements OnInit{
         const currentStep:any = localStorage.getItem('step')
         // const currentStep:any = await this.fetchProcessActiveStage(localStorage.getItem('processStateId'));
         this.step = parseInt(currentStep) - 1;
+        if(this.formOneData.model?.length && this.formOneData?.issuanceOfShares && this.formOneData?.model.includes(MODELS.RULE_ELEVEN_UA)){
+          this.step = this.step - 1;
+        }
         localStorage.setItem('step',`${this.step}`)
         // await this.updateProcessActiveStage(localStorage.getItem('processStateId'),this.step);
         this.calculationService.checkStepStatus.next({stepStatus:false,step:this.step,prev:true})
@@ -412,6 +420,9 @@ export class MainValuationComponent implements OnInit{
               updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
             }
           }) 
+          if(processStateDetails?.firstStageInput?.issuanceOfShares && processStateDetails?.firstStageInput?.model?.includes(MODELS.RULE_ELEVEN_UA)){
+            updatedPayload = {...processStateDetails?.firstStageInput}
+          }
           this.formFiveData = {formOneAndThreeData : updatedPayload,formFourData:processStateDetails.fourthStageInput,formFiveData:processStateDetails?.fifthStageInput?.totalWeightageModel};
         }
         if(processStateDetails?.fifthStageInput || processStateDetails?.sixthStageInput){

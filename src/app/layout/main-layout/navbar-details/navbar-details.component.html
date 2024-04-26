@@ -33,14 +33,14 @@
           </div>
       </div>
 
-           <div [class.selected]="selectedMenuItem === '3'" (click)="selectMenuItem('3')" [ngClass]="selectedMenuItem === 3 ? 'container navbars-inprogress navbar-h' : stepStatusOfThree  === 'true' ?  'container navbars navbar-h' : 'container navbars-pending navbar-h'" style="margin-top: 10%;">
+           <div [class.selected]="selectedMenuItem === '3'" (click)="selectMenuItem('3')" [ngClass]="hideModelInput ? 'blackbox container' : selectedMenuItem === 3 ? 'container navbars-inprogress navbar-h' : stepStatusOfThree  === 'true' ?  'container navbars navbar-h' : 'container navbars-pending navbar-h'" style="margin-top: 10%;">
             <p [ngClass]="selectedMenuItem === 3 ? 'new-company-det-inprogress new-company-h' : stepStatusOfThree === 'true' ? 'new-company-det new-company-h' : 'new-company-det new-company-h'">Model Inputs</p>
             <div class="row" style="padding-bottom: 7%;">
             <div class="col-xl-2" style="position: relative;">
               <span [ngClass]=" selectedMenuItem === 3 ? 'mat-bullet-inprogress mat-bullet-h' : stepStatusOfThree ? 'mat-bullet mat-bullet-h' : 'mat-bullet-pending mat-bullet-h'"><mat-icon>input</mat-icon></span>
             </div>
             <div class="col-xl-8">
-              <p [ngClass]="selectedMenuItem === 3 ? 'status-inprogress status-h' : stepStatusOfThree ? 'status-completed status-h' :  'status-pending status-h'">{{selectedMenuItem === 3 ? 'In-progress' : stepStatusOfThree === 'true' ? 'Completed' :  'Pending'}}</p>
+              <p [ngClass]="hideModelInput ? 'status-not-allowed status-h' : selectedMenuItem === 3 ? 'status-inprogress status-h' : stepStatusOfThree ? 'status-completed status-h' :  'status-pending status-h'">{{ hideModelInput ? 'Disabled' : selectedMenuItem === 3 ? 'In-progress' : stepStatusOfThree === 'true' ? 'Completed' :  'Pending'}}</p>
             </div>
             </div>
           </div>
