@@ -45,7 +45,7 @@ export class ElevenUAComponent implements OnInit, OnChanges{
       fairValueinvstShareSec: ['',[Validators.required]],
       contingentLiability: ['',[Validators.required]],
       otherThanAscertainLiability: ['',[Validators.required]],
-      phaseValue: ['',[Validators.required]],
+      // phaseValue: ['',[Validators.required]],
     })
   }
 
@@ -59,7 +59,7 @@ export class ElevenUAComponent implements OnInit, OnChanges{
           this.ruleElevenUaForm.controls['fairValueinvstShareSec'].setValue(stateThreeDetails?.fairValueinvstShareSec); 
           this.ruleElevenUaForm.controls['contingentLiability'].setValue(stateThreeDetails?.contingentLiability);
           this.ruleElevenUaForm.controls['otherThanAscertainLiability'].setValue(stateThreeDetails?.otherThanAscertainLiability);
-          this.ruleElevenUaForm.controls['phaseValue'].setValue(stateThreeDetails?.phaseValue);
+          // this.ruleElevenUaForm.controls['phaseValue'].setValue(stateThreeDetails?.phaseValue);
         }
       })
     }

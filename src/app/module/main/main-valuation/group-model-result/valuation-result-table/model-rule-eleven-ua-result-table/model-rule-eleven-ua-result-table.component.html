@@ -34,7 +34,15 @@
             <td colspan="4">
                 <tr>
                     <td colspan="1" style="width: 5%;text-align: left;padding-left: 1%;">i.</td>
-                    <td colspan="1" style="text-align: left;width: 40%;">Any amount of income-tax is paid, if any, less the amount of income-tax refund claimed, if any:</td>
+                    <td colspan="1" style="text-align: left;width: 40%;">
+                        {{  
+                            isTransferOfShares() ? 
+                            'Any amount of income-tax is paid, if any, less the amount of income-tax refund claimed, if any:' : 
+                            'Tax paid as deduction or collection at source or as advance tax payment as reduced by the
+                            amount of tax claimed as refund under the
+                            Income-tax Act' 
+                        }}
+                    </td>
                     <td colspan="1" style="text-align: left;width: 20%;padding-left: 8%;">{{formData?.formFourData?.appData?.totalIncomeTaxPaid ? formatnumber(formData?.formFourData?.appData?.totalIncomeTaxPaid) : '-'}}</td>
                     <td colspan="1" style="width: 10%;"></td>
                 </tr>
@@ -50,7 +58,7 @@
             <td colspan="4">Total (A)</td>
             <td colspan="1">{{calculateTotalA()}}</td>
         </tr>
-        <ng-container *ngIf="isIssuanceOfShares()">
+        <ng-container *ngIf="isTransferOfShares()">
         <tr style="background-color: #f5f5f5;">
             <td colspan="2">B.</td>
             <td colspan="1" style="text-align: left;">The price which the jewellery and artistic work would fetch if sold in the open:</td>
@@ -180,13 +188,13 @@
         </tr>
         <tr class="alltotal">
             <td colspan="4">
-                {{isIssuanceOfShares() ? 'A + B + C + D - L' : 'A - L'}}</td>
+                {{isTransferOfShares() ? 'A + B + C + D - L' : 'A - L'}}</td>
             <td colspan="1">{{calculateAll()}}</td>
         </tr>
         <tr>
             <td colspan="2">PV</td>
             <td colspan="1" style="text-align: left;padding-left: 4%;">The paid up value of such equity shares.</td>
-            <td colspan="1" style="text-align: left;padding-left: 11%;">{{formData?.formFourData?.appData?.inputData?.phaseValue ? formatnumber(formData?.formFourData?.appData?.inputData?.phaseValue) : '-' }}</td>
+            <td colspan="1" style="text-align: left;padding-left: 11%;">{{formData?.formFourData?.appData?.inputData?.faceValue ? formatnumber(formData?.formFourData?.appData?.inputData?.faceValue) : '-' }}</td>
             <td colspan="1"></td>
         </tr>
         <tr style="background-color: #ffffff;">
@@ -197,7 +205,7 @@
         </tr>
         <tr class="total" style="background-color: #f5f5f5;">
             <td colspan="4" style="text-align: left;padding-left: 13.5%;">
-                Fair market value of unquoted equity shares = {{isIssuanceOfShares() ? '(A + B + C + D - L)' : '(A - L)'}} X (PV) / (PE) (&#8377;)
+                Fair market value of unquoted equity shares = {{isTransferOfShares() ? '(A + B + C + D - L)' : '(A - L)'}} X (PV) / (PE) (&#8377;)
             </td>
             <td colspan="1">{{calculateFairMarketValue()}}</td>
         </tr>

@@ -162,11 +162,11 @@ export class ModelRuleElevenUaResultTableComponent implements OnChanges {
     return 'Management Certified';
   }
 
-  isIssuanceOfShares(){
+  isTransferOfShares(){
     const data = this.formData?.formFourData?.appData?.inputData;
-    if(data.model?.length && data.issuanceOfShares && data?.model?.includes(MODELS.RULE_ELEVEN_UA)){
-      return false;
+    if(data.model?.length && !data.issuanceOfShares && data?.model?.includes(MODELS.RULE_ELEVEN_UA)){
+      return true;
     }
-    return true;
+    return false;
   }
 }

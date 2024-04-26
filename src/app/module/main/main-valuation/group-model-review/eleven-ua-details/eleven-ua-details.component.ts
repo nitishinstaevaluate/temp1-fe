@@ -199,8 +199,11 @@ export class ElevenUaDetailsComponent {
           async (response:any)=>{
           if(response?.status){
             this.isExcelModified = true;
-            const excelResponse: any = await this.processStateManagerService.updateEditedExcelStatus(localStorage.getItem('processStateId')).toPromise();
             this.createruleElevenUaDataSource(response);
+            const excelResponse: any = await this.processStateManagerService.updateEditedExcelStatus(localStorage.getItem('processStateId')).toPromise();
+            if(excelResponse?.modifiedExcelSheetId){
+              this.excelSheetId = excelResponse.modifiedExcelSheetId;
+            }
           }
           // else{  [please uncomment this once backend error handling is done]
           //    this.ruleElevenSheetData.emit({status:false,error:response.error});

@@ -298,6 +298,11 @@ export class GroupModelControlsComponent implements OnInit {
       const keysToRemove = ['issuanceOfShares'];
       payload = this.recalculateFields(payload,keysToRemove)
     }
+
+    if(this.isNotRuleElevenUaAndNav()){
+      const keysToRemove = ['faceValue'];
+      payload = this.recalculateFields(payload,keysToRemove)
+    }
     // check if modified excel sheet id exist or not
     if(this.isExcelReupload) {
       payload['modifiedExcelSheetId']=  '';
@@ -329,7 +334,7 @@ export class GroupModelControlsComponent implements OnInit {
       delete control.projectionYears
     }
     
-    if(!isSelected('NAV', this.modelValuation.controls['model'].value)){
+    if(this.isNotRuleElevenUaAndNav()){
       delete control.faceValue;
     }
     if(!isSelected(MODELS.RULE_ELEVEN_UA, this.modelValuation.controls['model'].value)){
@@ -480,7 +485,7 @@ export class GroupModelControlsComponent implements OnInit {
   
      dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        if(result?.excelSheetId !== this.modelValuation.controls['excelSheetId']){
+        if(result?.excelSheetId !== this.modelValuation.controls['excelSheetId'].value){
           this.isExcelReupload = true;
         }
         else{
