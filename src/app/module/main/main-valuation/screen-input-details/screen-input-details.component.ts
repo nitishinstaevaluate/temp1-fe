@@ -274,6 +274,10 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       startWith(''),
       map(value => this.filter(value))
     );
+    if(this.companyQuery){
+      this.companyQuery = ''; //Default company name filter reset;
+      this.loadCiqIndustryBasedLevelFour(this.createPayload());
+    }
   }
 
   loadTableAsPerValuationDate(changes:any){
@@ -948,9 +952,18 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
   }
 
   filterByCompanyName(event:any){
-    if(event.target.value && this.companyQuery !== event.target.value){
-      this.companyQuery = event.target.value;
-      this.searchByCompanyName.next(this.companyQuery);
+    if(event.target.value){
+      if(this.companyQuery !== event.target.value){
+        this.companyQuery = event.target.value;
+        this.searchByCompanyName.next(this.companyQuery);
+      }
+      else{
+        this.companyQuery = event.target.value;
+      }
+    }
+    else{
+      this.companyQuery = '';
+      this.loadCiqIndustryBasedLevelFour(this.createPayload());
     }
   }
 

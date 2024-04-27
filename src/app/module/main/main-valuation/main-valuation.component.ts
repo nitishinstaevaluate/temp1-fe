@@ -423,6 +423,8 @@ export class MainValuationComponent implements OnInit{
           if(processStateDetails?.firstStageInput?.issuanceOfShares && processStateDetails?.firstStageInput?.model?.includes(MODELS.RULE_ELEVEN_UA)){
             updatedPayload = {...processStateDetails?.firstStageInput}
           }
+          this.onStepChange();
+          this.formOneAndThreeData = {...updatedPayload};
           this.formFiveData = {formOneAndThreeData : updatedPayload,formFourData:processStateDetails.fourthStageInput,formFiveData:processStateDetails?.fifthStageInput?.totalWeightageModel};
         }
         if(processStateDetails?.fifthStageInput || processStateDetails?.sixthStageInput){
