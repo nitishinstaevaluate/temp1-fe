@@ -299,7 +299,7 @@ export class GroupModelControlsComponent implements OnInit {
       payload = this.recalculateFields(payload,keysToRemove)
     }
 
-    if(this.isNotRuleElevenUaAndNav()){
+    if(!this.isNavOrElevenUa()){
       const keysToRemove = ['faceValue'];
       payload = this.recalculateFields(payload,keysToRemove)
     }
@@ -334,7 +334,7 @@ export class GroupModelControlsComponent implements OnInit {
       delete control.projectionYears
     }
     
-    if(this.isNotRuleElevenUaAndNav()){
+    if(!this.isNavOrElevenUa()){
       delete control.faceValue;
     }
     if(!isSelected(MODELS.RULE_ELEVEN_UA, this.modelValuation.controls['model'].value)){
@@ -613,8 +613,8 @@ export class GroupModelControlsComponent implements OnInit {
       this.calculationService.checkModel.next({status:true})
     }
   }
-  isNav(){
-    if(this.modelValuation.controls['model'].value?.length && this.modelValuation.controls['model'].value?.includes(MODELS.NAV)){
+  isNavOrElevenUa(){
+    if(this.modelValuation.controls['model'].value?.length && (this.modelValuation.controls['model'].value?.includes(MODELS.NAV) || this.modelValuation.controls['model'].value?.includes(MODELS.RULE_ELEVEN_UA))){
       return true;
     }
     return false;

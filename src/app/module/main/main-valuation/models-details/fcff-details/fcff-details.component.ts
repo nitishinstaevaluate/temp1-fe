@@ -122,6 +122,7 @@ checkProcessExist(){
           this.equityProp = stateThreeDetails.capitalStructure.equityProp;
           this.prefProp = stateThreeDetails.capitalStructure.prefProp;
           this.totalCapital = this.targetCapitalStructureForm.controls['totalCapital'].value;
+          this.deRatio = stateThreeDetails.capitalStructure?.deRatio;
         }
         this.fcffForm.controls['copShareCapital'].setValue(stateThreeDetails?.copShareCapital);
         this.bse500Value = stateThreeDetails?.bse500Value;
@@ -235,7 +236,7 @@ loadOnChangeValue(){
           else{
             this.deRatio = 0;
           }
-          this.deRatio = adDeRatio?.deRatio ? (adDeRatio.deRatio.split('%')[0]) : 0;
+          // this.deRatio = adDeRatio?.deRatio ? (adDeRatio.deRatio.split('%')[0]) : 0;
           this.getWaccIndustryOrCompanyBased();
         }
       } else if(val === 'Company_Based'){
