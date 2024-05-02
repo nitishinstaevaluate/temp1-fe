@@ -243,11 +243,11 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
         case this.transferStepperFour?.formOneAndThreeData?.model.includes(MODELS.RULE_ELEVEN_UA):
           reportService = this.generateElevenUaReport.bind(this);
             break;
-        case this.transferStepperFour?.formOneAndThreeData?.model.includes(MODELS.NAV) && this.transferStepperFour?.formOneAndThreeData?.model.length === 1:
-          reportService = this.generateNavReport.bind(this);
-            break;
         case this.reportForm.controls['reportPurpose'].value.some((item:any)=> item?.value.includes('sebiRegulations')):
           reportService = this.generateSebiReport.bind(this);
+            break;
+        case this.transferStepperFour?.formOneAndThreeData?.model.includes(MODELS.NAV) && this.transferStepperFour?.formOneAndThreeData?.model.length === 1:
+          reportService = this.generateNavReport.bind(this);
             break;
         default:
           reportService = this.generateBasicReport.bind(this);

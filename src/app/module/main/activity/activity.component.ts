@@ -348,11 +348,11 @@ export class ActivityComponent {
         case modelArray.includes(MODELS.RULE_ELEVEN_UA):
             reportService = this.generateElevenUaReport.bind(this);
             break;
-        case modelArray.includes(MODELS.NAV) && modelArray.length === 1:
-            reportService = this.generateNavReport.bind(this);
-            break;
         case reportPurpose.includes('sebiRegulations'):
             reportService = this.generateSebiReport.bind(this);
+            break;
+        case modelArray.includes(MODELS.NAV) && modelArray.length === 1:
+            reportService = this.generateNavReport.bind(this);
             break;
         default:
             reportService = this.generateBasicReport.bind(this);
