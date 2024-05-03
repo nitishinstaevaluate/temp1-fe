@@ -116,11 +116,14 @@
                               {{ doc.name }}
                           </mat-option>
                           </mat-select>
+                          <mat-error class="company-list-error" *ngIf="modelValuation.controls['reportingUnit'].touched && modelValuation.controls['reportingUnit'].errors">
+                            <span *ngIf="hasError('reportingUnit','required',modelValuation)" class="error-text" style="padding-left: 0%;">Please select reporting units</span>
+                        </mat-error>
                       </mat-form-field>
                   </div>
-                  <span *ngIf="modelValuation.controls['reportingUnit'].touched && modelValuation.controls['reportingUnit'].errors">
+                  <!-- <span *ngIf="modelValuation.controls['reportingUnit'].touched && modelValuation.controls['reportingUnit'].errors">
                     <span *ngIf="hasError('reportingUnit','required',modelValuation)" class="error-text">Please select reporting unit</span>
-                  </span>
+                  </span> -->
               </div>
 
               <!-- currency unit -->
@@ -152,11 +155,14 @@
                         {{ doc.name }}
                     </mat-option>
                     </mat-select>
+                    <mat-error class="company-list-error" *ngIf="modelValuation.controls['currencyUnit'].touched && modelValuation.controls['currencyUnit'].errors">
+                      <span *ngIf="hasError('currencyUnit','required',modelValuation)" class="error-text" style="padding-left: 0%;">Please select currency unit</span>
+                  </mat-error>
                 </mat-form-field>
                 </div>
-                <span *ngIf="modelValuation.controls['currencyUnit'].touched && modelValuation.controls['currencyUnit'].errors">
+                <!-- <span *ngIf="modelValuation.controls['currencyUnit'].touched && modelValuation.controls['currencyUnit'].errors">
                   <span *ngIf="hasError('currencyUnit','required',modelValuation)" class="error-text">Please select currency unit</span>
-                </span>
+                </span> -->
             </div>
 
                 <!-- location -->
