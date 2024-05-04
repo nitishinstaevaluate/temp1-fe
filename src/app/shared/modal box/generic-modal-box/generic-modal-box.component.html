@@ -226,7 +226,7 @@
       <mat-label class="label" >{{label}}</mat-label>
       <span class="close-modal-update"><mat-icon style="color: #807a7b" (click)="modalData()">close</mat-icon></span>
     </div>
-      <button (click)="onSave()" class="btn btn-success update-doc-bt" ><span class="update-doc-icon"><mat-icon>photo_filter</mat-icon></span>Update</button>
+      <button (click)="onSave()" *ngIf="!data?.isPurposeSebi" class="btn btn-success update-doc-bt" ><span class="update-doc-icon"><mat-icon>photo_filter</mat-icon></span>Update</button>
     <ejs-documenteditorcontainer height="590"  (created)="onCreate()" class="syncfusion" enableWordExport="'true'" serviceUrl="https://ej2services.syncfusion.com/production/web-services/api/documenteditor/" #documentEditor>
 
     </ejs-documenteditorcontainer>
