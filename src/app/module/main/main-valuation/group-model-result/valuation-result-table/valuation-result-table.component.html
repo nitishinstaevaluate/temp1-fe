@@ -273,6 +273,22 @@
       </div>
     </div>
   </mat-tab>
+  <mat-tab label="Market Price" *ngIf="marketPrice">
+    <div class="dropdown" style="float: right;padding: 1%;" (mouseenter)="isDropdownOpen = true" (mouseleave)="isDropdownOpen = false">
+      <button class="dropdown-toggle" mat-stroked-button >
+        Export
+      </button>
+      <div class="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
+        <button class="dropdown-item"><a  download>Export as PDF</a></button>
+        <button class="dropdown-item"><a  download>Export as Docx</a></button>
+      </div>
+    </div>
+    <div>
+      <div class="table-container" style="display: block;">
+        <app-model-market-price-result-table [formData]="transferStepperthree"></app-model-market-price-result-table>
+      </div>
+    </div>
+  </mat-tab>
 </mat-tab-group>
 <p class="currency-unit" *ngIf="transferStepperthree?.formOneAndThreeData?.excelSheetId && !isOnlyMarketApproach()">Amount in {{transferStepperthree?.formOneAndThreeData?.currencyUnit}} 
   {{transferStepperthree?.formOneAndThreeData?.reportingUnit === 'absolute' ? '' : (transferStepperthree?.formOneAndThreeData?.reportingUnit)}}</p>

@@ -245,12 +245,18 @@ export class MainValuationComponent implements OnInit{
   }
 
   async nextModelSelection(data?:any){
-    const model = this.formOneData?.model;
+    // const model = this.formOneData?.model;
+    let storeModelArray = [];
+    storeModelArray = [...this.formOneData?.model];
 
-    if(!model)
+    if(!storeModelArray?.length)
       return
 
-    const currentModel =this.formOneData?.model[model?.indexOf(data)+1];
+    if(this.formOneData?.model.includes(MODELS.MARKET_PRICE)){
+      storeModelArray.splice(storeModelArray.indexOf(MODELS.MARKET_PRICE),1);
+    }
+
+    const currentModel = storeModelArray[storeModelArray?.indexOf(data)+1];
       switch (currentModel) {
         case 'FCFE':
           this.next = 1;
@@ -286,13 +292,18 @@ export class MainValuationComponent implements OnInit{
   }
   
   async previousModelSelection(modelName?:string,isProcessState?:boolean){
-    let currentModel;
+    let currentModel, storeModelArray = [];
     // Determine the 'next' property based on the current model
-    currentModel = this.formOneData?.model[this.formOneData?.model.indexOf(modelName)-1];
+
+    storeModelArray = [...this.formOneData?.model];
+    if(this.formOneData?.model.includes(MODELS.MARKET_PRICE)){
+      storeModelArray.splice(storeModelArray.indexOf(MODELS.MARKET_PRICE),1);
+    }
+    currentModel = storeModelArray[storeModelArray.indexOf(modelName)-1];
 
     if(isProcessState){
-      currentModel = this.formOneData?.model[this.formOneData.model.length-1]
-      if(this.formOneData.model?.length && this.formOneData?.issuanceOfShares && this.formOneData?.model.includes(MODELS.RULE_ELEVEN_UA)){
+      currentModel = storeModelArray[this.formOneData.model.length-1]
+      if(this.formOneData.model?.length && this.formOneData?.issuanceOfShares && storeModelArray.includes(MODELS.RULE_ELEVEN_UA)){
         currentModel = '';
       }
     }
@@ -324,7 +335,7 @@ export class MainValuationComponent implements OnInit{
         const currentStep:any = localStorage.getItem('step')
         // const currentStep:any = await this.fetchProcessActiveStage(localStorage.getItem('processStateId'));
         this.step = parseInt(currentStep) - 1;
-        if(this.formOneData.model?.length && this.formOneData?.issuanceOfShares && this.formOneData?.model.includes(MODELS.RULE_ELEVEN_UA)){
+        if(storeModelArray.length && this.formOneData?.issuanceOfShares && storeModelArray.includes(MODELS.RULE_ELEVEN_UA)){
           this.step = this.step - 1;
         }
         localStorage.setItem('step',`${this.step}`)

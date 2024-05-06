@@ -1,0 +1,102 @@
+<div>
+     <!-- Share price 90 days table starts -->
+     <table class="relval-table">
+        <thead>
+        <tr class="header">
+            <th  colspan="3" style="border-right: none;text-align: left;padding-left:3.3%;padding-top:1%;padding-bottom: 1%;padding-right:3.3%">
+                Valuation of equity shares of <span style="text-transform: capitalize;">{{formData?.formOneAndThreeData?.company}}</span> using Market Price method
+            </th>
+        </tr>
+        <tr class="header">
+            <th style="text-align: center;">Sr.No</th>
+            <th style="text-align: center;">Particulars</th>
+            <th style="text-align: center;">VWAP</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="td-label-h">A</td>
+                <td class="td-label-h">Average of 90 trading days VWAP</td>
+                <td class="td-label-h">{{formatNumber(vwapNinetyDays)}}</td>
+            </tr>
+            <tr>
+                <td class="td-label-h">B</td>
+                <td class="td-label-h"> Average of 10 trading days VWAP</td>
+                <td class="td-label-h">{{formatNumber(vwapTenDays)}}</td>
+            </tr>
+            <tr class="header">
+                <th colspan="2" style="text-align: center;">Floor Price (Higher of A or B) </th>
+                <th style="text-align: center;">{{valuePerShare}}</th>
+            </tr>
+        </tbody>
+    </table>
+    <!-- Share price 90 days table ends -->
+
+    <!-- Share price 90 days table starts -->
+    <table class="relval-table">
+        <thead>
+        <tr class="header">
+            <th  colspan="4" style="border-right: none;text-align: left;padding-left:3.3%;padding-top:1%;padding-bottom: 1%;padding-right:3.3%">
+            Volume weighted average price (VWAP) of the equity shares of <span style="text-transform: capitalize;">{{formData?.formOneAndThreeData?.company}}</span>
+            quoted on the NSE (Relevant Stock Exchange) during the 90 trading days preceding
+            the relevant date (considering relevant date as {{convertEpochToPlusOneDate(formData?.formOneAndThreeData?.valuationDate) | date:'MMM d, yyyy'}})
+            </th>
+        </tr>
+        <tr class="header">
+            <th style="text-align: center;">Sr.No</th>
+            <th style="text-align: center;">Date</th>
+            <th style="text-align: center;">Volume of traded shares </th>
+            <th style="text-align: center;">Total Turnover (Rs.) </th>
+        </tr>
+        </thead>
+        <tbody>
+        <ng-container *ngFor="let item of sharePriceNinetyDays,let i = index">
+            <tr>
+                <td>{{ item?.SERIALNO }}</td>
+                <td class="td-label-h">{{item.PRICINGDATE | date:'MMM d, yyyy'}}</td>
+                <td class="td-label-h">{{formatNumber(item.VOLUME)}}</td>
+                <td class="td-label-h">{{totalRevenue(item.VWAP, item.VOLUME)}}</td>
+            </tr>
+        </ng-container>
+        <tr class="header">
+            <th colspan="3" style="text-align: center;">VWAP of 90 trading days ({{formData?.formOneAndThreeData?.currencyUnit}})</th>
+            <th style="text-align: center;">{{vwapNinetyDays}}</th>
+            </tr>
+        </tbody>
+    </table>
+    <!-- Share price 90 days table ends -->
+
+    <!-- Share price 10 days table starts -->
+    <table class="relval-table" style="padding-top: 2%;">
+        <thead>
+        <tr class="header">
+            <th  colspan="4" style="border-right: none;text-align: left;padding-left:3.3%;padding-top:1%;padding-bottom: 1%;padding-right:3.3%">
+            Volume weighted average price (VWAP) of the equity shares of <span style="text-transform: capitalize;">{{formData?.formOneAndThreeData?.company}}</span>
+            quoted on the NSE (Relevant Stock Exchange) during the 10 trading days preceding
+            the relevant date (considering relevant date as {{convertEpochToPlusOneDate(formData?.formOneAndThreeData?.valuationDate) | date:'MMM d, yyyy'}})
+            </th>
+        </tr>
+        <tr class="header">
+            <th style="text-align: center;">Sr.No</th>
+            <th style="text-align: center;">Date</th>
+            <th style="text-align: center;">Volume of traded shares </th>
+            <th style="text-align: center;">Total Turnover (Rs.) </th>
+        </tr>
+        </thead>
+        <tbody>
+        <ng-container *ngFor="let item of sharePriceTenDays,let i = index">
+            <tr>
+                <td>{{ item?.SERIALNO }}</td>
+                <td class="td-label-h">{{item.PRICINGDATE | date:'MMM d, yyyy'}}</td>
+                <td class="td-label-h">{{formatNumber(item.VOLUME)}}</td>
+                <td class="td-label-h">{{totalRevenue(item.VWAP, item.VOLUME)}}</td>
+            </tr>
+        </ng-container>
+        <tr class="header">
+            <th colspan="3" style="text-align: center;">VWAP of 10 trading days ({{formData?.formOneAndThreeData?.currencyUnit}})</th>
+            <th style="text-align: center;">{{vwapTenDays}}</th>
+            </tr>
+        </tbody>
+    </table>
+    <!-- Share price 10 days table ends -->
+</div>

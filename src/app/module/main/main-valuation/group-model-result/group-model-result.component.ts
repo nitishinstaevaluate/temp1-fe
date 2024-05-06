@@ -22,6 +22,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
   relativeValSlider:any=0;
   excessEarnSlider:any=0;
   comparableIndustrySlider:any=0;
+  marketPriceSlider:any=0;
   navSlider:any=0;
   finalWeightedValue:any;
 
@@ -32,6 +33,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
   excessEarnValuation:any;
   comparableIndustryValuation:any;
   navValuation:any;
+  marketPriceValuation:any;
   calculateModelWeigtagePayload:any = {
     results:[]
   }
@@ -42,6 +44,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
   excessEarnMaxValue: number=100;
   relativeValMaxValue: number=100;
   comparableIndustryMaxValue: number=100;
+  marketPriceMaxValue: number = 100;
   navMaxValue: number=100;
   maxModelValue: any;
   totalModelWeightageValue: any
@@ -182,6 +185,17 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
             this.calculateModelWeigtagePayload.results.splice(navIndex,1,{model:response.model,value:this.navValuation,weightage:0});
           }
         }
+        else if(response.model === 'Market_Price'){
+          this.marketPriceValuation = response.equityValue;
+          const marketPriceIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "Market_Price");
+          if(marketPriceIndex === -1)
+          {
+            this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.marketPriceValuation,weightage:0});
+          }
+          else{
+            this.calculateModelWeigtagePayload.results.splice(marketPriceIndex,1,{model:response.model,value:this.marketPriceValuation,weightage:0});
+          }
+        }
       }
     );
   }
@@ -190,7 +204,6 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
     const inputData = this.transferStepperthree?.formOneAndThreeData?.model;
     if(this.data && inputData && this.data?.length !== inputData?.length){
       this.calculateModelWeigtagePayload.results = [];
-      console.log(",195")
       this.loadWeightageSlider();
     }
     let bool=true;
@@ -414,6 +427,16 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
           })
           return availablePercentage - value;
           break;
+
+        case MODELS.MARKET_PRICE:
+          this.marketPriceSlider = value.toFixed(2);
+          this.calculateModelWeigtagePayload.results.map((response:any)=>{
+            if(response.model=== MODELS.MARKET_PRICE){
+              response.weightage = this.marketPriceSlider
+            }
+          })
+          return availablePercentage - value;
+          break;
           
          default:
           return availablePercentage;
@@ -450,6 +473,11 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
 
         case MODELS.NAV:
           this.navMaxValue = maxValue;
+          return maxValue;
+          break;
+
+        case MODELS.MARKET_PRICE:
+          this.marketPriceMaxValue = maxValue;
           return maxValue;
           break;
           

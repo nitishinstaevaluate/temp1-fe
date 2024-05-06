@@ -32,6 +32,7 @@ relativeVal = false;
 excessEarn = false;
 nav=false;
 ruleElevenUa=false;
+marketPrice = false;
 tableData:any;
 multiples:any;
 valuationDataReport:any=[];
@@ -366,6 +367,7 @@ this.valuationDataReport && (this.transferStepperthree?.formOneAndThreeData?.mod
 this.dataSourceExcessEarn && this.transferStepperthree?.formOneAndThreeData?.model.includes('Excess_Earnings') ? this.excessEarn = true : this.excessEarn = false;
 this.dataSourceNav && this.transferStepperthree?.formOneAndThreeData?.model.includes('NAV') ? this.nav = true : this.nav = false;
 this.transferStepperthree?.formFourData?.appData && this.transferStepperthree?.formOneAndThreeData?.model.includes(MODELS.RULE_ELEVEN_UA) ? this.ruleElevenUa = true : this.ruleElevenUa = false;
+this.transferStepperthree?.formFourData?.appData && this.transferStepperthree?.formOneAndThreeData?.model.includes(MODELS.MARKET_PRICE) ? this.marketPrice = true : this.marketPrice = false;
 }
 
 checkIndustryOrCompany(){
