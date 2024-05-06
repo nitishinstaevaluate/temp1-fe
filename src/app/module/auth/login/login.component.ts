@@ -65,6 +65,7 @@ export class LoginComponent  implements OnInit {
   }
 
   validateForm(email:string, password:string) {
+    this.disabled = '';
     if (email.length === 0) {
       this.errorMessage = "please enter email id";
       return false;

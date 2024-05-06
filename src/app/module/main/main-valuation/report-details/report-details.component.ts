@@ -668,7 +668,8 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
             value: 'previewDoc',
             dataBlob:reportData,
             reportId: response,
-            companyName:this.transferStepperFour?.formOneAndThreeData?.company
+            companyName:this.transferStepperFour?.formOneAndThreeData?.company,
+            isPurposeSebi:payload.reportPurpose?.length && payload.reportPurpose.includes('sebiRegulations') ? true : false
           }
           const dialogRef =  this.dialog.open(GenericModalBoxComponent, {data:dataSet,width:'80%',disableClose: true});
           const {reportId,...rest} = payload;
