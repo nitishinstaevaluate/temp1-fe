@@ -73,6 +73,7 @@ export const MODELS = {
   EXCESS_EARNINGS: 'Excess_Earnings',
   COMPARABLE_INDUSTRIES: 'CTM',
   RULE_ELEVEN_UA: 'ruleElevenUa',
+  MARKET_PRICE:'Market_Price'
 }
 
 export const ALL_MODELS = {

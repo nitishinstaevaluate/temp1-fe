@@ -147,6 +147,36 @@
                 </div>
             </div>
         </div>
+
+        <!-- Market Price -->
+        <div class="row" *ngIf="checkModel('Market_Price')">
+            <hr class="weight-hr">
+        <div class="col-md-6 text-left mt-4" style="border-bottom:1px  solid #d6d0d0;">
+            <p class="slider-label">Market Price</p>
+        </div>
+        <div class="col-md-6 t-right" style="text-align: right;border-bottom:1px  solid #d6d0d0;">
+            <div class="row">
+                <div class="col-md-10">
+                    <mat-slider
+                        class="example-margin mat-accent"
+                        [disabled]="'false'"
+                        [max]="marketPriceMaxValue"
+                        [min]="'0'"
+                        [step]="'1'"
+                        [discrete]="'false'"
+                        [showTickMarks]="'false'"
+                        style="width: 63%;"
+                        (input)="modelWeightageSlider($event,'Market_Price',marketPriceMaxValue,marketPriceSlider)">
+                        <input [(ngModel)]="marketPriceSlider" matSliderThumb>
+                    </mat-slider>
+                </div>
+                <div class="col-md-2" style="margin-top: auto;margin-bottom: auto;text-align: left;">
+                    <span class="slider-style">{{marketPriceSlider}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
             <!-- Net Asset Value -->
             <div class="row" *ngIf="checkModel('NAV')">    
                 <hr class="weight-hr">
@@ -234,7 +264,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of data" class="content">
-            <td class="make-bold">{{ item.model === 'Relative_Valuation' ? 'Comparable Companies' : item.model === 'CTM' ? 'Comparable Transaction'  : item.model }}</td>
+            <td class="make-bold">{{ item.model === 'Relative_Valuation' ? 'Comparable Companies' : item.model === 'CTM' ? 'Comparable Transaction'  : item.model === 'Market_Price' ? 'Market Price' : item.model }}</td>
             <td class="make-light">{{ item.indicatedValue | currency:'INR':'symbol':'1.0-2' }}</td>
             <td class="make-light">{{ item.weight | percent:'1.0-2' }}</td>
             <td class="make-light">{{ item.weightedValue | currency:'INR':'symbol':'1.0-2' }}</td>

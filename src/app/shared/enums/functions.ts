@@ -133,3 +133,13 @@ export function formatPositiveAndNegativeValues(value:any) {    //To be changed 
 
   return value < 0 ? `(${formattedValue})` : formattedValue;
 }
+
+export function getAdjustedTimestamp(date:any): any {
+  if (date) {
+    const timestamp = date;
+    const adjustedDate = new Date(timestamp);
+    adjustedDate.setDate(adjustedDate.getDate() + 1);
+    return adjustedDate.getTime();
+  }
+  return null;
+}

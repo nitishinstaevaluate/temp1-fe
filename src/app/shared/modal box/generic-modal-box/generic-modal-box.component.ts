@@ -302,11 +302,10 @@ createModelControl(modelName:string,approach:string){
   }
   if(approach === 'marketApproach'){
     if(!this.marketApproachmodels.includes(modelName)){
-      this.marketApproachmodels=[];
       this.marketApproachmodels.push(modelName);
     }
     else{
-      this.marketApproachmodels=[];
+      this.marketApproachmodels.splice(this.marketApproachmodels.indexOf(modelName), 1);
       this.clearModelRadioButton(modelName)
     }
   }
