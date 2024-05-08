@@ -24,8 +24,8 @@ export class ModelMarketPriceResultTableComponent implements OnChanges{
           this.sharePriceNinetyDays = indValuations?.valuationData?.sharePriceLastNinetyDays;
           this.sharePriceTenDays = indValuations?.valuationData?.sharePriceLastTenDays;
           this.valuePerShare = indValuations?.valuation;
-          this.vwapNinetyDays = indValuations.valuationData.vwapLastNinetyDays;
-          this.vwapTenDays = indValuations.valuationData.vwapLastTenDays;
+          this.vwapNinetyDays = indValuations.valuationData?.vwapLastNinetyDays;
+          this.vwapTenDays = indValuations.valuationData?.vwapLastTenDays;
         }
       })
     }
