@@ -66,8 +66,8 @@ export class ExcelAndReportService {
     });
   }
 
-  generateMrlReport(processStateId:any){
-    return this.http.get(`${this.HOST}report/mrl-report/${processStateId}`,{
+  generateMrlReport(processStateId:any, formatType:string){
+    return this.http.get(`${this.HOST}report/mrl-report/${processStateId}/${formatType}`,{
       responseType: 'blob'
     });
   }
@@ -78,20 +78,8 @@ export class ExcelAndReportService {
     });
   }
 
-  generateMrlDocxReport(processStateId:any){
-    return this.http.get(`${this.HOST}report/mrl-docx-report/${processStateId}`,{
-      responseType: 'blob'
-    });
-  }
-  
-  generateElevenUaMrlReport(processStateId:any){
-    return this.http.get(`${this.HOST}report/rule-eleven-mrl-report/${processStateId}`,{
-      responseType: 'blob'
-    });
-  }
-  
-  generateElevenUaMrlDocxReport(processStateId:any){
-    return this.http.get(`${this.HOST}report/rule-eleven-mrl-docx-report/${processStateId}`,{
+  generateElevenUaMrlReport(processStateId:any, formatType:string){
+    return this.http.get(`${this.HOST}report/rule-eleven-mrl-report/${processStateId}/${formatType}`,{
       responseType: 'blob'
     });
   }

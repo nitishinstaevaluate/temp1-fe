@@ -382,20 +382,22 @@ export class ActivityComponent {
     this.processLoader = true;
 
     if(format === 'docx'){
-      this.downloadMrlDocxVariations(model, processStateId, companyName);
+      const saveAsFileName = `${companyName} - Mrl.docx`;
+      this.downloadMrlVariations(model, processStateId, 'DOCX', saveAsFileName);
     }
     else{
-      this.downloadMrlPdfVariations(model, processStateId, companyName);
+      const saveAsFileName = `${companyName} - Mrl.pdf`;
+      this.downloadMrlVariations(model, processStateId, 'PDF', saveAsFileName);
     }
   }
 
-  downloadMrlDocxVariations(model:string, processStateId:any, companyName:any){
+  downloadMrlVariations(model:string, processStateId:any,  format:string, saveAsFileName:string){
     switch(true){
       case model.includes(MODELS.RULE_ELEVEN_UA):
-        this.excelAndReportService.generateElevenUaMrlDocxReport(processStateId).subscribe((response)=>{
+        this.excelAndReportService.generateElevenUaMrlReport(processStateId, format).subscribe((response)=>{
           this.processLoader = false;
           if(response){
-            saveAs(response, `${companyName} - MRL.docx`);
+            saveAs(response, saveAsFileName);
           }
         }, (error)=>{
           this.processLoader = false;
@@ -409,47 +411,10 @@ export class ActivityComponent {
       break;
 
       default:
-        this.excelAndReportService.generateMrlDocxReport(processStateId).subscribe((response)=>{
+        this.excelAndReportService.generateMrlReport(processStateId, format).subscribe((response)=>{
           this.processLoader = false;
           if(response){
-            saveAs(response, `${companyName} - MRL.docx`);
-          }
-        },(error)=>{
-          this.processLoader = false;
-          this.snackBar.open('backend error - Mrl generation failed', 'OK', {
-            horizontalPosition: 'right',
-            verticalPosition: 'top',
-            duration: 5000,
-            panelClass: 'app-notification-error',
-          });
-        })
-    }
-  }
-
-  downloadMrlPdfVariations(model:string, processStateId:any, companyName:any){
-    switch(true){
-      case model.includes(MODELS.RULE_ELEVEN_UA):
-        this.excelAndReportService.generateElevenUaMrlReport(processStateId).subscribe((response)=>{
-          this.processLoader = false;
-          if(response){
-            saveAs(response, `${companyName} - MRL.pdf`);
-          }
-        },(error)=>{
-          this.processLoader = false;
-          this.snackBar.open('backend error - Mrl generation for Eleven Ua failed', 'OK', {
-            horizontalPosition: 'right',
-            verticalPosition: 'top',
-            duration: 5000,
-            panelClass: 'app-notification-error',
-          });
-        })
-      break;
-
-      default:
-        this.excelAndReportService.generateMrlReport(processStateId).subscribe((response)=>{
-          this.processLoader = false;
-          if(response){
-            saveAs(response, `${companyName} - MRL.pdf`);
+            saveAs(response, saveAsFileName);
           }
         },(error)=>{
           this.processLoader = false;
