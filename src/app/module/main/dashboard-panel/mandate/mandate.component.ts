@@ -60,16 +60,15 @@ export class MandateComponent implements OnInit{
 
     this.utilService.postMandateChecklistDetails(lastUrlSegment, this.mandateForm.value).subscribe((response:any)=>{
       if(response.status){
-        this.snackbar.open('Mandate pdf generated', 'Ok',{
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-          duration: 3000,
-          panelClass: 'app-notification-success'
-        })
         this.excelAndReportService.generateMandateReport(response.uniqueLinkId).subscribe((response:any)=>{
           this.loader = false;
+          this.snackbar.open('Mandate pdf generated', 'Ok',{
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 3000,
+            panelClass: 'app-notification-success'
+          })
           if(response){
-            console.log("pdf generated successfully")
             saveAs(response, `${this.mandateForm.value.companyName}.pdf`);
           }
         },(error)=>{

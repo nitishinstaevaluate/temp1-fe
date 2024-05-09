@@ -279,8 +279,8 @@
         Export
       </button>
       <div class="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
-        <button class="dropdown-item"><a  download>Export as PDF</a></button>
-        <button class="dropdown-item"><a  download>Export as Docx</a></button>
+        <button class="dropdown-item"><a [href]="HOST + 'upload/generate-pdf/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + '/Market_Price/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType"  download>Export as PDF</a></button>
+        <button class="dropdown-item"><a [href]="HOST + 'upload/generate-docx/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + '/Market_Price/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType" download>Export as Docx</a></button>
       </div>
     </div>
     <div>

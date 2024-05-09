@@ -102,6 +102,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
           previousModel.push(val.model);
         })
         const elementsNotInArray = previousModel.filter((item:any) => !currentModel.includes(item));
+        const elementsInArray = previousModel.filter((item:any) => currentModel.includes(item));
         if(elementsNotInArray){
           for (let ele of elementsNotInArray){
             // console.log(ele,"for loop ele along with the payload:", this.calculateModelWeigtagePayload.results)
@@ -111,8 +112,46 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
             this.calculateModelWeigtagePayload.results.splice(findIndex,1);
             // console.log(this.calculateModelWeigtagePayload.results,"after payload");
           }
+          for (let ele of elementsInArray){
+            this.resetSliderWeightage(ele);
+          }
         }
     }
+    }
+  }
+
+  resetSliderWeightage(modelName:any){
+    switch(modelName){
+      case MODELS.FCFE:
+        this.fcfeMaxValue = 100;
+        break;
+       
+      case MODELS.FCFF:
+        this.fcffMaxValue = 100;
+        break;
+        
+      case MODELS.EXCESS_EARNINGS:
+        this.excessEarnMaxValue = 100;
+        break;
+
+      case MODELS.RELATIVE_VALUATION:
+        this.relativeValMaxValue = 100;
+        break;
+
+      case MODELS.COMPARABLE_INDUSTRIES:
+        this.comparableIndustryMaxValue = 100;
+        break;
+
+        case MODELS.NAV:
+          this.navMaxValue = 100;
+        break;
+
+      case MODELS.MARKET_PRICE:
+        this.marketPriceMaxValue = 100;
+        break;
+        
+       default:
+        'no model found';
     }
   }
 
@@ -246,6 +285,61 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
           }
           else{
             this.calculateModelWeigtagePayload.results.splice(fcffIndex,1,{model:response.model,value:this.fcffValuation,weightage:this.fcffSlider});
+          }
+        }
+        else if(response.model === 'Relative_Valuation'){
+          this.relativeValuation = response.valuation?.finalPriceMed;
+          const relativeValuationIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "Relative_Valuation");
+          if(relativeValuationIndex === -1)
+          {
+            this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.relativeValuation,weightage:this.relativeValSlider});
+          }
+          else{
+            this.calculateModelWeigtagePayload.results.splice(relativeValuationIndex,1,{model:response.model,value:this.relativeValuation,weightage:this.relativeValSlider});
+          }
+        }
+        else if(response.model === 'CTM'){
+          this.comparableIndustryValuation = response.valuation?.finalPriceMed;
+          const comparableIndustriesIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "CTM");
+          if(comparableIndustriesIndex === -1)
+          {
+            this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.comparableIndustryValuation,weightage:this.comparableIndustrySlider});
+          }
+          else{
+            this.calculateModelWeigtagePayload.results.splice(comparableIndustriesIndex,1,{model:response.model,value:this.comparableIndustryValuation,weightage:this.comparableIndustrySlider});
+          }
+        }
+        else if(response.model === 'Excess_Earnings'){
+          this.excessEarnValuation = response.valuation;
+          const excessEarningIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "Excess_Earnings");
+          if(excessEarningIndex === -1)
+          {
+            this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.excessEarnValuation,weightage:this.excessEarnSlider});
+          }
+          else{
+            this.calculateModelWeigtagePayload.results.splice(excessEarningIndex,1,{model:response.model,value:this.excessEarnValuation,weightage:this.excessEarnSlider});
+          }
+        }
+        else if(response.model === 'NAV'){
+          this.navValuation = response.valuation;
+          const navIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "NAV");
+          if(navIndex === -1)
+          {
+            this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.navValuation,weightage:this.navSlider});
+          }
+          else{
+            this.calculateModelWeigtagePayload.results.splice(navIndex,1,{model:response.model,value:this.navValuation,weightage:this.navSlider});
+          }
+        }
+        else if(response.model === 'Market_Price'){
+          this.marketPriceValuation = response.equityValue;
+          const marketPriceIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "Market_Price");
+          if(marketPriceIndex === -1)
+          {
+            this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.marketPriceValuation,weightage:this.marketPriceSlider});
+          }
+          else{
+            this.calculateModelWeigtagePayload.results.splice(marketPriceIndex,1,{model:response.model,value:this.marketPriceValuation,weightage:this.marketPriceSlider});
           }
         }
       });

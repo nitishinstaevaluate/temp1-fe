@@ -340,7 +340,7 @@ loadOnChangeValue(){
 
 loadFormControl(){
     this.fcffForm=this.formBuilder.group({
-    discountRate:['Cost_Of_Equity',[Validators.required]],
+    discountRate:['WACC',[Validators.required]],
     discountingPeriod:['',[Validators.required]],
     betaType:['',[Validators.required]],
     coeMethod:['',[Validators.required]],
