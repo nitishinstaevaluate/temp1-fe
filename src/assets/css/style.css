@@ -201,6 +201,12 @@ body {
     background: #27d69b;
     border-radius: 8px;
 }
+::ng-deep .cdk-overlay-connected-position-bounding-box{
+    left: 765.163px;
+    top: 34.9px;
+    height: 397.1px;
+    width: 764.837px;
+}
 ::ng-deep .app-notification-error .mdc-snackbar__surface,::ng-deep .app-notification-success .mdc-snackbar__surface{
     border-radius: 12px !important;
     background-color: #ffffff !important;

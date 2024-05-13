@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators,FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -14,6 +14,7 @@ import { ProcessStatusManagerService } from 'src/app/shared/service/process-stat
 import { BETA_FROM_TYPE, BETA_SUB_TYPE, MODELS } from 'src/app/shared/enums/constant';
 import { CiqSPService } from 'src/app/shared/service/ciq-sp.service';
 import { convertToNumberOrZero, formatNumber } from 'src/app/shared/enums/functions';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'app-fcff-details',
@@ -21,6 +22,7 @@ import { convertToNumberOrZero, formatNumber } from 'src/app/shared/enums/functi
   styleUrls: ['./fcff-details.component.scss']
 })
 export class FcffDetailsComponent implements OnInit{
+  @ViewChild('submenuTrigger') submenuTrigger!: MatMenuTrigger; // Add this line
 
   modelControl:any = groupModelControl;
 
@@ -63,6 +65,7 @@ export class FcffDetailsComponent implements OnInit{
   selectedSubBetaType:any = BETA_SUB_TYPE[0];
   stockBetaChecker = false;  
   betaMeanMedianWorking:any;
+  hoveredOption:any;
 constructor(private valuationService:ValuationService,
   private dataReferenceService: DataReferencesService,
   private formBuilder:FormBuilder,
@@ -168,7 +171,7 @@ loadOnChangeValue(){
         }
       })
 
-      if(expectedMarketReturnData.value === "Analyst_Consensus_Estimates"){
+      if(expectedMarketReturnData?.value === "Analyst_Consensus_Estimates"){
         const data={
           data: 'ACE',
           width:'30%',
@@ -958,6 +961,29 @@ calculateStockBeta(){
     else{
       // this.deRatio = 0;  
       // this.equityProp = 0;
+    }
+  }
+
+  onSubmenuClosed() {
+    this.hoveredOption = null; // Clear the hovered option when the submenu is closed
+  }
+
+  onOptionSelected(event: any) {
+    this.hoveredOption = null; // Clear any hovered option when an option is selected
+  }
+
+  onOptionHover(event: any, option: any) {
+    this.hoveredOption = option;
+    if (this.submenuTrigger) {
+      this.submenuTrigger.openMenu(); // Ensure submenu is initialized before calling openMenu()
+    }
+  }
+
+  onScroll(event:any){
+    if(this.hoveredOption?.subOptions?.length && event){
+      console.log('Scrolled:', event);
+      this.hoveredOption = null;
+      this.submenuTrigger.closeMenu();
     }
   }
 }
