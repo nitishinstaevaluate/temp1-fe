@@ -272,25 +272,127 @@
                         "years":"null"
                     },
                     {
-                        "name":"BSE500 Since Inception",
-                        "value":"BSE500_Since_Inception",
-                        "years":"0"
+                        "name":"BSE 500",
+                        "value":"BSE500",
+                        "years":"0",
+                        "subOptions":[
+                            {
+                                "name":"BSE500 Since Inception",
+                                "value":"BSE500_Since_Inception",
+                                "years":"0",
+                                "parentClass":"BSE500"
+                            },
+                            {
+                                "name":"BSE500 Since 5 years",
+                                "value":"BSE500_Since_5_years",
+                                "years":"5",
+                                "parentClass":"BSE500"
+                            },
+                            {
+                                "name":"BSE500 Since 10 years",
+                                "value":"BSE500_Since_10_years",
+                                "years":"10",
+                                "parentClass":"BSE500"
+                            },
+                            {
+                                "name":"BSE500 Since 15 years",
+                                "value":"BSE500_Since_15_years",
+                                "years":"15",
+                                "parentClass":"BSE500"
+                            }
+                        ]
                     },
                     {
-                        "name":"BSE500 Since 5 years",
-                        "value":"BSE500_Since_5_years",
-                        "years":"5"
+                        "name":"BSE Sensex 30",
+                        "value":"BSE_SENSEX30",
+                        "subOptions":[
+                            {
+                                "name":"BSE Sensex Since Inception",
+                                "value":"BSESENSEX30_Since_Inception",
+                                "years":"0",
+                                "parentClass":"BSE_SENSEX"
+                            },
+                            {
+                                "name":"BSE Sensex Since 5 years",
+                                "value":"BSESENSEX30_Since_5_years",
+                                "years":"5",
+                                "parentClass":"BSE_SENSEX"
+                            },
+                            {
+                                "name":"BSE Sensex Since 10 years",
+                                "value":"BSESENSEX30_Since_10_years",
+                                "years":"10",
+                                "parentClass":"BSE_SENSEX"
+                            },
+                            {
+                                "name":"BSE Sensex Since 15 years",
+                                "value":"BSESENSEX30_Since_15_years",
+                                "years":"15",
+                                "parentClass":"BSE_SENSEX"
+                            }
+                        ]
                     },
                     {
-                        "name":"BSE500 Since 10 years",
-                        "value":"BSE500_Since_10_years",
-                        "years":"10"
+                        "name":"Nifty 50",
+                        "value":"NIFTY50",
+                        "subOptions":[
+                            {
+                                "name":"NIFTY50 Since Inception",
+                                "value":"NIFTY50_Since_Inception",
+                                "years":"0",
+                                "parentClass":"NIFTY50"
+                            },
+                            {
+                                "name":"NIFTY50 Since 5 years",
+                                "value":"NIFTY50_Since_5_years",
+                                "years":"5",
+                                "parentClass":"NIFTY50"
+                            },
+                            {
+                                "name":"NIFTY50 Since 10 years",
+                                "value":"NIFTY50_Since_10_years",
+                                "years":"10",
+                                "parentClass":"NIFTY50"
+                            },
+                            {
+                                "name":"NIFTY50 Since 15 years",
+                                "value":"NIFTY50_Since_15_years",
+                                "years":"15",
+                                "parentClass":"NIFTY50"
+                            }
+                        ]
                     },
                     {
-                        "name":"BSE500 Since 15 years",
-                        "value":"BSE500_Since_15_years",
-                        "years":"15"
+                        "name":"Bank Nifty",
+                        "value":"BANK_NIFTY",
+                        "subOptions":[
+                            {
+                                "name":"Bank Nifty Since Inception",
+                                "value":"BANK_NIFTY_Since_Inception",
+                                "years":"0",
+                                "parentClass":"BANK_NIFTY"
+                            },
+                            {
+                                "name":"Bank Nifty Since 5 years",
+                                "value":"BANK_NIFTY_Since_5_years",
+                                "years":"5",
+                                "parentClass":"BANK_NIFTY"
+                            },
+                            {
+                                "name":"Bank Nifty Since 10 years",
+                                "value":"BANK_NIFTY_Since_10_years",
+                                "years":"10",
+                                "parentClass":"BANK_NIFTY"
+                            },
+                            {
+                                "name":"Bank Nifty Since 15 years",
+                                "value":"BANK_NIFTY_Since_15_years",
+                                "years":"15",
+                                "parentClass":"BANK_NIFTY"
+                            }
+                        ]
                     }
+                    
                 ]
             },
             "otherAdj":{
@@ -448,30 +550,30 @@
                         ]
                     },
                     {
-                        "name":"BSE Sensex",
-                        "value":"BSE_SENSEX",
+                        "name":"BSE Sensex 30",
+                        "value":"BSE_SENSEX30",
                         "subOptions":[
                             {
                                 "name":"BSE Sensex Since Inception",
-                                "value":"BSE_SENSEX_Since_Inception",
+                                "value":"BSESENSEX30_Since_Inception",
                                 "years":"0",
                                 "parentClass":"BSE_SENSEX"
                             },
                             {
                                 "name":"BSE Sensex Since 5 years",
-                                "value":"BSE_SENSEX_Since_5_years",
+                                "value":"BSESENSEX30_Since_5_years",
                                 "years":"5",
                                 "parentClass":"BSE_SENSEX"
                             },
                             {
                                 "name":"BSE Sensex Since 10 years",
-                                "value":"BSE_SENSEX_Since_10_years",
+                                "value":"BSESENSEX30_Since_10_years",
                                 "years":"10",
                                 "parentClass":"BSE_SENSEX"
                             },
                             {
                                 "name":"BSE Sensex Since 15 years",
-                                "value":"BSE_SENSEX_Since_15_years",
+                                "value":"BSESENSEX30_Since_15_years",
                                 "years":"15",
                                 "parentClass":"BSE_SENSEX"
                             }
@@ -660,25 +762,127 @@
                         "years":"null"
                     },
                     {
-                        "name":"BSE500 Since Inception",
-                        "value":"BSE500_Since_Inception",
-                        "years":"0"
+                        "name":"BSE 500",
+                        "value":"BSE500",
+                        "years":"0",
+                        "subOptions":[
+                            {
+                                "name":"BSE500 Since Inception",
+                                "value":"BSE500_Since_Inception",
+                                "years":"0",
+                                "parentClass":"BSE500"
+                            },
+                            {
+                                "name":"BSE500 Since 5 years",
+                                "value":"BSE500_Since_5_years",
+                                "years":"5",
+                                "parentClass":"BSE500"
+                            },
+                            {
+                                "name":"BSE500 Since 10 years",
+                                "value":"BSE500_Since_10_years",
+                                "years":"10",
+                                "parentClass":"BSE500"
+                            },
+                            {
+                                "name":"BSE500 Since 15 years",
+                                "value":"BSE500_Since_15_years",
+                                "years":"15",
+                                "parentClass":"BSE500"
+                            }
+                        ]
                     },
                     {
-                        "name":"BSE500 Since 5 years",
-                        "value":"BSE500_Since_5_years",
-                        "years":"5"
+                        "name":"BSE Sensex 30",
+                        "value":"BSE_SENSEX30",
+                        "subOptions":[
+                            {
+                                "name":"BSE Sensex Since Inception",
+                                "value":"BSESENSEX30_Since_Inception",
+                                "years":"0",
+                                "parentClass":"BSE_SENSEX"
+                            },
+                            {
+                                "name":"BSE Sensex Since 5 years",
+                                "value":"BSESENSEX30_Since_5_years",
+                                "years":"5",
+                                "parentClass":"BSE_SENSEX"
+                            },
+                            {
+                                "name":"BSE Sensex Since 10 years",
+                                "value":"BSESENSEX30_Since_10_years",
+                                "years":"10",
+                                "parentClass":"BSE_SENSEX"
+                            },
+                            {
+                                "name":"BSE Sensex Since 15 years",
+                                "value":"BSESENSEX30_Since_15_years",
+                                "years":"15",
+                                "parentClass":"BSE_SENSEX"
+                            }
+                        ]
                     },
                     {
-                        "name":"BSE500 Since 10 years",
-                        "value":"BSE500_Since_10_years",
-                        "years":"10"
+                        "name":"Nifty 50",
+                        "value":"NIFTY50",
+                        "subOptions":[
+                            {
+                                "name":"NIFTY50 Since Inception",
+                                "value":"NIFTY50_Since_Inception",
+                                "years":"0",
+                                "parentClass":"NIFTY50"
+                            },
+                            {
+                                "name":"NIFTY50 Since 5 years",
+                                "value":"NIFTY50_Since_5_years",
+                                "years":"5",
+                                "parentClass":"NIFTY50"
+                            },
+                            {
+                                "name":"NIFTY50 Since 10 years",
+                                "value":"NIFTY50_Since_10_years",
+                                "years":"10",
+                                "parentClass":"NIFTY50"
+                            },
+                            {
+                                "name":"NIFTY50 Since 15 years",
+                                "value":"NIFTY50_Since_15_years",
+                                "years":"15",
+                                "parentClass":"NIFTY50"
+                            }
+                        ]
                     },
                     {
-                        "name":"BSE500 Since 15 years",
-                        "value":"BSE500_Since_15_years",
-                        "years":"15"
+                        "name":"Bank Nifty",
+                        "value":"BANK_NIFTY",
+                        "subOptions":[
+                            {
+                                "name":"Bank Nifty Since Inception",
+                                "value":"BANK_NIFTY_Since_Inception",
+                                "years":"0",
+                                "parentClass":"BANK_NIFTY"
+                            },
+                            {
+                                "name":"Bank Nifty Since 5 years",
+                                "value":"BANK_NIFTY_Since_5_years",
+                                "years":"5",
+                                "parentClass":"BANK_NIFTY"
+                            },
+                            {
+                                "name":"Bank Nifty Since 10 years",
+                                "value":"BANK_NIFTY_Since_10_years",
+                                "years":"10",
+                                "parentClass":"BANK_NIFTY"
+                            },
+                            {
+                                "name":"Bank Nifty Since 15 years",
+                                "value":"BANK_NIFTY_Since_15_years",
+                                "years":"15",
+                                "parentClass":"BANK_NIFTY"
+                            }
+                        ]
                     }
+                    
                 ]
             },
             "otherAdj":{
