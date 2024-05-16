@@ -602,5 +602,27 @@ label {
   width: 100%;
   box-shadow: 1px 2px 10px #eeeeee !important;
   height: 30px !important;
-  background-color: #0cd18f !important;
+  background-color: #6ce598 !important;
+}
+
+::ng-deep .excess-earning-menu{
+  top: -15%;
+  left: 25%;
+  padding: 0px !important;
+  outline: none;
+  border: 1px solid #e4e4e4 !important;
+  border-radius: 8px !important;
+  color: #6d6d6d !important;
+  transition: 0.1s ease-out !important;
+  font-family: 'AR One Sans', sans-serif !important;
+  padding-top: 0%;
+  padding-bottom: 0%;
+  width: 100%;
+  box-shadow: 1px 2px 10px #eeeeee !important;
+}
+
+.exp-action-button:hover{
+  background-color: #bdf8de;
+  color: white !important;
+  transition: 0.3s;
 }
