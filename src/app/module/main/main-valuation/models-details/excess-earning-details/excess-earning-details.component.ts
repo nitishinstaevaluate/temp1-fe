@@ -16,6 +16,7 @@ import { ProcessStatusManagerService } from 'src/app/shared/service/process-stat
 import { BETA_FROM_TYPE, BETA_SUB_TYPE, MODELS } from 'src/app/shared/enums/constant';
 import { CiqSPService } from 'src/app/shared/service/ciq-sp.service';
 import { formatNumber } from 'src/app/shared/enums/functions';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'app-excess-earning-details',
@@ -23,6 +24,7 @@ import { formatNumber } from 'src/app/shared/enums/functions';
   styleUrls: ['./excess-earning-details.component.scss']
 })
 export class ExcessEarningDetailsComponent {
+  @ViewChild('submenuTrigger') submenuTrigger!: MatMenuTrigger;
 
   modelControl:any = groupModelControl;
 
@@ -52,8 +54,7 @@ export class ExcessEarningDetailsComponent {
   betaLoader=false;
   selectedSubBetaType:any = BETA_SUB_TYPE[0];
   stockBetaChecker = false;
-  @ViewChild(MatStepper, { static: false }) stepper!: MatStepper;
-  
+  expectedMarketReturnSubOptions:any;
 constructor(private valuationService:ValuationService,
   private dataReferenceService: DataReferencesService,
   private formBuilder:FormBuilder,
@@ -91,13 +92,15 @@ checkProcessExist(){
         this.excessEarningForm.controls['riskFreeRate'].setValue(stateTwoDetails?.riskFreeRate); 
         this.excessEarningForm.controls['riskFreeRateYears'].setValue(stateTwoDetails?.riskFreeRateYears); 
         let expectedMarketReturnData:any;
-        this.modelControl.fcfe.options.expMarketReturnType.options.map((response:any)=>{
+        this.modelControl.excessEarning.options.expMarketReturnType.options.map((response:any)=>{
           if(response.value ===  stateTwoDetails?.expMarketReturnType){
             expectedMarketReturnData = response
           }
         })
         this.bse500Value = stateTwoDetails?.bse500Value;
         this.excessEarningForm.controls['expMarketReturnType'].setValue(expectedMarketReturnData.name);
+        this.excessEarningForm.controls['expMarketReturnSubType'].setValue(stateTwoDetails?.expMarketReturnSubType);
+        this.excessEarningForm.controls['bse500Value'].setValue(stateTwoDetails?.bse500Value);
         this.excessEarningForm.controls['expMarketReturn'].setValue(stateTwoDetails?.expMarketReturn);
         this.excessEarningForm.controls['specificRiskPremium'].setValue(stateTwoDetails?.specificRiskPremium); 
         this.excessEarningForm.controls['riskPremium'].setValue(stateTwoDetails?.riskPremium); 
@@ -130,65 +133,6 @@ loadValues(){
 }
 
 loadOnChangeValue(){
-  this.excessEarningForm.controls['expMarketReturnType'].valueChanges.subscribe(
-    (val:any) => {
-      if(!val) return;
-
-      let expectedMarketReturnData:any;
-      this.modelControl.fcfe.options.expMarketReturnType.options.map((response:any)=>{
-        if(response.name ===  val){
-          expectedMarketReturnData = response
-        }
-      })
-
-      if(expectedMarketReturnData.value === "Analyst_Consensus_Estimates"){
-        const data={
-          data: 'ACE',
-          width:'30%',
-        }
-        const dialogRef = this.dialog.open(GenericModalBoxComponent,data);
-        dialogRef.afterClosed().subscribe((result)=>{
-          if (result) {
-            this.excessEarningForm.controls['expMarketReturn'].patchValue(parseFloat(result?.analystConsensusEstimates))
-            this.snackBar.open('Analyst Estimation Added','OK',{
-              horizontalPosition: 'right',
-              verticalPosition: 'top',
-              duration: 3000,
-              panelClass: 'app-notification-success'
-            })
-          } else {
-            this.excessEarningForm.controls['expMarketReturnType'].setValue('');
-          }
-        this.calculateCoeAndAdjustedCoe();
-        })
-      }
-      else{
-        this.dataReferenceService.getBSE500(expectedMarketReturnData?.years,this.formOneData?.valuationDate).subscribe(
-          (response) => {
-            if (response.status) {
-              this.excessEarningForm.controls['expMarketReturn'].setValue(response?.result || 0);
-              if(!response?.result){
-                this.snackBar.open('Expected market return not found', 'Ok',{
-                  horizontalPosition: 'center',
-                  verticalPosition: 'bottom',
-                  duration: 5000,
-                  panelClass: 'app-notification-error',
-                })
-              }
-              this.apiCallMade=false;
-              this.bse500Value=response?.close?.Close ? response?.close?.Close.toFixed(2) : 0;
-            }
-            this.calculateCoeAndAdjustedCoe();
-          },
-          (error) => {
-            console.error(error);
-          }
-          );
-      }
-      this.calculateCoeAndAdjustedCoe();
-    }
-  );
-
   this.excessEarningForm.controls['riskFreeRateYears'].valueChanges.subscribe((val:any)=>{
     if(!val) return;
     if(val === "customRiskFreeRate"){
@@ -238,6 +182,8 @@ loadFormControl(){
     specificRiskPremium:[false,[Validators.required]],
     beta:['',[Validators.required]],
     riskPremium:['',[Validators.required]],
+    expMarketReturnSubType:['',[Validators.required]],
+    bse500Value:['',[Validators.required]],
   })
 
   this.specificRiskPremiumModalForm=this.formBuilder.group({
@@ -304,7 +250,7 @@ onSlideToggleChange(event:any){
 
 saveAndNext(): void {
   let expectedMarketReturnData:any;
-  this.modelControl.fcfe.options.expMarketReturnType.options.map((response:any)=>{
+  this.modelControl.excessEarning.options.expMarketReturnType.options.map((response:any)=>{
     if(response.name ===  this.excessEarningForm.controls['expMarketReturnType'].value){
       expectedMarketReturnData = response
     }
@@ -319,8 +265,12 @@ saveAndNext(): void {
   payload['betaSubType']=this.selectedSubBetaType;
   payload['riskFreeRate'] = +this.excessEarningForm.controls['riskFreeRate'].value;
   
-
-  this.validateControls(this.excessEarningForm.controls,payload);
+  const controls = {...this.excessEarningForm.controls};
+  if(payload.expMarketReturnType === 'Analyst_Consensus_Estimates'){
+    delete controls.bse500Value;
+    delete controls.expMarketReturnSubType;
+  }
+  this.validateControls(controls,payload);
   
 }
 
@@ -643,7 +593,7 @@ calculateStockBeta(){
 }
 
   loadBetaDropdown() {
-    const betaDropdownValues = this.modelControl.fcfe.options.betaType.options.slice();
+    const betaDropdownValues = this.modelControl.excessEarning.options.betaType.options.slice();
     const stockBetaIndex = betaDropdownValues.findIndex((element: any) => element.value === 'stock_beta');
 
     if (!this.stockBetaChecker) {
@@ -672,6 +622,9 @@ calculateStockBeta(){
       break;
       case 'expMarketReturnType':
         this.excessEarningForm.controls['expMarketReturn'].setValue('');
+        this.excessEarningForm.controls['expMarketReturnSubType'].setValue('');
+        this.excessEarningForm.controls['bse500Value'].setValue('');
+        this.expectedMarketReturnSubOptions = null;
       break;
       case 'betaType':
         this.excessEarningForm.controls['beta'].setValue('');
@@ -729,6 +682,110 @@ calculateStockBeta(){
           panelClass: 'app-notification-error',
         })
       })
+    }
+  }
+
+  expMarketReturnSubOptClicked(subOpt:any){
+    const expSubOpt = subOpt;
+    if (expSubOpt){
+      this.excessEarningForm.controls['expMarketReturnSubType'].setValue(expSubOpt?.value);
+      this.calculateCagr(this.createCagrPayload(expSubOpt.years));
+      this.expectedMarketReturnSubOptions = null;
+    }
+  }
+
+  createCagrPayload(years:any){
+    let expectedMarketReturnData:any;
+      this.modelControl.fcff.options.expMarketReturnType.options.map((response:any)=>{
+        if(response.name ===  this.excessEarningForm.controls['expMarketReturnType'].value){
+          expectedMarketReturnData = response
+        }
+      })
+
+    return {
+      expectedMarketReturnType: expectedMarketReturnData?.value,
+      baseYrs: years, 
+      valuationDate: this.formOneData?.valuationDate
+    }
+  }
+
+  calculateCagr(payload:any){
+    this.dataReferenceService.getCagr(payload?.baseYrs, payload?.valuationDate, payload?.expectedMarketReturnType).subscribe(
+      (response) => {
+        if (response.status) {
+          this.excessEarningForm.controls['expMarketReturn'].setValue(response?.result || 0);
+          if(!response?.result){
+            this.snackBar.open('Expected market return not found', 'Ok',{
+              horizontalPosition: 'center',
+              verticalPosition: 'bottom',
+              duration: 5000,
+              panelClass: 'app-notification-error',
+            })
+          }
+        }
+        this.excessEarningForm.controls['bse500Value'].setValue(response?.close?.Close ? response?.close?.Close.toFixed(2) : 0);
+        
+        if(!response?.status){
+          this.snackBar.open('Cannot find data for the selected base year', 'Ok',{
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+            duration: 5000,
+            panelClass: 'app-notification-error',
+          })
+      }
+        this.calculateCoeAndAdjustedCoe();
+      },
+      (error) => {
+        console.error(error);
+        this.calculateCoeAndAdjustedCoe();
+      }
+    );
+  }
+  
+
+  openExpMarketReturnSubType(option: any) {
+    if(!option) return;
+
+    if(option?.value === "Analyst_Consensus_Estimates"){
+      const data={
+        data: 'ACE',
+        width:'30%',
+      }
+      const dialogRef = this.dialog.open(GenericModalBoxComponent,data);
+      dialogRef.afterClosed().subscribe((result)=>{
+        if (result) {
+          this.excessEarningForm.controls['expMarketReturn'].patchValue(parseFloat(result?.analystConsensusEstimates))
+          this.snackBar.open('Analyst Estimation Added','OK',{
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 3000,
+            panelClass: 'app-notification-success'
+          })
+          this.excessEarningForm.controls['bse500Value'].setValue('')
+        } else {
+          this.excessEarningForm.controls['expMarketReturnType'].setValue('');
+        }
+        this.submenuTrigger.closeMenu();
+        this.expectedMarketReturnSubOptions = null;
+        this.calculateCoeAndAdjustedCoe();
+      })
+    }
+    else{
+      if (this.submenuTrigger) {
+        this.submenuTrigger.openMenu();
+      }
+      this.expectedMarketReturnSubOptions = option;
+    }
+  }
+
+  onScroll(event:any){
+    if(this.expectedMarketReturnSubOptions?.subOptions?.length && event){
+      this.expectedMarketReturnSubOptions = null;
+      this.submenuTrigger.closeMenu();
+      this.excessEarningForm.controls['expMarketReturnType'].reset();
+      this.excessEarningForm.controls['expMarketReturnType'].markAsTouched();
+      this.excessEarningForm.controls['expMarketReturn'].reset()
+      this.excessEarningForm.controls['bse500Value'].reset();
     }
   }
 }

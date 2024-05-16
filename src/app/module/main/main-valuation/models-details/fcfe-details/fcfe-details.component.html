@@ -111,10 +111,20 @@
                             <mat-icon class="company-list-rmve-icon" (click)="clearInput('expMarketReturnType')">close</mat-icon>
                             </span>
                             <mat-select placeholder="Select expected market return" formControlName="expMarketReturnType" class="new-inp company-list-inp fcfe-list nature-of-instrument">
-                            <mat-option *ngFor="let doc of modelControl.fcfe.options.expMarketReturnType.options" class="auto-class" [value]="doc.name">
+                            <mat-option *ngFor="let doc of modelControl.fcfe.options.expMarketReturnType.options" class="auto-class" (click)="openExpMarketReturnSubType(doc)" [value]="doc.name"
+                            [matMenuTriggerFor]="submenu" #submenuTrigger="matMenuTrigger">
                               {{doc.name}}
                             </mat-option>
                             </mat-select>
+                            <mat-menu  [hasBackdrop]="false" #submenu="matMenu" (window:scroll)="onScroll($event)" class="fcfe-menu">
+                              <ng-container *ngFor="let subOption of expectedMarketReturnSubOptions?.subOptions">
+                                <button mat-menu-item  class="exp-action-button" [ngClass]="subOption?.value === fcfeForm.controls['expMarketReturnSubType']?.value ? 'exp-action-button higlight-exp-sub-type' : 'exp-action-button'" (click)="expMarketReturnSubOptClicked(subOption)">
+                                  <span style="font-size: 13px;font-family: 'AR One Sans', sans-serif !important;">
+                                    {{ subOption.name }}
+                                  </span>
+                                </button>
+                              </ng-container>
+                            </mat-menu>
                             <mat-hint *ngIf="fcfeForm.controls['expMarketReturn'].value" class="taxrate-hint">Expected Market Return is {{fcfeForm.controls['expMarketReturn'].value?.toFixed(2)}}%</mat-hint>
                             <mat-error class="company-list-error" *ngIf="fcfeForm.controls['expMarketReturnType'].touched && fcfeForm.controls['expMarketReturnType'].errors" style="margin-left: -5%;">
                               <span *ngIf="hasError('expMarketReturnType','required',fcfeForm)" class="error-text">

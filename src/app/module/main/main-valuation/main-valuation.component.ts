@@ -131,13 +131,13 @@ export class MainValuationComponent implements OnInit{
       this.formOneAndThreeData = {
         ...this.formOneData,
         ...this.formTwoData,
-        ...(this.formOneData?.model.includes('FCFF') ? this.fcffData : {}),
-        ...(this.formOneData?.model.includes('FCFE') ? this.fcfeData : {}),
-        ...(this.formOneData?.model.includes('Relative_Valuation') ? this.relativeData : {}),
-        ...(this.formOneData?.model.includes('Excess_Earnings') ? this.excessEarnData : {}),
-        ...(this.formOneData?.model.includes('CTM') ? this.comparableIndustriesData : {}),
-        ...(this.formOneData?.model.includes('NAV') ? this.navData : {}),
-        ...(this.formOneData?.model.includes('ruleElevenUa') ? this.ruleElevenData : {}),
+        ...(this.formOneData?.model?.includes('FCFF') ? this.fcffData : {}),
+        ...(this.formOneData?.model?.includes('FCFE') ? this.fcfeData : {}),
+        ...(this.formOneData?.model?.includes('Relative_Valuation') ? this.relativeData : {}),
+        ...(this.formOneData?.model?.includes('Excess_Earnings') ? this.excessEarnData : {}),
+        ...(this.formOneData?.model?.includes('CTM') ? this.comparableIndustriesData : {}),
+        ...(this.formOneData?.model?.includes('NAV') ? this.navData : {}),
+        ...(this.formOneData?.model?.includes('ruleElevenUa') ? this.ruleElevenData : {}),
       };
   }
 

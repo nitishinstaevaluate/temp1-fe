@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators,FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -14,6 +14,7 @@ import { ProcessStatusManagerService } from 'src/app/shared/service/process-stat
 import { BETA_FROM_TYPE, BETA_SUB_TYPE, MODELS } from 'src/app/shared/enums/constant';
 import { CiqSPService } from 'src/app/shared/service/ciq-sp.service';
 import { convertToNumberOrZero, formatNumber } from 'src/app/shared/enums/functions';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'app-fcff-details',
@@ -21,6 +22,7 @@ import { convertToNumberOrZero, formatNumber } from 'src/app/shared/enums/functi
   styleUrls: ['./fcff-details.component.scss']
 })
 export class FcffDetailsComponent implements OnInit{
+  @ViewChild('submenuTrigger') submenuTrigger!: MatMenuTrigger;
 
   modelControl:any = groupModelControl;
 
@@ -55,7 +57,6 @@ export class FcffDetailsComponent implements OnInit{
   apiCallMade = false;
   isLoader = false;
   isDialogOpen = false; 
-  bse500Value:number=0;
   customRiskFreeRate = 0;
   meanBeta = false;
   medianBeta = true;
@@ -63,6 +64,7 @@ export class FcffDetailsComponent implements OnInit{
   selectedSubBetaType:any = BETA_SUB_TYPE[0];
   stockBetaChecker = false;  
   betaMeanMedianWorking:any;
+  expectedMarketReturnSubOptions:any;
 constructor(private valuationService:ValuationService,
   private dataReferenceService: DataReferencesService,
   private formBuilder:FormBuilder,
@@ -102,12 +104,14 @@ checkProcessExist(){
         this.fcffForm.controls['riskFreeRate'].setValue(stateThreeDetails?.riskFreeRate); 
         this.fcffForm.controls['riskFreeRateYears'].setValue(stateThreeDetails?.riskFreeRateYears); 
         let expectedMarketReturnData:any;
-        this.modelControl.fcfe.options.expMarketReturnType.options.map((response:any)=>{
+        this.modelControl.fcff.options.expMarketReturnType.options.map((response:any)=>{
           if(response.value ===  stateThreeDetails?.expMarketReturnType){
             expectedMarketReturnData = response
           }
         })
-        this.fcffForm.controls['expMarketReturnType'].setValue(expectedMarketReturnData.name);
+        this.fcffForm.controls['expMarketReturnType'].setValue(expectedMarketReturnData?.name);
+        this.fcffForm.controls['expMarketReturnSubType'].setValue(stateThreeDetails?.expMarketReturnSubType);
+        this.fcffForm.controls['bse500Value'].setValue(stateThreeDetails?.bse500Value);
         this.fcffForm.controls['expMarketReturn'].setValue(stateThreeDetails?.expMarketReturn);
         this.fcffForm.controls['specificRiskPremium'].setValue(stateThreeDetails?.specificRiskPremium); 
         this.fcffForm.controls['riskPremium'].setValue(stateThreeDetails?.riskPremium); 
@@ -125,7 +129,6 @@ checkProcessExist(){
           this.deRatio = stateThreeDetails.capitalStructure?.deRatio;
         }
         this.fcffForm.controls['copShareCapital'].setValue(stateThreeDetails?.copShareCapital);
-        this.bse500Value = stateThreeDetails?.bse500Value;
         this.specificRiskPremiumModalForm.controls['companySize'].setValue(stateThreeDetails?.alpha.companySize)
         this.specificRiskPremiumModalForm.controls['marketPosition'].setValue(stateThreeDetails?.alpha.marketPosition)
         this.specificRiskPremiumModalForm.controls['liquidityFactor'].setValue(stateThreeDetails?.alpha.liquidityFactor)
@@ -157,65 +160,6 @@ loadValues(){
 }
 
 loadOnChangeValue(){
-  this.fcffForm.controls['expMarketReturnType'].valueChanges.subscribe(
-    (val:any) => {
-      if(!val) return;
-
-      let expectedMarketReturnData:any;
-      this.modelControl.fcfe.options.expMarketReturnType.options.map((response:any)=>{
-        if(response.name ===  val){
-          expectedMarketReturnData = response
-        }
-      })
-
-      if(expectedMarketReturnData.value === "Analyst_Consensus_Estimates"){
-        const data={
-          data: 'ACE',
-          width:'30%',
-        }
-        const dialogRef = this.dialog.open(GenericModalBoxComponent,data);
-        dialogRef.afterClosed().subscribe((result)=>{
-          if (result) {
-            this.fcffForm.controls['expMarketReturn'].patchValue(parseFloat(result?.analystConsensusEstimates))
-            this.snackBar.open('Analyst Estimation Added','OK',{
-              horizontalPosition: 'right',
-              verticalPosition: 'top',
-              duration: 3000,
-              panelClass: 'app-notification-success'
-            })
-          } else {
-            this.fcffForm.controls['expMarketReturnType'].setValue('');
-          }
-          this.calculateCoeAndAdjustedCoe();
-        })
-      }
-      else{
-        this.dataReferenceService.getBSE500(expectedMarketReturnData?.years,this.formOneData?.valuationDate).subscribe(
-          (response) => {
-            if (response.status) {
-              this.fcffForm.controls['expMarketReturn'].setValue(response?.result || 0);
-              if(!response?.result){
-                this.snackBar.open('Expected market return not found', 'Ok',{
-                  horizontalPosition: 'center',
-                  verticalPosition: 'bottom',
-                  duration: 5000,
-                  panelClass: 'app-notification-error',
-                })
-              }
-              this.bse500Value=response?.close?.Close ? response?.close?.Close.toFixed(2) : 0;
-              
-            }
-            this.calculateCoeAndAdjustedCoe();
-          },
-          (error) => {
-            console.error(error);
-            
-          }
-          );
-      }
-      this.calculateCoeAndAdjustedCoe();
-    }
-  );
   this.fcffForm.controls['capitalStructureType'].valueChanges.subscribe(
   (val:any) => {
       if(!val) return;
@@ -347,6 +291,8 @@ loadFormControl(){
     riskFreeRate:['',[Validators.required]],
     riskFreeRateYears:['',[Validators.required]],
     expMarketReturnType:['',[Validators.required]],
+    expMarketReturnSubType:['',[Validators.required]],
+    bse500Value:['',[Validators.required]],
     expMarketReturn:['',[Validators.required]],
     specificRiskPremium:[false,[Validators.required]],
     beta:['',[Validators.required]],
@@ -428,7 +374,7 @@ onSlideToggleChange(event:any){
 
 saveAndNext(): void {
   let expectedMarketReturnData:any;
-  this.modelControl.fcfe.options.expMarketReturnType.options.map((response:any)=>{
+  this.modelControl.fcff.options.expMarketReturnType.options.map((response:any)=>{
     if(response.name ===  this.fcffForm.controls['expMarketReturnType'].value){
       expectedMarketReturnData = response
     }
@@ -446,7 +392,6 @@ saveAndNext(): void {
   payload['adjustedCostOfEquity']=this.adjCoe;
   payload['costOfEquity']=this.coe;
   payload['wacc']=this.wacc;
-  payload['bse500Value']=this.bse500Value;
   payload['betaSubType']=this.selectedSubBetaType;
   payload['riskFreeRate'] = +this.fcffForm.controls['riskFreeRate'].value;
   // check if expected market return  is empty or not
@@ -454,6 +399,10 @@ saveAndNext(): void {
   payload['expMarketReturnType']=expectedMarketReturnData.value;
 
   const controls = {...this.fcffForm.controls};
+  if(payload.expMarketReturnType === 'Analyst_Consensus_Estimates'){
+    delete controls.bse500Value;
+    delete controls.expMarketReturnSubType;
+  }
   this.validateControls(controls,payload);
 }
 
@@ -858,6 +807,9 @@ calculateStockBeta(){
       break;
       case 'expMarketReturnType':
         this.fcffForm.controls['expMarketReturn'].setValue('');
+        this.fcffForm.controls['expMarketReturnSubType'].setValue('');
+        this.fcffForm.controls['bse500Value'].setValue('');
+        this.expectedMarketReturnSubOptions = null;
       break;
       case 'betaType':
         this.fcffForm.controls['beta'].setValue('');
@@ -958,6 +910,110 @@ calculateStockBeta(){
     else{
       // this.deRatio = 0;  
       // this.equityProp = 0;
+    }
+  }
+
+  expMarketReturnSubOptClicked(subOpt:any){
+    const expSubOpt = subOpt;
+    if (expSubOpt){
+      this.fcffForm.controls['expMarketReturnSubType'].setValue(expSubOpt?.value);
+      this.calculateCagr(this.createCagrPayload(expSubOpt.years));
+      this.expectedMarketReturnSubOptions = null;
+    }
+  }
+
+  createCagrPayload(years:any){
+    let expectedMarketReturnData:any;
+      this.modelControl.fcff.options.expMarketReturnType.options.map((response:any)=>{
+        if(response.name ===  this.fcffForm.controls['expMarketReturnType'].value){
+          expectedMarketReturnData = response
+        }
+      })
+
+    return {
+      expectedMarketReturnType: expectedMarketReturnData?.value,
+      baseYrs: years, 
+      valuationDate: this.formOneData?.valuationDate
+    }
+  }
+
+  calculateCagr(payload:any){
+    this.dataReferenceService.getCagr(payload?.baseYrs, payload?.valuationDate, payload?.expectedMarketReturnType).subscribe(
+      (response) => {
+        if (response.status) {
+          this.fcffForm.controls['expMarketReturn'].setValue(response?.result || 0);
+          if(!response?.result){
+            this.snackBar.open('Expected market return not found', 'Ok',{
+              horizontalPosition: 'center',
+              verticalPosition: 'bottom',
+              duration: 5000,
+              panelClass: 'app-notification-error',
+            })
+          }
+        }
+        this.fcffForm.controls['bse500Value'].setValue(response?.close?.Close ? response?.close?.Close.toFixed(2) : 0);
+        
+        if(!response?.status){
+          this.snackBar.open('Cannot find data for the selected base year', 'Ok',{
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+            duration: 5000,
+            panelClass: 'app-notification-error',
+          })
+      }
+        this.calculateCoeAndAdjustedCoe();
+      },
+      (error) => {
+        console.error(error);
+        this.calculateCoeAndAdjustedCoe();
+      }
+    );
+  }
+  
+
+  openExpMarketReturnSubType(option: any) {
+    if(!option) return;
+
+    if(option?.value === "Analyst_Consensus_Estimates"){
+      const data={
+        data: 'ACE',
+        width:'30%',
+      }
+      const dialogRef = this.dialog.open(GenericModalBoxComponent,data);
+      dialogRef.afterClosed().subscribe((result)=>{
+        if (result) {
+          this.fcffForm.controls['expMarketReturn'].patchValue(parseFloat(result?.analystConsensusEstimates))
+          this.snackBar.open('Analyst Estimation Added','OK',{
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 3000,
+            panelClass: 'app-notification-success'
+          })
+          this.fcffForm.controls['bse500Value'].setValue('')
+        } else {
+          this.fcffForm.controls['expMarketReturnType'].setValue('');
+        }
+        this.submenuTrigger.closeMenu();
+        this.expectedMarketReturnSubOptions = null;
+        this.calculateCoeAndAdjustedCoe();
+      })
+    }
+    else{
+      if (this.submenuTrigger) {
+        this.submenuTrigger.openMenu();
+      }
+      this.expectedMarketReturnSubOptions = option;
+    }
+  }
+
+  onScroll(event:any){
+    if(this.expectedMarketReturnSubOptions?.subOptions?.length && event){
+      this.expectedMarketReturnSubOptions = null;
+      this.submenuTrigger.closeMenu();
+      this.fcffForm.controls['expMarketReturnType'].reset();
+      this.fcffForm.controls['expMarketReturnType'].markAsTouched();
+      this.fcffForm.controls['expMarketReturn'].reset()
+      this.fcffForm.controls['bse500Value'].reset();
     }
   }
 }
