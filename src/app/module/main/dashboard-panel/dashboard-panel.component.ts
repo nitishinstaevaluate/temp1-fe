@@ -324,7 +324,8 @@ export class DashboardPanelComponent implements OnInit{
             reportDate:data.dateOfReport,
             natureOfInstrument:data.natureOfInstrument,
             reportPurpose:data.purposeOfReport,
-            reportSection:data.section
+            reportSection:data.section,
+            appointingAuthorityName:data.appointingAuthority
           },
           step:0,
           uniqueLinkId:data.uniqueLinkId

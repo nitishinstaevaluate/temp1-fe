@@ -74,7 +74,6 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
         this.reportForm.controls['useExistingValuer'].setValue(this.sixthStageInput?.formSixData?.useExistingValuer);
         this.reportForm.controls['appointingAuthorityName'].setValue(this.sixthStageInput?.formSixData?.appointingAuthorityName);
         this.reportForm.controls['dateOfAppointment'].setValue(this.sixthStageInput?.formSixData?.dateOfAppointment);
-        this.reportForm.controls['appointingAuthorityName'].setValue(this.sixthStageInput?.formSixData?.appointingAuthorityName);
         this.reportForm.controls['natureOfInstrument'].setValue(this.sixthStageInput?.formSixData?.natureOfInstrument);
         this.reportForm.controls['cinNumber'].setValue(this.sixthStageInput?.formSixData?.cinNumber);
         this.reportForm.controls['dateOfIncorporation'].setValue(this.sixthStageInput?.formSixData?.dateOfIncorporation);
