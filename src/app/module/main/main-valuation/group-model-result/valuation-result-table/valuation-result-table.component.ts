@@ -101,7 +101,7 @@ ngOnChanges(changes:SimpleChanges): void {
 }
   
 transposeData(data: any[][]): any[][] {
-  return data[0].map((_, columnIndex) => data.map((row) => row[columnIndex]));
+  return data[0]?.map((_, columnIndex) => data.map((row) => row[columnIndex]));
 }
 
 loadValuationTable(){
