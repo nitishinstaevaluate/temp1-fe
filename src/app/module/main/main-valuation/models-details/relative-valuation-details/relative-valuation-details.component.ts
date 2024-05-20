@@ -157,7 +157,8 @@ loadFormControl(){
   async calculateMeanMedianRatio(){
     const payload = {
       industryAggregateList:this.relativeValuation.controls['companies'].value,
-      ratioType: 'Company Based'
+      ratioType: 'Company Based',
+      valuationDate: this.formOneData?.valuationDate || this.formTwoData?.formOneData?.valuationDate
     }
     
     this.discountRateValue = this.relativeValuation.controls['discountRateValue'].value;
