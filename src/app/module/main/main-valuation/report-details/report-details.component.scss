@@ -622,7 +622,7 @@ opacity: 0;
 }
 
 
-::ng-deep .cdk-overlay-pane .mdc-menu-surface.mat-mdc-select-panel, ::ng-deep .mat-mdc-autocomplete-panel-above  .mat-mdc-autocomplete-panel{
+::ng-deep .cdk-overlay-pane .mdc-menu-surface.mat-mdc-select-panel, ::ng-deep .mat-mdc-autocomplete-panel-above  .mat-mdc-autocomplete-panel, ::ng-deep .cdk-overlay-pane .mat-mdc-autocomplete-panel{
   padding: 0px !important;
   outline: none;
   border: 1px solid #e4e4e4 !important;
@@ -636,7 +636,7 @@ opacity: 0;
   padding-left: 2%;
   box-shadow: 1px 2px 10px #eeeeee !important;
 }
-::ng-deep .cdk-overlay-pane .mdc-menu-surface.mat-mdc-select-panel .auto-class , ::ng-deep .mat-mdc-autocomplete-panel-above  .mat-mdc-autocomplete-panel .mat-mdc-option {
+::ng-deep .cdk-overlay-pane .mdc-menu-surface.mat-mdc-select-panel .auto-class , ::ng-deep .mat-mdc-autocomplete-panel-above  .mat-mdc-autocomplete-panel .mat-mdc-option, ::ng-deep .cdk-overlay-pane  .mat-mdc-autocomplete-panel .mat-mdc-option {
   font-family: 'AR One Sans', sans-serif !important;
   font-size: 14px !important;
   outline: none;
