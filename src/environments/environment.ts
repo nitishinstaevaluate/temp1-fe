@@ -5,5 +5,5 @@ export const environment = {
   production: false,
   baseUrl: 'https://localhost:3000/',
   version: '1.0.1',
-  synfusionLicenseKey:'ORg4AjUWIQA/Gnt2VlhhQlJCfV5AQmBIYVp/TGpJfl96cVxMZVVBJAtUQF1hSn9SdE1jWXtacXRcQGBZ',
+  synfusionLicenseKey:'Ngo9BigBOggjHTQxAR8/V1NBaF5cXmZCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXpcc3RVQ2lfVUB3WEs=',
 };
