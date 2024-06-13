@@ -14,6 +14,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { hasError } from 'src/app/shared/enums/errorMethods';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.service';
+import { HttpStatusCode } from '@angular/common/http';
 
 
 @Component({
@@ -242,11 +243,11 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
         case this.transferStepperFour?.formOneAndThreeData?.model.includes(MODELS.RULE_ELEVEN_UA):
           reportService = this.generateElevenUaReport.bind(this);
             break;
-        case this.reportForm.controls['reportPurpose'].value.some((item:any)=> item?.value.includes('sebiRegulations')):
-          reportService = this.generateSebiReport.bind(this);
-            break;
         case this.transferStepperFour?.formOneAndThreeData?.model.includes(MODELS.NAV) && this.transferStepperFour?.formOneAndThreeData?.model.length === 1:
           reportService = this.generateNavReport.bind(this);
+            break;
+        case this.reportForm.controls['reportPurpose'].value.some((item:any)=> item?.value.includes('sebiRegulations')) && this.reportForm.controls['reportPurpose'].value?.length === 1:
+          reportService = this.generateSebiReport.bind(this);
             break;
         default:
           reportService = this.generateBasicReport.bind(this);
@@ -498,12 +499,22 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       },
       (error)=>{
         this.reportGenerate = false;
-        this.snackBar.open('Something went wrong', 'OK', {
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-          duration: 2000,
-          panelClass: 'app-notification-error',
-        });
+        if(error?.status == HttpStatusCode.Unauthorized){
+          this.snackBar.open('You are not authorised to generate the selected format', 'OK', {
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 2000,
+            panelClass: 'app-notification-error',
+          });
+        }
+        else{
+          this.snackBar.open('Something went wrong', 'OK', {
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 2000,
+            panelClass: 'app-notification-error',
+          });
+        }
       })
     }
 
@@ -573,12 +584,23 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       },
       (error)=>{
         this.reportGenerate = false;
-        this.snackBar.open('Something went wrong', 'OK', {
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-          duration: 2000,
-          panelClass: 'app-notification-error',
-        });
+        console.log(error,"error")
+        if(error?.status == HttpStatusCode.Unauthorized){
+          this.snackBar.open('You are not authorised to generate the selected format', 'OK', {
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 2000,
+            panelClass: 'app-notification-error',
+          });
+        }
+        else{
+          this.snackBar.open('Something went wrong', 'OK', {
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 2000,
+            panelClass: 'app-notification-error',
+          });
+        }
       })
     }
 
@@ -648,12 +670,22 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       },
       (error)=>{
         this.reportGenerate = false;
-        this.snackBar.open('Something went wrong', 'OK', {
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-          duration: 2000,
-          panelClass: 'app-notification-error',
-        });
+        if(error?.status == HttpStatusCode.Unauthorized){
+          this.snackBar.open('You are not authorised to generate the selected format', 'OK', {
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 2000,
+            panelClass: 'app-notification-error',
+          });
+        }
+        else{
+          this.snackBar.open('Something went wrong', 'OK', {
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 2000,
+            panelClass: 'app-notification-error',
+          });
+        }
       })
     }
 
@@ -681,12 +713,22 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       },
       (error)=>{
         this.reportGenerate = false;
-        this.snackBar.open('Something went wrong', 'OK', {
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-          duration: 2000,
-          panelClass: 'app-notification-error',
-        });
+        if(error?.status == HttpStatusCode.Unauthorized){
+          this.snackBar.open('You are not authorised to generate the selected format', 'OK', {
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 2000,
+            panelClass: 'app-notification-error',
+          });
+        }
+        else{
+          this.snackBar.open('Something went wrong', 'OK', {
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: 2000,
+            panelClass: 'app-notification-error',
+          });
+        }
       })
     }
 
