@@ -1391,6 +1391,40 @@
             }
         }
     },
+    "slumpSale":{
+        "type":"slumpSale",
+        "header":"Slump Sale Inputs",
+        "columns":{
+            "monetaryConsiderationValue":{
+                "name":"monetaryConsiderationValue",
+                "placeholder":"Enter value",
+                "type":"text",
+                "toolTip":"Value of the Monetary Consideration received or accruing as a result of the transfer;",
+                "label":"Monetary Consideration"
+            },
+            "nonMonetaryConsiderationUnderSubRule":{
+                "name":"nonMonetaryConsiderationUnderSubRule",
+                "placeholder":"Enter value",
+                "type":"text",
+                "toolTip":"Fair Market Value of Non-Monetary Consideration received or accruing as a result of the transfer represented by property referred to in sub-rule (1) of Rule 11UA determined in the manner provided in sub-rule (1) of Rule 11UA for the property covered in that sub-rule;",
+                "label":"Non-monetary Consideration - 1"
+            },
+            "nonMonetaryConsiderationNotUnderSubRule":{
+                "name":"nonMonetaryConsiderationNotUnderSubRule",
+                "placeholder":"Enter value",
+                "type":"text",
+                "toolTip":"The price which the Non-Monetary Consideration received or accruing as a result of the transfer represented by property, other than Immovable Property, which is not referred to in sub-rule (1) of Rule 11UA would fetch if sold in the open market on the basis of the valuation report obtained from a registered valuer, in respect of property;",
+                "label":"Non-monetary Consideration - 2"
+            },
+            "valueAssessedByGov":{
+                "name":"valueAssessedByGov",
+                "placeholder":"Enter value",
+                "type":"text",
+                "toolTip":"The value adopted or assessed or assessable by any Authority of the Government for the purpose of payment of stamp duty in respect of the Immovable Property in case the Non-Monetary Consideration received or accruing as a result of the transfer is represented by the Immovable Property.",
+                "label":"Value Assessed By Govt."
+            }
+        }
+    },
     "auth":{
         "type":"auth",
         "header":"User Authentication",

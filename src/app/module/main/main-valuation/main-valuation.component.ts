@@ -38,6 +38,7 @@ export class MainValuationComponent implements OnInit{
   comparableIndustriesData:any;
   navData:any;
   ruleElevenData:any;
+  slumpSaleData:any;
   modelArray:any=[];
   
   // breadcrumb property
@@ -138,6 +139,7 @@ export class MainValuationComponent implements OnInit{
         ...(this.formOneData?.model?.includes('CTM') ? this.comparableIndustriesData : {}),
         ...(this.formOneData?.model?.includes('NAV') ? this.navData : {}),
         ...(this.formOneData?.model?.includes('ruleElevenUa') ? this.ruleElevenData : {}),
+        ...(this.formOneData?.model?.includes('slumpSale') ? this.slumpSaleData : {})
       };
   }
 
@@ -243,6 +245,11 @@ export class MainValuationComponent implements OnInit{
     this.nextModelSelection(data.status);
     this.onStepChange();
   }
+  slumpSaleDetails(data:any){
+    this.slumpSaleData=data;
+    this.nextModelSelection(data.status);
+    this.onStepChange();
+  }
 
   async nextModelSelection(data?:any){
     // const model = this.formOneData?.model;
@@ -278,6 +285,9 @@ export class MainValuationComponent implements OnInit{
           break;
         case 'ruleElevenUa':
           this.next = 7;
+          break;
+        case 'slumpSale':
+          this.next = 8;
           break;
         default:
           // this.stepper.next(); 
@@ -330,6 +340,9 @@ export class MainValuationComponent implements OnInit{
        case 'ruleElevenUa':
          this.next = 7;
          break;
+       case 'slumpSale':
+         this.next = 8;
+         break;
        default:
         // this.stepper.previous(); 
         const currentStep:any = localStorage.getItem('step')
@@ -364,6 +377,9 @@ export class MainValuationComponent implements OnInit{
     this.previousModelSelection(data?.status);
   }
   ruleElevenUaDetailsPrev(data:any){
+    this.previousModelSelection(data?.status);
+  }
+  slumpSaleDetailsPrev(data:any){
     this.previousModelSelection(data?.status);
   }
 
@@ -427,6 +443,10 @@ export class MainValuationComponent implements OnInit{
               updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
             }
             if(formTwoDetails.model === MODELS.RULE_ELEVEN_UA && processStateDetails?.firstStageInput.model.includes(MODELS.RULE_ELEVEN_UA)){
+              const {model , ...rest} = formTwoDetails;
+              updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
+            }
+            if(formTwoDetails.model === MODELS.SLUMP_SALE && processStateDetails?.firstStageInput.model.includes(MODELS.SLUMP_SALE)){
               const {model , ...rest} = formTwoDetails;
               updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
             }

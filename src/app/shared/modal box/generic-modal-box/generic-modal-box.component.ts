@@ -1,6 +1,6 @@
 import { Component , ElementRef, Inject, Renderer2, OnInit, ViewChild,AfterViewInit, Input} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { GLOBAL_VALUES, INCOME_APPROACH, MARKET_APPROACH, NET_ASSET_APPROACH, RULE_ELEVEN_UA_APPROACH, helperText } from '../../enums/constant';
+import { GLOBAL_VALUES, INCOME_APPROACH, MARKET_APPROACH, MODELS, NET_ASSET_APPROACH, RULE_ELEVEN_UA_APPROACH, helperText } from '../../enums/constant';
 import groupModelControl from '../../enums/group-model-controls.json'
 import WebViewer, { Core } from '@pdftron/webviewer';
 import PDFNet  from '@pdftron/webviewer';
@@ -74,6 +74,7 @@ ctmSelectedModel:any='';
 relativeValuationSelectedModel:any='';
 marketPriceSelectedModel:any = '';
 ruleElevenUaSelectedModel:any = '';
+slumpSaleSelectedModel:any = '';
 projectionYearSelect:any='';
 terminalGrowthRates:any='';
 projectionYears:any;
@@ -460,11 +461,23 @@ clearModelRadioButton(modelName:string){
       this.ruleElevenUaSelectedModel = null;
       break;
 
+    case 'slumpSale':
+      this.slumpSaleSelectedModel = null;
+      break;
+
   }
 }
 
 get downloadTemplate() {
-  const modelName = this.ruleElevenApproachModels.length ? 'ruleElevenUa' : this.incomeApproachmodels.length ? 'default' : 'marketApproach'
+  const modelName = this.ruleElevenApproachModels.length ? 
+  (
+    this.ruleElevenApproachModels.includes(MODELS.RULE_ELEVEN_UA) ? 
+    'ruleElevenUa' : 
+    'slumpSale'
+  ) : 
+  this.incomeApproachmodels.length ? 
+  'default' : 
+  'marketApproach'
   return GET_TEMPLATE(this.yearOfProjection.value,modelName,`${this.valuationDate ? new Date(this.valuationDate).getTime() : ''}`);
   }
 
@@ -525,6 +538,9 @@ get downloadTemplate() {
             break;
           case 'ruleElevenUa':
             this.ruleElevenUaSelectedModel = true;
+            break;
+          case 'slumpSale':
+            this.slumpSaleSelectedModel = true;
             break;
         }
 
@@ -666,5 +682,9 @@ get downloadTemplate() {
     } else {
       this.issuanceCheckbox.setValue(false);
     }
+  }
+
+  isRuleElevenUa(){
+    return this.ruleElevenApproachModels?.length && this.ruleElevenApproachModels?.includes(MODELS.RULE_ELEVEN_UA)
   }
 }

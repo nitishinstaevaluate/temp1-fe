@@ -73,7 +73,8 @@ export const MODELS = {
   EXCESS_EARNINGS: 'Excess_Earnings',
   COMPARABLE_INDUSTRIES: 'CTM',
   RULE_ELEVEN_UA: 'ruleElevenUa',
-  MARKET_PRICE:'Market_Price'
+  MARKET_PRICE:'Market_Price',
+  SLUMP_SALE:'slumpSale'
 }
 
 export const ALL_MODELS = {
@@ -85,6 +86,7 @@ export const ALL_MODELS = {
   Market_Price:'Market Price',
   Excess_Earnings:"Excess Earning",
   ruleElevenUa:"Rule Eleven UA",
+  slumpSale:"Slump Sale"
 }
 
   export const GLOBAL_VALUES = {
@@ -217,7 +219,14 @@ export const ALL_MODELS = {
         label:'Rule 11 UA Approach',
         ruleElevenUa:{
           name:'Rule 11 UA Method',
-          info:'This is NAV model'
+          info:'This is Rule 11 UA model'
+        }
+      },
+      slumpSaleApproach:{
+        label:'Slump Sale Approach',
+        slumpSale:{
+          name:'Slump Sale Method',
+          info:'This is Slump Sale model'
         }
       },
     },
@@ -281,7 +290,8 @@ export const ALL_MODELS = {
     tvPatBased:`Estimation of company value at the end of a forecast period, calculated based on the last year's Profit After Tax, discount rate, and long-term growth rate. It signifies the perpetual value of the company considering profit figures.`,
     capitalIqBetaDesc:`Capital IQ is used to calculate beta for valuation due to its extensive financial data coverage, aiding in the analysis of a stock's volatility relative to the market.`,
     aswathDamodaranBetaDesc:`Aswath Damodaran's methodologies are utilized for beta calculation due to their robustness and insight into market dynamics, ensuring accurate risk assessment relative to the market.`,
-    faceValue:`Face value`
+    faceValue:`Face value`,
+    slumpSaleModelLabel:`Assess the value of a company for the purpose of mergers and acquisitions, takeovers, and other financial transactions. It is a regulatory approach based on UAE-specific legal frameworks, involving the transfer of a business unit as a going concern without assigning individual values to assets and liabilities, and requiring regulatory approval and adherence to legal provisions.`
   }
 
   export const CHECKLIST_TYPES = {
@@ -302,7 +312,7 @@ export const ALL_MODELS = {
 
   export const NET_ASSET_APPROACH = ['NAV'];
 
-  export const RULE_ELEVEN_UA_APPROACH = ['ruleElevenUa'];
+  export const RULE_ELEVEN_UA_APPROACH = ['ruleElevenUa', 'slumpSale'];
 
   export const MARKET_APPROACH = ['Relative_Valuation','CTM','Market_Price'];
 

@@ -563,7 +563,8 @@ export class GroupModelControlsComponent implements OnInit {
     if (this.modelValuation.controls['model'].value?.length === 1 &&
       (
         this.modelValuation.controls['model'].value?.includes(MODELS.RULE_ELEVEN_UA) ||
-        this.modelValuation.controls['model'].value?.includes(MODELS.NAV)
+        this.modelValuation.controls['model'].value?.includes(MODELS.NAV) ||
+        this.modelValuation.controls['model'].value?.includes(MODELS.SLUMP_SALE)
       ))
       {
       return false;
@@ -576,7 +577,8 @@ export class GroupModelControlsComponent implements OnInit {
       }
       else if(this.modelValuation.controls['model'].value?.length  > 1 && (
         this.modelValuation.controls['model'].value?.includes(MODELS.RULE_ELEVEN_UA) ||
-        this.modelValuation.controls['model'].value?.includes(MODELS.NAV)
+        this.modelValuation.controls['model'].value?.includes(MODELS.NAV) ||
+        this.modelValuation.controls['model'].value?.includes(MODELS.SLUMP_SALE)
       )){
         return true;
       }
@@ -589,7 +591,8 @@ export class GroupModelControlsComponent implements OnInit {
     if (this.modelValuation.controls['model'].value?.length === 1 &&
     (
       this.modelValuation.controls['model'].value?.includes(MODELS.RULE_ELEVEN_UA) ||
-      this.modelValuation.controls['model'].value?.includes(MODELS.NAV)
+      this.modelValuation.controls['model'].value?.includes(MODELS.NAV) ||
+      this.modelValuation.controls['model'].value?.includes(MODELS.SLUMP_SALE)
     ))
     {
       this.calculationService.checkModel.next({status:true})
@@ -602,7 +605,8 @@ export class GroupModelControlsComponent implements OnInit {
     }
     else if(this.modelValuation.controls['model'].value?.length  > 1 && (
       this.modelValuation.controls['model'].value?.includes(MODELS.RULE_ELEVEN_UA) ||
-      this.modelValuation.controls['model'].value?.includes(MODELS.NAV)
+      this.modelValuation.controls['model'].value?.includes(MODELS.NAV) ||
+      this.modelValuation.controls['model'].value?.includes(MODELS.SLUMP_SALE)
     )){
       this.calculationService.checkModel.next({status:false})
     }
