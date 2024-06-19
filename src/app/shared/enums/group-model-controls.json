@@ -1218,6 +1218,10 @@
                 {
                     "name":"SEBI Regulations",
                     "value":"sebiRegulations"
+                },
+                {
+                    "name":"Internal Assessment",
+                    "value":"internalAssessment"
                 }
             ],
             "natureOfInstrument":[

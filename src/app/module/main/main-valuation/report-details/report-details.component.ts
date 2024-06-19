@@ -141,7 +141,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       return;
     }
 
-    if (this.reportPurposeDataChips.length === 0) {
+    if(!this.isInternalAssessment() && this.reportPurposeDataChips.length === 0){
       this.regulationPrefSelectionStatus = false;
       return;
     }
@@ -764,10 +764,12 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     }
 
     reComputeSectionPreference(){
+      if(this.isInternalAssessment() && !this.reportPurposeData?.length){
+        this.reportPurposeDataChips = [];
+      }
       if (this.reportPurposeData.length) {
         const newReportSections = [...this.reportPurposeDataChips];
         const updatedReportPurposeDataChips = [];
-        
         for (const indReportSections of newReportSections) {
             const checkIfSelectedPurposeExist = this.reportPurposeData.findIndex((element: any) => indReportSections.includes(element.Description));
             
@@ -791,5 +793,14 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
   
     comparerReportPurpose(o1: any, o2: any): boolean {
       return o1 && o2 ? o1?.name  === o2?.name  : o2 === o2;
+    }
+
+    isInternalAssessment(){
+      return (
+        this.reportForm.controls['reportPurpose']?.value?.length === 1
+      ) && 
+      (
+        this.reportForm.controls['reportPurpose']?.value?.findIndex((item:any)=>item.value === 'internalAssessment') !== -1
+      ) 
     }
 }
