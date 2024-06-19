@@ -43,8 +43,9 @@
           Export
         </button>
         <div class="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
-          <button class="dropdown-item"><a [href]="HOST + 'upload/generate-pdf/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/FCFE/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType" download>Export as PDF</a></button>
-          <button class="dropdown-item"><a [href]="HOST + 'upload/generate-docx/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/FCFE/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType" download>Export as Docx</a></button>
+          <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/FCFE/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/PDF'" download>Export as PDF</a></button>
+          <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/FCFE/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/DOCX'" download>Export as Docx</a></button>
+          <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/FCFE/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/XLSX'" download>Export as Excel</a></button>
         </div>
       </div>
     </div>
@@ -119,8 +120,9 @@
           Export
         </button>
         <div class="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
-          <button class="dropdown-item"><a [href]="HOST + 'upload/generate-pdf/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/FCFF/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType" download>Export as PDF</a></button>
-          <button class="dropdown-item"><a [href]="HOST + 'upload/generate-docx/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/FCFF/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType" download>Export as Docx</a></button>
+          <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/FCFF/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/PDF'" download>Export as PDF</a></button>
+          <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/FCFF/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/DOCX'" download>Export as Docx</a></button>
+          <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/FCFF/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/XLSX'" download>Export as Excel</a></button>
         </div>
       </div>
     </div>
@@ -162,8 +164,9 @@
         Export
       </button>
       <div class="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
-        <button class="dropdown-item"><a [href]="HOST + 'upload/generate-pdf/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/Excess_Earnings/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType" download>Export as PDF</a></button>
-        <button class="dropdown-item"><a [href]="HOST + 'upload/generate-docx/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/Excess_Earnings/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType" download>Export as Docx</a></button>
+        <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/Excess_Earnings/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/PDF'" download>Export as PDF</a></button>
+        <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/Excess_Earnings/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/DOCX'" download>Export as Docx</a></button>
+        <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/Excess_Earnings/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/XLSX'" download>Export as Excel</a></button>
       </div>
     </div>
     <div>
@@ -197,8 +200,9 @@
         Export
       </button>
       <div class="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
-        <button class="dropdown-item"><a [href]="HOST + 'upload/generate-pdf/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + (checkIndustryOrCompany() ? '/Relative_Valuation/' : '/CTM/') + 'true' + '/' + processStateId + '/' + terminalValueSelectedType" download>Export as PDF</a></button>
-        <button class="dropdown-item"><a [href]="HOST + 'upload/generate-docx/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + (checkIndustryOrCompany() ? '/Relative_Valuation/' : '/CTM/') + 'true' + '/' + processStateId + '/' + terminalValueSelectedType" download>Export as Docx</a></button>
+        <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + (checkIndustryOrCompany() ? '/Relative_Valuation/' : '/CTM/') + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/PDF'" download>Export as PDF</a></button>
+        <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + (checkIndustryOrCompany() ? '/Relative_Valuation/' : '/CTM/') + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/DOCX'" download>Export as Docx</a></button>
+        <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + (checkIndustryOrCompany() ? '/Relative_Valuation/' : '/CTM/') + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/XLSX'" download>Export as Excel</a></button>
       </div>
     </div>
     <div>
@@ -224,8 +228,9 @@
         Export
       </button>
       <div class="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
-        <button class="dropdown-item"><a [href]="HOST + 'upload/generate-pdf/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + '/NAV/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType" download>Export as PDF</a></button>
-        <button class="dropdown-item"><a [href]="HOST + 'upload/generate-docx/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + '/NAV/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType" download>Export as Docx</a></button>
+        <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + '/NAV/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/PDF'" download>Export as PDF</a></button>
+        <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + '/NAV/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/DOCX'" download>Export as Docx</a></button>
+        <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + '/NAV/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/XLSX'" download>Export as Excel</a></button>
       </div>
     </div>
     <div>
@@ -263,8 +268,9 @@
         Export
       </button>
       <div class="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
-        <button class="dropdown-item"><a [href]="HOST + 'upload/export-eleven-ua/' + (transferStepperthree?.formFourData?.appData?._id || 'null')" download>Export as PDF</a></button>
-        <button class="dropdown-item"><a [href]="HOST + 'upload/export-eleven-ua-docx/' + (transferStepperthree?.formFourData?.appData?._id || 'null')" download>Export as Docx</a></button>
+        <button class="dropdown-item"><a [href]="HOST + 'upload/export-eleven-ua/' + (transferStepperthree?.formFourData?.appData?._id || 'null') + '/PDF'" download>Export as PDF</a></button>
+        <button class="dropdown-item"><a [href]="HOST + 'upload/export-eleven-ua/' + (transferStepperthree?.formFourData?.appData?._id || 'null') + '/DOCX'" download>Export as Docx</a></button>
+        <button class="dropdown-item"><a [href]="HOST + 'upload/export-eleven-ua/' + (transferStepperthree?.formFourData?.appData?._id || 'null') + '/XLSX'" download>Export as Excel</a></button>
       </div>
     </div>
     <div>
@@ -279,8 +285,9 @@
         Export
       </button>
       <div class="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
-        <button class="dropdown-item"><a [href]="HOST + 'upload/generate-pdf/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + '/Market_Price/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType"  download>Export as PDF</a></button>
-        <button class="dropdown-item"><a [href]="HOST + 'upload/generate-docx/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + '/Market_Price/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType" download>Export as Docx</a></button>
+        <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + '/Market_Price/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/PDF'"  download>Export as PDF</a></button>
+        <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + '/Market_Price/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/DOCX'" download>Export as Docx</a></button>
+        <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + '/Market_Price/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/XLSX'" download>Export as Excel</a></button>
       </div>
     </div>
     <div>
