@@ -162,7 +162,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       return;
     }
 
-    if (this.reportPurposeDataChips.length === 0) {
+    if (!this.isInternalAssessment() && this.reportPurposeDataChips.length === 0) {
       this.regulationPrefSelectionStatus = false;
       return;
     }
