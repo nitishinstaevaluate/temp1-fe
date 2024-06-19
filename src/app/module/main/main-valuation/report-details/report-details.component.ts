@@ -264,7 +264,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
         case this.transferStepperFour?.formOneAndThreeData?.model.includes(MODELS.NAV) && this.transferStepperFour?.formOneAndThreeData?.model.length === 1:
             reportService = this.previewNavReport.bind(this);
             break;
-        case this.reportForm.controls['reportPurpose'].value.some((item:any)=> item?.value.includes('sebiRegulations')):
+        case this.reportForm.controls['reportPurpose'].value.some((item:any)=> item?.value.includes('sebiRegulations')) && this.reportForm.controls['reportPurpose'].value?.length === 1:
             reportService = this.previewSebiReport.bind(this);
             break;
         default:
