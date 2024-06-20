@@ -53,6 +53,8 @@ export class GenericModalBoxComponent implements OnInit {
   issuanceCheckbox = new FormControl(false);
   transferCheckbox = new FormControl(false);
 
+  customBeta = new FormControl('');
+
 label:string='';
 appValues= GLOBAL_VALUES;
 floatLabelType:any = 'never';
@@ -153,6 +155,9 @@ loadModel(data:any){
   if(data.value === this.appValues.CIQ_COMPANY_DETAILS.value) return this.label = this.appValues.CIQ_COMPANY_DETAILS.name;
   if(data.data?.value === this.appValues.CHECKLIST_TYPES.DATA_CHECKLIST.value) return this.label = this.appValues.CHECKLIST_TYPES.DATA_CHECKLIST.name;
   if(data.value === this.appValues.TERMINAL_VALUE_WORKING.value) return this.label = this.appValues.TERMINAL_VALUE_WORKING.name;
+  if(data.value === this.appValues.CUSTOM_BETA.value) {
+    this.patchExistingBetaDetails(data);
+  } 
   return '';
 }
 
@@ -248,6 +253,12 @@ modalData(data?:any,knownAs?:string) {
     case 'riskFreeRate':
       this.dialogRef.close({
         riskFreeRate:data?.riskFreeRate
+      })
+      break;
+
+    case 'customBeta':
+      this.dialogRef.close({
+        customBeta:data?.customBeta
       })
       break;
 
@@ -636,6 +647,13 @@ get downloadTemplate() {
       this.summationTargetCaps  = data.totalCapital
     }
   }
+
+  patchExistingBetaDetails(data:any){
+    if(data?.betaValue){
+      this.customBeta.setValue(data.betaValue);
+    }
+  }
+  
   processStateManager(process:any, processId:any){
     this.processStatusManagerService.instantiateProcess(process, processId).subscribe(
       (processStatusDetails: any) => {

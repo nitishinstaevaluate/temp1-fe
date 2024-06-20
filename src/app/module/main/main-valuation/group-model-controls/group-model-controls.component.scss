@@ -574,29 +574,29 @@ label {
   min-width: 400px !important;
 }
 
-::ng-deep .company-l .mdc-text-field .mat-mdc-form-field-focus-overlay{
+::ng-deep .control-form-field .mdc-text-field .mat-mdc-form-field-focus-overlay{
   background-color: #ffffff !important;
 }
 
-::ng-deep .company-l .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix .mdc-floating-label .mat-mdc-form-field-required-marker{
+::ng-deep .control-form-field .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix .mdc-floating-label .mat-mdc-form-field-required-marker{
   display: none;
 }
 
-::ng-deep .company-l .mat-mdc-form-field-subscript-wrapper{
+::ng-deep .control-form-field .mat-mdc-form-field-subscript-wrapper{
   border-top: 1px solid #ffffff;
 }
-::ng-deep .company-l .mat-mdc-form-field-subscript-wrapper:hover{
+::ng-deep .control-form-field .mat-mdc-form-field-subscript-wrapper:hover{
   border-top: 1px solid #ffffff;
 }
 
-::ng-deep .company-l .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix .mdc-floating-label{
+::ng-deep .control-form-field .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix .mdc-floating-label{
   top: 58%;
   left: 2%;
   color: #6d6d6d;
   font-family: 'AR One Sans', sans-serif;
 }
 
-::ng-deep .company-l .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix:focus-within .mdc-floating-label {
+::ng-deep .control-form-field .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix:focus-within .mdc-floating-label {
   top: 47%;
   background-color: #ffffff;
   font-size: 1rem !important;
@@ -604,24 +604,24 @@ label {
   font-family: 'AR One Sans', sans-serif;
 }
 
-::ng-deep .company-l .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix .mdc-floating-label--float-above {
+::ng-deep .control-form-field .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix .mdc-floating-label--float-above {
   top: 47%;
   background-color: #ffffff;
   font-family: 'AR One Sans', sans-serif;
   z-index: 1;
-  padding-right: 2%;
+  padding-right: 1%;
 }
-::ng-deep .company-l .mdc-text-field{
+::ng-deep .control-form-field .mdc-text-field{
   padding: 0px;
 }
 .ind-4{
   color:#6d6d6d !important;
   font-size: 1rem !important;
 }
-::ng-deep .company-l .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::before  {
+::ng-deep .control-form-field .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::before  {
   border-bottom: 1px solid #ffffff;
 }
-::ng-deep .company-l .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::after  {
+::ng-deep .control-form-field .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::after  {
   border-bottom: 1px solid #ffffff;
 }
 
@@ -690,13 +690,16 @@ label {
     font-size: 17px !important;
   }
   .company-info-span{
-    padding-right: 1%;
-    position: absolute;
-    display: block;
-    top: 18%;
-    left: 22%;
-    padding-left: 1%;
-    background-color: white;
+    // padding-right: 1%;
+    // position: absolute;
+    // display: block;
+    // top: 18%;
+    // left: 22%;
+    // padding-left: 1%;
+    // background-color: white;
+    display: flex;
+    align-items: center;
+    margin-left: 5px;
   }
 
   .company-list-error{
@@ -742,4 +745,9 @@ label {
 }
 ::ng-deep .cdk-overlay-pane .mat-mdc-select-panel .mat-mdc-option:hover{
   background: #bdf8de !important;
+}
+
+.label-container {
+  display: flex;
+  align-items: center;
 }

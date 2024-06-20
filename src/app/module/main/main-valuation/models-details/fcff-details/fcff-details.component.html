@@ -154,18 +154,18 @@
                         </mat-error>
                         <mat-hint style="width: 100%;display: flex; align-items: center;">
                           <span style="width: 100%;" *ngIf="fcffForm.controls['betaType'].value">
-                            <span *ngIf="fcffForm.controls['betaType'].value !== 'market_beta' && fcffForm.controls['betaType'].value !== 'stock_beta' && formTwoData?.formTwoData?.betaFrom !== 'aswathDamodaran'">
+                            <span *ngIf="fcffForm.controls['betaType'].value !== 'market_beta' && fcffForm.controls['betaType'].value !== 'stock_beta' && formTwoData?.formTwoData?.betaFrom !== 'aswathDamodaran' && fcffForm.controls['betaType'].value !== 'custom_beta'">
                               <input type="radio" style="vertical-align: middle;" [checked]="selectedSubBetaType === 'meanBeta'" (change)="onRadioButtonChange($event)" value="meanBeta" name="betaRadio" id="betaRadio">
                               <span class="reset-ind3" style="vertical-align: middle;">Mean</span>
                             </span>
-                            <span style="padding-left: 7%;" *ngIf="fcffForm.controls['betaType'].value !== 'market_beta' && fcffForm.controls['betaType'].value !== 'stock_beta'  && formTwoData?.formTwoData?.betaFrom !== 'aswathDamodaran'">
+                            <span style="padding-left: 7%;" *ngIf="fcffForm.controls['betaType'].value !== 'market_beta' && fcffForm.controls['betaType'].value !== 'stock_beta'  && formTwoData?.formTwoData?.betaFrom !== 'aswathDamodaran' && fcffForm.controls['betaType'].value !== 'custom_beta'">
                               <input type="radio" style="vertical-align: middle;" [checked]="selectedSubBetaType === 'medianBeta'" (change)="onRadioButtonChange($event)" value="medianBeta" name="betaRadio" id="betaRadio">
                               <span class="reset-ind3" style="vertical-align: middle;">Median</span>
                             </span>
-                            <span [ngClass]="(fcffForm.controls['betaType'].value === 'market_beta' || fcffForm.controls['betaType'].value === 'stock_beta' || formTwoData?.formTwoData?.betaFrom === 'aswathDamodaran') ? '' :  'add-padding-beta'">
+                            <span [ngClass]="(fcffForm.controls['betaType'].value === 'market_beta' || fcffForm.controls['betaType'].value === 'stock_beta' || formTwoData?.formTwoData?.betaFrom === 'aswathDamodaran' || fcffForm.controls['betaType'].value === 'custom_beta') ? '' :  'add-padding-beta'">
                               <span *ngIf="!betaLoader" style="vertical-align: middle;font-size: 11px;color: #1915bb;" class="reset-ind3">
                                 <a target="_blank" class="beta-val"  (click)="handleBetaClick()">
-                                  Beta {{ fcffForm.controls['beta'].value === null ? 'not found' : fcffForm.controls['beta'].value?.toFixed(2) }} 
+                                  Beta {{ fcffForm.controls['beta'].value === null || fcffForm.controls['beta'].value === '' ? 'not found' : fcffForm.controls['beta'].value?.toFixed(2) }} 
                                   <span style="vertical-align: middle;">
                                     <mat-icon>settings</mat-icon>
                                   </span>

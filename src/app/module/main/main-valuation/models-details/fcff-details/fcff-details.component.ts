@@ -591,6 +591,9 @@ if(selectedValue){
     else if(selectedValue.includes('stock_beta')){
       this.calculateStockBeta();
     }
+    else if(selectedValue.includes('custom_beta')){
+      this.calculateCustomBeta();
+    }
     else{
       this.selectedSubBetaType = '';
       this.fcffForm.controls['beta'].setValue(1);
@@ -606,6 +609,9 @@ if(selectedValue){
     else if(selectedValue.includes('levered')){
       this.fcffForm.controls['beta'].setValue(aswathDamodaranSelectedBetaObj?.beta);
       this.calculateCoeAndAdjustedCoe();
+    }
+    else if(selectedValue.includes('custom_beta')){
+      this.calculateCustomBeta();
     }
     else{
       this.selectedSubBetaType = '';
@@ -688,6 +694,36 @@ this.ciqSpService.calculateSPindustryBeta(betaPayload).subscribe((betaData:any)=
   },); 
 })
 
+}
+
+calculateCustomBeta(){
+  const data = {
+    value:'customBeta',
+    betaValue: this.fcffForm.controls['beta'].value
+  }
+  const betaDialogPrev = this.dialog.open(GenericModalBoxComponent,{data:data, width: '30%',maxHeight: '90vh',panelClass: 'custom-dialog-container'});
+
+  betaDialogPrev.afterClosed().subscribe((result)=>{
+    if (result) {
+      this.fcffForm.controls['beta'].setValue(convertToNumberOrZero(result?.customBeta))
+      this.snackBar.open('Custom beta Added','OK',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 3000,
+        panelClass: 'app-notification-success'
+      })
+    } else {
+      this.fcffForm.controls['beta'].setValue('');
+      this.fcffForm.controls['betaType'].setValue('');
+      this.snackBar.open('Please add beta','OK',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 5000,
+        panelClass: 'app-notification-error'
+      })
+    }
+    this.calculateCoeAndAdjustedCoe();
+  })
 }
 
 processStateManager(process:any, processId:any){
@@ -778,7 +814,7 @@ calculateStockBeta(){
 }
 
   loadBetaDropdown() {
-    const betaDropdownValues = this.modelControl.fcff.options.betaType.options.slice();
+    const betaDropdownValues = this.modelControl.fcff.options.betaType.options.slice().filter((options:any) => options.enabled === true);
     const stockBetaIndex = betaDropdownValues.findIndex((element: any) => element.value === 'stock_beta');
 
     if (!this.stockBetaChecker) {

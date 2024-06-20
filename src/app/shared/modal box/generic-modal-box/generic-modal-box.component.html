@@ -964,3 +964,22 @@
     </div>
    </ng-container>
   </div>
+
+  <!-- Custom beta -->
+  <div *ngIf="data?.value === appValues.CUSTOM_BETA.value">
+    <div class="col-md-12 revalmodel" style="text-align: center;padding-top: 4%;">
+      <mat-label class="label" >{{label}}</mat-label>
+      <span><mat-icon class="close-modal-valuer" (click)="modalData()" style="padding-right: 8%;">close</mat-icon></span>
+    </div>
+    <div class="container" style="padding-top: 4%;padding-bottom: 4%;">
+      <div class="material-textfield">
+        <input class="new-inp" [formControl]="customBeta" [placeholder]="'Enter beta value'" type="text"/>
+        <label class="going-concern-label">Add Beta</label>
+      </div>
+    </div>
+    <div mat-dialog-actions> 
+      <button mat-raised-button style="margin-left: auto;" [disabled]="!customBeta.value" [ngClass]="!customBeta.value ? 'submit-bt-disable' : 'submit-bt'" (click)="modalData({customBeta:customBeta.value},'customBeta')">
+        Save
+      </button>
+    </div>
+  </div>

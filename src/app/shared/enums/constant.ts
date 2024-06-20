@@ -255,7 +255,11 @@ export const ALL_MODELS = {
         nameOne:"Calculation of Terminal Year Cash Flows",
         nameTwo:"Calculation of terminal value"
       }
-    }
+    },
+    CUSTOM_BETA:{
+      value:'customBeta',
+      name:'Custom Beta'
+    },
   }
 
   export const helperText = {
