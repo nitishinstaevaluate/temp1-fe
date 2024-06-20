@@ -52,7 +52,17 @@
 
             <div class="material-textfield">
               <mat-form-field appearance="fill" class="companyStatus" style="width: 100%;">
-                <mat-label class="ind-4">{{modelControl.inputScreen.columns.industryL3.label}}</mat-label>
+                <mat-label class="ind-4">
+                  <div class="label-container">
+                    {{modelControl.inputScreen.columns.industryL3.label}}
+                    <span class="tool-class-company-stat" *ngIf="inputScreenForm.controls['industryL3']?.value">
+                      <svg [matTooltip]="modelControl.inputScreen.columns.industryL3.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 256 256"><rect  fill="none"></rect>
+                        <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
+                        <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
+                        <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
+                    </span>
+                  </div>
+                </mat-label>
                 <span class="company-list-rmve" *ngIf="inputScreenForm.controls['industryL3']?.value" style="right:5%;top: 44%;">
                   <mat-icon class="company-list-rmve-icon" (click)="clearInput('industryL3')">close</mat-icon>
                   </span>
@@ -62,12 +72,6 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-              <span class="tool-class">
-                <svg [matTooltip]="modelControl.inputScreen.columns.industryL3.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
-                  <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
-                  <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
-                  <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
-              </span>
           </div>
           </div>
         </div>
@@ -97,19 +101,19 @@
           <div class="material-textfield">
             <mat-form-field appearance="fill" class="ind4" style="width: 100%;">
                 <input type="text" matInput formControlName="companyName" class="autocomplete-inp" (focus)="companyInputFocused()" (blur)="companyInputBlurred()" (keyup)="filterByCompanyName($event)" [matAutocomplete]="autoCompanyList" placeholder="Enter company name">
-                <span class="tool-class-business-desc" *ngIf="companyInput || inputScreenForm.controls['companyName']?.value">
-                  <svg matTooltipClass='form-one-tooltip' [matTooltip]="helperText.companyName" matTooltipPosition="right" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
-                    <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:32px;" 
-                    fill="#ff0000"></path>
-                    <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px;">
-                    </polyline><line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px;">
-                  </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
-                </span>
                   <span class="company-list-rmve" *ngIf="inputScreenForm.controls['companyName']?.value" style="right:5%;">
                     <mat-icon class="company-list-rmve-icon" (click)="clearInput('companyName')">close</mat-icon>
                   </span>
                 <mat-label class="ind-4">
-                  Company Name
+                  <div class="label-container">
+                    Company Name
+                    <span class="tool-class-company-stat" *ngIf="companyInput || inputScreenForm.controls['companyName']?.value">
+                      <svg [matTooltip]="helperText.companyName" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 256 256"><rect  fill="none"></rect>
+                        <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
+                        <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
+                        <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
+                    </span>
+                  </div>
                 </mat-label>
                 <mat-autocomplete #autoCompanyList="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onCompanySelection($event)" class="mat-auto">
                   <mat-option *ngFor="let option of companyList" [value]="option.COMPANYNAME" style="text-transform: capitalize;font-size: 13px !important;" class="input-scrn">
@@ -124,7 +128,17 @@
         <div class="col-md-6 field" style="padding-top: 0%;padding-left: 1.5%;">
           <div class="material-textfield">
               <mat-form-field appearance="fill" class="companyStatus" style="width: 100%;">
-                <mat-label class="ind-4">{{modelControl.inputScreen.columns.companyStatus.label}}</mat-label>
+                <mat-label class="ind-4">
+                  <div class="label-container">
+                    {{modelControl.inputScreen.columns.companyStatus.label}}
+                    <span class="company-status-info" [ngClass]="{'tool-class-company-stat': companyStatusDropdownFocused || companyStatusDropdownValue}"> 
+                      <svg [matTooltip]="modelControl.inputScreen.columns.companyStatus.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 256 256"><rect  fill="none"></rect>
+                        <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
+                        <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
+                        <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
+                    </span>
+                  </div>
+                </mat-label>
                 <span class="company-list-rmve" *ngIf="inputScreenForm.controls['companyStatus']?.value.length" style="right:5%;top: 44%;">
                   <mat-icon class="company-list-rmve-icon" (click)="clearInput('companyStatus')">close</mat-icon>
                 </span>
@@ -134,12 +148,6 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-              <span class="company-status-info" [ngClass]="{'tool-class-company-stat': companyStatusDropdownFocused || companyStatusDropdownValue}" style="left: 21%;"> 
-                <svg [matTooltip]="modelControl.inputScreen.columns.companyStatus.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
-                  <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
-                  <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
-                  <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
-              </span>
           </div>
         </div>
 
@@ -148,7 +156,17 @@
           <div class="material-textfield">
             <mat-form-field appearance="fill" class="ind4" style="width: 100%;">
                 <input type="text" matInput formControlName="descriptor" class="autocomplete-inp" (keyup)="filterByBusinessDescriptor($event)" [matAutocomplete]="auto" placeholder="Enter description">
-                <mat-label class="ind-4">{{modelControl.inputScreen.columns.descriptor.label}}</mat-label>
+                <mat-label class="ind-4">
+                  <div class="label-container">
+                    {{modelControl.inputScreen.columns.descriptor.label}}
+                    <span class="tool-class-company-stat" *ngIf="inputScreenForm.controls['descriptor'].value">
+                      <svg [matTooltip]="modelControl.inputScreen.columns.descriptor.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 256 256"><rect  fill="none"></rect>
+                        <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
+                        <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
+                        <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
+                    </span>
+                  </div>
+                </mat-label>
                 <span class="company-list-rmve" *ngIf="inputScreenForm.controls['descriptor']?.value" style="right:5%;">
                   <mat-icon class="company-list-rmve-icon" (click)="clearInput('descriptor')">close</mat-icon>
                   </span>
@@ -157,13 +175,7 @@
                     {{ option }}
                   </mat-option>
                 </mat-autocomplete>
-            </mat-form-field>
-            <span class="tool-class-business-desc" *ngIf="inputScreenForm.controls['descriptor'].value">
-              <svg [matTooltip]="modelControl.inputScreen.columns.descriptor.tooltip" matTooltipPosition="above" style="color: 6200ee" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 256 256"><rect  fill="none"></rect>
-                <circle cx="128" cy="128" r="96" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
-                <polyline points="120 124 128 124 128 176 136 176" fill="none" stroke="#6200ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
-                <circle cx="126" cy="84" r="16" fill="#6200ee"></circle></svg>
-            </span>
+            </mat-form-field>            
           </div>
         </div>
 

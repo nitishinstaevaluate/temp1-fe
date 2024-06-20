@@ -14,7 +14,7 @@ import { hasError } from 'src/app/shared/enums/errorMethods';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { BETA_FROM_TYPE, BETA_SUB_TYPE, MODELS } from 'src/app/shared/enums/constant';
 import { CiqSPService } from 'src/app/shared/service/ciq-sp.service';
-import { formatNumber } from 'src/app/shared/enums/functions';
+import { convertToNumberOrZero, formatNumber } from 'src/app/shared/enums/functions';
 import { MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
@@ -410,6 +410,9 @@ betaChange(event:any){
       else if(selectedValue.includes('stock_beta')){
         this.calculateStockBeta();
       }
+      else if(selectedValue.includes('custom_beta')){
+        this.calculateCustomBeta();
+      }
       else{
         this.selectedSubBetaType = '';
         this.fcfeForm.controls['beta'].setValue(1);
@@ -425,6 +428,9 @@ betaChange(event:any){
       else if(selectedValue.includes('levered')){
         this.fcfeForm.controls['beta'].setValue(aswathDamodaranSelectedBetaObj?.beta);
         this.calculateCoeAndAdjustedCoe();
+      }
+      else if(selectedValue.includes('custom_beta')){
+        this.calculateCustomBeta();
       }
       else{
         this.selectedSubBetaType = '';
@@ -507,6 +513,36 @@ calculateBeta(betaSubType:any){
 
 }
 
+calculateCustomBeta(){
+  const data = {
+    value:'customBeta',
+    betaValue: this.fcfeForm.controls['beta'].value
+  }
+  const betaDialogPrev = this.dialog.open(GenericModalBoxComponent,{data:data, width: '30%',maxHeight: '90vh',panelClass: 'custom-dialog-container'});
+
+  betaDialogPrev.afterClosed().subscribe((result)=>{
+    if (result) {
+      this.fcfeForm.controls['beta'].setValue(convertToNumberOrZero(result?.customBeta))
+      this.snackBar.open('Custom beta Added','OK',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 3000,
+        panelClass: 'app-notification-success'
+      })
+    } else {
+      this.fcfeForm.controls['beta'].setValue('');
+      this.fcfeForm.controls['betaType'].setValue('');
+      this.snackBar.open('Please add beta','OK',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 5000,
+        panelClass: 'app-notification-error'
+      })
+    }
+    this.calculateCoeAndAdjustedCoe();
+  })
+}
+
 calculateRiskFreeRate(maturityYears:any){
   if(!maturityYears)
     return;
@@ -577,7 +613,7 @@ calculateStockBeta(){
 }
 
   loadBetaDropdown() {
-    const betaDropdownValues = this.modelControl.fcfe.options.betaType.options.slice();
+    const betaDropdownValues = this.modelControl.fcfe.options.betaType.options.slice().filter((option:any) => option.enabled === true);
     const stockBetaIndex = betaDropdownValues.findIndex((element: any) => element.value === 'stock_beta');
 
     if (!this.stockBetaChecker) {
