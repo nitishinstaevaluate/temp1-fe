@@ -43,9 +43,9 @@
           Export
         </button>
         <div class="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
-          <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/FCFE/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/PDF'" download>Export as PDF</a></button>
-          <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/FCFE/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/DOCX'" download>Export as Docx</a></button>
-          <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/FCFE/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/XLSX'" download>Export as Excel</a></button>
+          <button class="dropdown-item"><a (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'pdf', 'FCFE', (transferStepperthree?.formFourData?.appData?.reportId || null))">Export as PDF</a></button>
+          <button class="dropdown-item"><a (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'docx', 'FCFE', (transferStepperthree?.formFourData?.appData?.reportId || null))">Export as Docx</a></button>
+          <button class="dropdown-item"><a (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'xlsx', 'FCFE', (transferStepperthree?.formFourData?.appData?.reportId || null))">Export as Excel</a></button>
         </div>
       </div>
     </div>
@@ -120,9 +120,9 @@
           Export
         </button>
         <div class="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
-          <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/FCFF/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/PDF'" download>Export as PDF</a></button>
-          <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/FCFF/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/DOCX'" download>Export as Docx</a></button>
-          <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/FCFF/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/XLSX'" download>Export as Excel</a></button>
+          <button class="dropdown-item"><a (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'pdf', 'FCFF', (transferStepperthree?.formFourData?.appData?.reportId || null))">Export as PDF</a></button>
+          <button class="dropdown-item"><a (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'docx', 'FCFF', (transferStepperthree?.formFourData?.appData?.reportId || null))">Export as Docx</a></button>
+          <button class="dropdown-item"><a (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'xlsx', 'FCFF', (transferStepperthree?.formFourData?.appData?.reportId || null))">Export as Excel</a></button>
         </div>
       </div>
     </div>
@@ -164,9 +164,9 @@
         Export
       </button>
       <div class="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
-        <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/Excess_Earnings/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/PDF'" download>Export as PDF</a></button>
-        <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/Excess_Earnings/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/DOCX'" download>Export as Docx</a></button>
-        <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/Excess_Earnings/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/XLSX'" download>Export as Excel</a></button>
+        <button class="dropdown-item"><a (click)="exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'pdf', 'Excess_Earnings', (transferStepperthree?.formFourData?.appData?.reportId || null))">Export as PDF</a></button>
+        <button class="dropdown-item"><a (click)="exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'docx', 'Excess_Earnings', (transferStepperthree?.formFourData?.appData?.reportId || null))">Export as Docx</a></button>
+        <button class="dropdown-item"><a (click)="exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'xlsx', 'Excess_Earnings', (transferStepperthree?.formFourData?.appData?.reportId || null))">Export as Excel</a></button>
       </div>
     </div>
     <div>
@@ -200,9 +200,9 @@
         Export
       </button>
       <div class="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
-        <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + (checkIndustryOrCompany() ? '/Relative_Valuation/' : '/CTM/') + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/PDF'" download>Export as PDF</a></button>
-        <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + (checkIndustryOrCompany() ? '/Relative_Valuation/' : '/CTM/') + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/DOCX'" download>Export as Docx</a></button>
-        <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + (checkIndustryOrCompany() ? '/Relative_Valuation/' : '/CTM/') + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/XLSX'" download>Export as Excel</a></button>
+        <button class="dropdown-item"><a (click)="exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'pdf', (checkIndustryOrCompany() ? 'Relative_Valuation' : 'CTM'), (transferStepperthree?.formFourData?.appData?.reportId || null))">Export as PDF</a></button>
+        <button class="dropdown-item"><a (click)="exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'docx', (checkIndustryOrCompany() ? 'Relative_Valuation' : 'CTM'), (transferStepperthree?.formFourData?.appData?.reportId || null))">Export as Docx</a></button>
+        <button class="dropdown-item"><a (click)="exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'xlsx', (checkIndustryOrCompany() ? 'Relative_Valuation' : 'CTM'), (transferStepperthree?.formFourData?.appData?.reportId || null))">Export as Excel</a></button>
       </div>
     </div>
     <div>
@@ -228,9 +228,9 @@
         Export
       </button>
       <div class="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
-        <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + '/NAV/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/PDF'" download>Export as PDF</a></button>
-        <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + '/NAV/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/DOCX'" download>Export as Docx</a></button>
-        <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + '/NAV/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/XLSX'" download>Export as Excel</a></button>
+        <button class="dropdown-item"><a (click)="exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'pdf', 'NAV', (transferStepperthree?.formFourData?.appData?.reportId || null))">Export as PDF</a></button>
+        <button class="dropdown-item"><a (click)="exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'docx', 'NAV', (transferStepperthree?.formFourData?.appData?.reportId || null))">Export as Docx</a></button>
+        <button class="dropdown-item"><a (click)="exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'xlsx', 'NAV', (transferStepperthree?.formFourData?.appData?.reportId || null))">Export as Excel</a></button>
       </div>
     </div>
     <div>
@@ -268,9 +268,9 @@
         Export
       </button>
       <div class="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
-        <button class="dropdown-item"><a [href]="HOST + 'upload/export-eleven-ua/' + (transferStepperthree?.formFourData?.appData?._id || 'null') + '/PDF'" download>Export as PDF</a></button>
-        <button class="dropdown-item"><a [href]="HOST + 'upload/export-eleven-ua/' + (transferStepperthree?.formFourData?.appData?._id || 'null') + '/DOCX'" download>Export as Docx</a></button>
-        <button class="dropdown-item"><a [href]="HOST + 'upload/export-eleven-ua/' + (transferStepperthree?.formFourData?.appData?._id || 'null') + '/XLSX'" download>Export as Excel</a></button>
+        <button class="dropdown-item"><a (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'pdf', 'ruleElevenUa', (transferStepperthree?.formFourData?.appData?._id || null))">Export as PDF</a></button>
+        <button class="dropdown-item"><a (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'docx', 'ruleElevenUa', (transferStepperthree?.formFourData?.appData?._id || null))">Export as Docx</a></button>
+        <button class="dropdown-item"><a (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'xlsx', 'ruleElevenUa', (transferStepperthree?.formFourData?.appData?._id || null))">Export as Excel</a></button>
       </div>
     </div>
     <div>

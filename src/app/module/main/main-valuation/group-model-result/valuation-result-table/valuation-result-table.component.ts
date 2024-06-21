@@ -11,6 +11,7 @@ import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.s
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
 import { environment } from 'src/environments/environment';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-valuation-result-table',
@@ -703,6 +704,60 @@ recalculateCcmValuation(companyData:any){
       panelClass: 'app-notification-success',
     })
   })
+}
+
+exportValuation( companyName:any, format:string, model:any, reportId:any){
+  // this.processLoader = true;
+
+  if(format === 'docx'){
+    const saveAsFileName = `${companyName}.docx`;
+    this.downloadValuation(model, 'DOCX', saveAsFileName, reportId);
+  }
+  else if (format === 'pdf'){
+    const saveAsFileName = `${companyName}.pdf`;
+    this.downloadValuation(model, 'PDF', saveAsFileName, reportId);
+  }
+  else if (format === 'xlsx'){
+    const saveAsFileName = `${companyName}.xlsx`;
+    this.downloadValuation(model, 'XLSX', saveAsFileName, reportId);
+  }
+}
+
+downloadValuation(model:any, format:any, saveAsFileName:any, reportId:any){
+  switch(true){
+    case model === MODELS.RULE_ELEVEN_UA:
+      this.excelAndReportService.exportRulElevenUaValuation(reportId, format).subscribe((response)=>{
+        // this.processLoader = false;
+        if(response){
+          saveAs(response, saveAsFileName);
+        }
+      }, (error)=>{
+        // this.processLoader = false;
+        this.snackbar.open('backend error - Mrl generation for Eleven Ua failed', 'OK', {
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 5000,
+          panelClass: 'app-notification-error',
+        });
+      })
+    break;
+
+    default:
+      this.excelAndReportService.exportValuation(reportId, model, true, this.processStateId, this.terminalValueSelectedType, format).subscribe((response)=>{
+        // this.processLoader = false;
+        if(response as Blob){
+          saveAs(response, saveAsFileName);
+        }
+      },(error)=>{
+        // this.processLoader = false;
+        this.snackbar.open('backend error - Mrl generation failed', 'OK', {
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 5000,
+          panelClass: 'app-notification-error',
+        });
+      })
+  }
 }
 }
 
