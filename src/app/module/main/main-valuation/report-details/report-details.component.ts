@@ -15,6 +15,8 @@ import { hasError } from 'src/app/shared/enums/errorMethods';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.service';
 import { HttpStatusCode } from '@angular/common/http';
+import { AuthService } from 'src/app/shared/service/auth.service';
+import { ROLE_MAPPING } from 'src/app/shared/enums/role';
 
 
 @Component({
@@ -50,6 +52,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
   selectedReportPurpose:any=[];
   isDropdownOpen = false;
   formatType = 'PDF';
+  userAccess = false;
   constructor(private fb : FormBuilder,
     private calculationService:CalculationsService,
     private dialog:MatDialog,
@@ -58,10 +61,12 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     private truncateStringPipe: StringModificationPipe,
     private ngxLoaderService:NgxUiLoaderService,
     private excelAdnReportService:ExcelAndReportService,
-    private processStatusManagerService:ProcessStatusManagerService){}
+    private processStatusManagerService:ProcessStatusManagerService,
+    private authenticationService:AuthService){}
     ngOnInit(): void {
     this.loadForm();
     this.checkProcessExist();
+    this.validateUserRole()
   }
   
   ngOnChanges(changes:SimpleChanges){
@@ -802,5 +807,21 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       (
         this.reportForm.controls['reportPurpose']?.value?.findIndex((item:any)=>item.value === 'internalAssessment') !== -1
       ) 
+    }
+
+    validateUserRole(){
+      const role = {
+        role: [ROLE_MAPPING.ADD_REGISTERED_VALUER_TOGGLE]
+      }
+      this.authenticationService.validateRole(role).subscribe((authRoleResponse:any)=>{  
+          this.userAccess = authRoleResponse
+      },(error)=>{
+        this.snackBar.open('Role validation failed', 'Ok',{
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 5000,
+          panelClass: 'app-notification-error',
+        })
+      })
     }
 }

@@ -61,4 +61,8 @@ export class AuthService {
   extractUser(){
     return this.http.get(`${environment.baseUrl}authentication/extractUser`)
   }
+
+  validateRole(payload:any){
+    return this.http.post(`${environment.baseUrl}authentication/role-mapping`, payload);
+  }
 }
