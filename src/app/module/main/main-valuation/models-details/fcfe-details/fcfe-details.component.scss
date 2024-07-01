@@ -156,6 +156,18 @@
   position: relative;
 }
 
+.value-per-share-label {
+  color: #4b6df3;
+  height: 100%;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: right;
+  font-size: 18px;
+  font-family: 'AR One Sans';
+  font-weight: 500;
+  position: relative;
+}
+
 .rp-p{
   color: #089e94;
   font-family: 'Oxygen', sans-serif;
@@ -624,4 +636,17 @@ label {
   background-color: #bdf8de;
   color: white !important;
   transition: 0.3s;
+}
+
+.short-line {
+  height: 40px;
+  width: 4px;
+  color: #28e0b2;
+  background: linear-gradient(90deg, #28e0b2 0%, #28e0b2 100%);
+  margin-right: 10px;
+}
+.header-container {
+  display: flex;
+  align-items: center;
+  padding-left: 2%;
 }

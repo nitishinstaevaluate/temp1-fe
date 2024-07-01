@@ -117,7 +117,9 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
     let payload: any = {
         ...(!this.transferStepperTwo ? fourthStageData : this.transferStepperTwo),
         otherAdj: this.reviewForm.controls['otherAdj'].value && (this.isRelativeValuation('FCFE') || this.isRelativeValuation('FCFF')) ? this.reviewForm.controls['otherAdj'].value : 0,
-        financialBasis: this.reviewForm.value.financialBasis
+        financialBasis: this.reviewForm.value.financialBasis,
+        primaryValuationFlag: true,
+        processStateId: localStorage.getItem('processStateId')
     };
 
     // if (this.isPAndLExcelModified || this.isBSExcelModified || this.isAssessmentSheetModified || this.isRuleELevenUaSheetModified) {
@@ -317,7 +319,8 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
             appData:this.valuationData,
             otherAdj:this.reviewForm.controls['otherAdj'].value && (this.isRelativeValuation('FCFE') || this.isRelativeValuation('FCFF')) ? this.reviewForm.controls['otherAdj'].value : 0,
             financialBasis: this.reviewForm.value.financialBasis,
-            formFillingStatus:processStatStep
+            formFillingStatus:processStatStep,
+            sensitivityAnalysisId: response?.sensitivityAnalysisId
           },
           step:processStat
         }

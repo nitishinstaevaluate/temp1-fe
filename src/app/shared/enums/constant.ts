@@ -260,6 +260,14 @@ export const ALL_MODELS = {
       value:'customBeta',
       name:'Custom Beta'
     },
+    SENSITIVITY_ANALYSIS:{
+      value:'sensitivityAnalysis',
+      name:'Sensitivity Analysis'
+    },
+    REVALUATION_SA_MODEL:{
+      value:'revaluationSAModel',
+      name:'Workings'
+    },
   }
 
   export const helperText = {
