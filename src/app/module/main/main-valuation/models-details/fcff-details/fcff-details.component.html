@@ -1,4 +1,31 @@
 <div *ngIf="modelControl.fcff.type === 'FCFF' && formOneData && next === 2">
+  <h4 class="card-header" *ngIf="sensitivityAnalysisToggle">Terminal Growth Rate</h4>
+
+  <form class="outer-wrapper" *ngIf="sensitivityAnalysisToggle" [formGroup]="otherForm">
+    <div class="row" >
+
+         <!-- terminal growth rate -->
+         <div class="col-md-4 field" style="padding-top: 0%;">
+          <div class="material-textfield">
+            <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                <mat-label>Terminal Growth Rate*</mat-label>
+                <span class="company-list-rmve" *ngIf="otherForm.controls['terminalGrowthRate'].value" style="right:9%;z-index: 0;">
+                <mat-icon class="company-list-rmve-icon" (click)="clearInput('terminalGrowthRate')">close</mat-icon>
+                </span>
+                <mat-select formControlName="terminalGrowthRate" class="new-inp company-list-inp fcfe-list nature-of-instrument">
+                <mat-option *ngFor="let doc of modelControl.modelValuation.options.terminalGrowthRate.options"  [value]="doc.value" class="auto-class">
+                    {{ doc.value }}
+                </mat-option>
+                </mat-select>
+                <mat-error class="company-list-error" *ngIf="otherForm.controls['terminalGrowthRate'].touched && otherForm.controls['terminalGrowthRate'].errors" style="margin-left: -5%;">
+                    Please select terminal rate
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    </div>
+  </form>
+  
     <h4 class="card-header">{{modelControl.fcff.header}}</h4>
     <form [formGroup]="fcffForm" class="outer-wrapper">
         <div class="row" >
@@ -355,17 +382,34 @@
               </div>
 
               <div class="col-md-12 btn-prop">
-                <button (click)="previous()" mat-raised-button class="button-back-mat">
+                <button *ngIf="!sensitivityAnalysisToggle" (click)="previous()" mat-raised-button class="button-back-mat">
                   <span class="button-back"><mat-icon>send</mat-icon></span>
                     Back
                     <!-- <mat-icon>arrow_left</mat-icon> -->
 
                 </button>
 
-            <button (click)="saveAndNext()" class="button-save-mat" mat-raised-button>
+            <button *ngIf="!sensitivityAnalysisToggle" (click)="saveAndNext()" class="button-save-mat" mat-raised-button>
                 Next
                 <span class="button-save"><mat-icon>send</mat-icon></span>
              </button>
+             <div class="header-container" *ngIf="sensitivityAnalysisToggle">
+              <div class="short-line"></div>
+              <h2 class="value-per-share-label mt-auto mb-auto" style="display: inline-block" data-wow-delay="0.3s">
+                Value per share - {{valuePerShare}}
+              </h2>
+              <span style="padding-left: 1%;">
+                <mat-progress-spinner *ngIf="revaluationLoader" style="vertical-align: middle;"  class="beta-spin" mode="indeterminate" diameter="20"></mat-progress-spinner>
+              </span>
+              <button (click)="closeDialog()" class="button-save-mat" style="width: 23%;margin-left: auto;" mat-raised-button>
+                  Save
+                  <span class="button-save"><mat-icon>send</mat-icon></span>
+               </button>
+              <button (click)="saveAndNext()" class="button-save-mat" style="width: 23%;margin-left: 2%;" mat-raised-button>
+                  Recalculate Valuation
+                  <span class="button-save"><mat-icon>send</mat-icon></span>
+               </button>
+            </div>
         </div>
         </div>
       </form>  

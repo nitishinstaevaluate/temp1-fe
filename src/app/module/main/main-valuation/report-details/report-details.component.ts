@@ -73,7 +73,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     this.transferStepperFour;
   }
   checkProcessExist(){
-    if(!this.transferStepperFour){
+    if(!this.transferStepperFour?.sixthStageInput){
       if(this.sixthStageInput?.formSixData){
         this.reportForm.controls['clientName'].setValue(this.sixthStageInput?.formSixData?.clientName);
         this.reportForm.controls['reportDate'].setValue(this.sixthStageInput?.formSixData?.reportDate);

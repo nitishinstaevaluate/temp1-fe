@@ -1,11 +1,11 @@
 import { Component , ElementRef, Inject, Renderer2, OnInit, ViewChild,AfterViewInit, Input} from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { GLOBAL_VALUES, INCOME_APPROACH, MARKET_APPROACH, NET_ASSET_APPROACH, RULE_ELEVEN_UA_APPROACH, helperText } from '../../enums/constant';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { GLOBAL_VALUES, INCOME_APPROACH, MARKET_APPROACH, MODELS, NET_ASSET_APPROACH, RULE_ELEVEN_UA_APPROACH, helperText } from '../../enums/constant';
 import groupModelControl from '../../enums/group-model-controls.json'
 import WebViewer, { Core } from '@pdftron/webviewer';
 import PDFNet  from '@pdftron/webviewer';
 import { environment } from 'src/environments/environment';
-import { GET_TEMPLATE, convertToNumberOrZero, formatNumber } from '../../enums/functions';
+import { GET_TEMPLATE, convertToNumberOrZero, formatNumber, formatPositiveAndNegativeValues } from '../../enums/functions';
 import { ValuationService } from '../../service/valuation.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Form, FormControl, Validators } from '@angular/forms';
@@ -15,6 +15,7 @@ import saveAs from 'file-saver';
 import { hasError } from '../../enums/errorMethods';
 import { ProcessStatusManagerService } from '../../service/process-status-manager.service';
 import { ExcelAndReportService } from '../../service/excel-and-report.service';
+import { SensitivityAnalysisService } from '../../service/sensitivity-analysis.service';
 
 @Component({
   selector: 'app-generic-modal-box',
@@ -94,16 +95,27 @@ hasError=hasError
 helperText = helperText;
 hasLeveredBeta = false;
 hasPreferredEquity = false;
+sensitivityAnalysisToggle = false;
+valuationData:any=[];
 
 formatNumber = formatNumber;
 valuationDate:any='';
+secondaryValuationId:any;
+SAloader = false;
+selectedValuationId:any;
+terminalSelectionType:any;
+terminalSelectionRowType:any;
+revaluationPrev:any;
+updatedSAsecondaryValuationId:any;
 
 constructor(@Inject(MAT_DIALOG_DATA) public data: any,
 private dialogRef:MatDialogRef<GenericModalBoxComponent>,
 private valuationService:ValuationService,
 private snackBar:MatSnackBar,
 private excelAndReportService:ExcelAndReportService,
-private processStatusManagerService:ProcessStatusManagerService){
+private processStatusManagerService:ProcessStatusManagerService,
+private sensitivityAnalysisService: SensitivityAnalysisService,
+private dialog: MatDialog){
 this.loadModel(data);
 if(data?.value === this.appValues.PREVIEW_DOC.value){
 this.showWebViewer = true;
@@ -158,6 +170,14 @@ loadModel(data:any){
   if(data.value === this.appValues.CUSTOM_BETA.value) {
     this.patchExistingBetaDetails(data);
   } 
+  if(data.value === this.appValues.REVALUATION_SA_MODEL.value) {
+    this.label = this.appValues.REVALUATION_SA_MODEL.name;
+    return 
+  }
+  if(data.value === this.appValues.SENSITIVITY_ANALYSIS.value) {
+    this.label = this.appValues.SENSITIVITY_ANALYSIS.name;
+    this.sensitivityAnalysisTable(data);
+  }
   return '';
 }
 
@@ -272,6 +292,12 @@ modalData(data?:any,knownAs?:string) {
       this.dialogRef.close({
         emailId: data.emailId,
         sendEmail: data.sendEmail
+      })
+      break;
+
+    case 'sensitivityAnalysis':
+      this.dialogRef.close({
+        sensitivityAnalysisToggle:this.sensitivityAnalysisToggle
       })
       break;
       
@@ -684,5 +710,196 @@ get downloadTemplate() {
     } else {
       this.issuanceCheckbox.setValue(false);
     }
+  }
+
+  fcfeDetailsPrev(event:any){
+    // do nothing for now, cause we dont use previous button incase of sensitivity analysis
+  }
+  fcffDetailsPrev(event:any){
+    // do nothing for now, cause we dont use previous button incase of sensitivity analysis
+  }
+
+  fcfeDetails(data:any){
+    if(data?.closeDialog){
+      this.dialogRef.close();
+      return;
+    }
+    const payload = {
+      ...data,
+      processStateId: localStorage.getItem('processStateId')
+    }
+
+    if(payload?.secondaryValuationId && this.updatedSAsecondaryValuationId){
+      payload.secondaryValuationId = this.updatedSAsecondaryValuationId;
+    }
+   
+    this.sensitivityAnalysisService.SAsecondaryRevaluation(payload).subscribe((saRevaluationResponse:any)=>{
+      if(saRevaluationResponse?.status){
+        this.data.valuePerShare = formatNumber(saRevaluationResponse.valuePerShare);
+        this.updatedSAsecondaryValuationId = saRevaluationResponse?.newValuationId
+      }
+    },(error)=>{
+      this.snackBar.open('Revaluation failed','Ok',{
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+        duration: 3000,
+        panelClass: 'app-notification-error'
+      })
+    })
+  }
+
+  fcffDetails(data:any){
+    if(data?.closeDialog){
+      this.dialogRef.close();
+      return;
+    }
+    const payload = {
+      ...data,
+      processStateId: localStorage.getItem('processStateId')
+    }
+
+    if(payload?.secondaryValuationId && this.updatedSAsecondaryValuationId){
+      payload.secondaryValuationId = this.updatedSAsecondaryValuationId;
+    }
+   
+    this.sensitivityAnalysisService.SAsecondaryRevaluation(payload).subscribe((saRevaluationResponse:any)=>{
+      if(saRevaluationResponse?.status){
+        this.data.valuePerShare = formatNumber(saRevaluationResponse.valuePerShare);
+        this.updatedSAsecondaryValuationId = saRevaluationResponse?.newValuationId
+      }
+    },(error)=>{
+      this.snackBar.open('Revaluation failed','Ok',{
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+        duration: 3000,
+        panelClass: 'app-notification-error'
+      })
+    })
+  }
+
+  sensitivityAnalysisTable(data:any){
+    if(data?.sensitivityAnalysisId){
+      this.sensitivityAnalysisService.fetchSAbyId(data.sensitivityAnalysisId).subscribe((response:any)=>{
+        this.SAloader = false
+        this.valuationData = response;
+        if(data?.reportId){
+          this.selectedValuationId = data.reportId;
+        }
+        if(data?.terminalSelectionType){
+          this.terminalSelectionRowType = data.terminalSelectionType;
+        }
+        this.terminalSelectionType = response?.terminalSelectionType;
+      },(error)=>{
+        this.snackBar.open('Sensitivity Analysis Failed','Ok',{
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+            duration: 3000,
+            panelClass: 'app-notification-error'
+        })
+      })
+    }
+  }
+
+  editSABulkRow(formOneData:any, formTwoData: any, formThreeData: any, valuePerShare: any, valuationId:any, sensitivityAnalysisId:any){
+    const data = {
+      value:'revaluationSAModel',
+      formOneData,
+      formTwoData,
+      formThreeData,
+      modelName: this.data.modelName,
+      valuePerShare:formatPositiveAndNegativeValues(valuePerShare),
+      secondaryValuationId: valuationId
+    }
+    const revaluationprev = this.dialog.open(GenericModalBoxComponent, {data,width:'80%',maxHeight:'90vh', panelClass:'custom-dialog-container', disableClose:true})
+
+    revaluationprev.afterClosed().subscribe((response:any)=>{
+      const data = {
+        sensitivityAnalysisId
+      }
+      this.SAloader = true;
+      this.sensitivityAnalysisTable(data);
+    })
+  }
+
+  deleteSABulkRow(SAid:any, valuationId:any){
+    const payload ={
+      SAid,
+      reportId: valuationId
+    }
+    this.sensitivityAnalysisService.deleteSAsecondaryRevaluation(payload).subscribe((deleteResponse:any)=>{
+      if(deleteResponse){
+        this.SAloader = true;
+        this.sensitivityAnalysisTable(deleteResponse);
+      }
+    })
+  }
+
+  addSABulkRow(index:number, valuationId: any, terminalSelectionType:any){
+    const payload = {
+      reportId: valuationId,
+      terminalSelectionType,
+      processId: localStorage.getItem('processStateId')
+    }
+    this.valuationService.insertValuation(payload).subscribe((insertionResponse:any)=>{
+      if(insertionResponse){
+        this.sensitivityAnalysisTable(this.data);
+      }
+    })
+  }
+
+  saveSAvaluation(SAid:any){
+    const payload = {
+      sensitivityAnalysisId: SAid,
+      valuationId: this.selectedValuationId
+    }
+    if(!this.terminalSelectionRowType){
+      this.snackBar.open('Please select a row','Ok',{
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+        duration: 3000,
+        panelClass: 'app-notification-error'
+    })
+    return;
+    }
+    this.SAloader = true;
+    this.sensitivityAnalysisService.updateSelectedValuationId(payload).subscribe((response:any)=>{
+      
+      const payload = {
+        processId:localStorage.getItem('processStateId'), 
+        type:this.terminalSelectionRowType, 
+        updateByValuationId: this.selectedValuationId,
+      }
+      this.valuationService.revaluationProcess(payload).subscribe((response)=>{
+        this.SAloader = false;
+        this.dialogRef.close({
+          valuationResult: response,
+          terminalValueSelectedType: this.terminalSelectionRowType
+        })
+        if(response){
+          this.snackBar.open('Valuation updated successfully','Ok',{
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+            duration: 3000,
+            panelClass: 'app-notification-success'
+          })
+        }
+      },(error)=>{
+        console.log(error)
+      })
+    },(error)=>{
+      this.SAloader = false;
+      this.snackBar.open('Valuation Id update failed','Ok',{
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+        duration: 3000,
+        panelClass: 'app-notification-error'
+    })
+    })
+  }
+
+  onRadioChange(event: any, valuationId:any, terminalSelectionType:any) {
+    const inputElement = event.target;
+    this.selectedValuationId = valuationId;
+    this.terminalSelectionRowType = terminalSelectionType;
   }
 }

@@ -12,6 +12,9 @@ import { ProcessStatusManagerService } from 'src/app/shared/service/process-stat
 import { ValuationService } from 'src/app/shared/service/valuation.service';
 import { environment } from 'src/environments/environment';
 import { saveAs } from 'file-saver';
+import { SensitivityAnalysisService } from 'src/app/shared/service/sensitivity-analysis.service';
+import { ROLE_MAPPING } from 'src/app/shared/enums/role';
+import { AuthService } from 'src/app/shared/service/auth.service';
 
 @Component({
   selector: 'app-valuation-result-table',
@@ -61,6 +64,7 @@ dcfLoader = false;
 processStateId:any;
 isDropdownOpen = false;
 ccmCompanyTableLoader = false;
+userAccess = false;
 getKeys(navData:any){
 this.dataSourceNav =[navData].map((response:any)=>{
   let obj = Object.values(response);
@@ -83,7 +87,9 @@ ngAfterViewInit(): void {
   this.setTableWidth();
 }
 
-ngOnInit(): void {}
+ngOnInit(): void {
+  this.validateUserRole()
+}
 
 constructor(private excelAndReportService:ExcelAndReportService,
   private snackbar:MatSnackBar,
@@ -91,7 +97,9 @@ constructor(private excelAndReportService:ExcelAndReportService,
   private dialog: MatDialog,
   private processManagerService: ProcessStatusManagerService,
   private valuationService: ValuationService,
-  private calculationService: CalculationsService){}
+  private calculationService: CalculationsService,
+  private sensitivityAnalysisService: SensitivityAnalysisService,
+  private authenticationService: AuthService){}
 
 ngOnChanges(changes:SimpleChanges): void {
   this.processStateId = localStorage.getItem('processStateId');
@@ -549,8 +557,12 @@ async terminalValueOptions(options:string){
   else{
     this.terminalValueSelectedType = options;
   }
-  await this.delay(1000);
-  this.valuationService.revaluationProcess(localStorage.getItem('processStateId'), options).subscribe((response:any)=>{
+  const payload = {
+    processId:localStorage.getItem('processStateId'), 
+    type:options, 
+    updateTerminalSelectionAndPrimarySAvaluation: true
+  }
+  this.valuationService.revaluationProcess(payload).subscribe((response:any)=>{
     if(response.success){
         this.dcfLoader = false;
         snackBarRef.dismiss();
@@ -758,6 +770,62 @@ downloadValuation(model:any, format:any, saveAsFileName:any, reportId:any){
         });
       })
   }
+}
+
+async sensitivityAnalysis(modelName:string){
+  const fourthStageRawDetails:any = await this.processManagerService.getStageWiseDetails(this.processStateId, 'fourthStageInput').toPromise();
+  const data = {
+    reportId:this.transferStepperthree?.formFourData?.appData?.reportId,
+    value:'sensitivityAnalysis',
+    sensitivityAnalysisId:fourthStageRawDetails.data.fourthStageInput.sensitivityAnalysisId,
+    terminalSelectionType: this.terminalValueSelectedType,
+    modelName
+  }
+  const snstvityAnlsysPrev = this.dialog.open(GenericModalBoxComponent, {data,width:'60%',maxHeight:'90vh', panelClass:'custom-dialog-container'});
+  snstvityAnlsysPrev.afterClosed().subscribe((response)=>{
+    if(response?.valuationResult){
+      const modifiedAppData = {
+        reportId: response.valuationResult?.reportId,
+        valuationResult: response.valuationResult?.valuationResult
+      }
+      this.terminalValueSelectedType = response?.terminalValueSelectedType
+      this.transferStepperthree.formFourData.appData = modifiedAppData;
+      this.sensitivityAnalysisService.SArerunDetector.next({status:true})
+  
+      if(this.transferStepperthree?.formOneAndThreeData?.model?.includes(MODELS.FCFF) || this.transferStepperthree?.formOneAndThreeData?.model?.includes(MODELS.FCFE) && this.transferStepperthree?.formOneAndThreeData?.model?.length > 1){
+        this.formFourAppData.emit(this.transferStepperthree.formFourData.appData);
+      }
+      this.loadValuationTable()
+    }
+  })
+}
+
+validateUserRole(){
+  const role = {
+    role: [ROLE_MAPPING.SENSITIVITY_ANALYSIS]
+  }
+  this.authenticationService.validateRole(role).subscribe((authRoleResponse:any)=>{  
+      this.userAccess = authRoleResponse
+  },(error)=>{
+    this.snackbar.open('Role validation failed', 'Ok',{
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+      duration: 5000,
+      panelClass: 'app-notification-error',
+    })
+  })
+}
+
+getStyle(feature: any) {
+  switch(feature){
+    case 'terminalWorkingButton':
+      return this.userAccess ? { 'width': '22%' } : { 'width': '20%' };
+      break;
+    case 'terminalWorkingContainer':
+      return this.userAccess ? { 'width': '75%' } : { 'width': '66%' };
+      break;
+  }
+  return {}
 }
 }
 
