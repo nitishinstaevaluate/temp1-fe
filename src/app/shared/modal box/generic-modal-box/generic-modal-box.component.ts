@@ -594,7 +594,7 @@ get downloadTemplate() {
       this.projectionYearSelect = data?.projectionYearSelect;
     }
     if(data.terminalGrowthRate){
-      this.terminalGrowthRateControl.setValue(parseInt(data?.terminalGrowthRate));
+      this.terminalGrowthRateControl.setValue(data?.terminalGrowthRate);
     }
     if(data.projectionYears){
       this.yearOfProjection.setValue(data.projectionYears);
