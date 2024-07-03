@@ -193,6 +193,11 @@ loadValuationTable(){
           return [this.displayFcfeColumn[index], ...subArray.slice(1)];
         }
     });
+
+    const presntTrmnlValIndex = this.dataSourceFcff.findIndex((element:any) => element.includes('Present Value of Terminal Value'));
+      if(this.transferStepperthree?.formOneAndThreeData?.projectionYearSelect === 'Finite_Projection' && presntTrmnlValIndex !== -1){
+        this.dataSourceFcfe.splice(presntTrmnlValIndex, 1);
+      }
       
     }
     if(response.model === 'FCFF'){
@@ -275,6 +280,11 @@ loadValuationTable(){
         }
        
     });
+
+    const presntTrmnlValIndex = this.dataSourceFcff.findIndex((element: any) => element.includes('Present Value of Terminal Value'));
+      if(this.transferStepperthree?.formOneAndThreeData?.projectionYearSelect === 'Finite_Projection' && presntTrmnlValIndex !== -1){
+        this.dataSourceFcfe.splice(presntTrmnlValIndex, 1);
+      }
     
     }
     if(response.model === 'Relative_Valuation' || response.model === 'CTM'){

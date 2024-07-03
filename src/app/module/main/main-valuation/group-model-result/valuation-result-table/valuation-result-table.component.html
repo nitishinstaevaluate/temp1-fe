@@ -2,7 +2,7 @@
   <mat-tab-group style="padding-bottom: 1% !important;background-color: #ffffff;border-radius: 20px;" class="tab-group" mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="selectedTabIndex" (selectedTabChange)="onTabSelectionChange()">
   <mat-tab label="FCFE" *ngIf = "fcfe">
     <div style="display: flex; align-items: center; justify-content: space-between;padding: 1%;">
-      <div style="display: flex; align-items: center;width: 85%;">
+      <div style="display: flex; align-items: center;width: 85%;" *ngIf="transferStepperthree?.formOneAndThreeData?.projectionYearSelect === 'Going_Concern'">
         <div style="display: inline-block; align-items: center;" [ngStyle]="getStyle('terminalWorkingContainer')">
           <input type="radio" id="tvCashFlow" name="radios" style="vertical-align: text-top;" [checked]="terminalValueSelectedType === 'tvCashFlowBased'" (click)="terminalValueOptions('tvCashFlowBased')">
           <label for="tvCashFlow" class="remove-bottom-margin terminal-working-options" style="padding-right: 4%;">
@@ -33,7 +33,7 @@
          View Terminal Working
         </button>
       </div> 
-      <button mat-stroked-button class="terminal-working-button" style="width: 17%;color: white;margin-right: 2%;" (click)="sensitivityAnalysis('FCFE')" *ngIf="userAccess">
+      <button mat-stroked-button class="terminal-working-button" style="width: 17%;color: white;margin-right: 2%;margin-left: auto;" (click)="sensitivityAnalysis('FCFE')" *ngIf="userAccess">
        Sensitivity Analysis
       </button>
       <!-- <div style="display: flex;width: 15%;">
@@ -82,7 +82,7 @@
   </mat-tab>
    <mat-tab label="FCFF" *ngIf = "fcff">
     <div style="display: flex; align-items: center; justify-content: space-between;padding: 1%;">
-      <div style="display: flex; align-items: center;width: 85%;">
+      <div style="display: flex; align-items: center;width: 85%;" *ngIf="transferStepperthree?.formOneAndThreeData?.projectionYearSelect === 'Going_Concern'">
         <div style="display: inline-block; align-items: center;" [ngStyle]="getStyle('terminalWorkingContainer')">
           <input type="radio" id="tvCashFlow" name="radios" style="vertical-align: text-top;" [checked]="terminalValueSelectedType === 'tvCashFlowBased'" (click)="terminalValueOptions('tvCashFlowBased')">
           <label for="tvCashFlow" class="remove-bottom-margin terminal-working-options" style="padding-right: 4%;">
@@ -113,7 +113,7 @@
          View Terminal Working
         </button>
       </div> 
-      <button mat-stroked-button class="terminal-working-button" style="width: 17%;color: white;margin-right: 2%;" (click)="sensitivityAnalysis('FCFF')" *ngIf="userAccess">
+      <button mat-stroked-button class="terminal-working-button" style="width: 17%;color: white;margin-right: 2%;margin-left: auto;" (click)="sensitivityAnalysis('FCFF')" *ngIf="userAccess">
         Sensitivity Analysis
        </button>
       <!-- <div style="display: flex;width: 15%;">
