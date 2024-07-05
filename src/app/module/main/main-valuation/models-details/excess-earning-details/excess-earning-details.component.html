@@ -157,18 +157,18 @@
 
                     <mat-hint style="width: 100%;display: flex; align-items: center;">
                       <span style="width: 100%;" *ngIf="excessEarningForm.controls['betaType'].value">
-                        <span *ngIf="excessEarningForm.controls['betaType'].value !== 'market_beta' && excessEarningForm.controls['betaType'].value !== 'stock_beta' && formTwoData?.formTwoData?.betaFrom !== 'aswathDamodaran'">
+                        <span *ngIf="excessEarningForm.controls['betaType'].value !== 'market_beta' && excessEarningForm.controls['betaType'].value !== 'stock_beta' && formTwoData?.formTwoData?.betaFrom !== 'aswathDamodaran' && excessEarningForm.controls['betaType'].value !== 'custom_beta'">
                           <input type="radio" style="vertical-align: middle;" [checked]="selectedSubBetaType === 'meanBeta'" (change)="onRadioButtonChange($event)" value="meanBeta" name="betaRadio" id="betaRadio">
                           <span class="reset-ind3" style="vertical-align: middle;">Mean</span>
                         </span>
-                        <span style="padding-left: 7%;" *ngIf="excessEarningForm.controls['betaType'].value !== 'market_beta' && excessEarningForm.controls['betaType'].value !== 'stock_beta' && formTwoData?.formTwoData?.betaFrom !== 'aswathDamodaran'">
+                        <span style="padding-left: 7%;" *ngIf="excessEarningForm.controls['betaType'].value !== 'market_beta' && excessEarningForm.controls['betaType'].value !== 'stock_beta' && formTwoData?.formTwoData?.betaFrom !== 'aswathDamodaran' && excessEarningForm.controls['betaType'].value !== 'custom_beta'">
                           <input type="radio" style="vertical-align: middle;" [checked]="selectedSubBetaType === 'medianBeta'" (change)="onRadioButtonChange($event)" value="medianBeta" name="betaRadio" id="betaRadio">
                           <span class="reset-ind3" style="vertical-align: middle;">Median</span>
                         </span>
-                        <span [ngClass]="(excessEarningForm.controls['betaType'].value === 'market_beta' || excessEarningForm.controls['betaType'].value === 'stock_beta' || formTwoData?.formTwoData?.betaFrom === 'aswathDamodaran') ? '' :  'add-padding-beta'">
+                        <span [ngClass]="(excessEarningForm.controls['betaType'].value === 'market_beta' || excessEarningForm.controls['betaType'].value === 'stock_beta' || formTwoData?.formTwoData?.betaFrom === 'aswathDamodaran' || excessEarningForm.controls['betaType'].value === 'custom_beta') ? '' :  'add-padding-beta'">
                           <span *ngIf="!betaLoader" style="vertical-align: middle;font-size: 11px;color: #1915bb;" class="reset-ind3">
                             <a target="_blank" class="beta-val"  (click)="handleBetaClick()">
-                              Beta {{ excessEarningForm.controls['beta'].value === null ? 'not found' : excessEarningForm.controls['beta'].value?.toFixed(2) }} 
+                              Beta {{ excessEarningForm.controls['beta'].value === null || excessEarningForm.controls['beta'].value === '' ? 'not found' : excessEarningForm.controls['beta'].value?.toFixed(2) }} 
                               <span style="vertical-align: middle;">
                                 <mat-icon>settings</mat-icon>
                               </span>

@@ -264,7 +264,19 @@ export const ALL_MODELS = {
         nameOne:"Calculation of Terminal Year Cash Flows",
         nameTwo:"Calculation of terminal value"
       }
-    }
+    },
+    CUSTOM_BETA:{
+      value:'customBeta',
+      name:'Custom Beta'
+    },
+    SENSITIVITY_ANALYSIS:{
+      value:'sensitivityAnalysis',
+      name:'Sensitivity Analysis'
+    },
+    REVALUATION_SA_MODEL:{
+      value:'revaluationSAModel',
+      name:'Workings'
+    },
   }
 
   export const helperText = {

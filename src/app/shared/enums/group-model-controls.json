@@ -210,19 +210,28 @@
                 "options":[
                     {
                         "name":"Relevered",
-                        "value":"levered"
+                        "value":"levered",
+                        "enabled":true
                     },
                     {
                         "name":"Unlevered",
-                        "value":"unlevered"
+                        "value":"unlevered",
+                        "enabled":true
                     },
                     {
                         "name":"Market Beta",
-                        "value":"market_beta"
+                        "value":"market_beta",
+                        "enabled":true
                     },
                     {
                         "name":"Stock Beta",
-                        "value":"stock_beta"
+                        "value":"stock_beta",
+                        "enabled":true
+                    },
+                    {
+                        "name":"Custom Beta",
+                        "value":"custom_beta",
+                        "enabled":true
                     }
                 ]
             },
@@ -457,19 +466,28 @@
                 "options":[
                     {
                         "name":"Relevered",
-                        "value":"levered"
+                        "value":"levered",
+                        "enabled":true
                     },
                     {
                         "name":"Unlevered",
-                        "value":"unlevered"
+                        "value":"unlevered",
+                        "enabled":true
                     },
                     {
                         "name":"Market Beta",
-                        "value":"market_beta"
+                        "value":"market_beta",
+                        "enabled":true
                     },
                     {
                         "name":"Stock Beta",
-                        "value":"stock_beta"
+                        "value":"stock_beta",
+                        "enabled":true
+                    },
+                    {
+                        "name":"Custom Beta",
+                        "value":"custom_beta",
+                        "enabled":true
                     }
                 ]
             },
@@ -700,19 +718,28 @@
                 "options":[
                     {
                         "name":"Relevered",
-                        "value":"levered"
+                        "value":"levered",
+                        "enabled":true
                     },
                     {
                         "name":"Unlevered",
-                        "value":"unlevered"
+                        "value":"unlevered",
+                        "enabled":true
                     },
                     {
                         "name":"Market Beta",
-                        "value":"market_beta"
+                        "value":"market_beta",
+                        "enabled":true
                     },
                     {
                         "name":"Stock Beta",
-                        "value":"stock_beta"
+                        "value":"stock_beta",
+                        "enabled":true
+                    },
+                    {
+                        "name":"Custom Beta",
+                        "value":"custom_beta",
+                        "enabled":true
                     }
                 ]
             },
@@ -1218,6 +1245,10 @@
                 {
                     "name":"SEBI Regulations",
                     "value":"sebiRegulations"
+                },
+                {
+                    "name":"Internal Assessment",
+                    "value":"internalAssessment"
                 }
             ],
             "natureOfInstrument":[

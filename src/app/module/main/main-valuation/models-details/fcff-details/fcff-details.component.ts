@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, SimpleChanges, ViewChild, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators,FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -21,7 +21,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
   templateUrl: './fcff-details.component.html',
   styleUrls: ['./fcff-details.component.scss']
 })
-export class FcffDetailsComponent implements OnInit{
+export class FcffDetailsComponent implements OnInit, AfterViewInit{
   @ViewChild('submenuTrigger') submenuTrigger!: MatMenuTrigger;
 
   modelControl:any = groupModelControl;
@@ -32,11 +32,15 @@ export class FcffDetailsComponent implements OnInit{
   @Input() thirdStageInput:any;
   @Input() formTwoData:any;
   @Input() next:any;
+  @Input() sensitivityAnalysisToggle:any;
+  @Input() valuePerShare:any;
+  @Input() secondaryValuationId:any;
 
   
   fcffForm:any=FormGroup;
   specificRiskPremiumModalForm:any=FormGroup;
   targetCapitalStructureForm:any=FormGroup;
+  otherForm:any;
 
   hasError = hasError;
   floatLabelType:any = 'never';
@@ -65,6 +69,8 @@ export class FcffDetailsComponent implements OnInit{
   stockBetaChecker = false;  
   betaMeanMedianWorking:any;
   expectedMarketReturnSubOptions:any;
+  disableSnsitveAnlsys = false;
+  revaluationLoader = false;
 constructor(private valuationService:ValuationService,
   private dataReferenceService: DataReferencesService,
   private formBuilder:FormBuilder,
@@ -81,7 +87,9 @@ ngOnChanges(changes:SimpleChanges): void {
     return;
 
   this.formOneData;
-  this.checkPreviousAndCurrentValue(changes)
+  if(!this.sensitivityAnalysisToggle){
+  this.checkPreviousAndCurrentValue(changes);
+  }
 }
 
 ngOnInit(): void {
@@ -92,9 +100,15 @@ ngOnInit(): void {
   this.loadOnChangeValue();
   // }
 }
+ngAfterViewInit() {
+  if (this.sensitivityAnalysisToggle) {
+    this.otherForm.controls['terminalGrowthRate'].patchValue(this.formOneData?.terminalGrowthRate);
+  }
+}
 
 checkProcessExist(){
   if(this.thirdStageInput){
+    if(!this.sensitivityAnalysisToggle){
     this.thirdStageInput.map((stateThreeDetails:any)=>{
       if(stateThreeDetails.model === MODELS.FCFF && this.formOneData.model.includes(MODELS.FCFF)){
         this.fcffForm.controls['discountRate'].setValue(stateThreeDetails?.discountRate) 
@@ -144,6 +158,53 @@ checkProcessExist(){
         this.calculateCoeAndAdjustedCoe()
       }
     })
+  }else{
+      this.fcffForm.controls['discountRate'].setValue(this.thirdStageInput?.discountRate) 
+        this.fcffForm.controls['discountingPeriod'].setValue(this.thirdStageInput?.discountingPeriod) 
+        this.selectedSubBetaType = this.thirdStageInput?.betaSubType ? this.thirdStageInput.betaSubType : BETA_SUB_TYPE[0];
+        this.fcffForm.controls['coeMethod'].setValue(this.thirdStageInput?.coeMethod); 
+        this.fcffForm.controls['riskFreeRate'].setValue(this.thirdStageInput?.riskFreeRate); 
+        this.fcffForm.controls['riskFreeRateYears'].setValue(this.thirdStageInput?.riskFreeRateYears); 
+        let expectedMarketReturnData:any;
+        this.modelControl.fcff.options.expMarketReturnType.options.map((response:any)=>{
+          if(response.value ===  this.thirdStageInput?.expMarketReturnType){
+            expectedMarketReturnData = response
+          }
+        })
+        this.fcffForm.controls['expMarketReturnType'].setValue(expectedMarketReturnData?.name);
+        this.fcffForm.controls['expMarketReturnSubType'].setValue(this.thirdStageInput?.expMarketReturnSubType);
+        this.fcffForm.controls['bse500Value'].setValue(this.thirdStageInput?.bse500Value);
+        this.fcffForm.controls['expMarketReturn'].setValue(this.thirdStageInput?.expMarketReturn);
+        this.fcffForm.controls['specificRiskPremium'].setValue(this.thirdStageInput?.specificRiskPremium); 
+        this.fcffForm.controls['riskPremium'].setValue(this.thirdStageInput?.riskPremium); 
+        this.fcffForm.controls['costOfDebt'].setValue(this.thirdStageInput?.costOfDebt);
+        this.fcffForm.controls['capitalStructureType'].setValue(this.thirdStageInput?.capitalStructureType);
+        if(this.thirdStageInput?.capitalStructure){
+          this.targetCapitalStructureForm.controls['equityProportion'].setValue(this.thirdStageInput.capitalStructure?.equityProp);
+          this.targetCapitalStructureForm.controls['preferenceProportion'].setValue(this.thirdStageInput.capitalStructure?.prefProp);
+          this.targetCapitalStructureForm.controls['debtProportion'].setValue(this.thirdStageInput.capitalStructure?.debtProp);
+          this.targetCapitalStructureForm.controls['totalCapital'].setValue(this.thirdStageInput.capitalStructure?.totalCapital);
+          this.debtProp = this.thirdStageInput.capitalStructure.debtProp;
+          this.equityProp = this.thirdStageInput.capitalStructure.equityProp;
+          this.prefProp = this.thirdStageInput.capitalStructure.prefProp;
+          this.totalCapital = this.targetCapitalStructureForm.controls['totalCapital'].value;
+          this.deRatio = this.thirdStageInput.capitalStructure?.deRatio;
+        }
+        this.fcffForm.controls['copShareCapital'].setValue(this.thirdStageInput?.copShareCapital);
+        this.specificRiskPremiumModalForm.controls['companySize'].setValue(this.thirdStageInput?.alpha.companySize)
+        this.specificRiskPremiumModalForm.controls['marketPosition'].setValue(this.thirdStageInput?.alpha.marketPosition)
+        this.specificRiskPremiumModalForm.controls['liquidityFactor'].setValue(this.thirdStageInput?.alpha.liquidityFactor)
+        this.specificRiskPremiumModalForm.controls['competition'].setValue(this.thirdStageInput?.alpha.competition);
+        if(!this.formOneData.companyId && this.thirdStageInput.betaType === 'stock_beta'){
+          this.fcffForm.controls['betaType'].setValue('');
+          this.fcffForm.controls['beta'].reset();
+        }
+        else{
+          this.fcffForm.controls['betaType'].setValue(this.thirdStageInput?.betaType) 
+          this.fcffForm.controls['beta'].setValue(this.thirdStageInput?.beta);
+        }
+        this.calculateCoeAndAdjustedCoe()
+    }
   }
   }
 
@@ -316,6 +377,9 @@ loadFormControl(){
     preferenceProportion:['',[Validators.required]],
     totalCapital:['',[Validators.required]],
   })
+  this.otherForm = this.formBuilder.group({
+    terminalGrowthRate:['', [Validators.required]]
+  })
 }
 
 getDocList(doc: any) {
@@ -398,12 +462,49 @@ saveAndNext(): void {
  
   payload['expMarketReturnType']=expectedMarketReturnData.value;
 
+  if(this.sensitivityAnalysisToggle){
+    payload['secondaryValuationId'] = this.secondaryValuationId;
+    payload['terminalGrowthRate'] = this.otherForm.controls['terminalGrowthRate'].value;
+  }
+
   const controls = {...this.fcffForm.controls};
   if(payload.expMarketReturnType === 'Analyst_Consensus_Estimates'){
     delete controls.bse500Value;
     delete controls.expMarketReturnSubType;
   }
-  this.validateControls(controls,payload);
+
+   // validate formcontrols
+   if(!this.sensitivityAnalysisToggle){
+    this.validateControls(controls,payload);
+  }
+  else{
+    this.validateControlsInCaseSnsitveAnlsys(controls,payload);
+  }
+}
+
+validateControlsInCaseSnsitveAnlsys(controlArray: { [key: string]: FormControl },payload:any){
+  let allControlsFilled = true;
+    for (const controlName in controlArray) {
+      if (controlArray.hasOwnProperty(controlName)) {
+        const control = controlArray[controlName];
+        if (control.value === null || control.value === '' ) {
+          allControlsFilled = false;
+          break;
+        }
+       
+      }
+    }
+    if(!allControlsFilled) return this.disableSnsitveAnlsys = true;
+    let processStateStep = 5;
+    const processStateModel ={
+      thirdStageInput:[{model:MODELS.FCFF,...payload,formFillingStatus:allControlsFilled}],
+      step:processStateStep
+    }
+    this.processStateManager(processStateModel,localStorage.getItem('processStateId'))
+
+    this.fcffDetails.emit(payload);
+    
+    return;
 }
 
 previous(){
@@ -591,6 +692,9 @@ if(selectedValue){
     else if(selectedValue.includes('stock_beta')){
       this.calculateStockBeta();
     }
+    else if(selectedValue.includes('custom_beta')){
+      this.calculateCustomBeta();
+    }
     else{
       this.selectedSubBetaType = '';
       this.fcffForm.controls['beta'].setValue(1);
@@ -606,6 +710,9 @@ if(selectedValue){
     else if(selectedValue.includes('levered')){
       this.fcffForm.controls['beta'].setValue(aswathDamodaranSelectedBetaObj?.beta);
       this.calculateCoeAndAdjustedCoe();
+    }
+    else if(selectedValue.includes('custom_beta')){
+      this.calculateCustomBeta();
     }
     else{
       this.selectedSubBetaType = '';
@@ -690,9 +797,41 @@ this.ciqSpService.calculateSPindustryBeta(betaPayload).subscribe((betaData:any)=
 
 }
 
+calculateCustomBeta(){
+  const data = {
+    value:'customBeta',
+    betaValue: this.fcffForm.controls['beta'].value
+  }
+  const betaDialogPrev = this.dialog.open(GenericModalBoxComponent,{data:data, width: '30%',maxHeight: '90vh',panelClass: 'custom-dialog-container'});
+
+  betaDialogPrev.afterClosed().subscribe((result)=>{
+    if (result) {
+      this.fcffForm.controls['beta'].setValue(convertToNumberOrZero(result?.customBeta))
+      this.snackBar.open('Custom beta Added','OK',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 3000,
+        panelClass: 'app-notification-success'
+      })
+    } else {
+      this.fcffForm.controls['beta'].setValue('');
+      this.fcffForm.controls['betaType'].setValue('');
+      this.snackBar.open('Please add beta','OK',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 5000,
+        panelClass: 'app-notification-error'
+      })
+    }
+    this.calculateCoeAndAdjustedCoe();
+  })
+}
+
 processStateManager(process:any, processId:any){
+  this.revaluationLoader = true;
   this.processStatusManagerService.instantiateProcess(process, processId).subscribe(
     (processStatusDetails: any) => {
+      this.revaluationLoader = false;
       if (processStatusDetails.status) {
         localStorage.setItem('processStateId', processStatusDetails.processId);
       }
@@ -778,7 +917,7 @@ calculateStockBeta(){
 }
 
   loadBetaDropdown() {
-    const betaDropdownValues = this.modelControl.fcff.options.betaType.options.slice();
+    const betaDropdownValues = this.modelControl.fcff.options.betaType.options.slice().filter((options:any) => options.enabled === true);
     const stockBetaIndex = betaDropdownValues.findIndex((element: any) => element.value === 'stock_beta');
 
     if (!this.stockBetaChecker) {
@@ -1015,5 +1154,9 @@ calculateStockBeta(){
       this.fcffForm.controls['expMarketReturn'].reset()
       this.fcffForm.controls['bse500Value'].reset();
     }
+  }
+
+  closeDialog(){
+    this.fcffDetails.emit({closeDialog: true});
   }
 }

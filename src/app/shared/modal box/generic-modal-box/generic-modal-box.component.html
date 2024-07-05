@@ -991,3 +991,117 @@
     </div>
    </ng-container>
   </div>
+
+  <!-- Custom beta -->
+  <div *ngIf="data?.value === appValues.CUSTOM_BETA.value">
+    <div class="col-md-12 revalmodel" style="text-align: center;padding-top: 4%;">
+      <mat-label class="label" >{{label}}</mat-label>
+      <span><mat-icon class="close-modal-valuer" (click)="modalData()" style="padding-right: 8%;">close</mat-icon></span>
+    </div>
+    <div class="container" style="padding-top: 4%;padding-bottom: 4%;">
+      <div class="material-textfield">
+        <input class="new-inp" [formControl]="customBeta" [placeholder]="'Enter beta value'" type="text"/>
+        <label class="going-concern-label">Add Beta</label>
+      </div>
+    </div>
+    <div mat-dialog-actions> 
+      <button mat-raised-button style="margin-left: auto;" [disabled]="!customBeta.value" [ngClass]="!customBeta.value ? 'submit-bt-disable' : 'submit-bt'" (click)="modalData({customBeta:customBeta.value},'customBeta')">
+        Save
+      </button>
+    </div>
+  </div>
+
+  <!-- Sensitivity Analysis -->
+  <div *ngIf="data?.value === appValues.SENSITIVITY_ANALYSIS.value">
+    <div class="col-md-12 revalmodel" style="text-align: center;padding-top: 2%;">
+      <mat-label class="label" >{{label}}</mat-label>
+      <!-- <span><mat-icon class="close-modal-valuer" (click)="modalData('sensitivityAnalysis')" style="padding-right: 4%;">close</mat-icon></span> -->
+    </div>
+    <div class="container" style="padding-bottom: 2%;position: relative;" *ngIf="data.modelName === 'FCFE' || data.modelName === 'FCFF' || data.modelName === 'Excess_Earnings'">
+      <div class="dcf-loader-overlay" *ngIf="SAloader">
+        <div class="dcf-loader-container">
+          <div class="dcf-loader">
+            <div class="dcf-spinner"></div>
+          </div>
+        </div>
+      </div>
+      <table>
+        <thead class="sticky-header">
+          <tr class="t-header">
+            <th style="padding: 1%;text-align: center !important;">Sr No.</th>
+            <th style="padding: 1%;text-align: center !important;">Criteria</th>
+            <!-- <th style="padding: 1%;text-align: center !important;">Terminal Workings based on:</th> -->
+            <th style="padding: 1%;text-align: center !important;">Terminal Growth Rate</th>
+            <th style="padding: 1%;text-align: center !important;">Discounting Factor</th>
+            <th style="padding: 1%;text-align: center !important;">Value per Share</th>
+            <th style="padding: 1%;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of valuationData?.sensitiveAnalysisData; let i = index" class="content">
+            <td style="text-align: center;font-size: 11px !important;padding: 1%;padding-top: 0px !important;padding-bottom: 0px !important;font-weight: 600 !important;" class="make-light">{{ i+1 }}</td>
+            <td style="text-align: center;font-size: 11px !important;padding: 1%;padding-top: 0px !important;padding-bottom: 0px !important" class="make-light">
+              <div class="sa-radio-group">
+                <span>
+                  <input type="radio" name="analysisSelection"  [value]="row?.valuationId" [checked]="selectedValuationId === row?.valuationId" (change)="onRadioChange($event, row?.valuationId, row?.terminalSelectionType)">
+                </span>
+              </div>
+            </td>
+            <!-- <td style="text-align: center;font-size: 11px !important;padding: 1%;padding-top: 0px !important;padding-bottom: 0px !important;" class="make-light">{{ row?.terminalSelectionType === 'tvPatBased' ? 'Based on last year PAT' : 'Based on last year Cash Flow' }}</td> -->
+            <td style="text-align: center;font-size: 11px !important;padding: 1%;padding-top: 0px !important;padding-bottom: 0px !important;" class="make-light">{{ formatNumber(row.formThreeData?.terminalGrowthRate) }}%</td>
+            <td style="text-align: center;font-size: 11px !important;padding: 1%;padding-top: 0px !important;padding-bottom: 0px !important" class="make-light"><a target="_blank">{{ formatNumber(row.formThreeData?.adjustedCostOfEquity) }}%</a></td>
+            <td style="text-align: center;font-size: 11px !important;padding: 1%;padding-top: 0px !important;padding-bottom: 0px !important" class="make-light"><a target="_blank">{{ formatNumber(row.valuePerShare) }}</a></td>
+            <td>
+              <button mat-icon-button class="act" [matMenuTriggerFor]="menu">
+                <span style="position: absolute;top: 14%;">
+                  <mat-icon style="transform: scale(0.9)">more_vert</mat-icon>
+                </span>
+              </button>
+              
+              <mat-menu #menu="matMenu" xPosition="before">
+                <button mat-menu-item class="action-button" (click)="editSABulkRow(row?.formOneData, row?.formTwoData, row?.formThreeData, row?.valuePerShare, row?.valuationId, valuationData?.sensitivityAnalysisId)"  *ngIf="!row?.isPrimaryValuation">
+                  <span style="width: 155px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+                    <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../assets/images/icons/report-edit.png" alt="">
+                  <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Edit</span>
+                </span>
+                </button>
+                <button mat-menu-item class="action-button" (click)="addSABulkRow(i, row?.valuationId, row?.terminalSelectionType)" >
+                  <span style="width: 155px;display: block;text-align: left;padding-left: 9%;" class="download-label">
+                    <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../assets/images/icons/add.png" alt="">
+                  <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Add</span>
+                </span>
+                </button>
+                <button mat-menu-item class="action-button" *ngIf="!row?.isPrimaryValuation" (click)="deleteSABulkRow(valuationData?.sensitivityAnalysisId,row?.valuationId)">
+                  <span style="width: 155px;display: block;text-align: left;padding-left: 9%;" class="download-label">
+                    <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../assets/images/icons/trash.png" alt="">
+                  <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Delete</span>
+                </span>
+                </button>
+              </mat-menu>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div mat-dialog-actions> 
+      <button mat-raised-button style="margin-left: auto;background-color: #0CD18F !important;color: #ffffff !important;"  [ngClass]="'submit-bt btn-success'" (click)="saveSAvaluation(valuationData?.sensitivityAnalysisId)">
+        Save
+      </button>
+    </div>
+  </div>
+
+
+  <div *ngIf="data?.value === appValues.REVALUATION_SA_MODEL.value">
+    <div class="col-md-12 revalmodel" style="text-align: center;padding-top: 2%;">
+      <mat-label class="label" >{{label}}</mat-label>
+      <span><mat-icon class="close-modal-valuer" (click)="modalData('sensitivityAnalysis')" style="padding-right: 4%;">close</mat-icon></span>
+    </div>
+    <div class="container" style="padding-bottom: 2%;" *ngIf="data.modelName === 'FCFE'">
+      <app-fcfe-details [secondaryValuationId]="data?.secondaryValuationId" [sensitivityAnalysisToggle]="true" (fcfeDetailsPrev)="fcfeDetailsPrev($event)" (fcfeDetails)="fcfeDetails($event)" [formOneData]="data?.formOneData" [thirdStageInput]="data?.formThreeData" [formTwoData]="data?.formTwoData" [next]="1" [valuePerShare]="data?.valuePerShare"></app-fcfe-details>
+    </div>
+    <div class="container" style="padding-bottom: 2%;" *ngIf="data.modelName === 'FCFF'">
+      <app-fcff-details [secondaryValuationId]="data?.secondaryValuationId" [sensitivityAnalysisToggle]="true" (fcffDetailsPrev)="fcffDetailsPrev($event)" (fcffDetails)="fcffDetails($event)" [formOneData]="data?.formOneData" [thirdStageInput]="data?.formThreeData" [formTwoData]="data?.formTwoData" [next]="2" [valuePerShare]="data?.valuePerShare"></app-fcff-details>
+    </div>
+
+  </div>

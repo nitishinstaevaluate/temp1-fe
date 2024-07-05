@@ -83,7 +83,7 @@
                       </div>
 
 
-                <div class="col-md-12 revalmodel" style="padding-top: 0%;">
+                <div class="col-md-12 revalmodel" style="padding-top: 0%;" *ngIf="userAccess">
                   <div class="label-toggle-container">
                       <mat-label class="t-label">Registered Valuer Details</mat-label>
                       <mat-slide-toggle
@@ -289,7 +289,7 @@
                         </div>
                     </div> -->
 
-                    <div class="material-textfield">
+                    <div class="material-textfield" *ngIf="!isInternalAssessment()">
                       <mat-form-field appearance="fill" class="section-chip" style="width: 100%;" >
                         <mat-label>Section/Regulation Reference*</mat-label>
                         <mat-chip-grid #chipGrid>

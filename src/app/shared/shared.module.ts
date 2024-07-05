@@ -18,13 +18,14 @@ import { DocumentEditorModule, DocumentEditorContainerModule,ToolbarService, } f
 import { ButtonModule, CheckBoxModule, RadioButtonModule, SwitchModule, ChipListModule, FabModule, SpeedDialModule } from '@syncfusion/ej2-angular-buttons';
 import { NgxUiLoaderComponent } from './ngx-loader/ngx-ui-loader/ngx-ui-loader.component';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
+import { SharedComponentsModule } from './shared-component.module';
 
 
 const MODULES = [NgbModule, ReactiveFormsModule, FormsModule,MaterialModuleModule,NgSelectModule,NgxUiLoaderModule];
 
 @NgModule({
   declarations: [ToggleThemeDirective, FullscreenDirective, SidemenuToggleDirective,UserInputComponent,RelativeComponent,GenericModalBoxComponent,NgxUiLoaderComponent],
-  imports: [CommonModule,NgxSliderModule,...MODULES,QuillModule.forRoot(),DocumentEditorModule,DocumentEditorContainerModule, ButtonModule, CheckBoxModule, RadioButtonModule, SwitchModule, ChipListModule, FabModule, SpeedDialModule],
+  imports: [CommonModule,NgxSliderModule,...MODULES,QuillModule.forRoot(),DocumentEditorModule,DocumentEditorContainerModule, ButtonModule, CheckBoxModule, RadioButtonModule, SwitchModule, ChipListModule, FabModule, SpeedDialModule, SharedComponentsModule],
   exports: [RelativeComponent,UserInputComponent,...MODULES,GenericModalBoxComponent,NgxUiLoaderComponent],
   entryComponents:[GenericModalBoxComponent,NgxUiLoaderComponent],
   providers:[CustomDatePipe,StringModificationPipe,ToolbarService]

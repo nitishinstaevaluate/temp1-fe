@@ -15,6 +15,8 @@ import { hasError } from 'src/app/shared/enums/errorMethods';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.service';
 import { HttpStatusCode } from '@angular/common/http';
+import { AuthService } from 'src/app/shared/service/auth.service';
+import { ROLE_MAPPING } from 'src/app/shared/enums/role';
 
 
 @Component({
@@ -50,6 +52,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
   selectedReportPurpose:any=[];
   isDropdownOpen = false;
   formatType = 'PDF';
+  userAccess = false;
   constructor(private fb : FormBuilder,
     private calculationService:CalculationsService,
     private dialog:MatDialog,
@@ -58,17 +61,19 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     private truncateStringPipe: StringModificationPipe,
     private ngxLoaderService:NgxUiLoaderService,
     private excelAdnReportService:ExcelAndReportService,
-    private processStatusManagerService:ProcessStatusManagerService){}
+    private processStatusManagerService:ProcessStatusManagerService,
+    private authenticationService:AuthService){}
     ngOnInit(): void {
     this.loadForm();
     this.checkProcessExist();
+    this.validateUserRole()
   }
   
   ngOnChanges(changes:SimpleChanges){
     this.transferStepperFour;
   }
   checkProcessExist(){
-    if(!this.transferStepperFour){
+    if(!this.transferStepperFour?.sixthStageInput){
       if(this.sixthStageInput?.formSixData){
         this.reportForm.controls['clientName'].setValue(this.sixthStageInput?.formSixData?.clientName);
         this.reportForm.controls['reportDate'].setValue(this.sixthStageInput?.formSixData?.reportDate);
@@ -141,7 +146,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       return;
     }
 
-    if (this.reportPurposeDataChips.length === 0) {
+    if(!this.isInternalAssessment() && this.reportPurposeDataChips.length === 0){
       this.regulationPrefSelectionStatus = false;
       return;
     }
@@ -162,7 +167,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
       return;
     }
 
-    if (this.reportPurposeDataChips.length === 0) {
+    if (!this.isInternalAssessment() && this.reportPurposeDataChips.length === 0) {
       this.regulationPrefSelectionStatus = false;
       return;
     }
@@ -264,7 +269,7 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
         case this.transferStepperFour?.formOneAndThreeData?.model.includes(MODELS.NAV) && this.transferStepperFour?.formOneAndThreeData?.model.length === 1:
             reportService = this.previewNavReport.bind(this);
             break;
-        case this.reportForm.controls['reportPurpose'].value.some((item:any)=> item?.value.includes('sebiRegulations')):
+        case this.reportForm.controls['reportPurpose'].value.some((item:any)=> item?.value.includes('sebiRegulations')) && this.reportForm.controls['reportPurpose'].value?.length === 1:
             reportService = this.previewSebiReport.bind(this);
             break;
         default:
@@ -764,10 +769,12 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
     }
 
     reComputeSectionPreference(){
+      if(this.isInternalAssessment() && !this.reportPurposeData?.length){
+        this.reportPurposeDataChips = [];
+      }
       if (this.reportPurposeData.length) {
         const newReportSections = [...this.reportPurposeDataChips];
         const updatedReportPurposeDataChips = [];
-        
         for (const indReportSections of newReportSections) {
             const checkIfSelectedPurposeExist = this.reportPurposeData.findIndex((element: any) => indReportSections.includes(element.Description));
             
@@ -791,5 +798,30 @@ export class ReportDetailsComponent implements OnInit,AfterViewInit {
   
     comparerReportPurpose(o1: any, o2: any): boolean {
       return o1 && o2 ? o1?.name  === o2?.name  : o2 === o2;
+    }
+
+    isInternalAssessment(){
+      return (
+        this.reportForm.controls['reportPurpose']?.value?.length === 1
+      ) && 
+      (
+        this.reportForm.controls['reportPurpose']?.value?.findIndex((item:any)=>item.value === 'internalAssessment') !== -1
+      ) 
+    }
+
+    validateUserRole(){
+      const role = {
+        role: [ROLE_MAPPING.ADD_REGISTERED_VALUER_TOGGLE]
+      }
+      this.authenticationService.validateRole(role).subscribe((authRoleResponse:any)=>{  
+          this.userAccess = authRoleResponse
+      },(error)=>{
+        this.snackBar.open('Role validation failed', 'Ok',{
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 5000,
+          panelClass: 'app-notification-error',
+        })
+      })
     }
 }

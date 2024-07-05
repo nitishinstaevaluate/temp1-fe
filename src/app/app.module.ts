@@ -14,6 +14,7 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { HttpInterceptorService } from './interceptors/http-interceptor.service';
 import { HeaderComponent } from './layout/main-layout/header/header.component';
+import { SharedComponentsModule } from './shared/shared-component.module';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { HeaderComponent } from './layout/main-layout/header/header.component';
     AngularFireAuthModule,NgSelectModule,
     SharedModule,
     MaterialModuleModule,
-    BrowserAnimationsModule,HttpClientModule,NgxDropzoneModule,NgxSliderModule
+    BrowserAnimationsModule,HttpClientModule,NgxDropzoneModule,NgxSliderModule,
+    SharedComponentsModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }],
   bootstrap: [AppComponent],

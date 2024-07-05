@@ -34,11 +34,12 @@ import { ModelRuleElevenUaResultTableComponent } from './main-valuation/group-mo
 import { ValuationDataChecklistComponent } from './dashboard-panel/valuation-data-checklist/valuation-data-checklist.component';
 import { MandateComponent } from './dashboard-panel/mandate/mandate.component';
 import { ModelMarketPriceResultTableComponent } from './main-valuation/group-model-result/valuation-result-table/model-market-price-result-table/model-market-price-result-table.component';
+import { SharedComponentsModule } from 'src/app/shared/shared-component.module';
 import { SlumpSaleComponent } from './main-valuation/models-details/slump-sale/slump-sale.component';
 import { SlumpSaleDetailsComponent } from './main-valuation/group-model-review/slump-sale-details/slump-sale-details.component';
 
 @NgModule({
-  declarations: [ValuationComponent, ActivityComponent, MainValuationComponent, GroupModelControlsComponent, GroupModelReviewComponent, GroupModelResultComponent, ProfitLossDataComponent, BalanceSheetDetailsComponent, RelativeValuationsTableComponent,ValuationResultTableComponent, ModelRelativeValuationResultTableComponent,FcfeDetailsComponent,FcffDetailsComponent,RelativeValuationDetailsComponent, ExcessEarningDetailsComponent, ComparableIndustriesDetailsComponent, NetAssetValueDetailsComponent, ReportDetailsComponent, AssessmentDetailsComponent,NavbarDetailsComponent, DashboardPanelComponent, ElevenUAComponent, ElevenUaDetailsComponent, ModelRuleElevenUaResultTableComponent,ScreenInputDetailsComponent, ValuationDataChecklistComponent, MandateComponent, ModelMarketPriceResultTableComponent, SlumpSaleComponent, SlumpSaleDetailsComponent],
-  imports: [CommonModule, MainRoutingModule, NgxDropzoneModule, SharedModule,QuillModule.forRoot(),NgxUiLoaderModule],
+  declarations: [ValuationComponent, ActivityComponent, MainValuationComponent, GroupModelControlsComponent, GroupModelReviewComponent, GroupModelResultComponent, ProfitLossDataComponent, BalanceSheetDetailsComponent, RelativeValuationsTableComponent,ValuationResultTableComponent, ModelRelativeValuationResultTableComponent,RelativeValuationDetailsComponent, ExcessEarningDetailsComponent, ComparableIndustriesDetailsComponent, NetAssetValueDetailsComponent, ReportDetailsComponent, AssessmentDetailsComponent,NavbarDetailsComponent, DashboardPanelComponent, ElevenUAComponent, ElevenUaDetailsComponent, ModelRuleElevenUaResultTableComponent,ScreenInputDetailsComponent, ValuationDataChecklistComponent, MandateComponent, ModelMarketPriceResultTableComponent, SlumpSaleComponent, SlumpSaleDetailsComponent],
+  imports: [CommonModule, MainRoutingModule, NgxDropzoneModule, SharedModule,QuillModule.forRoot(),NgxUiLoaderModule, SharedComponentsModule],
 })
 export class MainModule {}

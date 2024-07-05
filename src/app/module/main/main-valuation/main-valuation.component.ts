@@ -10,6 +10,7 @@ import { isSelected } from 'src/app/shared/enums/functions';
 import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal-box/generic-modal-box.component';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
+import { SensitivityAnalysisService } from 'src/app/shared/service/sensitivity-analysis.service';
 
 @Component({
   selector: 'app-main-valuation',
@@ -56,6 +57,7 @@ export class MainValuationComponent implements OnInit{
   constructor(private _formBuilder : FormBuilder,
     private calculationService:CalculationsService,
     private processStatusManagerService: ProcessStatusManagerService,
+    private sensitivityAnalysisService: SensitivityAnalysisService,
     private dialog :MatDialog,
     private snackBar: MatSnackBar,
     private route:Router
@@ -108,6 +110,8 @@ export class MainValuationComponent implements OnInit{
     else{
       this.isProcessExistLoader = false;
     }
+
+    this.SArevaluationChanges()
   }
   @ViewChild('stepper') stepper!: MatStepper;
 
@@ -549,5 +553,13 @@ export class MainValuationComponent implements OnInit{
 
   refId(refId:any){
     this.uniqueProcessIdentifierId = refId;
+  }
+  SArevaluationChanges(){
+    this.sensitivityAnalysisService.SArerunDetector.subscribe((response:any)=>{
+      if(response?.status){
+        const processStateId:any = localStorage.getItem('processStateId');
+        this.loadStateByProcessId(processStateId);
+      }
+    })
   }
 }

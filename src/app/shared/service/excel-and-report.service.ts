@@ -83,4 +83,20 @@ export class ExcelAndReportService {
       responseType: 'blob'
     });
   }
+
+  exportValuation(reportId: any, model: any, specificity: boolean, processStateId: any, terminalValueSelectedType: any, formatType:any){
+    return this.http.get(`${this.HOST}upload/export-valuation/${reportId || 'null'}/${model}/${specificity}/${processStateId}/${terminalValueSelectedType}/${formatType}`,
+      {
+        responseType: 'blob'
+      }
+    )
+  }
+
+  exportRulElevenUaValuation(id: any, formatType:any){
+    return this.http.get(`${this.HOST}upload/export-eleven-ua/${id || 'null'}/${formatType}`, 
+      {
+      responseType: 'blob'
+      }
+    );
+  }
 }
