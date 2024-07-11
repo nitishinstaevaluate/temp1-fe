@@ -163,6 +163,19 @@ mat-header-cell{
     left: 0;
     min-width: 35%;
   }
+
+  .mat-column-serialNo{
+    position: sticky;
+    left: 0;
+  }
+  .serialNo{
+    font-weight: bold;
+    font-size: 14px !important;
+    color: #7a7a7a;
+    border-right: 1px solid #e3e3e3 !important;
+    position: sticky;
+    left: 0;
+  }
   .increase-table-width {
     width: 1500px;
   }
@@ -225,3 +238,36 @@ mat-header-cell{
     transform: translateY(-3px);
   }
   
+.excel-loader-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(125 125 125 / 50%);
+  z-index: 9998;
+}
+
+.excel-loader-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+}
+
+.excel-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.excel-spinner {
+  border: 4px solid rgb(255 255 255 / 68%);
+  border-top: 4px solid #28bc7f;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}

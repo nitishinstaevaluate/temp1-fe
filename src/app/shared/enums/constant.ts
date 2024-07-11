@@ -461,3 +461,46 @@ export const BETA_FROM_TYPE = {
   ASWATHDAMODARAN:'aswathDamodaran',
   CAPITALIQ:'capitalIqBeta'
 }
+
+export const ADD_SPACE_BEFORE_LINE_ITEM_PL = [
+  'Other Non-Operating Income',
+  'Expenses',
+  'Other Non-Operating expenses:',
+  'Total Expense',
+  'Earnings Before Interest Taxation, Depreciation and Amortisation (EBITDA)',
+  'Earnings Before Interest Taxation (EBIT)',
+  'Profit/(loss) before exceptional items and tax (I - IV)',
+  'Profit/(loss) before tax (V-VI)',
+  'Profit (Loss) for the period from continuing operations (VII-VIII)',
+  'Profit/(loss) for the period (IX+XII)',
+  'Other Comprehensive Income',
+  'A',
+  'Total Comprehensive Income for the period (XIII+XIV) (Comprising Profit (Loss) and Other Comprehensive Income for the period)'
+]
+
+export const ADD_SPACE_BEFORE_LINE_ITEM_BS = [
+  'Non-current assets',
+  'Total non current assets',
+  'Current assets',
+  'Total Assets',
+  'EQUITY AND LIABILITIES',
+  'Equity',
+  'Liabilities',
+  'Current liabilities',
+  'Total Equity and Liabilities',
+  'Check'
+]
+
+export const ADD_SPACE_BEFORE_LINE_ITEM_CASH_FLOW = [
+  'Cash flows from investing activities',
+  'Cash flows from financing activities',
+  'Net increase in cash and cash equivalents (I+II+III)',
+  'Cash and cash equivalents at beginning of period',
+  'Cash and cash equivalents at end of period (IV+V)'
+]
+
+export const ADD_SPACE_BEFORE_LINE_ITEM_ASSESSMENT_OF_WC = [
+  'Operating Liabilities',
+  'Non-Cash Working Capital (A-B)',
+  'Change in NCA'
+]

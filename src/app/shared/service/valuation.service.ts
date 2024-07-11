@@ -38,8 +38,8 @@ export class ValuationService {
     return this.http.get(`${HOST}companies/${id}`);
   }
 
-  getProfitLossSheet(filename:string,sheetName:string){
-    return this.http.get(`${HOST}upload/sheet/${filename}/${sheetName}`)
+  getProfitLossSheet(filename:string,sheetName:string, processStateId:any){
+    return this.http.get(`${HOST}upload/sheet/${filename}/${sheetName}/${processStateId}`)
   }
  
   getPaginatedValuations(page: number, pageSize: number, query?: string): Observable<any[]> {

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ADD_SPACE_BEFORE_LINE_ITEM_BS } from 'src/app/shared/enums/constant';
 import { formatPositiveAndNegativeValues, isSelected } from 'src/app/shared/enums/functions';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.service';
@@ -28,6 +29,7 @@ export class BalanceSheetDetailsComponent implements OnChanges {
   excelSheetId:string='';
   excelErrorMsg = false;
   loadExcelTable = false;
+  bsLoader = false;
 
   constructor(private valuationService:ValuationService,
     private snackBar:MatSnackBar,
@@ -84,7 +86,8 @@ export class BalanceSheetDetailsComponent implements OnChanges {
 
   loadExcel(){
     this.loadExcelTable = true; 
-    this.valuationService.getProfitLossSheet(this.excelSheetId,'BS').subscribe((response:any)=>{
+    this.bsLoader = true;
+    this.valuationService.getProfitLossSheet(this.excelSheetId,'BS', localStorage.getItem('processStateId')).subscribe((response:any)=>{
       this.loadExcelTable = false; 
       if(response.status){
         this.excelErrorMsg = false;
@@ -92,15 +95,17 @@ export class BalanceSheetDetailsComponent implements OnChanges {
       //  this.balanceSheetData.emit({status:true, result:response,isExcelModified:this.isExcelModified})
       
       //  Calling assessment api so that when new excel is generated in backend it also has assessment sheet
-      this.valuationService.getProfitLossSheet(this.excelSheetId, 'Assessment of Working Capital').subscribe((assessmentResponse)=>{
-        //Do nothing for now
-       })
+      // this.valuationService.getProfitLossSheet(this.excelSheetId, 'Assessment of Working Capital', localStorage.getItem('processStateId')).subscribe((assessmentResponse)=>{
+      //   //Do nothing for now
+      //  })
       }
       else{
         this.excelErrorMsg = true;
       }
+      this.bsLoader = false;
     },
     (error)=>{
+      this.bsLoader = false;
       this.loadExcelTable = false;
        this.excelErrorMsg = true;
       //  this.balanceSheetData.emit({status:false, error:error})
@@ -117,8 +122,18 @@ export class BalanceSheetDetailsComponent implements OnChanges {
     return (typeof value === 'number' || value === '') && !isNaN(value) ? true : false;
   }
 
-  checkIfEditable(value:any){
+  checkIfEditable(value:any, columnIndex:any){
     if(value?.Particulars){
+      // For Sys code - 8027
+      if(value.Particulars === '(iii) cash and cash equivalents' && columnIndex === 1){
+        return true;
+      }
+      
+      // For Sys code - 8042
+      if(value.Particulars === '(iv) Retained Earnings' && columnIndex === 1){
+        return true;
+      }
+
       return this.dataSource.some((data:any)=>{
         if(data.lineEntry.particulars === value?.Particulars && data.lineEntry?.editable){
           return true;
@@ -172,6 +187,7 @@ export class BalanceSheetDetailsComponent implements OnChanges {
     }
   }
   onInputChange(value: any, column: string,originalValue:any) {
+    this.bsLoader = true;
     this.editedValues=[];
     let newValue;
     const cellData = this.getCellAddress(originalValue,column);
@@ -188,7 +204,8 @@ export class BalanceSheetDetailsComponent implements OnChanges {
         cellData,
         oldValue:originalValue[`${column}`],
         newValue:newValue,
-        particulars:originalValue.Particulars
+        particulars:originalValue.Particulars,
+        processStateId:localStorage.getItem('processStateId')
       }
       this.editedValues.push(cellStructure);
 
@@ -201,6 +218,7 @@ export class BalanceSheetDetailsComponent implements OnChanges {
       if(payload.newValue !== null && payload.newValue !== undefined){
         this.excelAndReportService.modifyExcel(payload).subscribe(
           async (response:any)=>{
+            this.bsLoader = false;
           if(response.status){
             this.isExcelModified = true;
             this.createbalanceSheetDataSource(response);
@@ -221,6 +239,7 @@ export class BalanceSheetDetailsComponent implements OnChanges {
           }
         },(error)=>{
           // this.balanceSheetData.emit({status:false,error:error.message});
+          this.bsLoader = false;
           this.snackBar.open(error.message,'Ok',{
             horizontalPosition: 'right',
               verticalPosition: 'top',
@@ -268,6 +287,14 @@ export class BalanceSheetDetailsComponent implements OnChanges {
       }
       return transformedItem;
     });
+
+    ADD_SPACE_BEFORE_LINE_ITEM_BS.forEach((particular) => {
+      const index = this.balanceSheetDataSource.findIndex((item: any) => item.Particulars === particular);
+      if (index !== -1) {
+        this.balanceSheetDataSource.splice(index, 0, { Particulars: "  " });
+      }
+    });
+
     // this.balanceSheetDataSource.splice(this.balanceSheetDataSource.findIndex((item:any) => item.Particulars.includes(`Shareholders' Funds`)),0,{Particulars:"  "}) //push empty object for line break      
     // this.balanceSheetDataSource.splice(this.balanceSheetDataSource.findIndex((item:any) => item.Particulars.includes('Share Warrants')),0,{Particulars:"  "}) //push empty object for line break      
     // this.balanceSheetDataSource.splice(this.balanceSheetDataSource.findIndex((item:any) => item.Particulars.includes('Non Current Liabilities')),0,{Particulars:"  "}) //push empty object for line break      

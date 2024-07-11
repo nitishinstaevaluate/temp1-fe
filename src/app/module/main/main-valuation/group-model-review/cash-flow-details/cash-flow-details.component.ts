@@ -1,23 +1,25 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ADD_SPACE_BEFORE_LINE_ITEM_CASH_FLOW } from 'src/app/shared/enums/constant';
+import { formatPositiveAndNegativeValues } from 'src/app/shared/enums/functions';
 import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.service';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
 
 @Component({
-  selector: 'app-slump-sale-details',
-  templateUrl: './slump-sale-details.component.html',
-  styleUrls: ['./slump-sale-details.component.scss']
+  selector: 'app-cash-flow-details',
+  templateUrl: './cash-flow-details.component.html',
+  styleUrls: ['./cash-flow-details.component.scss']
 })
-export class SlumpSaleDetailsComponent implements OnChanges{
+export class CashFlowDetailsComponent implements OnChanges{
   @Input() transferStepperTwo :any;
   @Input() currentStepIndex :any;
   @Input() fourthStageInput :any;
-  @Output() slumpSaleData :any = new EventEmitter();
-  @Output() slumpSaleSheetData=new EventEmitter<any>();
+  @Output() cashFlowData :any = new EventEmitter();
+  @Output() cashFlowSheetData=new EventEmitter<any>();
 
   displayColumns:any;
-  slumpSaleDataSource:any;
+  cashFlowDataSource:any;
   floatLabelType:any='never';
   appearance:any='fill';
   dataSource:any;
@@ -28,10 +30,13 @@ export class SlumpSaleDetailsComponent implements OnChanges{
   financialSheetLoader = true;
   loadExcelTable = false;
   excelErrorMsg = false;
+  cfLoader = false;
   constructor(private valuationService:ValuationService,
     private snackBar: MatSnackBar,
     private excelAndReportService:ExcelAndReportService,
-    private processStateManagerService:ProcessStatusManagerService){}
+    private processStateManagerService: ProcessStatusManagerService){
+  }
+
   ngOnChanges(){
     this.fetchExcelData();
   }
@@ -58,32 +63,31 @@ export class SlumpSaleDetailsComponent implements OnChanges{
         duration: 3000,
         panelClass: 'app-notification-error'
       })
-    }) 
+    })
   }
+
   loadExcel(){
-    this.loadExcelTable = true;
-    // const payload = {
-    //   filename:this.excelSheetId,
-    //   sheetName:'Slump Sale',
-    //   processIdentifierId:localStorage.getItem('processStateId')
-    // }
-    this.valuationService.getProfitLossSheet(this.excelSheetId, 'Slump Sale', localStorage.getItem('processStateId')).subscribe((response:any)=>{
+    this.loadExcelTable = true; 
+    this.cfLoader = true;
+    this.valuationService.getProfitLossSheet(this.excelSheetId,'Cash Flow', localStorage.getItem('processStateId')).subscribe((response:any)=>{
       this.loadExcelTable = false;
       if(response.status){
         this.excelErrorMsg = false;
-        this.createSlumpSaleDataSource(response)
-        this.slumpSaleSheetData.emit({status:true,result:response,isExcelModified:this.isExcelModified});
-      }
-      else{
-        this.excelErrorMsg = true;
-      }
-    }
-    ,(error)=>{
+       this.createCashFlowDataSource(response)
+       this.cashFlowData.emit({status:true,result:response,isExcelModified:this.isExcelModified});
+     }
+     else{
       this.excelErrorMsg = true;
-     this.loadExcelTable = false;
-     this.slumpSaleSheetData.emit({status:true, error:error})
-       this.slumpSaleData.emit({status:false,error:error});
-     })
+    }
+    this.cfLoader = false;
+  }
+  ,(error)=>{
+      this.cfLoader = false;
+      this.excelErrorMsg = true;
+      this.loadExcelTable = false;
+      // this.profitAndLossSheetData.emit({status:true, error:error})
+      this.cashFlowData.emit({status:false,error:error});
+  })
   }
 
   checkType(ele:any){
@@ -111,7 +115,7 @@ export class SlumpSaleDetailsComponent implements OnChanges{
   ifOnlyNumber(value:any){
     if(value?.Particulars && this.dataSource){
       return this.dataSource.some((data:any)=>{
-        if(data.lineEntry.particulars === value?.Particulars && data.lineEntry?.sysCode !== 3009 && data.lineEntry?.sysCode !== 3018){
+        if(data.lineEntry.particulars === value?.Particulars){
           return true;
         }
         return false
@@ -124,7 +128,7 @@ export class SlumpSaleDetailsComponent implements OnChanges{
     return parseFloat(value)?.toFixed(2);
   }
   checkSubHeader(value:any,index:number){
-    if(index === 0){
+    if(index === 1){
       if(value?.Particulars && this.dataSource){
         return this.dataSource.some((data:any)=>{
           if(data.lineEntry.particulars === value?.Particulars && data.lineEntry?.subHeader){
@@ -137,7 +141,7 @@ export class SlumpSaleDetailsComponent implements OnChanges{
     }
   }
   checkHeader(value:any,index:number){
-    if(index === 0){
+    if(index === 1){
       if(value?.Particulars){
         return this.dataSource.some((data:any)=>{
           if(data.lineEntry.particulars === value?.Particulars && data.lineEntry?.header){
@@ -149,7 +153,9 @@ export class SlumpSaleDetailsComponent implements OnChanges{
       return false
     }
   }
+
   onInputChange(value: any, column: string,originalValue:any) {
+    this.cfLoader = true;
     this.editedValues=[];
     let newValue;
     const cellData = this.getCellAddress(originalValue,column);
@@ -170,32 +176,32 @@ export class SlumpSaleDetailsComponent implements OnChanges{
       this.editedValues.push(cellStructure);
       
       const payload = {
-        excelSheet:'Rule 11 UA',
+        excelSheet:'Cash Flow',
         excelSheetId:this.excelSheetId,
         ...this.editedValues[0] 
       }
       if(payload.newValue !== null && payload.newValue !== undefined){
         this.excelAndReportService.modifyExcel(payload).subscribe(
           async (response:any)=>{
-          if(response?.status){
+            this.cfLoader = false;
+          if(response.status){
             this.isExcelModified = true;
-            this.createSlumpSaleDataSource(response);
+            this.createCashFlowDataSource(response);
             const excelResponse: any = await this.processStateManagerService.updateEditedExcelStatus(localStorage.getItem('processStateId')).toPromise();
             if(excelResponse?.modifiedExcelSheetId){
               this.excelSheetId = excelResponse.modifiedExcelSheetId;
             }
           }
-          // else{  [please uncomment this once backend error handling is done]
-          //    this.slumpSaleSheetData.emit({status:false,error:response.error});
-          //    this.snackBar.open(response.error,'Ok',{
-          //     horizontalPosition: 'right',
-          //     verticalPosition: 'top',
-          //     duration: 3000,
-          //     panelClass: 'app-notification-error'
-          //   })
-          // }
+          else{
+             this.snackBar.open(response.error,'Ok',{
+              horizontalPosition: 'right',
+              verticalPosition: 'top',
+              duration: 3000,
+              panelClass: 'app-notification-error'
+            })
+          }
         },(error)=>{
-          // this.slumpSaleSheetData.emit({status:false,error:error.message});
+          this.cfLoader = false;
           this.snackBar.open(error.message,'Ok',{
             horizontalPosition: 'right',
               verticalPosition: 'top',
@@ -205,6 +211,7 @@ export class SlumpSaleDetailsComponent implements OnChanges{
         })
       }
 }
+
 getCellAddress(data:any,changedColumn:any){
   const cellAddresses:any = [];
 
@@ -223,49 +230,48 @@ getCellAddress(data:any,changedColumn:any){
 
   return cellAddresses;
 }
-createSlumpSaleDataSource(response:any){
+
+createCashFlowDataSource(response:any){
   this.dataSource = response?.data;
   this.displayColumns = Object.keys(this.dataSource[0]);
-  
   this.displayColumns.splice(this.displayColumns.indexOf('lineEntry'),1,'Particulars')
-  // if(this.isRelativeValuation('Relative_Valuation') || this.isRelativeValuation('NAV') || this.isRelativeValuation('CTM')){
-  //   this.displayColumns = this.displayColumns.splice(0,2)
-  // }
-  this.slumpSaleDataSource = this.dataSource.map((result:any)=>{
+  const srNoIndex = this.displayColumns.indexOf('Sr No');
+  
+  
+  this.cashFlowDataSource = this.dataSource.map((result:any)=>{
     const transformedItem: any = {};
     transformedItem['Particulars'] = result.lineEntry.particulars;
+
     for (let i = 1; i < this.displayColumns.length; i++) {
       const yearKey = this.displayColumns[i];
       transformedItem[yearKey] = result[yearKey];
     }
     return transformedItem;
   });
-  this.slumpSaleDataSource.splice(this.slumpSaleDataSource.findIndex((item:any) => item.Particulars.includes('Current Assets')),0,{Particulars:"  "}) //push empty object for line break      
-  this.slumpSaleDataSource.splice(this.slumpSaleDataSource.findIndex((item:any) => item.Particulars === 'Current Liabilities'),0,{Particulars:"  "}) //push empty object for line break      
-  this.slumpSaleDataSource.splice(this.slumpSaleDataSource.findIndex((item:any) => item.Particulars.includes('Equity & Liabilities')),0,{Particulars:"  "}) //push empty object for line break      
-  this.slumpSaleDataSource.splice(this.slumpSaleDataSource.findIndex((item:any) => item.Particulars.includes('Non-Current Liabilities')),0,{Particulars:"  "}) //push empty object for line break      
-  // this.ruleElevenUaDataSource.splice(this.ruleElevenUaDataSource.findIndex((item:any) => item.Particulars.includes('Total Equity & Liabilities')),0,{Particulars:"  "}) //push empty object for line break      
+  if (srNoIndex !== -1) {
+    const [srNo] = this.displayColumns.splice(srNoIndex, 1);
+    this.displayColumns.unshift(srNo);
+}
 
-  // if(response?.modifiedFileName){
-  //   this.slumpSaleSheetData.emit({status:true,result:response,isExcelModified:this.isExcelModified});
-  // }
+ADD_SPACE_BEFORE_LINE_ITEM_CASH_FLOW.forEach((particular) => {
+    const index = this.cashFlowDataSource.findIndex((item: any) => item.Particulars === particular);
+    if (index !== -1) {
+      this.cashFlowDataSource.splice(index, 0, { Particulars: "  " });
+    }
+  });
+
+  if(response?.modifiedFileName){
+    this.cashFlowData.emit({status:true, isExcelModified:this.isExcelModified});
+  }
 }
 
 formatNegativeAndPositiveValues(value:any){
   if(value && `${value}`.includes('-')){
-    let formattedNumber = value.toLocaleString(undefined, {
-      minimumIntegerDigits: 1,
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-    return `(${`${formattedNumber}`.replace(/-/g,'')})`;
+    let formattedNumber = formatPositiveAndNegativeValues(value);
+    return formattedNumber;
   }
   else if(value){
-    return value.toLocaleString(undefined, {
-      minimumIntegerDigits: 1,
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })
+    return formatPositiveAndNegativeValues(value);
   }
   return  null;
 }
@@ -273,12 +279,6 @@ contentIsBig(data:any){
   if(data && Object.keys(data[0]).length > 6){
     return true;
   }
-  return false;
-}
-
-addDivider(element:string){
-  if(element === 'Total Assets' || element === 'Assets' || element === 'Total Equity & Liabilities')
-    return true;
   return false;
 }
 }

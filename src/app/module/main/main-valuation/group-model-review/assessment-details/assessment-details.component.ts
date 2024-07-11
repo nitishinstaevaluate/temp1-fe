@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ADD_SPACE_BEFORE_LINE_ITEM_ASSESSMENT_OF_WC } from 'src/app/shared/enums/constant';
 import { formatPositiveAndNegativeValues } from 'src/app/shared/enums/functions';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.service';
@@ -32,6 +33,7 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
   excelSheetId:any='';
   loadExcelTable = false;
   excelErrorMsg = false;
+  asLoader = false;
 
   ngOnInit(): void {
     // this.checkProcessState()
@@ -75,7 +77,8 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
 
   loadExcel(){
     this.loadExcelTable = true;
-    this.valuationService.getProfitLossSheet(this.excelSheetId,'Assessment of Working Capital').subscribe((response:any)=>{
+    this.asLoader = true;
+    this.valuationService.getProfitLossSheet(this.excelSheetId,'Assessment of Working Capital',localStorage.getItem('processStateId')).subscribe((response:any)=>{
       this.loadExcelTable = false;
       if(response.status){
         this.excelErrorMsg = false;
@@ -84,9 +87,11 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
       }else{
         this.excelErrorMsg = true;
       }
+      this.asLoader = false;
     },
     (error)=>{
-    this.loadExcelTable = false;
+      this.asLoader = false;
+      this.loadExcelTable = false;
       this.excelErrorMsg = true;
       this.assessmentSheetData.emit({status:false,error:error});
     })
@@ -118,7 +123,8 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
     // return (Object.values(value).some(value => typeof value === 'number' && !isNaN(value)) && value.Particulars !== 'Other Operating Assets' && value.Particulars !== 'Other Operating Liabilities');
     if(value?.Particulars){
       return this.dataSource.some((data:any)=>{
-        if(data.lineEntry.particulars === value?.Particulars && data.lineEntry?.sysCode !== 3009 && data.lineEntry?.sysCode !== 3018){
+        // if(data.lineEntry.particulars === value?.Particulars && data.lineEntry?.sysCode !== 3009 && data.lineEntry?.sysCode !== 3018){
+        if(data.lineEntry.particulars === value?.Particulars){
           return true;
         }
         return false
@@ -157,8 +163,8 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
     }
   }
   onInputChange(value: any, column: string,originalValue:any) {
+        this.asLoader = true;
         this.editedValues=[];
-
         const cellData = this.getCellAddress(originalValue,column);
 
           const cellStructure={
@@ -177,6 +183,7 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
 
           this.excelAndReportService.modifyExcel(payload).subscribe(
             async (response:any)=>{
+            this.asLoader = false;
             if(response.status){
               this.isExcelModified = true;
               this.createAssessmentDataSource(response);
@@ -197,6 +204,7 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
             }
           },(error)=>{
             // this.assessmentSheetData.emit({status:false,error:error.message})
+            this.asLoader = false;
             this.snackbar.open(error.message,'Ok',{
               horizontalPosition: 'right',
                 verticalPosition: 'top',
@@ -239,9 +247,15 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
       }
       return transformedItem;
     });
-    this.assessmentDataSource.splice(this.assessmentDataSource.findIndex((item:any) => item.Particulars.includes('Operating Liabilities')),0,{Particulars:"  "}) //push empty object for line break      
-    this.assessmentDataSource.splice(this.assessmentDataSource.findIndex((item:any) => item.Particulars.includes('Net Operating Assets')),0,{Particulars:"  "}) //push empty object for line break      
-    this.assessmentDataSource.splice(this.assessmentDataSource.findIndex((item:any) => item.Particulars.includes('Short Term Investments')),1) //removing short term investments 
+    ADD_SPACE_BEFORE_LINE_ITEM_ASSESSMENT_OF_WC.forEach((particular) => {
+      const index = this.assessmentDataSource.findIndex((item: any) => item.Particulars === particular);
+      if (index !== -1) {
+        this.assessmentDataSource.splice(index, 0, { Particulars: "  " });
+      }
+    });
+    // this.assessmentDataSource.splice(this.assessmentDataSource.findIndex((item:any) => item.Particulars.includes('Operating Liabilities')),0,{Particulars:"  "}) //push empty object for line break      
+    // this.assessmentDataSource.splice(this.assessmentDataSource.findIndex((item:any) => item.Particulars.includes('Net Operating Assets')),0,{Particulars:"  "}) //push empty object for line break      
+    // this.assessmentDataSource.splice(this.assessmentDataSource.findIndex((item:any) => item.Particulars.includes('Short Term Investments')),1) //removing short term investments 
     // if(response?.modifiedFileName){
     //   // this.assessmentSheetData.emit({status:true,result:response, isExcelModified:this.isExcelModified})
     // }

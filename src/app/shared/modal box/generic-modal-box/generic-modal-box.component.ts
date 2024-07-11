@@ -532,6 +532,7 @@ get downloadTemplate() {
   
     const formData = new FormData();
     formData.append('file', this.files[0]);
+    formData.append('processId', `${localStorage.getItem('processStateId')}`);
     this.valuationService.fileUpload(formData).subscribe((res: any) => {
       this.excelSheetId = res.excelSheetId;
       this.fileUploadStatus = true;

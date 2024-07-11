@@ -14,9 +14,14 @@
                         <app-balance-sheet-details *ngIf="selectedTab === 'Balance Sheet'" [transferStepperTwo]="transferStepperTwo" (balanceSheetData)="balanceSheetData($event)" [fourthStageInput]="fourthStageInput"></app-balance-sheet-details>
                     </ng-template>
                 </mat-tab>
-                <mat-tab label="Assessment of Working Capital" *ngIf="hasSingleModel('FCFE') || hasSingleModel('FCFF') || hasSingleModel('Excess_Earnings') ">
+                <mat-tab label="Assessment of Working Capital" *ngIf="hasSingleModel('FCFE') || hasSingleModel('FCFF') || hasSingleModel('Excess_Earnings') " (selectedTabChange)="onTabChange($event)">
                     <ng-template matTabContent>
                         <app-assessment-details *ngIf="selectedTab === 'Assessment of Working Capital'" [transferStepperTwo]="transferStepperTwo" (assessmentSheetData)="assessmentSheetData($event)" [fourthStageInput]="fourthStageInput"></app-assessment-details>
+                    </ng-template>
+                </mat-tab>
+                <mat-tab label="Cash Flow" *ngIf="hasSingleModel('FCFE') || hasSingleModel('FCFF') || hasSingleModel('Excess_Earnings') " (selectedTabChange)="onTabChange($event)">
+                    <ng-template matTabContent>
+                        <app-cash-flow-details *ngIf="selectedTab === 'Cash Flow'" [transferStepperTwo]="transferStepperTwo" (cashFlowData)="cashFlowData($event)" [fourthStageInput]="fourthStageInput"></app-cash-flow-details>
                     </ng-template>
                 </mat-tab>
                 <mat-tab label="Rule 11 UA" *ngIf="hasSingleModel('ruleElevenUa')">

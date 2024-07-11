@@ -87,7 +87,7 @@ export class ElevenUaDetailsComponent {
 
   loadExcel(){
     this.loadExcelTable = true;
-    this.valuationService.getProfitLossSheet(this.excelSheetId,'Rule 11 UA').subscribe((response:any)=>{
+    this.valuationService.getProfitLossSheet(this.excelSheetId,'Rule 11 UA', localStorage.getItem('processStateId')).subscribe((response:any)=>{
       this.loadExcelTable = false;
       if(response.status){
         this.excelErrorMsg = false;
