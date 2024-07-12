@@ -108,6 +108,7 @@ terminalSelectionType:any;
 terminalSelectionRowType:any;
 revaluationPrev:any;
 updatedSAsecondaryValuationId:any;
+modSelLoader = false; 
 
 constructor(@Inject(MAT_DIALOG_DATA) public data: any,
 private dialogRef:MatDialogRef<GenericModalBoxComponent>,
@@ -519,6 +520,7 @@ get downloadTemplate() {
   }
 
   onFileSelected(event: any) {
+    this.modSelLoader = true;
     // console.log(event,"file event")
     if (event && event.target.files && event.target.files.length > 0) {
       this.files = event.target.files;
@@ -536,6 +538,7 @@ get downloadTemplate() {
     this.valuationService.fileUpload(formData).subscribe((res: any) => {
       this.excelSheetId = res.excelSheetId;
       this.fileUploadStatus = true;
+      this.modSelLoader = false;
       if(res.excelSheetId){
         this.snackBar.open('File has been uploaded successfully','Ok',{
           horizontalPosition: 'center',
@@ -546,6 +549,14 @@ get downloadTemplate() {
       }
       
       event.target.value = '';
+    },(error)=>{
+      this.modSelLoader = false;
+      this.snackBar.open('File upload failed','Ok',{
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+        duration: 4000,
+        panelClass: 'app-notification-error'
+      })
     });
   }
 
