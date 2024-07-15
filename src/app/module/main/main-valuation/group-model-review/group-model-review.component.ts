@@ -398,7 +398,6 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
 
   onTabChange(event: any) {
     this.selectedTab = event.tab.textLabel;
-    console.log(this.selectedTab,"selected tab")
   }
 
   clearInput(controlName:string){
