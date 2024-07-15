@@ -68,7 +68,7 @@ export class CashFlowDetailsComponent implements OnChanges{
 
   loadExcel(){
     this.loadExcelTable = true; 
-    this.cfLoader = true;
+    // this.cfLoader = true;
     this.valuationService.getProfitLossSheet(this.excelSheetId,'Cash Flow', localStorage.getItem('processStateId')).subscribe((response:any)=>{
       this.loadExcelTable = false;
       if(response.status){
@@ -79,10 +79,10 @@ export class CashFlowDetailsComponent implements OnChanges{
      else{
       this.excelErrorMsg = true;
     }
-    this.cfLoader = false;
+    // this.cfLoader = false;
   }
   ,(error)=>{
-      this.cfLoader = false;
+      // this.cfLoader = false;
       this.excelErrorMsg = true;
       this.loadExcelTable = false;
       // this.profitAndLossSheetData.emit({status:true, error:error})

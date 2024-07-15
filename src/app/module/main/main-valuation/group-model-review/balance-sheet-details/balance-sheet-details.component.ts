@@ -86,7 +86,7 @@ export class BalanceSheetDetailsComponent implements OnChanges {
 
   loadExcel(){
     this.loadExcelTable = true; 
-    this.bsLoader = true;
+    // this.bsLoader = true;
     this.valuationService.getProfitLossSheet(this.excelSheetId,'BS', localStorage.getItem('processStateId')).subscribe((response:any)=>{
       this.loadExcelTable = false; 
       if(response.status){
@@ -102,10 +102,10 @@ export class BalanceSheetDetailsComponent implements OnChanges {
       else{
         this.excelErrorMsg = true;
       }
-      this.bsLoader = false;
+      // this.bsLoader = false;
     },
     (error)=>{
-      this.bsLoader = false;
+      // this.bsLoader = false;
       this.loadExcelTable = false;
        this.excelErrorMsg = true;
       //  this.balanceSheetData.emit({status:false, error:error})
@@ -128,7 +128,7 @@ export class BalanceSheetDetailsComponent implements OnChanges {
       if(value.Particulars === '(iii) cash and cash equivalents' && columnIndex === 1){
         return true;
       }
-      
+
       // For Sys code - 8042
       if(value.Particulars === '(iv) Retained Earnings' && columnIndex === 1){
         return true;

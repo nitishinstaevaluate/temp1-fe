@@ -77,7 +77,7 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
 
   loadExcel(){
     this.loadExcelTable = true;
-    this.asLoader = true;
+    // this.asLoader = true;
     this.valuationService.getProfitLossSheet(this.excelSheetId,'Assessment of Working Capital',localStorage.getItem('processStateId')).subscribe((response:any)=>{
       this.loadExcelTable = false;
       if(response.status){
@@ -87,10 +87,10 @@ export class AssessmentDetailsComponent implements OnInit,OnChanges {
       }else{
         this.excelErrorMsg = true;
       }
-      this.asLoader = false;
+      // this.asLoader = false;
     },
     (error)=>{
-      this.asLoader = false;
+      // this.asLoader = false;
       this.loadExcelTable = false;
       this.excelErrorMsg = true;
       this.assessmentSheetData.emit({status:false,error:error});

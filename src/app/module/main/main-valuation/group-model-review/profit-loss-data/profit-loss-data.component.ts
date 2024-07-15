@@ -90,7 +90,7 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
 
   loadExcel(){
     this.loadExcelTable = true; 
-    this.plLoader = true;
+    // this.plLoader = true;
     this.valuationService.getProfitLossSheet(this.excelSheetId,'P&L', localStorage.getItem('processStateId')).subscribe((response:any)=>{
       this.loadExcelTable = false;
       if(response.status){
@@ -107,12 +107,12 @@ export class ProfitLossDataComponent implements OnInit,OnChanges {
      else{
       this.excelErrorMsg = true;
     }
-    this.plLoader = false;
+    // this.plLoader = false;
   }
   ,(error)=>{
       this.excelErrorMsg = true;
       this.loadExcelTable = false;
-      this.plLoader = false;
+      // this.plLoader = false;
       // this.profitAndLossSheetData.emit({status:true, error:error})
       this.profitLossData.emit({status:false,error:error});
   })
