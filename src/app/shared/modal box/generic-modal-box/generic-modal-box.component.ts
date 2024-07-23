@@ -16,6 +16,7 @@ import { hasError } from '../../enums/errorMethods';
 import { ProcessStatusManagerService } from '../../service/process-status-manager.service';
 import { ExcelAndReportService } from '../../service/excel-and-report.service';
 import { SensitivityAnalysisService } from '../../service/sensitivity-analysis.service';
+import { NotFoundError } from 'rxjs';
 
 @Component({
   selector: 'app-generic-modal-box',
@@ -535,6 +536,8 @@ get downloadTemplate() {
     const formData = new FormData();
     formData.append('file', this.files[0]);
     formData.append('processId', `${localStorage.getItem('processStateId')}`);
+
+    formData.append('modelName', `${this.verifyModelBasedExcel()}`);
     this.valuationService.fileUpload(formData).subscribe((res: any) => {
       this.excelSheetId = res.excelSheetId;
       this.fileUploadStatus = true;
@@ -932,5 +935,23 @@ get downloadTemplate() {
     const inputElement = event.target;
     this.selectedValuationId = valuationId;
     this.terminalSelectionRowType = terminalSelectionType;
+  }
+
+  verifyModelBasedExcel(){
+    if(this.incomeApproachmodels?.length || this.netAssetApproachmodels?.length || this.marketApproachmodels?.length){
+      return 'containsProfitLossAndBalanceSheet'
+    }
+    else if(this.ruleElevenApproachModels?.length){
+      return 'containsRuleElevenUa'
+    }
+    this.modSelLoader = false;
+    this.fileName = ''
+    this.snackBar.open('Model not found','Ok',{
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+      duration: 4000,
+      panelClass: 'app-notification-error'
+    })
+    throw new NotFoundError(`{msg:'model not found'}`)
   }
 }

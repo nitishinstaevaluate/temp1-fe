@@ -185,7 +185,8 @@ export class ElevenUaDetailsComponent {
         cellData,
         oldValue:originalValue[`${column}`],
         newValue:newValue,
-        particulars:originalValue.Particulars
+        particulars:originalValue.Particulars,
+        processStateId:localStorage.getItem('processStateId')
       }
       this.editedValues.push(cellStructure);
       
