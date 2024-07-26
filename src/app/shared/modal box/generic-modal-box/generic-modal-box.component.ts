@@ -522,6 +522,12 @@ get downloadTemplate() {
 
   onFileSelected(event: any) {
     this.modSelLoader = true;
+    const snackBarRef = this.snackBar.open('Please wait, uploading excel','', {
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+      duration: -1,
+      panelClass: 'app-notification-success',
+    })
     // console.log(event,"file event")
     if (event && event.target.files && event.target.files.length > 0) {
       this.files = event.target.files;
@@ -542,6 +548,7 @@ get downloadTemplate() {
       this.excelSheetId = res.excelSheetId;
       this.fileUploadStatus = true;
       this.modSelLoader = false;
+      snackBarRef.dismiss();
       if(res.excelSheetId){
         this.snackBar.open('File has been uploaded successfully','Ok',{
           horizontalPosition: 'center',
@@ -554,6 +561,7 @@ get downloadTemplate() {
       event.target.value = '';
     },(error)=>{
       this.modSelLoader = false;
+      snackBarRef.dismiss();
       this.snackBar.open('File upload failed','Ok',{
         horizontalPosition: 'center',
         verticalPosition: 'bottom',
