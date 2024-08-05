@@ -47,6 +47,7 @@ export class HttpInterceptorService {
               });
               this.router.navigate(['../']);
               sessionStorage.clear();
+              localStorage.clear()
               return EMPTY;
             }
         }

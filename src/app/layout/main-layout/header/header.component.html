@@ -91,11 +91,18 @@
       </div> -->
       <div class="main-sidebar-header active new-img-css" style="border-right: 0px;border-bottom: 0px;">
           <a class="desktop-logo logo-light active" 
-            ><img
+            >
+            <!-- <img
               src="assets\images\brand\infin logo.jpg"
               class="main-logo"
               alt="logo"
-          /></a>
+          /> -->
+            <img *ngIf="isLoggedIn()"
+              src="assets\images\brand\new-logo.png"
+              class="main-logo"
+              alt="logo"
+          />
+        </a>
     
           <a class="logo-icon mobile-logo icon-light active"
             ><img src="../../../../assets/images/brand/icccon.ico" alt="logo"
