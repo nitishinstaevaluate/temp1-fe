@@ -760,22 +760,22 @@
       <span><mat-icon class="close-modal-valuer" (click)="modalData()" style="padding-right: 3%;">close</mat-icon></span>
     </div>
     <div class="container-fluid beta-table-container">
-      <!-- <mat-label style="float:left;font-size: 12px;color:blue;padding-left: 2%;text-decoration: underline;"><i>(In Millions)</i></mat-label> -->
+      <!-- <mat-label style="float:left;font-size: 12px;color:blue;padding-left: 2%;text-decoration: underline;"><i>(In INR Millions)</i></mat-label> -->
       <table class="beta-table">
         <thead class="sticky-header">
           <tr class="t-header">
             <th colspan="2"></th>
             <th colspan="2" class="enhance-beta-label" style="padding-left: 4% !important;">Book Value of</th>
             <th colspan="2" class="enhance-beta-label" style="padding-left: 2% !important;">Market Value of</th>
-            <th colspan="4" style="text-align: right;"><mat-label style="float:right;font-size: 12px;color:blue;padding-right: 6%;text-decoration: underline;cursor: pointer;">(In Millions)</mat-label></th>
+            <th colspan="4" style="text-align: right;"></th>
           </tr>
           <tr class="t-header">
             <th>Company Id</th>
             <th>Company Name</th>
-            <th>Debt</th>
-            <th>Preferred Equity</th>
-            <th>Equity</th>
-            <th>Capital</th>
+            <th>Debt <mat-label style="font-size: 10px;text-decoration: underline;cursor: pointer;">(In mn)</mat-label></th>
+            <th>Preferred Equity <mat-label style="font-size: 10px;text-decoration: underline;cursor: pointer;">(In mn)</mat-label></th>
+            <th>Equity <mat-label style="font-size: 10px;text-decoration: underline;cursor: pointer;">(In mn)</mat-label></th>
+            <th>Capital <mat-label style="font-size: 10px;text-decoration: underline;cursor: pointer;">(In mn)</mat-label></th>
             <th>Debt to capital</th>
             <th>Equity to capital</th>
             <th *ngIf="hasLeveredBeta">Levered Beta</th>
