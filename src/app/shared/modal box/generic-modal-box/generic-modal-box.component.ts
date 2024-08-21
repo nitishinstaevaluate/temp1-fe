@@ -562,12 +562,22 @@ get downloadTemplate() {
     },(error)=>{
       this.modSelLoader = false;
       snackBarRef.dismiss();
-      this.snackBar.open('File upload failed','Ok',{
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom',
-        duration: 4000,
-        panelClass: 'app-notification-error'
-      })
+      if(error?.error?.message){
+        this.snackBar.open(`${error?.error?.message}`,'Ok',{
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 60000,
+          panelClass: 'app-notification-error'
+        })
+      }
+      else{
+        this.snackBar.open('File upload failed','Ok',{
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 4000,
+          panelClass: 'app-notification-error'
+        })
+      }
     });
   }
 
