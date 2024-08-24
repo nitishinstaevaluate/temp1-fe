@@ -850,7 +850,7 @@
             <td style="font-size: 11px !important;padding: 1%;" class="make-light">Change In NCA</td>
             <td style="font-size: 11px !important;padding: 1%;text-align: center;" class="make-light"><a  target="_blank">{{ data?.terminalYearWorking?.nca ? formatNumber(data?.terminalYearWorking?.nca) : '-'}}</a></td>
           </tr>
-          <tr class="content">
+          <tr class="content" *ngIf="data.isFcfe">
             <td style="font-size: 11px !important;padding: 1%;" class="make-light">Change In Borrowings</td>
             <td style="font-size: 11px !important;padding: 1%;text-align: center;" class="make-light"><a  target="_blank">{{ data?.terminalYearWorking?.changeInBorrowings ? formatNumber(data?.terminalYearWorking?.changeInBorrowings) : '-'}}</a></td>
           </tr>
