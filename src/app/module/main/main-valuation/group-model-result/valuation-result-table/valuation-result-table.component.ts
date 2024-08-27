@@ -718,34 +718,43 @@ recalculateCcmValuation(companyData:any){
   })
 }
 
-exportValuation( companyName:any, format:string, model:any, reportId:any){
+exportValuation( companyName:any, format:string, model:any, reportId:any, disableMultiReport = true){
   // this.processLoader = true;
 
   if(format === 'docx'){
     const saveAsFileName = `${companyName}.docx`;
-    this.downloadValuation(model, 'DOCX', saveAsFileName, reportId);
+    this.downloadValuation(model, 'DOCX', saveAsFileName, reportId, disableMultiReport);
   }
   else if (format === 'pdf'){
     const saveAsFileName = `${companyName}.pdf`;
-    this.downloadValuation(model, 'PDF', saveAsFileName, reportId);
+    this.downloadValuation(model, 'PDF', saveAsFileName, reportId, disableMultiReport);
   }
   else if (format === 'xlsx'){
     const saveAsFileName = `${companyName}.xlsx`;
-    this.downloadValuation(model, 'XLSX', saveAsFileName, reportId);
+    this.downloadValuation(model, 'XLSX', saveAsFileName, reportId, disableMultiReport);
   }
 }
 
-downloadValuation(model:any, format:any, saveAsFileName:any, reportId:any){
+downloadValuation(model:any, format:any, saveAsFileName:any, reportId:any, disableMultiReport = false){
+  this.isLoader = true;
+  const snackBarRef = this.snackbar.open('Exporting result, please wait','',{
+    horizontalPosition: 'right',
+    verticalPosition: 'top',
+    duration: -1,
+    panelClass: 'app-notification-success',
+  })
   switch(true){
     case model === MODELS.RULE_ELEVEN_UA:
       this.excelAndReportService.exportRulElevenUaValuation(reportId, format).subscribe((response)=>{
-        // this.processLoader = false;
+        this.isLoader = false;
+        snackBarRef.dismiss();
         if(response){
           saveAs(response, saveAsFileName);
         }
       }, (error)=>{
-        // this.processLoader = false;
-        this.snackbar.open('backend error - Mrl generation for Eleven Ua failed', 'OK', {
+        snackBarRef.dismiss();
+        this.isLoader = false;
+        this.snackbar.open('backend error - export failed', 'OK', {
           horizontalPosition: 'right',
           verticalPosition: 'top',
           duration: 5000,
@@ -755,14 +764,16 @@ downloadValuation(model:any, format:any, saveAsFileName:any, reportId:any){
     break;
 
     default:
-      this.excelAndReportService.exportValuation(reportId, model, true, this.processStateId, this.terminalValueSelectedType, format).subscribe((response)=>{
-        // this.processLoader = false;
+      this.excelAndReportService.exportValuation(reportId, model, disableMultiReport, this.processStateId, this.terminalValueSelectedType, format).subscribe((response)=>{
+        snackBarRef.dismiss();
+        this.isLoader = false;
         if(response as Blob){
           saveAs(response, saveAsFileName);
         }
       },(error)=>{
-        // this.processLoader = false;
-        this.snackbar.open('backend error - Mrl generation failed', 'OK', {
+        snackBarRef.dismiss();
+        this.isLoader = false;
+        this.snackbar.open('backend error - export failed', 'OK', {
           horizontalPosition: 'right',
           verticalPosition: 'top',
           duration: 5000,

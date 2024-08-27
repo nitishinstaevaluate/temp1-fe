@@ -36,20 +36,66 @@
       <button mat-stroked-button class="terminal-working-button" style="width: 17%;color: white;margin-right: 2%;" (click)="sensitivityAnalysis('FCFE')" *ngIf="userAccess">
        Sensitivity Analysis
       </button>
-      <!-- <div style="display: flex;width: 15%;">
-        <button mat-stroked-button class="exp" style="margin-left: auto;width: 60%;">
-          <a class="exp-a" [href]="HOST + 'upload/generate/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/FCFE/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType" download>Export</a>
-        </button>
-      </div> -->
-      <div class="dropdown" (mouseenter)="isDropdownOpen = true" (mouseleave)="isDropdownOpen = false">
-        <button class="dropdown-toggle" mat-stroked-button >
+      <div class="dropdown">
+        <button [matMenuTriggerFor]="fcfeMenu" class="dropdown-toggle" #trigger="matMenuTrigger" (mouseenter)="trigger.openMenu()" mat-stroked-button>
           Export
         </button>
-        <div class="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
-          <button class="dropdown-item"><a (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'pdf', 'FCFE', (transferStepperthree?.formFourData?.appData?.reportId || null))">Export as PDF</a></button>
-          <button class="dropdown-item"><a (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'docx', 'FCFE', (transferStepperthree?.formFourData?.appData?.reportId || null))">Export as Docx</a></button>
-          <button class="dropdown-item"><a (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'xlsx', 'FCFE', (transferStepperthree?.formFourData?.appData?.reportId || null))">Export as Excel</a></button>
-        </div>
+          <mat-menu  #fcfeMenu="matMenu" xPosition="before">
+              <button mat-menu-item class="action-button" [matMenuTriggerFor]="exportSingleOptions">
+                <span style="width: 190px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+                  <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/sheet.png" alt="">
+                <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export Current</span>
+              </span>
+              </button>
+              <button mat-menu-item class="action-button" [matMenuTriggerFor]="exportAllOptions" *ngIf="transferStepperthree?.formOneAndThreeData?.model?.length > 1">
+                <span style="width: 190px;display: block;text-align: left;padding-left: 9%;" class="download-label">
+                  <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/document.png" alt="">
+                <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export All</span>
+              </span>
+              </button>
+          </mat-menu>
+
+        <mat-menu #exportAllOptions="matMenu" xPosition="before">
+          <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'pdf', 'FCFE', (transferStepperthree?.formFourData?.appData?.reportId || null), false)">
+            <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+              <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/pdf.png" alt="">
+            <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as PDF</span>
+          </span>
+          </button>
+          <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'docx', 'FCFE', (transferStepperthree?.formFourData?.appData?.reportId || null), false)">
+            <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+              <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/doc.png" alt="">
+            <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Docx</span>
+          </span>
+          </button>
+          <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'xlsx', 'FCFE', (transferStepperthree?.formFourData?.appData?.reportId || null), false)">
+            <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="download-label">
+              <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/xls.png" alt="">
+            <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Excel</span>
+          </span>
+          </button>
+        </mat-menu>
+
+        <mat-menu #exportSingleOptions="matMenu" xPosition="before">
+          <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'pdf', 'FCFE', (transferStepperthree?.formFourData?.appData?.reportId || null))">
+            <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+              <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/pdf.png" alt="">
+            <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as PDF</span>
+          </span>
+          </button>
+          <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'docx', 'FCFE', (transferStepperthree?.formFourData?.appData?.reportId || null))">
+            <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+              <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/doc.png" alt="">
+            <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Docx</span>
+          </span>
+          </button>
+          <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'xlsx', 'FCFE', (transferStepperthree?.formFourData?.appData?.reportId || null))">
+            <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="download-label">
+              <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/xls.png" alt="">
+            <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Excel</span>
+          </span>
+          </button>
+        </mat-menu>
       </div>
     </div>
     <div>
@@ -116,20 +162,67 @@
       <button mat-stroked-button class="terminal-working-button" style="width: 17%;color: white;margin-right: 2%;" (click)="sensitivityAnalysis('FCFF')" *ngIf="userAccess">
         Sensitivity Analysis
        </button>
-      <!-- <div style="display: flex;width: 15%;">
-        <button mat-stroked-button class="exp" style="margin-left: auto;width: 60%;">
-          <a class="exp-a" [href]="HOST + 'upload/generate/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/FCFF/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType" download>Export</a>
-        </button>
-      </div> -->
-      <div class="dropdown" (mouseenter)="isDropdownOpen = true" (mouseleave)="isDropdownOpen = false">
-        <button class="dropdown-toggle" mat-stroked-button >
+      <div class="dropdown">
+        <button class="dropdown-toggle" mat-stroked-button [matMenuTriggerFor]="fcffMenu" #trigger="matMenuTrigger" (mouseenter)="trigger.openMenu()">
           Export
         </button>
-        <div class="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
-          <button class="dropdown-item"><a (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'pdf', 'FCFF', (transferStepperthree?.formFourData?.appData?.reportId || null))">Export as PDF</a></button>
-          <button class="dropdown-item"><a (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'docx', 'FCFF', (transferStepperthree?.formFourData?.appData?.reportId || null))">Export as Docx</a></button>
-          <button class="dropdown-item"><a (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'xlsx', 'FCFF', (transferStepperthree?.formFourData?.appData?.reportId || null))">Export as Excel</a></button>
-        </div>
+        <mat-menu #fcffMenu="matMenu" xPosition="before">
+          <button mat-menu-item class="action-button" [matMenuTriggerFor]="exportSingleOptions">
+            <span style="width: 190px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+              <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/sheet.png" alt="">
+            <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export Current</span>
+          </span>
+          </button>
+          <button mat-menu-item class="action-button" [matMenuTriggerFor]="exportAllOptions" *ngIf="transferStepperthree?.formOneAndThreeData?.model?.length > 1">
+            <span style="width: 190px;display: block;text-align: left;padding-left: 9%;" class="download-label">
+              <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/document.png" alt="">
+            <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export All</span>
+          </span>
+          </button>
+        </mat-menu>
+
+        <mat-menu #exportAllOptions="matMenu" xPosition="before">
+          <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'pdf', 'FCFF', (transferStepperthree?.formFourData?.appData?.reportId || null), false)">
+            <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+              <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/pdf.png" alt="">
+            <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as PDF</span>
+          </span>
+          </button>
+          <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'docx', 'FCFF', (transferStepperthree?.formFourData?.appData?.reportId || null), false)">
+            <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+              <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/doc.png" alt="">
+            <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Docx</span>
+          </span>
+          </button>
+          <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'xlsx', 'FCFF', (transferStepperthree?.formFourData?.appData?.reportId || null), false)">
+            <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="download-label">
+              <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/xls.png" alt="">
+            <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Excel</span>
+          </span>
+          </button>
+        </mat-menu>
+
+        <mat-menu #exportSingleOptions="matMenu" xPosition="before">
+          <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'pdf', 'FCFF', (transferStepperthree?.formFourData?.appData?.reportId || null))">
+            <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+              <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/pdf.png" alt="">
+            <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as PDF</span>
+          </span>
+          </button>
+          <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'docx', 'FCFF', (transferStepperthree?.formFourData?.appData?.reportId || null))">
+            <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+              <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/doc.png" alt="">
+            <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Docx</span>
+          </span>
+          </button>
+          <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'xlsx', 'FCFF', (transferStepperthree?.formFourData?.appData?.reportId || null))">
+            <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="download-label">
+              <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/xls.png" alt="">
+            <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Excel</span>
+          </span>
+          </button>
+        </mat-menu>
+
       </div>
     </div>
     <div>
@@ -160,20 +253,66 @@
     </div>
   </mat-tab>
   <mat-tab label="Excess Earning" *ngIf = "excessEarn">
-    <!-- <div class="btn" style="text-align: right;width: 100%;">
-      <button mat-stroked-button class="exp">
-        <a class="exp-a" [href]="HOST + 'upload/generate/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') +'/Excess_Earnings/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType" download>Export</a>
-      </button>
-    </div> -->
-    <div class="dropdown" style="float: right;padding: 1%;" (mouseenter)="isDropdownOpen = true" (mouseleave)="isDropdownOpen = false">
-      <button class="dropdown-toggle" mat-stroked-button >
+    <div class="dropdown" style="float: right;padding: 1%;">
+      <button class="dropdown-toggle" mat-stroked-button [matMenuTriggerFor]="excessEarningMenu" #trigger="matMenuTrigger" (mouseenter)="trigger.openMenu()">
         Export
       </button>
-      <div class="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
-        <button class="dropdown-item"><a (click)="exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'pdf', 'Excess_Earnings', (transferStepperthree?.formFourData?.appData?.reportId || null))">Export as PDF</a></button>
-        <button class="dropdown-item"><a (click)="exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'docx', 'Excess_Earnings', (transferStepperthree?.formFourData?.appData?.reportId || null))">Export as Docx</a></button>
-        <button class="dropdown-item"><a (click)="exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'xlsx', 'Excess_Earnings', (transferStepperthree?.formFourData?.appData?.reportId || null))">Export as Excel</a></button>
-      </div>
+      <mat-menu #excessEarningMenu="matMenu" xPosition="before">
+        <button mat-menu-item class="action-button" [matMenuTriggerFor]="exportSingleOptions">
+          <span style="width: 190px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/sheet.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export Current</span>
+        </span>
+        </button>
+        <button mat-menu-item class="action-button" [matMenuTriggerFor]="exportAllOptions" *ngIf="transferStepperthree?.formOneAndThreeData?.model?.length > 1">
+          <span style="width: 190px;display: block;text-align: left;padding-left: 9%;" class="download-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/document.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export All</span>
+        </span>
+        </button>
+      </mat-menu>
+
+      <mat-menu #exportAllOptions="matMenu" xPosition="before">
+        <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'pdf', 'Excess_Earnings', (transferStepperthree?.formFourData?.appData?.reportId || null), false)">
+          <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/pdf.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as PDF</span>
+        </span>
+        </button>
+        <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'docx', 'Excess_Earnings', (transferStepperthree?.formFourData?.appData?.reportId || null), false)">
+          <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/doc.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Docx</span>
+        </span>
+        </button>
+        <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'xlsx', 'Excess_Earnings', (transferStepperthree?.formFourData?.appData?.reportId || null), false)">
+          <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="download-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/xls.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Excel</span>
+        </span>
+        </button>
+      </mat-menu>
+
+      <mat-menu #exportSingleOptions="matMenu" xPosition="before">
+        <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'pdf', 'Excess_Earnings', (transferStepperthree?.formFourData?.appData?.reportId || null))">
+          <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/pdf.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as PDF</span>
+        </span>
+        </button>
+        <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'docx', 'Excess_Earnings', (transferStepperthree?.formFourData?.appData?.reportId || null))">
+          <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/doc.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Docx</span>
+        </span>
+        </button>
+        <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'xlsx', 'Excess_Earnings', (transferStepperthree?.formFourData?.appData?.reportId || null))">
+          <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="download-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/xls.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Excel</span>
+        </span>
+        </button>
+      </mat-menu>
     </div>
     <div>
       <h5 class="company-head-excEarn">Excess Earning Result</h5>
@@ -196,20 +335,66 @@
   </div>
   </mat-tab> 
   <mat-tab [label]="checkIndustryOrCompany() ? 'Comparable Companies' : 'Comparable Transaction'" *ngIf="relativeVal">
-    <!-- <div class="btn" style="text-align: right;width: 100%;">
-      <button mat-stroked-button class="exp">
-        <a class="exp-a" [href]="HOST + 'upload/generate/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + (checkIndustryOrCompany() ? '/Relative_Valuation/' : '/CTM/') + 'true' + '/' + processStateId + '/' + terminalValueSelectedType" download>Export</a>
-      </button>
-    </div> -->
-    <div class="dropdown" style="float: right;padding: 1%;" (mouseenter)="isDropdownOpen = true" (mouseleave)="isDropdownOpen = false">
-      <button class="dropdown-toggle" mat-stroked-button >
+    <div class="dropdown" style="float: right;padding: 1%;" >
+      <button class="dropdown-toggle" mat-stroked-button [matMenuTriggerFor]="relativeValuationMenu" #trigger="matMenuTrigger" (mouseenter)="trigger.openMenu()">
         Export
       </button>
-      <div class="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
-        <button class="dropdown-item"><a (click)="exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'pdf', (checkIndustryOrCompany() ? 'Relative_Valuation' : 'CTM'), (transferStepperthree?.formFourData?.appData?.reportId || null))">Export as PDF</a></button>
-        <button class="dropdown-item"><a (click)="exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'docx', (checkIndustryOrCompany() ? 'Relative_Valuation' : 'CTM'), (transferStepperthree?.formFourData?.appData?.reportId || null))">Export as Docx</a></button>
-        <button class="dropdown-item"><a (click)="exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'xlsx', (checkIndustryOrCompany() ? 'Relative_Valuation' : 'CTM'), (transferStepperthree?.formFourData?.appData?.reportId || null))">Export as Excel</a></button>
-      </div>
+      <mat-menu #relativeValuationMenu="matMenu" xPosition="before">
+        <button mat-menu-item class="action-button" [matMenuTriggerFor]="exportSingleOptions">
+          <span style="width: 190px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/sheet.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export Current</span>
+        </span>
+        </button>
+        <button mat-menu-item class="action-button" [matMenuTriggerFor]="exportAllOptions" *ngIf="transferStepperthree?.formOneAndThreeData?.model?.length > 1">
+          <span style="width: 190px;display: block;text-align: left;padding-left: 9%;" class="download-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/document.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export All</span>
+        </span>
+        </button>
+      </mat-menu>
+
+      <mat-menu #exportAllOptions="matMenu" xPosition="before">
+        <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'pdf', 'Relative_Valuation', (transferStepperthree?.formFourData?.appData?.reportId || null), false)">
+          <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/pdf.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as PDF</span>
+        </span>
+        </button>
+        <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'docx', 'Relative_Valuation', (transferStepperthree?.formFourData?.appData?.reportId || null), false)">
+          <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/doc.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Docx</span>
+        </span>
+        </button>
+        <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'xlsx', 'Relative_Valuation', (transferStepperthree?.formFourData?.appData?.reportId || null), false)">
+          <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="download-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/xls.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Excel</span>
+        </span>
+        </button>
+      </mat-menu>
+
+      <mat-menu #exportSingleOptions="matMenu" xPosition="before">
+        <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'pdf', 'Relative_Valuation', (transferStepperthree?.formFourData?.appData?.reportId || null))">
+          <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/pdf.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as PDF</span>
+        </span>
+        </button>
+        <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'docx', 'Relative_Valuation', (transferStepperthree?.formFourData?.appData?.reportId || null))">
+          <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/doc.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Docx</span>
+        </span>
+        </button>
+        <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'xlsx', 'Relative_Valuation', (transferStepperthree?.formFourData?.appData?.reportId || null))">
+          <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="download-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/xls.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Excel</span>
+        </span>
+        </button>
+      </mat-menu>
     </div>
     <div>
         <!-- <h5 class="company-head-relativeval">Relative Valuations Result</h5> -->
@@ -224,20 +409,66 @@
     </div>  
   </mat-tab>
   <mat-tab label="Net Asset Value" *ngIf="nav">
-    <!-- <div class="btn" style="text-align: right;width: 100%;">
-      <button mat-stroked-button class="exp">
-        <a class="exp-a" [href]="HOST + 'upload/generate/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + '/NAV/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType" download>Export</a>
-      </button>
-    </div> -->
-    <div class="dropdown" style="float: right;padding: 1%;" (mouseenter)="isDropdownOpen = true" (mouseleave)="isDropdownOpen = false">
-      <button class="dropdown-toggle" mat-stroked-button >
+    <div class="dropdown" style="float: right;padding: 1%;">
+      <button class="dropdown-toggle" mat-stroked-button [matMenuTriggerFor]="navMenu" #trigger="matMenuTrigger" (mouseenter)="trigger.openMenu()">
         Export
       </button>
-      <div class="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
-        <button class="dropdown-item"><a (click)="exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'pdf', 'NAV', (transferStepperthree?.formFourData?.appData?.reportId || null))">Export as PDF</a></button>
-        <button class="dropdown-item"><a (click)="exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'docx', 'NAV', (transferStepperthree?.formFourData?.appData?.reportId || null))">Export as Docx</a></button>
-        <button class="dropdown-item"><a (click)="exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'xlsx', 'NAV', (transferStepperthree?.formFourData?.appData?.reportId || null))">Export as Excel</a></button>
-      </div>
+      <mat-menu #navMenu="matMenu" xPosition="before">
+        <button mat-menu-item class="action-button" [matMenuTriggerFor]="exportSingleOptions">
+          <span style="width: 190px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/sheet.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export Current</span>
+        </span>
+        </button>
+        <button mat-menu-item class="action-button" [matMenuTriggerFor]="exportAllOptions" *ngIf="transferStepperthree?.formOneAndThreeData?.model?.length > 1">
+          <span style="width: 190px;display: block;text-align: left;padding-left: 9%;" class="download-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/document.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export All</span>
+        </span>
+        </button>
+      </mat-menu>
+
+      <mat-menu #exportAllOptions="matMenu" xPosition="before">
+        <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'pdf', 'NAV', (transferStepperthree?.formFourData?.appData?.reportId || null), false)">
+          <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/pdf.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as PDF</span>
+        </span>
+        </button>
+        <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'docx', 'NAV', (transferStepperthree?.formFourData?.appData?.reportId || null), false)">
+          <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/doc.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Docx</span>
+        </span>
+        </button>
+        <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'xlsx', 'NAV', (transferStepperthree?.formFourData?.appData?.reportId || null), false)">
+          <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="download-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/xls.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Excel</span>
+        </span>
+        </button>
+      </mat-menu>
+
+      <mat-menu #exportSingleOptions="matMenu" xPosition="before">
+        <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'pdf', 'NAV', (transferStepperthree?.formFourData?.appData?.reportId || null))">
+          <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/pdf.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as PDF</span>
+        </span>
+        </button>
+        <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'docx', 'NAV', (transferStepperthree?.formFourData?.appData?.reportId || null))">
+          <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/doc.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Docx</span>
+        </span>
+        </button>
+        <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'xlsx', 'NAV', (transferStepperthree?.formFourData?.appData?.reportId || null))">
+          <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="download-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/xls.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Excel</span>
+        </span>
+        </button>
+      </mat-menu>
     </div>
     <div>
       <!-- <h5 class="head-nav">NAV Result</h5> -->
@@ -286,15 +517,71 @@
     </div>
   </mat-tab>
   <mat-tab label="Market Price" *ngIf="marketPrice">
-    <div class="dropdown" style="float: right;padding: 1%;" (mouseenter)="isDropdownOpen = true" (mouseleave)="isDropdownOpen = false">
-      <button class="dropdown-toggle" mat-stroked-button >
+    <div class="dropdown" style="float: right;padding: 1%;">
+      <button class="dropdown-toggle" mat-stroked-button [matMenuTriggerFor]="marketPriceMenu" #trigger="matMenuTrigger" (mouseenter)="trigger.openMenu()">
         Export
       </button>
-      <div class="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
+      <!-- <div class="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
         <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + '/Market_Price/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/PDF'"  download>Export as PDF</a></button>
         <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + '/Market_Price/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/DOCX'" download>Export as Docx</a></button>
         <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + '/Market_Price/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/XLSX'" download>Export as Excel</a></button>
-      </div>
+      </div> -->
+      <mat-menu #marketPriceMenu="matMenu" xPosition="before">
+        <button mat-menu-item class="action-button" [matMenuTriggerFor]="exportSingleOptions">
+          <span style="width: 190px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/sheet.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export Current</span>
+        </span>
+        </button>
+        <button mat-menu-item class="action-button" [matMenuTriggerFor]="exportAllOptions" *ngIf="transferStepperthree?.formOneAndThreeData?.model?.length > 1">
+          <span style="width: 190px;display: block;text-align: left;padding-left: 9%;" class="download-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/document.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export All</span>
+        </span>
+        </button>
+      </mat-menu>
+
+      <mat-menu #exportAllOptions="matMenu" xPosition="before">
+        <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'pdf', 'Market_Price', (transferStepperthree?.formFourData?.appData?.reportId || null), false)">
+          <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/pdf.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as PDF</span>
+        </span>
+        </button>
+        <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'docx', 'Market_Price', (transferStepperthree?.formFourData?.appData?.reportId || null), false)">
+          <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/doc.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Docx</span>
+        </span>
+        </button>
+        <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'xlsx', 'Market_Price', (transferStepperthree?.formFourData?.appData?.reportId || null), false)">
+          <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="download-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/xls.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Excel</span>
+        </span>
+        </button>
+      </mat-menu>
+
+      <mat-menu #exportSingleOptions="matMenu" xPosition="before">
+        <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'pdf', 'Market_Price', (transferStepperthree?.formFourData?.appData?.reportId || null))">
+          <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/pdf.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as PDF</span>
+        </span>
+        </button>
+        <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'docx', 'Market_Price', (transferStepperthree?.formFourData?.appData?.reportId || null))">
+          <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/doc.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Docx</span>
+        </span>
+        </button>
+        <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'xlsx', 'Market_Price', (transferStepperthree?.formFourData?.appData?.reportId || null))">
+          <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="download-label">
+            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/xls.png" alt="">
+          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Excel</span>
+        </span>
+        </button>
+      </mat-menu>
     </div>
     <div>
       <div class="table-container" style="display: block;">
@@ -306,9 +593,11 @@
 <p class="currency-unit" *ngIf="transferStepperthree?.formOneAndThreeData?.excelSheetId && !isOnlyMarketApproach()">Amount in {{transferStepperthree?.formOneAndThreeData?.currencyUnit}} 
   {{transferStepperthree?.formOneAndThreeData?.reportingUnit === 'absolute' ? '' : (transferStepperthree?.formOneAndThreeData?.reportingUnit)}}</p>
 </div>
-<div class="loader-overlay" *ngIf="isLoader">
+<!-- <div class="loader-overlay" *ngIf="isLoader">
   <div class="loader">
     <div class="loader-spinner"></div>
     <div class="loader-message">Please wait...</div>
   </div>
+</div> -->
+<div class="loader-overlay" *ngIf="isLoader">
 </div>
