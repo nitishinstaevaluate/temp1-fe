@@ -221,6 +221,9 @@ body {
     color: rgb(225, 29, 29) !important;
   
   }
+  ::ng-deep .app-notification-success .mdc-snackbar__surface{
+    z-index: 999;
+  }
   ::ng-deep .app-notification-success .mdc-snackbar__surface .mat-mdc-snack-bar-label{
     color: #0cd184 !important;
   }
