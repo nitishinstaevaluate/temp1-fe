@@ -84,8 +84,9 @@ export class ExcelAndReportService {
     });
   }
 
-  exportValuation(reportId: any, model: any, specificity: boolean, processStateId: any, terminalValueSelectedType: any, formatType:any){
-    return this.http.get(`${this.HOST}upload/export-valuation/${reportId || 'null'}/${model}/${specificity}/${processStateId}/${terminalValueSelectedType}/${formatType}`,
+  exportValuation(payload: any){
+    return this.http.post(`${this.HOST}upload/export-valuation`,
+      payload, 
       {
         responseType: 'blob'
       }

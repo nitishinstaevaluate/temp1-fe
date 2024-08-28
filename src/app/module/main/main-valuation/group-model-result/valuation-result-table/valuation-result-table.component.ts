@@ -65,6 +65,7 @@ processStateId:any;
 isDropdownOpen = false;
 ccmCompanyTableLoader = false;
 userAccess = false;
+fifthStageDetails: any;
 getKeys(navData:any){
 this.dataSourceNav =[navData].map((response:any)=>{
   let obj = Object.values(response);
@@ -647,12 +648,12 @@ async loadTerminalValueWorking(){
 loadStageFiveDetails(){
   this.processManagerService.getStageWiseDetails(localStorage.getItem('processStateId'), 'fifthStageInput').subscribe((response:any)=>{
     if(response.status){
-      const fifthStageDetails = response.data.fifthStageInput;
-      if(fifthStageDetails?.terminalValueSelectedType){
-        this.terminalValueSelectedType = fifthStageDetails.terminalValueSelectedType
+      this.fifthStageDetails = response.data.fifthStageInput;
+      if(this.fifthStageDetails?.terminalValueSelectedType){
+        this.terminalValueSelectedType = this.fifthStageDetails.terminalValueSelectedType
       }
       if(this.transferStepperthree?.formOneAndThreeData?.model?.includes(MODELS.FCFE) || this.transferStepperthree?.formOneAndThreeData?.model?.includes(MODELS.FCFF)){
-        this.terminalValueOptions(fifthStageDetails?.terminalValueSelectedType || this.terminalValueSelectedType);
+        this.terminalValueOptions(this.fifthStageDetails?.terminalValueSelectedType || this.terminalValueSelectedType);
       }else{
         this.loadValuationTable()
       }
@@ -718,34 +719,43 @@ recalculateCcmValuation(companyData:any){
   })
 }
 
-exportValuation( companyName:any, format:string, model:any, reportId:any){
+exportValuation( companyName:any, format:string, model:any, reportId:any, disableMultiReport = true){
   // this.processLoader = true;
 
   if(format === 'docx'){
     const saveAsFileName = `${companyName}.docx`;
-    this.downloadValuation(model, 'DOCX', saveAsFileName, reportId);
+    this.downloadValuation(model, 'DOCX', saveAsFileName, reportId, disableMultiReport);
   }
   else if (format === 'pdf'){
     const saveAsFileName = `${companyName}.pdf`;
-    this.downloadValuation(model, 'PDF', saveAsFileName, reportId);
+    this.downloadValuation(model, 'PDF', saveAsFileName, reportId, disableMultiReport);
   }
   else if (format === 'xlsx'){
     const saveAsFileName = `${companyName}.xlsx`;
-    this.downloadValuation(model, 'XLSX', saveAsFileName, reportId);
+    this.downloadValuation(model, 'XLSX', saveAsFileName, reportId, disableMultiReport);
   }
 }
 
-downloadValuation(model:any, format:any, saveAsFileName:any, reportId:any){
+downloadValuation(model:any, format:any, saveAsFileName:any, reportId:any, disableMultiReport = false){
+  this.isLoader = true;
+  const snackBarRef = this.snackbar.open('Exporting result, please wait','',{
+    horizontalPosition: 'right',
+    verticalPosition: 'top',
+    duration: -1,
+    panelClass: 'app-notification-success',
+  })
   switch(true){
     case model === MODELS.RULE_ELEVEN_UA:
       this.excelAndReportService.exportRulElevenUaValuation(reportId, format).subscribe((response)=>{
-        // this.processLoader = false;
+        this.isLoader = false;
+        snackBarRef.dismiss();
         if(response){
           saveAs(response, saveAsFileName);
         }
       }, (error)=>{
-        // this.processLoader = false;
-        this.snackbar.open('backend error - Mrl generation for Eleven Ua failed', 'OK', {
+        snackBarRef.dismiss();
+        this.isLoader = false;
+        this.snackbar.open('backend error - export failed', 'OK', {
           horizontalPosition: 'right',
           verticalPosition: 'top',
           duration: 5000,
@@ -755,14 +765,29 @@ downloadValuation(model:any, format:any, saveAsFileName:any, reportId:any){
     break;
 
     default:
-      this.excelAndReportService.exportValuation(reportId, model, true, this.processStateId, this.terminalValueSelectedType, format).subscribe((response)=>{
-        // this.processLoader = false;
+    let modelWeightage;  
+    this.calculationService.modelWeightageData.subscribe((weightageData)=>{
+      modelWeightage = weightageData;
+      });
+      const payload = {
+        id: reportId, 
+        model, 
+        specificity: disableMultiReport, 
+        processId: this.processStateId, 
+        terminalValueType: this.terminalValueSelectedType, 
+        formatType: format,
+        modelWeightageData: modelWeightage || this.fifthStageDetails.totalModelWeightageValue
+      }
+      this.excelAndReportService.exportValuation(payload).subscribe((response)=>{
+        snackBarRef.dismiss();
+        this.isLoader = false;
         if(response as Blob){
           saveAs(response, saveAsFileName);
         }
       },(error)=>{
-        // this.processLoader = false;
-        this.snackbar.open('backend error - Mrl generation failed', 'OK', {
+        snackBarRef.dismiss();
+        this.isLoader = false;
+        this.snackbar.open('backend error - export failed', 'OK', {
           horizontalPosition: 'right',
           verticalPosition: 'top',
           duration: 5000,
