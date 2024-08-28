@@ -65,6 +65,7 @@ processStateId:any;
 isDropdownOpen = false;
 ccmCompanyTableLoader = false;
 userAccess = false;
+fifthStageDetails: any;
 getKeys(navData:any){
 this.dataSourceNav =[navData].map((response:any)=>{
   let obj = Object.values(response);
@@ -647,12 +648,12 @@ async loadTerminalValueWorking(){
 loadStageFiveDetails(){
   this.processManagerService.getStageWiseDetails(localStorage.getItem('processStateId'), 'fifthStageInput').subscribe((response:any)=>{
     if(response.status){
-      const fifthStageDetails = response.data.fifthStageInput;
-      if(fifthStageDetails?.terminalValueSelectedType){
-        this.terminalValueSelectedType = fifthStageDetails.terminalValueSelectedType
+      this.fifthStageDetails = response.data.fifthStageInput;
+      if(this.fifthStageDetails?.terminalValueSelectedType){
+        this.terminalValueSelectedType = this.fifthStageDetails.terminalValueSelectedType
       }
       if(this.transferStepperthree?.formOneAndThreeData?.model?.includes(MODELS.FCFE) || this.transferStepperthree?.formOneAndThreeData?.model?.includes(MODELS.FCFF)){
-        this.terminalValueOptions(fifthStageDetails?.terminalValueSelectedType || this.terminalValueSelectedType);
+        this.terminalValueOptions(this.fifthStageDetails?.terminalValueSelectedType || this.terminalValueSelectedType);
       }else{
         this.loadValuationTable()
       }
@@ -764,7 +765,20 @@ downloadValuation(model:any, format:any, saveAsFileName:any, reportId:any, disab
     break;
 
     default:
-      this.excelAndReportService.exportValuation(reportId, model, disableMultiReport, this.processStateId, this.terminalValueSelectedType, format).subscribe((response)=>{
+    let modelWeightage;  
+    this.calculationService.modelWeightageData.subscribe((weightageData)=>{
+      modelWeightage = weightageData;
+      });
+      const payload = {
+        id: reportId, 
+        model, 
+        specificity: disableMultiReport, 
+        processId: this.processStateId, 
+        terminalValueType: this.terminalValueSelectedType, 
+        formatType: format,
+        modelWeightageData: modelWeightage || this.fifthStageDetails.totalModelWeightageValue
+      }
+      this.excelAndReportService.exportValuation(payload).subscribe((response)=>{
         snackBarRef.dismiss();
         this.isLoader = false;
         if(response as Blob){

@@ -69,6 +69,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
           })
           this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
             if(response.status){
+              this.calculationsService.modelWeightageData.next(response?.result);
               this.totalModelWeightageValue = response.result;
               this.data = response?.result?.modelValue;
               this.finalWeightedValue = response?.result?.weightedVal ?? 0;
@@ -225,7 +226,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
           }
         }
         else if(response.model === 'Market_Price'){
-          this.marketPriceValuation = response.equityValue;
+          this.marketPriceValuation = response.valuation;
           const marketPriceIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "Market_Price");
           if(marketPriceIndex === -1)
           {
@@ -332,7 +333,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
           }
         }
         else if(response.model === 'Market_Price'){
-          this.marketPriceValuation = response.equityValue;
+          this.marketPriceValuation = response.valuation;
           const marketPriceIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "Market_Price");
           if(marketPriceIndex === -1)
           {
@@ -345,6 +346,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
       });
       this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
         if(response.status){
+          this.calculationsService.modelWeightageData.next(response?.result);
           this.totalModelWeightageValue = response.result;
           this.data = response?.result?.modelValue;
           this.finalWeightedValue = response?.result?.weightedVal ?? 0;
@@ -371,6 +373,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
       });
       this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
         if(response.status){
+          this.calculationsService.modelWeightageData.next(response?.result);
           this.totalModelWeightageValue = response.result;
           this.data = response?.result?.modelValue;
           this.finalWeightedValue = response?.result?.weightedVal ?? 0;
@@ -452,6 +455,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
 
       this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
         if(response.status){
+          this.calculationsService.modelWeightageData.next(response?.result);
           this.totalModelWeightageValue = response.result;
           this.data = response?.result?.modelValue;
           this.finalWeightedValue = response?.result?.weightedVal ?? 0;

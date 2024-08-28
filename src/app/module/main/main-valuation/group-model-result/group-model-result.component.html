@@ -257,9 +257,9 @@
         <thead>
           <tr class="header">
             <th>Model</th>
-            <th>Indicated Value ({{transferStepperthree?.formOneAndThreeData?.currencyUnit ? transferStepperthree?.formOneAndThreeData?.currencyUnit : 'INR'}})</th>
-            <th>Weight</th>
-            <th>Weighted Value ({{transferStepperthree?.formOneAndThreeData?.currencyUnit ? transferStepperthree?.formOneAndThreeData?.currencyUnit : 'INR'}} {{transferStepperthree?.formOneAndThreeData?.reportingUnit ? transferStepperthree?.formOneAndThreeData?.reportingUnit : 'Lakhs'}})</th>
+            <th>Value per share ({{transferStepperthree?.formOneAndThreeData?.currencyUnit ? transferStepperthree?.formOneAndThreeData?.currencyUnit : 'INR'}})</th>
+            <th>Weights</th>
+            <th>Weighted Value ({{transferStepperthree?.formOneAndThreeData?.currencyUnit ? transferStepperthree?.formOneAndThreeData?.currencyUnit : 'INR'}})</th>
           </tr>
         </thead>
         <tbody>
@@ -270,7 +270,7 @@
             <td class="make-light">{{ item.weightedValue | currency:'INR':'symbol':'1.0-2' }}</td>
           </tr>
           <tr class="content">
-            <td colspan="3" class="bottom-head make-blue">Weighted Average Value</td>
+            <td colspan="3" class="bottom-head make-blue">Weighted Value per Share ({{transferStepperthree?.formOneAndThreeData?.currencyUnit ? transferStepperthree?.formOneAndThreeData?.currencyUnit : 'INR'}})</td>
             <td class="bottom-val make-light">{{ finalWeightedValue !==0 && finalWeightedValue ? (finalWeightedValue.toFixed(2) | currency:'INR':'symbol':'1.0-2') : finalWeightedValue }}</td>
           </tr>
         </tbody>

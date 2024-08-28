@@ -18,6 +18,7 @@ export class CalculationsService {
   ccmValuationDetector: BehaviorSubject<any> = new BehaviorSubject({status:false});
   multiplesSelector: BehaviorSubject<any> = new BehaviorSubject(null);
   issuanceOfSharesDetector = new Subject<{ status: boolean }>();
+  modelWeightageData: BehaviorSubject<any> = new BehaviorSubject(0);
   
   getCostOfEquity(payload:any){
     return this.http.get(`${HOST}coe/adjcoe/?riskFreeRate=${payload.riskFreeRate}&expMarketReturn=${payload.expMarketReturn}&beta=${payload.beta}&riskPremium=${payload.riskPremium}&coeMethod=${payload.coeMethod}`)
