@@ -31,7 +31,7 @@
       <ng-container *ngIf="checkType(element[column]) && (columnIndex === 0 || columnIndex === 1)">
         <span>{{ element[column] }}</span>
       </ng-container>
-      <ng-container *ngIf="ifOnlyNumber(element) && columnIndex !== 0  && columnIndex === 1 && !checkIfEditable(element)">
+      <ng-container *ngIf="ifOnlyNumber(element) && columnIndex !== 0 && columnIndex !== 1 && !checkIfEditable(element)">
         <span style="font-size: 13px;font-weight: 500;color: #666666;">{{ formatNegativeAndPositiveValues(element[column])}}</span>
       </ng-container>
         <input class="new-inp new-inp-auto" style="text-align: center;color: #666666 !important;font-weight: 500;" (blur)="onInputChange($event.target, column,element)" placeholder="-" type="text" [value]="formatNegativeAndPositiveValues(element[column])" *ngIf="checkIfEditable(element) && columnIndex !== 0 && columnIndex != 1"/>
