@@ -67,21 +67,47 @@ ccmCompanyTableLoader = false;
 userAccess = false;
 fifthStageDetails: any;
 getKeys(navData:any){
-this.dataSourceNav =[navData].map((response:any)=>{
+this.dataSourceNav =[navData].flatMap((response:any)=>{
   let obj = Object.values(response);
-  obj = obj.map((objVal:any)=>{
-    return {
+  obj = obj.flatMap((objVal:any)=>{
+    const result =  {
       fieldName:objVal?.fieldName,
       bookValue:objVal?.bookValue ? parseFloat(objVal.bookValue) : objVal.bookValue,
-      fairValue:objVal?.fairValue  ? parseFloat(objVal.fairValue) : objVal.value ? parseFloat(objVal.value) : objVal.fairValue,
-      type:objVal?.type === 'book_value' ? 'Book Value' : objVal.type === 'market_value' ? 'Market Value' : objVal.type
+      fairValue:objVal?.fairValue  ? 
+      parseFloat(objVal.fairValue) : 
+      objVal.value ? 
+        parseFloat(objVal.value) : 
+        objVal.fairValue,
+      type:objVal?.type === 'book_value' ? 
+      'Book Value' : 
+      objVal.type === 'market_value' ? 
+        'Market Value' : 
+        objVal.type,
+        header:objVal?.header,
+        subHeader:objVal?.subHeader,
+        mainHead: objVal.mainHead,
+        mainSubHead: objVal.mainSubHead,
+        nestedSubHeader:objVal.nestedSubHeader
     }
+    const outputArray = [];
+
+    if (objVal.reqUBrk) {
+      outputArray.push({fieldName:''});
+    }
+
+    outputArray.push(result);
+
+    if (objVal.reqLBrk) {
+      outputArray.push({fieldName:''});
+    }
+
+    return outputArray;
   })
   return obj;
 })
-this.dataSourceNav=this.dataSourceNav[0];
-this.dataSourceNav.splice(this.dataSourceNav.findIndex((item:any) => item?.fieldName === 'Net Current Assets'),0,{fieldName:''})
-this.dataSourceNav.splice(this.dataSourceNav.findIndex((item:any) => item?.fieldName === 'Firm Value'),0,{fieldName:''})
+// this.dataSourceNav=this.dataSourceNav[0];
+// this.dataSourceNav.splice(this.dataSourceNav.findIndex((item:any) => item?.fieldName === 'Net Current Assets'),0,{fieldName:''})
+// this.dataSourceNav.splice(this.dataSourceNav.findIndex((item:any) => item?.fieldName === 'Firm Value'),0,{fieldName:''})
 }
 
 ngAfterViewInit(): void {
@@ -851,6 +877,10 @@ getStyle(feature: any) {
       break;
   }
   return {}
+}
+
+keyValidator(item:any, key:any){
+  return item[`${key}`]
 }
 }
 

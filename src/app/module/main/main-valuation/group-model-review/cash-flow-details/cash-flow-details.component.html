@@ -1,7 +1,7 @@
 <div class="scroll-container">
     <mat-table [dataSource]="cashFlowDataSource" [ngClass]="contentIsBig(cashFlowDataSource) ? 'increase-table-width mat-p scroll-content' : 'mat-p scroll-content'" *ngIf="excelSheetId">
       <ng-container *ngFor="let column of displayColumns;let columnIndex = index" [matColumnDef]="column">
-        <mat-header-cell *matHeaderCellDef [ngClass]="column === 'Particulars' ? 'inc-width mat-column-Particulars' : column === 'Sr No'? 'mat-column-serialNo' : ''">{{ column }}</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef [ngClass]="column === 'Particulars' ? 'inc-width mat-column-cf-Particulars' : column === 'Sr No'? 'mat-column-serialNo' : ''">{{ column }}</mat-header-cell>
         <mat-cell *matCellDef="let element" [ngClass]="columnIndex === 0 ? 'serialNo' : columnIndex === 2 ? 'firstColumn' : checkHeader(element,columnIndex) ? 'highlight-header' :  checkSubHeader(element,columnIndex) ? 'label-highlight' : checkType(element[column]) && !isNumberOrEmpty(element[column]) ? 'label-c' : '' ">
           <ng-container *ngIf="checkType(element[column]) && (columnIndex === 0 || columnIndex === 1)">
             <span>{{ element[column] }}</span>

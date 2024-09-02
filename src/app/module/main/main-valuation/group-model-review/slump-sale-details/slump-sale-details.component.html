@@ -1,7 +1,7 @@
 <div class="scroll-container">
     <mat-table [dataSource]="slumpSaleDataSource" [ngClass]="contentIsBig(slumpSaleDataSource) ? 'increase-table-width mat-p scroll-content' : 'mat-p scroll-content'">
       <ng-container *ngFor="let column of displayColumns;let columnIndex = index" [matColumnDef]="column">
-        <mat-header-cell *matHeaderCellDef [ngClass]="column === 'Particulars' ? 'inc-width mat-column-Particulars' : ''">{{ column }}</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef [ngClass]="column === 'Particulars' ? 'inc-width mat-column-sl-Particulars' : ''">{{ column }}</mat-header-cell>
         <mat-cell *matCellDef="let element" [ngClass]="checkHeader(element,columnIndex) ? (addDivider(element[column]) ? 'add-divider highlight-header' : 'highlight-header') :  checkSubHeader(element,columnIndex) ? (addDivider(element[column]) ? 'add-divider label-highlight' : 'label-highlight') : checkType(element[column]) && !isNumberOrEmpty(element[column]) ? 'label-c' : '' ">
           <ng-container *ngIf="checkType(element[column]) && columnIndex === 0">
             <span>{{ element[column] }}</span>

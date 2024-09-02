@@ -478,16 +478,15 @@
             <tr class="header">
               <th style="padding-left: 4%;">Particulars</th>
               <!-- <th>Type</th> -->
-              <th style="padding-left: 4%;">Book Value</th>
-              <th style="padding-left: 4%;">Fair Value</th>
+              <th >Book Value</th>
+              <th >Fair Value</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of dataSourceNav" class="content">
-              <td [ngClass]="item.fieldName === 'Non Current Assets' || item.fieldName === 'Total Non Current Assets' || item.fieldName === 'Net Current Assets' || item.fieldName === 'Firm Value' || item.fieldName === 'Equity Value' || item.fieldName === 'Value per share' ? 'nav-style-header' : 'nav-style-sub-header'">{{ item.fieldName }}</td>
-              <!-- <td class="nav-style-sub-text">{{ item.type }}</td> -->
-              <td class="nav-style-sub-text">{{ formatNumber(item.bookValue)  }}</td>
-              <td class="nav-style-sub-text">{{ formatNumber(item.fairValue)  }}</td>
+            <tr *ngFor="let item of dataSourceNav" [ngClass]="keyValidator(item, 'mainHead') ? 'nav-style-main-header' : keyValidator(item, 'mainSubHead') ? 'nav-style-main-sub-header' : keyValidator(item, 'header') ? 'nav-style-header' : 'nav-style-sub-header'">
+              <td [ngClass]="keyValidator(item, 'subHeader') ? 'nav-add-pad-left' : keyValidator(item, 'nestedSubHeader') ? 'nav-add-nested-pad-left' : 'nav-style-sub-header'">{{ item.fieldName }}</td>
+              <td style="width: 20%;padding-left:2%">{{ formatNumber(item.bookValue)  }}</td>
+              <td style="width: 20%;padding-left:2%">{{ formatNumber(item.fairValue)  }}</td>
             </tr>
           </tbody>
         </table>

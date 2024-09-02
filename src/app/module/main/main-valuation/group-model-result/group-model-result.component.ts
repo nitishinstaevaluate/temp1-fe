@@ -215,7 +215,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
           }
         }
         else if(response.model === 'NAV'){
-          this.navValuation = response.valuation;
+          this.navValuation = response.valuation.fairValue;
           const navIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "NAV");
           if(navIndex === -1)
           {
@@ -322,7 +322,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
           }
         }
         else if(response.model === 'NAV'){
-          this.navValuation = response.valuation;
+          this.navValuation = response.valuation.fairValue;
           const navIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "NAV");
           if(navIndex === -1)
           {

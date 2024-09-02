@@ -215,7 +215,7 @@ export class ActivityComponent {
         })
         }
         if(navValuation){
-          return `${processData.firstStageInput.currencyUnit} ${formatNumber(navValuation?.valuePerShare?.bookValue ? navValuation?.valuePerShare?.bookValue : '-')}`;
+          return `${processData.firstStageInput.currencyUnit} ${formatNumber(navValuation?.valuePerShare?.fairValue ? navValuation?.valuePerShare?.fairValue : '-')}`;
         }
         else{
           return `${processData.firstStageInput.currencyUnit} -`;
