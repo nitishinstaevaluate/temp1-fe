@@ -12,6 +12,7 @@ import { Subject, debounceTime, distinctUntilChanged, switchMap, tap } from 'rxj
 import { MatPaginator } from '@angular/material/paginator';
 import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.service';
 import { convertToNumberOrZero, formatNumber, formatPositiveAndNegativeValues } from 'src/app/shared/enums/functions';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-activity',
@@ -43,7 +44,9 @@ export class ActivityComponent {
     private route: Router,
     private excelAndReportService: ExcelAndReportService,
     private ngxLoaderService: NgxUiLoaderService,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar,
+    private dialogBox: MatDialog) {
+      this.dialogBox.closeAll();
     this.inItData();
     this.searchTerms
       .pipe(
