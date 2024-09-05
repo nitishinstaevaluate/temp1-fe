@@ -67,14 +67,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
           this.transferStepperthree.formFiveData.modelValue.map((modelWeightage:any)=>{
             this.setModelSliderValue(modelWeightage.model,(modelWeightage.weight).toFixed(2)*100,(modelWeightage.weight).toFixed(2)*100 - 100)
           })
-          this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
-            if(response.status){
-              this.calculationsService.modelWeightageData.next(response?.result);
-              this.totalModelWeightageValue = response.result;
-              this.data = response?.result?.modelValue;
-              this.finalWeightedValue = response?.result?.weightedVal ?? 0;
-            }
-          })
+          this.getWeightedValuation();
         }
       }
     }
@@ -109,6 +102,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
           }
           const totalElementsRemaining = this.calculateModelWeigtagePayload?.results?.length;
           const assignWeightage = 100/totalElementsRemaining ?? 0;
+          this.loadWeightageSlider(true);
           for (const ele of this.calculateModelWeigtagePayload.results){
             this.setModelSliderValue(ele.model,assignWeightage, 100-assignWeightage)
             this.resetSliderWeightage(ele.model);
@@ -357,14 +351,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
           }
         }
       });
-      this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
-        if(response.status){
-          this.calculationsService.modelWeightageData.next(response?.result);
-          this.totalModelWeightageValue = response.result;
-          this.data = response?.result?.modelValue;
-          this.finalWeightedValue = response?.result?.weightedVal ?? 0;
-        }
-      })
+      this.getWeightedValuation()
     }
   }
 
@@ -384,14 +371,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
           }
         }
       });
-      this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
-        if(response.status){
-          this.calculationsService.modelWeightageData.next(response?.result);
-          this.totalModelWeightageValue = response.result;
-          this.data = response?.result?.modelValue;
-          this.finalWeightedValue = response?.result?.weightedVal ?? 0;
-        }
-      })
+      this.getWeightedValuation();
     }
   }
   
@@ -466,14 +446,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
         }
       }
 
-      this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
-        if(response.status){
-          this.calculationsService.modelWeightageData.next(response?.result);
-          this.totalModelWeightageValue = response.result;
-          this.data = response?.result?.modelValue;
-          this.finalWeightedValue = response?.result?.weightedVal ?? 0;
-        }
-      })
+      this.getWeightedValuation();
     }
 
     setModelSliderValue(modelName:string,value:number,availPercent?:number){
