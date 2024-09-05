@@ -81,21 +81,19 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
   }
 
   ngOnChanges(changes:SimpleChanges){
-   
-    if(this.transferStepperthree?.formOneAndThreeData && !this.transferStepperthree?.formOneAndThreeData?.model.includes(MODELS.RULE_ELEVEN_UA)){
-    this.loadWeightageSlider()
-    if(changes['transferStepperthree']?.currentValue && changes['transferStepperthree']?.previousValue ){
-        const currentModel:any=[];
-        const previousModel:any=[];
-        this.data=null;
-        // this.fcfeSlider=0;
-        // this.fcffSlider=0;
-        // this.navSlider=0;
-        // this.comparableIndustrySlider=0;
-        // this.relativeValSlider=0;
-        // this.excessEarnSlider=0;
-        // console.log(changes['transferStepperthree']?.currentValue?.formFourData?.appData,"current final")
-        // console.log(changes['transferStepperthree']?.previousValue?.formFourData?.appData,"previous final")
+    if(
+      this.transferStepperthree?.formOneAndThreeData && 
+      !this.transferStepperthree?.formOneAndThreeData?.model.includes(MODELS.RULE_ELEVEN_UA) && 
+      changes['transferStepperthree']?.currentValue && 
+      this.transferStepperthree?.formOneAndThreeData?.model?.length > 1
+    ){
+      if(!changes['transferStepperthree']?.previousValue){
+        this.loadWeightageSlider(true);
+        this.getWeightedValuation();
+        return;
+      }
+      const currentModel:any=[];
+      const previousModel:any=[];
         changes['transferStepperthree']?.currentValue?.formFourData?.appData?.valuationResult.map((val:any)=>{
           currentModel.push(val.model); 
         })
@@ -104,21 +102,36 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
         })
         const elementsNotInArray = previousModel.filter((item:any) => !currentModel.includes(item));
         const elementsInArray = previousModel.filter((item:any) => currentModel.includes(item));
-        if(elementsNotInArray){
+        if(elementsNotInArray?.length){
           for (let ele of elementsNotInArray){
-            // console.log(ele,"for loop ele along with the payload:", this.calculateModelWeigtagePayload.results)
             const findIndex=this.calculateModelWeigtagePayload.results.findIndex((res:any)=>res.model === ele);
-            // console.log(findIndex,"index to remove")
-            // console.log(this.calculateModelWeigtagePayload.results,"before payload")
             this.calculateModelWeigtagePayload.results.splice(findIndex,1);
-            // console.log(this.calculateModelWeigtagePayload.results,"after payload");
           }
-          for (let ele of elementsInArray){
-            this.resetSliderWeightage(ele);
+          const totalElementsRemaining = this.calculateModelWeigtagePayload?.results?.length;
+          const assignWeightage = 100/totalElementsRemaining ?? 0;
+          for (const ele of this.calculateModelWeigtagePayload.results){
+            this.setModelSliderValue(ele.model,assignWeightage, 100-assignWeightage)
+            this.resetSliderWeightage(ele.model);
           }
+          this.getWeightedValuation()
+        }
+        else{
+          this.loadWeightageSlider(true);
+          this.getWeightedValuation();
         }
     }
-    }
+  }
+
+
+  getWeightedValuation(){
+    this.calculationsService.getWeightedValuation(this.calculateModelWeigtagePayload).subscribe((response:any)=>{
+      if(response.status){
+        this.calculationsService.modelWeightageData.next(response?.result);
+        this.totalModelWeightageValue = response.result;
+        this.data = response?.result?.modelValue;
+        this.finalWeightedValue = response?.result?.weightedVal ?? 0;
+      }
+    })
   }
 
   resetSliderWeightage(modelName:any){
@@ -156,7 +169,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
     }
   }
 
-  loadWeightageSlider(){
+  loadWeightageSlider(reqBinding?:any){
     this.transferStepperthree?.formFourData?.appData?.valuationResult.map(
       (response: any) => {
         if(response.model === 'FCFE'){
@@ -164,10 +177,10 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
           const fcfeIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "FCFE")
           if(fcfeIndex === -1)
           {
-            this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.fcfeValuation,weightage:0});
+            this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.fcfeValuation,weightage:reqBinding ? this.fcfeSlider : 0});
           }
           else{
-            this.calculateModelWeigtagePayload.results.splice(fcfeIndex,1,{model:response.model,value:this.fcfeValuation,weightage:0})
+            this.calculateModelWeigtagePayload.results.splice(fcfeIndex,1,{model:response.model,value:this.fcfeValuation,weightage:reqBinding ? this.fcfeSlider : 0})
           }
         }
         else if(response.model === 'FCFF'){
@@ -175,10 +188,10 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
           const fcffIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "FCFF");
           if(fcffIndex === -1)
           {
-            this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.fcffValuation,weightage:0});
+            this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.fcffValuation,weightage:reqBinding ? this.fcffSlider : 0});
           }
           else{
-            this.calculateModelWeigtagePayload.results.splice(fcffIndex,1,{model:response.model,value:this.fcffValuation,weightage:0});
+            this.calculateModelWeigtagePayload.results.splice(fcffIndex,1,{model:response.model,value:this.fcffValuation,weightage:reqBinding ? this.fcffSlider : 0});
           }
         }
         else if(response.model === 'Relative_Valuation'){
@@ -186,10 +199,10 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
           const relativeValuationIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "Relative_Valuation");
           if(relativeValuationIndex === -1)
           {
-            this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.relativeValuation,weightage:0});
+            this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.relativeValuation,weightage:reqBinding ? this.relativeValSlider : 0});
           }
           else{
-            this.calculateModelWeigtagePayload.results.splice(relativeValuationIndex,1,{model:response.model,value:this.relativeValuation,weightage:0});
+            this.calculateModelWeigtagePayload.results.splice(relativeValuationIndex,1,{model:response.model,value:this.relativeValuation,weightage:reqBinding ? this.relativeValSlider : 0});
           }
         }
         else if(response.model === 'CTM'){
@@ -197,10 +210,10 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
           const comparableIndustriesIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "CTM");
           if(comparableIndustriesIndex === -1)
           {
-            this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.comparableIndustryValuation,weightage:0});
+            this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.comparableIndustryValuation,weightage:reqBinding ? this.comparableIndustrySlider : 0});
           }
           else{
-            this.calculateModelWeigtagePayload.results.splice(comparableIndustriesIndex,1,{model:response.model,value:this.comparableIndustryValuation,weightage:0});
+            this.calculateModelWeigtagePayload.results.splice(comparableIndustriesIndex,1,{model:response.model,value:this.comparableIndustryValuation,weightage:reqBinding ? this.comparableIndustrySlider : 0});
           }
         }
         else if(response.model === 'Excess_Earnings'){
@@ -208,10 +221,10 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
           const excessEarningIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "Excess_Earnings");
           if(excessEarningIndex === -1)
           {
-            this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.excessEarnValuation,weightage:0});
+            this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.excessEarnValuation,weightage:reqBinding ? this.excessEarnSlider : 0});
           }
           else{
-            this.calculateModelWeigtagePayload.results.splice(excessEarningIndex,1,{model:response.model,value:this.excessEarnValuation,weightage:0});
+            this.calculateModelWeigtagePayload.results.splice(excessEarningIndex,1,{model:response.model,value:this.excessEarnValuation,weightage:reqBinding ? this.excessEarnSlider : 0});
           }
         }
         else if(response.model === 'NAV'){
@@ -219,10 +232,10 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
           const navIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "NAV");
           if(navIndex === -1)
           {
-            this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.navValuation,weightage:0});
+            this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.navValuation,weightage:reqBinding ? this.navSlider : 0});
           }
           else{
-            this.calculateModelWeigtagePayload.results.splice(navIndex,1,{model:response.model,value:this.navValuation,weightage:0});
+            this.calculateModelWeigtagePayload.results.splice(navIndex,1,{model:response.model,value:this.navValuation,weightage:reqBinding ? this.navSlider : 0});
           }
         }
         else if(response.model === 'Market_Price'){
@@ -230,10 +243,10 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
           const marketPriceIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "Market_Price");
           if(marketPriceIndex === -1)
           {
-            this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.marketPriceValuation,weightage:0});
+            this.calculateModelWeigtagePayload.results.push({model:response.model,value:this.marketPriceValuation,weightage:reqBinding ? this.marketPriceSlider : 0});
           }
           else{
-            this.calculateModelWeigtagePayload.results.splice(marketPriceIndex,1,{model:response.model,value:this.marketPriceValuation,weightage:0});
+            this.calculateModelWeigtagePayload.results.splice(marketPriceIndex,1,{model:response.model,value:this.marketPriceValuation,weightage:reqBinding ? this.marketPriceSlider : 0});
           }
         }
       }
