@@ -1695,6 +1695,22 @@
                     ]
                 },
                 {
+                  "controlName": "cntngntLbility",
+                  "label": "Less:Contingent liabilities",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
                     "type": "header",
                     "label": "Current Liabilities",
                     "class":"c-decorated-header-cl"
