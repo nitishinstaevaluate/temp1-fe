@@ -26,6 +26,7 @@ export class ValuationResultTableComponent implements OnInit, OnChanges{
 @Output() terminalValueType = new EventEmitter<any>();
 @Output() formFourAppData = new EventEmitter<any>();
 @Output() formFourAppDataCCM = new EventEmitter<any>();
+@Output() vwapMethod = new EventEmitter<any>();
 @ViewChild('dynamicTable') dynamicTable!: ElementRef;
 
 HOST = environment.baseUrl
@@ -66,6 +67,7 @@ isDropdownOpen = false;
 ccmCompanyTableLoader = false;
 userAccess = false;
 fifthStageDetails: any;
+marketMethodType:any = '';
 getKeys(navData:any){
 this.dataSourceNav =[navData].map((response:any)=>{
   let obj = Object.values(response);
@@ -652,6 +654,9 @@ loadStageFiveDetails(){
       if(this.fifthStageDetails?.terminalValueSelectedType){
         this.terminalValueSelectedType = this.fifthStageDetails.terminalValueSelectedType
       }
+      if(this.fifthStageDetails?.vwapType){
+        this.marketMethodType = this.fifthStageDetails?.vwapType;
+      }
       if(this.transferStepperthree?.formOneAndThreeData?.model?.includes(MODELS.FCFE) || this.transferStepperthree?.formOneAndThreeData?.model?.includes(MODELS.FCFF)){
         this.terminalValueOptions(this.fifthStageDetails?.terminalValueSelectedType || this.terminalValueSelectedType);
       }else{
@@ -851,6 +856,11 @@ getStyle(feature: any) {
       break;
   }
   return {}
+}
+
+marketPriceType(type:any){
+  this.marketMethodType = type;
+  this.vwapMethod.emit(this.marketMethodType);
 }
 }
 

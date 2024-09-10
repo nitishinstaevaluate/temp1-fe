@@ -9,15 +9,17 @@ import {  convertToNumberOrZero, formatPositiveAndNegativeValues, getAdjustedTim
 })
 export class ModelMarketPriceResultTableComponent implements OnChanges{
   @Input() formData:any;
+  @Input() marketMethodType:any;
   convertEpochToPlusOneDate = getAdjustedTimestamp;
   sharePriceNinetyDays:any = [];
   sharePriceTenDays:any = [];
-  valuePerShare = 0;
-  vwapNinetyDays = 0;
-  vwapTenDays = 0;
+  valuePerShare:any = 0;
+  vwapNinetyDays:any = 0;
+  vwapTenDays:any = 0;
   formatNumber = formatPositiveAndNegativeValues;
 
   ngOnChanges(){
+    console.log(this.marketMethodType,"market price method type")
     if(this.formData){
       this.formData?.formFourData?.appData?.valuationResult.map((indValuations:any)=>{ 
         if(indValuations?.model === MODELS.MARKET_PRICE){
@@ -33,5 +35,37 @@ export class ModelMarketPriceResultTableComponent implements OnChanges{
 
   totalRevenue(vwap:any, volume:any){
     return formatPositiveAndNegativeValues(convertToNumberOrZero(vwap) * convertToNumberOrZero(volume));
+  }
+
+  columnToBeDisabled(columnName:any){
+    return this.marketMethodType && this.marketMethodType === columnName ? 'overlayBackgrnd' : '';
+  }
+
+  dataExist(vwapType:any){
+      if(vwapType === 'vwapNse' && this.valuePerShare?.valuePerShareNse) return true;
+      if(vwapType === 'vwapBse' && this.valuePerShare?.valuePerShareBse) return true;
+      return false;
+
+  }
+
+  getColspan(type?:any): string {
+    if(type === 'finalVal'){
+      const { valuePerShareNse, valuePerShareBse } = this.valuePerShare || {};
+      if (!valuePerShareNse && !valuePerShareBse) {
+        return '6';
+      } else if (!valuePerShareNse || !valuePerShareBse) {
+        return '3';
+      } else {
+        return '3';
+      }
+    }
+    const { valuePerShareNse, valuePerShareBse } = this.valuePerShare || {};
+    if (!valuePerShareNse && !valuePerShareBse) {
+      return '6';
+    } else if (!valuePerShareNse || !valuePerShareBse) {
+      return '4';
+    } else {
+      return '6';
+    }
   }
 }

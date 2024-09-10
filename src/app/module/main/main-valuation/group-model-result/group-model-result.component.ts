@@ -50,6 +50,9 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
   totalModelWeightageValue: any
   isNotRuleElevenUaAndNav=isNotRuleElevenUaAndNav;
   terminalValueSelectedType:any = '';
+  vwapType:any='';
+  vwapNse:any;
+  vwapBse:any;
   constructor(private calculationsService:CalculationsService,
     private snackBar:MatSnackBar,
     private processStatusManagerService:ProcessStatusManagerService){
@@ -233,7 +236,9 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
           }
         }
         else if(response.model === 'Market_Price'){
-          this.marketPriceValuation = response.valuation;
+          this.vwapNse = response.valuation?.valuePerShareNse;
+          this.vwapBse = response.valuation?.valuePerShareBse;
+          this.marketPriceValuation = this.vwapType === 'vwapNse' ?  this.vwapNse : this.vwapBse;
           const marketPriceIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "Market_Price");
           if(marketPriceIndex === -1)
           {
@@ -340,7 +345,9 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
           }
         }
         else if(response.model === 'Market_Price'){
-          this.marketPriceValuation = response.valuation;
+          this.vwapNse = response.valuation?.valuePerShareNse;
+          this.vwapBse = response.valuation?.valuePerShareBse;
+          this.marketPriceValuation = this.vwapType === 'vwapNse' ? this.vwapNse : this.vwapBse;
           const marketPriceIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "Market_Price");
           if(marketPriceIndex === -1)
           {
@@ -395,7 +402,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
       localStorage.setItem('stepFiveStats','true');
     }
     const processStateModel ={
-      fifthStageInput:{valuationResultReportId:this.transferStepperthree?.formFourData.valuationId,totalWeightageModel:this.totalModelWeightageValue,formFillingStatus:processCompleteState,terminalValueSelectedType:this.terminalValueSelectedType},
+      fifthStageInput:{valuationResultReportId:this.transferStepperthree?.formFourData.valuationId,totalWeightageModel:this.totalModelWeightageValue,formFillingStatus:processCompleteState,terminalValueSelectedType:this.terminalValueSelectedType,vwapType:this.vwapType},
       step:processStateStep
     }
   
@@ -590,5 +597,20 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
           });
         }
       );
+    }
+
+    vwapMethod(event:any){
+      this.vwapType = event;
+      if(!this.vwapType) return;
+      this.marketPriceValuation = this.vwapType === 'vwapNse' ? this.vwapNse : this.vwapBse;
+      const marketPriceIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "Market_Price");
+      if(marketPriceIndex === -1)
+      {
+        this.calculateModelWeigtagePayload.results.push({model:MODELS.MARKET_PRICE,value:this.marketPriceValuation,weightage:this.marketPriceSlider});
+      }
+      else{
+        this.calculateModelWeigtagePayload.results.splice(marketPriceIndex,1,{model:MODELS.MARKET_PRICE,value:this.marketPriceValuation,weightage:this.marketPriceSlider});
+      }
+      this.getWeightedValuation();
     }
 }
