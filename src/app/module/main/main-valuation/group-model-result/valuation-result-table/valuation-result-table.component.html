@@ -519,7 +519,7 @@
   <mat-tab label="Market Price" *ngIf="marketPrice">
     <div style="display: flex; align-items: center; justify-content: space-between;padding: 1%;">
       <div style="display: flex; align-items: center;width: 85%;">
-        <div style="display: inline-block; align-items: center;width: 100%;">
+        <div style="display: inline-block; align-items: center;width: 100%;" *ngIf="containsNseAndBse()">
           <input type="radio" id="tvCashFlow" name="radios" style="vertical-align: middle;" [checked]="marketMethodType === 'vwapNse'" (click)="marketPriceType('vwapNse')">
           <label for="tvCashFlow" class="remove-bottom-margin terminal-working-options" style="padding-right: 4%;">
             Volume Weighted Average Price(VWAP) using NSE

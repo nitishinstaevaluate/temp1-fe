@@ -67,7 +67,9 @@ isDropdownOpen = false;
 ccmCompanyTableLoader = false;
 userAccess = false;
 fifthStageDetails: any;
-marketMethodType:any = '';
+marketMethodType:any = 'vwapNse';
+vwapNse:any='';
+vwapBse:any='';
 getKeys(navData:any){
 this.dataSourceNav =[navData].map((response:any)=>{
   let obj = Object.values(response);
@@ -370,6 +372,13 @@ loadValuationTable(){
     }
     if(response.model === 'NAV'){
       this.getKeys(response.valuationData);
+    }
+
+    if(response.model === MODELS.MARKET_PRICE){
+      this.marketMethodType = response?.valuation?.valuePerShareBse ? 'vwapBse' : 'vwapNse';
+      this.vwapNse = response?.valuation?.valuePerShareNse;
+      this.vwapBse = response?.valuation?.valuePerShareBse;
+      this.vwapMethod.emit(this.marketMethodType);
     }
   })
 }
@@ -861,6 +870,11 @@ getStyle(feature: any) {
 marketPriceType(type:any){
   this.marketMethodType = type;
   this.vwapMethod.emit(this.marketMethodType);
+}
+
+containsNseAndBse(){
+  if(this.vwapBse && this.vwapNse) return true;
+  return false;
 }
 }
 

@@ -56,7 +56,7 @@ export class ModelMarketPriceResultTableComponent implements OnChanges{
       } else if (!valuePerShareNse || !valuePerShareBse) {
         return '3';
       } else {
-        return '3';
+        return '4';
       }
     }
     const { valuePerShareNse, valuePerShareBse } = this.valuePerShare || {};

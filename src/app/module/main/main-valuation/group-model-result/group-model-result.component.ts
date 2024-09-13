@@ -50,7 +50,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
   totalModelWeightageValue: any
   isNotRuleElevenUaAndNav=isNotRuleElevenUaAndNav;
   terminalValueSelectedType:any = '';
-  vwapType:any='';
+  vwapType:any='vwapNse';
   vwapNse:any;
   vwapBse:any;
   constructor(private calculationsService:CalculationsService,
@@ -238,7 +238,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
         else if(response.model === 'Market_Price'){
           this.vwapNse = response.valuation?.valuePerShareNse;
           this.vwapBse = response.valuation?.valuePerShareBse;
-          this.marketPriceValuation = this.vwapType === 'vwapNse' ?  this.vwapNse : this.vwapBse;
+          this.marketPriceValuation = this.vwapType === 'vwapNse' ?  (this.vwapNse || 0) : (this.vwapBse || 0);
           const marketPriceIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "Market_Price");
           if(marketPriceIndex === -1)
           {
@@ -347,7 +347,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
         else if(response.model === 'Market_Price'){
           this.vwapNse = response.valuation?.valuePerShareNse;
           this.vwapBse = response.valuation?.valuePerShareBse;
-          this.marketPriceValuation = this.vwapType === 'vwapNse' ? this.vwapNse : this.vwapBse;
+          this.marketPriceValuation = this.vwapType === 'vwapNse' ? (this.vwapNse || 0) : (this.vwapBse || 0);
           const marketPriceIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "Market_Price");
           if(marketPriceIndex === -1)
           {
@@ -601,8 +601,8 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
 
     vwapMethod(event:any){
       this.vwapType = event;
-      if(!this.vwapType) return;
-      this.marketPriceValuation = this.vwapType === 'vwapNse' ? this.vwapNse : this.vwapBse;
+      if(!this.transferStepperthree?.formOneAndThreeData?.model.includes(MODELS.MARKET_PRICE)) return;
+      this.marketPriceValuation = this.vwapType === 'vwapNse' ? (this.vwapNse || 0) : (this.vwapBse || 0);
       const marketPriceIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "Market_Price");
       if(marketPriceIndex === -1)
       {
