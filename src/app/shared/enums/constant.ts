@@ -293,7 +293,9 @@ export const ALL_MODELS = {
     tvPatBased:`Estimation of company value at the end of a forecast period, calculated based on the last year's Profit After Tax, discount rate, and long-term growth rate. It signifies the perpetual value of the company considering profit figures.`,
     capitalIqBetaDesc:`Capital IQ is used to calculate beta for valuation due to its extensive financial data coverage, aiding in the analysis of a stock's volatility relative to the market.`,
     aswathDamodaranBetaDesc:`Aswath Damodaran's methodologies are utilized for beta calculation due to their robustness and insight into market dynamics, ensuring accurate risk assessment relative to the market.`,
-    faceValue:`Face value`
+    faceValue:`Face value`,
+    vwapNse:`VWAP on NSE represents the average price of a security traded throughout the day, weighted by the volume of trades on the NSE, indicating the true average trading price during that period.`,
+    vwapBse:`VWAP on BSE is the average price of a security traded throughout the day, weighted by the volume of trades on the BSE, reflecting the actual average trading price over the given timeframe.`
   }
 
   export const CHECKLIST_TYPES = {

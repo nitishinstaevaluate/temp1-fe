@@ -26,6 +26,7 @@ export class ValuationResultTableComponent implements OnInit, OnChanges{
 @Output() terminalValueType = new EventEmitter<any>();
 @Output() formFourAppData = new EventEmitter<any>();
 @Output() formFourAppDataCCM = new EventEmitter<any>();
+@Output() vwapMethod = new EventEmitter<any>();
 @ViewChild('dynamicTable') dynamicTable!: ElementRef;
 
 HOST = environment.baseUrl
@@ -66,6 +67,9 @@ isDropdownOpen = false;
 ccmCompanyTableLoader = false;
 userAccess = false;
 fifthStageDetails: any;
+marketMethodType:any = 'vwapNse';
+vwapNse:any='';
+vwapBse:any='';
 getKeys(navData:any){
 this.dataSourceNav =[navData].map((response:any)=>{
   let obj = Object.values(response);
@@ -369,6 +373,13 @@ loadValuationTable(){
     if(response.model === 'NAV'){
       this.getKeys(response.valuationData);
     }
+
+    if(response.model === MODELS.MARKET_PRICE){
+      this.marketMethodType = response?.valuation?.valuePerShareBse ? 'vwapBse' : 'vwapNse';
+      this.vwapNse = response?.valuation?.valuePerShareNse;
+      this.vwapBse = response?.valuation?.valuePerShareBse;
+      this.vwapMethod.emit(this.marketMethodType);
+    }
   })
 }
 this.dataSourceFcff && this.transferStepperthree?.formOneAndThreeData?.model.includes('FCFF') ? this.fcff = true : this.fcff = false;
@@ -652,6 +663,9 @@ loadStageFiveDetails(){
       if(this.fifthStageDetails?.terminalValueSelectedType){
         this.terminalValueSelectedType = this.fifthStageDetails.terminalValueSelectedType
       }
+      if(this.fifthStageDetails?.vwapType){
+        this.marketMethodType = this.fifthStageDetails?.vwapType;
+      }
       if(this.transferStepperthree?.formOneAndThreeData?.model?.includes(MODELS.FCFE) || this.transferStepperthree?.formOneAndThreeData?.model?.includes(MODELS.FCFF)){
         this.terminalValueOptions(this.fifthStageDetails?.terminalValueSelectedType || this.terminalValueSelectedType);
       }else{
@@ -851,6 +865,16 @@ getStyle(feature: any) {
       break;
   }
   return {}
+}
+
+marketPriceType(type:any){
+  this.marketMethodType = type;
+  this.vwapMethod.emit(this.marketMethodType);
+}
+
+containsNseAndBse(){
+  if(this.vwapBse && this.vwapNse) return true;
+  return false;
 }
 }
 

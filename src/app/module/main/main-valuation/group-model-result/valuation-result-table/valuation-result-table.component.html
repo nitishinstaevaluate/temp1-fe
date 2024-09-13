@@ -517,75 +517,100 @@
     </div>
   </mat-tab>
   <mat-tab label="Market Price" *ngIf="marketPrice">
-    <div class="dropdown" style="float: right;padding: 1%;">
-      <button class="dropdown-toggle" mat-stroked-button [matMenuTriggerFor]="marketPriceMenu" #trigger="matMenuTrigger" (mouseenter)="trigger.openMenu()">
-        Export
-      </button>
-      <!-- <div class="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
-        <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + '/Market_Price/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/PDF'"  download>Export as PDF</a></button>
-        <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + '/Market_Price/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/DOCX'" download>Export as Docx</a></button>
-        <button class="dropdown-item"><a [href]="HOST + 'upload/export-valuation/' + (transferStepperthree?.formFourData?.appData?.reportId || 'null') + '/Market_Price/' + 'true' + '/' + processStateId + '/' + terminalValueSelectedType + '/XLSX'" download>Export as Excel</a></button>
-      </div> -->
-      <mat-menu #marketPriceMenu="matMenu" xPosition="before">
-        <button mat-menu-item class="action-button" [matMenuTriggerFor]="exportSingleOptions">
-          <span style="width: 190px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
-            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/sheet.png" alt="">
-          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export Current</span>
-        </span>
+    <div style="display: flex; align-items: center; justify-content: space-between;padding: 1%;">
+      <div style="display: flex; align-items: center;width: 85%;">
+        <div style="display: inline-block; align-items: center;width: 100%;" *ngIf="containsNseAndBse()">
+          <input type="radio" id="tvCashFlow" name="radios" style="vertical-align: middle;" [checked]="marketMethodType === 'vwapNse'" (click)="marketPriceType('vwapNse')">
+          <label for="tvCashFlow" class="remove-bottom-margin terminal-working-options" style="padding-right: 4%;">
+            Volume Weighted Average Price(VWAP) using NSE
+            <span class="tool-class" style="vertical-align: sub;">
+              <svg [matTooltip]="helperText.vwapNse" matTooltipPosition="above" matTooltipClass='model-tooltip' xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
+                <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:37px" 
+                fill="#ff0000"></path>
+                <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px">
+                </polyline><line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px">
+              </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
+            </span>
+          </label>
+          <input type="radio" id="tvLastYearPat" name="radios" style="vertical-align: middle;" [checked]="marketMethodType === 'vwapBse'" (click)="marketPriceType('vwapBse')">
+          <label for="tvLastYearPat" class="remove-bottom-margin terminal-working-options">
+            Volume Weighted Average Price(VWAP) using BSE
+            <span class="tool-class" style="vertical-align: sub;">
+              <svg [matTooltip]="helperText.vwapBse" matTooltipPosition="above" matTooltipClass='model-tooltip' xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
+                <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:37px" 
+                fill="#ff0000"></path>
+                <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px">
+                </polyline><line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px">
+              </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
+            </span>
+          </label>
+        </div>
+      </div>
+      <div class="dropdown" style="float: right;padding: 1%;">
+        <button class="dropdown-toggle" mat-stroked-button [matMenuTriggerFor]="marketPriceMenu" #trigger="matMenuTrigger" (mouseenter)="trigger.openMenu()">
+          Export
         </button>
-        <button mat-menu-item class="action-button" [matMenuTriggerFor]="exportAllOptions" *ngIf="transferStepperthree?.formOneAndThreeData?.model?.length > 1">
-          <span style="width: 190px;display: block;text-align: left;padding-left: 9%;" class="download-label">
-            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/document.png" alt="">
-          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export All</span>
-        </span>
-        </button>
-      </mat-menu>
-
-      <mat-menu #exportAllOptions="matMenu" xPosition="before">
-        <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'pdf', 'Market_Price', (transferStepperthree?.formFourData?.appData?.reportId || null), false)">
-          <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
-            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/pdf.png" alt="">
-          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as PDF</span>
-        </span>
-        </button>
-        <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'docx', 'Market_Price', (transferStepperthree?.formFourData?.appData?.reportId || null), false)">
-          <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
-            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/doc.png" alt="">
-          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Docx</span>
-        </span>
-        </button>
-        <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'xlsx', 'Market_Price', (transferStepperthree?.formFourData?.appData?.reportId || null), false)">
-          <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="download-label">
-            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/xls.png" alt="">
-          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Excel</span>
-        </span>
-        </button>
-      </mat-menu>
-
-      <mat-menu #exportSingleOptions="matMenu" xPosition="before">
-        <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'pdf', 'Market_Price', (transferStepperthree?.formFourData?.appData?.reportId || null))">
-          <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
-            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/pdf.png" alt="">
-          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as PDF</span>
-        </span>
-        </button>
-        <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'docx', 'Market_Price', (transferStepperthree?.formFourData?.appData?.reportId || null))">
-          <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
-            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/doc.png" alt="">
-          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Docx</span>
-        </span>
-        </button>
-        <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'xlsx', 'Market_Price', (transferStepperthree?.formFourData?.appData?.reportId || null))">
-          <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="download-label">
-            <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/xls.png" alt="">
-          <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Excel</span>
-        </span>
-        </button>
-      </mat-menu>
+        <mat-menu #marketPriceMenu="matMenu" xPosition="before">
+          <button mat-menu-item class="action-button" [matMenuTriggerFor]="exportSingleOptions">
+            <span style="width: 190px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+              <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/sheet.png" alt="">
+            <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export Current</span>
+          </span>
+          </button>
+          <button mat-menu-item class="action-button" [matMenuTriggerFor]="exportAllOptions" *ngIf="transferStepperthree?.formOneAndThreeData?.model?.length > 1">
+            <span style="width: 190px;display: block;text-align: left;padding-left: 9%;" class="download-label">
+              <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/document.png" alt="">
+            <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export All</span>
+          </span>
+          </button>
+        </mat-menu>
+  
+        <mat-menu #exportAllOptions="matMenu" xPosition="before">
+          <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'pdf', 'Market_Price', (transferStepperthree?.formFourData?.appData?.reportId || null), false)">
+            <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+              <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/pdf.png" alt="">
+            <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as PDF</span>
+          </span>
+          </button>
+          <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'docx', 'Market_Price', (transferStepperthree?.formFourData?.appData?.reportId || null), false)">
+            <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+              <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/doc.png" alt="">
+            <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Docx</span>
+          </span>
+          </button>
+          <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'xlsx', 'Market_Price', (transferStepperthree?.formFourData?.appData?.reportId || null), false)">
+            <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="download-label">
+              <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/xls.png" alt="">
+            <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Excel</span>
+          </span>
+          </button>
+        </mat-menu>
+  
+        <mat-menu #exportSingleOptions="matMenu" xPosition="before">
+          <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'pdf', 'Market_Price', (transferStepperthree?.formFourData?.appData?.reportId || null))">
+            <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+              <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/pdf.png" alt="">
+            <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as PDF</span>
+          </span>
+          </button>
+          <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'docx', 'Market_Price', (transferStepperthree?.formFourData?.appData?.reportId || null))">
+            <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="resume-label">
+              <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/doc.png" alt="">
+            <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Docx</span>
+          </span>
+          </button>
+          <button mat-menu-item class="action-button" (click) = "exportValuation(transferStepperthree?.formOneAndThreeData?.company, 'xlsx', 'Market_Price', (transferStepperthree?.formFourData?.appData?.reportId || null))">
+            <span style="width: 160px;display: block;text-align: left;padding-left: 9%;" class="download-label">
+              <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../../../assets/images/icons/xls.png" alt="">
+            <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Export as Excel</span>
+          </span>
+          </button>
+        </mat-menu>
+      </div>
     </div>
     <div>
       <div class="table-container" style="display: block;">
-        <app-model-market-price-result-table [formData]="transferStepperthree"></app-model-market-price-result-table>
+        <app-model-market-price-result-table [formData]="transferStepperthree" [marketMethodType]="marketMethodType"></app-model-market-price-result-table>
       </div>
     </div>
   </mat-tab>
