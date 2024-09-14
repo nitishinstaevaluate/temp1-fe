@@ -303,7 +303,7 @@ export const ALL_MODELS = {
     capitalIqBetaDesc:`Capital IQ is used to calculate beta for valuation due to its extensive financial data coverage, aiding in the analysis of a stock's volatility relative to the market.`,
     aswathDamodaranBetaDesc:`Aswath Damodaran's methodologies are utilized for beta calculation due to their robustness and insight into market dynamics, ensuring accurate risk assessment relative to the market.`,
     faceValue:`Face value`,
-    slumpSaleModelLabel:`Assess the value of a company for the purpose of mergers and acquisitions, takeovers, and other financial transactions. It is a regulatory approach based on UAE-specific legal frameworks, involving the transfer of a business unit as a going concern without assigning individual values to assets and liabilities, and requiring regulatory approval and adherence to legal provisions.`
+    slumpSaleModelLabel:`Assess the value of a company for the purpose of mergers and acquisitions, takeovers, and other financial transactions. It is a regulatory approach based on UAE-specific legal frameworks, involving the transfer of a business unit as a going concern without assigning individual values to assets and liabilities, and requiring regulatory approval and adherence to legal provisions.`,
     vwapNse:`VWAP on NSE represents the average price of a security traded throughout the day, weighted by the volume of trades on the NSE, indicating the true average trading price during that period.`,
     vwapBse:`VWAP on BSE is the average price of a security traded throughout the day, weighted by the volume of trades on the BSE, reflecting the actual average trading price over the given timeframe.`
   }
