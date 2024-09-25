@@ -183,4 +183,13 @@ export class MandateComponent implements OnInit{
       this.reportPurposeDataChips = updatedReportPurposeDataChips;
   }
 }
+
+isInternalAssessment(){
+  return (
+    this.mandateForm.controls['purposeOfReport']?.value?.length === 1
+  ) && 
+  (
+    this.mandateForm.controls['purposeOfReport']?.value?.indexOf('internalAssessment') !== -1
+  ) 
+}
 }
