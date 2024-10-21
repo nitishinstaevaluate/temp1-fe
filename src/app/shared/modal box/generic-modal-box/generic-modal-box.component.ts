@@ -1,6 +1,6 @@
 import { Component , ElementRef, Inject, Renderer2, OnInit, ViewChild,AfterViewInit, Input} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { GLOBAL_VALUES, INCOME_APPROACH, MARKET_APPROACH, MODELS, NET_ASSET_APPROACH, RULE_ELEVEN_UA_APPROACH, helperText } from '../../enums/constant';
+import { GLOBAL_VALUES, INCOME_APPROACH, MARKET_APPROACH, MODELS, NET_ASSET_APPROACH, RULE_ELEVEN_UA_APPROACH, XL_SHEET_ENUM, helperText } from '../../enums/constant';
 import groupModelControl from '../../enums/group-model-controls.json'
 import WebViewer, { Core } from '@pdftron/webviewer';
 import PDFNet  from '@pdftron/webviewer';
@@ -508,15 +508,24 @@ clearModelRadioButton(modelName:string){
 }
 
 get downloadTemplate() {
-  const modelName = this.ruleElevenApproachModels.length ? 
-  (
-    this.ruleElevenApproachModels.includes(MODELS.RULE_ELEVEN_UA) ? 
-    'ruleElevenUa' : 
-    'slumpSale'
-  ) : 
-  this.incomeApproachmodels.length ? 
-  'default' : 
-  'marketApproach'
+  let modelName = '';
+
+    if (this.ruleElevenApproachModels.length) {
+      modelName = this.ruleElevenApproachModels.includes(MODELS.RULE_ELEVEN_UA) ? 
+                  XL_SHEET_ENUM[1] : 
+                  XL_SHEET_ENUM[4];
+    } else if (this.incomeApproachmodels.length) {
+      modelName = XL_SHEET_ENUM[0];
+    } else if (this.netAssetApproachmodels.length && !this.incomeApproachmodels.length && !this.marketApproachmodels.length) {
+      this.yearOfProjection.setValue(0);
+      modelName = XL_SHEET_ENUM[3];
+    } else if (
+      (this.marketApproachmodels.length && !this.netAssetApproachmodels.length && !this.incomeApproachmodels.length) || 
+      (this.marketApproachmodels.length && this.netAssetApproachmodels.length && !this.incomeApproachmodels.length)
+    ) {
+      modelName = XL_SHEET_ENUM[2];
+      this.yearOfProjection.setValue(0);
+    }
   return GET_TEMPLATE(this.yearOfProjection.value,modelName,`${this.valuationDate ? new Date(this.valuationDate).getTime() : ''}`);
   }
 
@@ -578,6 +587,7 @@ get downloadTemplate() {
           panelClass: 'app-notification-error'
         })
       }
+      event.target.value = '';
     });
   }
 
@@ -956,11 +966,18 @@ get downloadTemplate() {
   }
 
   verifyModelBasedExcel(){
-    if(this.incomeApproachmodels?.length || this.netAssetApproachmodels?.length || this.marketApproachmodels?.length){
-      return 'containsProfitLossAndBalanceSheet'
+    if(this.incomeApproachmodels?.length){
+      return XL_SHEET_ENUM[0];
+    }
+    else if(this.netAssetApproachmodels.length && !this.incomeApproachmodels.length && !this.marketApproachmodels.length){
+      return XL_SHEET_ENUM[3];
+    }
+    else if((this.marketApproachmodels.length && !this.netAssetApproachmodels.length && !this.incomeApproachmodels.length) || 
+    (this.marketApproachmodels.length && this.netAssetApproachmodels.length && !this.incomeApproachmodels.length)){
+      return XL_SHEET_ENUM[2];
     }
     else if(this.ruleElevenApproachModels?.length){
-      return 'containsRuleElevenUa'
+      return XL_SHEET_ENUM[1]
     }
     this.modSelLoader = false;
     this.fileName = ''
