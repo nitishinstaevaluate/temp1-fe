@@ -32,7 +32,7 @@
       </div>
     </div>
   </div>
-<mat-table [dataSource]="balanceSheetDataSource" [ngClass]="contentIsBig(balanceSheetDataSource) ? 'increase-table-width mat-p scroll-content' : 'mat-p scroll-content'" *ngIf="excelSheetId && (!isRelativeValuation('Relative_Valuation') && !isRelativeValuation('CTM') && !isRelativeValuation('NAV'))">
+<mat-table [dataSource]="balanceSheetDataSource" [ngClass]="contentIsBig(balanceSheetDataSource) ? 'increase-table-width mat-p scroll-content' : 'mat-p scroll-content'" *ngIf="excelSheetId">
   <ng-container *ngFor="let column of displayColumns;let columnIndex = index" [matColumnDef]="column">
     <mat-header-cell *matHeaderCellDef [ngClass]="column === 'Particulars' ? 'inc-width' : ''">{{ column }}</mat-header-cell>
     <mat-cell *matCellDef="let element" [ngClass]="checkHeader(element,columnIndex) ? 'highlight-header' :  checkSubHeader(element,columnIndex) ? 'label-highlight' : checkType(element[column]) && !isNumberOrEmpty(element[column]) ? 'label-c' : '' ">
@@ -42,7 +42,7 @@
       <ng-container *ngIf="ifOnlyNumber(element) && columnIndex !== 0 && !checkIfEditable(element,columnIndex)">
         <span style="font-size: 13px;font-weight: 500;color: #666666;">{{ formatNegativeAndPositiveValues(element[column])}}</span>
       </ng-container>
-        <input class="new-inp" style="text-align: center;color: #666666 !important;font-weight: 500;" (blur)="onInputChange($event.target, column,element)" placeholder="-" type="text" [value]="formatNegativeAndPositiveValues(element[column])" *ngIf="checkIfEditable(element, columnIndex) && columnIndex !== 0"/>
+        <input [ngClass]="isNavAndCcm() ? 'new-inp reduce-width' : singularModelCheck('NAV') ? 'new-inp nav-width' : 'new-inp'" style="text-align: center;color: #666666 !important;font-weight: 500;" (blur)="onInputChange($event.target, column,element)" placeholder="-" type="text" [value]="formatNegativeAndPositiveValues(element[column])" *ngIf="checkIfEditable(element, columnIndex) && columnIndex !== 0"/>
     </mat-cell>
   </ng-container>
   <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
@@ -50,7 +50,7 @@
 </mat-table>
 
 
-<mat-table [dataSource]="balanceSheetDataSource" class="mat-p" *ngIf="excelSheetId && (isRelativeValuation('Relative_Valuation') || isRelativeValuation('CTM') || isRelativeValuation('NAV'))">
+<!-- <mat-table [dataSource]="balanceSheetDataSource" class="mat-p" *ngIf="excelSheetId && (isRelativeValuation('Relative_Valuation') || isRelativeValuation('CTM') || isRelativeValuation('NAV'))">
   <ng-container *ngFor="let column of displayColumns;let columnIndex = index" [matColumnDef]="column">
     <mat-header-cell *matHeaderCellDef [ngClass]="column === 'Particulars' ? 'inc-width' : ''">{{ column }}</mat-header-cell>
     <mat-cell *matCellDef="let element" [ngClass]="checkHeader(element,columnIndex) ? 'highlight-header' :  checkSubHeader(element,columnIndex) ? 'label-highlight' : checkType(element[column]) && !isNumberOrEmpty(element[column]) ? 'label-c' : '' ">
@@ -65,7 +65,7 @@
   </ng-container>
   <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
-</mat-table>
+</mat-table> -->
 </div>
 
 <div class="loader-overlay" *ngIf="loadExcelTable">

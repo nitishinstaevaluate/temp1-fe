@@ -506,3 +506,7 @@ export const ADD_SPACE_BEFORE_LINE_ITEM_ASSESSMENT_OF_WC = [
   'Non-Cash Working Capital (A-B)',
   'Change in NCA'
 ]
+
+export const DATE_REGEX = /^([0-2]?\d|30|31)-(0?[1-9]|1[0-2])-\d{4}$/;
+
+export const XL_SHEET_ENUM = [ 'dcfApproach', 'ruleElevenUaApproach', 'marketPriceApproach', 'navApproach', 'slumpSaleApproach' ];

@@ -6,7 +6,7 @@
       </div>
     </div>
   </div>
-    <mat-table [dataSource]="profitAndLossDataSource" [ngClass]="contentIsBig(profitAndLossDataSource) ? 'increase-table-width mat-p scroll-content' : 'mat-p scroll-content'" *ngIf="excelSheetId && (!isRelativeValuation('Relative_Valuation') && !isRelativeValuation('CTM') && !isRelativeValuation('NAV'))">
+    <mat-table [dataSource]="profitAndLossDataSource" [ngClass]="contentIsBig(profitAndLossDataSource) ? 'increase-table-width mat-p scroll-content' : 'mat-p scroll-content'" *ngIf="excelSheetId">
       <ng-container *ngFor="let column of displayColumns;let columnIndex = index" [matColumnDef]="column">
         <mat-header-cell *matHeaderCellDef [ngClass]="column === 'Particulars' ? 'inc-width mat-pl-part' : column === 'Sr no.'? 'mat-column-serialNo' : ''">{{ column }}</mat-header-cell>
         <mat-cell *matCellDef="let element" [ngClass]="columnIndex === 0 ? 'serialNo' : checkHeader(element,columnIndex) ? 'highlight-header' :  checkSubHeader(element,columnIndex) ? 'label-highlight' : checkType(element[column]) && !isNumberOrEmpty(element[column]) ? 'label-c' : '' ">
@@ -16,7 +16,7 @@
           <ng-container *ngIf="ifOnlyNumber(element) && columnIndex !== 0 && columnIndex !== 1 && !checkIfEditable(element)">
             <span class="num-width-adj" style="font-size: 13px;font-weight: 500;color: #666666;">{{ formatNegativeAndPositiveValues(element[column])  }}</span>
           </ng-container>
-            <input class="new-inp" style="text-align: center;color: #666666 !important;font-weight: 500;" (blur)="onInputChange($event.target, column,element)" placeholder="-" type="text" [value]="formatNegativeAndPositiveValues(element[column])" *ngIf="checkIfEditable(element) && columnIndex !== 0 && columnIndex !== 1"/>
+            <input [ngClass]="isNavOrCcm() ? 'new-inp reduce-width' : 'new-inp'" style="text-align: center;color: #666666 !important;font-weight: 500;" (blur)="onInputChange($event.target, column,element)" placeholder="-" type="text" [value]="formatNegativeAndPositiveValues(element[column])" *ngIf="checkIfEditable(element) && columnIndex !== 0 && columnIndex !== 1"/>
         </mat-cell>
       </ng-container>
       <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
@@ -24,10 +24,10 @@
     </mat-table>
   </div>
   
-<mat-table [dataSource]="profitAndLossDataSource" class="mat-p" *ngIf="excelSheetId && (isRelativeValuation('Relative_Valuation') || isRelativeValuation('CTM') || isRelativeValuation('NAV'))">
+<!-- <mat-table [dataSource]="profitAndLossDataSource" class="mat-p" *ngIf="excelSheetId && (isRelativeValuation('Relative_Valuation') || isRelativeValuation('CTM') || isRelativeValuation('NAV'))">
   <ng-container *ngFor="let column of displayColumns;let columnIndex = index" [matColumnDef]="column">
     <mat-header-cell *matHeaderCellDef [ngClass]="column === 'Particulars' ? 'inc-width' : column === 'Sr no.'? 'mat-column-serialNo' : ''">{{ column }}</mat-header-cell>
-    <mat-cell *matCellDef="let element" [ngClass]="columnIndex === 0 ? 'serialNo' : checkHeader(element,columnIndex) ? 'highlight-header' :  checkSubHeader(element,columnIndex) ? 'label-highlight' : checkType(element[column]) && !isNumberOrEmpty(element[column]) ? 'label-c' : '' ">
+    <mat-cell *matCellDef="let element" [ngClass]="columnIndex === 0 ? (isNavOrCcm() ? 'serialNo max-width' : 'serialNo') : checkHeader(element,columnIndex) ? 'highlight-header' :  checkSubHeader(element,columnIndex) ? 'label-highlight' : checkType(element[column]) && !isNumberOrEmpty(element[column]) ? 'label-c' : '' ">
       <ng-container *ngIf="checkType(element[column]) && (columnIndex === 0 || columnIndex === 1)">
         <span>{{ element[column] }}</span>
       </ng-container>
@@ -39,7 +39,7 @@
   </ng-container>
   <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
-</mat-table>
+</mat-table> -->
 
 <div class="loader-overlay" *ngIf="loadExcelTable">
   <mat-progress-spinner diameter="50" class="PandL-spinner"  mode="indeterminate"></mat-progress-spinner>

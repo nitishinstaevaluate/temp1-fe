@@ -20,7 +20,7 @@ export function GET_TEMPLATE(value:string, modelName:string, valuationDate:strin
     return (
     environment.baseUrl +
     `download/template?projectionYears=` +
-    (value || '1') + '&modelName=' + `${modelName}` + '&valuationDate=' + `${valuationDate}`
+    (value || '0') + '&modelName=' + `${modelName}` + '&valuationDate=' + `${valuationDate}`
   )
 }
 

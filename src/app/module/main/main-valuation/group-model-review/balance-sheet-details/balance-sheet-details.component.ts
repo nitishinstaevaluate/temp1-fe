@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ADD_SPACE_BEFORE_LINE_ITEM_BS } from 'src/app/shared/enums/constant';
+import { ADD_SPACE_BEFORE_LINE_ITEM_BS, MODELS } from 'src/app/shared/enums/constant';
 import { formatPositiveAndNegativeValues, isSelected } from 'src/app/shared/enums/functions';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.service';
@@ -30,7 +30,7 @@ export class BalanceSheetDetailsComponent implements OnChanges {
   excelErrorMsg = false;
   loadExcelTable = false;
   bsLoader = false;
-
+  isUpdating: boolean = false;
   constructor(private valuationService:ValuationService,
     private snackBar:MatSnackBar,
     private excelAndReportService:ExcelAndReportService,
@@ -125,12 +125,12 @@ export class BalanceSheetDetailsComponent implements OnChanges {
   checkIfEditable(value:any, columnIndex:any){
     if(value?.Particulars){
       // For Sys code - 8027
-      if(value.Particulars === '(iii) cash and cash equivalents' && columnIndex === 1){
+      if(value.Particulars === '(iii) cash and cash equivalents' && (columnIndex === 1 || columnIndex === 2)){
         return true;
       }
 
       // For Sys code - 8042
-      if(value.Particulars === '(iv) Retained Earnings' && columnIndex === 1){
+      if(value.Particulars === '(iv) Retained Earnings' && (columnIndex === 1 || columnIndex === 2)){
         return true;
       }
 
@@ -186,7 +186,7 @@ export class BalanceSheetDetailsComponent implements OnChanges {
       return false
     }
   }
-  onInputChange(value: any, column: string,originalValue:any) {
+ async  onInputChange(value: any, column: string,originalValue:any) {
     this.bsLoader = true;
     this.editedValues=[];
     let newValue;
@@ -200,11 +200,13 @@ export class BalanceSheetDetailsComponent implements OnChanges {
       newValue = +value.value;
     }
 
+    
       const cellStructure={
         cellData,
         oldValue:originalValue[`${column}`],
         newValue:newValue,
         particulars:originalValue.Particulars,
+        model:this.fetchExistingModel(),
         processStateId:localStorage.getItem('processStateId')
       }
       this.editedValues.push(cellStructure);
@@ -216,38 +218,80 @@ export class BalanceSheetDetailsComponent implements OnChanges {
       }
 
       if(payload.newValue !== null && payload.newValue !== undefined){
-        this.excelAndReportService.modifyExcel(payload).subscribe(
-          async (response:any)=>{
-            this.bsLoader = false;
-          if(response.status){
-            this.isExcelModified = true;
-            this.createbalanceSheetDataSource(response);
-            const excelResponse: any = await this.processStateManagerService.updateEditedExcelStatus(localStorage.getItem('processStateId')).toPromise();
-            if(excelResponse?.modifiedExcelSheetId){
-              this.excelSheetId = excelResponse.modifiedExcelSheetId;
-            }
-            // this.balanceSheetData.emit({status:true,result:response});
-          }
-          else{
-            // this.balanceSheetData.emit({status:false,error:response.error});
-              this.snackBar.open(response.error,'Ok',{
-              horizontalPosition: 'right',
-              verticalPosition: 'top',
-              duration: 3000,
-              panelClass: 'app-notification-error'
-            })
-          }
-        },(error)=>{
-          // this.balanceSheetData.emit({status:false,error:error.message});
-          this.bsLoader = false;
-          this.snackBar.open(error.message,'Ok',{
-            horizontalPosition: 'right',
-              verticalPosition: 'top',
-              duration: 3000,
-              panelClass: 'app-notification-error'
-          })
-        })
+        await this.queueModifyExcelRequest(payload);
+        // this.excelAndReportService.modifyExcel(payload).subscribe(
+        //   async (response:any)=>{
+        //     this.bsLoader = false;
+        //   if(response.status){
+        //     this.isExcelModified = true;
+        //     this.createbalanceSheetDataSource(response);
+        //     const excelResponse: any = await this.processStateManagerService.updateEditedExcelStatus(localStorage.getItem('processStateId')).toPromise();
+        //     if(excelResponse?.modifiedExcelSheetId){
+        //       this.excelSheetId = excelResponse.modifiedExcelSheetId;
+        //     }
+        //     // this.balanceSheetData.emit({status:true,result:response});
+        //   }
+        //   else{
+        //     // this.balanceSheetData.emit({status:false,error:response.error});
+        //       this.snackBar.open(response.error,'Ok',{
+        //       horizontalPosition: 'right',
+        //       verticalPosition: 'top',
+        //       duration: 3000,
+        //       panelClass: 'app-notification-error'
+        //     })
+        //   }
+        // },(error)=>{
+        //   // this.balanceSheetData.emit({status:false,error:error.message});
+        //   this.bsLoader = false;
+        //   this.snackBar.open(error.message,'Ok',{
+        //     horizontalPosition: 'right',
+        //       verticalPosition: 'top',
+        //       duration: 3000,
+        //       panelClass: 'app-notification-error'
+        //   })
+        // })
       }
+  }
+
+  sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  async queueModifyExcelRequest(payload: any) {
+    while (this.isUpdating) {
+      await this.sleep(100); // Wait for 100ms before checking again
+    }
+    this.isUpdating = true;
+  
+    try {
+      const response: any = await this.excelAndReportService.modifyExcel(payload).toPromise();
+      this.bsLoader = false;
+  
+      if (response.status) {
+        this.isExcelModified = true;
+        this.createbalanceSheetDataSource(response);
+        const excelResponse: any = await this.processStateManagerService.updateEditedExcelStatus(localStorage.getItem('processStateId')).toPromise();
+        if (excelResponse?.modifiedExcelSheetId) {
+          this.excelSheetId = excelResponse.modifiedExcelSheetId;
+        }
+      } else {
+        this.snackBar.open(response.error, 'Ok', {
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 3000,
+          panelClass: 'app-notification-error'
+        });
+      }
+    } catch (error:any) {
+      this.snackBar.open(error.message, 'Ok', {
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 3000,
+        panelClass: 'app-notification-error'
+      });
+    } finally {
+      this.isUpdating = false;
+    }
   }
 
   getCellAddress(data:any,changedColumn:any){
@@ -276,7 +320,26 @@ export class BalanceSheetDetailsComponent implements OnChanges {
     
     this.displayColumns.splice(this.displayColumns.indexOf('lineEntry'),1,'Particulars')
     if(this.isRelativeValuation('Relative_Valuation') || this.isRelativeValuation('NAV') || this.isRelativeValuation('CTM')){
-      this.displayColumns = this.displayColumns.splice(0,2)
+      
+    }
+    if(
+        (
+          (
+            this.fetchExistingModel().includes(MODELS.RELATIVE_VALUATION) || 
+            this.fetchExistingModel().includes(MODELS.COMPARABLE_INDUSTRIES)
+          ) && 
+          this.fetchExistingModel().length === 1
+      ) ||
+      (
+        this.fetchExistingModel().includes(MODELS.RELATIVE_VALUATION) &&
+        this.fetchExistingModel().includes(MODELS.NAV)
+      ) && 
+      this.fetchExistingModel().length === 2
+    ){
+      this.displayColumns = this.displayColumns.splice(0,3)
+    }
+    if(this.singularModelCheck(MODELS.NAV)){
+      this.createBalanceSheetDisplayColumnsNavBased()
     }
     this.balanceSheetDataSource = this.dataSource.map((result:any)=>{
       const transformedItem: any = {};
@@ -324,5 +387,34 @@ export class BalanceSheetDetailsComponent implements OnChanges {
       return true;
     }
     return false;
+  }
+
+  isNavAndCcm(){
+    const models = this.fetchExistingModel();
+    return models.length === 2 && models.includes(MODELS.NAV) && models.includes(MODELS.RELATIVE_VALUATION);
+  }
+
+  fetchExistingModel(){
+    return this.transferStepperTwo?.model || this.fourthStageInput?.formOneData?.model;
+  }
+
+  singularModelCheck(value:any){
+    const models = this.fetchExistingModel();
+    return models.length === 1 && models.includes(value);
+  }
+  isNav(value:any){
+    const models = this.fetchExistingModel();
+    return models.length === 1 && models.includes(value);
+  }
+
+  createBalanceSheetDisplayColumnsNavBased(){
+    const yearRegex = /\b\d{4}\b/;
+    const dateRegex = /^([0-2]?\d|30|31)-(0?[1-9]|1[0-2])-\d{4}$/;
+
+    this.displayColumns = this.displayColumns.filter((value:any) => {
+        return !yearRegex.test(value) || dateRegex.test(value);
+    });
+
+    this.displayColumns.splice(2);
   }
 }

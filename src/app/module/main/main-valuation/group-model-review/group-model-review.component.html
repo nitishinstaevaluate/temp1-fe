@@ -4,7 +4,7 @@
     <div>
         <div class="mat-tab-g">
             <mat-tab-group mat-stretch-tabs="false" class="tab-group" mat-align-tabs="start" style="background-color: #ffffff;border-radius: 20px;" (selectedTabChange)="onTabChange($event)">
-                <mat-tab label="Profit & Loss" *ngIf="!hasSingleModel('ruleElevenUa') && !hasSingleModel('slumpSale') ">
+                <mat-tab label="Profit & Loss" *ngIf="!hasSingleModel('ruleElevenUa') && !hasSingleModel('slumpSale') && !isOnlyModel('NAV')">
                     <ng-template matTabContent>
                         <app-profit-loss-data *ngIf="selectedTab === 'Profit & Loss'" [transferStepperTwo]="transferStepperTwo" (profitLossData)="profitLossData($event)" [currentStepIndex]="step" [fourthStageInput]="fourthStageInput"></app-profit-loss-data>
                     </ng-template>

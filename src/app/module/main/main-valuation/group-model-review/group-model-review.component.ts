@@ -79,6 +79,9 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
       case modelValue?.length && modelValue.includes(MODELS.SLUMP_SALE):
         this.selectedTab = 'Slump Sale';
         break;
+      case this.isOnlyModel(MODELS.NAV) :
+        this.selectedTab = 'Balance Sheet';
+        break;
       default:
         this.selectedTab = 'Profit & Loss';
         break;
@@ -402,5 +405,11 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
 
   clearInput(controlName:string){
     this.reviewForm.controls[controlName].setValue('');
+  }
+
+  isOnlyModel(value:string){
+    const model = this.transferStepperTwo?.model || this.fourthStageInput?.formOneData?.model;
+    if(!model?.length) return false;
+    return model.length === 1 && model.includes(value);
   }
 }
