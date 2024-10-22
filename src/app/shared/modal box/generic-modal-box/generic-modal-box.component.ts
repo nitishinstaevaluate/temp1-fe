@@ -555,6 +555,9 @@ get downloadTemplate() {
     formData.append('modelName', `${this.verifyModelBasedExcel()}`);
     this.valuationService.fileUpload(formData).subscribe((res: any) => {
       this.excelSheetId = res.excelSheetId;
+      if (res?.processId) {
+        localStorage.setItem('processStateId', res.processId);
+      }
       this.fileUploadStatus = true;
       this.modSelLoader = false;
       snackBarRef.dismiss();
