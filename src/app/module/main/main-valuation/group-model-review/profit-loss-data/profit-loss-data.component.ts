@@ -390,7 +390,7 @@ async queueModifyExcelRequest(payload: any) {
 
   isNavOrCcm(){
     const models = this.fetchExistingModel();
-    return models.length === 2 && models.includes(MODELS.NAV) && models.includes(MODELS.RELATIVE_VALUATION);
+    return (models.length === 2 && models.includes(MODELS.NAV) && models.includes(MODELS.RELATIVE_VALUATION)) || (models.length === 1 && (models.includes(MODELS.NAV) || models.includes(MODELS.RELATIVE_VALUATION)));
   }
 
   fetchExistingModel(){

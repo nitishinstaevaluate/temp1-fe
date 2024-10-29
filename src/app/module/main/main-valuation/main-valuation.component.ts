@@ -470,12 +470,22 @@ export class MainValuationComponent implements OnInit{
         this.processLoader = false;
         localStorage.setItem('execProcess','false')
 
-        this.snackBar.open('Session Restored Successfully','OK',{
-          horizontalPosition: 'center',
-          verticalPosition: 'bottom',
-          duration: 3000,
-          panelClass: 'app-notification-success'
-        })
+        if(processStateDetails?.isLegacyTemplate){
+          this.snackBar.open('Valuation is done using Old Template Format, few process might not work','OK',{
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: -1,
+            panelClass: 'app-notification-error'
+          })
+        }
+        else{
+          this.snackBar.open('Session Restored Successfully','OK',{
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+            duration: 3000,
+            panelClass: 'app-notification-success'
+          })
+        }
       }
     })
   }

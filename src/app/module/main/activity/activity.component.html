@@ -22,7 +22,7 @@
                 <tr class="header">
                   <th *ngFor="let item of columnName" [ngStyle]="(item === 'Reference Id') ? { 'width': '10%'} : (item === 'Date') ? { 'width':'15%' } : (item === 'Status') ? { 'width':'12%' } : (item === 'Action') ? { 'width':'8%' } : (item === 'Valuation (per share)') ? { 'width' : '15%' } : { 'width':'auto' }">{{item}}</th>       
                 </tr>
-                <tr *ngFor="let item of activity">
+                <tr *ngFor="let item of activity" [ngClass]="item.isLegacyTemplate ? 'old-template':''">
                   <td>{{ item?.processIdentifierId ? item?.processIdentifierId : '-'  }}</td>
                   <td>{{ item.createdOn | date :'MMM d, yyyy h:mm a' }} </td>
                   <td>{{ item?.firstStageInput?.company ? item?.firstStageInput?.company : '-'  }}</td>
