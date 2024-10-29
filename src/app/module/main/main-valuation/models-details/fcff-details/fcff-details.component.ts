@@ -624,12 +624,13 @@ getWaccIndustryOrCompanyBased(){
   else{
     const payload={
       adjCoe:this.adjCoe,
-      excelSheetId:this.formOneData.excelSheetId,
+      // excelSheetId:this.formOneData.excelSheetId,
       costOfDebt:this.fcffForm.controls['costOfDebt'].value,
       copShareCapital:this.fcffForm.controls['copShareCapital'].value,
       deRatio:this.deRatio,
       type:this.fcffForm.controls['capitalStructureType'].value,
       taxRate:this.formOneData?.taxRate?.includes('%') ? parseFloat(this.formOneData?.taxRate.replace("%", "")) : this.formOneData?.taxRate,
+      processStateId: localStorage.getItem('processStateId')
     }
     this.calculationsService.getWaccIndustryOrCompanyBased(payload).subscribe((response:any)=>{
       if(response.status){
