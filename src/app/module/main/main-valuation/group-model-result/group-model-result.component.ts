@@ -374,7 +374,9 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
       appData.valuationResult.map((response:any)=>{
         if(response.model === MODELS.RELATIVE_VALUATION){
 
-          this.relativeValuation = response.valuation?.finalPriceMed;
+          this.ccmVPSavg = response.valuation?.finalPriceAvg;
+          this.ccmVPSmed = response.valuation?.finalPriceMed;
+          this.relativeValuation = this.ccmValuationMetric === 'average' ? this.ccmVPSavg : this.ccmVPSmed;
           const relativeValuationIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "Relative_Valuation");
           if(relativeValuationIndex === -1)
           {
