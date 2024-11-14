@@ -127,11 +127,12 @@ mat-header-cell{
     color: #6d6d6d;
     transition: 0.1s ease-out;
     font-family: 'AR One Sans', sans-serif;
-    padding-top: 2%;
-    padding-bottom: 2%;
+    padding-top: 0.5%;
+    padding-bottom: 0.5%;
     width: 95%;
     padding-left: 2%;
     // box-shadow: 1px 2px 10px #f0ebeb;
+    margin: 0.7%;
   }
 .new-inp-auto {
     width: 20%;
@@ -260,7 +261,7 @@ mat-header-cell{
 }
 
 .reduce-width{
-  width: 35%;
+  width: 24%;
 }
 .nav-width{
   width: 20%;
