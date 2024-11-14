@@ -27,6 +27,7 @@ export class ValuationResultTableComponent implements OnInit, OnChanges{
 @Output() formFourAppData = new EventEmitter<any>();
 @Output() formFourAppDataCCM = new EventEmitter<any>();
 @Output() vwapMethod = new EventEmitter<any>();
+@Output() ccmVPSMethod = new EventEmitter<any>();
 @ViewChild('dynamicTable') dynamicTable!: ElementRef;
 
 HOST = environment.baseUrl
@@ -68,6 +69,7 @@ ccmCompanyTableLoader = false;
 userAccess = false;
 fifthStageDetails: any;
 marketMethodType:any = 'vwapNse';
+ccmValuationMetric:any = 'average';
 vwapNse:any='';
 vwapBse:any='';
 getKeys(navData:any){
@@ -692,6 +694,9 @@ loadStageFiveDetails(){
       if(this.fifthStageDetails?.vwapType){
         this.marketMethodType = this.fifthStageDetails?.vwapType;
       }
+      if(this.fifthStageDetails?.ccmVPStype){
+        this.ccmValuationMetric = this.fifthStageDetails.ccmVPStype;
+      }
       if(this.transferStepperthree?.formOneAndThreeData?.model?.includes(MODELS.FCFE) || this.transferStepperthree?.formOneAndThreeData?.model?.includes(MODELS.FCFF)){
         this.terminalValueOptions(this.fifthStageDetails?.terminalValueSelectedType || this.terminalValueSelectedType);
       }else{
@@ -816,7 +821,8 @@ downloadValuation(model:any, format:any, saveAsFileName:any, reportId:any, disab
         processId: this.processStateId, 
         terminalValueType: this.terminalValueSelectedType, 
         formatType: format,
-        modelWeightageData: modelWeightage || this.fifthStageDetails.totalModelWeightageValue
+        modelWeightageData: modelWeightage || this.fifthStageDetails.totalModelWeightageValue,
+        ccmVPStype:this.ccmValuationMetric
       }
       this.excelAndReportService.exportValuation(payload).subscribe((response)=>{
         snackBarRef.dismiss();
@@ -899,6 +905,10 @@ keyValidator(item:any, key:any){
 marketPriceType(type:any){
   this.marketMethodType = type;
   this.vwapMethod.emit(this.marketMethodType);
+}
+ccmMetric(metric:any){
+  this.ccmValuationMetric = metric;
+  this.ccmVPSMethod.emit(this.ccmValuationMetric);
 }
 
 containsNseAndBse(){
