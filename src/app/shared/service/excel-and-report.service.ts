@@ -100,4 +100,13 @@ export class ExcelAndReportService {
       }
     );
   }
+
+  fetchExcelTemplate(payload:any){
+    return this.http.post(`${this.HOST}upload/download-excel-template`,
+      payload, 
+      {
+        responseType: 'blob'
+      }
+    )
+  }
 }

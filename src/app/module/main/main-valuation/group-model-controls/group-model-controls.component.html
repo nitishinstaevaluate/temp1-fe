@@ -386,7 +386,7 @@
       <div class="col-xl-12" *ngIf="fileName" style="padding-top: 1%;">
         <div class="filename-container" >
           <div class="title">Uploaded filename:</div>
-          <span class="filename">{{fileName}}</span>
+          <span class="filename" (click)="downloadTemplateExternal()">{{fileName}}</span>
           <!-- Uncomment the below code, also from ts,to reupload excels :-) -->
           <!-- <span class="filename" (click)="fileInput.click()">{{fileName}}</span> -->
           <!-- <input #fileInput type="file" style="display: none;" (change)="reUploadFile($event)"> -->
