@@ -733,9 +733,8 @@ export class GroupModelControlsComponent implements OnInit {
       this.processStatusManagerService.getExcelStatus(localStorage.getItem('processStateId')).subscribe((response:any)=>{
         snackBarRef.dismiss();
 
-        const saveAsFileName = `${this.fileName}.xlsx`;
         if(excelResponse){
-          saveAs(excelResponse, saveAsFileName);
+          saveAs(excelResponse, this.fileName);
         }
 
         if (response?.isExcelModifiedStatus) {
