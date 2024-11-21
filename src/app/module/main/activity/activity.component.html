@@ -47,6 +47,12 @@
                     </button>
                     
                     <mat-menu #menu="matMenu" xPosition="before">
+                      <button mat-menu-item (click)="cloneLead(item)" class="action-button">
+                        <span matTooltip="Clone Lead" style="width: 150px;display: block;text-align: left;padding-left: 9%;" matTooltipPosition="left" class="resume-label" matTooltipClass='activity-mrl-tooltip'>
+                          <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../assets/images/icons/files-transfer.png" alt="">
+                        <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Clone Lead</span>
+                      </span>
+                      </button>
                       <button mat-menu-item (click)="loadProcess(item._id)" class="action-button">
                         <span matTooltip="Resume valuation" style="width: 150px;display: block;text-align: left;padding-left: 9%;" matTooltipPosition="left" class="resume-label" matTooltipClass='activity-resume-tooltip'>
                           <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../assets/images/icons/report-edit.png" alt="">

@@ -42,4 +42,8 @@ export class ProcessStatusManagerService {
   fetchProcessIdentifierId(obId:any){
     return this.http.get(`${this.HOST}process-status-manager/fetch-process-identifier-id/${obId}`);
   }
+
+  cloneLead(payload:any){
+    return this.http.post(`${this.HOST}process-status-manager/clone-lead`,payload);
+  }
 }

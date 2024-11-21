@@ -13,6 +13,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.service';
 import { convertToNumberOrZero, formatNumber, formatPositiveAndNegativeValues } from 'src/app/shared/enums/functions';
 import { MatDialog } from '@angular/material/dialog';
+import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 
 @Component({
   selector: 'app-activity',
@@ -45,7 +46,8 @@ export class ActivityComponent {
     private excelAndReportService: ExcelAndReportService,
     private ngxLoaderService: NgxUiLoaderService,
     private snackBar: MatSnackBar,
-    private dialogBox: MatDialog) {
+    private dialogBox: MatDialog,
+  private processStatusManagerService:ProcessStatusManagerService) {
       this.dialogBox.closeAll();
     this.inItData();
     this.searchTerms
@@ -429,5 +431,20 @@ export class ActivityComponent {
           });
         })
     }
+  }
+
+  cloneLead(leadDetails:any){
+    this.processStatusManagerService.cloneLead(leadDetails).subscribe((cloneResponse:any)=>{
+      if(cloneResponse?.status){
+        this.fetchData();
+      }
+    },(error:any)=>{
+      this.snackBar.open(`${error.error.message || error?.statusText || 'Lead clone failed'}`, 'Ok' ,{
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 5000,
+          panelClass: 'app-notification-error'
+      })
+    })
   }
 }
