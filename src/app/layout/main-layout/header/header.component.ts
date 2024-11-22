@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { NavService } from 'src/app/shared/service/nav.service';
+import { UserService } from 'src/app/shared/service/user.service';
 
 @Component({
   selector: 'mvp-header',
@@ -11,19 +14,14 @@ export class HeaderComponent implements OnInit {
   public isCollapsed = true;
   store: any;
   menuItems: any;
+  userName: any;
 
   constructor(
-    // private layoutService: LayoutService,
     public navServices: NavService,
-    // private modalService: NgbModal,
-    // public SwitcherService : SwitcherService,
     private router: Router,
-    // public ShopService: ShopService,
-    // private store: Store<any>,
-    // private auth : AuthService
-  ){
-    this.price();
-  }
+    private calculationService: CalculationsService,
+    private snackBar: MatSnackBar
+  ){}
 
 
   // data$ = this.store.select('data')
@@ -32,39 +30,8 @@ export class HeaderComponent implements OnInit {
   delectFunction = false
   getdelectData:any;
   isDropdownOpen: boolean = false;
-
-  price(){
-    // this.data$.forEach((item) =>{
-
-    //   this.totalLength = item.length
-    //   if(item.length>1){
-
-    //     this.totalMoney =this.totalMoney+item[this.totalLength-1]?.offer_price
-    //   }
-    //   else{
-    //     if(item[0]?.offer_price != undefined){
-    //       this.totalMoney = item[0].offer_price
-    //     }
-    //   }
-    //   if(this.delectFunction){
-    //     this.totalMoney = 0
-    //     this.delectFunction = false
-    //   }
-    // })
-  }
-
-
-
-
   ngOnInit(): void {
-    // this.navServices.items.subscribe((menuItems) => {
-    //   this.items = menuItems;
-    // });
-    // To clear and close the search field by clicking on body
-    document.querySelector('.main-content')?.addEventListener('click',()=>{
-      this.clearSearch();
-    })
-    this.text = '';
+    this.fetchUser();
   }
 
 
@@ -175,4 +142,25 @@ export class HeaderComponent implements OnInit {
       return false;
     return true;
   }
+
+  fetchUser(){
+    this.calculationService.userName.subscribe((userResponse:any)=>{
+      if(userResponse){
+        this.userName = userResponse;
+      }else{
+        this.handleError('User not found')
+      }
+    },(error)=>{
+      this.handleError(`${error?.message}`);
+    })
+  }
+
+  handleError(message: string) {
+    this.snackBar.open(message, 'OK', { 
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+      duration: 3000,
+      panelClass: 'app-notification-error'
+    });
+}
 }

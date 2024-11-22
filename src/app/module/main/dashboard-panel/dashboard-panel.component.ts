@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { CHECKLIST_TYPES, INCOME_APPROACH, MARKET_APPROACH, NET_ASSET_APPROACH, PAGINATION_VAL } from 'src/app/shared/enums/constant';
 import { convertToNumberOrZero, formatNumber } from 'src/app/shared/enums/functions';
 import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal-box/generic-modal-box.component';
+import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { EmailService } from 'src/app/shared/service/email.service';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { UserService } from 'src/app/shared/service/user.service';
@@ -33,6 +34,7 @@ export class DashboardPanelComponent implements OnInit{
     private dialog: MatDialog,
     private emailService: EmailService,
     private processStatusManagerService: ProcessStatusManagerService,
+    private calculationService: CalculationsService,
     private userService: UserService){
       this.fetchData();
       this.fetchAllDatachecklistEmails();
@@ -369,6 +371,7 @@ export class DashboardPanelComponent implements OnInit{
     this.userService.getUser().subscribe((userResponse:any)=>{
       if(userResponse){
         this.userName = userResponse.given_name;
+        this.calculationService.userName.next(this.userName);
       }else{
         this.handleError('User not found')
       }
