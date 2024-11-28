@@ -129,6 +129,8 @@ checkProcessExist(){
         this.fcffForm.controls['expMarketReturn'].setValue(stateThreeDetails?.expMarketReturn);
         this.fcffForm.controls['specificRiskPremium'].setValue(stateThreeDetails?.specificRiskPremium); 
         this.fcffForm.controls['riskPremium'].setValue(stateThreeDetails?.riskPremium); 
+        this.fcffForm.controls['industryRiskPremium'].setValue(stateThreeDetails?.industryRiskPremium);
+        this.fcffForm.controls['sizePremium'].setValue(stateThreeDetails?.sizePremium);
         this.fcffForm.controls['costOfDebt'].setValue(stateThreeDetails?.costOfDebt);
         this.fcffForm.controls['capitalStructureType'].setValue(stateThreeDetails?.capitalStructureType);
         if(stateThreeDetails?.capitalStructure){
@@ -177,6 +179,8 @@ checkProcessExist(){
         this.fcffForm.controls['expMarketReturn'].setValue(this.thirdStageInput?.expMarketReturn);
         this.fcffForm.controls['specificRiskPremium'].setValue(this.thirdStageInput?.specificRiskPremium); 
         this.fcffForm.controls['riskPremium'].setValue(this.thirdStageInput?.riskPremium); 
+        this.fcffForm.controls['industryRiskPremium'].setValue(this.thirdStageInput?.industryRiskPremium);
+        this.fcffForm.controls['sizePremium'].setValue(this.thirdStageInput?.sizePremium);
         this.fcffForm.controls['costOfDebt'].setValue(this.thirdStageInput?.costOfDebt);
         this.fcffForm.controls['capitalStructureType'].setValue(this.thirdStageInput?.capitalStructureType);
         if(this.thirdStageInput?.capitalStructure){
@@ -338,9 +342,23 @@ loadOnChangeValue(){
   })
   this.fcffForm.controls['coeMethod'].valueChanges.subscribe((val:any)=>{
     if(!val) return;
+
+    this.fcffForm.get('riskPremium').reset();
+    this.fcffForm.get('riskPremium').setErrors({required:true});
+
+    this.fcffForm.get('riskPremium').markAsTouched();
     this.calculateCoeAndAdjustedCoe();
   })
 
+  this.fcffForm.controls['sizePremium'].valueChanges.subscribe((value:any)=>{
+    if(!value) return;
+    this.calculateCoeAndAdjustedCoe()
+  })
+  
+  this.fcffForm.controls['industryRiskPremium'].valueChanges.subscribe((value:any)=>{
+    if(!value) return;
+    this.calculateCoeAndAdjustedCoe()
+  })
 }
 
 loadFormControl(){
@@ -361,6 +379,8 @@ loadFormControl(){
     capitalStructureType:['',[Validators.required]],
     costOfDebt:['',[Validators.required]],
     copShareCapital:['',[Validators.required]],
+    industryRiskPremium:['',[Validators.required]],
+    sizePremium:['',[Validators.required]]
   })
 
   this.specificRiskPremiumModalForm=this.formBuilder.group({
@@ -393,7 +413,8 @@ onSlideToggleChange(event:any){
     const data = {
       data: {
         ...this.specificRiskPremiumModalForm.value,
-        value:'specificRiskPremiumForm'
+        value:'specificRiskPremiumForm',
+        coeMethod:this.fcffForm.controls['coeMethod'].value
       }
     };
     
@@ -471,6 +492,15 @@ saveAndNext(): void {
   if(payload.expMarketReturnType === 'Analyst_Consensus_Estimates'){
     delete controls.bse500Value;
     delete controls.expMarketReturnSubType;
+  }
+
+  if(this.fcffForm.controls['coeMethod'].value === 'capm'){
+    delete controls.industryRiskPremium;
+    delete controls.sizePremium;
+  }
+  if(this.fcffForm.controls['coeMethod'].value === 'buildUpCapm'){
+    delete controls.beta;
+    delete controls.betaType;
   }
 
    // validate formcontrols
@@ -582,22 +612,25 @@ calculateCoeAndAdjustedCoe() {
     beta: this.fcffForm.controls['beta']?.value ? this.fcffForm.controls['beta'].value : 0,
     riskPremium: this.fcffForm.controls['riskPremium'].value,
     coeMethod: this.fcffForm.controls['coeMethod'].value,
+    industryRiskPremium: this.fcffForm.controls['industryRiskPremium'].value,
+    sizePremium: this.fcffForm.controls['sizePremium'].value
   };
 
   this.calculationsService.getCostOfEquity(coePayload).subscribe((response: any) => {
     if (response.status) {
-     this.adjCoe=response.result.adjCOE;
-     this.coe=response.result.coe;
-      this.getWaccIndustryOrCompanyBased();
+      this.adjCoe = formatNumber(response?.result?.adjCOE);
+      this.coe = formatNumber(response?.result?.coe);
     }
+    else{
+      this.adjCoe = 0;
+      this.coe = 0;
+    }
+    this.getWaccIndustryOrCompanyBased();
   });
   this.isLoader=false;
-  // Always return false the first time to prevent the template from displaying prematurely.
-  return false;
 }
 
 getWaccIndustryOrCompanyBased(){
-
   if(!this.fcffForm.controls['capitalStructureType'].value)
       return;
   if(this.fcffForm.controls['capitalStructureType'].value=== 'Target_Based'){
@@ -614,8 +647,8 @@ getWaccIndustryOrCompanyBased(){
     }
     this.calculationsService.getWacc(waccPayload).subscribe((data:any)=>{
       if(data.status){
-        this.adjCoe = data?.result?.adjCOE;
-        this.wacc = data?.result?.wacc/100;
+        // this.adjCoe = data?.result?.adjCOE;
+        this.wacc = formatNumber(data?.result?.wacc/100);
         this.isLoader=false;
       }
     })
@@ -635,7 +668,7 @@ getWaccIndustryOrCompanyBased(){
     this.calculationsService.getWaccIndustryOrCompanyBased(payload).subscribe((response:any)=>{
       if(response.status){
         this.adjCoe = response?.result?.adjCOE;
-        this.wacc = response?.result?.wacc;
+        this.wacc = formatNumber(response?.result?.wacc);
       }
       if(!response?.result){
         this.snackBar.open(`Wacc calculation failed (excel not found), please reupload excel template or traverse back from review form and try again`, 'OK', {
@@ -664,9 +697,9 @@ checkPreviousAndCurrentValue(changes:any){
 
     this.stockBetaCheck(current, previous);
   }
-  if(this.equityM?.length > 0){
-    this.fcffForm.controls['coeMethod'].setValue(this.equityM[0].type);
-  }
+  // if(this.equityM?.length > 0){
+  //   this.fcffForm.controls['coeMethod'].setValue(this.equityM[0].type);
+  // }
 
   this.calculationsService.betaChangeDetector.subscribe((detector:any)=>{
     if(detector.status){

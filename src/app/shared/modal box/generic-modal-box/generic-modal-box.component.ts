@@ -706,7 +706,8 @@ get downloadTemplate() {
       this.liquidityFactor.setValue(data.liquidityFactor);
     }
     if(data?.companySize){
-      this.companySize.setValue(data.companySize);
+      if(data?.coeMethod === 'buildUpCapm') this.companySize.setValue(0)
+      else this.companySize.setValue(data.companySize);
     }
     if(data?.marketPosition){
       this.marketPosition.setValue(data.marketPosition);
@@ -991,5 +992,10 @@ get downloadTemplate() {
       panelClass: 'app-notification-error'
     })
     throw new NotFoundError(`{msg:'model not found'}`)
+  }
+
+  disableSpecificRiskPremium(){
+    if(this.data?.data?.coeMethod === 'buildUpCapm') return !this.marketPosition.value || !this.liquidityFactor.value || !this.competition.value;
+    return !this.companySize.value ||  !this.marketPosition.value || !this.liquidityFactor.value || !this.competition.value;
   }
 }

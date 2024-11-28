@@ -78,7 +78,7 @@
           <h4 class="modal-subtitle">Qualitative Factors</h4>
         </div>
 
-        <div class="col-md-12 field" style="padding-bottom: 5%;padding-top: 3%;">
+        <div class="col-md-12 field" style="padding-bottom: 5%;padding-top: 3%;" *ngIf="data?.data?.coeMethod !== 'buildUpCapm'">
           <div class="material-textfield">
             <input class="new-inp" type="text" placeholder="Enter company size" [formControl]="companySize"/>
             <label class="going-concern-label">Company Size</label>
@@ -108,7 +108,7 @@
       </div>
       
     <div class="col-md-12 btn-prop" style="text-align: center !important;">
-      <button style=" width: 30%;padding-right: 8%;" [disabled]="!companySize.value || !marketPosition.value || !liquidityFactor.value || !competition.value" [ngClass]="!companySize.value || !marketPosition.value || !liquidityFactor.value || !competition.value  ? 'valuer-button-disable' : 'button-save-mat'" (click)="modalData({companySize:companySize.value,marketPosition:marketPosition.value,liquidityFactor:liquidityFactor.value,competition:competition.value},'specificRiskPremium')" mat-raised-button>
+      <button style=" width: 30%;padding-right: 8%;" [disabled]="disableSpecificRiskPremium()" [ngClass]="disableSpecificRiskPremium() ? 'valuer-button-disable' : 'button-save-mat'" (click)="modalData({companySize:companySize.value,marketPosition:marketPosition.value,liquidityFactor:liquidityFactor.value,competition:competition.value},'specificRiskPremium')" mat-raised-button>
           Save
           <span class="button-save"><mat-icon>send</mat-icon></span>
        </button>

@@ -118,6 +118,8 @@ if(this.thirdStageInput){
       this.fcfeForm.controls['expMarketReturn'].setValue(stateTwoDetails?.expMarketReturn);
       this.fcfeForm.controls['specificRiskPremium'].setValue(stateTwoDetails?.specificRiskPremium); 
       this.fcfeForm.controls['riskPremium'].setValue(stateTwoDetails?.riskPremium);
+      this.fcfeForm.controls['industryRiskPremium'].setValue(stateTwoDetails?.industryRiskPremium);
+      this.fcfeForm.controls['sizePremium'].setValue(stateTwoDetails?.sizePremium);
       this.specificRiskPremiumModalForm.controls['companySize'].setValue(stateTwoDetails?.alpha.companySize)
       this.specificRiskPremiumModalForm.controls['marketPosition'].setValue(stateTwoDetails?.alpha.marketPosition)
       this.specificRiskPremiumModalForm.controls['liquidityFactor'].setValue(stateTwoDetails?.alpha.liquidityFactor)
@@ -153,6 +155,8 @@ if(this.thirdStageInput){
     this.fcfeForm.controls['expMarketReturn'].setValue(this.thirdStageInput?.expMarketReturn);
     this.fcfeForm.controls['specificRiskPremium'].setValue(this.thirdStageInput?.specificRiskPremium); 
     this.fcfeForm.controls['riskPremium'].setValue(this.thirdStageInput?.riskPremium);
+    this.fcfeForm.controls['industryRiskPremium'].setValue(this.thirdStageInput?.industryRiskPremium);
+    this.fcfeForm.controls['sizePremium'].setValue(this.thirdStageInput?.sizePremium);
     this.specificRiskPremiumModalForm.controls['companySize'].setValue(this.thirdStageInput?.alpha.companySize)
     this.specificRiskPremiumModalForm.controls['marketPosition'].setValue(this.thirdStageInput?.alpha.marketPosition)
     this.specificRiskPremiumModalForm.controls['liquidityFactor'].setValue(this.thirdStageInput?.alpha.liquidityFactor)
@@ -212,8 +216,23 @@ loadOnChangeValue(){
 
   this.fcfeForm.controls['coeMethod'].valueChanges.subscribe((value:any)=>{
     if(!value) return;
+
+    this.fcfeForm.get('riskPremium').reset();
+    this.fcfeForm.get('riskPremium').setErrors({required:true});
+
+    this.fcfeForm.get('riskPremium').markAsTouched();
     this.calculateCoeAndAdjustedCoe();
   })  
+
+  this.fcfeForm.controls['sizePremium'].valueChanges.subscribe((value:any)=>{
+    if(!value) return;
+    this.calculateCoeAndAdjustedCoe()
+  })
+  
+  this.fcfeForm.controls['industryRiskPremium'].valueChanges.subscribe((value:any)=>{
+    if(!value) return;
+    this.calculateCoeAndAdjustedCoe()
+  })
 }
 
 loadFormControl(){
@@ -231,6 +250,8 @@ loadFormControl(){
     riskPremium:['',[Validators.required]],
     expMarketReturnSubType:['',[Validators.required]],
     bse500Value:['',[Validators.required]],
+    industryRiskPremium:['',[Validators.required]],
+    sizePremium:['',[Validators.required]]
   })
 
   this.specificRiskPremiumModalForm=this.formBuilder.group({
@@ -257,7 +278,8 @@ onSlideToggleChange(event: any) {
     const data = {
       data: {
         ...this.specificRiskPremiumModalForm.value,
-        value:'specificRiskPremiumForm'
+        value:'specificRiskPremiumForm',
+        coeMethod:this.fcfeForm.controls['coeMethod'].value
       },
     };
 
@@ -317,6 +339,14 @@ saveAndNext(): void {
     delete controls.bse500Value;
     delete controls.expMarketReturnSubType;
   }
+  if(this.fcfeForm.controls['coeMethod'].value === 'capm'){
+    delete controls.industryRiskPremium;
+    delete controls.sizePremium;
+  }
+  if(this.fcfeForm.controls['coeMethod'].value === 'buildUpCapm'){
+    delete controls.beta;
+    delete controls.betaType;
+  }
   // validate formcontrols
   if(!this.sensitivityAnalysisToggle){
     this.validateControls(controls,payload);
@@ -358,6 +388,7 @@ validateControls(controlArray: { [key: string]: FormControl },payload:any){
         const control = controlArray[controlName];
         if (control.value === null || control.value === '' ) {
           allControlsFilled = false;
+          console.log(control,"control", controlName)
           break;
         }
        
@@ -425,18 +456,23 @@ calculateCoeAndAdjustedCoe() {
     beta: this.fcfeForm.controls['beta']?.value ? this.fcfeForm.controls['beta'].value : 0,
     riskPremium: this.fcfeForm.controls['riskPremium'].value,
     coeMethod: this.fcfeForm.controls['coeMethod'].value,
+    industryRiskPremium: this.fcfeForm.controls['industryRiskPremium'].value,
+    sizePremium: this.fcfeForm.controls['sizePremium'].value
   };
 
   this.calculationsService.getCostOfEquity(coePayload).subscribe((response: any) => {
     if (response.status) {
-      this.adjCoe = response?.result?.adjCOE;
-      this.coe = response?.result?.coe;
+      this.adjCoe = formatNumber(response?.result?.adjCOE);
+      this.coe = formatNumber(response?.result?.coe);
       this.apiCallMade = true;
-      this.isLoader=false;
     }
+    else{
+      this.adjCoe = 0;
+      this.coe = 0;
+    }
+    this.isLoader=false;
   });
   this.isLoader=false;
-  return false;
 }
 
 processStateManager(process:any, processId:any){
@@ -474,9 +510,9 @@ processStateManager(process:any, processId:any){
 
     this.stockBetaCheck(current, previous);
   }
-  if(this.equityM?.length > 0){
-    this.fcfeForm.controls['coeMethod'].setValue(this.equityM[0].type);
-  }
+  // if(this.equityM?.length > 0){
+  //   this.fcfeForm.controls['coeMethod'].setValue(this.equityM[0].type);
+  // }
 
   this.calculationsService.betaChangeDetector.subscribe((detector:any)=>{
     if(detector.status){

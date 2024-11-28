@@ -22,7 +22,7 @@ export class CalculationsService {
   userName: Subject<any> = new Subject();
   
   getCostOfEquity(payload:any){
-    return this.http.get(`${HOST}coe/adjcoe/?riskFreeRate=${payload.riskFreeRate}&expMarketReturn=${payload.expMarketReturn}&beta=${payload.beta}&riskPremium=${payload.riskPremium}&coeMethod=${payload.coeMethod}`)
+    return this.http.post(`${HOST}coe/adjcoe`, payload)
   }
 
   getWacc(payload:any){
