@@ -639,7 +639,7 @@
     </div>
     <div>
       <div class="table-container" style="display: block;">
-        <app-model-market-price-result-table [formData]="transferStepperthree" [marketMethodType]="marketMethodType"></app-model-market-price-result-table>
+        <app-model-market-price-result-table [formData]="transferStepperthree" [marketMethodType]="marketMethodType" (marketPriceRevaluation)="marketPriceRevaluation($event)"></app-model-market-price-result-table>
       </div>
     </div>
   </mat-tab>

@@ -915,5 +915,46 @@ containsNseAndBse(){
   if(this.vwapBse && this.vwapNse) return true;
   return false;
 }
-}
 
+async marketPriceRevaluation(data:any){
+  this.isLoader = true;
+  const snackBarRef = this.snackbar.open('Please wait, performing revaluation','Ok', {
+    horizontalPosition: 'right',
+    verticalPosition: 'top',
+    duration: -1,
+    panelClass: 'app-notification-success',
+  })
+  await this.delay(2000)
+  this.valuationService.marketPriceRevaluationProcess(data).subscribe((response:any)=>{
+    snackBarRef.dismiss();
+    this.isLoader = false;
+    if(response.status){
+      this.transferStepperthree.formFourData = response.data;
+      this.transferStepperthree = {...this.transferStepperthree};
+      this.formFourAppData.emit(this.transferStepperthree.formFourData.appData);
+      this.snackbar.open('Revaluation successfull','Ok',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 3000,
+        panelClass: 'app-notification-success'
+      })
+    }else{
+      this.snackbar.open('Revaluation failed due to network connection, please try again later','Ok',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 6000,
+        panelClass: 'app-notification-error'
+      })
+    }
+  },(error)=>{
+    snackBarRef.dismiss();
+    this.isLoader = false;
+    this.snackbar.open(`${error?.error?.message || error?.statusText || 'Backend failed'}`,'Ok',{
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+      duration: 5000,
+      panelClass: 'app-notification-error',
+    })
+  })
+}
+}

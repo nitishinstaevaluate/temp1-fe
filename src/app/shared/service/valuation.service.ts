@@ -66,5 +66,8 @@ export class ValuationService {
   ccmRevaluationProcess(payload:any){
     return this.http.post(`${HOST}valuations/ccm-re-valuation`, payload)
   }
-  }
 
+  marketPriceRevaluationProcess(payload:any){
+    return this.http.post(`${HOST}valuations/market-price-re-valuation`, payload)
+  }
+}

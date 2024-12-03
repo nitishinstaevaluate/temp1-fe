@@ -388,7 +388,6 @@ validateControls(controlArray: { [key: string]: FormControl },payload:any){
         const control = controlArray[controlName];
         if (control.value === null || control.value === '' ) {
           allControlsFilled = false;
-          console.log(control,"control", controlName)
           break;
         }
        

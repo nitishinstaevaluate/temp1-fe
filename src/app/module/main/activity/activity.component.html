@@ -65,7 +65,7 @@
                         <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Generate MRL</span>
                         </span>
                       </button>
-                      <button mat-menu-item (click)="cloneLead(item)" class="action-button">
+                      <button mat-menu-item (click)="cloneLead(item)" class="action-button" *ngIf="!item.isLegacyTemplate">
                         <span matTooltip="Create duplicate lead" style="width: 150px;display: block;text-align: left;padding-left: 9%;" matTooltipPosition="below" class="resume-label" matTooltipClass='activity-resume-tooltip'>
                           <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../assets/images/icons/files-transfer.png" alt="">
                         <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Clone Lead</span>
