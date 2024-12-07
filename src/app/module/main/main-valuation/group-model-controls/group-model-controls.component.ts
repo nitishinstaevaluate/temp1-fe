@@ -91,6 +91,7 @@ export class GroupModelControlsComponent implements OnInit {
   options:any=[];
   companyListLoader=false;
   companyInput=false;
+  isCmpnyNmeOrVltionDteReset = false;
 
 
   constructor(private formBuilder: FormBuilder,
@@ -188,6 +189,7 @@ export class GroupModelControlsComponent implements OnInit {
    this.modelValuation.controls['taxRate'].setValue(data?.taxRate?? '');
    this.modelValuation.controls['faceValue'].setValue(data?.faceValue?? '');
    this.modelValuation.controls['issuanceOfShares'].setValue(data?.issuanceOfShares?? '');
+   this.isCmpnyNmeOrVltionDteReset = data?.validateFieldOptions?.isCmpnyNmeOrVltionDteReset || false;
 
    if(data?.model?.length && data?.model?.includes(MODELS.RULE_ELEVEN_UA)){
     this.issuanceOfShares()
@@ -349,8 +351,19 @@ export class GroupModelControlsComponent implements OnInit {
       delete control.discountRateType;
       // delete control.discountRateValue;
     }
+    if(
+      this.firstStageInput?.company &&  this.firstStageInput?.valuationDate && 
+      this.firstStageInput?.company.trim() !== this.modelValuation.controls['company'].value.trim() || 
+      this.firstStageInput?.valuationDate !== this.newDate.getTime()
+    ){
+      this.isCmpnyNmeOrVltionDteReset = true;
+    }
+    else{
+      this.isCmpnyNmeOrVltionDteReset = false;
+    }
+    (payload['validateFieldOptions'] = payload['validateFieldOptions'] || {}).isCmpnyNmeOrVltionDteReset = this.isCmpnyNmeOrVltionDteReset;
+      
     delete control.industry;
-    
     this.validateControls(control,payload);
   }
 

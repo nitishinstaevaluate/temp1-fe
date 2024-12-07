@@ -19,7 +19,7 @@ export class HeaderComponent implements OnInit {
   constructor(
     public navServices: NavService,
     private router: Router,
-    private calculationService: CalculationsService,
+    private userService: UserService,
     private snackBar: MatSnackBar
   ){}
 
@@ -144,14 +144,14 @@ export class HeaderComponent implements OnInit {
   }
 
   fetchUser(){
-    this.calculationService.userName.subscribe((userResponse:any)=>{
+    this.userService.getUser().subscribe((userResponse:any)=>{
       if(userResponse){
-        this.userName = userResponse;
+        this.userName = userResponse.given_name;
       }else{
         this.handleError('User not found')
       }
     },(error)=>{
-      this.handleError(`${error?.message}`);
+      this.handleError(`${error?.statusText}`);
     })
   }
 

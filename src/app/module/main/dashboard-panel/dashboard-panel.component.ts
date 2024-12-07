@@ -371,7 +371,6 @@ export class DashboardPanelComponent implements OnInit{
     this.userService.getUser().subscribe((userResponse:any)=>{
       if(userResponse){
         this.userName = userResponse.given_name;
-        this.calculationService.userName.next(this.userName);
       }else{
         this.handleError('User not found')
       }
