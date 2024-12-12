@@ -64,7 +64,7 @@
             <!-- Right Side Content -->
             <div class="col-md-10">
               <!-- <router-outlet></router-outlet> -->
-              <app-group-model-controls [step]="step" (groupModelControls)="groupModelControls($event)" [hidden]="step !== 1" [firstStageInput]="formOneData" (refId)="refId($event)"></app-group-model-controls>
+              <app-group-model-controls [step]="step" (groupModelControls)="groupModelControls($event)" [hidden]="step !== 1" (refId)="refId($event)"></app-group-model-controls>
               <app-screen-input-details [hidden]="step !== 2" [step]="step" (previousPage)="previous($event)" (screenInputDetails)="screenInputDetails($event)" [formOneData]="formOneData" [secondStageInput]="formTwoData"></app-screen-input-details>
 
               <div [hidden]="step !== 3">
@@ -81,7 +81,7 @@
                 </div>
                 <!-- tab trial ends -->
                 
-                <app-fcfe-details [sensitivityAnalysisToggle]="false" (fcfeDetailsPrev)="fcfeDetailsPrev($event)" [hidden]="next !== 1" (fcfeDetails)="fcfeDetails($event)" [formOneData]="formOneData" [thirdStageInput]="formThreeData" [formTwoData]="formTwoData" [next]="next"></app-fcfe-details>
+                <app-fcfe-details [sensitivityAnalysisToggle]="false" (fcfeDetailsPrev)="fcfeDetailsPrev($event)" [hidden]="next !== 1" (fcfeDetails)="fcfeDetails($event)" [formTwoData]="formTwoData" [next]="next"></app-fcfe-details>
                 <app-fcff-details [sensitivityAnalysisToggle]="false" (fcffDetailsPrev)="fcffDetailsPrev($event)" (fcffDetails)="fcffDetails($event)" [hidden]="next !== 2" [formOneData]="formOneData" [thirdStageInput]="formThreeData" [next]="next" [formTwoData]="formTwoData"></app-fcff-details>
                 <app-relative-valuation-details (relativeValDetailsPrev)="relativeValDetailsPrev($event)" (relativeValDetails)="relativeValDetails($event)" [hidden]="next !== 3" [formOneData]="formOneData" [thirdStageInput]="formThreeData" [formTwoData]="formTwoData" [next]="next"></app-relative-valuation-details>
                 <app-excess-earning-details (excessEarnDetailsPrev)="excessEarnDetailsPrev($event)" (excessEarnDetails)="excessEarnDetails($event)" [hidden]="next !== 4" [formOneData]="formOneData" [thirdStageInput]="formThreeData" [next]="next" [formTwoData]="formTwoData"></app-excess-earning-details>

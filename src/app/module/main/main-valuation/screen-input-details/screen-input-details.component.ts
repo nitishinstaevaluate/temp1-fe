@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { hasError } from 'src/app/shared/enums/errorMethods';
 import groupModelControl from '../../../../shared/enums/group-model-controls.json';
 import { CiqSPService } from 'src/app/shared/service/ciq-sp.service';
-import { BETA_SUB_TYPE, INDUSTRY_BASED_COMPANY, MODELS, PAGINATION_VAL, helperText } from 'src/app/shared/enums/constant';
+import { BETA_SUB_TYPE, COMPONENT_ENUM, INDUSTRY_BASED_COMPANY, MODELS, PAGINATION_VAL, helperText } from 'src/app/shared/enums/constant';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal-box/generic-modal-box.component';
 import { excludeDecimalFormatting } from 'src/app/shared/enums/functions';
 import { DataReferencesService } from 'src/app/shared/service/data-references.service';
+import { ComponentInteractionService } from 'src/app/shared/service/component-interaction.service';
 
 @Component({
   selector: 'app-screen-input-details',
@@ -89,10 +90,12 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
     private snackBar: MatSnackBar,
     private utilService: UtilService,
     private dialog:MatDialog,
-    private datareferenceService: DataReferencesService){}
+    private datareferenceService: DataReferencesService,
+    private componentInteractionService: ComponentInteractionService ){}
 
   ngOnInit(){
     this.loadForm();
+    this.loadFormDetails()
     this.loadEnums();
     this.checkProcessExist(this.secondStageInput);
     this.onValueChange();
@@ -124,6 +127,34 @@ export class ScreenInputDetailsComponent implements OnInit,OnChanges {
       }]
       this.companyTypeDropdownValue = true;
     // #end-region
+  }
+
+  loadFormDetails(){
+    this.componentInteractionService
+      .registerComponent(COMPONENT_ENUM.loadComponent.key)
+      .subscribe(async (data) => {
+        if(data?.firstStageInput){
+          this.formOneData = data?.firstStageInput;
+        }
+        if(data?.secondStageInput){
+          this.secondStageInput = data?.secondStageInput;
+        }
+        
+      });
+      
+    this.componentInteractionService.registerComponent(COMPONENT_ENUM.fieldValidator.fieldValidatorRequest.key).subscribe((response)=>{
+      // this.stepStatusOfOne = response?.firstFormStatus;
+      // this.stepStatusOfTwo = response?.secondFormStatus;
+      // this.stepStatusOfThree = response?.secondFormStatus;
+      // this.stepStatusOfFour = response?.thirdFormStatus;
+      // this.stepStatusOfFive = response?.fourthFormStatus;
+      // this.showBlackBox = response?.showBlackBox;
+      // this.currentStep = response?.step;
+      if(response?.step){
+        this.step = response.step;
+      }
+      console.log(response,"response in input screen component")
+    })
   }
 
   loadForm(){

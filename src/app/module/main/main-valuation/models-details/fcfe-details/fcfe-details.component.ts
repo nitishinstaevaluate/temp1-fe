@@ -12,10 +12,11 @@ import { MatStepper } from '@angular/material/stepper';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { hasError } from 'src/app/shared/enums/errorMethods';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
-import { BETA_FROM_TYPE, BETA_SUB_TYPE, MODELS } from 'src/app/shared/enums/constant';
+import { BETA_FROM_TYPE, BETA_SUB_TYPE, COMPONENT_ENUM, MODELS } from 'src/app/shared/enums/constant';
 import { CiqSPService } from 'src/app/shared/service/ciq-sp.service';
 import { convertToNumberOrZero, formatNumber } from 'src/app/shared/enums/functions';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { ComponentInteractionService } from 'src/app/shared/service/component-interaction.service';
 
 @Component({
   selector: 'app-fcfe-details',
@@ -29,8 +30,8 @@ export class FcfeDetailsComponent implements OnChanges,OnInit, AfterViewInit{
 
   @Output() fcfeDetails=new EventEmitter<any>();
   @Output() fcfeDetailsPrev=new EventEmitter<any>();
-  @Input() formOneData:any;
-  @Input() thirdStageInput:any;
+  // @Input() formOneData:any;
+  // @Input() thirdStageInput:any;
   @Input() formTwoData:any;
   @Input() next:any;
   @Input() sensitivityAnalysisToggle:any;
@@ -59,6 +60,10 @@ export class FcfeDetailsComponent implements OnChanges,OnInit, AfterViewInit{
   expectedMarketReturnSubOptions:any;
   disableSnsitveAnlsys = false;
   revaluationLoader = false;
+  thirdStageInput:any = [];
+  formOneData:any = {};
+  processDetails:any = {};
+  fieldValidatorsResponse:any;
   
 constructor(
   private valuationService:ValuationService,
@@ -68,23 +73,23 @@ constructor(
   private snackBar:MatSnackBar,
   private calculationsService:CalculationsService,
   private processStatusManagerService:ProcessStatusManagerService,
-  private ciqSpService:CiqSPService){
+  private ciqSpService:CiqSPService,
+  private componentInteractiveService: ComponentInteractionService){
     this.loadFormControl();
   }
   
-ngOnChanges(changes:SimpleChanges): void {
+ngOnChanges(): void {
   if(this.next !==1 )
     return;
 
-  this.formOneData;
-  if(!this.sensitivityAnalysisToggle){
-    this.checkPreviousAndCurrentValue(changes);
-  }
+  // this.formOneData;
+  
 }
 
 ngOnInit(): void {
   // if(this.next === 1){
     // this.loadFormControl();
+    this.loadFormDetails();
     this.checkProcessExist();
     this.loadValues();
     this.loadOnChangeValue();
@@ -95,11 +100,29 @@ ngAfterViewInit() {
     this.otherForm.controls['terminalGrowthRate'].patchValue(this.formOneData?.terminalGrowthRate);
   }
 }
+
+loadFormDetails(){
+  this.componentInteractiveService
+    .registerComponent(COMPONENT_ENUM.loadComponent.key)
+    .subscribe((data) => {
+      if(data){
+        this.processDetails = data;
+        if(data?.thirdStageInput) this.thirdStageInput = data.thirdStageInput;
+        if(data?.firstStageInput) this.formOneData = data.firstStageInput;
+      }
+    });
+
+  this.componentInteractiveService.registerComponent(COMPONENT_ENUM.fieldValidator.fieldValidatorRequest.key).subscribe((response)=>{
+    if(response){
+      this.fieldValidatorsResponse = response;
+      this.checkPreviousAndCurrentValue()
+    }
+  })
+}
 checkProcessExist(){
 if(this.thirdStageInput){
-  if(!this.sensitivityAnalysisToggle){
   this.thirdStageInput.map((stateTwoDetails:any)=>{
-    if(stateTwoDetails.model === MODELS.FCFE && this.formOneData.model.includes(MODELS.FCFE)){
+    if(stateTwoDetails.model === MODELS.FCFE){
       this.fcfeForm.controls['discountRate'].setValue(stateTwoDetails?.discountRate) 
       this.fcfeForm.controls['discountingPeriod'].setValue(stateTwoDetails?.discountingPeriod)
       this.selectedSubBetaType = stateTwoDetails?.betaSubType ? stateTwoDetails.betaSubType : BETA_SUB_TYPE[0];
@@ -124,7 +147,7 @@ if(this.thirdStageInput){
       this.specificRiskPremiumModalForm.controls['marketPosition'].setValue(stateTwoDetails?.alpha.marketPosition)
       this.specificRiskPremiumModalForm.controls['liquidityFactor'].setValue(stateTwoDetails?.alpha.liquidityFactor)
       this.specificRiskPremiumModalForm.controls['competition'].setValue(stateTwoDetails?.alpha.competition);
-      if(!this.formOneData.companyId && stateTwoDetails.betaType === 'stock_beta'){
+      if(!this.processDetails.firstStageInput.companyId && stateTwoDetails.betaType === 'stock_beta'){
         this.fcfeForm.controls['betaType'].setValue('');
         this.fcfeForm.controls['beta'].reset();
       }
@@ -135,42 +158,80 @@ if(this.thirdStageInput){
       this.calculateCoeAndAdjustedCoe()
     }
   })
-  }
-  else{
-    this.fcfeForm.controls['discountRate'].setValue(this.thirdStageInput?.discountRate) 
-    this.fcfeForm.controls['discountingPeriod'].setValue(this.thirdStageInput?.discountingPeriod)
-    this.selectedSubBetaType = this.thirdStageInput?.betaSubType ? this.thirdStageInput.betaSubType : BETA_SUB_TYPE[0];
-    this.fcfeForm.controls['coeMethod'].setValue(this.thirdStageInput?.coeMethod); 
-    this.fcfeForm.controls['riskFreeRate'].setValue(this.thirdStageInput?.riskFreeRate); 
-    this.fcfeForm.controls['riskFreeRateYears'].setValue(this.thirdStageInput?.riskFreeRateYears); 
-    let expectedMarketReturnData:any;
-    this.modelControl.fcfe.options.expMarketReturnType.options.map((response:any)=>{
-      if(response.value ===  this.thirdStageInput?.expMarketReturnType){
-        expectedMarketReturnData = response
-      }
-    })
-    this.fcfeForm.controls['expMarketReturnType'].setValue(expectedMarketReturnData?.name);
-    this.fcfeForm.controls['expMarketReturnSubType'].setValue(this.thirdStageInput?.expMarketReturnSubType);
-    this.fcfeForm.controls['bse500Value'].setValue(this.thirdStageInput?.bse500Value);
-    this.fcfeForm.controls['expMarketReturn'].setValue(this.thirdStageInput?.expMarketReturn);
-    this.fcfeForm.controls['specificRiskPremium'].setValue(this.thirdStageInput?.specificRiskPremium); 
-    this.fcfeForm.controls['riskPremium'].setValue(this.thirdStageInput?.riskPremium);
-    this.fcfeForm.controls['industryRiskPremium'].setValue(this.thirdStageInput?.industryRiskPremium);
-    this.fcfeForm.controls['sizePremium'].setValue(this.thirdStageInput?.sizePremium);
-    this.specificRiskPremiumModalForm.controls['companySize'].setValue(this.thirdStageInput?.alpha.companySize)
-    this.specificRiskPremiumModalForm.controls['marketPosition'].setValue(this.thirdStageInput?.alpha.marketPosition)
-    this.specificRiskPremiumModalForm.controls['liquidityFactor'].setValue(this.thirdStageInput?.alpha.liquidityFactor)
-    this.specificRiskPremiumModalForm.controls['competition'].setValue(this.thirdStageInput?.alpha.competition);
-    if(!this.formOneData.companyId && this.thirdStageInput.betaType === 'stock_beta'){
-      this.fcfeForm.controls['betaType'].setValue('');
-      this.fcfeForm.controls['beta'].reset();
-    }
-    else{
-      this.fcfeForm.controls['betaType'].setValue(this.thirdStageInput?.betaType) 
-      this.fcfeForm.controls['beta'].setValue(this.thirdStageInput?.beta);
-    }
-    this.calculateCoeAndAdjustedCoe()
-  }
+  // if(!this.sensitivityAnalysisToggle){
+  // this.thirdStageInput.map((stateTwoDetails:any)=>{
+  //   if(stateTwoDetails.model === MODELS.FCFE && this.formOneData.model.includes(MODELS.FCFE)){
+  //     this.fcfeForm.controls['discountRate'].setValue(stateTwoDetails?.discountRate) 
+  //     this.fcfeForm.controls['discountingPeriod'].setValue(stateTwoDetails?.discountingPeriod)
+  //     this.selectedSubBetaType = stateTwoDetails?.betaSubType ? stateTwoDetails.betaSubType : BETA_SUB_TYPE[0];
+  //     this.fcfeForm.controls['coeMethod'].setValue(stateTwoDetails?.coeMethod); 
+  //     this.fcfeForm.controls['riskFreeRate'].setValue(stateTwoDetails?.riskFreeRate); 
+  //     this.fcfeForm.controls['riskFreeRateYears'].setValue(stateTwoDetails?.riskFreeRateYears); 
+  //     let expectedMarketReturnData:any;
+  //     this.modelControl.fcfe.options.expMarketReturnType.options.map((response:any)=>{
+  //       if(response.value ===  stateTwoDetails?.expMarketReturnType){
+  //         expectedMarketReturnData = response
+  //       }
+  //     })
+  //     this.fcfeForm.controls['expMarketReturnType'].setValue(expectedMarketReturnData?.name);
+  //     this.fcfeForm.controls['expMarketReturnSubType'].setValue(stateTwoDetails?.expMarketReturnSubType);
+  //     this.fcfeForm.controls['bse500Value'].setValue(stateTwoDetails?.bse500Value);
+  //     this.fcfeForm.controls['expMarketReturn'].setValue(stateTwoDetails?.expMarketReturn);
+  //     this.fcfeForm.controls['specificRiskPremium'].setValue(stateTwoDetails?.specificRiskPremium); 
+  //     this.fcfeForm.controls['riskPremium'].setValue(stateTwoDetails?.riskPremium);
+  //     this.fcfeForm.controls['industryRiskPremium'].setValue(stateTwoDetails?.industryRiskPremium);
+  //     this.fcfeForm.controls['sizePremium'].setValue(stateTwoDetails?.sizePremium);
+  //     this.specificRiskPremiumModalForm.controls['companySize'].setValue(stateTwoDetails?.alpha.companySize)
+  //     this.specificRiskPremiumModalForm.controls['marketPosition'].setValue(stateTwoDetails?.alpha.marketPosition)
+  //     this.specificRiskPremiumModalForm.controls['liquidityFactor'].setValue(stateTwoDetails?.alpha.liquidityFactor)
+  //     this.specificRiskPremiumModalForm.controls['competition'].setValue(stateTwoDetails?.alpha.competition);
+  //     if(!this.formOneData.companyId && stateTwoDetails.betaType === 'stock_beta'){
+  //       this.fcfeForm.controls['betaType'].setValue('');
+  //       this.fcfeForm.controls['beta'].reset();
+  //     }
+  //     else{
+  //       this.fcfeForm.controls['betaType'].setValue(stateTwoDetails?.betaType) 
+  //       this.fcfeForm.controls['beta'].setValue(stateTwoDetails?.beta);
+  //     }
+  //     this.calculateCoeAndAdjustedCoe()
+  //   }
+  // })
+  // }
+  // else{
+  //   this.fcfeForm.controls['discountRate'].setValue(this.thirdStageInput?.discountRate) 
+  //   this.fcfeForm.controls['discountingPeriod'].setValue(this.thirdStageInput?.discountingPeriod)
+  //   this.selectedSubBetaType = this.thirdStageInput?.betaSubType ? this.thirdStageInput.betaSubType : BETA_SUB_TYPE[0];
+  //   this.fcfeForm.controls['coeMethod'].setValue(this.thirdStageInput?.coeMethod); 
+  //   this.fcfeForm.controls['riskFreeRate'].setValue(this.thirdStageInput?.riskFreeRate); 
+  //   this.fcfeForm.controls['riskFreeRateYears'].setValue(this.thirdStageInput?.riskFreeRateYears); 
+  //   let expectedMarketReturnData:any;
+  //   this.modelControl.fcfe.options.expMarketReturnType.options.map((response:any)=>{
+  //     if(response.value ===  this.thirdStageInput?.expMarketReturnType){
+  //       expectedMarketReturnData = response
+  //     }
+  //   })
+  //   this.fcfeForm.controls['expMarketReturnType'].setValue(expectedMarketReturnData?.name);
+  //   this.fcfeForm.controls['expMarketReturnSubType'].setValue(this.thirdStageInput?.expMarketReturnSubType);
+  //   this.fcfeForm.controls['bse500Value'].setValue(this.thirdStageInput?.bse500Value);
+  //   this.fcfeForm.controls['expMarketReturn'].setValue(this.thirdStageInput?.expMarketReturn);
+  //   this.fcfeForm.controls['specificRiskPremium'].setValue(this.thirdStageInput?.specificRiskPremium); 
+  //   this.fcfeForm.controls['riskPremium'].setValue(this.thirdStageInput?.riskPremium);
+  //   this.fcfeForm.controls['industryRiskPremium'].setValue(this.thirdStageInput?.industryRiskPremium);
+  //   this.fcfeForm.controls['sizePremium'].setValue(this.thirdStageInput?.sizePremium);
+  //   this.specificRiskPremiumModalForm.controls['companySize'].setValue(this.thirdStageInput?.alpha.companySize)
+  //   this.specificRiskPremiumModalForm.controls['marketPosition'].setValue(this.thirdStageInput?.alpha.marketPosition)
+  //   this.specificRiskPremiumModalForm.controls['liquidityFactor'].setValue(this.thirdStageInput?.alpha.liquidityFactor)
+  //   this.specificRiskPremiumModalForm.controls['competition'].setValue(this.thirdStageInput?.alpha.competition);
+  //   if(!this.formOneData.companyId && this.thirdStageInput.betaType === 'stock_beta'){
+  //     this.fcfeForm.controls['betaType'].setValue('');
+  //     this.fcfeForm.controls['beta'].reset();
+  //   }
+  //   else{
+  //     this.fcfeForm.controls['betaType'].setValue(this.thirdStageInput?.betaType) 
+  //     this.fcfeForm.controls['beta'].setValue(this.thirdStageInput?.beta);
+  //   }
+  //   this.calculateCoeAndAdjustedCoe()
+  // }
 }
 }
 
@@ -494,12 +555,11 @@ processStateManager(process:any, processId:any){
   );
 }
 
- checkPreviousAndCurrentValue(changes:any){
-  if (this.formOneData && changes['formOneData'] ) {
-    const current = changes['formOneData'].currentValue;
-    const previous = changes['formOneData'].previousValue;
-    
-    if((current?.valuationDate && previous?.valuationDate) && current.valuationDate !== previous.valuationDate){
+ checkPreviousAndCurrentValue(){
+  // if (this.formOneData &&  this.processDetails) {
+    // const current = this.formOneData?.firstStageInput;
+    // const previous = this.processDetails.firstStageInput;
+    if(this.fieldValidatorsResponse.isValuationDateReset){
       this.fcfeForm.controls['expMarketReturnType'].setValue('');
       this.fcfeForm.controls['expMarketReturn'].reset();
       this.fcfeForm.controls['betaType'].setValue('');
@@ -507,8 +567,8 @@ processStateManager(process:any, processId:any){
       this.calculateRiskFreeRate(this.fcfeForm.controls['riskFreeRateYears'].value)
     }
 
-    this.stockBetaCheck(current, previous);
-  }
+    this.stockBetaCheck();
+  // }
   // if(this.equityM?.length > 0){
   //   this.fcfeForm.controls['coeMethod'].setValue(this.equityM[0].type);
   // }
@@ -566,18 +626,18 @@ betaChange(event:any){
   }
 }
 
-stockBetaCheck(current:any, previous:any){
+stockBetaCheck(){
   if(this.formOneData.companyId){
     this.stockBetaChecker = true;
   }
   else{
     this.stockBetaChecker = false;
   }
-  if(!current.companyId && this.fcfeForm.controls['betaType'].value === 'stock_beta'){
+  if(!this.formOneData?.companyId && this.fcfeForm.controls['betaType'].value === 'stock_beta'){
     this.fcfeForm.controls['betaType'].setValue('');
     this.fcfeForm.controls['beta'].reset();
   }
-  else if(current.companyId && current.companyId !== previous?.companyId && this.fcfeForm.controls['betaType'].value === 'stock_beta'){
+  else if(this.formOneData?.companyId && this.fieldValidatorsResponse.isCompanyIdReset && this.fcfeForm.controls['betaType'].value === 'stock_beta'){
     this.calculateStockBeta();
   }
 }

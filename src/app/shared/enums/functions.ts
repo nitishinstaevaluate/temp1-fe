@@ -1,5 +1,5 @@
 import { environment } from "src/environments/environment";
-import { MODELS } from "./constant";
+import { FORM_ONE_FIELDS, MODELS } from "./constant";
 
 export function  isSelected(value: string,checkList:Array<any>): boolean {
     return checkList.includes(value);
@@ -142,4 +142,18 @@ export function getAdjustedTimestamp(date:any): any {
     return adjustedDate.getTime();
   }
   return null;
+}
+
+export function checkAndUpdateResetFlags(newPayload: any, oldPayload: any): any {
+  let updatedFields:any = {};
+  for (const [field, value] of Object.entries(newPayload)) {
+    if (oldPayload[field] !==  newPayload[field]) {
+      const resetKey = FORM_ONE_FIELDS[field];
+      if (resetKey) {
+        updatedFields[resetKey] = true;
+      }
+    }
+  }
+
+  return updatedFields;
 }

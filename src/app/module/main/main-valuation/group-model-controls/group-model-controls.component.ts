@@ -6,8 +6,8 @@ import { ValuationService } from 'src/app/shared/service/valuation.service';
 import { DataReferencesService } from 'src/app/shared/service/data-references.service';
 import { Subject, debounceTime, distinctUntilChanged, switchMap, throttleTime } from 'rxjs';
 import { DROPDOWN } from 'src/app/shared/enums/enum';
-import { GET_TEMPLATE, isSelected, toggleCheckbox } from 'src/app/shared/enums/functions';
-import { ALL_MODELS, MODELS, helperText } from 'src/app/shared/enums/constant';
+import { checkAndUpdateResetFlags, GET_TEMPLATE, isSelected, toggleCheckbox } from 'src/app/shared/enums/functions';
+import { ALL_MODELS, COMPONENT_ENUM, MODELS, helperText } from 'src/app/shared/enums/constant';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal-box/generic-modal-box.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -18,6 +18,8 @@ import { CiqSPService } from 'src/app/shared/service/ciq-sp.service';
 import { UtilService } from 'src/app/shared/service/util.service';
 import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.service';
 import { saveAs } from 'file-saver';
+import { ComponentInteractionService } from 'src/app/shared/service/component-interaction.service';
+import { FieldValidationService } from 'src/app/shared/service/field-validation.service';
 
 
 @Component({
@@ -26,73 +28,32 @@ import { saveAs } from 'file-saver';
   styleUrls: ['./group-model-controls.component.scss']
 })
 export class GroupModelControlsComponent implements OnInit {
-  // decorators declaration
   @Output() saveAndNextEvent = new EventEmitter<void>();
   @Output() groupModelControls = new EventEmitter<any>();
   @Output() previousPage = new EventEmitter<any>();
   @Output() refId = new EventEmitter<any>();
   @Input() step: any;
-  @Input() firstStageInput: any;
+  // @Input() firstStageInput: any;
 
-  // form declaration
   modelControl:any = groupModelControl;
   modelValuation: FormGroup;
-  form: FormGroup;
-  modelSpecificCalculation:FormGroup;
-  waccCalculation:FormGroup;
-  relativeValuation:FormGroup;
   hasError= hasError;
   MODEL=MODELS;
   allModels:any = ALL_MODELS;
-  helperText = helperText
-
-// array declaration
-  inputs = [{}];
-  checkedItems:any=[];
-  selectedPreferenceItems:any=[];
-  files: any = [];
-  industries:any=[];
-  subIndustries: any=[];
-  preferenceCompanies:any=[];
+  helperText = helperText;
   
-  // property declaration
-  industriesRatio: any = '';
-  betaIndustriesId: any = '';
   taxRateModelBox:any='25.17'
-  floatLabelType:any = 'never';
-  isDragged=false;
-  valuationM: any;
   taxRate: any;
-  discountR: any;
-  terminalgrowthRate: any;
-  equityM: any;
-  riskF: any;
-  marketE: any;
-  betaS: any;
-  rPremium: any;
-  preShaCap: any;
-  debt: any;
-  cStructure: any;
-  pppShareCaptial: any;
-  indianTreasuryY: any;
-  historicalReturns: any;
-  debtRatio: any;
-  totalCapital: any;
-  debtProp: any;
-  equityProp:any;
-  newDate: any;
-  discountRateSelection: any;
-  betaIndustries: any;
   fileName:any='';
   modelSelectStatus:boolean= true;
-  selectedIndustry:any;
   companyQuery:any;
   searchByCompanyName = new Subject<string>();
   options:any=[];
   companyListLoader=false;
   companyInput=false;
   isCmpnyNmeOrVltionDteReset = false;
-
+  firstStageInput:any={};
+  // step:any = 0;
 
   constructor(private formBuilder: FormBuilder,
     private valuationService: ValuationService,
@@ -101,8 +62,9 @@ export class GroupModelControlsComponent implements OnInit {
     private calculationService: CalculationsService,
     private processStatusManagerService: ProcessStatusManagerService,
     private utilService: UtilService,
-    private excelAndReportService: ExcelAndReportService) {
-    this.form=this.formBuilder.group({});
+    private excelAndReportService: ExcelAndReportService,
+    private componentInteractionService: ComponentInteractionService,
+    private fieldValidationService: FieldValidationService) {
 
     this.modelValuation=this.formBuilder.group({
       company:['',[Validators.required]],
@@ -111,9 +73,7 @@ export class GroupModelControlsComponent implements OnInit {
       location:['India',[Validators.required]],
       projectionYearSelect:['',[Validators.required]],
       industry:['',[Validators.required]],
-      subIndustry:['',[Validators.required]],
       model:[false,[Validators.required]],
-      userId: ['641d654fa83ed4a5f0293a52', Validators.required],
       excelSheetId:['',[Validators.required]],
       type: ['industry', Validators.required],
       outstandingShares:['',[Validators.required]],
@@ -121,39 +81,16 @@ export class GroupModelControlsComponent implements OnInit {
       taxRate:['',[Validators.required]],
       terminalGrowthRate:['',[Validators.required]],
       discountRateType: ['WACC'],                                  // removed as required field
-      // discountRateValue: [20],
       reportingUnit:['',[Validators.required]],
       currencyUnit:['INR',[Validators.required]],
       faceValue:['',[Validators.required]],
       issuanceOfShares:[false,[Validators.required]]
     })
-    this.modelSpecificCalculation=this.formBuilder.group({
-      discountRate:[null,[Validators.required]],
-      discountingPeriod:['',[Validators.required]],
-      betaType:['',[Validators.required]],
-      coeMethod:['',[Validators.required]],
-      riskFreeRate:['',[Validators.required]],
-      expMarketReturnType:['',[Validators.required]],
-      expMarketReturn:['',[Validators.required]],
-      otherAdj:['',[Validators.required]],
-      beta:['',[Validators.required]]
-    })
-    this.waccCalculation=this.formBuilder.group({
-      riskPremium:['',[Validators.required]],
-      capitalStructureType:['',[Validators.required]],
-      copShareCapital:['',[Validators.required]],
-      costOfDebt:['',[Validators.required]]
-    })
-    this.relativeValuation=this.formBuilder.group({
-      preferenceRatioSelect:['',[Validators.required]],
-      companies:this.formBuilder.array([]),
-      industries:this.formBuilder.array([]),
-
-    })
   }
 
   ngOnInit(){
     this.loadValues();
+    this.loadFormDetails();
     this.checkProcessExist(this.firstStageInput)
     this.searchByCompanyName.pipe(
       debounceTime(600),
@@ -165,9 +102,25 @@ export class GroupModelControlsComponent implements OnInit {
     // this.loadCiqIndustryList()
   }
 
+  loadFormDetails(){
+    this.componentInteractionService
+      .registerComponent(COMPONENT_ENUM.loadComponent.key)
+      .subscribe(async (data) => {
+        if(data?.firstStageInput){
+          this.firstStageInput = data?.firstStageInput;
+        }
+        if(data?.step){
+          this.step = data?.step;
+        }
+      });
+
+      this.componentInteractionService.registerComponent(COMPONENT_ENUM.fieldValidator.fieldValidatorRequest.key).subscribe((response)=>{
+        console.log(response,"response in model control component")
+      })
+  }
+
   async checkProcessExist(data:any){
    if(data){
-    this.betaIndustries = data?.betaIndustries;
     if(data?.company){
       this.companyQuery = data?.company;
       this.fetchCompanyNames()
@@ -175,9 +128,7 @@ export class GroupModelControlsComponent implements OnInit {
     }
    this.modelValuation.controls['currencyUnit'].setValue(data?.currencyUnit ?? 'INR');
    this.modelValuation.controls['discountRateType'].setValue(data?.discountRateType === ""  ?  'WACC' : data?.discountRateType);
-  //  this.modelValuation.controls['discountRateValue'].setValue(data?.discountRateValue === "" ? 20 : data?.discountRateValue);
 
-   this.preferenceCompanies = data.preferenceCompanies ?? [];
    this.modelValuation.controls['industry'].setValue(data?.industry?? '');
    this.modelValuation.controls['location'].setValue(data?.location?? 'India');
    this.modelValuation.controls['model'].setValue(data?.model?? false);
@@ -185,7 +136,6 @@ export class GroupModelControlsComponent implements OnInit {
    this.modelValuation.controls['projectionYearSelect'].setValue(data?.projectionYearSelect?? '');
    this.modelValuation.controls['projectionYears'].setValue(data?.projectionYears?? '');
    this.modelValuation.controls['reportingUnit'].setValue(data?.reportingUnit?? '');
-   this.modelValuation.controls['subIndustry'].setValue(data?.subIndustry?? '');
    this.modelValuation.controls['taxRate'].setValue(data?.taxRate?? '');
    this.modelValuation.controls['faceValue'].setValue(data?.faceValue?? '');
    this.modelValuation.controls['issuanceOfShares'].setValue(data?.issuanceOfShares?? '');
@@ -207,7 +157,6 @@ export class GroupModelControlsComponent implements OnInit {
    this.modelValuation.controls['industry'].setValue(data?.industry ?? '');
    this.modelValuation.controls['userId'].setValue( !data?.userId || data?.userId === "" ? '640a4783337b1b37d6fd04c7' : data?.userId);
    this.modelValuation.controls['excelSheetId'].setValue(data?.excelSheetId?? '');
-   this.selectedIndustry = data?.selectedIndustry;
    this.fileName = data?.fileName || data?.excelSheetId;
    
   const dateToSet = data?.valuationDate ? new Date(data?.valuationDate) : null;
@@ -220,61 +169,22 @@ export class GroupModelControlsComponent implements OnInit {
       .subscribe((resp: any) => {
         this.taxRate = resp[DROPDOWN.TAX];
       });
-    // forkJoin([this.valuationService.getValuationDropdown(),this._dataReferencesService.getIndianTreasuryYields(),
-    //   this._dataReferencesService.getHistoricalReturns(),
-    //   this._dataReferencesService.getBetaIndustries()
-    // ])
-    //   .subscribe((resp: any) => {
-    //     this.industries = resp[0][DROPDOWN.INDUSTRIES];
-    //     this.valuationM = resp[0][DROPDOWN.MODAL];
-    //     this.taxRate = resp[0][DROPDOWN.TAX];
-    //     this.discountR = resp[0][DROPDOWN.DISCOUNT];
-    //     this.terminalgrowthRate = resp[0][DROPDOWN.GROWTH];
-    //     this.equityM = resp[0][DROPDOWN.EQUITY];
-    //     this.riskF = resp[0][DROPDOWN.RISK];
-    //     this.marketE = resp[0][DROPDOWN.EMARKET];
-    //     this.betaS = resp[0][DROPDOWN.BETA];
-    //     this.rPremium = resp[0][DROPDOWN.PREMIUM];
-    //     this.preShaCap = resp[0][DROPDOWN.PREFERANCE_SHARE_CAPITAL];
-    //     this.debt = resp[0][DROPDOWN.DEBT];
-    //     this.cStructure = resp[0][DROPDOWN.CAPTIAL_STRUCTURE];
-    //     this.pppShareCaptial = resp[0][DROPDOWN.P_P_SHARE_CAPTIAL]; // Spell Error
-    //     this.indianTreasuryY = resp[DROPDOWN.INDIANTREASURYYIELDS]; // Set as array element 1
-    //     this.historicalReturns = resp[DROPDOWN.HISTORICALRETURNS]; // Set as array element 2
-    //     this.betaIndustries = resp[DROPDOWN.BETAINDUSTRIES]; // Set as array element 3
-    //     // this.industriesRatio = resp[DROPDOWN.INDUSTRIESRATIO]; //Set as array element 4
-    //   });
-
-  }
-  
-  isRelativeValuation(value:string){
-    return this.checkedItems.includes(value);
   }
 
-  isSelectedpreferenceRatio(value:any){
-    return isSelected(value,this.selectedPreferenceItems)
-  
-  }
-
-  saveAndNext(): void {
+  saveAndNext() {
+    let newDate = new Date();
     if(!this.modelValuation.controls['model'].value || this.modelValuation.controls['model'].value?.length === 0){
       this.modelSelectStatus = false;
       return;
     }
-
-    if(!this.isRelativeValuation(this.MODEL.RELATIVE_VALUATION)){
-      this.relativeValuation.controls['preferenceRatioSelect'].setValue('');
-    }
-    let payload = {...this.modelValuation.value,betaIndustry:this.betaIndustriesId,preferenceCompanies:this.preferenceCompanies}
+    let payload = this.modelValuation.value;
     
-    //  check if tax rate is null
     if (payload['taxRate'] == null || payload['taxRateType']=='25.17') {
       this.modelValuation.controls['taxRate'].patchValue('25.17%')
       payload['taxRate'] = '25.17%';
       payload['taxRateType'] = 'Default';
     }
 
-    // check if valuation date is empty
     const valuationDateValue = this.modelValuation.value.valuationDate;
     if (valuationDateValue) {
       const valuationDate = new Date(valuationDateValue);
@@ -287,15 +197,15 @@ export class GroupModelControlsComponent implements OnInit {
         month: month,
         day: day
       };
-      this.newDate = new Date(myDate.year, myDate.month - 1, myDate.day);
-      payload['valuationDate'] = this.newDate.getTime();
+      newDate = new Date(myDate.year, myDate.month - 1, myDate.day);
+      payload['valuationDate'] = newDate.getTime();
     }
     if(this.modelValuation.controls['model'].value.includes(MODELS.NAV) && this.modelValuation.controls['model'].value.length=== 1){
-      const keysToRemove = ['taxRate', 'taxRateType', 'terminalGrowthRate', 'preferenceCompanies','projectionYears','projectionYearSelect','industriesRatio','industry','discountRateType'];
+      const keysToRemove = ['taxRate', 'taxRateType', 'terminalGrowthRate','projectionYears','projectionYearSelect',,'industry','discountRateType'];
       payload = this.recalculateFields(payload,keysToRemove)
     }
     else if(this.modelValuation.controls['model'].value.includes(MODELS.RULE_ELEVEN_UA) && this.modelValuation.controls['model'].value.length=== 1){
-      const keysToRemove = ['taxRate', 'taxRateType', 'terminalGrowthRate', 'preferenceCompanies','projectionYears','projectionYearSelect','industriesRatio','industry','discountRateType'];
+      const keysToRemove = ['taxRate', 'taxRateType', 'terminalGrowthRate', 'projectionYears','projectionYearSelect','industry','discountRateType'];
       payload = this.recalculateFields(payload,keysToRemove)
     }
     if(!this.isElevenUa()){
@@ -314,12 +224,7 @@ export class GroupModelControlsComponent implements OnInit {
     // validate form controls
     let control:any;
     control = { ...this.modelValuation.controls };
-    if(this.subIndustries?.length <= 0){
-      delete control.subIndustry;
-    }
-    else if(this.selectedIndustry){
-      payload['selectedIndustry'] = this.selectedIndustry;
-    }
+    
     const modelsNotRequireProjection = isSelected('NAV', this.modelValuation.controls['model'].value) || isSelected('CTM', this.modelValuation.controls['model'].value) || isSelected('Relative_Valuation', this.modelValuation.controls['model'].value) || isSelected('ruleElevenUa', this.modelValuation.controls['model'].value)
     const mmodelsRequireProjection = isSelected('FCFE', this.modelValuation.controls['model'].value) || isSelected('FCFF', this.modelValuation.controls['model'].value) || isSelected('Excess_Earnings', this.modelValuation.controls['model'].value)
     if (modelsNotRequireProjection && this.modelValuation.controls['model'].value.length === 1) {
@@ -344,7 +249,6 @@ export class GroupModelControlsComponent implements OnInit {
       delete control.taxRate;
       delete control.taxRateType;
       delete control.terminalGrowthRate;
-      delete control.preferenceCompanies;
       delete control.projectionYears;
       delete control.projectionYearSelect;
       delete control.industry;
@@ -354,7 +258,7 @@ export class GroupModelControlsComponent implements OnInit {
     if(
       this.firstStageInput?.company &&  this.firstStageInput?.valuationDate && 
       this.firstStageInput?.company.trim() !== this.modelValuation.controls['company'].value.trim() || 
-      this.firstStageInput?.valuationDate !== this.newDate.getTime()
+      this.firstStageInput?.valuationDate !== newDate.getTime()
     ){
       this.isCmpnyNmeOrVltionDteReset = true;
     }
@@ -395,42 +299,54 @@ export class GroupModelControlsComponent implements OnInit {
         }
       }
 
-      let processStep=1;
+      let processStep=2;
       if(!allControlsFilled){
         this.modelValuation.markAllAsTouched();
-        processStep = 0
+        // processStep = 1
       }
 
       const checkModel = this.isNotRuleElevenUaAndNav();
       if(!checkModel){
-        localStorage.setItem('step', '2')
-        processStep = 2
+        // localStorage.setItem('step', '2')
+        processStep = 3
       }
       const isRuleElevenUa = this.isElevenUa();
+      let isIssuance = false;
       if(isRuleElevenUa && this.modelValuation.controls['issuanceOfShares']?.value){
-        localStorage.setItem('step', '3');
-        processStep = 3;
+        isIssuance = true;
+        // localStorage.setItem('step', '3');
+        processStep = 4;
       }
 
-    localStorage.setItem('stepOneStats',`${allControlsFilled}`)
-    this.calculationService.checkStepStatus.next({stepStatus:allControlsFilled,step:this.step})
+    // localStorage.setItem('stepOneStats',`${allControlsFilled}`)
+    // this.calculationService.checkStepStatus.next({stepStatus:allControlsFilled,step:this.step})
 
-    const {userId , ...rest } = payload;
+    // const {userId , ...rest } = payload;
     const processStateModel ={
-      firstStageInput:{...rest,fileName:this.fileName,formFillingStatus:allControlsFilled},
+      firstStageInput:{...payload,fileName:this.fileName,formFillingStatus:allControlsFilled},
       step:processStep
     }
     
     this.processStateManager(processStateModel,localStorage.getItem('processStateId'));
     this.fetchRefId();
 
-      // submit final payload
       this.groupModelControls.emit(payload);
+      const changedFields = checkAndUpdateResetFlags(payload, this.firstStageInput);
+      this.fieldValidationService.upsertValidator(
+        {
+          ...changedFields, 
+          processStateId: localStorage.getItem('processStateId'), 
+          step: processStep, 
+          firstFormStatus: allControlsFilled, 
+          isIssuanceOfShares: isIssuance, 
+          showBlackBox: this.evaluateNumberOfSteps()
+        }
+      )
   }
 
-  previous(){
-    this.previousPage.emit(true)
-  }
+  // previous(){
+  //   this.previousPage.emit(true);
+  // }
 
   openDialog(bool?:boolean){
     if(bool){
@@ -538,6 +454,7 @@ export class GroupModelControlsComponent implements OnInit {
       (processStatusDetails: any) => {
         if (processStatusDetails.status) {
           localStorage.setItem('processStateId', processStatusDetails.processId);
+          if(processStatusDetails?.data) this.componentInteractionService.broadcastData(processStatusDetails?.data);
         }
       },
       (error) => {
@@ -597,26 +514,31 @@ export class GroupModelControlsComponent implements OnInit {
       this.modelValuation.controls['model'].value?.includes(MODELS.SLUMP_SALE)
     ))
     {
-      this.calculationService.checkModel.next({status:true})
+      // this.calculationService.checkModel.next({status:true})
+      return true;
     }
     else if(this.modelValuation.controls['model'].value?.length === 2 && (
       this.modelValuation.controls['model'].value?.includes(MODELS.RULE_ELEVEN_UA) &&
       this.modelValuation.controls['model'].value?.includes(MODELS.NAV)
     )){
-      this.calculationService.checkModel.next({status:true})
+      // this.calculationService.checkModel.next({status:true})
+      return true;
     }
     else if(this.modelValuation.controls['model'].value?.length  > 1 && (
       this.modelValuation.controls['model'].value?.includes(MODELS.RULE_ELEVEN_UA) ||
       this.modelValuation.controls['model'].value?.includes(MODELS.NAV) ||
       this.modelValuation.controls['model'].value?.includes(MODELS.SLUMP_SALE)
     )){
-      this.calculationService.checkModel.next({status:false})
+      // this.calculationService.checkModel.next({status:false})
+      return false;
     }
     else if(this.modelValuation.controls['model']?.value?.length){
-      this.calculationService.checkModel.next({status:false})
+      // this.calculationService.checkModel.next({status:false})
+      return false
     }
     else{
-      this.calculationService.checkModel.next({status:true})
+      // this.calculationService.checkModel.next({status:true})
+      return true
     }
   }
   isNavOrElevenUa(){

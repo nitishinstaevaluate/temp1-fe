@@ -5,10 +5,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatStepper } from '@angular/material/stepper';
 import { Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { MODELS } from 'src/app/shared/enums/constant';
+import { COMPONENT_ENUM, MODELS } from 'src/app/shared/enums/constant';
 import { isSelected } from 'src/app/shared/enums/functions';
 import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal-box/generic-modal-box.component';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
+import { ComponentInteractionService } from 'src/app/shared/service/component-interaction.service';
+import { FieldValidationService } from 'src/app/shared/service/field-validation.service';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { SensitivityAnalysisService } from 'src/app/shared/service/sensitivity-analysis.service';
 
@@ -60,7 +62,9 @@ export class MainValuationComponent implements OnInit{
     private sensitivityAnalysisService: SensitivityAnalysisService,
     private dialog :MatDialog,
     private snackBar: MatSnackBar,
-    private route:Router
+    private route:Router,
+    private componentInteractiveService: ComponentInteractionService,
+    private fieldValidatorService: FieldValidationService
     ){    }
   ngOnInit() {
     if(!sessionStorage.getItem('access_token')){
@@ -110,7 +114,13 @@ export class MainValuationComponent implements OnInit{
     else{
       this.isProcessExistLoader = false;
     }
-
+    this.componentInteractiveService
+    .registerComponent(COMPONENT_ENUM.fieldValidator.fieldValidatorRequest.key)
+    .subscribe((response)=>{
+      if(response?.step){
+        this.step = response.step;
+      }
+    })
     this.SArevaluationChanges()
   }
   @ViewChild('stepper') stepper!: MatStepper;
@@ -148,24 +158,25 @@ export class MainValuationComponent implements OnInit{
   }
 
   async groupModelControls(data:any,incrementStep?:boolean){
-    this.transferSteppertwo = data;
-    this.formOneData = data;
-    this.modelArray=this.formOneData?.model;
-    this.onStepChange()
+    // this.transferSteppertwo = data;
+    // this.formOneData = data;
+    // this.modelArray=this.formOneData?.model;
+    // this.onStepChange()
     // this.stepper.next();
     const currentStep:any = localStorage.getItem('step')
     //  const currentStep:any = await  this.fetchProcessActiveStage(localStorage.getItem('processStateId'));
     if(incrementStep){
       this.step = parseInt(currentStep);
     }
-    else{
-      this.step = parseInt(currentStep) + 1;
-    }
-
+    // else{
+    //   console.log(currentStep,"step")
+    //   this.step = parseInt(currentStep) + 1;
+    // }
+    console.log(this.step)
   localStorage.setItem('step',`${this.step}`);
     // await this.updateProcessActiveStage(localStorage.getItem('processStateId'),this.step);
-    this.calculationService.checkStepStatus.next({status:true,step:this.step})
-  this.nextModelSelection();
+    // this.calculationService.checkStepStatus.next({status:true,step:this.step})
+  // this.nextModelSelection();
   }
 
   async previous(event:any){
@@ -486,6 +497,20 @@ export class MainValuationComponent implements OnInit{
             panelClass: 'app-notification-success'
           })
         }
+
+        
+        this.componentInteractiveService
+        .registerComponent(COMPONENT_ENUM.loadComponent.key)
+        .toPromise()
+
+        this.componentInteractiveService.broadcastData(processStateDetails);
+        this.componentInteractiveService
+          .registerComponent(COMPONENT_ENUM.fieldValidator.fieldValidatorRequest.key)
+          .toPromise()
+
+        await this.fieldValidatorService
+        .upsertValidator({processStateId: localStorage.getItem('processStateId')})
+
       }
     })
   }

@@ -1106,7 +1106,7 @@
       <span><mat-icon class="close-modal-valuer" (click)="modalData('sensitivityAnalysis')" style="padding-right: 4%;">close</mat-icon></span>
     </div>
     <div class="container" style="padding-bottom: 2%;" *ngIf="data.modelName === 'FCFE'">
-      <app-fcfe-details [secondaryValuationId]="data?.secondaryValuationId" [sensitivityAnalysisToggle]="true" (fcfeDetailsPrev)="fcfeDetailsPrev($event)" (fcfeDetails)="fcfeDetails($event)" [formOneData]="data?.formOneData" [thirdStageInput]="data?.formThreeData" [formTwoData]="data?.formTwoData" [next]="1" [valuePerShare]="data?.valuePerShare"></app-fcfe-details>
+      <app-fcfe-details [secondaryValuationId]="data?.secondaryValuationId" [sensitivityAnalysisToggle]="true" (fcfeDetailsPrev)="fcfeDetailsPrev($event)" (fcfeDetails)="fcfeDetails($event)"  [formTwoData]="data?.formTwoData" [next]="1" [valuePerShare]="data?.valuePerShare"></app-fcfe-details>
     </div>
     <div class="container" style="padding-bottom: 2%;" *ngIf="data.modelName === 'FCFF'">
       <app-fcff-details [secondaryValuationId]="data?.secondaryValuationId" [sensitivityAnalysisToggle]="true" (fcffDetailsPrev)="fcffDetailsPrev($event)" (fcffDetails)="fcffDetails($event)" [formOneData]="data?.formOneData" [thirdStageInput]="data?.formThreeData" [formTwoData]="data?.formTwoData" [next]="2" [valuePerShare]="data?.valuePerShare"></app-fcff-details>

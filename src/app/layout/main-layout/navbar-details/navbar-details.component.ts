@@ -1,8 +1,10 @@
 import { Component,OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { MODELS } from 'src/app/shared/enums/constant';
+import { COMPONENT_ENUM, MODELS } from 'src/app/shared/enums/constant';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
+import { ComponentInteractionService } from 'src/app/shared/service/component-interaction.service';
+import { FieldValidationService } from 'src/app/shared/service/field-validation.service';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 
 @Component({
@@ -25,7 +27,8 @@ export class NavbarDetailsComponent implements OnInit{
   constructor(
     private calculationService:CalculationsService,
     private processStatusManagerService:ProcessStatusManagerService,
-    private snackBar:MatSnackBar){}
+    private snackBar:MatSnackBar,
+    private componentInterativeService: ComponentInteractionService){}
 
   ngOnInit(): void {
     // localStorage.setItem('step','1')
@@ -37,80 +40,101 @@ export class NavbarDetailsComponent implements OnInit{
     localStorage.removeItem('stepSixStats')
     localStorage.removeItem('pendingStat')
 
-     this.checkProcessState();
-     this.evaluateTabs()
+    //  this.checkProcessState();
+    //  this.evaluateTabs()
+
+  this.componentInterativeService.registerComponent(COMPONENT_ENUM.fieldValidator.fieldValidatorRequest.key).subscribe((response)=>{
+    // this.stepStatusOfOne = response?.firstFormStatus;
+    // this.stepStatusOfTwo = response?.secondFormStatus;
+    // this.stepStatusOfThree = response?.secondFormStatus;
+    // this.stepStatusOfFour = response?.thirdFormStatus;
+    // this.stepStatusOfFive = response?.fourthFormStatus;
+    // this.showBlackBox = response?.showBlackBox;
+    // this.currentStep = response?.step;
+    if(response?.processStateId){
+      this.currentStep = `${response.step}`;
+      this.selectedMenuItem = response.step;
+      this.stepStatusOfOne = `${response.firstFormStatus}`;
+      this.stepStatusOfTwo = `${response.secondFormStatus}`;
+      this.stepStatusOfThree = `${response.thirdFormStatus}`;
+      this.stepStatusOfFour = `${response.fourthFormStatus}`;
+      this.stepStatusOfFive = `${response.fifthFormStatus}`;
+      this.showBlackBox=response.showBlackBox
+      console.log(response,"response in navbar compoentn", this.currentStep, this.stepStatusOfOne, typeof this.stepStatusOfOne);
+    }
+  })
   }
 
-async checkProcessState(){
+// async checkProcessState(){
     
-    if(localStorage.getItem('processStateId')){
+//     if(localStorage.getItem('processStateId')){
 
-      this.processStatusManagerService.retrieveProcess(localStorage.getItem('processStateId')).subscribe((processInfo:any)=>{
-        if(processInfo.status){
-          const processStateDetails = processInfo.stateInfo;
-          const step = processStateDetails.step;
-          const modelsSelected = processStateDetails.firstStageInput.model;
-          if(modelsSelected){
-          localStorage.setItem('stepOneStats',`${processStateDetails.firstStageInput.formFillingStatus}`)
-          if(modelsSelected.length){
-            const modelInputStages = processStateDetails?.thirdStageInput;
-            let formTwoFillingStatus = false;
-            if(modelInputStages.length){
+//       this.processStatusManagerService.retrieveProcess(localStorage.getItem('processStateId')).subscribe((processInfo:any)=>{
+//         if(processInfo.status){
+//           const processStateDetails = processInfo.stateInfo;
+//           const step = processStateDetails.step;
+//           const modelsSelected = processStateDetails.firstStageInput.model;
+//           if(modelsSelected){
+//           localStorage.setItem('stepOneStats',`${processStateDetails.firstStageInput.formFillingStatus}`)
+//           if(modelsSelected.length){
+//             const modelInputStages = processStateDetails?.thirdStageInput;
+//             let formTwoFillingStatus = false;
+//             if(modelInputStages.length){
 
-               formTwoFillingStatus = modelInputStages.every((stateThreeDetails:any)=>{return stateThreeDetails.formFillingStatus});
-               if(formTwoFillingStatus){
-                 localStorage.setItem('stepThreeStats','true')
-               }
-               else{
-                 localStorage.setItem('stepThreeStats','false')
-               }
-              }
-              const modelsForInputScreen = modelsSelected.some((stateThreeDetails: any) => {
-               return (
-                 stateThreeDetails === MODELS.FCFE ||
-                 stateThreeDetails === MODELS.FCFF ||
-                 stateThreeDetails === MODELS.RELATIVE_VALUATION ||
-                 stateThreeDetails === MODELS.EXCESS_EARNINGS ||
-                 stateThreeDetails === MODELS.COMPARABLE_INDUSTRIES
-               );
-             });
-              if(modelsForInputScreen){
-               this.showBlackBox = false;
-              }
-              else{
-               this.showBlackBox = true
-              }
-          }
-          const stageTwoDetails = processStateDetails?.secondStageInput?.formFillingStatus;
-          if(stageTwoDetails){
-            localStorage.setItem('stepTwoStats',`${stageTwoDetails}`);
-          }
+//                formTwoFillingStatus = modelInputStages.every((stateThreeDetails:any)=>{return stateThreeDetails.formFillingStatus});
+//                if(formTwoFillingStatus){
+//                  localStorage.setItem('stepThreeStats','true')
+//                }
+//                else{
+//                  localStorage.setItem('stepThreeStats','false')
+//                }
+//               }
+//               const modelsForInputScreen = modelsSelected.some((stateThreeDetails: any) => {
+//                return (
+//                  stateThreeDetails === MODELS.FCFE ||
+//                  stateThreeDetails === MODELS.FCFF ||
+//                  stateThreeDetails === MODELS.RELATIVE_VALUATION ||
+//                  stateThreeDetails === MODELS.EXCESS_EARNINGS ||
+//                  stateThreeDetails === MODELS.COMPARABLE_INDUSTRIES
+//                );
+//              });
+//               if(modelsForInputScreen){
+//                this.showBlackBox = false;
+//               }
+//               else{
+//                this.showBlackBox = true
+//               }
+//           }
+//           const stageTwoDetails = processStateDetails?.secondStageInput?.formFillingStatus;
+//           if(stageTwoDetails){
+//             localStorage.setItem('stepTwoStats',`${stageTwoDetails}`);
+//           }
 
-          const stateFourDetails  = processStateDetails?.fourthStageInput?.formFillingStatus;
-          if(stateFourDetails){
-            localStorage.setItem('stepFourStats',`${stateFourDetails}`)
-          }
+//           const stateFourDetails  = processStateDetails?.fourthStageInput?.formFillingStatus;
+//           if(stateFourDetails){
+//             localStorage.setItem('stepFourStats',`${stateFourDetails}`)
+//           }
 
-          const stateFiveDetails  = processStateDetails?.fifthStageInput?.formFillingStatus;
-          if(stateFiveDetails){
-            localStorage.setItem('stepFiveStats',`${stateFiveDetails}`)
-          }
-          const stateSixDetails  = processStateDetails?.sixthStageInput?.formFillingStatus;
-          if(stateSixDetails){
-            localStorage.setItem('stepSixStats',`${stateSixDetails}`)
-          }
-          }
-          this.checkstepStat()
-          this.selectedMenuItem = step
-        }
-      })
-    }
-    else{
-    localStorage.setItem('step','1');
-    // await this.updateProcessActiveStage(localStorage.getItem('processStateId'),1)
-      this.checkstepStat();
-    }
-  }
+//           const stateFiveDetails  = processStateDetails?.fifthStageInput?.formFillingStatus;
+//           if(stateFiveDetails){
+//             localStorage.setItem('stepFiveStats',`${stateFiveDetails}`)
+//           }
+//           const stateSixDetails  = processStateDetails?.sixthStageInput?.formFillingStatus;
+//           if(stateSixDetails){
+//             localStorage.setItem('stepSixStats',`${stateSixDetails}`)
+//           }
+//           }
+//           this.checkstepStat()
+//           this.selectedMenuItem = step
+//         }
+//       })
+//     }
+//     else{
+//     localStorage.setItem('step','1');
+//     // await this.updateProcessActiveStage(localStorage.getItem('processStateId'),1)
+//       this.checkstepStat();
+//     }
+//   }
    selectMenuItem(route: string) {
     if (route === '2' && this.showBlackBox) {
       this.snackBar.open('Cannot select this tab', 'Ok', {
@@ -165,49 +189,49 @@ async checkProcessState(){
     this.calculationService.steps.next(parseInt(route));
   }
 
-  checkstepStat(){
-    this.calculationService.checkStepStatus.subscribe(async (response)=>{
-      this.currentStep = localStorage.getItem('step');
-      // this.currentStep = await this.fetchProcessActiveStage(localStorage.getItem('processStateId'));
-      // console.log(this.currentStep," navbar step")
-      if(parseInt(this.currentStep) === 1){
-        this.bindStatusToNavbar(this.currentStep);
-      }
+  // checkstepStat(){
+  //   this.calculationService.checkStepStatus.subscribe(async (response)=>{
+  //     this.currentStep = localStorage.getItem('step');
+  //     // this.currentStep = await this.fetchProcessActiveStage(localStorage.getItem('processStateId'));
+  //     // console.log(this.currentStep," navbar step")
+  //     if(parseInt(this.currentStep) === 1){
+  //       this.bindStatusToNavbar(this.currentStep);
+  //     }
 
-      if(parseInt(this.currentStep) === 2){
-        this.bindStatusToNavbar(this.currentStep);
-      }
+  //     if(parseInt(this.currentStep) === 2){
+  //       this.bindStatusToNavbar(this.currentStep);
+  //     }
 
-      if(parseInt(this.currentStep) === 3){
-        this.bindStatusToNavbar(this.currentStep);
-      }
-      if(parseInt(this.currentStep) === 4){
-        this.bindStatusToNavbar(this.currentStep);
-      }
-      if(parseInt(this.currentStep) === 5){
-        this.bindStatusToNavbar(this.currentStep);
-      }
-      if(parseInt(this.currentStep) === 6){
-        this.bindStatusToNavbar(this.currentStep);
-      }
-    })
-  }
+  //     if(parseInt(this.currentStep) === 3){
+  //       this.bindStatusToNavbar(this.currentStep);
+  //     }
+  //     if(parseInt(this.currentStep) === 4){
+  //       this.bindStatusToNavbar(this.currentStep);
+  //     }
+  //     if(parseInt(this.currentStep) === 5){
+  //       this.bindStatusToNavbar(this.currentStep);
+  //     }
+  //     if(parseInt(this.currentStep) === 6){
+  //       this.bindStatusToNavbar(this.currentStep);
+  //     }
+  //   })
+  // }
 
-  bindStatusToNavbar(currentStep:any){
-         this.selectedMenuItem = parseInt(currentStep);
-        const stepOneStat = localStorage.getItem('stepOneStats');
-        const stepTwoStat = localStorage.getItem('stepTwoStats');
-        const stepThreeStat = localStorage.getItem('stepThreeStats');
-        const stepFourStat = localStorage.getItem('stepFourStats');
-        const stepFiveStat = localStorage.getItem('stepFiveStats');
-        const stepSixStat = localStorage.getItem('stepSixStats');
-        this.stepStatusOfOne = stepOneStat;
-        this.stepStatusOfTwo = stepTwoStat;
-        this.stepStatusOfThree = stepThreeStat;
-        this.stepStatusOfFour = stepFourStat;
-        this.stepStatusOfFive = stepFiveStat;
-        this.stepStatusOfSix = stepSixStat;
-  }
+  // bindStatusToNavbar(currentStep:any){
+  //        this.selectedMenuItem = parseInt(currentStep);
+  //       const stepOneStat = localStorage.getItem('stepOneStats');
+  //       const stepTwoStat = localStorage.getItem('stepTwoStats');
+  //       const stepThreeStat = localStorage.getItem('stepThreeStats');
+  //       const stepFourStat = localStorage.getItem('stepFourStats');
+  //       const stepFiveStat = localStorage.getItem('stepFiveStats');
+  //       const stepSixStat = localStorage.getItem('stepSixStats');
+  //       this.stepStatusOfOne = stepOneStat;
+  //       this.stepStatusOfTwo = stepTwoStat;
+  //       this.stepStatusOfThree = stepThreeStat;
+  //       this.stepStatusOfFour = stepFourStat;
+  //       this.stepStatusOfFive = stepFiveStat;
+  //       this.stepStatusOfSix = stepSixStat;
+  // }
 
 
   // async fetchProcessActiveStage(processId: any) {
@@ -269,21 +293,21 @@ async checkProcessState(){
   //   }
   // }
 
- async evaluateTabs(){
-    this.calculationService.checkModel.subscribe((data)=>{
-      if(data.status){
-        this.showBlackBox = true;
-      }else{
-        this.showBlackBox = false;
-      }
-    })
+//  async evaluateTabs(){
+//     this.calculationService.checkModel.subscribe((data)=>{
+//       if(data.status){
+//         this.showBlackBox = true;
+//       }else{
+//         this.showBlackBox = false;
+//       }
+//     })
 
-    this.calculationService.issuanceOfSharesDetector.subscribe((data)=>{
-      if(data.status){
-        this.hideModelInput = true;
-      }else{
-        this.hideModelInput = false;
-      }
-    })
-  }
+//     this.calculationService.issuanceOfSharesDetector.subscribe((data)=>{
+//       if(data.status){
+//         this.hideModelInput = true;
+//       }else{
+//         this.hideModelInput = false;
+//       }
+//     })
+//   }
 }
