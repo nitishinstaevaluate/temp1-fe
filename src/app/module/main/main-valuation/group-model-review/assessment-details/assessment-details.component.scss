@@ -50,6 +50,9 @@ mat-header-row{
 ::ng-deep mat-row:hover mat-cell {
     // background-color: rgb(36 69 208 / 16%) !important;
     background-color: rgb(180 185 236 / 61%) !important;
+    box-shadow: 0 0px 3px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease !important;
+    cursor: pointer;
   }
 
 .label-c{
@@ -152,7 +155,7 @@ mat-header-row{
   .mat-column-Particulars {
     position: sticky;
     left: 0;
-    min-width: 20%;
+    min-width: 30%;
   }
   .increase-table-width {
     width: 1500px;
@@ -214,4 +217,8 @@ mat-header-row{
   
   .instruction-list li:hover {
     transform: translateY(-3px);
+  }
+
+  .firstColumn{
+    border-right: 1px solid #eeeeee !important;
   }

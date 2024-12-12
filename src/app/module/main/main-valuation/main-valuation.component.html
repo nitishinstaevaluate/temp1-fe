@@ -77,6 +77,7 @@
                   <div class="tab-element" [ngClass]="{ 'active': next === 3 }" *ngIf="ifModelExist('Relative_Valuation',formOneData?.model)">Comparable Companies</div>
                   <div class="tab-element" [ngClass]="{ 'active': next === 5 }" *ngIf="ifModelExist('CTM',formOneData?.model)">Comparable Transaction</div>
                   <div class="tab-element" [ngClass]="{ 'active': next === 7 }" *ngIf="ifModelExist('ruleElevenUa',formOneData?.model)">Rule 11 UA</div>
+                  <div class="tab-element" [ngClass]="{ 'active': next === 8 }" *ngIf="ifModelExist('slumpSale',formOneData?.model)">Slump Sale</div>
                 </div>
                 <!-- tab trial ends -->
                 
@@ -87,6 +88,7 @@
                 <app-comparable-industries-details (comparableIndustriesDetailsPrev)="comparableIndustriesDetailsPrev($event)" (comparableIndustriesDetails)="comparableIndustriesDetails($event)" [hidden]="next !== 5" [formOneData]="formOneData" [thirdStageInput]="formThreeData"></app-comparable-industries-details>
                 <app-net-asset-value-details (navDetailsPrev)="navDetailsPrev($event)" (navDetails)="navDetails($event)" [hidden]="next !== 6" [formOneData]="formOneData" [thirdStageInput]="formThreeData"></app-net-asset-value-details>
                 <app-eleven-ua (ruleElevenUaDetailsPrev)="ruleElevenUaDetailsPrev($event)" (ruleElevenUaDetails)="ruleElevenUaDetails($event)" [hidden]="next !== 7" [formOneData]="formOneData" [thirdStageInput]="formThreeData"></app-eleven-ua>
+                <app-slump-sale (slumpSaleDetailsPrev)="slumpSaleDetailsPrev($event)" (slumpSaleDetails)="slumpSaleDetails($event)" [hidden]="next !== 8" [formOneData]="formOneData" [thirdStageInput]="formThreeData"></app-slump-sale>
               </div>
 
               <app-group-model-review (groupReviewControls)="groupReviewControls($event)" [step]="step" (previousPage)="previous($event)" [transferStepperTwo]="formOneAndThreeData" [hidden]="step !== 4" [fourthStageInput]="formFourData"></app-group-model-review>

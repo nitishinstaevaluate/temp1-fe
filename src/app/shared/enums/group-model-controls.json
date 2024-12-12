@@ -1163,7 +1163,656 @@
                     "value":[],
                     "ifMarketVal":""
                 }
-            }
+            },
+            "controlsConfig": [
+                {
+                    "type": "header",
+                    "label": "Non Current Assets",
+                    "class":"c-decorated-header"
+                },
+                {
+                  "controlName": "ncaMoveable",
+                  "label": "Moveable Property",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "ncaImmoveable",
+                  "label": "Immoveable Property",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "ncaPlntAndMachnry",
+                  "label": "Plant And Machinary",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "ncaLndAndBlding",
+                  "label": "Land And Building",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "ncaCptlWrkInPrgrss",
+                  "label": "Capital Work In Progress",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "ncaInvstmntPrprty",
+                  "label": "Investment Property",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "ncaGoodwill",
+                  "label": "Goodwill",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "ncaOthrIntngbleAsst",
+                  "label": "Other Tangible Assets",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "ncaInTngbleAsstUndrDevlpmnt",
+                  "label": "Intangible Assets Under Development",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "ncaBiolgclAsstOthrThnBrPlnt",
+                  "label": "Biological Assets",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "ncaRghtOfUseOfAsst",
+                  "label": "Right Of Use Of Assets",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "ncaInvstmntInSbsidryJvAssciate",
+                  "label": "Investments in Subsidiary/JV/Associate",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "ncaOthrNCrntInvstmnt",
+                  "label": "Other Non-Current Investments",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "ncaLngTrmLoansAndAdvncmnt",
+                  "label": "Long term loans and advances",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "ncaDffrdTxAsst",
+                  "label": "Deferred tax assets(net)",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "ncaOthrNCrntAsst",
+                  "label": "Other non-current assets",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "ncaDpst",
+                  "label": "Deposits",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                    "type": "header",
+                    "label": "Current Assets",
+                    "class":"c-decorated-header-ca"
+
+                },
+                {
+                  "controlName": "caInvntries",
+                  "label": "Inventories",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "caCrntInvstmnt",
+                  "label": "Current Investments",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "caTrdeRecvbles",
+                  "label": "Trade receivables",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "caCshNCshEqvlnt",
+                  "label": "Cash and cash equivalents",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "caBnkBlnceOthrThn",
+                  "label": "Bank balance",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "caShrtTrmLoansAndAdvnces",
+                  "label": "Short term loans & advances",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "caCrntTxAsst",
+                  "label": "Current tax assets",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "caOthrCrntAsst",
+                  "label": "Other current assets",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                    "type": "header",
+                    "label": "Non Current Liabilities",
+                    "class":"c-decorated-header-ncl"
+
+                },
+                {
+                  "controlName": "nclBrrwng",
+                  "label": "Borrowings",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "nclOthrFncialLb",
+                  "label": "Other financial liabilities",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "nclLeaseLb",
+                  "label": "Lease liabilities",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "nclPrvisn",
+                  "label": "Provision",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "nclDeferredTaxLb",
+                  "label": "Deferred tax liabilities",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "nclOthrNCrntLb",
+                  "label": "Other non-current liabilities",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "nclOthrNonOprtngLB",
+                  "label": "Other non-operating liabilities",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "cntngntLbility",
+                  "label": "Less:Contingent liabilities",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                    "type": "header",
+                    "label": "Current Liabilities",
+                    "class":"c-decorated-header-cl"
+
+                },
+                {
+                  "controlName": "clBrrwng",
+                  "label": "Borrowings",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "clTrdePyble",
+                  "label": "Trade payables",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "clOthrFncialLb",
+                  "label": "Other financial liabilities",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "clOthrCrntLb",
+                  "label": "Other current liabilities",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "clPrvsion",
+                  "label": "Provisions",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                },
+                {
+                  "controlName": "clCrntTxLb",
+                  "label": "Current tax liabilities(net)",
+                  "placeholder":"Enter market value",
+                  "tooltip":"By choosing this, Book-value will be selected",
+                  "options": [               
+                        {
+                            "name":"Book Value",
+                            "value":"book_value"
+                        },
+                        {
+                            "name":"Market Value",
+                            "value":"market_value"
+                        }
+                    ]
+                }
+              ]
         }
     },
     "reportDetails":{
@@ -1419,6 +2068,40 @@
                 "type":"text",
                 "tooltip":"Face value",
                 "label":"Face Value"
+            }
+        }
+    },
+    "slumpSale":{
+        "type":"slumpSale",
+        "header":"Slump Sale Inputs",
+        "columns":{
+            "monetaryConsiderationValue":{
+                "name":"monetaryConsiderationValue",
+                "placeholder":"Enter value",
+                "type":"text",
+                "toolTip":"Value of the Monetary Consideration received or accruing as a result of the transfer;",
+                "label":"Monetary Consideration"
+            },
+            "nonMonetaryConsiderationUnderSubRule":{
+                "name":"nonMonetaryConsiderationUnderSubRule",
+                "placeholder":"Enter value",
+                "type":"text",
+                "toolTip":"Fair Market Value of Non-Monetary Consideration received or accruing as a result of the transfer represented by property referred to in sub-rule (1) of Rule 11UA determined in the manner provided in sub-rule (1) of Rule 11UA for the property covered in that sub-rule;",
+                "label":"Non-monetary Consideration - 1"
+            },
+            "nonMonetaryConsiderationNotUnderSubRule":{
+                "name":"nonMonetaryConsiderationNotUnderSubRule",
+                "placeholder":"Enter value",
+                "type":"text",
+                "toolTip":"The price which the Non-Monetary Consideration received or accruing as a result of the transfer represented by property, other than Immovable Property, which is not referred to in sub-rule (1) of Rule 11UA would fetch if sold in the open market on the basis of the valuation report obtained from a registered valuer, in respect of property;",
+                "label":"Non-monetary Consideration - 2"
+            },
+            "valueAssessedByGov":{
+                "name":"valueAssessedByGov",
+                "placeholder":"Enter value",
+                "type":"text",
+                "toolTip":"The value adopted or assessed or assessable by any Authority of the Government for the purpose of payment of stamp duty in respect of the Immovable Property in case the Non-Monetary Consideration received or accruing as a result of the transfer is represented by the Immovable Property.",
+                "label":"Value Assessed By Govt."
             }
         }
     },

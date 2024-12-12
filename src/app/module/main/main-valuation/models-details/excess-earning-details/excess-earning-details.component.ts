@@ -104,6 +104,8 @@ checkProcessExist(){
         this.excessEarningForm.controls['expMarketReturn'].setValue(stateTwoDetails?.expMarketReturn);
         this.excessEarningForm.controls['specificRiskPremium'].setValue(stateTwoDetails?.specificRiskPremium); 
         this.excessEarningForm.controls['riskPremium'].setValue(stateTwoDetails?.riskPremium); 
+        this.excessEarningForm.controls['industryRiskPremium'].setValue(stateTwoDetails.industryRiskPremium);
+        this.excessEarningForm.controls['sizePremium'].setValue(stateTwoDetails.sizePremium);
         this.specificRiskPremiumModalForm.controls['companySize'].setValue(stateTwoDetails?.alpha.companySize);
         this.specificRiskPremiumModalForm.controls['marketPosition'].setValue(stateTwoDetails?.alpha.marketPosition);
         this.specificRiskPremiumModalForm.controls['liquidityFactor'].setValue(stateTwoDetails?.alpha.liquidityFactor);
@@ -165,7 +167,21 @@ loadOnChangeValue(){
 
   this.excessEarningForm.controls['coeMethod'].valueChanges.subscribe((value:any)=>{
     if(!value) return;
+    this.excessEarningForm.get('riskPremium').reset();
+    this.excessEarningForm.get('riskPremium').setErrors({required:true});
+
+    this.excessEarningForm.get('riskPremium').markAsTouched();
     this.calculateCoeAndAdjustedCoe();
+  })
+
+  this.excessEarningForm.controls['sizePremium'].valueChanges.subscribe((value:any)=>{
+    if(!value) return;
+    this.calculateCoeAndAdjustedCoe()
+  })
+  
+  this.excessEarningForm.controls['industryRiskPremium'].valueChanges.subscribe((value:any)=>{
+    if(!value) return;
+    this.calculateCoeAndAdjustedCoe()
   })
 }
 
@@ -184,6 +200,8 @@ loadFormControl(){
     riskPremium:['',[Validators.required]],
     expMarketReturnSubType:['',[Validators.required]],
     bse500Value:['',[Validators.required]],
+    industryRiskPremium:['',[Validators.required]],
+    sizePremium:['',[Validators.required]]
   })
 
   this.specificRiskPremiumModalForm=this.formBuilder.group({
@@ -206,7 +224,8 @@ onSlideToggleChange(event:any){
     const data = {
       data: {
         ...this.specificRiskPremiumModalForm.value,
-        value:'specificRiskPremiumForm'
+        value:'specificRiskPremiumForm',
+        coeMethod:this.excessEarningForm.controls['coeMethod'].value
       },
      
     };
@@ -269,6 +288,14 @@ saveAndNext(): void {
   if(payload.expMarketReturnType === 'Analyst_Consensus_Estimates'){
     delete controls.bse500Value;
     delete controls.expMarketReturnSubType;
+  }
+  if(this.excessEarningForm.controls['coeMethod'].value === 'capm'){
+    delete controls.industryRiskPremium;
+    delete controls.sizePremium;
+  }
+  if(this.excessEarningForm.controls['coeMethod'].value === 'buildUpCapm'){
+    delete controls.beta;
+    delete controls.betaType;
   }
   this.validateControls(controls,payload);
   
@@ -349,20 +376,22 @@ calculateCoeAndAdjustedCoe() {
     beta: this.excessEarningForm.controls['beta']?.value ? this.excessEarningForm.controls['beta'].value : 0,
     riskPremium: this.excessEarningForm.controls['riskPremium'].value,
     coeMethod: this.excessEarningForm.controls['coeMethod'].value,
+    industryRiskPremium: this.excessEarningForm.controls['industryRiskPremium'].value,
+    sizePremium: this.excessEarningForm.controls['sizePremium'].value
   };
 
   this.calculationsService.getCostOfEquity(coePayload).subscribe((response: any) => {
     if (response.status) {
-      this.adjCoe = response?.result?.adjCOE;
-      this.coe = response?.result?.coe;
-      // Set the flag to true to indicate that the API call has been made.
+      this.adjCoe = formatNumber(response?.result?.adjCOE);
+      this.coe = formatNumber(response?.result?.coe);
       this.apiCallMade = true;
-      this.isLoader=false;
+    }
+    else{
+      this.adjCoe = 0;
+      this.coe = 0;
     }
   });
   this.isLoader=false;
-  // Always return false the first time to prevent the template from displaying prematurely.
-  return false;
 }
 
 processStateManager(process:any, processId:any){
@@ -398,9 +427,9 @@ checkPreviousAndCurrentValue(changes:any){
 
     this.stockBetaCheck(current, previous);
   }
-  if(this.equityM?.length > 0){
-    this.excessEarningForm.controls['coeMethod'].setValue(this.equityM[0].type);
-  }
+  // if(this.equityM?.length > 0){
+  //   this.excessEarningForm.controls['coeMethod'].setValue(this.equityM[0].type);
+  // }
 
   this.calculationsService.betaChangeDetector.subscribe((detector:any)=>{
     if(detector.status){

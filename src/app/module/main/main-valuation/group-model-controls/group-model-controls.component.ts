@@ -16,6 +16,8 @@ import { ProcessStatusManagerService } from 'src/app/shared/service/process-stat
 import { AuthService } from 'src/app/shared/service/auth.service';
 import { CiqSPService } from 'src/app/shared/service/ciq-sp.service';
 import { UtilService } from 'src/app/shared/service/util.service';
+import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.service';
+import { saveAs } from 'file-saver';
 
 
 @Component({
@@ -81,7 +83,6 @@ export class GroupModelControlsComponent implements OnInit {
   newDate: any;
   discountRateSelection: any;
   betaIndustries: any;
-  isExcelReupload=false;
   fileName:any='';
   modelSelectStatus:boolean= true;
   selectedIndustry:any;
@@ -96,9 +97,10 @@ export class GroupModelControlsComponent implements OnInit {
     private valuationService: ValuationService,
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private calculationService:CalculationsService,
-    private processStatusManagerService:ProcessStatusManagerService,
-    private utilService:UtilService) {
+    private calculationService: CalculationsService,
+    private processStatusManagerService: ProcessStatusManagerService,
+    private utilService: UtilService,
+    private excelAndReportService: ExcelAndReportService) {
     this.form=this.formBuilder.group({});
 
     this.modelValuation=this.formBuilder.group({
@@ -303,11 +305,6 @@ export class GroupModelControlsComponent implements OnInit {
       const keysToRemove = ['faceValue'];
       payload = this.recalculateFields(payload,keysToRemove)
     }
-    // check if modified excel sheet id exist or not
-    if(this.isExcelReupload) {
-      payload['modifiedExcelSheetId']=  '';
-      payload['isExcelModified']= false;
-    }
     
     payload['companyId'] = this.fetchCompanyId()?.companyId;
     payload['companyType'] = this.fetchCompanyId()?.companyTypeId;
@@ -353,8 +350,6 @@ export class GroupModelControlsComponent implements OnInit {
       // delete control.discountRateValue;
     }
     delete control.industry;
-    
-    this.isExcelReupload = false; // reset it once payload has modified excel sheet id
     
     this.validateControls(control,payload);
   }
@@ -485,12 +480,6 @@ export class GroupModelControlsComponent implements OnInit {
   
      dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        if(result?.excelSheetId !== this.modelValuation.controls['excelSheetId'].value){
-          this.isExcelReupload = true;
-        }
-        else{
-          this.isExcelReupload = false;
-        }
         if(result.model.length > 0){
           this.modelSelectStatus = true
         }
@@ -563,7 +552,8 @@ export class GroupModelControlsComponent implements OnInit {
     if (this.modelValuation.controls['model'].value?.length === 1 &&
       (
         this.modelValuation.controls['model'].value?.includes(MODELS.RULE_ELEVEN_UA) ||
-        this.modelValuation.controls['model'].value?.includes(MODELS.NAV)
+        this.modelValuation.controls['model'].value?.includes(MODELS.NAV) ||
+        this.modelValuation.controls['model'].value?.includes(MODELS.SLUMP_SALE)
       ))
       {
       return false;
@@ -576,7 +566,8 @@ export class GroupModelControlsComponent implements OnInit {
       }
       else if(this.modelValuation.controls['model'].value?.length  > 1 && (
         this.modelValuation.controls['model'].value?.includes(MODELS.RULE_ELEVEN_UA) ||
-        this.modelValuation.controls['model'].value?.includes(MODELS.NAV)
+        this.modelValuation.controls['model'].value?.includes(MODELS.NAV) ||
+        this.modelValuation.controls['model'].value?.includes(MODELS.SLUMP_SALE)
       )){
         return true;
       }
@@ -589,7 +580,8 @@ export class GroupModelControlsComponent implements OnInit {
     if (this.modelValuation.controls['model'].value?.length === 1 &&
     (
       this.modelValuation.controls['model'].value?.includes(MODELS.RULE_ELEVEN_UA) ||
-      this.modelValuation.controls['model'].value?.includes(MODELS.NAV)
+      this.modelValuation.controls['model'].value?.includes(MODELS.NAV) ||
+      this.modelValuation.controls['model'].value?.includes(MODELS.SLUMP_SALE)
     ))
     {
       this.calculationService.checkModel.next({status:true})
@@ -602,7 +594,8 @@ export class GroupModelControlsComponent implements OnInit {
     }
     else if(this.modelValuation.controls['model'].value?.length  > 1 && (
       this.modelValuation.controls['model'].value?.includes(MODELS.RULE_ELEVEN_UA) ||
-      this.modelValuation.controls['model'].value?.includes(MODELS.NAV)
+      this.modelValuation.controls['model'].value?.includes(MODELS.NAV) ||
+      this.modelValuation.controls['model'].value?.includes(MODELS.SLUMP_SALE)
     )){
       this.calculationService.checkModel.next({status:false})
     }
@@ -724,4 +717,44 @@ export class GroupModelControlsComponent implements OnInit {
   //     }
   //   })
   // }
+
+  downloadTemplateExternal(){
+    const snackBarRef = this.snackBar.open('Exporting result, please wait','',{
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+      duration: -1,
+      panelClass: 'app-notification-success',
+    })
+    const payload = {
+      fileName:this.fileName,
+      processStateId: localStorage.getItem('processStateId')
+    }
+    this.excelAndReportService.fetchExcelTemplate(payload).subscribe((excelResponse:any)=>{
+      this.processStatusManagerService.getExcelStatus(localStorage.getItem('processStateId')).subscribe((response:any)=>{
+        snackBarRef.dismiss();
+
+        if(excelResponse){
+          saveAs(excelResponse, this.fileName);
+        }
+
+        if (response?.isExcelModifiedStatus) {
+          this.snackBar.open('Excel has been edited on review form', 'OK', {
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: -1,
+            panelClass: 'app-notification-error',
+          });
+        }
+      })
+    },(error)=>{
+      const errorMessage = 'Please upload excel again';
+      snackBarRef.dismiss();
+      this.snackBar.open(errorMessage, 'OK', {
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 5000,
+        panelClass: 'app-notification-error',
+      });
+    })
+  }
 }

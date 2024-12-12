@@ -51,6 +51,9 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
   isNotRuleElevenUaAndNav=isNotRuleElevenUaAndNav;
   terminalValueSelectedType:any = '';
   vwapType:any='vwapNse';
+  ccmValuationMetric:any = 'average';
+  ccmVPSavg:any;
+  ccmVPSmed:any;
   vwapNse:any;
   vwapBse:any;
   constructor(private calculationsService:CalculationsService,
@@ -192,7 +195,9 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
           }
         }
         else if(response.model === 'Relative_Valuation'){
-          this.relativeValuation = response.valuation?.finalPriceMed;
+          this.ccmVPSavg = response.valuation?.finalPriceAvg;
+          this.ccmVPSmed = response.valuation?.finalPriceMed;
+          this.relativeValuation = this.ccmValuationMetric === 'average' ? this.ccmVPSavg : this.ccmVPSmed;
           const relativeValuationIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "Relative_Valuation");
           if(relativeValuationIndex === -1)
           {
@@ -225,7 +230,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
           }
         }
         else if(response.model === 'NAV'){
-          this.navValuation = response.valuation;
+          this.navValuation = response.valuation.fairValue;
           const navIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "NAV");
           if(navIndex === -1)
           {
@@ -301,7 +306,9 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
           }
         }
         else if(response.model === 'Relative_Valuation'){
-          this.relativeValuation = response.valuation?.finalPriceMed;
+          this.ccmVPSavg = response.valuation?.finalPriceAvg;
+          this.ccmVPSmed = response.valuation?.finalPriceMed;
+          this.relativeValuation = this.ccmValuationMetric === 'average' ? this.ccmVPSavg : this.ccmVPSmed;
           const relativeValuationIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "Relative_Valuation");
           if(relativeValuationIndex === -1)
           {
@@ -334,7 +341,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
           }
         }
         else if(response.model === 'NAV'){
-          this.navValuation = response.valuation;
+          this.navValuation = response.valuation.fairValue;
           const navIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "NAV");
           if(navIndex === -1)
           {
@@ -367,7 +374,9 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
       appData.valuationResult.map((response:any)=>{
         if(response.model === MODELS.RELATIVE_VALUATION){
 
-          this.relativeValuation = response.valuation?.finalPriceMed;
+          this.ccmVPSavg = response.valuation?.finalPriceAvg;
+          this.ccmVPSmed = response.valuation?.finalPriceMed;
+          this.relativeValuation = this.ccmValuationMetric === 'average' ? this.ccmVPSavg : this.ccmVPSmed;
           const relativeValuationIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "Relative_Valuation");
           if(relativeValuationIndex === -1)
           {
@@ -402,7 +411,7 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
       localStorage.setItem('stepFiveStats','true');
     }
     const processStateModel ={
-      fifthStageInput:{valuationResultReportId:this.transferStepperthree?.formFourData.valuationId,totalWeightageModel:this.totalModelWeightageValue,formFillingStatus:processCompleteState,terminalValueSelectedType:this.terminalValueSelectedType,vwapType:this.vwapType},
+      fifthStageInput:{valuationResultReportId:this.transferStepperthree?.formFourData.valuationId,totalWeightageModel:this.totalModelWeightageValue,formFillingStatus:processCompleteState,terminalValueSelectedType:this.terminalValueSelectedType,vwapType:this.vwapType, ccmVPStype: this.ccmValuationMetric},
       step:processStateStep
     }
   
@@ -610,6 +619,22 @@ export class GroupModelResultComponent implements OnChanges,OnInit {
       }
       else{
         this.calculateModelWeigtagePayload.results.splice(marketPriceIndex,1,{model:MODELS.MARKET_PRICE,value:this.marketPriceValuation,weightage:this.marketPriceSlider});
+      }
+      this.getWeightedValuation();
+    }
+
+
+    ccmVPSMethod(event:any){
+      this.ccmValuationMetric = event;
+      if(!this.transferStepperthree?.formOneAndThreeData?.model.includes(MODELS.RELATIVE_VALUATION)) return;
+      this.relativeValuation = this.ccmValuationMetric === 'average' ? this.ccmVPSavg : this.ccmVPSmed;
+      const relativeValuationIndex = this.calculateModelWeigtagePayload.results.findIndex((item:any) => item.model === "Relative_Valuation");
+      if(relativeValuationIndex === -1)
+      {
+        this.calculateModelWeigtagePayload.results.push({model:MODELS.RELATIVE_VALUATION,value:this.relativeValuation,weightage:this.relativeValSlider});
+      }
+      else{
+        this.calculateModelWeigtagePayload.results.splice(relativeValuationIndex,1,{model:MODELS.RELATIVE_VALUATION,value:this.relativeValuation,weightage:this.relativeValSlider});
       }
       this.getWeightedValuation();
     }

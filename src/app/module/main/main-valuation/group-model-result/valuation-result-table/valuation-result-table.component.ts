@@ -27,6 +27,7 @@ export class ValuationResultTableComponent implements OnInit, OnChanges{
 @Output() formFourAppData = new EventEmitter<any>();
 @Output() formFourAppDataCCM = new EventEmitter<any>();
 @Output() vwapMethod = new EventEmitter<any>();
+@Output() ccmVPSMethod = new EventEmitter<any>();
 @ViewChild('dynamicTable') dynamicTable!: ElementRef;
 
 HOST = environment.baseUrl
@@ -68,24 +69,51 @@ ccmCompanyTableLoader = false;
 userAccess = false;
 fifthStageDetails: any;
 marketMethodType:any = 'vwapNse';
+ccmValuationMetric:any = 'average';
 vwapNse:any='';
 vwapBse:any='';
 getKeys(navData:any){
-this.dataSourceNav =[navData].map((response:any)=>{
+this.dataSourceNav =[navData].flatMap((response:any)=>{
   let obj = Object.values(response);
-  obj = obj.map((objVal:any)=>{
-    return {
+  obj = obj.flatMap((objVal:any)=>{
+    const result =  {
       fieldName:objVal?.fieldName,
       bookValue:objVal?.bookValue ? parseFloat(objVal.bookValue) : objVal.bookValue,
-      fairValue:objVal?.fairValue  ? parseFloat(objVal.fairValue) : objVal.value ? parseFloat(objVal.value) : objVal.fairValue,
-      type:objVal?.type === 'book_value' ? 'Book Value' : objVal.type === 'market_value' ? 'Market Value' : objVal.type
+      fairValue:objVal?.fairValue  ? 
+      parseFloat(objVal.fairValue) : 
+      objVal.value ? 
+        parseFloat(objVal.value) : 
+        objVal.fairValue,
+      type:objVal?.type === 'book_value' ? 
+      'Book Value' : 
+      objVal.type === 'market_value' ? 
+        'Market Value' : 
+        objVal.type,
+        header:objVal?.header,
+        subHeader:objVal?.subHeader,
+        mainHead: objVal.mainHead,
+        mainSubHead: objVal.mainSubHead,
+        nestedSubHeader:objVal.nestedSubHeader
     }
+    const outputArray = [];
+
+    if (objVal.reqUBrk) {
+      outputArray.push({fieldName:''});
+    }
+
+    outputArray.push(result);
+
+    if (objVal.reqLBrk) {
+      outputArray.push({fieldName:''});
+    }
+
+    return outputArray;
   })
   return obj;
 })
-this.dataSourceNav=this.dataSourceNav[0];
-this.dataSourceNav.splice(this.dataSourceNav.findIndex((item:any) => item?.fieldName === 'Net Current Assets'),0,{fieldName:''})
-this.dataSourceNav.splice(this.dataSourceNav.findIndex((item:any) => item?.fieldName === 'Firm Value'),0,{fieldName:''})
+// this.dataSourceNav=this.dataSourceNav[0];
+// this.dataSourceNav.splice(this.dataSourceNav.findIndex((item:any) => item?.fieldName === 'Net Current Assets'),0,{fieldName:''})
+// this.dataSourceNav.splice(this.dataSourceNav.findIndex((item:any) => item?.fieldName === 'Firm Value'),0,{fieldName:''})
 }
 
 ngAfterViewInit(): void {
@@ -666,6 +694,9 @@ loadStageFiveDetails(){
       if(this.fifthStageDetails?.vwapType){
         this.marketMethodType = this.fifthStageDetails?.vwapType;
       }
+      if(this.fifthStageDetails?.ccmVPStype){
+        this.ccmValuationMetric = this.fifthStageDetails.ccmVPStype;
+      }
       if(this.transferStepperthree?.formOneAndThreeData?.model?.includes(MODELS.FCFE) || this.transferStepperthree?.formOneAndThreeData?.model?.includes(MODELS.FCFF)){
         this.terminalValueOptions(this.fifthStageDetails?.terminalValueSelectedType || this.terminalValueSelectedType);
       }else{
@@ -790,7 +821,8 @@ downloadValuation(model:any, format:any, saveAsFileName:any, reportId:any, disab
         processId: this.processStateId, 
         terminalValueType: this.terminalValueSelectedType, 
         formatType: format,
-        modelWeightageData: modelWeightage || this.fifthStageDetails.totalModelWeightageValue
+        modelWeightageData: modelWeightage || this.fifthStageDetails.totalModelWeightageValue,
+        ccmVPStype:this.ccmValuationMetric
       }
       this.excelAndReportService.exportValuation(payload).subscribe((response)=>{
         snackBarRef.dismiss();
@@ -867,14 +899,62 @@ getStyle(feature: any) {
   return {}
 }
 
+keyValidator(item:any, key:any){
+  return item[`${key}`]
+}
 marketPriceType(type:any){
   this.marketMethodType = type;
   this.vwapMethod.emit(this.marketMethodType);
+}
+ccmMetric(metric:any){
+  this.ccmValuationMetric = metric;
+  this.ccmVPSMethod.emit(this.ccmValuationMetric);
 }
 
 containsNseAndBse(){
   if(this.vwapBse && this.vwapNse) return true;
   return false;
 }
-}
 
+async marketPriceRevaluation(data:any){
+  this.isLoader = true;
+  const snackBarRef = this.snackbar.open('Please wait, performing revaluation','Ok', {
+    horizontalPosition: 'right',
+    verticalPosition: 'top',
+    duration: -1,
+    panelClass: 'app-notification-success',
+  })
+  await this.delay(2000)
+  this.valuationService.marketPriceRevaluationProcess(data).subscribe((response:any)=>{
+    snackBarRef.dismiss();
+    this.isLoader = false;
+    if(response.status){
+      this.transferStepperthree.formFourData = response.data;
+      this.transferStepperthree = {...this.transferStepperthree};
+      this.formFourAppData.emit(this.transferStepperthree.formFourData.appData);
+      this.snackbar.open('Revaluation successfull','Ok',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 3000,
+        panelClass: 'app-notification-success'
+      })
+    }else{
+      this.snackbar.open('Revaluation failed due to network connection, please try again later','Ok',{
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 6000,
+        panelClass: 'app-notification-error'
+      })
+    }
+  },(error)=>{
+    snackBarRef.dismiss();
+    this.isLoader = false;
+    this.snackbar.open(`${error?.error?.message || error?.statusText || 'Backend failed'}`,'Ok',{
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+      duration: 5000,
+      panelClass: 'app-notification-error',
+    })
+  })
+}
+}

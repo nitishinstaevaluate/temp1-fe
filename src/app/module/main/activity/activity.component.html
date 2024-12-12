@@ -22,7 +22,7 @@
                 <tr class="header">
                   <th *ngFor="let item of columnName" [ngStyle]="(item === 'Reference Id') ? { 'width': '10%'} : (item === 'Date') ? { 'width':'15%' } : (item === 'Status') ? { 'width':'12%' } : (item === 'Action') ? { 'width':'8%' } : (item === 'Valuation (per share)') ? { 'width' : '15%' } : { 'width':'auto' }">{{item}}</th>       
                 </tr>
-                <tr *ngFor="let item of activity">
+                <tr *ngFor="let item of activity" [ngClass]="item.isLegacyTemplate ? 'old-template':''">
                   <td>{{ item?.processIdentifierId ? item?.processIdentifierId : '-'  }}</td>
                   <td>{{ item.createdOn | date :'MMM d, yyyy h:mm a' }} </td>
                   <td>{{ item?.firstStageInput?.company ? item?.firstStageInput?.company : '-'  }}</td>
@@ -60,10 +60,16 @@
                       </span>
                       </button>
                       <button mat-menu-item class="action-button remove-svg" *ngIf="item?.sixthStageInput" [matMenuTriggerFor]="mrlOptions">
-                        <span matTooltip="Generate MRL pdf" style="width: 150px;display: block;text-align: left;padding-left: 9%;" class="mrl-label" matTooltipPosition="below" matTooltipClass="activity-mrl-tooltip">
+                        <span  style="width: 150px;display: block;text-align: left;padding-left: 9%;" class="mrl-label" matTooltipPosition="below" matTooltipClass="activity-mrl-tooltip">
                           <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../assets/images/icons/mrl-pdf.png" alt="">
                         <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Generate MRL</span>
                         </span>
+                      </button>
+                      <button mat-menu-item (click)="cloneLead(item)" class="action-button" *ngIf="!item.isLegacyTemplate">
+                        <span matTooltip="Create duplicate lead" style="width: 150px;display: block;text-align: left;padding-left: 9%;" matTooltipPosition="below" class="resume-label" matTooltipClass='activity-resume-tooltip'>
+                          <img style="height: 13px;width: 13px;cursor: pointer;" src="../../../../assets/images/icons/files-transfer.png" alt="">
+                        <span style="font-size: 14px;padding-left: 9%;font-family: 'AR One Sans', sans-serif !important;">Clone Lead</span>
+                      </span>
                       </button>
                     </mat-menu>
 

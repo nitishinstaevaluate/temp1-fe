@@ -13,6 +13,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.service';
 import { convertToNumberOrZero, formatNumber, formatPositiveAndNegativeValues } from 'src/app/shared/enums/functions';
 import { MatDialog } from '@angular/material/dialog';
+import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 
 @Component({
   selector: 'app-activity',
@@ -45,7 +46,8 @@ export class ActivityComponent {
     private excelAndReportService: ExcelAndReportService,
     private ngxLoaderService: NgxUiLoaderService,
     private snackBar: MatSnackBar,
-    private dialogBox: MatDialog) {
+    private dialogBox: MatDialog,
+  private processStatusManagerService:ProcessStatusManagerService) {
       this.dialogBox.closeAll();
     this.inItData();
     this.searchTerms
@@ -218,7 +220,7 @@ export class ActivityComponent {
         })
         }
         if(navValuation){
-          return `${processData.firstStageInput.currencyUnit} ${formatNumber(navValuation?.valuePerShare?.bookValue ? navValuation?.valuePerShare?.bookValue : '-')}`;
+          return `${processData.firstStageInput.currencyUnit} ${formatNumber(navValuation?.valuePerShare?.fairValue ? navValuation?.valuePerShare?.fairValue : '-')}`;
         }
         else{
           return `${processData.firstStageInput.currencyUnit} -`;
@@ -229,10 +231,10 @@ export class ActivityComponent {
         return `${processData.firstStageInput.currencyUnit} ${formatNumber(ruleElevenUaAprroachValuation ? formatPositiveAndNegativeValues(ruleElevenUaAprroachValuation) : '0')}`;
       }
       else if(processData.fifthStageInput?.totalWeightageModel){
-        const outstandingShares = convertToNumberOrZero(processData.firstStageInput.outstandingShares);
-        const reportingUnit = processData.firstStageInput?.reportingUnit;
-        const multiplier = GET_MULTIPLIER_UNITS[`${reportingUnit}`] || 100000; //In default case, setting multiplier to 1 lakh
-        return `${processData.firstStageInput.currencyUnit} ${formatNumber(processData.fifthStageInput.totalWeightageModel?.weightedVal ? processData.fifthStageInput.totalWeightageModel?.weightedVal * multiplier/outstandingShares : '-')}`;
+        // const outstandingShares = convertToNumberOrZero(processData.firstStageInput.outstandingShares);
+        // const reportingUnit = processData.firstStageInput?.reportingUnit;
+        // const multiplier = GET_MULTIPLIER_UNITS[`${reportingUnit}`] || 100000; //In default case, setting multiplier to 1 lakh
+        return `${processData.firstStageInput.currencyUnit} ${formatNumber(processData.fifthStageInput.totalWeightageModel?.weightedVal || '-')}`;
       }
       else{
         return '-';
@@ -429,5 +431,23 @@ export class ActivityComponent {
           });
         })
     }
+  }
+
+  cloneLead(leadDetails:any){
+    this.processLoader = true;
+    this.processStatusManagerService.cloneLead(leadDetails).subscribe((cloneResponse:any)=>{
+      if(cloneResponse?.status){
+        this.fetchData();
+      }
+      this.processLoader = false;
+    },(error:any)=>{
+      this.processLoader = false;
+      this.snackBar.open(`${error.error.message || error?.statusText || 'Lead clone failed'}`, 'Ok' ,{
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 5000,
+          panelClass: 'app-notification-error'
+      })
+    })
   }
 }

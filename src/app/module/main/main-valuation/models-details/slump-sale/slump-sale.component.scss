@@ -1,0 +1,556 @@
+@import url('https://fonts.googleapis.com/css2?family=AR+One+Sans:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+.full-width-input {
+    width: 100%; /* Set the width to 100% to occupy the full width of the container */
+    height: 75px;
+  }
+  .col-md-6 mat-form-field{
+    width: 100% !important;
+  }
+
+  .outer-wrapper{
+    box-shadow: 1px 2px 10px #cecece;
+    border-radius: 10px;
+    background-color: #ffffff;
+  }
+
+  .label{
+    border-radius: 5px;
+    font-family: 'AR One Sans', sans-serif;
+    font-size: 17px;
+    color: #26879d;
+    padding-left: 2%;
+    cursor: pointer;
+    transition:color .3s;
+  }
+  
+  ::ng-deep .mat-relative-val input
+  {
+    color: #004e67 !important;
+    font-family: 'AR One Sans';
+  }
+  // mat-label{
+  //   color:#38a3b8;
+  // }
+  .field{
+    padding-left: 2.5%;
+    padding-top: 3%;
+    padding-right: 2.5%;
+  }
+
+.card-header{
+    color: #4b6df3;
+    font-size: 17px;
+    font-weight: 500  ;
+    font-family: 'AR One Sans', sans-serif;
+    padding-left: 0px;
+  }
+
+  .card-title{
+    font-size: 1.25rem;
+    color: #777777 !important;
+    font-family: 'AR One Sans';
+    font-weight: 500;
+    padding-right: 1%;
+  }
+  .card-text{
+    font-size: 1.1rem;
+    color: #777777 !important;
+    font-family: 'AR One Sans';
+    font-weight: 500;
+    padding-left: 1%;
+  }
+
+// keep this css
+.revalmodel{
+    margin-top: auto;
+    margin-bottom: auto;
+    padding-top: 1%;
+    position: relative;
+    padding-left: 1.8%;
+  }
+  .label:hover{
+    color: #26879d;
+  }
+
+  .mat-bullet{
+    position: absolute;
+    left: 2%;
+    top: 30%;
+    mat-icon{
+        transform: scale(.5);
+        color: #26879d;
+    }
+  }
+
+  mat-hint{
+    font-family: 'Poppins', sans-serif;
+    color: #219476;
+    font-size: 10px;
+    font-weight: 500;
+    padding-left: 2%;
+  }
+
+  ::ng-deep .mat-select-value .mat-mdc-select-trigger .mat-mdc-select-value .mat-mdc-select-value-text{    
+    padding: 0px !important;
+    color: #004e67 !important;
+      font-family: 'AR One Sans';
+  }
+  ::ng-deep .mat-relative-val .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) .mat-mdc-form-field-infix {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+  }
+
+//risk premium card css
+.card-container {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.card-est {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s,box-shadow 0.2s, background-color 0.2s;
+  cursor: pointer;
+  padding-top: 2%;
+  padding-bottom: 2%;
+}
+
+.card-est:hover {
+  // transform: translateY(-5px);
+  box-shadow: 0px 4px 8px rgba(45, 45, 45, 0.6);
+  background-color: #f1f1f1;
+}
+
+.card-header-rp {
+  font-size: 18px;
+  font-weight: 500;
+  // font-family: 'Ubuntu', sans-serif;
+  font-family: 'AR One Sans';
+  // border-top: 1px solid #e3e3f7;
+  border-bottom: 0px !important;
+  color: #666666;
+  display: table-cell;
+  position: relative;
+  text-align: left;
+  padding-top: 5%;
+}
+
+.card-subtext {
+  color: #4b6df3;
+  height: 100%;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: right;
+  font-size: 18px;
+  padding-top: 4%;
+  // font-family: 'Teko', sans-serif;
+  font-family: 'AR One Sans';
+  font-weight: 500;
+  position: relative;
+}
+
+.rp-p{
+  color: #089e94;
+  font-family: 'Oxygen', sans-serif;
+  font-size: 20px;
+  border-top: 1px solid #e3e3f7;
+  font-weight: 500;
+  padding-top: 2%;
+  padding-left: 1%;
+}
+
+
+// new scss
+.card-body{
+  padding-left: 0px;
+  padding-right: 0px;
+  border-radius: 15px;
+  box-shadow: 1px 2px 5px #d5d5d5;
+}
+.c-decorated-header {
+  position: relative;
+  padding-top: 1%;
+
+}
+.c-decorated-header-coe {
+  position: relative;
+  padding-top: 1%;
+
+}
+.c-decorated-header-rp {
+  position: relative;
+  padding-top: 1%;
+
+}
+
+.c-decorated-header h3 {
+  position: relative;
+  text-align: left;
+
+  font-family: 'AR One Sans', sans-serif;
+  font-size: 19px;
+  color: #666666;
+  cursor: pointer;
+}
+.c-decorated-header-coe h3 {
+  position: relative;
+  text-align: left;
+
+  font-family: 'AR One Sans', sans-serif;
+  font-size: 19px;
+  color: #666666;
+  cursor: pointer;
+}
+.c-decorated-header-rp h3 {
+  position: relative;
+  text-align: left;
+
+  font-family: 'AR One Sans', sans-serif;
+  font-size: 19px;
+  color: #666666;
+  cursor: pointer;
+}
+
+.c-decorated-header h3:after {
+  content: "";
+  height: 1px;
+  position: absolute;
+  right: 0;
+  left: 17%;
+  top: 20%;
+  bottom: 0;
+  margin: auto;
+  background: #e2e2e6;
+}
+.c-decorated-header-coe h3:after {
+  content: "";
+  height: 1px;
+  position: absolute;
+  right: 0;
+  left: 20%;
+  top: 20%;
+  bottom: 0;
+  margin: auto;
+  background: #e2e2e6;
+}
+.c-decorated-header-rp h3:after {
+  content: "";
+  height: 1px;
+  position: absolute;
+  right: 0;
+  left: 12%;
+  top: 20%;
+  bottom: 0;
+  margin: auto;
+  background: #e2e2e6;
+}
+
+.c-decorated-header h3 span {
+  position: relative;
+  font-size: 17px;
+  font-weight: 500;
+  font-stretch: condensed;
+  color: #757575;
+  font-family: 'AR One Sans', sans-serif;
+
+}
+.c-decorated-header-coe h3 span {
+  position: relative;
+  font-size: 17px;
+  font-weight: 500;
+  font-stretch: condensed;
+  color: #757575;
+  font-family: 'AR One Sans', sans-serif;
+
+}
+.c-decorated-header-rp h3 span {
+  position: relative;
+  font-size: 17px;
+  font-weight: 500;
+  font-stretch: condensed;
+  color: #757575;
+  font-family: 'AR One Sans', sans-serif;
+
+}
+
+.c-decorated-header_link-view-more {
+  position: absolute;
+  top: 12px;
+  right: 40px;
+  font-size: 15px;
+  font-weight: 400;
+  font-family: 'AR One Sans', sans-serif;
+  color: #aaaaaa;
+  text-decoration: none;
+  background: #fcf8fe;;
+  padding: 5px;
+}
+
+// flotable header ends
+
+
+// coe calculation starts
+.separator::before {
+  content: '';
+  border-left: 2px solid #b4b4b4;
+  padding: 4px 0 50px;
+  margin: -20px 8px;
+  display: inline-block;
+}
+// coe calculation ends
+
+.rp-icon{
+  position: absolute;
+  top: 23%;
+  right: 3%;
+}
+.rp-relate-icon{
+  position: absolute;
+  left: 1%;
+  transform: scale(1.5);
+  mat-icon{
+    color:#0cd18f
+  }
+}
+
+.button-save-mat{
+  box-shadow: 1px 2px 15px #d1d1d1;
+  color:#ffffff !important;
+  background-color: #0cd18f !important;
+  border-radius: 8px;
+  position: relative;
+  font-family: 'AR One Sans', sans-serif;
+  font-weight: 500;
+  width: 10%;
+  padding-right: 4%;
+}
+.button-back-mat{
+  box-shadow: 1px 2px 15px #d1d1d1;
+  margin-right: 1%;
+  color:#ffffff !important;
+  background-color: #fe6060 !important;
+  // background-color: #0cd18f !important;
+  border-radius: 8px;
+  position: relative;
+  font-family: 'AR One Sans', sans-serif;
+  font-weight: 500;
+  width: 10%;
+  padding-left: 4%;
+}
+.button-save{
+  position: absolute;
+    left: 112%;
+    transform: scale(0.7);
+    top: -8%;
+    mat-icon{
+      font-weight: bold;
+      color: #ffffff;
+    }
+}
+.button-back{
+  position: absolute;
+    right: 112%;
+    transform: scale(0.7);
+    top: -8%;
+    mat-icon{
+      font-weight: bold;
+      color: #ffffff;
+      transform: rotate(180deg);
+    }
+}
+.prev-button{
+  box-shadow: 1px 2px 15px #d1d1d1;
+  color:#ffffff !important;
+  font-weight: bold !important;
+  margin-right: 1%;
+  background-color: #fe6060 !important;
+  border-radius: 8px;
+  mat-icon{
+    font-weight: bold;
+    color: #ffffff !important;
+  }
+}
+.btn-prop{
+  text-align: right;
+  padding-bottom: 1%;
+  padding-top: 1%;
+  padding-right: 2%;
+}
+
+.material-textfield {
+  position: relative;
+}
+
+label {
+  position: absolute;
+  font-size: 1rem;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: white;
+  color: gray;
+  padding: 0 0.3rem;
+  margin: 0 0.5rem;
+  transition: 0.1s ease-out;
+  transform-origin: left top;
+  pointer-events: none;
+  font-family: 'AR One Sans', sans-serif;
+  font-weight: 500;
+}
+
+.new-inp {
+  font-size: 1rem;
+  outline: none;
+  border: 1px solid #e4e4e4;
+  border-radius: 10px;
+  color: #6d6d6d;
+  transition: 0.1s ease-out;
+  font-family: 'AR One Sans', sans-serif;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  width: 100%;
+  padding-left: 2%;
+  box-shadow: 1px 2px 10px #f0ebeb;
+  height: 50px;
+}
+
+.new-inp:focus {
+  border-color: #6200ee;
+}
+
+.new-inp:focus+label {
+  color: #6200ee;
+  top: 3%;
+  transform: translateY(-50%) scale(0.8) !important;
+}
+
+.new-inp:not(:placeholder-shown)+label {
+  top: 3%;
+  transform: translateY(-50%) scale(0.8) !important;
+}
+
+.new-inp:not(:focus)::placeholder {
+  opacity: 0;
+}
+
+.error-text{
+  padding-left: 3%;
+  color: red;
+  font-size: 10px;
+  font-family: 'AR One Sans';
+}
+
+
+::ng-deep .mon-consdr .mdc-text-field .mat-mdc-form-field-focus-overlay{
+  background-color: #ffffff !important;
+}
+
+::ng-deep .mon-consdr .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix .mdc-floating-label .mat-mdc-form-field-required-marker{
+  display: none;
+}
+
+::ng-deep .mon-consdr .mat-mdc-form-field-subscript-wrapper{
+  border-top: 1px solid #ffffff;
+}
+::ng-deep .mon-consdr .mat-mdc-form-field-subscript-wrapper:hover{
+  border-top: 1px solid #ffffff;
+}
+
+::ng-deep .mon-consdr .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix .mdc-floating-label{
+  top: 58%;
+  left: 2%;
+  color: #6d6d6d;
+  font-family: 'AR One Sans', sans-serif;
+}
+
+::ng-deep .mon-consdr .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix:focus-within .mdc-floating-label {
+  top: 47%;
+  background-color: #ffffff;
+  font-size: 1rem !important;
+  color: #6d6d6d !important;
+  font-family: 'AR One Sans', sans-serif;
+}
+
+::ng-deep .mon-consdr .mdc-text-field .mat-mdc-form-field-flex .mat-mdc-form-field-infix .mdc-floating-label--float-above {
+  top: 47%;
+  background-color: #ffffff;
+  font-family: 'AR One Sans', sans-serif;
+  z-index: 1;
+  padding-right: 2%;
+}
+::ng-deep .mon-consdr .mdc-text-field{
+  padding: 0px;
+}
+.ind-4{
+  color:#6d6d6d !important;
+  font-size: 1rem !important;
+}
+::ng-deep .mon-consdr .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::before  {
+  border-bottom: 1px solid #ffffff;
+}
+::ng-deep .mon-consdr .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::after  {
+  border-bottom: 1px solid #ffffff;
+}
+
+.company-info-span{
+  // padding-right: 1%;
+  // position: absolute;
+  // display: block;
+  // top: 18%;
+  // left: 22%;
+  // padding-left: 1%;
+  // background-color: white;
+}
+.label-container {
+  display: flex;
+  align-items: center;
+}
+
+.company-info-span {
+  display: flex;
+  align-items: center;
+  margin-left: 5px; /* Optional: Add space between the text and the icon */
+}
+
+svg {
+  display: block;
+}
+.company-list-inp{
+  font-size: 1rem !important;
+  outline: none;
+  border: 1px solid #e4e4e4 !important;
+  border-radius: 10px;
+  color: #6d6d6d !important;
+  transition: 0.1s ease-out !important;
+  font-family: 'AR One Sans', sans-serif !important;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  width: 100%;
+  padding-left: 2%;
+  box-shadow: 1px 2px 10px #f0ebeb !important;
+  height: 50px !important;
+  position: relative;
+}
+
+.company-list-rmve-icon{
+  color: #7c7c7c;
+  transform: scale(0.8);
+}
+.company-list-rmve{
+  cursor: pointer;
+  position: absolute;
+  right: 1%;
+  top: 46%;
+  z-index: 1;
+}
+.company-list-rmve-icon:hover{
+  color: #e71a1a;
+  transition: 0.4s;
+}

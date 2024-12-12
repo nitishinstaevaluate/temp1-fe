@@ -180,12 +180,12 @@
                 <div class="dropdown-content" [ngClass]="{ 'show': isDropdownOpen }">
                   <ul class="side-menu">
                     <li class="slide drop-d">
-                      <span style="padding-right: 12%;">
+                      <span style="padding-right: 6%;">
                         <img src="../../../../assets/images/icons/user.png" style="height: 17px;width: 17px;" alt="">
-                      </span>Profile
+                      </span>Profile <span style="font-size: 11px;text-transform: capitalize;">({{(userName === 'Anil' ? 'Nitish' : userName) || 'NA'}})</span>
                     </li>
                     <li class="slide drop-d" (click)="checkStatus('signOut')">
-                      <span style="padding-right: 12%;">
+                      <span style="padding-right: 6%;">
                         <img src="../../../../assets/images/icons/sign-out.png" style="height: 17px;width: 17px;" alt="">
                       </span>Sign Out
                     </li>

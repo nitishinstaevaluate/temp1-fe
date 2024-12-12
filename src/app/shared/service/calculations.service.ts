@@ -19,9 +19,10 @@ export class CalculationsService {
   multiplesSelector: BehaviorSubject<any> = new BehaviorSubject(null);
   issuanceOfSharesDetector = new Subject<{ status: boolean }>();
   modelWeightageData: BehaviorSubject<any> = new BehaviorSubject(0);
+  userName: Subject<any> = new Subject();
   
   getCostOfEquity(payload:any){
-    return this.http.get(`${HOST}coe/adjcoe/?riskFreeRate=${payload.riskFreeRate}&expMarketReturn=${payload.expMarketReturn}&beta=${payload.beta}&riskPremium=${payload.riskPremium}&coeMethod=${payload.coeMethod}`)
+    return this.http.post(`${HOST}coe/adjcoe`, payload)
   }
 
   getWacc(payload:any){
@@ -33,7 +34,7 @@ export class CalculationsService {
   }
 
   getWaccIndustryOrCompanyBased(payload:any){
-    return this.http.get(`${HOST}coe/industryOrCompanyBasedWacc?adjCoe=${payload.adjCoe}&costOfDebt=${payload.costOfDebt}&copShareCapital=${payload.copShareCapital}&deRatio=${payload.deRatio}&type=${payload.type}&taxRate=${payload.taxRate}&excelSheetId=${payload.excelSheetId}`)
+    return this.http.post(`${HOST}coe/industryOrCompanyBasedWacc`, payload)
   }
 
   getRiskFreeRate(maturityYears:any,date:any){

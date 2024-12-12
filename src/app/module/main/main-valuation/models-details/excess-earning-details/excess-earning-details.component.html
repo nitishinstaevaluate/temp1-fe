@@ -137,7 +137,7 @@
             </div>
 
             <!-- beta -->
-            <div class="col-md-4 field" style="padding-top: 0%;">
+            <div class="col-md-4 field" style="padding-top: 0%;" *ngIf="excessEarningForm.controls['coeMethod'].value === 'capm'">
               <div class="material-textfield">
                 <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
                     <mat-label>Beta*</mat-label>
@@ -185,6 +185,46 @@
               </div>
             </div>
             
+            <!-- Industry risk premium -->
+            <div class="col-md-4 field" style="padding-top: 0%;" *ngIf="excessEarningForm.controls['coeMethod'].value === 'buildUpCapm'">
+              <div class="material-textfield">
+                <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                    <input type="text" matInput formControlName="industryRiskPremium" class="company-list-inp" placeholder="Enter specific risk premium">
+                      <span class="company-list-rmve" *ngIf="excessEarningForm.controls['industryRiskPremium']?.value" style="right: 3%;">
+                        <mat-icon class="company-list-rmve-icon" (click)="clearInput('industryRiskPremium')">close</mat-icon>
+                      </span>
+                    <mat-label>
+                      Industry Risk Premium*
+                    </mat-label>
+                    <mat-error class="company-list-error" *ngIf="excessEarningForm.controls['industryRiskPremium'].touched && excessEarningForm.controls['industryRiskPremium'].errors" style="margin-left: -5%;">
+                      <span *ngIf="hasError('industryRiskPremium','required',excessEarningForm)" class="error-text">
+                        Please add industry risk premium
+                      </span>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <!-- Size premium -->
+            <div class="col-md-4 field" style="padding-top: 0%;" *ngIf="excessEarningForm.controls['coeMethod'].value === 'buildUpCapm'">
+              <div class="material-textfield">
+                <mat-form-field appearance="fill" class="company-l" style="width: 100%;">
+                    <input type="text" matInput formControlName="sizePremium" class="company-list-inp" placeholder="Enter specific risk premium">
+                      <span class="company-list-rmve" *ngIf="excessEarningForm.controls['sizePremium']?.value" style="right: 3%;">
+                        <mat-icon class="company-list-rmve-icon" (click)="clearInput('sizePremium')">close</mat-icon>
+                      </span>
+                    <mat-label>
+                      Size Premium*
+                    </mat-label>
+                    <mat-error class="company-list-error" *ngIf="excessEarningForm.controls['sizePremium'].touched && excessEarningForm.controls['sizePremium'].errors" style="margin-left: -5%;">
+                      <span *ngIf="hasError('sizePremium','required',excessEarningForm)" class="error-text">
+                        Please add size premium
+                      </span>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
             <!-- risk premium -->
             <div class="col-md-4 field" style="padding-top: 0%;">
               <div class="material-textfield">
@@ -205,14 +245,14 @@
                 </div>
               </div>
 
-            <div class="col-md-12" *ngIf="(adjCoe !== null && adjCoe !== 0)   && (coe !== null && coe !== 0)">
+            <div class="col-md-12" *ngIf="adjCoe">
                 <div class='c-decorated-header-coe'>
                     <h3><span style="padding-left: 2%;">Estimated Cost of Equity</span></h3>
                     <div class='c-decorated-header_link-view-more'>
                     </div>
                   </div>
             </div>
-            <div class="col-md-12 text-center" style="padding: 2%; padding-top: 1%;padding-bottom: 1%;" *ngIf="(adjCoe !== null && adjCoe !== 0)   && (coe !== null && coe !== 0)">
+            <div class="col-md-12 text-center" style="padding: 2%; padding-top: 1%;padding-bottom: 1%;" *ngIf="adjCoe">
                 <div >
                     <div class="row">
                       <div class="col-md-6">
@@ -220,7 +260,7 @@
                           <div class="card-body">
                             <span class="card-title">Cost Of Equity</span>
                             <span class="separator"></span>
-                            <span class="card-text">{{coe.toFixed(2)}}%</span>
+                            <span class="card-text">{{coe}}%</span>
                           </div>
                         </div>
                       </div>
@@ -229,7 +269,7 @@
                           <div class="card-body">
                             <span class="card-title">Adjusted Cost Of Equity</span>
                             <span class="separator"></span>
-                            <span class="card-text">{{adjCoe.toFixed(2)}}%</span>
+                            <span class="card-text">{{adjCoe}}%</span>
                           </div>
                         </div>
                       </div>
@@ -238,34 +278,34 @@
 
             </div>
 
-            <div class="col-md-12" *ngIf="specificRiskPremiumModalForm.controls['companySize'].value || specificRiskPremiumModalForm.controls['marketPosition'].value || specificRiskPremiumModalForm.controls['liquidityFactor'].value || specificRiskPremiumModalForm.controls['competition'].value">
+            <div class="col-md-12" *ngIf="excessEarningForm.controls['riskPremium'].value">
                 <div class='c-decorated-header-rp'>
                     <h3><span style="padding-left: 2%;">Risk Premium</span></h3>
                     <div class='c-decorated-header_link-view-more'>
                     </div>
                   </div>
             </div>
-            <div class="card-container col-md-12" style="padding: 2%;padding-top: 1%;" *ngIf="specificRiskPremiumModalForm.controls['companySize'].value || specificRiskPremiumModalForm.controls['marketPosition'].value || specificRiskPremiumModalForm.controls['liquidityFactor'].value || specificRiskPremiumModalForm.controls['competition'].value">
+            <div class="card-container col-md-12" style="padding: 2%;padding-top: 1%;" *ngIf="excessEarningForm.controls['riskPremium'].value">
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-3" *ngIf="excessEarningForm.controls['coeMethod'].value !== 'buildUpCapm'">
                         <div class="card card-est">
                             <div class="card-subtext"><span class="rp-relate-icon"><mat-icon> business</mat-icon></span>{{specificRiskPremiumModalForm.controls['companySize'].value}}%</div>
                             <div class="card-header-rp card-header">Company Size <span class="rp-icon"><mat-icon>keyboard_arrow_right</mat-icon></span></div>
                           </div>
                     </div>
-                    <div class="col-md-3">
+                    <div  [ngClass]="excessEarningForm.controls['coeMethod'].value !== 'buildUpCapm' ? 'col-md-3' : 'col-md-4'">
                         <div class="card card-est">
                             <div class="card-subtext"><span class="rp-relate-icon"><mat-icon>view_column</mat-icon></span>{{specificRiskPremiumModalForm.controls['marketPosition'].value}}%</div>
                             <div class="card-header-rp card-header">Market Position <span class="rp-icon"><mat-icon >keyboard_arrow_right</mat-icon></span></div>
                           </div>
                     </div>
-                    <div class="col-md-3">
+                    <div [ngClass]="excessEarningForm.controls['coeMethod'].value !== 'buildUpCapm' ? 'col-md-3' : 'col-md-4'">
                         <div class="card card-est">
                             <div class="card-subtext"><span class="rp-relate-icon"><mat-icon>how_to_vote</mat-icon></span>{{specificRiskPremiumModalForm.controls['liquidityFactor'].value}}%</div>
                             <div class="card-header-rp card-header">Liquidity Factor <span class="rp-icon"><mat-icon>keyboard_arrow_right</mat-icon></span></div>
                           </div>
                     </div>
-                    <div class="col-md-3">
+                    <div [ngClass]="excessEarningForm.controls['coeMethod'].value !== 'buildUpCapm' ? 'col-md-3' : 'col-md-4'">
                         <div class="card card-est">
                             <div class="card-subtext"><span class="rp-relate-icon"><mat-icon>whatshot</mat-icon></span>{{specificRiskPremiumModalForm.controls['competition'].value}}%</div>
                             <div class="card-header-rp card-header">Competition <span class="rp-icon"><mat-icon>keyboard_arrow_right</mat-icon></span></div>

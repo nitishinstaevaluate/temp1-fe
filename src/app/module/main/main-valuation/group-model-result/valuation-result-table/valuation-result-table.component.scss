@@ -117,8 +117,18 @@
   }
   .nav-style-header{
     color: #666666 !important;
-    font-size: 15px !important;
-    font-weight: 500 !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    font-family: 'AR One Sans', sans-serif !important;
+    padding-left: 3% !important;
+    text-align: left;
+    border-bottom: 2px solid #d7d2d2;
+    border-top: 2px solid #d7d2d2;
+  }
+  .nav-style-main-header{
+    color: #666666 !important;
+    font-size: 17px !important;
+    font-weight: 600 !important;
     font-family: 'AR One Sans', sans-serif !important;
     padding-left: 3% !important;
     text-align: left;
@@ -126,8 +136,17 @@
   .nav-style-sub-header{
 
     color: #666666 !important;
-    font-size: 13px !important;
-    font-weight: 500;
+    // font-size: 13px !important;
+    // font-weight: 500;
+    font-family: 'AR One Sans', sans-serif !important;
+    text-align: left;
+    padding-left: 4% !important;
+  }
+  .nav-style-main-sub-header{
+
+    color: #666666 !important;
+    font-size: 14px !important;
+    font-weight: 600;
     font-family: 'AR One Sans', sans-serif !important;
     text-align: left;
     padding-left: 4% !important;
@@ -140,12 +159,13 @@
     text-align: left;
     padding-left: 4% !important;
     background-color: none !important;
+    width: 20%;
   }
   .nav-th th{
     border: 1px solid #d1d1d1;
     font-size: 17px;
     text-align: center;
-    text-transform: capitalize;
+    text-transform: capitalize; 
     color: #38a3b8;
     font-family: 'Gabarito', cursive;
     font-weight: 500;
@@ -566,6 +586,17 @@
 
 ::ng-deep .remove-svg svg {
    display: none;
+}
+.nav-add-pad-left,.nav-add-nested-pad-left{
+  color: #666666;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: 'AR One Sans', sans-serif;
+  padding-left: 5%;
+  text-align: left;
+}
+.nav-add-nested-pad-left{
+  padding-left: 7%;
 }
 
   // new scss ends

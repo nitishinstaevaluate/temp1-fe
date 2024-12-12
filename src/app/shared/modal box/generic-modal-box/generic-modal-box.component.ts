@@ -1,6 +1,6 @@
 import { Component , ElementRef, Inject, Renderer2, OnInit, ViewChild,AfterViewInit, Input} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { GLOBAL_VALUES, INCOME_APPROACH, MARKET_APPROACH, MODELS, NET_ASSET_APPROACH, RULE_ELEVEN_UA_APPROACH, helperText } from '../../enums/constant';
+import { GLOBAL_VALUES, INCOME_APPROACH, MARKET_APPROACH, MODELS, NET_ASSET_APPROACH, RULE_ELEVEN_UA_APPROACH, XL_SHEET_ENUM, helperText } from '../../enums/constant';
 import groupModelControl from '../../enums/group-model-controls.json'
 import WebViewer, { Core } from '@pdftron/webviewer';
 import PDFNet  from '@pdftron/webviewer';
@@ -16,6 +16,7 @@ import { hasError } from '../../enums/errorMethods';
 import { ProcessStatusManagerService } from '../../service/process-status-manager.service';
 import { ExcelAndReportService } from '../../service/excel-and-report.service';
 import { SensitivityAnalysisService } from '../../service/sensitivity-analysis.service';
+import { NotFoundError } from 'rxjs';
 
 @Component({
   selector: 'app-generic-modal-box',
@@ -77,6 +78,7 @@ ctmSelectedModel:any='';
 relativeValuationSelectedModel:any='';
 marketPriceSelectedModel:any = '';
 ruleElevenUaSelectedModel:any = '';
+slumpSaleSelectedModel:any = '';
 projectionYearSelect:any='';
 terminalGrowthRates:any='';
 projectionYears:any;
@@ -107,6 +109,7 @@ terminalSelectionType:any;
 terminalSelectionRowType:any;
 revaluationPrev:any;
 updatedSAsecondaryValuationId:any;
+modSelLoader = false; 
 
 constructor(@Inject(MAT_DIALOG_DATA) public data: any,
 private dialogRef:MatDialogRef<GenericModalBoxComponent>,
@@ -497,15 +500,43 @@ clearModelRadioButton(modelName:string){
       this.ruleElevenUaSelectedModel = null;
       break;
 
+    case 'slumpSale':
+      this.slumpSaleSelectedModel = null;
+      break;
+
   }
 }
 
 get downloadTemplate() {
-  const modelName = this.ruleElevenApproachModels.length ? 'ruleElevenUa' : this.incomeApproachmodels.length ? 'default' : 'marketApproach'
+  let modelName = '';
+
+    if (this.ruleElevenApproachModels.length) {
+      modelName = this.ruleElevenApproachModels.includes(MODELS.RULE_ELEVEN_UA) ? 
+                  XL_SHEET_ENUM[1] : 
+                  XL_SHEET_ENUM[4];
+    } else if (this.incomeApproachmodels.length) {
+      modelName = XL_SHEET_ENUM[0];
+    } else if (this.netAssetApproachmodels.length && !this.incomeApproachmodels.length && !this.marketApproachmodels.length) {
+      this.yearOfProjection.setValue(0);
+      modelName = XL_SHEET_ENUM[3];
+    } else if (
+      (this.marketApproachmodels.length && !this.netAssetApproachmodels.length && !this.incomeApproachmodels.length) || 
+      (this.marketApproachmodels.length && this.netAssetApproachmodels.length && !this.incomeApproachmodels.length)
+    ) {
+      modelName = XL_SHEET_ENUM[2];
+      this.yearOfProjection.setValue(0);
+    }
   return GET_TEMPLATE(this.yearOfProjection.value,modelName,`${this.valuationDate ? new Date(this.valuationDate).getTime() : ''}`);
   }
 
   onFileSelected(event: any) {
+    this.modSelLoader = true;
+    const snackBarRef = this.snackBar.open('Please wait, uploading excel','', {
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+      duration: -1,
+      panelClass: 'app-notification-success',
+    })
     // console.log(event,"file event")
     if (event && event.target.files && event.target.files.length > 0) {
       this.files = event.target.files;
@@ -519,9 +550,17 @@ get downloadTemplate() {
   
     const formData = new FormData();
     formData.append('file', this.files[0]);
+    formData.append('processId', `${localStorage.getItem('processStateId')}`);
+
+    formData.append('modelName', `${this.verifyModelBasedExcel()}`);
     this.valuationService.fileUpload(formData).subscribe((res: any) => {
       this.excelSheetId = res.excelSheetId;
+      if (res?.processId) {
+        localStorage.setItem('processStateId', res.processId);
+      }
       this.fileUploadStatus = true;
+      this.modSelLoader = false;
+      snackBarRef.dismiss();
       if(res.excelSheetId){
         this.snackBar.open('File has been uploaded successfully','Ok',{
           horizontalPosition: 'center',
@@ -531,6 +570,26 @@ get downloadTemplate() {
         })
       }
       
+      event.target.value = '';
+    },(error)=>{
+      this.modSelLoader = false;
+      snackBarRef.dismiss();
+      if(error?.error?.message){
+        this.snackBar.open(`${error?.error?.message}`,'Ok',{
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 60000,
+          panelClass: 'app-notification-error'
+        })
+      }
+      else{
+        this.snackBar.open('File upload failed','Ok',{
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 4000,
+          panelClass: 'app-notification-error'
+        })
+      }
       event.target.value = '';
     });
   }
@@ -562,6 +621,9 @@ get downloadTemplate() {
             break;
           case 'ruleElevenUa':
             this.ruleElevenUaSelectedModel = true;
+            break;
+          case 'slumpSale':
+            this.slumpSaleSelectedModel = true;
             break;
         }
 
@@ -644,7 +706,8 @@ get downloadTemplate() {
       this.liquidityFactor.setValue(data.liquidityFactor);
     }
     if(data?.companySize){
-      this.companySize.setValue(data.companySize);
+      if(data?.coeMethod === 'buildUpCapm') this.companySize.setValue(0)
+      else this.companySize.setValue(data.companySize);
     }
     if(data?.marketPosition){
       this.marketPosition.setValue(data.marketPosition);
@@ -712,6 +775,9 @@ get downloadTemplate() {
     }
   }
 
+  isRuleElevenUa(){
+    return this.ruleElevenApproachModels?.length && this.ruleElevenApproachModels?.includes(MODELS.RULE_ELEVEN_UA)
+  }
   fcfeDetailsPrev(event:any){
     // do nothing for now, cause we dont use previous button incase of sensitivity analysis
   }
@@ -901,5 +967,35 @@ get downloadTemplate() {
     const inputElement = event.target;
     this.selectedValuationId = valuationId;
     this.terminalSelectionRowType = terminalSelectionType;
+  }
+
+  verifyModelBasedExcel(){
+    if(this.incomeApproachmodels?.length){
+      return XL_SHEET_ENUM[0];
+    }
+    else if(this.netAssetApproachmodels.length && !this.incomeApproachmodels.length && !this.marketApproachmodels.length){
+      return XL_SHEET_ENUM[3];
+    }
+    else if((this.marketApproachmodels.length && !this.netAssetApproachmodels.length && !this.incomeApproachmodels.length) || 
+    (this.marketApproachmodels.length && this.netAssetApproachmodels.length && !this.incomeApproachmodels.length)){
+      return XL_SHEET_ENUM[2];
+    }
+    else if(this.ruleElevenApproachModels?.length){
+      return XL_SHEET_ENUM[1]
+    }
+    this.modSelLoader = false;
+    this.fileName = ''
+    this.snackBar.open('Model not found','Ok',{
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+      duration: 4000,
+      panelClass: 'app-notification-error'
+    })
+    throw new NotFoundError(`{msg:'model not found'}`)
+  }
+
+  disableSpecificRiskPremium(){
+    if(this.data?.data?.coeMethod === 'buildUpCapm') return !this.marketPosition.value || !this.liquidityFactor.value || !this.competition.value;
+    return !this.companySize.value ||  !this.marketPosition.value || !this.liquidityFactor.value || !this.competition.value;
   }
 }

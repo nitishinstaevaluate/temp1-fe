@@ -29,7 +29,7 @@
   // }
   .field{
     padding-left: 2.5%;
-    padding-top: 3%;
+    padding-top: 2%;
     padding-right: 2.5%;
   }
 
@@ -86,37 +86,24 @@
   border-radius: 15px;
   box-shadow: 1px 2px 5px #d5d5d5;
 }
-.c-decorated-header {
-  position: relative;
-  padding-top: 1%;
-
-}
-.c-decorated-header-firm {
+.c-decorated-header, .c-decorated-header-cl, .c-decorated-header-ca, .c-decorated-header-ncl {
   position: relative;
   padding-top: 1%;
 
 }
 
-.c-decorated-header h3 {
+.c-decorated-header h3, .c-decorated-header-cl h3, .c-decorated-header-ca h3, .c-decorated-header-ncl h3 {
   position: relative;
   text-align: left;
 
   font-family: 'AR One Sans', sans-serif;
   font-size: 19px;
-  color: #666666;
-  cursor: pointer;
-}
-.c-decorated-header-firm h3 {
-  position: relative;
-  text-align: left;
-
-  font-family: 'AR One Sans', sans-serif;
-  font-size: 19px;
-  color: #666666;
+  // color: #666666;
+  color: #4b6df3;
   cursor: pointer;
 }
 
-.c-decorated-header h3:after {
+.c-decorated-header h3:after, .c-decorated-header-cl:after, .c-decorated-header-ca:after, .c-decorated-header-ncl:after {
   content: "";
   height: 1px;
   position: absolute;
@@ -127,35 +114,26 @@
   margin: auto;
   background: #e2e2e6;
 }
-.c-decorated-header-firm h3:after {
-  content: "";
-  height: 1px;
-  position: absolute;
-  right: 0;
+.c-decorated-header-cl:after{
   left: 15%;
-  top: 20%;
-  bottom: 0;
-  margin: auto;
-  background: #e2e2e6;
+  top: 50%;
+}
+.c-decorated-header-ca:after{
+  left: 13%;
+  top: 50%;
+}
+.c-decorated-header-ncl:after{
+  left: 18.5%;
+  top: 50%;
 }
 
-.c-decorated-header h3 span {
+.c-decorated-header h3 span, .c-decorated-header-cl h3 span, .c-decorated-header-ca h3 span, .c-decorated-header-ncl h3 span {
   position: relative;
   font-size: 17px;
   font-weight: 500;
   font-stretch: condensed;
-  color: #757575;
+  color: #4b6df3;
   font-family: 'AR One Sans', sans-serif;
-
-}
-.c-decorated-header-firm h3 span {
-  position: relative;
-  font-size: 17px;
-  font-weight: 500;
-  font-stretch: condensed;
-  color: #757575;
-  font-family: 'AR One Sans', sans-serif;
-
 }
 
 .c-decorated-header_link-view-more {

@@ -72,10 +72,19 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
   ngOnChanges(): void {
     this.reportingUnit = this.transferStepperTwo?.reportingUnit ||  this.fourthStageInput?.formOneData?.reportingUnit;
     const modelValue = this.transferStepperTwo?.model || this.fourthStageInput?.formOneData?.model;
-    if(modelValue?.length && modelValue.includes(MODELS.RULE_ELEVEN_UA)){
-      this.selectedTab = 'Rule 11 UA';
-    }else{
-      this.selectedTab = 'Profit & Loss';
+    switch(true){
+      case modelValue?.length && modelValue.includes(MODELS.RULE_ELEVEN_UA):
+        this.selectedTab = 'Rule 11 UA';
+        break;
+      case modelValue?.length && modelValue.includes(MODELS.SLUMP_SALE):
+        this.selectedTab = 'Slump Sale';
+        break;
+      case this.isOnlyModel(MODELS.NAV) :
+        this.selectedTab = 'Balance Sheet';
+        break;
+      default:
+        this.selectedTab = 'Profit & Loss';
+        break;
     }
     if(this.transferStepperTwo){
       this.isLoadingBalanceSheet=true;
@@ -193,8 +202,28 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
     //   }
     // }
   }
+  cashFlowData(data:any){
+
+  }
 
   ruleElevenSheetData(data:any){
+    // if(data){
+    //   this.isLoadingRuleElevenSheet=false;
+    //   if(data?.error){
+    //     this.snackBar.open('Rule Eleven UA Sheet fetch fail','Ok',{
+    //       horizontalPosition: 'center',
+    //       verticalPosition: 'bottom',
+    //       duration: 3000,
+    //       panelClass: 'app-notification-error',
+    //     })
+    //   }
+    //   else{
+    //     this.isRuleELevenUaSheetModified = data.isExcelModified;
+    //     this.ruleElevenSheet = data.result;
+    //   }
+    // }
+  }
+  slumpSaleSheetData(data:any){
     // if(data){
     //   this.isLoadingRuleElevenSheet=false;
     //   if(data?.error){
@@ -376,5 +405,11 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
 
   clearInput(controlName:string){
     this.reviewForm.controls[controlName].setValue('');
+  }
+
+  isOnlyModel(value:string){
+    const model = this.transferStepperTwo?.model || this.fourthStageInput?.formOneData?.model;
+    if(!model?.length) return false;
+    return model.length === 1 && model.includes(value);
   }
 }

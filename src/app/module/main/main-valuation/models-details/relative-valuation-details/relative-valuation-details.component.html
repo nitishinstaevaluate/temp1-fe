@@ -29,7 +29,7 @@
                   </select>
                   <label for="company">Company Name</label>
                 </div>
-                <span style="position: absolute;right: 13%;transform: scale(0.6);cursor: pointer;bottom: 68%;" *ngIf="i === companyList.length - 1 ? false :true" (click)="addInput()">
+                <span style="position: absolute;right: 13%;transform: scale(0.6);cursor: pointer;bottom: 68%;" *ngIf="i === companyList?.length - 1 ? false :true" (click)="addInput()">
                   <!-- <mat-icon style="color: #39e239;">add</mat-icon> -->
                   <mat-icon style="color: #39e239;">control_point</mat-icon>
                 </span>
@@ -42,7 +42,7 @@
             </div>
           </div>
 
-          <div *ngIf="companyList.length === 0 && !selectedIndustry" class="message-container col-md-12">
+          <div *ngIf="companyList?.length === 0 && !selectedIndustry" class="message-container col-md-12">
             <div class="message-icon">
                 <i class="fas fa-exclamation-circle"></i>
             </div>
@@ -50,7 +50,7 @@
               The selected industry does not have associated companies. Kindly select another industry to proceed or contact support.
             </div>
         </div>
-          <div *ngIf="companyList.length === 0 && !selectedIndustry" class="message-container col-md-12">
+          <div *ngIf="companyList?.length === 0 && !selectedIndustry" class="message-container col-md-12">
             <div class="message-icon">
                 <i class="fas fa-exclamation-circle"></i>
             </div>

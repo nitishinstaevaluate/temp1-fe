@@ -25,9 +25,9 @@
                   <!-- <th>As on {{returnDate(firstFormGroup.value?.valuationDate) | date}}</th>
                   <th>As on {{returnDate(firstFormGroup.value?.valuationDate) | date}}</th> -->
                   <th style="text-align: center;padding-left: 1%;">As on {{formData?.formOneAndThreeData?.valuationDate | date:'MMM d, yyyy'}} </th>
-                  <th *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'" style="text-align: center;padding-left: 1%;">As on {{formData?.formOneAndThreeData?.valuationDate | date:'MMM d, yyyy'}} </th>
+                  <th style="text-align: center;padding-left: 1%;">As on {{formData?.formOneAndThreeData?.valuationDate | date:'MMM d, yyyy'}} </th>
                 </tr>
-                <tr *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'" class="header">
+                <tr class="header">
                   <th></th>
                   <th></th>
                   <th style="text-align: center;padding-left: 1%;">Average</th>
@@ -40,14 +40,14 @@
                     <tr>
                       <td>{{ item?.serialNo }}</td>
                       <td class="td-label-h"><b>P/B Ratio</b></td>
-                      <td></td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'"></td>
+                      <td [ngClass]="columnToBeDisabled('average')"></td>
+                      <td [ngClass]="columnToBeDisabled('average')"></td>
                     </tr>
                     <tr>
                       <td></td>
                       <td class="td-label">Net Worth of Company</td>
-                      <td>{{ formatPositiveAndNegativeNumber(item.netWorthAvg) }}</td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ formatPositiveAndNegativeNumber(item.netWorthMed) }}</td>
+                      <td [ngClass]="columnToBeDisabled('average')">{{ formatPositiveAndNegativeNumber(item.netWorthAvg) }}</td>
+                      <td [ngClass]="columnToBeDisabled('median')">{{ formatPositiveAndNegativeNumber(item.netWorthMed) }}</td>
                     </tr>
                     <!-- <tr>
                       <td></td>
@@ -58,96 +58,96 @@
                     <tr>
                       <td></td>
                       <td class="td-label">P/B Ratio of Industry (x)</td>
-                      <td>{{ formatPositiveAndNegativeNumber(item.pbRatioAvg) }}</td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ item.pbRatioMed ? formatPositiveAndNegativeNumber(item.pbRatioMed) : '-'}}</td>
+                      <td [ngClass]="columnToBeDisabled('average')">{{ formatPositiveAndNegativeNumber(item.pbRatioAvg) }}</td>
+                      <td [ngClass]="columnToBeDisabled('median')">{{ item.pbRatioMed ? formatPositiveAndNegativeNumber(item.pbRatioMed) : '-'}}</td>
                     </tr>
                     <tr>
                       <td></td>
                       <td class="td-label" style="font-weight: bold;">Fair Value of Equity</td>
-                      <td style="font-weight: bold;">{{ item.pbMarketPriceAvg ? formatPositiveAndNegativeNumber(item.pbMarketPriceAvg) : '-' }}</td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'" style="font-weight: bold;">{{ item.pbMarketPriceMed ? formatPositiveAndNegativeNumber(item.pbMarketPriceMed) : '-' }}</td>
+                      <td style="font-weight: bold;" [ngClass]="columnToBeDisabled('average')">{{ item.pbMarketPriceAvg ? formatPositiveAndNegativeNumber(item.pbMarketPriceAvg) : '-' }}</td>
+                      <td [ngClass]="columnToBeDisabled('median')" style="font-weight: bold;">{{ item.pbMarketPriceMed ? formatPositiveAndNegativeNumber(item.pbMarketPriceMed) : '-' }}</td>
                     </tr>
                     <tr style="height: 30px">
                       <td></td>
                       <td></td>
-                      <td></td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'"></td>
+                      <td [ngClass]="columnToBeDisabled('average')"></td>
+                      <td [ngClass]="columnToBeDisabled('median')"></td>
                     </tr>
                   </ng-container>
                   <ng-container *ngIf="item.particular == 'peRatio' && peSelection">
                     <tr>
                       <td>{{ item.serialNo }}</td>
                       <td class="td-label-h"><b>P/E Ratio</b></td>
-                      <td></td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'"></td>
+                      <td [ngClass]="columnToBeDisabled('average')"></td>
+                      <td [ngClass]="columnToBeDisabled('median')"></td>
                     </tr>
                     <tr>
                       <td></td>
                       <td class="td-label">Profit after Taxes</td>
-                      <td>{{ formatPositiveAndNegativeNumber(item.pat) }}</td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ formatPositiveAndNegativeNumber(item.pat) }}</td>
+                      <td [ngClass]="columnToBeDisabled('average')">{{ formatPositiveAndNegativeNumber(item.pat) }}</td>
+                      <td [ngClass]="columnToBeDisabled('median')">{{ formatPositiveAndNegativeNumber(item.pat) }}</td>
                     </tr>
                     <tr>
                       <td></td>
                       <td class="td-label">P/E Ratio of Industry (x)</td>
-                      <td>{{ formatPositiveAndNegativeNumber(item.peRatioAvg) }}</td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ formatPositiveAndNegativeNumber(item.peRatioMed) }}</td>
+                      <td [ngClass]="columnToBeDisabled('average')">{{ formatPositiveAndNegativeNumber(item.peRatioAvg) }}</td>
+                      <td [ngClass]="columnToBeDisabled('median')">{{ formatPositiveAndNegativeNumber(item.peRatioMed) }}</td>
                     </tr>
                     <tr>
                       <td></td>
                       <td class="td-label" style="font-weight: bold;">Fair Value Of Equity</td>
-                      <td style="font-weight: bold;">{{ formatPositiveAndNegativeNumber(item.peMarketPriceAvg) }}</td>
-                      <td style="font-weight: bold;" *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ formatPositiveAndNegativeNumber(item.peMarketPriceMed) }}</td>
+                      <td style="font-weight: bold;" [ngClass]="columnToBeDisabled('average')">{{ formatPositiveAndNegativeNumber(item.peMarketPriceAvg) }}</td>
+                      <td style="font-weight: bold;" [ngClass]="columnToBeDisabled('median')">{{ formatPositiveAndNegativeNumber(item.peMarketPriceMed) }}</td>
                     </tr>
                     <tr style="height: 30px">
                       <td></td>
                       <td></td>
-                      <td></td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'"></td>
+                      <td [ngClass]="columnToBeDisabled('average')"></td>
+                      <td [ngClass]="columnToBeDisabled('median')"></td>
                     </tr>
                   </ng-container>
                   <ng-container *ngIf="item.particular == 'ebitda' && evEbitdaSelection">
                     <tr style="height: 30px">
                       <td>{{ item.serialNo }}</td>
                       <td class="td-label-h"><b>EV/EBITDA</b></td>
-                      <td></td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'"></td>
+                      <td [ngClass]="columnToBeDisabled('average')"></td>
+                      <td [ngClass]="columnToBeDisabled('median')"></td>
                     </tr>
                     <tr>
                       <td></td>
                       <td class="td-label">EBITDA</td>
-                      <td>{{ formatPositiveAndNegativeNumber(item.ebitda) }}</td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ formatPositiveAndNegativeNumber(item.ebitda) }}</td>
+                      <td [ngClass]="columnToBeDisabled('average')">{{ formatPositiveAndNegativeNumber(item.ebitda) }}</td>
+                      <td [ngClass]="columnToBeDisabled('median')">{{ formatPositiveAndNegativeNumber(item.ebitda) }}</td>
                     </tr>
                     <tr>
                       <td></td>
                       <td class="td-label">EV/EBITDA (x)</td>
-                      <td>{{ formatPositiveAndNegativeNumber(item.evAvg) }}</td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ formatPositiveAndNegativeNumber(item.evMed) }}</td>
+                      <td [ngClass]="columnToBeDisabled('average')">{{ formatPositiveAndNegativeNumber(item.evAvg) }}</td>
+                      <td [ngClass]="columnToBeDisabled('median')">{{ formatPositiveAndNegativeNumber(item.evMed) }}</td>
                     </tr>
                     <tr>
                       <td></td>
                       <td class="td-label">Enterprise Value</td>
-                      <td>{{ formatPositiveAndNegativeNumber(item.enterpriseAvg) }}</td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ formatPositiveAndNegativeNumber(item.enterpriseMed) }}</td>
+                      <td [ngClass]="columnToBeDisabled('average')">{{ formatPositiveAndNegativeNumber(item.enterpriseAvg) }}</td>
+                      <td [ngClass]="columnToBeDisabled('median')">{{ formatPositiveAndNegativeNumber(item.enterpriseMed) }}</td>
                     </tr>
                     <tr>
                       <td></td>
                       <td class="td-label">Less:Value of Debt</td>
-                      <td>{{ formatPositiveAndNegativeNumber(item.debtAvg) }}</td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ formatPositiveAndNegativeNumber(item.debtMed) }}</td>
+                      <td [ngClass]="columnToBeDisabled('average')">{{ formatPositiveAndNegativeNumber(item.debtAvg) }}</td>
+                      <td [ngClass]="columnToBeDisabled('median')">{{ formatPositiveAndNegativeNumber(item.debtMed) }}</td>
                     </tr>
                     <tr>
                       <td></td>
                       <td class="td-label">Add:Cash and cash equivalent</td>
-                      <td>{{ formatPositiveAndNegativeNumber(item.cashEquivalent) }}</td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ formatPositiveAndNegativeNumber(item.cashEquivalent) }}</td>
+                      <td [ngClass]="columnToBeDisabled('average')">{{ formatPositiveAndNegativeNumber(item.cashEquivalent) }}</td>
+                      <td [ngClass]="columnToBeDisabled('median')">{{ formatPositiveAndNegativeNumber(item.cashEquivalent) }}</td>
                     </tr>
                     <tr>
                       <td></td>
                       <td class="td-label" style="font-weight: bold;">Value of Equity</td>
-                      <td style="font-weight: bold;">{{ formatPositiveAndNegativeNumber(item.ebitdaEquityAvg) }}</td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'" style="font-weight: bold;">{{ formatPositiveAndNegativeNumber(item.ebitdaEquityMed) }}</td>
+                      <td style="font-weight: bold;" [ngClass]="columnToBeDisabled('average')">{{ formatPositiveAndNegativeNumber(item.ebitdaEquityAvg) }}</td>
+                      <td [ngClass]="columnToBeDisabled('median')" style="font-weight: bold;">{{ formatPositiveAndNegativeNumber(item.ebitdaEquityMed) }}</td>
                     </tr>
                     <!-- <tr>
                       <td></td>
@@ -158,34 +158,34 @@
                     <tr style="height: 30px">
                       <td></td>
                       <td></td>
-                      <td></td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'"></td>
+                      <td [ngClass]="columnToBeDisabled('average')"></td>
+                      <td [ngClass]="columnToBeDisabled('median')"></td>
                     </tr>
                   </ng-container>
                   <ng-container *ngIf="item.particular == 'sales' && psSelection">
                     <tr>
                       <td>{{ item.serialNo }}</td>
                       <td class="td-label-h"><b>Price to Sales</b></td>
-                      <td></td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'"></td>
+                      <td [ngClass]="columnToBeDisabled('average')"></td>
+                      <td [ngClass]="columnToBeDisabled('median')"></td>
                     </tr>
                     <tr>
                       <td></td>
                       <td class="td-label">Sales of company</td>
-                      <td>{{ formatPositiveAndNegativeNumber(item.salesAvg) }}</td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ formatPositiveAndNegativeNumber(item.salesMed) }}</td>
+                      <td [ngClass]="columnToBeDisabled('average')">{{ formatPositiveAndNegativeNumber(item.salesAvg) }}</td>
+                      <td [ngClass]="columnToBeDisabled('median')">{{ formatPositiveAndNegativeNumber(item.salesMed) }}</td>
                     </tr>
                     <tr>
                       <td></td>
                       <td class="td-label">P/S Ratio (x)</td>
-                      <td>{{ formatPositiveAndNegativeNumber(item.salesRatioAvg) }}</td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ formatPositiveAndNegativeNumber(item.salesRatioMed) }}</td>
+                      <td [ngClass]="columnToBeDisabled('average')">{{ formatPositiveAndNegativeNumber(item.salesRatioAvg) }}</td>
+                      <td [ngClass]="columnToBeDisabled('median')">{{ formatPositiveAndNegativeNumber(item.salesRatioMed) }}</td>
                     </tr>
                     <tr>
                       <td></td>
                       <td class="td-label" style="font-weight: bold;">Value of Equity</td>
-                      <td style="font-weight: bold;">{{ formatPositiveAndNegativeNumber(item.salesEquityAvg) }}</td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'" style="font-weight: bold;">{{ formatPositiveAndNegativeNumber(item.salesEquityMed) }}</td>
+                      <td style="font-weight: bold;" [ngClass]="columnToBeDisabled('average')">{{ formatPositiveAndNegativeNumber(item.salesEquityAvg) }}</td>
+                      <td [ngClass]="columnToBeDisabled('median')" style="font-weight: bold;">{{ formatPositiveAndNegativeNumber(item.salesEquityMed) }}</td>
                     </tr>
                     <!-- <tr>
                       <td></td>
@@ -196,8 +196,8 @@
                     <tr style="height: 30px">
                       <td></td>
                       <td></td>
-                      <td></td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'"></td>
+                      <td [ngClass]="columnToBeDisabled('average')"></td>
+                      <td [ngClass]="columnToBeDisabled('median')"></td>
                     </tr>
                   </ng-container>
                   <ng-container *ngIf="item.particular == 'result'">
@@ -216,8 +216,8 @@
                     <tr>
                       <td></td>
                       <td class="td-label" style="font-weight: bold;">Average value of Equity</td>
-                      <td style="font-weight: bold;">{{ formatPositiveAndNegativeNumber(item.avgPricePerShareAvg) }}</td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'" style="font-weight: bold;">{{ formatPositiveAndNegativeNumber(item.avgPricePerShareMed) }}</td>
+                      <td style="font-weight: bold;" [ngClass]="columnToBeDisabled('average')">{{ formatPositiveAndNegativeNumber(item.avgPricePerShareAvg) }}</td>
+                      <td [ngClass]="columnToBeDisabled('median')" style="font-weight: bold;">{{ formatPositiveAndNegativeNumber(item.avgPricePerShareMed) }}</td>
                     </tr>
                     <!-- <tr *ngIf="item.locAvg">
                       <td></td>
@@ -236,14 +236,14 @@
                     <tr>
                       <td></td>
                       <td class="td-label">No. of Shares</td>
-                      <td>{{ formatPositiveAndNegativeNumber(item.outstandingShares)}}</td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'">{{ formatPositiveAndNegativeNumber(item.outstandingShares) }}</td>
+                      <td [ngClass]="columnToBeDisabled('average')">{{ formatPositiveAndNegativeNumber(item.outstandingShares)}}</td>
+                      <td [ngClass]="columnToBeDisabled('median')">{{ formatPositiveAndNegativeNumber(item.outstandingShares) }}</td>
                     </tr>
                     <tr>
                       <td></td>
                       <td class="td-label" style="font-weight: bold;">Fair Value per Share</td>
-                      <td style="font-weight: bold;">{{ formatPositiveAndNegativeNumber(item.fairValuePerShareAvg) }}</td>
-                      <td *ngIf="formData?.formOneAndThreeData?.preferenceRatioSelect === 'Company Based'" style="font-weight: bold;">{{ formatPositiveAndNegativeNumber(item.fairValuePerShareMed) }}</td>
+                      <td style="font-weight: bold;" [ngClass]="columnToBeDisabled('average')">{{ formatPositiveAndNegativeNumber(item.fairValuePerShareAvg) }}</td>
+                      <td [ngClass]="columnToBeDisabled('median')" style="font-weight: bold;">{{ formatPositiveAndNegativeNumber(item.fairValuePerShareMed) }}</td>
                     </tr>
                     <!-- <tr>
                       <td></td>

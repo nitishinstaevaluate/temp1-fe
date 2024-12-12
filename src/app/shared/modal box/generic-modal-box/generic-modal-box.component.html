@@ -78,7 +78,7 @@
           <h4 class="modal-subtitle">Qualitative Factors</h4>
         </div>
 
-        <div class="col-md-12 field" style="padding-bottom: 5%;padding-top: 3%;">
+        <div class="col-md-12 field" style="padding-bottom: 5%;padding-top: 3%;" *ngIf="data?.data?.coeMethod !== 'buildUpCapm'">
           <div class="material-textfield">
             <input class="new-inp" type="text" placeholder="Enter company size" [formControl]="companySize"/>
             <label class="going-concern-label">Company Size</label>
@@ -108,7 +108,7 @@
       </div>
       
     <div class="col-md-12 btn-prop" style="text-align: center !important;">
-      <button style=" width: 30%;padding-right: 8%;" [disabled]="!companySize.value || !marketPosition.value || !liquidityFactor.value || !competition.value" [ngClass]="!companySize.value || !marketPosition.value || !liquidityFactor.value || !competition.value  ? 'valuer-button-disable' : 'button-save-mat'" (click)="modalData({companySize:companySize.value,marketPosition:marketPosition.value,liquidityFactor:liquidityFactor.value,competition:competition.value},'specificRiskPremium')" mat-raised-button>
+      <button style=" width: 30%;padding-right: 8%;" [disabled]="disableSpecificRiskPremium()" [ngClass]="disableSpecificRiskPremium() ? 'valuer-button-disable' : 'button-save-mat'" (click)="modalData({companySize:companySize.value,marketPosition:marketPosition.value,liquidityFactor:liquidityFactor.value,competition:competition.value},'specificRiskPremium')" mat-raised-button>
           Save
           <span class="button-save"><mat-icon>send</mat-icon></span>
        </button>
@@ -234,7 +234,7 @@
   </div>
 
   <!-- valuation model -->
-  <div class="container"  *ngIf="data?.value === appValues.VALUATION_METHOD.value" style="padding-top: 4%;padding-bottom: 2%;">
+  <div class="container" style="position: relative;" *ngIf="data?.value === appValues.VALUATION_METHOD.value" style="padding-top: 4%;padding-bottom: 2%;">
     <!-- income approach -->
     <div class="incomeApproach" [ngClass]=" (incomeApproachmodels?.length > 0) && (incomeApproachmodels.includes('FCFE') || incomeApproachmodels.includes('FCFF') || incomeApproachmodels.includes('Excess_Earnings')) ? 'going-concern-added' : 'going-concern-not-added'">
       <div [ngClass]=" (incomeApproachmodels?.length > 0) && (incomeApproachmodels.includes('FCFE') || incomeApproachmodels.includes('FCFF') || incomeApproachmodels.includes('Excess_Earnings')) && (projectionYearSelect === 'Going_Concern') ? 'pos-absolute' : (incomeApproachmodels?.length > 0) && (incomeApproachmodels.includes('FCFE') || incomeApproachmodels.includes('FCFF') || incomeApproachmodels.includes('Excess_Earnings')) ? 'pos-absolute2' :'pos-absolute3'">
@@ -553,7 +553,7 @@
             </p>
           </div>
         </div>
-        <div class="col-xl-7 d-flex align-items-center" *ngIf="ruleElevenApproachModels?.length">
+        <div class="col-xl-7 d-flex align-items-center" *ngIf="isRuleElevenUa()">
           <mat-checkbox class="issuanceCheckbox company-list-inp" [formControl]="issuanceCheckbox" (change)="onElevenUaCheckboxChange(1)" style="transform: scale(0.75);padding-left: 3%;padding-right: 5%;width: auto !important;"><span style="font-size: 19px;color: #6d6d6d;font-family: 'AR One Sans', sans-serif !important;">Issuance </span></mat-checkbox>
           <mat-checkbox class="issuanceCheckbox company-list-inp" [formControl]="transferCheckbox" (change)="onElevenUaCheckboxChange(2)" style="transform: scale(0.75);padding-left: 3%;padding-right: 5%;width: auto !important;"><span style="font-size: 19px;color: #6d6d6d;font-family: 'AR One Sans', sans-serif !important;">Transfer</span></mat-checkbox>
         </div>
@@ -571,6 +571,33 @@
         </div> -->
       </div>
     </div>
+
+  <!-- Slump Sale -->
+  <!-- <div class="ruleElevenUaApproach">
+    <div class="pos-absolute-r11ua">
+      <span>{{appValues.VALUATION_METHOD.slumpSaleApproach.label}}</span>
+    </div>
+    <div class="row r11ua-hover" >
+      <div class="col-xl-5 n-models-r11ua">
+        <div class="form-check">
+          <input class="form-check-input" [checked]="slumpSaleSelectedModel" (click)="createModelControl('slumpSale','ruleElevenUaApproach')" type="radio" name="flexRadioDefault8" id="flexRadioDefault8">
+          <label class="form-check-label" for="flexRadioDefault8">
+            Slump Sale Method
+          </label>
+          <p class="rm-pad"> 
+            <span class="tool-class">
+              <svg matTooltipClass='model-tooltip' [matTooltip]="helperText.slumpSaleModelLabel" matTooltipPosition="right"  xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
+                <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:32px;" 
+                fill="#ff0000"></path>
+                <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px;">
+                </polyline><line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px;">
+              </line><path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path></svg>
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div> -->
     <!-- template download and upload -->
     <div class="row" style="margin-top: 3%;padding-left: 1%;">
       <div class="col-xl-9">
@@ -582,7 +609,7 @@
           accept="image/png, image/jpeg, .pdf, .xlsx"
           (change)="onFileSelected($event)"
         />
-        <button type="button" class="btn btn-primary upload-bt" (click)="fileInput.click()">
+        <button type="button" [disabled]="modSelLoader" class="btn btn-primary upload-bt" (click)="fileInput.click()">
           <span class="pos-upload-absolute">
             <mat-icon>cloud_upload</mat-icon>
           </span>
@@ -591,11 +618,18 @@
         <span *ngIf="!fileUploadStatus" class="error-text">Please upload file</span>
       </div>
       <div class="col-xl-3" style="text-align: right;padding-right: 2%;">
-        <button type="button" class="btn btn-success submit-bt" (click)="submitModelValuation()">
+        <button type="button" [disabled]="modSelLoader" class="btn btn-success submit-bt" (click)="submitModelValuation()">
           Submit
         </button>
       </div>
     </div>
+    <!-- <div class="model-selection-loader-overlay" style="min-height: 90vh;" *ngIf="modSelLoader">
+      <div class="model-selection-loader-container">
+        <div class="model-selection-loader">
+          <div class="model-selection-spinner"></div>
+        </div>
+      </div>
+    </div> -->
   </div>
 
   <!-- Risk free rate -->

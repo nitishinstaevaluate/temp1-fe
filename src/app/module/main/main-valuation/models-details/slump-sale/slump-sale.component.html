@@ -1,0 +1,148 @@
+<div  *ngIf="modelControl.slumpSale.type === 'slumpSale'">
+    <h4 class="card-header">{{modelControl.slumpSale.header}}</h4>
+    <form [formGroup]="slumpSaleForm" class="outer-wrapper">
+        <div class="row" >
+            <div class="col-md-12">
+                <div class='c-decorated-header'>
+                    <h3><span style="padding-left: 2%;">Fair Market Value - 2</span></h3>
+                    <div class='c-decorated-header_link-view-more'>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monetary Consideration Value -->
+            <div class="col-md-4 field" style="padding-top: 0px;">
+              <div class="material-textfield">
+                <mat-form-field appearance="fill" class="mon-consdr" style="width: 100%;">
+                  <input [type]="modelControl.slumpSale.columns.monetaryConsiderationValue.type" matInput formControlName="monetaryConsiderationValue" class="company-list-inp" [placeholder]="modelControl.slumpSale.columns.monetaryConsiderationValue.placeholder">
+                  
+                    <span class="company-list-rmve" *ngIf="slumpSaleForm.controls['monetaryConsiderationValue']?.value">
+                      <mat-icon class="company-list-rmve-icon" (click)="clearInput('monetaryConsiderationValue')">close</mat-icon>
+                    </span>
+                  <mat-label>
+                    <div class="label-container">
+                      {{modelControl.slumpSale.columns.monetaryConsiderationValue.label}}
+                      <span class="company-info-span" *ngIf="slumpSaleForm.controls['monetaryConsiderationValue']?.value">
+                        <svg matTooltipClass='form-one-tooltip' [matTooltip]="modelControl.slumpSale.columns.monetaryConsiderationValue.toolTip" matTooltipPosition="right" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
+                          <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:32px;" fill="#ff0000"></path>
+                          <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px;"></polyline>
+                          <line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px;"></line>
+                          <path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path>
+                        </svg>
+                      </span>
+                    </div>
+                  </mat-label>
+                  <mat-error class="company-list-error" *ngIf="slumpSaleForm.controls['monetaryConsiderationValue'].touched && slumpSaleForm.controls['monetaryConsiderationValue'].errors" style="margin-left: -10px;">
+                    <span *ngIf="hasError('monetaryConsiderationValue','required',slumpSaleForm)">
+                      Please enter value.
+                    </span>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+          </div>
+
+            <!-- Non-Monetary Consideration value under Sub Rule (1) of Rule 11 UA -->
+            <div class="col-md-4 field" style="padding-top: 0px;">
+              <div class="material-textfield">
+                <mat-form-field appearance="fill" class="mon-consdr" style="width: 100%;">
+                  <input [type]="modelControl.slumpSale.columns.nonMonetaryConsiderationUnderSubRule.type" matInput formControlName="nonMonetaryConsiderationUnderSubRule" class="company-list-inp" [placeholder]="modelControl.slumpSale.columns.nonMonetaryConsiderationUnderSubRule.placeholder">
+                  
+                    <span class="company-list-rmve" *ngIf="slumpSaleForm.controls['nonMonetaryConsiderationUnderSubRule']?.value">
+                      <mat-icon class="company-list-rmve-icon" (click)="clearInput('nonMonetaryConsiderationUnderSubRule')">close</mat-icon>
+                    </span>
+                  <mat-label>
+                    <div class="label-container">
+                      {{modelControl.slumpSale.columns.nonMonetaryConsiderationUnderSubRule.label}}
+                      <span class="company-info-span" *ngIf="slumpSaleForm.controls['nonMonetaryConsiderationUnderSubRule']?.value">
+                        <svg matTooltipClass='form-one-tooltip' [matTooltip]="modelControl.slumpSale.columns.nonMonetaryConsiderationUnderSubRule.toolTip" matTooltipPosition="right" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
+                          <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:32px;" fill="#ff0000"></path>
+                          <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px;"></polyline>
+                          <line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px;"></line>
+                          <path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path>
+                        </svg>
+                      </span>
+                    </div>
+                  </mat-label>
+                  <mat-error class="company-list-error" *ngIf="slumpSaleForm.controls['nonMonetaryConsiderationUnderSubRule'].touched && slumpSaleForm.controls['nonMonetaryConsiderationUnderSubRule'].errors" style="margin-left: -10px;">
+                    <span *ngIf="hasError('nonMonetaryConsiderationUnderSubRule','required',slumpSaleForm)">
+                      Please enter value.
+                    </span>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+          </div>
+
+            <!-- Non-Monetary Consideration value not referred under Sub Rule (1) of Rule 11 UA -->
+            <div class="col-md-4 field" style="padding-top: 0px;">
+              <div class="material-textfield">
+                <mat-form-field appearance="fill" class="mon-consdr" style="width: 100%;">
+                  <input [type]="modelControl.slumpSale.columns.nonMonetaryConsiderationNotUnderSubRule.type" matInput formControlName="nonMonetaryConsiderationNotUnderSubRule" class="company-list-inp" [placeholder]="modelControl.slumpSale.columns.nonMonetaryConsiderationNotUnderSubRule.placeholder">
+                    <span class="company-list-rmve" *ngIf="slumpSaleForm.controls['nonMonetaryConsiderationNotUnderSubRule']?.value">
+                      <mat-icon class="company-list-rmve-icon" (click)="clearInput('nonMonetaryConsiderationNotUnderSubRule')">close</mat-icon>
+                    </span>
+                  <mat-label>
+                    <div class="label-container">
+                      {{modelControl.slumpSale.columns.nonMonetaryConsiderationNotUnderSubRule.label}}
+                      <span class="company-info-span" *ngIf="slumpSaleForm.controls['nonMonetaryConsiderationNotUnderSubRule']?.value">
+                        <svg matTooltipClass='form-one-tooltip' [matTooltip]="modelControl.slumpSale.columns.nonMonetaryConsiderationNotUnderSubRule.toolTip" matTooltipPosition="right" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
+                          <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:32px;" fill="#ff0000"></path>
+                          <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px;"></polyline>
+                          <line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px;"></line>
+                          <path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path>
+                        </svg>
+                      </span>
+                    </div>
+                  </mat-label>
+                  <mat-error class="company-list-error" *ngIf="slumpSaleForm.controls['nonMonetaryConsiderationNotUnderSubRule'].touched && slumpSaleForm.controls['nonMonetaryConsiderationNotUnderSubRule'].errors" style="margin-left: -10px;">
+                    <span *ngIf="hasError('nonMonetaryConsiderationNotUnderSubRule','required',slumpSaleForm)">
+                      Please enter value.
+                    </span>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+          </div>
+
+            <!-- Value accessible or assessed by any authority of government -->
+            <div class="col-md-4 field" style="padding-top: 0px;">
+              <div class="material-textfield">
+                <mat-form-field appearance="fill" class="mon-consdr" style="width: 100%;">
+                  <input [type]="modelControl.slumpSale.columns.valueAssessedByGov.type" matInput formControlName="valueAssessedByGov" class="company-list-inp" [placeholder]="modelControl.slumpSale.columns.valueAssessedByGov.placeholder">
+                    <span class="company-list-rmve" *ngIf="slumpSaleForm.controls['valueAssessedByGov']?.value">
+                      <mat-icon class="company-list-rmve-icon" (click)="clearInput('valueAssessedByGov')">close</mat-icon>
+                    </span>
+                  <mat-label>
+                    <div class="label-container">
+                      {{modelControl.slumpSale.columns.valueAssessedByGov.label}}
+                      <span class="company-info-span" *ngIf="slumpSaleForm.controls['valueAssessedByGov']?.value">
+                        <svg matTooltipClass='form-one-tooltip' [matTooltip]="modelControl.slumpSale.columns.valueAssessedByGov.toolTip" matTooltipPosition="right" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 512 512">
+                          <path d="M248,64C146.39,64,64,146.39,64,248s82.39,184,184,184,184-82.39,184-184S349.61,64,248,64Z" class="path-svg" style="fill:none;stroke:#3355dd;stroke-miterlimit:10;stroke-width:32px;" fill="#ff0000"></path>
+                          <polyline points="220 220 252 220 252 336" class="model-polyline" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px;"></polyline>
+                          <line x1="208" y1="340" x2="296" y2="340" style="fill:none;stroke:#3355dd;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px;"></line>
+                          <path d="M248,130a26,26,0,1,0,26,26A26,26,0,0,0,248,130Z" fill="#ff0000"></path>
+                        </svg>
+                      </span>
+                    </div>
+                  </mat-label>
+                  <mat-error class="company-list-error" *ngIf="slumpSaleForm.controls['valueAssessedByGov'].touched && slumpSaleForm.controls['valueAssessedByGov'].errors" style="margin-left: -10px;">
+                    <span *ngIf="hasError('valueAssessedByGov','required',slumpSaleForm)">
+                      Please enter value.
+                    </span>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+          </div>
+
+            <div class="col-md-12 btn-prop">
+                <button (click)="previous()" mat-raised-button class="button-back-mat">
+                  <span class="button-back"><mat-icon>send</mat-icon></span>
+                    Back
+                </button>
+
+                <button (click)="saveAndNext()" class="button-save-mat" mat-raised-button>
+                    Next
+                    <span class="button-save"><mat-icon>send</mat-icon></span>
+                </button>
+            </div>
+        </div>
+      </form>  
+</div>

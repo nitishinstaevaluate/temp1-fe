@@ -11,6 +11,7 @@ import { CalculationsService } from 'src/app/shared/service/calculations.service
 export class ModelRelativeValuationResultTableComponent implements OnChanges, OnInit{
   @Input() dataSource:any;
   @Input() formData:any;
+  @Input() ccmValuationMetric:any;
   tableResult:any='';
   peSelection = true;
   psSelection = true;
@@ -55,5 +56,9 @@ export class ModelRelativeValuationResultTableComponent implements OnChanges, On
 
   incrementSerialNumber(){
     return this.serialNumber++;
+  }
+
+  columnToBeDisabled(columnName:any){
+    return this.ccmValuationMetric && this.ccmValuationMetric !== columnName ? 'overlayBackgrnd' : '';
   }
 }

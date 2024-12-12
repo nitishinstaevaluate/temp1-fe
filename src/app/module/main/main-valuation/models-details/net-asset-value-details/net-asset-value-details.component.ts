@@ -23,7 +23,8 @@ navForm:any;
 floatLabelType:any='never';
 appearance:any='fill';
 editedValues:any=[];
-modelValue:any = []
+modelValue:any = [];
+navRegConfig:any=groupModelControl.NAV.options.controlsConfig;
 
 constructor(private fb:FormBuilder,
   private processStatusManagerService:ProcessStatusManagerService,
@@ -59,28 +60,80 @@ checkProcessExist(){
   }
 
 loadForm(){
-  this.navForm=this.fb.group({
-    fixedAsset:['book_value',[Validators.required]],
-    longTermLoansAdvances:['book_value',[Validators.required]],
-    nonCurrentInvestment:['book_value',[Validators.required]],
-    deferredTaxAsset:['book_value',[Validators.required]],
-    otherNonCurrentAsset:['book_value',[Validators.required]],
-    inventories:['book_value',[Validators.required]],
-    shortTermLoanAdvances:['book_value',[Validators.required]],
-    tradeReceivables:['book_value',[Validators.required]],
-    cash:['book_value',[Validators.required]],
-    shortTermInvestment:['book_value',[Validators.required]],
-    otherCurrentAssets:['book_value',[Validators.required]],
-    shortTermProvisions:['book_value',[Validators.required]],
-    shortTermBorrowings:['book_value',[Validators.required]],
-    tradePayables:['book_value',[Validators.required]],
-    otherCurrentLiabilities:['book_value',[Validators.required]],
-    lessLongTermBorrowings:['book_value',[Validators.required]],//check in backend,names not same
-    lessLongTermProvisions:['book_value',[Validators.required]],//check in backend,name not same
-    shareApplicationMoney:['book_value',[Validators.required]],
-    contingentLiability:['book_value',[Validators.required]],
-    // deferredTaxLiability:['book_value',[Validators.required]],
-  })
+  /**
+     * Old V1 params
+    * fixedAsset:['book_value',[Validators.required]],
+    * longTermLoansAdvances:['book_value',[Validators.required]],
+    * nonCurrentInvestment:['book_value',[Validators.required]],
+    * deferredTaxAsset:['book_value',[Validators.required]],
+    * otherNonCurrentAsset:['book_value',[Validators.required]],
+    * inventories:['book_value',[Validators.required]],
+    * shortTermLoanAdvances:['book_value',[Validators.required]],
+    * tradeReceivables:['book_value',[Validators.required]],
+    * cash:['book_value',[Validators.required]],
+    * shortTermInvestment:['book_value',[Validators.required]],
+    * otherCurrentAssets:['book_value',[Validators.required]],
+    * shortTermProvisions:['book_value',[Validators.required]],
+    * shortTermBorrowings:['book_value',[Validators.required]],
+    * tradePayables:['book_value',[Validators.required]],
+    * otherCurrentLiabilities:['book_value',[Validators.required]],
+    * lessLongTermBorrowings:['book_value',[Validators.required]],//check in backend,names not same
+    * lessLongTermProvisions:['book_value',[Validators.required]],//check in backend,name not same
+    * shareApplicationMoney:['book_value',[Validators.required]],
+    * contingentLiability:['book_value',[Validators.required]],
+    * deferredTaxLiability:['book_value',[Validators.required]],
+    */
+    
+    /**
+     * New V2 Params
+     * NOTE: DO NOT DECLARE ANY FORM CONTROL MANUALLY IN THIS COMPONENT
+     * INSTEAD INSERT IT INTO MODEL CONTROL JSON FILE
+    * ncaMoveable: ['book_value',[Validators.required]],
+    * ncaImmoveable: ['book_value',[Validators.required]],
+    * ncaLndAndBldng: ['book_value',[Validators.required]],
+    * ncaPlantAndMchnry: ['book_value',[Validators.required]],
+    * ncaCptlWrkInPrgrss: ['book_value',[Validators.required]],
+    * ncaInvstmntPrprty: ['book_value',[Validators.required]],
+    * ncaGoodwill: ['book_value',[Validators.required]],
+    * ncaOthrIntngbleAsst: ['book_value',[Validators.required]],
+    * ncaInTngbleAsstUndrDevlpmnt: ['book_value',[Validators.required]],
+    * ncaBiolgclAsstOthrThnBrPlnt: ['book_value',[Validators.required]],
+    * ncaRghtOfUseOfAsst: ['book_value',[Validators.required]],
+    * ncaInvstmntInSbsidryJvAssciate: ['book_value',[Validators.required]],
+    * ncaOthrNCrntInvstmnt: ['book_value',[Validators.required]],
+    * ncaLngTrmLoansAndAdvncmnt: ['book_value',[Validators.required]],
+    * ncaDffrdTxAsst: ['book_value',[Validators.required]],
+    * ncaOthrNCrntAsst: ['book_value',[Validators.required]],
+    * ncaDpst: ['book_value',[Validators.required]],
+    * caInvntries: ['book_value',[Validators.required]],
+    * caCrntInvstmnt: ['book_value',[Validators.required]],
+    * caTrdeRecvbles: ['book_value',[Validators.required]],
+    * caCshNCshEqvlnt: ['book_value',[Validators.required]],
+    * caBnkBlnceOthrThn: ['book_value',[Validators.required]],
+    * caShrtTrmLoansAndAdvnces: ['book_value',[Validators.required]],
+    * caCrntTxAsst: ['book_value',[Validators.required]],
+    * caOthrCrntAsst: ['book_value',[Validators.required]],
+    * nclBrrwng: ['book_value',[Validators.required]],
+    * nclOthrFncialLb: ['book_value',[Validators.required]],
+    * nclLeaseLb: ['book_value',[Validators.required]],
+    * nclPrvisn: ['book_value',[Validators.required]],
+    * nclDeferredTaxLb: ['book_value',[Validators.required]],
+    * nclOthrNCrntLb: ['book_value',[Validators.required]],
+    * nclOthrNonOprtngLB: ['book_value',[Validators.required]],
+    * clBrrwng: ['book_value',[Validators.required]],
+    * clTrdePyble: ['book_value',[Validators.required]],
+    * clOthrFncialLb: ['book_value',[Validators.required]],
+    * clOthrCrntLb: ['book_value',[Validators.required]],
+    * clPrvsion: ['book_value',[Validators.required]],
+    * clCrntTxLb: ['book_value',[Validators.required]],
+    */
+  this.navForm=this.fb.group({});
+  
+  this.navRegConfig.forEach((config:any) => {
+    if (!config.type) {
+      this.navForm.addControl(config.controlName, new FormControl('book_value',[Validators.required]));
+    }
+  });
 }
 
 isRelativeValuation(modelName:string){
@@ -90,214 +143,13 @@ isRelativeValuation(modelName:string){
 }
 
 onSelectorChange(value:any,controlValue:any){
-  switch(controlValue){
-    case 'fixedAsset':
-      if(value==='market_value'){
-        this.navForm.controls[controlValue].setValue('');
-      }
-    break;
-    case 'longTermLoansAdvances':
-      if(value==='market_value'){
-        this.navForm.controls[controlValue].setValue('');
-      }
-    break;
-    case 'nonCurrentInvestment':
-      if(value==='market_value'){
-        this.navForm.controls[controlValue].setValue('');
-      }
-    break;
-    case 'deferredTaxAsset':
-      if(value==='market_value'){
-        this.navForm.controls[controlValue].setValue('');
-      }
-    break;
-    case 'otherNonCurrentAsset':
-      if(value==='market_value'){
-        this.navForm.controls[controlValue].setValue('');
-      }
-    break;
-    case 'inventories':
-      if(value==='market_value'){
-        this.navForm.controls[controlValue].setValue('');
-      }
-    break;
-    case 'shortTermLoanAdvances':
-      if(value==='market_value'){
-        this.navForm.controls[controlValue].setValue('');
-      }
-    break;
-    case 'tradeReceivables':
-      if(value==='market_value'){
-        this.navForm.controls[controlValue].setValue('');
-      }
-    break;
-    case 'cash':
-      if(value==='market_value'){
-        this.navForm.controls[controlValue].setValue('');
-      }
-    break;
-    case 'shortTermInvestment':
-      if(value==='market_value'){
-        this.navForm.controls[controlValue].setValue('');
-      }
-    break;
-    case 'otherCurrentAssets':
-      if(value==='market_value'){
-        this.navForm.controls[controlValue].setValue('');
-      }
-    break;
-    // case 'deferredTaxLiability':
-    //   if(value==='market_value'){
-    //     this.navForm.controls[controlValue].setValue('');
-    //   }
-    // break;
-    case 'shortTermProvisions':
-      if(value==='market_value'){
-        this.navForm.controls[controlValue].setValue('');
-      }
-    break;
-    case 'shortTermBorrowings':
-      if(value==='market_value'){
-        this.navForm.controls[controlValue].setValue('');
-      }
-    break;
-    case 'tradePayables':
-      if(value==='market_value'){
-        this.navForm.controls[controlValue].setValue('');
-      }
-    break;
-    case 'otherCurrentLiabilities':
-      if(value==='market_value'){
-        this.navForm.controls[controlValue].setValue('');
-      }
-    break;
-    case 'lessLongTermBorrowings':
-      if(value==='market_value'){
-        this.navForm.controls[controlValue].setValue('');
-      }
-    break;
-    case 'lessLongTermProvisions':
-      if(value==='market_value'){
-        this.navForm.controls[controlValue].setValue('');
-      }
-    break;
-    case 'shareApplicationMoney':
-      if(value==='market_value'){
-        this.navForm.controls[controlValue].setValue('');
-      }
-    break;
-    case 'contingentLiability':
-      if(value==='market_value'){
-        this.navForm.controls[controlValue].setValue('');
-      }
-    break;
-  }
+  this.navForm.controls[controlValue].setValue('');
 }
 
 resetBookValue(value:any,controlName:any){
-  switch(controlName){
-    case 'fixedAsset':
-      if(value === 'book_value'){
-        this.navForm.controls[controlName].setValue(value);
-      }
-    break;
-    case 'longTermLoansAdvances':
-      if(value==='book_value'){
-        this.navForm.controls[controlName].setValue(value);
-      }
-    break;
-    case 'nonCurrentInvestment':
-      if(value==='book_value'){
-        this.navForm.controls[controlName].setValue(value);
-      }
-    break;
-    case 'deferredTaxAsset':
-      if(value==='book_value'){
-        this.navForm.controls[controlName].setValue(value);
-      }
-    break;
-    case 'otherNonCurrentAsset':
-      if(value==='book_value'){
-        this.navForm.controls[controlName].setValue(value);
-      }
-    break;
-    case 'inventories':
-      if(value==='book_value'){
-        this.navForm.controls[controlName].setValue(value);
-      }
-    break;
-    case 'shortTermLoanAdvances':
-      if(value==='book_value'){
-        this.navForm.controls[controlName].setValue(value);
-      }
-    break;
-    case 'tradeReceivables':
-      if(value==='book_value'){
-        this.navForm.controls[controlName].setValue(value);
-      }
-    break;
-    case 'cash':
-      if(value==='book_value'){
-        this.navForm.controls[controlName].setValue(value);
-      }
-    break;
-    case 'shortTermInvestment':
-      if(value==='book_value'){
-        this.navForm.controls[controlName].setValue(value);
-      }
-    break;
-    case 'otherCurrentAssets':
-      if(value==='book_value'){
-        this.navForm.controls[controlName].setValue(value);
-      }
-    break;
-    // case 'deferredTaxLiability':
-    //   if(value==='book_value'){
-    //     this.navForm.controls[controlName].setValue(value);
-    //   }
-    // break;
-    case 'shortTermProvisions':
-      if(value==='book_value'){
-        this.navForm.controls[controlName].setValue(value);
-      }
-    break;
-    case 'shortTermBorrowings':
-      if(value==='book_value'){
-        this.navForm.controls[controlName].setValue(value);
-      }
-    break;
-    case 'tradePayables':
-      if(value==='book_value'){
-        this.navForm.controls[controlName].setValue(value);
-      }
-    break;
-    case 'otherCurrentLiabilities':
-      if(value==='book_value'){
-        this.navForm.controls[controlName].setValue(value);
-      }
-    break;
-    case 'lessLongTermBorrowings':
-      if(value==='book_value'){
-        this.navForm.controls[controlName].setValue(value);
-      }
-    break;
-    case 'lessLongTermProvisions':
-      if(value==='book_value'){
-        this.navForm.controls[controlName].setValue(value);
-      }
-    break;
-    case 'shareApplicationMoney':
-      if(value==='book_value'){
-        this.navForm.controls[controlName].setValue(value);
-      }
-    break;  
-    case 'contingentLiability':
-      if(value==='book_value'){
-        this.navForm.controls[controlName].setValue(value);
-      }
-    break;  
-  }
+  if(value === 'book_value') this.navForm.controls[controlName].setValue(value);
 }
+
 previous(){
   const checkModel = isNotRuleElevenUaAndNav(this.modelValue);
   if(!checkModel){

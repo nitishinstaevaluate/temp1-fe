@@ -15,6 +15,7 @@ export class RelativeValuationsTableComponent implements OnChanges, OnInit {
   @Input() formData : any;
   @Input() multiples : any;
   @Output() recalculateCcmValuation = new EventEmitter();
+  @Input() ccmValuationMetric : any;
 
   companyColumn = RELATIVE_VALUATION_COMPANY_COLUMNS;
   companyColumnMap = RELATIVE_VALUATION_COMPANY_MAPPING;

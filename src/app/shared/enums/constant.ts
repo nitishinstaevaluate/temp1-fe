@@ -73,7 +73,8 @@ export const MODELS = {
   EXCESS_EARNINGS: 'Excess_Earnings',
   COMPARABLE_INDUSTRIES: 'CTM',
   RULE_ELEVEN_UA: 'ruleElevenUa',
-  MARKET_PRICE:'Market_Price'
+  MARKET_PRICE:'Market_Price',
+  SLUMP_SALE:'slumpSale'
 }
 
 export const ALL_MODELS = {
@@ -85,6 +86,7 @@ export const ALL_MODELS = {
   Market_Price:'Market Price',
   Excess_Earnings:"Excess Earning",
   ruleElevenUa:"Rule Eleven UA",
+  slumpSale:"Slump Sale"
 }
 
   export const GLOBAL_VALUES = {
@@ -217,7 +219,14 @@ export const ALL_MODELS = {
         label:'Rule 11 UA Approach',
         ruleElevenUa:{
           name:'Rule 11 UA Method',
-          info:'This is NAV model'
+          info:'This is Rule 11 UA model'
+        }
+      },
+      slumpSaleApproach:{
+        label:'Slump Sale Approach',
+        slumpSale:{
+          name:'Slump Sale Method',
+          info:'This is Slump Sale model'
         }
       },
     },
@@ -294,8 +303,11 @@ export const ALL_MODELS = {
     capitalIqBetaDesc:`Capital IQ is used to calculate beta for valuation due to its extensive financial data coverage, aiding in the analysis of a stock's volatility relative to the market.`,
     aswathDamodaranBetaDesc:`Aswath Damodaran's methodologies are utilized for beta calculation due to their robustness and insight into market dynamics, ensuring accurate risk assessment relative to the market.`,
     faceValue:`Face value`,
+    slumpSaleModelLabel:`Assess the value of a company for the purpose of mergers and acquisitions, takeovers, and other financial transactions. It is a regulatory approach based on UAE-specific legal frameworks, involving the transfer of a business unit as a going concern without assigning individual values to assets and liabilities, and requiring regulatory approval and adherence to legal provisions.`,
     vwapNse:`VWAP on NSE represents the average price of a security traded throughout the day, weighted by the volume of trades on the NSE, indicating the true average trading price during that period.`,
-    vwapBse:`VWAP on BSE is the average price of a security traded throughout the day, weighted by the volume of trades on the BSE, reflecting the actual average trading price over the given timeframe.`
+    vwapBse:`VWAP on BSE is the average price of a security traded throughout the day, weighted by the volume of trades on the BSE, reflecting the actual average trading price over the given timeframe.`,
+    averageCCM:'CCM valuation based on average calculation',
+    medianCCM:'CCM valuation based on median calculation'
   }
 
   export const CHECKLIST_TYPES = {
@@ -316,7 +328,7 @@ export const ALL_MODELS = {
 
   export const NET_ASSET_APPROACH = ['NAV'];
 
-  export const RULE_ELEVEN_UA_APPROACH = ['ruleElevenUa'];
+  export const RULE_ELEVEN_UA_APPROACH = ['ruleElevenUa', 'slumpSale'];
 
   export const MARKET_APPROACH = ['Relative_Valuation','CTM','Market_Price'];
 
@@ -453,3 +465,50 @@ export const BETA_FROM_TYPE = {
   ASWATHDAMODARAN:'aswathDamodaran',
   CAPITALIQ:'capitalIqBeta'
 }
+
+export const ADD_SPACE_BEFORE_LINE_ITEM_PL = [
+  'Other Non-Operating Income',
+  'Expenses',
+  'Other Non-Operating expenses:',
+  'Total Expense',
+  'Earnings Before Interest Taxation, Depreciation and Amortisation (EBITDA)',
+  'Earnings Before Interest Taxation (EBIT)',
+  'Profit/(loss) before exceptional items and tax (I - IV)',
+  'Profit/(loss) before tax (V-VI)',
+  'Profit (Loss) for the period from continuing operations (VII-VIII)',
+  'Profit/(loss) for the period (IX+XII)',
+  'Other Comprehensive Income',
+  'A',
+  'Total Comprehensive Income for the period (XIII+XIV) (Comprising Profit (Loss) and Other Comprehensive Income for the period)'
+]
+
+export const ADD_SPACE_BEFORE_LINE_ITEM_BS = [
+  'Non-current assets',
+  'Total non current assets',
+  'Current assets',
+  'Total Assets',
+  'EQUITY AND LIABILITIES',
+  'Equity',
+  'Liabilities',
+  'Current liabilities',
+  'Total Equity and Liabilities',
+  'Check'
+]
+
+export const ADD_SPACE_BEFORE_LINE_ITEM_CASH_FLOW = [
+  'Cash flows from investing activities',
+  'Cash flows from financing activities',
+  'Net increase in cash and cash equivalents (I+II+III)',
+  'Cash and cash equivalents at beginning of period',
+  'Cash and cash equivalents at end of period (IV+V)'
+]
+
+export const ADD_SPACE_BEFORE_LINE_ITEM_ASSESSMENT_OF_WC = [
+  'Operating Liabilities',
+  'Non-Cash Working Capital (A-B)',
+  'Change in NCA'
+]
+
+export const DATE_REGEX = /^([0-2]?\d|30|31)-(0?[1-9]|1[0-2])-\d{4}$/;
+
+export const XL_SHEET_ENUM = [ 'dcfApproach', 'ruleElevenUaApproach', 'marketPriceApproach', 'navApproach', 'slumpSaleApproach' ];

@@ -1,6 +1,6 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { MODELS } from 'src/app/shared/enums/constant';
-import {  convertToNumberOrZero, formatPositiveAndNegativeValues, getAdjustedTimestamp } from 'src/app/shared/enums/functions';
+import {  convertToNumberOrZero, formatNumber, formatPositiveAndNegativeValues, getAdjustedTimestamp } from 'src/app/shared/enums/functions';
 
 @Component({
   selector: 'app-model-market-price-result-table',
@@ -10,6 +10,7 @@ import {  convertToNumberOrZero, formatPositiveAndNegativeValues, getAdjustedTim
 export class ModelMarketPriceResultTableComponent implements OnChanges{
   @Input() formData:any;
   @Input() marketMethodType:any;
+  @Output() marketPriceRevaluation = new EventEmitter<any>();
   convertEpochToPlusOneDate = getAdjustedTimestamp;
   sharePriceNinetyDays:any = [];
   sharePriceTenDays:any = [];
@@ -67,5 +68,30 @@ export class ModelMarketPriceResultTableComponent implements OnChanges{
     } else {
       return '6';
     }
+  }
+
+  recalculateMP(data:any, newValue:any, type:any){
+    const payload = {
+      processId: localStorage.getItem('processStateId'),
+      date:data.PRICINGDATE,
+      newValue: typeof newValue === 'string' ? newValue.replace(/,/g, '') : newValue,
+      type
+    }
+
+    this.marketPriceRevaluation.emit(payload)
+  }
+
+  displayMarketPriceButton(ngModel: any): boolean {
+    if(ngModel.touched) {
+      ngModel.control.markAsUntouched();
+      // ngModel.control.markAsPristine();
+    }
+
+    return !!ngModel.model && ngModel.dirty && !ngModel.touched;
+  }
+
+  formatIndianCurrency(value:any){
+    const sanitizedValue = typeof value === 'string' ? value.replace(/,/g, '') : value;
+    return formatPositiveAndNegativeValues(sanitizedValue);
   }
 }

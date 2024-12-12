@@ -1,26 +1,23 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { isSelected } from 'src/app/shared/enums/functions';
-import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.service';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
 
 @Component({
-  selector: 'app-eleven-ua-details',
-  templateUrl: './eleven-ua-details.component.html',
-  styleUrls: ['./eleven-ua-details.component.scss']
+  selector: 'app-slump-sale-details',
+  templateUrl: './slump-sale-details.component.html',
+  styleUrls: ['./slump-sale-details.component.scss']
 })
-export class ElevenUaDetailsComponent {
-
+export class SlumpSaleDetailsComponent implements OnChanges{
   @Input() transferStepperTwo :any;
   @Input() currentStepIndex :any;
   @Input() fourthStageInput :any;
-  @Output() ruleElevenData :any = new EventEmitter();
-  @Output() ruleElevenSheetData=new EventEmitter<any>();
+  @Output() slumpSaleData :any = new EventEmitter();
+  @Output() slumpSaleSheetData=new EventEmitter<any>();
 
   displayColumns:any;
-  ruleElevenUaDataSource:any;
+  slumpSaleDataSource:any;
   floatLabelType:any='never';
   appearance:any='fill';
   dataSource:any;
@@ -31,32 +28,12 @@ export class ElevenUaDetailsComponent {
   financialSheetLoader = true;
   loadExcelTable = false;
   excelErrorMsg = false;
-
   constructor(private valuationService:ValuationService,
     private snackBar: MatSnackBar,
     private excelAndReportService:ExcelAndReportService,
-    private processStateManagerService:ProcessStatusManagerService){
-
-  }
+    private processStateManagerService:ProcessStatusManagerService){}
   ngOnChanges(){
     this.fetchExcelData();
-  }
-  ngOnInit(): void {
-
-    // this.checkProcessState()
-  }
-  // checkProcessState(){
-  //   if(this.fourthStageInput){
-  //     const excelSheetId = this.fourthStageInput?.formFourData?.isExcelModified ?this.fourthStageInput?.formFourData.modifiedExcelSheetId :  this.fourthStageInput.formOneData.excelSheetId;
-  //     this.excelSheetId = excelSheetId;
-  //     this.fetchExcelData(excelSheetId)
-  //   }
-  // }
-  isRelativeValuation(modelName:string){
-    if(!this.transferStepperTwo){
-      return (isSelected(modelName,this.fourthStageInput?.formOneData.model) && this.fourthStageInput?.formOneData.model.length <= 1)
-    }
-    return (isSelected(modelName,this.transferStepperTwo?.model) && this.transferStepperTwo.model.length <= 1)
   }
 
   fetchExcelData(){
@@ -81,18 +58,21 @@ export class ElevenUaDetailsComponent {
         duration: 3000,
         panelClass: 'app-notification-error'
       })
-    })
-    
+    }) 
   }
-
   loadExcel(){
     this.loadExcelTable = true;
-    this.valuationService.getProfitLossSheet(this.excelSheetId,'Rule 11 UA', localStorage.getItem('processStateId')).subscribe((response:any)=>{
+    // const payload = {
+    //   filename:this.excelSheetId,
+    //   sheetName:'Slump Sale',
+    //   processIdentifierId:localStorage.getItem('processStateId')
+    // }
+    this.valuationService.getProfitLossSheet(this.excelSheetId, 'Slump Sale', localStorage.getItem('processStateId')).subscribe((response:any)=>{
       this.loadExcelTable = false;
       if(response.status){
         this.excelErrorMsg = false;
-        this.createruleElevenUaDataSource(response)
-        this.ruleElevenSheetData.emit({status:true,result:response,isExcelModified:this.isExcelModified});
+        this.createSlumpSaleDataSource(response)
+        this.slumpSaleSheetData.emit({status:true,result:response,isExcelModified:this.isExcelModified});
       }
       else{
         this.excelErrorMsg = true;
@@ -101,8 +81,8 @@ export class ElevenUaDetailsComponent {
     ,(error)=>{
       this.excelErrorMsg = true;
      this.loadExcelTable = false;
-     this.ruleElevenSheetData.emit({status:true, error:error})
-       this.ruleElevenData.emit({status:false,error:error});
+     this.slumpSaleSheetData.emit({status:true, error:error})
+       this.slumpSaleData.emit({status:false,error:error});
      })
   }
 
@@ -185,8 +165,7 @@ export class ElevenUaDetailsComponent {
         cellData,
         oldValue:originalValue[`${column}`],
         newValue:newValue,
-        particulars:originalValue.Particulars,
-        processStateId:localStorage.getItem('processStateId')
+        particulars:originalValue.Particulars
       }
       this.editedValues.push(cellStructure);
       
@@ -200,14 +179,14 @@ export class ElevenUaDetailsComponent {
           async (response:any)=>{
           if(response?.status){
             this.isExcelModified = true;
-            this.createruleElevenUaDataSource(response);
+            this.createSlumpSaleDataSource(response);
             const excelResponse: any = await this.processStateManagerService.updateEditedExcelStatus(localStorage.getItem('processStateId')).toPromise();
             if(excelResponse?.modifiedExcelSheetId){
               this.excelSheetId = excelResponse.modifiedExcelSheetId;
             }
           }
           // else{  [please uncomment this once backend error handling is done]
-          //    this.ruleElevenSheetData.emit({status:false,error:response.error});
+          //    this.slumpSaleSheetData.emit({status:false,error:response.error});
           //    this.snackBar.open(response.error,'Ok',{
           //     horizontalPosition: 'right',
           //     verticalPosition: 'top',
@@ -216,7 +195,7 @@ export class ElevenUaDetailsComponent {
           //   })
           // }
         },(error)=>{
-          // this.ruleElevenSheetData.emit({status:false,error:error.message});
+          // this.slumpSaleSheetData.emit({status:false,error:error.message});
           this.snackBar.open(error.message,'Ok',{
             horizontalPosition: 'right',
               verticalPosition: 'top',
@@ -226,82 +205,80 @@ export class ElevenUaDetailsComponent {
         })
       }
 }
+getCellAddress(data:any,changedColumn:any){
+  const cellAddresses:any = [];
 
-  getCellAddress(data:any,changedColumn:any){
-    const cellAddresses:any = [];
-
-    this.displayColumns.forEach((column:any, columnIndex:any) => {
-      this.dataSource.forEach((row:any, rowIndex:any) => {
-        if (row.lineEntry.particulars === data.Particulars && column === changedColumn) {
-          cellAddresses.push({
-            cellAddress: `${String.fromCharCode(columnIndex + 65)}${row.lineEntry?.rowNumber}`, // add one since we are looping inside for loop
-            columnCell: String.fromCharCode(columnIndex + 65), // add one since we are looping inside for loop
-            rowCell: row.lineEntry.rowNumber,
-            sysCode: row.lineEntry.sysCode
-          });
-        }
-      });
-    });
-  
-    return cellAddresses;
-  }
-
-  createruleElevenUaDataSource(response:any){
-    this.dataSource = response?.data;
-    this.displayColumns = Object.keys(this.dataSource[0]);
-    
-    this.displayColumns.splice(this.displayColumns.indexOf('lineEntry'),1,'Particulars')
-    if(this.isRelativeValuation('Relative_Valuation') || this.isRelativeValuation('NAV') || this.isRelativeValuation('CTM')){
-      this.displayColumns = this.displayColumns.splice(0,2)
-    }
-    this.ruleElevenUaDataSource = this.dataSource.map((result:any)=>{
-      const transformedItem: any = {};
-      transformedItem['Particulars'] = result.lineEntry.particulars;
-      for (let i = 1; i < this.displayColumns.length; i++) {
-        const yearKey = this.displayColumns[i];
-        transformedItem[yearKey] = result[yearKey];
+  this.displayColumns.forEach((column:any, columnIndex:any) => {
+    this.dataSource.forEach((row:any, rowIndex:any) => {
+      if (row.lineEntry.particulars === data.Particulars && column === changedColumn) {
+        cellAddresses.push({
+          cellAddress: `${String.fromCharCode(columnIndex + 65)}${row.lineEntry?.rowNumber}`, // add one since we are looping inside for loop
+          columnCell: String.fromCharCode(columnIndex + 65), // add one since we are looping inside for loop
+          rowCell: row.lineEntry.rowNumber,
+          sysCode: row.lineEntry.sysCode
+        });
       }
-      return transformedItem;
     });
-    this.ruleElevenUaDataSource.splice(this.ruleElevenUaDataSource.findIndex((item:any) => item.Particulars.includes('Current Assets')),0,{Particulars:"  "}) //push empty object for line break      
-    this.ruleElevenUaDataSource.splice(this.ruleElevenUaDataSource.findIndex((item:any) => item.Particulars === 'Current Liabilities'),0,{Particulars:"  "}) //push empty object for line break      
-    this.ruleElevenUaDataSource.splice(this.ruleElevenUaDataSource.findIndex((item:any) => item.Particulars.includes('Equity & Liabilities')),0,{Particulars:"  "}) //push empty object for line break      
-    this.ruleElevenUaDataSource.splice(this.ruleElevenUaDataSource.findIndex((item:any) => item.Particulars.includes('Non-Current Liabilities')),0,{Particulars:"  "}) //push empty object for line break      
-    // this.ruleElevenUaDataSource.splice(this.ruleElevenUaDataSource.findIndex((item:any) => item.Particulars.includes('Total Equity & Liabilities')),0,{Particulars:"  "}) //push empty object for line break      
+  });
 
-    // if(response?.modifiedFileName){
-    //   this.ruleElevenSheetData.emit({status:true,result:response,isExcelModified:this.isExcelModified});
-    // }
-  }
+  return cellAddresses;
+}
+createSlumpSaleDataSource(response:any){
+  this.dataSource = response?.data;
+  this.displayColumns = Object.keys(this.dataSource[0]);
+  
+  this.displayColumns.splice(this.displayColumns.indexOf('lineEntry'),1,'Particulars')
+  // if(this.isRelativeValuation('Relative_Valuation') || this.isRelativeValuation('NAV') || this.isRelativeValuation('CTM')){
+  //   this.displayColumns = this.displayColumns.splice(0,2)
+  // }
+  this.slumpSaleDataSource = this.dataSource.map((result:any)=>{
+    const transformedItem: any = {};
+    transformedItem['Particulars'] = result.lineEntry.particulars;
+    for (let i = 1; i < this.displayColumns.length; i++) {
+      const yearKey = this.displayColumns[i];
+      transformedItem[yearKey] = result[yearKey];
+    }
+    return transformedItem;
+  });
+  this.slumpSaleDataSource.splice(this.slumpSaleDataSource.findIndex((item:any) => item.Particulars.includes('Current Assets')),0,{Particulars:"  "}) //push empty object for line break      
+  this.slumpSaleDataSource.splice(this.slumpSaleDataSource.findIndex((item:any) => item.Particulars === 'Current Liabilities'),0,{Particulars:"  "}) //push empty object for line break      
+  this.slumpSaleDataSource.splice(this.slumpSaleDataSource.findIndex((item:any) => item.Particulars.includes('Equity & Liabilities')),0,{Particulars:"  "}) //push empty object for line break      
+  this.slumpSaleDataSource.splice(this.slumpSaleDataSource.findIndex((item:any) => item.Particulars.includes('Non-Current Liabilities')),0,{Particulars:"  "}) //push empty object for line break      
+  // this.ruleElevenUaDataSource.splice(this.ruleElevenUaDataSource.findIndex((item:any) => item.Particulars.includes('Total Equity & Liabilities')),0,{Particulars:"  "}) //push empty object for line break      
 
-  formatNegativeAndPositiveValues(value:any){
-    if(value && `${value}`.includes('-')){
-      let formattedNumber = value.toLocaleString(undefined, {
-        minimumIntegerDigits: 1,
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      });
-      return `(${`${formattedNumber}`.replace(/-/g,'')})`;
-    }
-    else if(value){
-      return value.toLocaleString(undefined, {
-        minimumIntegerDigits: 1,
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      })
-    }
-    return  null;
-  }
-  contentIsBig(data:any){
-    if(data && Object.keys(data[0]).length > 6){
-      return true;
-    }
-    return false;
-  }
+  // if(response?.modifiedFileName){
+  //   this.slumpSaleSheetData.emit({status:true,result:response,isExcelModified:this.isExcelModified});
+  // }
+}
 
-  addDivider(element:string){
-    if(element === 'Total Assets' || element === 'Assets' || element === 'Total Equity & Liabilities')
-      return true;
-    return false;
+formatNegativeAndPositiveValues(value:any){
+  if(value && `${value}`.includes('-')){
+    let formattedNumber = value.toLocaleString(undefined, {
+      minimumIntegerDigits: 1,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+    return `(${`${formattedNumber}`.replace(/-/g,'')})`;
   }
+  else if(value){
+    return value.toLocaleString(undefined, {
+      minimumIntegerDigits: 1,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })
+  }
+  return  null;
+}
+contentIsBig(data:any){
+  if(data && Object.keys(data[0]).length > 6){
+    return true;
+  }
+  return false;
+}
+
+addDivider(element:string){
+  if(element === 'Total Assets' || element === 'Assets' || element === 'Total Equity & Liabilities')
+    return true;
+  return false;
+}
 }

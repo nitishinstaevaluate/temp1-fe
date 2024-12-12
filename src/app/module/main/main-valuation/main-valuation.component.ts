@@ -39,6 +39,7 @@ export class MainValuationComponent implements OnInit{
   comparableIndustriesData:any;
   navData:any;
   ruleElevenData:any;
+  slumpSaleData:any;
   modelArray:any=[];
   
   // breadcrumb property
@@ -142,6 +143,7 @@ export class MainValuationComponent implements OnInit{
         ...(this.formOneData?.model?.includes('CTM') ? this.comparableIndustriesData : {}),
         ...(this.formOneData?.model?.includes('NAV') ? this.navData : {}),
         ...(this.formOneData?.model?.includes('ruleElevenUa') ? this.ruleElevenData : {}),
+        ...(this.formOneData?.model?.includes('slumpSale') ? this.slumpSaleData : {})
       };
   }
 
@@ -247,6 +249,11 @@ export class MainValuationComponent implements OnInit{
     this.nextModelSelection(data.status);
     this.onStepChange();
   }
+  slumpSaleDetails(data:any){
+    this.slumpSaleData=data;
+    this.nextModelSelection(data.status);
+    this.onStepChange();
+  }
 
   async nextModelSelection(data?:any){
     // const model = this.formOneData?.model;
@@ -282,6 +289,9 @@ export class MainValuationComponent implements OnInit{
           break;
         case 'ruleElevenUa':
           this.next = 7;
+          break;
+        case 'slumpSale':
+          this.next = 8;
           break;
         default:
           // this.stepper.next(); 
@@ -334,6 +344,9 @@ export class MainValuationComponent implements OnInit{
        case 'ruleElevenUa':
          this.next = 7;
          break;
+       case 'slumpSale':
+         this.next = 8;
+         break;
        default:
         // this.stepper.previous(); 
         const currentStep:any = localStorage.getItem('step')
@@ -368,6 +381,9 @@ export class MainValuationComponent implements OnInit{
     this.previousModelSelection(data?.status);
   }
   ruleElevenUaDetailsPrev(data:any){
+    this.previousModelSelection(data?.status);
+  }
+  slumpSaleDetailsPrev(data:any){
     this.previousModelSelection(data?.status);
   }
 
@@ -434,6 +450,10 @@ export class MainValuationComponent implements OnInit{
               const {model , ...rest} = formTwoDetails;
               updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
             }
+            if(formTwoDetails.model === MODELS.SLUMP_SALE && processStateDetails?.firstStageInput.model.includes(MODELS.SLUMP_SALE)){
+              const {model , ...rest} = formTwoDetails;
+              updatedPayload = {...processStateDetails?.firstStageInput,...rest,...updatedPayload}
+            }
           }) 
           if(processStateDetails?.firstStageInput?.issuanceOfShares && processStateDetails?.firstStageInput?.model?.includes(MODELS.RULE_ELEVEN_UA)){
             updatedPayload = {...processStateDetails?.firstStageInput}
@@ -450,12 +470,22 @@ export class MainValuationComponent implements OnInit{
         this.processLoader = false;
         localStorage.setItem('execProcess','false')
 
-        this.snackBar.open('Session Restored Successfully','OK',{
-          horizontalPosition: 'center',
-          verticalPosition: 'bottom',
-          duration: 3000,
-          panelClass: 'app-notification-success'
-        })
+        if(processStateDetails?.isLegacyTemplate){
+          this.snackBar.open('Valuation is done using Old Template Format, few process might not work','OK',{
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            duration: -1,
+            panelClass: 'app-notification-error'
+          })
+        }
+        else{
+          this.snackBar.open('Session Restored Successfully','OK',{
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+            duration: 3000,
+            panelClass: 'app-notification-success'
+          })
+        }
       }
     })
   }
