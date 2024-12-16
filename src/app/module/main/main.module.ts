@@ -38,9 +38,16 @@ import { SharedComponentsModule } from 'src/app/shared/shared-component.module';
 import { SlumpSaleComponent } from './main-valuation/models-details/slump-sale/slump-sale.component';
 import { SlumpSaleDetailsComponent } from './main-valuation/group-model-review/slump-sale-details/slump-sale-details.component';
 import { CashFlowDetailsComponent } from './main-valuation/group-model-review/cash-flow-details/cash-flow-details.component';
+import { BerkusComponent } from './main-valuation/models-details/start-up-valuations/berkus/berkus.component';
+import { RiskFactorComponent } from './main-valuation/models-details/start-up-valuations/risk-factor/risk-factor.component';
+import { SoundIdeaComponent } from './main-valuation/models-details/start-up-valuations/berkus/sound-idea/sound-idea.component';
+import { PrototypeComponent } from './main-valuation/models-details/start-up-valuations/berkus/prototype/prototype.component';
+import { ManagementComponent } from './main-valuation/models-details/start-up-valuations/berkus/management/management.component';
+import { StrategicRelationshipComponent } from './main-valuation/models-details/start-up-valuations/berkus/strategic-relationship/strategic-relationship.component';
+import { ProductRolloutComponent } from './main-valuation/models-details/start-up-valuations/berkus/product-rollout/product-rollout.component';
 
 @NgModule({
-  declarations: [ValuationComponent, ActivityComponent, MainValuationComponent, GroupModelControlsComponent, GroupModelReviewComponent, GroupModelResultComponent, ProfitLossDataComponent, BalanceSheetDetailsComponent, RelativeValuationsTableComponent,ValuationResultTableComponent, ModelRelativeValuationResultTableComponent,RelativeValuationDetailsComponent, ExcessEarningDetailsComponent, ComparableIndustriesDetailsComponent, NetAssetValueDetailsComponent, ReportDetailsComponent, AssessmentDetailsComponent,NavbarDetailsComponent, DashboardPanelComponent, ElevenUAComponent, ElevenUaDetailsComponent, ModelRuleElevenUaResultTableComponent,ScreenInputDetailsComponent, ValuationDataChecklistComponent, MandateComponent, ModelMarketPriceResultTableComponent, SlumpSaleComponent, SlumpSaleDetailsComponent, CashFlowDetailsComponent],
+  declarations: [ValuationComponent, ActivityComponent, MainValuationComponent, GroupModelControlsComponent, GroupModelReviewComponent, GroupModelResultComponent, ProfitLossDataComponent, BalanceSheetDetailsComponent, RelativeValuationsTableComponent,ValuationResultTableComponent, ModelRelativeValuationResultTableComponent,RelativeValuationDetailsComponent, ExcessEarningDetailsComponent, ComparableIndustriesDetailsComponent, NetAssetValueDetailsComponent, ReportDetailsComponent, AssessmentDetailsComponent,NavbarDetailsComponent, DashboardPanelComponent, ElevenUAComponent, ElevenUaDetailsComponent, ModelRuleElevenUaResultTableComponent,ScreenInputDetailsComponent, ValuationDataChecklistComponent, MandateComponent, ModelMarketPriceResultTableComponent, SlumpSaleComponent, SlumpSaleDetailsComponent, CashFlowDetailsComponent, BerkusComponent, RiskFactorComponent, SoundIdeaComponent, PrototypeComponent, ManagementComponent, StrategicRelationshipComponent, ProductRolloutComponent],
   imports: [CommonModule, MainRoutingModule, NgxDropzoneModule, SharedModule,QuillModule.forRoot(),NgxUiLoaderModule, SharedComponentsModule],
 })
 export class MainModule {}

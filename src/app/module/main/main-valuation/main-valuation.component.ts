@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatStepper } from '@angular/material/stepper';
 import { Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { MODELS } from 'src/app/shared/enums/constant';
+import { BERKUS_METHOD, MODELS } from 'src/app/shared/enums/constant';
 import { isSelected } from 'src/app/shared/enums/functions';
 import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal-box/generic-modal-box.component';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
@@ -41,6 +41,7 @@ export class MainValuationComponent implements OnInit{
   ruleElevenData:any;
   slumpSaleData:any;
   modelArray:any=[];
+  berkusStep:any = 0;
   
   // breadcrumb property
   fcfePrev=false;
@@ -131,7 +132,24 @@ export class MainValuationComponent implements OnInit{
     fifthCtrl: ['', Validators.required],
   });
 
-  
+  loadCurrentTab(tabNum: any, type?:any){
+    if(type === MODELS.BERKUS){
+      this.berkusStep = tabNum;
+      this.next = 9;
+    }
+    else{
+      this.berkusStep = 0;
+      this.next = tabNum;
+    }
+  }
+
+  berkusstep(bStep:any){
+  this.berkusStep = bStep;
+  console.log(bStep,"berkus step")
+  if(bStep === 0) {this.previousModelSelection(MODELS.BERKUS)}
+  else if(bStep === 6) {this.nextModelSelection(MODELS.BERKUS)}
+  else {this.berkusStep = bStep};
+  }
   onStepChange() {  
       this.formOneAndThreeData = {
         ...this.formOneData,
@@ -268,6 +286,7 @@ export class MainValuationComponent implements OnInit{
     }
 
     const currentModel = storeModelArray[storeModelArray?.indexOf(data)+1];
+    this.berkusStep = 0;
       switch (currentModel) {
         case 'FCFE':
           this.next = 1;
@@ -292,6 +311,10 @@ export class MainValuationComponent implements OnInit{
           break;
         case 'slumpSale':
           this.next = 8;
+          break;
+        case 'berkus':
+          this.next = 9;
+          this.berkusStep = 1;
           break;
         default:
           // this.stepper.next(); 
@@ -321,7 +344,6 @@ export class MainValuationComponent implements OnInit{
         currentModel = '';
       }
     }
-  
      switch (currentModel) {
        case 'FCFE':
          this.next = 1;
@@ -346,6 +368,10 @@ export class MainValuationComponent implements OnInit{
          break;
        case 'slumpSale':
          this.next = 8;
+         break;
+       case 'berkus':
+         this.next = 9;
+         this.berkusStep = 5;
          break;
        default:
         // this.stepper.previous(); 

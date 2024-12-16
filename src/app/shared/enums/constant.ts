@@ -74,7 +74,33 @@ export const MODELS = {
   COMPARABLE_INDUSTRIES: 'CTM',
   RULE_ELEVEN_UA: 'ruleElevenUa',
   MARKET_PRICE:'Market_Price',
-  SLUMP_SALE:'slumpSale'
+  SLUMP_SALE:'slumpSale',
+  BERKUS:'berkus',
+  RISK_FACTOR:'riskFactor',
+  SCORE_CARD:'scoreCard',
+  VENTURE_CAPITAL:'ventureCapital',
+  COST_TO_DUPLICATE:'costToDuplicate'
+}
+
+export const BERKUS_METHOD = {
+  key:'Berkus',
+  subMethods:{
+    soundIdea:{
+      key:'soundIdea'
+    },
+    prototype:{
+      key:'prototype'
+    },
+    management:{
+      key:'management'
+    },
+    strategicRelationship:{
+      key:'strategicRelationship'
+    },
+    productRollOut:{
+      key:'productRollOut'
+    }
+  }
 }
 
 export const ALL_MODELS = {
@@ -86,7 +112,12 @@ export const ALL_MODELS = {
   Market_Price:'Market Price',
   Excess_Earnings:"Excess Earning",
   ruleElevenUa:"Rule Eleven UA",
-  slumpSale:"Slump Sale"
+  slumpSale:"Slump Sale",
+  berkus:"Berkus",
+  riskFactor:"Risk Factor",
+  scoreCard:"Score Card",
+  ventureCapital:"Venture Capital",
+  costToDuplicate:"Cost To Duplicate"
 }
 
   export const GLOBAL_VALUES = {
@@ -229,6 +260,29 @@ export const ALL_MODELS = {
           info:'This is Slump Sale model'
         }
       },
+      startUpValuationApproach:{
+        label:'Start-Up Valuations',
+        berkus:{
+          name:'Berkus Method',
+          info:'This is Berkus model'
+        },
+        riskFactor:{
+          name:'Risk Factor Method',
+          info:'This is risk factor model'
+        },
+        scoreCard:{
+          name:'Score Card Method',
+          info:'This is score card model'
+        },
+        ventureCapital:{
+          name:'Venture Capital (VC) Method',
+          info:'This is venture capital model'
+        },
+        costToDuplicate:{
+          name:'Cost to duplicate',
+          info:'This is cost to duplicate model'
+        }
+      },
     },
     RISK_FREE_RATE:{
       name:"Risk Free Rate",
@@ -307,7 +361,12 @@ export const ALL_MODELS = {
     vwapNse:`VWAP on NSE represents the average price of a security traded throughout the day, weighted by the volume of trades on the NSE, indicating the true average trading price during that period.`,
     vwapBse:`VWAP on BSE is the average price of a security traded throughout the day, weighted by the volume of trades on the BSE, reflecting the actual average trading price over the given timeframe.`,
     averageCCM:'CCM valuation based on average calculation',
-    medianCCM:'CCM valuation based on median calculation'
+    medianCCM:'CCM valuation based on median calculation',
+    berkusModelLabel: 'The Berkus Method is a startup valuation technique that assigns a specific value to different aspects of a startup, such as its idea, execution stage, team quality, partnerships, and market potential, aiming to estimate worth by evaluating progress and reducing risks.',
+    riskFactorModelLabel: `The Risk Factor Method is a startup valuation approach that adjusts a base value by evaluating specific risk factors. Positive or negative adjustments are applied based on risks such as management, market competition, technology, and financials, ultimately providing a valuation that reflects the startup's unique risk profile.`,
+    scoreCardModelLabel: 'The Scorecard Method values a startup by comparing it to similar companies, assigning weights to factors like management, market, and product, then adjusting a baseline valuation based on scores for each factor.',
+    ventureCapitalModelLabel: `The Venture Capital Method values a startup by estimating its future exit value, calculating the required return, and working backward to determine the present value. This involves dividing the expected exit value by the investor's target return, factoring in the risk and time to exit.`,
+    costToDuplicateModelLabel: `The Cost to Duplicate Method values a company by estimating the total cost required to replicate its assets and capabilities. This approach considers the expenses of recreating tangible assets, intellectual property, and business operations, making it useful for assessing early-stage startups. It assumes the company’s value equals what it would cost to rebuild it from scratch.`
   }
 
   export const CHECKLIST_TYPES = {
@@ -331,6 +390,8 @@ export const ALL_MODELS = {
   export const RULE_ELEVEN_UA_APPROACH = ['ruleElevenUa', 'slumpSale'];
 
   export const MARKET_APPROACH = ['Relative_Valuation','CTM','Market_Price'];
+
+  export const START_UP_APPROACH = ['berkus','riskFactor','scoreCard', 'ventureCapital', 'costToDuplicate'];
 
 export const RELATIVE_VALUATION_COMPANY_MAPPING: { [key: string]: string } = {
   'Company Name': 'company',
@@ -511,4 +572,4 @@ export const ADD_SPACE_BEFORE_LINE_ITEM_ASSESSMENT_OF_WC = [
 
 export const DATE_REGEX = /^([0-2]?\d|30|31)-(0?[1-9]|1[0-2])-\d{4}$/;
 
-export const XL_SHEET_ENUM = [ 'dcfApproach', 'ruleElevenUaApproach', 'marketPriceApproach', 'navApproach', 'slumpSaleApproach' ];
+export const XL_SHEET_ENUM = [ 'dcfApproach', 'ruleElevenUaApproach', 'marketPriceApproach', 'navApproach', 'slumpSaleApproach', 'startUpApproach' ];

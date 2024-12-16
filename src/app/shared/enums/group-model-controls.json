@@ -1815,6 +1815,2245 @@
               ]
         }
     },
+    "BERKUS":{
+        "type":"berkus",
+        "header":"Berkus Method",
+        "options":{
+            "soundIdea": {
+            "name":"soundIdea",
+            "placeholder":"Sound Idea Method",
+            "type":"text",
+            "toolTip":"Please select sound idea value",
+            "controlsConfig": [
+                {
+                    "type": "header",
+                    "label": "Sound Idea Method",
+                    "class":"c-decorated-header"
+                },
+                {
+                    "controlName": "proprietaryNature",
+                    "controlNameDoa": "proprietaryNatureDoa",
+                    "label": "Proprietary Nature",
+                    "labelDoa": "Proprietary Nature DOA",
+                    "placeholder":"Select Value",
+                    "tooltip":"The idea should be protectable via patents/copyrights and capable of generating significant returns.",
+                    "options": [               
+                            {
+                                "name":"In process",
+                                "value":"inProcess"
+                            },
+                            {
+                                "name":"Approved",
+                                "value":"approved"
+                            },
+                            {
+                                "name":"Not Approved",
+                                "value":"notApproved"
+                            }
+                        ],
+                        "degreeOfAchievement":[
+                        {
+                            "key":"inProcess",
+                            "percentage":[
+                                {
+                                    "percent":"10%",
+                                    "value":10
+                                },
+                                {
+                                    "percent":"20%",
+                                    "value":20
+                                },
+                                {
+                                    "percent":"30%",
+                                    "value":30
+                                },
+                                {
+                                    "percent":"40%",
+                                    "value":40
+                                },
+                                {
+                                    "percent":"50%",
+                                    "value":50
+                                }
+                            ]
+                        },
+                        {
+                            "key":"approved",
+                            "percentage":[
+                                {
+                                    "percent":"60%",
+                                    "value":60
+                                },
+                                {
+                                    "percent":"70%",
+                                    "value":70
+                                },
+                                {
+                                    "percent":"80%",
+                                    "value":80
+                                },
+                                {
+                                    "percent":"90%",
+                                    "value":90
+                                },
+                                {
+                                    "percent":"100%",
+                                    "value":100
+                                }
+                            ]
+                        },
+                        {
+                            "key":"notApproved",
+                            "percentage":[]
+                        }
+                    ],
+                    "question":"What stage is your product prototype currently in? "
+                },
+                {
+                    "controlName": "futurePlan",
+                    "controlNameDoa": "futurePlanDoa",
+                    "label": "Well Defined Future Plan",
+                    "labelDoa": "Well Defined Future Plan Doa",
+                    "placeholder":"Select Value",
+                    "tooltip":"Investors seek startups with a clear long-term vision and strategic direction, essential for attracting investment.",
+                    "options": [               
+                        {
+                            "name":"Well Defined",
+                            "value":"wellDefined"
+                        },
+                        {
+                            "name":"Somewhat Defined",
+                            "value":"somewhatDefined"
+                        },
+                        {
+                            "name":"Not Ready",
+                            "value":"notReady"
+                        }
+                    ],
+                    "degreeOfAchievement":[
+                        {
+                            "key":"wellDefined",
+                            "percentage":[
+                                {
+                                    "percent":"60%",
+                                    "value":60
+                                },
+                                {
+                                    "percent":"70%",
+                                    "value":70
+                                },
+                                {
+                                    "percent":"80%",
+                                    "value":80
+                                },
+                                {
+                                    "percent":"90%",
+                                    "value":90
+                                },
+                                {
+                                    "percent":"100%",
+                                    "value":100
+                                }
+                            ]
+                        },
+                        {
+                            "key":"somewhatDefined",
+                            "percentage":[
+                                {
+                                    "percent":"10%",
+                                    "value":10
+                                },
+                                {
+                                    "percent":"20%",
+                                    "value":20
+                                },
+                                {
+                                    "percent":"30%",
+                                    "value":30
+                                },
+                                {
+                                    "percent":"40%",
+                                    "value":40
+                                },
+                                {
+                                    "percent":"50%",
+                                    "value":50
+                                }
+                            ]
+                        },
+                        {
+                            "key":"notReady",
+                            "percentage":[]
+                        }
+                    ],
+                    "question":"Is a comprehensive business plan ready for investors?"
+                }, 
+                {
+                    "controlName": "scalability",
+                    "controlNameDoa": "scalabilityDoa",
+                    "label": "Scalability",
+                    "labelDoa": "Scalability Doa",
+                    "placeholder":"Select Value",
+                    "tooltip":"A scalable business can grow with minimal additional costs, vital for survival in competitive markets.",
+                    "options": [               
+                        {
+                            "name":"High",
+                            "value":"high"
+                        },
+                        {
+                            "name":"Moderate",
+                            "value":"moderate"
+                        },
+                        {
+                            "name":"Low",
+                            "value":"low"
+                        }
+                    ],
+                    "degreeOfAchievement":[
+                        {
+                            "key":"moderate",
+                            "percentage":[
+                                {
+                                    "percent":"10%",
+                                    "value":10
+                                },
+                                {
+                                    "percent":"20%",
+                                    "value":20
+                                },
+                                {
+                                    "percent":"30%",
+                                    "value":30
+                                },
+                                {
+                                    "percent":"40%",
+                                    "value":40
+                                },
+                                {
+                                    "percent":"50%",
+                                    "value":50
+                                }
+                            ]
+                        },
+                        {
+                            "key":"low",
+                            "percentage":[
+                                {
+                                    "percent":"60%",
+                                    "value":60
+                                },
+                                {
+                                    "percent":"70%",
+                                    "value":70
+                                },
+                                {
+                                    "percent":"80%",
+                                    "value":80
+                                },
+                                {
+                                    "percent":"90%",
+                                    "value":90
+                                },
+                                {
+                                    "percent":"100%",
+                                    "value":100
+                                }
+                            ]
+                        },
+                        {
+                            "key":"high",
+                            "percentage":[]
+                        }
+                    ],
+                    "question":"Focuses on cash burn rate?"
+                },
+                {
+                    "controlName": "socioPolticalRelevance",
+                    "controlNameDoa": "socioPolticalRelevanceDoa",
+                    "label": "Socio-Political Relevance",
+                    "labelDoa": "Socio-Political Relevance Doa",
+                    "placeholder":"Select Value",
+                    "tooltip":"The startup's idea must resonate with the prevailing socio-political climate to appeal to the broader audience.",
+                    "options": [               
+                        {
+                            "name":"High",
+                            "value":"high"
+                        },
+                        {
+                            "name":"Moderate",
+                            "value":"moderate"
+                        },
+                        {
+                            "name":"Low",
+                            "value":"low"
+                        }
+                    ],
+                    "degreeOfAchievement":[
+                        {
+                            "key":"moderate",
+                            "percentage":[
+                                {
+                                    "percent":"10%",
+                                    "value":10
+                                },
+                                {
+                                    "percent":"20%",
+                                    "value":20
+                                },
+                                {
+                                    "percent":"30%",
+                                    "value":30
+                                },
+                                {
+                                    "percent":"40%",
+                                    "value":40
+                                },
+                                {
+                                    "percent":"50%",
+                                    "value":50
+                                }
+                            ]
+                        },
+                        {
+                            "key":"low",
+                            "percentage":[
+                                {
+                                    "percent":"60%",
+                                    "value":60
+                                },
+                                {
+                                    "percent":"70%",
+                                    "value":70
+                                },
+                                {
+                                    "percent":"80%",
+                                    "value":80
+                                },
+                                {
+                                    "percent":"90%",
+                                    "value":90
+                                },
+                                {
+                                    "percent":"100%",
+                                    "value":100
+                                }
+                            ]
+                        },
+                        {
+                            "key":"high",
+                            "percentage":[]
+                        }
+                    ],
+                    "question":"How do current socio-political or macroeconomic trends impact your business?"
+                },
+                {
+                    "controlName": "validationOfIdea",
+                    "controlNameDoa": "validationOfIdeaDoa",
+                    "label": "Validation Of Idea",
+                    "labelDoa": "Validation Of Idea Doa",
+                    "placeholder":"Select Value",
+                    "tooltip":"Thorough experimentation and validation with a large audience minimize implementation risks and increase investor confidence.",
+                    "options": [               
+                        {
+                            "name":"Positive",
+                            "value":"positive"
+                        },
+                        {
+                            "name":"Mixed",
+                            "value":"mixed"
+                        },
+                        {
+                            "name":"Negative",
+                            "value":"negative"
+                        }
+                    ],
+                    "degreeOfAchievement":[
+                        {
+                            "key":"mixed",
+                            "percentage":[
+                                {
+                                    "percent":"10%",
+                                    "value":10
+                                },
+                                {
+                                    "percent":"20%",
+                                    "value":20
+                                },
+                                {
+                                    "percent":"30%",
+                                    "value":30
+                                },
+                                {
+                                    "percent":"40%",
+                                    "value":40
+                                },
+                                {
+                                    "percent":"50%",
+                                    "value":50
+                                }
+                            ]
+                        },
+                        {
+                            "key":"positive",
+                            "percentage":[
+                                {
+                                    "percent":"60%",
+                                    "value":60
+                                },
+                                {
+                                    "percent":"70%",
+                                    "value":70
+                                },
+                                {
+                                    "percent":"80%",
+                                    "value":80
+                                },
+                                {
+                                    "percent":"90%",
+                                    "value":90
+                                },
+                                {
+                                    "percent":"100%",
+                                    "value":100
+                                }
+                            ]
+                        },
+                        {
+                            "key":"negative",
+                            "percentage":[]
+                        }
+                    ],
+                    "question":"What have been the outcomes of tests conducted on your product or service?"
+                }
+                ]
+            },
+            "prototype": {
+            "name":"prototype",
+            "placeholder":"Prototype Method",
+            "type":"text",
+            "toolTip":"Please select prototype value",
+            "controlsConfig": [
+                {
+                    "type": "header",
+                    "label": "Prototype Method",
+                    "class":"c-decorated-header"
+                },
+                {
+                    "controlName": "functionality",
+                    "controlNameDoa": "functionalityDoa",
+                    "label": "Functionality",
+                    "labelDoa": "Functionality DOA",
+                    "placeholder":"Select Value",
+                    "tooltip":"The idea should be protectable via patents/copyrights and capable of generating significant returns.",
+                    "options": [               
+                            {
+                                "name":"Success Rate",
+                                "value":"successRate"
+                            }
+                        ],
+                        "degreeOfAchievement":[
+                        {
+                            "key":"successRate",
+                            "percentage":[
+                                {
+                                    "percent":"10%",
+                                    "value":10
+                                },
+                                {
+                                    "percent":"20%",
+                                    "value":20
+                                },
+                                {
+                                    "percent":"30%",
+                                    "value":30
+                                },
+                                {
+                                    "percent":"40%",
+                                    "value":40
+                                },
+                                {
+                                    "percent":"50%",
+                                    "value":50
+                                },
+                                {
+                                    "percent":"60%",
+                                    "value":60
+                                },
+                                {
+                                    "percent":"70%",
+                                    "value":70
+                                },
+                                {
+                                    "percent":"80%",
+                                    "value":80
+                                },
+                                {
+                                    "percent":"90%",
+                                    "value":90
+                                },
+                                {
+                                    "percent":"100%",
+                                    "value":100
+                                }
+                            ]
+                        }
+                    ],
+                    "question":"What is the success rate of tests during the trial phase?"
+                },
+                {
+                    "controlName": "viabilty",
+                    "controlNameDoa": "viabilityDoa",
+                    "label": "Viability",
+                    "labelDoa": "Well Defined Future Plan Doa",
+                    "placeholder":"Select Value",
+                    "tooltip":"Investors seek startups with a clear long-term vision and strategic direction, essential for attracting investment.",
+                    "options": [               
+                        {
+                            "name":"Low Demand",
+                            "value":"lowDemand"
+                        },
+                        {
+                            "name":"Moderate Demand",
+                            "value":"moderateDemand"
+                        },
+                        {
+                            "name":"High Demand",
+                            "value":"highDemand"
+                        }
+                    ],
+                    "degreeOfAchievement":[
+                        {
+                            "key":"highDemand",
+                            "percentage":[
+                                {
+                                    "percent":"60%",
+                                    "value":60
+                                },
+                                {
+                                    "percent":"70%",
+                                    "value":70
+                                },
+                                {
+                                    "percent":"80%",
+                                    "value":80
+                                },
+                                {
+                                    "percent":"90%",
+                                    "value":90
+                                },
+                                {
+                                    "percent":"100%",
+                                    "value":100
+                                }
+                            ]
+                        },
+                        {
+                            "key":"lowDemand",
+                            "percentage":[
+                                {
+                                    "percent":"0%",
+                                    "value":0
+                                },
+                                {
+                                    "percent":"10%",
+                                    "value":10
+                                },
+                                {
+                                    "percent":"20%",
+                                    "value":20
+                                }
+                            ]
+                        },
+                        {
+                            "key":"moderateDemand",
+                            "percentage":[
+                                {
+                                    "percent":"30%",
+                                    "value":30
+                                },
+                                {
+                                    "percent":"40%",
+                                    "value":40
+                                },
+                                {
+                                    "percent":"50%",
+                                    "value":50
+                                }
+                            ]
+                        }
+                    ],
+                    "question":"What level of demand have you observed or do you anticipate for the product in the current market?"
+                }, 
+                {
+                    "controlName": "userExprnce",
+                    "controlNameDoa": "userExprnceDoa",
+                    "label": "User Experience (UX)",
+                    "labelDoa": "User Experience (UX) Doa",
+                    "placeholder":"Select Value",
+                    "tooltip":"A scalable business can grow with minimal additional costs, vital for survival in competitive markets.",
+                    "options": [               
+                        {
+                            "name":"Highly Satisfied",
+                            "value":"highlySatisfied"
+                        },
+                        {
+                            "name":"Not Satisfied",
+                            "value":"notSatisfied"
+                        },
+                        {
+                            "name":"Satisfied",
+                            "value":"satisfied"
+                        }
+                    ],
+                    "degreeOfAchievement":[
+                        {
+                            "key":"satisfied",
+                            "percentage":[
+                                {
+                                    "percent":"30%",
+                                    "value":30
+                                },
+                                {
+                                    "percent":"40%",
+                                    "value":40
+                                },
+                                {
+                                    "percent":"50%",
+                                    "value":50
+                                }
+                            ]
+                        },
+                        {
+                            "key":"highlySatisfied",
+                            "percentage":[
+                                {
+                                    "percent":"60%",
+                                    "value":60
+                                },
+                                {
+                                    "percent":"70%",
+                                    "value":70
+                                },
+                                {
+                                    "percent":"80%",
+                                    "value":80
+                                },
+                                {
+                                    "percent":"90%",
+                                    "value":90
+                                },
+                                {
+                                    "percent":"100%",
+                                    "value":100
+                                }
+                            ]
+                        },
+                        {
+                            "key":"notSatisfied",
+                            "percentage":[
+                                {
+                                    "percent":"0%",
+                                    "value":0
+                                },
+                                {
+                                    "percent":"10%",
+                                    "value":10
+                                },
+                                {
+                                    "percent":"20%",
+                                    "value":20
+                                }
+                            ]
+                        }
+                    ],
+                    "question":"How would you rate user satisfaction based on initial testing?"
+                },
+                {
+                    "controlName": "innovation",
+                    "controlNameDoa": "innovationDoa",
+                    "label": "Innovation",
+                    "labelDoa": "Innovation Doa",
+                    "placeholder":"Select Value",
+                    "tooltip":"The startup's idea must resonate with the prevailing socio-political climate to appeal to the broader audience.",
+                    "options": [               
+                        {
+                            "name":"Extremely Innovative",
+                            "value":"extremelyInnovative"
+                        },
+                        {
+                            "name":"Moderately Innovative",
+                            "value":"moderatelyInnovative"
+                        },
+                        {
+                            "name":"Not Innovative",
+                            "value":"notInnovative"
+                        }
+                    ],
+                    "degreeOfAchievement":[
+                        {
+                            "key":"moderatelyInnovative",
+                            "percentage":[
+                                {
+                                    "percent":"10%",
+                                    "value":10
+                                },
+                                {
+                                    "percent":"20%",
+                                    "value":20
+                                },
+                                {
+                                    "percent":"30%",
+                                    "value":30
+                                },
+                                {
+                                    "percent":"40%",
+                                    "value":40
+                                }
+                                
+                            ]
+                        },
+                        {
+                            "key":"extremelyInnovative",
+                            "percentage":[
+                                {
+                                    "percent":"50%",
+                                    "value":50
+                                },
+                                {
+                                    "percent":"60%",
+                                    "value":60
+                                },
+                                {
+                                    "percent":"70%",
+                                    "value":70
+                                },
+                                {
+                                    "percent":"80%",
+                                    "value":80
+                                },
+                                {
+                                    "percent":"90%",
+                                    "value":90
+                                },
+                                {
+                                    "percent":"100%",
+                                    "value":100
+                                }
+                            ]
+                        },
+                        {
+                            "key":"notInnovative",
+                            "percentage":[]
+                        }
+                    ],
+                    "question":"Is the prototype innovative in terms of its features or technology?"
+                },
+                {
+                    "controlName": "costEffeciency",
+                    "controlNameDoa": "costEffeciencyDoa",
+                    "label": "Cost Efficiency",
+                    "labelDoa": "Cost Efficiency Doa",
+                    "placeholder":"Select Value",
+                    "tooltip":"Thorough experimentation and validation with a large audience minimize implementation risks and increase investor confidence.",
+                    "options": [               
+                        {
+                            "name":"ETA Within",
+                            "value":"etaWithin"
+                        },
+                        {
+                            "name":"ETA On",
+                            "value":"etaOn"
+                        },
+                        {
+                            "name":"ETA Beyond",
+                            "value":"etaBeyond"
+                        }
+                    ],
+                    "degreeOfAchievement":[
+                        {
+                            "key":"etaOn",
+                            "percentage":[
+                                {
+                                    "percent":"30%",
+                                    "value":30
+                                },
+                                {
+                                    "percent":"40%",
+                                    "value":40
+                                },
+                                {
+                                    "percent":"50%",
+                                    "value":50
+                                }
+                            ]
+                        },
+                        {
+                            "key":"etaWithin",
+                            "percentage":[
+                                {
+                                    "percent":"60%",
+                                    "value":60
+                                },
+                                {
+                                    "percent":"70%",
+                                    "value":70
+                                },
+                                {
+                                    "percent":"80%",
+                                    "value":80
+                                },
+                                {
+                                    "percent":"90%",
+                                    "value":90
+                                },
+                                {
+                                    "percent":"100%",
+                                    "value":100
+                                }
+                            ]
+                        },
+                        {
+                            "key":"etaBeyond",
+                            "percentage":[
+                                {
+                                    "percent":"0%",
+                                    "value":0
+                                },
+                                {
+                                    "percent":"10%",
+                                    "value":10
+                                },
+                                {
+                                    "percent":"20%",
+                                    "value":20
+                                }
+                            ]
+                        }
+                    ],
+                    "question":"How efficiently was the prototype developed in terms of resources? Cost-effective development may lead to a higher weight."
+                },
+                {
+                    "controlName": "timeEffeciency",
+                    "controlNameDoa": "timeEffeciencyDoa",
+                    "label": "Time Efficiency",
+                    "labelDoa": "Time Efficiency Doa",
+                    "placeholder":"Select Value",
+                    "tooltip":"Thorough experimentation and validation with a large audience minimize implementation risks and increase investor confidence.",
+                    "options": [               
+                        {
+                            "name":"ETA Within",
+                            "value":"etaWithin"
+                        },
+                        {
+                            "name":"ETA On",
+                            "value":"etaOn"
+                        },
+                        {
+                            "name":"ETA Beyond",
+                            "value":"etaBeyond"
+                        }
+                    ],
+                    "degreeOfAchievement":[
+                        {
+                            "key":"etaOn",
+                            "percentage":[
+                                {
+                                    "percent":"30%",
+                                    "value":30
+                                },
+                                {
+                                    "percent":"40%",
+                                    "value":40
+                                },
+                                {
+                                    "percent":"50%",
+                                    "value":50
+                                }
+                            ]
+                        },
+                        {
+                            "key":"etaWithin",
+                            "percentage":[
+                                {
+                                    "percent":"60%",
+                                    "value":60
+                                },
+                                {
+                                    "percent":"70%",
+                                    "value":70
+                                },
+                                {
+                                    "percent":"80%",
+                                    "value":80
+                                },
+                                {
+                                    "percent":"90%",
+                                    "value":90
+                                },
+                                {
+                                    "percent":"100%",
+                                    "value":100
+                                }
+                            ]
+                        },
+                        {
+                            "key":"etaBeyond",
+                            "percentage":[
+                                {
+                                    "percent":"0%",
+                                    "value":0
+                                },
+                                {
+                                    "percent":"10%",
+                                    "value":10
+                                },
+                                {
+                                    "percent":"20%",
+                                    "value":20
+                                }
+                            ]
+                        }
+                    ],
+                    "question":"How efficiently was the prototype developed in terms of resources? Time-efficient development may lead to a higher weight."
+                }
+            ]
+            },
+            "management": {
+                "name":"management",
+                "placeholder":"Management Method",
+                "type":"text",
+                "toolTip":"Please select management value",
+                "controlsConfig": [
+                    {
+                        "type": "header",
+                        "label": "Management Method",
+                        "class":"c-decorated-header"
+                    },
+                    {
+                        "controlName": "experienceAndExpertise",
+                        "controlNameDoa": "experienceAndExpertiseDoa",
+                        "label": "Experience and Expertise",
+                        "labelDoa": "Experience and Expertise DOA",
+                        "placeholder":"Select Value",
+                        "tooltip":"The idea should be protectable via patents/copyrights and capable of generating significant returns.",
+                        "options": [               
+                                {
+                                    "name":"Five To Ten",
+                                    "value":"fiveToTen"
+                                },
+                                {
+                                    "name":"Ten Years Plus",
+                                    "value":"tenYearsPlus"
+                                },
+                                {
+                                    "name":"Below Ten Years",
+                                    "value":"belowTenYears"
+                                }
+                            ],
+                            "degreeOfAchievement":[
+                            {
+                                "key":"fiveToTen",
+                                "percentage":[
+                                    {
+                                        "percent":"20%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":30
+                                    },
+                                    {
+                                        "percent":"40%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":50
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"tenYearsPlus",
+                                "percentage":[
+                                    {
+                                        "percent":"60%",
+                                        "value":60
+                                    },
+                                    {
+                                        "percent":"70%",
+                                        "value":70
+                                    },
+                                    {
+                                        "percent":"80%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":100
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"belowTenYears",
+                                "percentage":[
+                                    {
+                                        "percent":"0%",
+                                        "value":0
+                                    },
+                                    {
+                                        "percent":"10%",
+                                        "value":10
+                                    }
+                                ]
+                            }
+                        ],
+                        "question":"What is the average management experience level of your team?"
+                    },
+                    {
+                        "controlName": "visionAndStrategy",
+                        "controlNameDoa": "visionAndStrategyDoa",
+                        "label": "Vision and Strategy",
+                        "labelDoa": "Vision and Strategy Doa",
+                        "placeholder":"Select Value",
+                        "tooltip":"Investors seek startups with a clear long-term vision and strategic direction, essential for attracting investment.",
+                        "options": [               
+                            {
+                                "name":"Well Defined And Ambitious",
+                                "value":"wellDefinedAndAmbitious"
+                            },
+                            {
+                                "name":"Basic Goals",
+                                "value":"basicGoals"
+                            },
+                            {
+                                "name":"None",
+                                "value":"none"
+                            }
+                        ],
+                        "degreeOfAchievement":[
+                            {
+                                "key":"wellDefinedAndAmbitious",
+                                "percentage":[
+                                    {
+                                        "percent":"60%",
+                                        "value":60
+                                    },
+                                    {
+                                        "percent":"70%",
+                                        "value":70
+                                    },
+                                    {
+                                        "percent":"80%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":100
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"none",
+                                "percentage":[]
+                            },
+                            {
+                                "key":"basicGoals",
+                                "percentage":[
+                                    {
+                                        "percent":"10%",
+                                        "value":10
+                                    },
+                                    {
+                                        "percent":"20%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":30
+                                    },
+                                    {
+                                        "percent":"40%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":50
+                                    }
+                                ]
+                            }
+                        ],
+                        "question":"How well-defined are your strategic goals and milestones?"
+                    }, 
+                    {
+                        "controlName": "executionSkills",
+                        "controlNameDoa": "executionSkillsDoa",
+                        "label": "Execution Skills",
+                        "labelDoa": "Execution Skills Doa",
+                        "placeholder":"Select Value",
+                        "tooltip":"A scalable business can grow with minimal additional costs, vital for survival in competitive markets.",
+                        "options": [               
+                            {
+                                "name":"Consistently Met",
+                                "value":"consistentlyMet"
+                            },
+                            {
+                                "name":"Sometimes Met",
+                                "value":"sometimesMet"
+                            },
+                            {
+                                "name":"Rarely Met",
+                                "value":"rarelyMet"
+                            }
+                        ],
+                        "degreeOfAchievement":[
+                            {
+                                "key":"sometimesMet",
+                                "percentage":[
+                                    {
+                                        "percent":"20%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":30
+                                    },
+                                    {
+                                        "percent":"40%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":50
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"consistentlyMet",
+                                "percentage":[
+                                    {
+                                        "percent":"60%",
+                                        "value":60
+                                    },
+                                    {
+                                        "percent":"70%",
+                                        "value":70
+                                    },
+                                    {
+                                        "percent":"80%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":100
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"rarelyMet",
+                                "percentage":[
+                                    {
+                                        "percent":"0%",
+                                        "value":0
+                                    },
+                                    {
+                                        "percent":"10%",
+                                        "value":10
+                                    }
+                                ]
+                            }
+                        ],
+                        "question":"How frequently has the team met its past execution targets?"
+                    },
+                    {
+                        "controlName": "networkAndRelationships",
+                        "controlNameDoa": "networkAndRelationshipsDoa",
+                        "label": "Network and Relationships",
+                        "labelDoa": "Network and Relationships Doa",
+                        "placeholder":"Select Value",
+                        "tooltip":"The startup's idea must resonate with the prevailing socio-political climate to appeal to the broader audience.",
+                        "options": [               
+                            {
+                                "name":"Extensive Network",
+                                "value":"extensiveNetwork"
+                            },
+                            {
+                                "name":"No Network",
+                                "value":"noNetwork"
+                            },
+                            {
+                                "name":"Moderate Network",
+                                "value":"moderateNetwork"
+                            }
+                        ],
+                        "degreeOfAchievement":[
+                            {
+                                "key":"moderateNetwork",
+                                "percentage":[
+                                    {
+                                        "percent":"10%",
+                                        "value":10
+                                    },
+                                    {
+                                        "percent":"20%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":30
+                                    },
+                                    {
+                                        "percent":"40%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":50
+                                    }
+                                    
+                                ]
+                            },
+                            {
+                                "key":"extensiveNetwork",
+                                "percentage":[
+                                    
+                                    {
+                                        "percent":"60%",
+                                        "value":60
+                                    },
+                                    {
+                                        "percent":"70%",
+                                        "value":70
+                                    },
+                                    {
+                                        "percent":"80%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":100
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"noNetwork",
+                                "percentage":[]
+                            }
+                        ],
+                        "question":"How strong is the management team’s professional network within the industry?"
+                    },
+                    {
+                        "controlName": "leadershipAndTeamDynamic",
+                        "controlNameDoa": "leadershipAndTeamDyanamicDoa",
+                        "label": "Leadership and Team Dynamics",
+                        "labelDoa": "Leadership and Team Dynamics Doa",
+                        "placeholder":"Select Value",
+                        "tooltip":"Thorough experimentation and validation with a large audience minimize implementation risks and increase investor confidence.",
+                        "options": [               
+                            {
+                                "name":"Outstanding",
+                                "value":"outstanding"
+                            },
+                            {
+                                "name":"Satisfactory",
+                                "value":"satisfactory"
+                            },
+                            {
+                                "name":"Insufficient",
+                                "value":"insufficient"
+                            }
+                        ],
+                        "degreeOfAchievement":[
+                            {
+                                "key":"satisfactory",
+                                "percentage":[
+                                    {
+                                        "percent":"10%",
+                                        "value":10
+                                    },
+                                    {
+                                        "percent":"20%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":30
+                                    },
+                                    {
+                                        "percent":"40%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":50
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"outstanding",
+                                "percentage":[
+                                    {
+                                        "percent":"60%",
+                                        "value":60
+                                    },
+                                    {
+                                        "percent":"70%",
+                                        "value":70
+                                    },
+                                    {
+                                        "percent":"80%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":100
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"insufficient",
+                                "percentage":[]
+                            }
+                        ],
+                        "question":"How effective is teamwork and collaboration among the management team?"
+                    },
+                    {
+                        "controlName": "industryKnowledgeAndInsights",
+                        "controlNameDoa": "industryKnowledgeAndInsightsDoa",
+                        "label": "Industry Knowledge and Insights",
+                        "labelDoa": "Industry Knowledge and Insights Doa",
+                        "placeholder":"Select Value",
+                        "tooltip":"Thorough experimentation and validation with a large audience minimize implementation risks and increase investor confidence.",
+                        "options": [               
+                            {
+                                "name":"Extensive Knowledge",
+                                "value":"extensiveKnowledge"
+                            },
+                            {
+                                "name":"Basic Knowledge",
+                                "value":"basicKnowledge"
+                            },
+                            {
+                                "name":"No Knowledge",
+                                "value":"noKnowledge"
+                            }
+                        ],
+                        "degreeOfAchievement":[
+                            {
+                                "key":"basicKnowledge",
+                                "percentage":[
+                                    {
+                                        "percent":"10%",
+                                        "value":10
+                                    },
+                                    {
+                                        "percent":"20%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":30
+                                    },
+                                    {
+                                        "percent":"40%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":50
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"extensiveKnowledge",
+                                "percentage":[
+                                    {
+                                        "percent":"60%",
+                                        "value":60
+                                    },
+                                    {
+                                        "percent":"70%",
+                                        "value":70
+                                    },
+                                    {
+                                        "percent":"80%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":100
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"noKnowledge",
+                                "percentage":[]
+                            }
+                        ],
+                        "question":"How extensive is the management team’s knowledge of industry trends and dynamics?"
+                    }
+                ]
+            },
+            "strategicRelationships": {
+                "name":"strategicRelationships",
+                "placeholder":"Strategic Relationships Method",
+                "type":"text",
+                "toolTip":"Please select value",
+                "controlsConfig": [
+                    {
+                        "type": "header",
+                        "label": "Strategic Relationships Method",
+                        "class":"c-decorated-header"
+                    },
+                    {
+                        "controlName": "partnership",
+                        "controlNameDoa": "partnershipDoa",
+                        "label": "Partnerships",
+                        "labelDoa": "Partnerships DOA",
+                        "placeholder":"Select Value",
+                        "tooltip":"The idea should be protectable via patents/copyrights and capable of generating significant returns.",
+                        "options": [               
+                                {
+                                    "name":"Many Partnership",
+                                    "value":"manyPartnership"
+                                },
+                                {
+                                    "name":"Few Partnership",
+                                    "value":"fewPartnerShip"
+                                },
+                                {
+                                    "name":"No Partnership",
+                                    "value":"noPartnership"
+                                }
+                            ],
+                            "degreeOfAchievement":[
+                            {
+                                "key":"fewPartnerShip",
+                                "percentage":[
+                                    {
+                                        "percent":"10%",
+                                        "value":10
+                                    },
+                                    {
+                                        "percent":"20%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":30
+                                    },
+                                    {
+                                        "percent":"40%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":50
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"manyPartnership",
+                                "percentage":[
+                                    {
+                                        "percent":"60%",
+                                        "value":60
+                                    },
+                                    {
+                                        "percent":"70%",
+                                        "value":70
+                                    },
+                                    {
+                                        "percent":"80%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":100
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"noPartnership",
+                                "percentage":[]
+                            }
+                        ],
+                        "question":"How many partnerships does your startup have with established industry players or complementary businesses?"
+                    },
+                    {
+                        "controlName": "customerRelationship",
+                        "controlNameDoa": "customerRelationshipDoa",
+                        "label": "Customer Relationships",
+                        "labelDoa": "Customer Relationships Doa",
+                        "placeholder":"Select Value",
+                        "tooltip":"Investors seek startups with a clear long-term vision and strategic direction, essential for attracting investment.",
+                        "options": [               
+                            {
+                                "name":"Moderate Customer",
+                                "value":"moderateCustomer"
+                            },
+                            {
+                                "name":"Strong Customer",
+                                "value":"strongCustomer"
+                            },
+                            {
+                                "name":"Weak Customer",
+                                "value":"weakCustomer"
+                            }
+                        ],
+                        "degreeOfAchievement":[
+                            {
+                                "key":"strongCustomer",
+                                "percentage":[
+                                    {
+                                        "percent":"60%",
+                                        "value":10
+                                    },
+                                    {
+                                        "percent":"70%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"80%",
+                                        "value":30
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":50
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"weakCustomer",
+                                "percentage":[]
+                            },
+                            {
+                                "key":"moderateCustomer",
+                                "percentage":[
+                                    {
+                                        "percent":"10%",
+                                        "value":60
+                                    },
+                                    {
+                                        "percent":"20%",
+                                        "value":70
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"40%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":100
+                                    }
+                                ]
+                            }
+                        ],
+                        "question":"How strong are your customer relationships and retention rates?"
+                    }, 
+                    {
+                        "controlName": "supplierRelationship",
+                        "controlNameDoa": "supplierRelationshipDoa",
+                        "label": "Supplier Relationships",
+                        "labelDoa": "Supplier Relationships Doa",
+                        "placeholder":"Select Value",
+                        "tooltip":"A scalable business can grow with minimal additional costs, vital for survival in competitive markets.",
+                        "options": [               
+                            {
+                                "name":"Many Suppliers With Better Pricing",
+                                "value":"manySuppliersWithBetterPricing"
+                            },
+                            {
+                                "name":"Few Suppliers With Adequate Pricing",
+                                "value":"fewSuppliersWithAdequatePricing"
+                            },
+                            {
+                                "name":"No Supplier Associated",
+                                "value":"noSupplierAssociated"
+                            }
+                        ],
+                        "degreeOfAchievement":[
+                            {
+                                "key":"fewSuppliersWithAdequatePricing",
+                                "percentage":[
+                                    {
+                                        "percent":"10%",
+                                        "value":10
+                                    },
+                                    {
+                                        "percent":"20%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":30
+                                    },
+                                    {
+                                        "percent":"40%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":50
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"manySuppliersWithBetterPricing",
+                                "percentage":[
+                                    {
+                                        "percent":"60%",
+                                        "value":60
+                                    },
+                                    {
+                                        "percent":"70%",
+                                        "value":70
+                                    },
+                                    {
+                                        "percent":"80%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":100
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"noSupplierAssociated",
+                                "percentage":[]
+                            }
+                        ],
+                        "question":"How many suppliers are associated with your business, and what is the nature of their pricing?"
+                    },
+                    {
+                        "controlName": "distributionChannel",
+                        "controlNameDoa": "distributionChannelDoa",
+                        "label": "Distribution Channels",
+                        "labelDoa": "Distribution Channels Doa",
+                        "placeholder":"Select Value",
+                        "tooltip":"The startup's idea must resonate with the prevailing socio-political climate to appeal to the broader audience.",
+                        "options": [               
+                            {
+                                "name":"Strong Retailer Network With Good Availability",
+                                "value":"strongRetailerNetworkWithGoodAvailbility"
+                            },
+                            {
+                                "name":"Few Retailer With Moderate Availability",
+                                "value":"fewRetailerWithModerateAvailability"
+                            },
+                            {
+                                "name":"No Manjor Retailer",
+                                "value":"noMajorRetailer"
+                            }
+                        ],
+                        "degreeOfAchievement":[
+                            {
+                                "key":"fewRetailerWithModerateAvailability",
+                                "percentage":[
+                                    {
+                                        "percent":"10%",
+                                        "value":10
+                                    },
+                                    {
+                                        "percent":"20%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":30
+                                    },
+                                    {
+                                        "percent":"40%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":50
+                                    }
+                                    
+                                ]
+                            },
+                            {
+                                "key":"strongRetailerNetworkWithGoodAvailbility",
+                                "percentage":[
+                                    
+                                    {
+                                        "percent":"60%",
+                                        "value":60
+                                    },
+                                    {
+                                        "percent":"70%",
+                                        "value":70
+                                    },
+                                    {
+                                        "percent":"80%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":100
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"noMajorRetailer",
+                                "percentage":[]
+                            }
+                        ],
+                        "question":"How many major retailers or distributors are part of your network, and how effective are they in making your product available?"
+                    },
+                    {
+                        "controlName": "intellectualPropertyRelationship",
+                        "controlNameDoa": "intellectualPropertyRelationshipDoa",
+                        "label": "Intellectual Property (IP) Relationships",
+                        "labelDoa": "Intellectual Property (IP) Relationships Doa",
+                        "placeholder":"Select Value",
+                        "tooltip":"Thorough experimentation and validation with a large audience minimize implementation risks and increase investor confidence.",
+                        "options": [               
+                            {
+                                "name":"Many Collaboration Or Engagement",
+                                "value":"manyCollaborationOrEngagement"
+                            },
+                            {
+                                "name":"Few Collaboration Or Engagement",
+                                "value":"FewCollaborationOrEngagement"
+                            },
+                            {
+                                "name":"No Collaboration Or Engagement",
+                                "value":"noCollaborationOrEngagement"
+                            }
+                        ],
+                        "degreeOfAchievement":[
+                            {
+                                "key":"FewCollaborationOrEngagement",
+                                "percentage":[
+                                    {
+                                        "percent":"10%",
+                                        "value":10
+                                    },
+                                    {
+                                        "percent":"20%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":30
+                                    },
+                                    {
+                                        "percent":"40%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":50
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"manyCollaborationOrEngagement",
+                                "percentage":[
+                                    {
+                                        "percent":"60%",
+                                        "value":60
+                                    },
+                                    {
+                                        "percent":"70%",
+                                        "value":70
+                                    },
+                                    {
+                                        "percent":"80%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":100
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"noCollaborationOrEngagement",
+                                "percentage":[]
+                            }
+                        ],
+                        "question":"How many collaborations or beneficial licensing agreements does your startup have related to intellectual property?"
+                    }
+                ]
+            },
+            "productRollout": {
+                "name":"productRollout",
+                "placeholder":"Product Rollout Method",
+                "type":"text",
+                "toolTip":"Please select value",
+                "controlsConfig": [
+                    {
+                        "type": "header",
+                        "label": "Product Rollout Method",
+                        "class":"c-decorated-header"
+                    },
+                    {
+                        "controlName": "marketPotential",
+                        "controlNameDoa": "marketPotentialDoa",
+                        "label": "Market Potential",
+                        "labelDoa": "Market Potential DOA",
+                        "placeholder":"Select Value",
+                        "tooltip":"The idea should be protectable via patents/copyrights and capable of generating significant returns.",
+                        "options": [               
+                                {
+                                    "name":"Strong Positive Trends",
+                                    "value":"strongPositiveTrends"
+                                },
+                                {
+                                    "name":"Some Positive Trends",
+                                    "value":"somePositiveTrends"
+                                },
+                                {
+                                    "name":"Negative Positive Trends",
+                                    "value":"negativePositiveTrends"
+                                }
+                            ],
+                            "degreeOfAchievement":[
+                            {
+                                "key":"somePositiveTrends",
+                                "percentage":[
+                                    {
+                                        "percent":"20%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":30
+                                    },
+                                    {
+                                        "percent":"40%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":50
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"strongPositiveTrends",
+                                "percentage":[
+                                    {
+                                        "percent":"60%",
+                                        "value":60
+                                    },
+                                    {
+                                        "percent":"70%",
+                                        "value":70
+                                    },
+                                    {
+                                        "percent":"80%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":100
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"negativePositiveTrends",
+                                "percentage":[
+                                    {
+                                        "percent":"0%",
+                                        "value":0
+                                    },
+                                    {
+                                        "percent":"10%",
+                                        "value":10
+                                    }
+                                ]
+                            }
+                        ],
+                        "question":"What are the current trends in your target market, and how is demand expected to grow?"
+                    },
+                    {
+                        "controlName": "customerAcquisitionPlan",
+                        "controlNameDoa": "customerAcquisitionPlanDoa",
+                        "label": "Customer Acquisition Plan",
+                        "labelDoa": "Customer Acquisition Plan Doa",
+                        "placeholder":"Select Value",
+                        "tooltip":"Investors seek startups with a clear long-term vision and strategic direction, essential for attracting investment.",
+                        "options": [               
+                            {
+                                "name":"High Conversion Rate And Efficiency",
+                                "value":"highConversionRateAndEfficiency"
+                            },
+                            {
+                                "name":"Moderate Conversion Rate And Efficiency",
+                                "value":"moderateConversionRateAndEfficiency"
+                            },
+                            {
+                                "name":"Low Conversion Rate And Efficiency",
+                                "value":"lowConversionRateAndEfficiency"
+                            }
+                        ],
+                        "degreeOfAchievement":[
+                            {
+                                "key":"highConversionRateAndEfficiency",
+                                "percentage":[
+                                    {
+                                        "percent":"60%",
+                                        "value":60
+                                    },
+                                    {
+                                        "percent":"70%",
+                                        "value":70
+                                    },
+                                    {
+                                        "percent":"80%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":100
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"lowConversionRateAndEfficiency",
+                                "percentage":[
+                                    {
+                                        "percent":"0%",
+                                        "value":0
+                                    },
+                                    {
+                                        "percent":"10%",
+                                        "value":10
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"moderateConversionRateAndEfficiency",
+                                "percentage":[
+                                    {
+                                        "percent":"20%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":30
+                                    },
+                                    {
+                                        "percent":"40%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":50
+                                    }
+                                ]
+                            }
+                        ],
+                        "question":"What is the conversion rate from potential customers to actual customers, and how efficient is this process?"
+                    }, 
+                    {
+                        "controlName": "productDifferentiation",
+                        "controlNameDoa": "productDifferentiationDoa",
+                        "label": "Product Differentiation",
+                        "labelDoa": "Product Differentiation Doa",
+                        "placeholder":"Select Value",
+                        "tooltip":"A scalable business can grow with minimal additional costs, vital for survival in competitive markets.",
+                        "options": [               
+                            {
+                                "name":"Significant Competitive Advantage",
+                                "value":"significantCompetitiveAdvantage"
+                            },
+                            {
+                                "name":"Some Competitive Advantage",
+                                "value":"someCompetitiveAdvantage"
+                            },
+                            {
+                                "name":"No Competitive Advantage",
+                                "value":"noCompetitiveAdvantage"
+                            }
+                        ],
+                        "degreeOfAchievement":[
+                            {
+                                "key":"someCompetitiveAdvantage",
+                                "percentage":[
+                                    {
+                                        "percent":"10%",
+                                        "value":10
+                                    },
+                                    {
+                                        "percent":"20%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":30
+                                    },
+                                    {
+                                        "percent":"40%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":50
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"significantCompetitiveAdvantage",
+                                "percentage":[
+                                    {
+                                        "percent":"60%",
+                                        "value":60
+                                    },
+                                    {
+                                        "percent":"70%",
+                                        "value":70
+                                    },
+                                    {
+                                        "percent":"80%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":100
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"noCompetitiveAdvantage",
+                                "percentage":[]
+                            }
+                        ],
+                        "question":"What advantages does your product have over competing products in the market?"
+                    },
+                    {
+                        "controlName": "executionRisk",
+                        "controlNameDoa": "executionRiskDoa",
+                        "label": "Execution Risk",
+                        "labelDoa": "Execution Risk Doa",
+                        "placeholder":"Select Value",
+                        "tooltip":"The startup's idea must resonate with the prevailing socio-political climate to appeal to the broader audience.",
+                        "options": [               
+                            {
+                                "name":"Well Prepared",
+                                "value":"wellPrepared"
+                            },
+                            {
+                                "name":"Sufficient",
+                                "value":"sufficient"
+                            },
+                            {
+                                "name":"Unprepared",
+                                "value":"unprepared"
+                            }
+                        ],
+                        "degreeOfAchievement":[
+                            {
+                                "key":"sufficient",
+                                "percentage":[
+                                    {
+                                        "percent":"10%",
+                                        "value":10
+                                    },
+                                    {
+                                        "percent":"20%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":30
+                                    },
+                                    {
+                                        "percent":"40%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":50
+                                    }
+                                    
+                                ]
+                            },
+                            {
+                                "key":"wellPrepared",
+                                "percentage":[
+                                    
+                                    {
+                                        "percent":"60%",
+                                        "value":60
+                                    },
+                                    {
+                                        "percent":"70%",
+                                        "value":70
+                                    },
+                                    {
+                                        "percent":"80%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":100
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"unprepared",
+                                "percentage":[]
+                            }
+                        ],
+                        "question":"How well does the product rollout plan address potential risks associated with execution, such as resource constraints and regulatory hurdles?"
+                    },
+                    {
+                        "controlName": "feedbackAndIterationProcess",
+                        "controlNameDoa": "feedbackAndIterationProcessDoa",
+                        "label": "Feedback and Iteration Process",
+                        "labelDoa": "Feedback and Iteration Process Doa",
+                        "placeholder":"Select Value",
+                        "tooltip":"Thorough experimentation and validation with a large audience minimize implementation risks and increase investor confidence.",
+                        "options": [               
+                            {
+                                "name":"High Iteration",
+                                "value":"highIteration"
+                            },
+                            {
+                                "name":"Moderate Iteration",
+                                "value":"moderateIteration"
+                            },
+                            {
+                                "name":"Slow Iteration",
+                                "value":"slowIteration"
+                            }
+                        ],
+                        "degreeOfAchievement":[
+                            {
+                                "key":"moderateIteration",
+                                "percentage":[
+                                    {
+                                        "percent":"20%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":30
+                                    },
+                                    {
+                                        "percent":"40%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":50
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"highIteration",
+                                "percentage":[
+                                    {
+                                        "percent":"60%",
+                                        "value":60
+                                    },
+                                    {
+                                        "percent":"70%",
+                                        "value":70
+                                    },
+                                    {
+                                        "percent":"80%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":100
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"slowIteration",
+                                "percentage":[
+                                    {
+                                        "percent":"0%",
+                                        "value":0
+                                    },
+                                    {
+                                        "percent":"10%",
+                                        "value":10
+                                    }
+                                ]
+                            }
+                        ],
+                        "question":"How quickly can your startup implement product changes based on customer feedback?"
+                    }
+                ]
+            }
+    }
+},
     "reportDetails":{
         "type":"reportDetails",
         "header":"Details Of Valuation Report",
