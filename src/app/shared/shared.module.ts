@@ -19,9 +19,10 @@ import { ButtonModule, CheckBoxModule, RadioButtonModule, SwitchModule, ChipList
 import { NgxUiLoaderComponent } from './ngx-loader/ngx-ui-loader/ngx-ui-loader.component';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { SharedComponentsModule } from './shared-component.module';
+import { QRCodeModule } from 'angularx-qrcode';
 
 
-const MODULES = [NgbModule, ReactiveFormsModule, FormsModule,MaterialModuleModule,NgSelectModule,NgxUiLoaderModule];
+const MODULES = [NgbModule, ReactiveFormsModule, FormsModule,MaterialModuleModule,NgSelectModule,NgxUiLoaderModule,QRCodeModule];
 
 @NgModule({
   declarations: [ToggleThemeDirective, FullscreenDirective, SidemenuToggleDirective,UserInputComponent,RelativeComponent,GenericModalBoxComponent,NgxUiLoaderComponent],

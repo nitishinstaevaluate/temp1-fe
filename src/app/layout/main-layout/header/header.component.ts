@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { GenericModalBoxComponent } from 'src/app/shared/modal box/generic-modal-box/generic-modal-box.component';
 import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { NavService } from 'src/app/shared/service/nav.service';
 import { UserService } from 'src/app/shared/service/user.service';
@@ -20,7 +22,8 @@ export class HeaderComponent implements OnInit {
     public navServices: NavService,
     private router: Router,
     private calculationService: CalculationsService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
   ){}
 
 
@@ -163,4 +166,10 @@ export class HeaderComponent implements OnInit {
       panelClass: 'app-notification-error'
     });
 }
+  showQrCode(){
+    const dataSet={
+      value: 'qrCode',
+    }
+    const dialogRef =  this.dialog.open(GenericModalBoxComponent, {data:dataSet,width:'20%'});
+  }
 }

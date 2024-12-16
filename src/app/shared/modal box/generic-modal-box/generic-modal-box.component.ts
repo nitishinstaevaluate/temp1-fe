@@ -181,6 +181,7 @@ loadModel(data:any){
     this.label = this.appValues.SENSITIVITY_ANALYSIS.name;
     this.sensitivityAnalysisTable(data);
   }
+  if(data.value === this.appValues.QR_CODE.value) return this.label = this.appValues.QR_CODE.value;
   return '';
 }
 

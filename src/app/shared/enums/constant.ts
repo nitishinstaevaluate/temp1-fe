@@ -277,6 +277,9 @@ export const ALL_MODELS = {
       value:'revaluationSAModel',
       name:'Workings'
     },
+    QR_CODE:{
+      value:'qrCode'
+    }
   }
 
   export const helperText = {

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=AR+One+Sans:wght@500&display=swap');
+
 .full-width-input{
     width:100%
 }
@@ -1327,4 +1329,55 @@ tr:hover {
   height: 50px;
   animation: spin 1s linear infinite;
   margin-bottom: 20px;
+}
+.qr-code-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f9f9f9;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.qr-code-wrapper {
+  background: linear-gradient(135deg, #a5f7b9 0%, #9dc7f9 100%);
+  color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.qr-code-wrapper p {
+  color: #fff;
+}
+
+.qr-code-label-container {
+  text-align: center;
+  margin-bottom: 10px;
+  padding-top: 6%;
+}
+
+.qr-code-label {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  text-transform: uppercase;
+  font-family: 'AR One Sans', sans-serif;
+}
+
+.qr-code-wrapper p {
+  font-size: 16px;
+  color: #333;
+  margin-top: 10px;
+}
+
+.qr-code-wrapper a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.qr-code-wrapper a:hover {
+  text-decoration: underline;
 }

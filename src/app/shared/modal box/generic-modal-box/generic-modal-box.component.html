@@ -1111,5 +1111,31 @@
     <div class="container" style="padding-bottom: 2%;" *ngIf="data.modelName === 'FCFF'">
       <app-fcff-details [secondaryValuationId]="data?.secondaryValuationId" [sensitivityAnalysisToggle]="true" (fcffDetailsPrev)="fcffDetailsPrev($event)" (fcffDetails)="fcffDetails($event)" [formOneData]="data?.formOneData" [thirdStageInput]="data?.formThreeData" [formTwoData]="data?.formTwoData" [next]="2" [valuePerShare]="data?.valuePerShare"></app-fcff-details>
     </div>
+  </div>
 
+  <div class="qrcodeImage" *ngIf="data?.value === appValues.QR_CODE.value">
+  
+    <div class="qr-code-label-container">
+      <span class="qr-code-label">Scan QR CODE</span>
+    </div>
+  
+    <div class="qr-code-wrapper">
+      <qrcode
+        [qrdata]="'https://prabhatsrivastava.in/ifinworth-fzco/'"
+        [allowEmptyString]="true"
+        [ariaLabel]="'QR Code image with the following content...'"
+        [cssClass]="'center'"
+        [colorDark]="'#000000ff'"
+        [colorLight]="'#ffffffff'"
+        [elementType]="'canvas'"
+        [errorCorrectionLevel]="'M'"
+        [imageHeight]="75"
+        [imageWidth]="75"
+        [margin]="4"
+        [scale]="1"
+        [title]="'A custom title attribute'"
+        [width]="300"
+      ></qrcode>
+      <!-- <p>Scan to visit: <a href="https://prabhatsrivastava.in/ifinworth-fzco/" target="_blank">Ifinworth</a></p> -->
+    </div>
   </div>
