@@ -1373,11 +1373,48 @@ tr:hover {
 }
 
 .qr-code-wrapper a {
-  color: #007bff;
+  color: #ffffff;
   text-decoration: none;
   font-weight: bold;
 }
 
 .qr-code-wrapper a:hover {
   text-decoration: underline;
+}
+
+.qr-instruction {
+  font-size: 14px;
+  color: #ffffff;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-family: 'AR One Sans', sans-serif;
+}
+
+.btn-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #2b55d9;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  mat-icon {
+    font-size: 20px;
+  }
+
+  &:hover {
+    background-color: #45a047;
+    text-decoration: none;
+  }
+
+  &:active {
+    background-color: #ffffff;
+  }
 }

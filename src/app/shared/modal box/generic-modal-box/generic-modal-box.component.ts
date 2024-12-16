@@ -110,6 +110,7 @@ terminalSelectionRowType:any;
 revaluationPrev:any;
 updatedSAsecondaryValuationId:any;
 modSelLoader = false; 
+qrCodeDownloadLink:any = '';
 
 constructor(@Inject(MAT_DIALOG_DATA) public data: any,
 private dialogRef:MatDialogRef<GenericModalBoxComponent>,
@@ -998,5 +999,9 @@ get downloadTemplate() {
   disableSpecificRiskPremium(){
     if(this.data?.data?.coeMethod === 'buildUpCapm') return !this.marketPosition.value || !this.liquidityFactor.value || !this.competition.value;
     return !this.companySize.value ||  !this.marketPosition.value || !this.liquidityFactor.value || !this.competition.value;
+  }
+
+  onChangeURL(url: any) {
+    this.qrCodeDownloadLink = url;
   }
 }

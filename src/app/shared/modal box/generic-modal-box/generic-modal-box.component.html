@@ -1135,7 +1135,15 @@
         [scale]="1"
         [title]="'A custom title attribute'"
         [width]="300"
+        (qrCodeURL)="onChangeURL($event)"
       ></qrcode>
-      <!-- <p>Scan to visit: <a href="https://prabhatsrivastava.in/ifinworth-fzco/" target="_blank">Ifinworth</a></p> -->
+      <!-- <p><a [href]="qrCodeDownloadLink" download="qrcode">Download</a></p> -->
+      <p class="qr-instruction">Click to download the code:</p>
+
+      <!-- Styled Download Button -->
+      <a [href]="qrCodeDownloadLink" download="qrcode" class="btn-download">
+        <mat-icon>download</mat-icon>
+        Download QR Code
+      </a>
     </div>
   </div>
