@@ -22,6 +22,7 @@ export class NavbarDetailsComponent implements OnInit{
   currentStep:any='';
   showBlackBox=false;
   hideModelInput=false;
+  hideReviewFormTab = false;
   constructor(
     private calculationService:CalculationsService,
     private processStatusManagerService:ProcessStatusManagerService,
@@ -142,6 +143,15 @@ async checkProcessState(){
     }
     if(route === '4' && (this.stepStatusOfThree !== 'true' || this.stepStatusOfOne !== 'true') && !this.hideModelInput){
       this.snackBar.open('Please check all details in form 1 and form 3', 'Ok', {
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 3000,
+        panelClass: 'app-notification-error'
+      });
+      return;
+    }
+    if(route === '4' &&  this.hideReviewFormTab){
+      this.snackBar.open('Not applicable', 'Ok', {
         horizontalPosition: 'right',
         verticalPosition: 'top',
         duration: 3000,
@@ -283,6 +293,14 @@ async checkProcessState(){
         this.hideModelInput = true;
       }else{
         this.hideModelInput = false;
+      }
+    })
+
+    this.calculationService.hideReviewForm.subscribe((data)=>{
+      if(data.status){
+        this.hideReviewFormTab = true;
+      }else{
+        this.hideReviewFormTab = false;
       }
     })
   }

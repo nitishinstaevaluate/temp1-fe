@@ -4,6 +4,9 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { hasError } from 'src/app/shared/enums/errorMethods';
+import { COMPONENT_ENUM } from 'src/app/shared/enums/constant';
+import { ComponentInteractionService } from 'src/app/shared/service/component-interaction.service';
+import { StartUpValuationService } from 'src/app/shared/service/berkus.service';
 
 @Component({
   selector: 'app-product-rollout',
@@ -20,10 +23,14 @@ export class ProductRolloutComponent implements OnInit{
 
   constructor(private fb:FormBuilder,
     private processStatusManagerService:ProcessStatusManagerService,
-    private snackBar:MatSnackBar){}
+    private snackBar:MatSnackBar,
+    private componentInteractionService: ComponentInteractionService,
+    private startupValuationService: StartUpValuationService,
+  ){}
 
   ngOnInit(): void {
     this.loadForm();
+    this.loadData();
   }
   
   loadForm(){
@@ -37,9 +44,24 @@ export class ProductRolloutComponent implements OnInit{
     });
   }
 
-  submit(){
+  loadData(){
+    this.componentInteractionService.registerComponent(COMPONENT_ENUM.BERKUS.key).subscribe((response)=>{
+      if(response){
+        const productRollOutData = response?.berkus?.productRollOut;
+        if(productRollOutData){
+          for (const key in productRollOutData) {
+            if (this.productRolloutForm.controls[key]) {
+              this.productRolloutForm.controls[key].setValue(productRollOutData[key]);
+            }
+          }
+        }
+      }
+    })
+  }
+
+  async submit(){
+    await this.startupValuationService.upsertStartUpValuation(this.constructPayload());
     this.berkusStep.emit(6);
-    console.log(this.productRolloutForm.value,"product roll out")
   }
 
   previous(){
@@ -50,7 +72,27 @@ export class ProductRolloutComponent implements OnInit{
     this.productRolloutForm.controls[controlName].setValue('');
   }
 
-  onSelectorChange(controlName:string){
-    this.productRolloutForm.controls[controlName].setValue(0);
+  onSelectorChange(control:any, controlDoa:any, degreeOfAchievement:any){
+    const dgreOfAchvmnt = degreeOfAchievement || [];
+    let defaultExist = false;
+    if(dgreOfAchvmnt.length){
+      for(const doa of dgreOfAchvmnt){
+        defaultExist = doa?.key === this.productRolloutForm.controls[control]?.value && doa?.defaultValue;
+        if(defaultExist) break;
+      }
+    }
+    if(defaultExist) return this.productRolloutForm.controls[controlDoa].setValue(0);
+    
+    this.productRolloutForm.controls[controlDoa].reset();
+    return this.productRolloutForm.get(controlDoa).markAsTouched();
+  }
+
+  constructPayload(){
+    return {
+      berkus: {
+        productRollOut: this.productRolloutForm.value
+      }, 
+      processStateId: localStorage.getItem('processStateId'),
+    }
   }
 }

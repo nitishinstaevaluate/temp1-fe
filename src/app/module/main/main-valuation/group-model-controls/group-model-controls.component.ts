@@ -131,6 +131,7 @@ export class GroupModelControlsComponent implements OnInit {
   const dateToSet = data?.valuationDate ? new Date(data?.valuationDate) : null;
   const formattedDate = dateToSet ? `${dateToSet.getFullYear()}-${(dateToSet.getMonth() + 1).toString().padStart(2, '0')}-${dateToSet.getDate().toString().padStart(2, '0')}` : '';
   this.modelValuation.controls['valuationDate'].patchValue(formattedDate);
+  this.hideReviewForm();
    }
   }
   loadValues(){
@@ -247,7 +248,24 @@ export class GroupModelControlsComponent implements OnInit {
       delete control.projectionYears;
       delete control.projectionYearSelect;
     }
-    delete control.industry;
+          
+    const excludeModels = [MODELS.BERKUS]
+    if(!this.modelValuation.controls['model'].value?.filter((model:any) => !excludeModels.includes(model)).length){
+      delete control.projectionYears;
+      delete control.location;
+      delete control.projectionYearSelect;
+      delete control.excelSheetId;
+      delete control.type;
+      delete control.outstandingShares;
+      delete control.taxRateType;
+      delete control.taxRate;
+      delete control.terminalGrowthRate;
+      delete control.currencyUnit;
+      delete control.faceValue;
+      delete control.issuanceOfShares;
+      delete control.reportingUnit;
+    }
+    
     
     this.validateControls(control,payload);
   }
@@ -273,6 +291,7 @@ export class GroupModelControlsComponent implements OnInit {
         if (controlArray.hasOwnProperty(controlName)) {
           const control = controlArray[controlName];
           if (control.value === null || control.value === '' ) {
+            console.log(control.value, controlName,"control name and value")
             allControlsFilled = false;
             break;
           }
@@ -388,7 +407,8 @@ export class GroupModelControlsComponent implements OnInit {
         this.modelValuation.controls['excelSheetId'].setValue(result?.excelSheetId); 
         this.fileName = result?.fileName;
         this.evaluateNumberOfSteps()
-        this.isNotRuleElevenUaAndNav()
+        this.isNotRuleElevenUaAndNav();
+        this.hideReviewForm();
 
         this.modelValuation.controls['issuanceOfShares']?.setValue(result?.issuanceCheckbox);
         this.issuanceOfShares();
@@ -416,7 +436,8 @@ export class GroupModelControlsComponent implements OnInit {
     values.splice(values.indexOf(modelName),1);
     this.modelValuation.controls['model'].setValue(values);
     this.isNotRuleElevenUaAndNav();
-    this.evaluateNumberOfSteps()
+    this.evaluateNumberOfSteps();
+    this.hideReviewForm();
   }
   processStateManager(process:any, processId:any){
     this.processStatusManagerService.instantiateProcess(process, processId).subscribe(
@@ -447,61 +468,37 @@ export class GroupModelControlsComponent implements OnInit {
   }
 
   isNotRuleElevenUaAndNav(){
-    if (this.modelValuation.controls['model'].value?.length === 1 &&
-      (
-        this.modelValuation.controls['model'].value?.includes(MODELS.RULE_ELEVEN_UA) ||
-        this.modelValuation.controls['model'].value?.includes(MODELS.NAV) ||
-        this.modelValuation.controls['model'].value?.includes(MODELS.SLUMP_SALE)
-      ))
-      {
-      return false;
-      }
-      else if(this.modelValuation.controls['model'].value?.length === 2 && (
-        this.modelValuation.controls['model'].value?.includes(MODELS.RULE_ELEVEN_UA) &&
-        this.modelValuation.controls['model'].value?.includes(MODELS.NAV)
-      )){
-        return false;
-      }
-      else if(this.modelValuation.controls['model'].value?.length  > 1 && (
-        this.modelValuation.controls['model'].value?.includes(MODELS.RULE_ELEVEN_UA) ||
-        this.modelValuation.controls['model'].value?.includes(MODELS.NAV) ||
-        this.modelValuation.controls['model'].value?.includes(MODELS.SLUMP_SALE)
-      )){
-        return true;
-      }
-      else{
-        return true;
-      }
+    const excludeModels = [MODELS.RULE_ELEVEN_UA, MODELS.NAV, MODELS.SLUMP_SALE, MODELS.BERKUS]
+
+    if(this.modelValuation.controls['model'].value?.length && this.modelValuation.controls['model'].value?.filter((model:any) => !excludeModels.includes(model)).length){
+      return true;
+    }
+    else{
+      return false
+    }
   }
 
   evaluateNumberOfSteps(){
-    if (this.modelValuation.controls['model'].value?.length === 1 &&
-    (
-      this.modelValuation.controls['model'].value?.includes(MODELS.RULE_ELEVEN_UA) ||
-      this.modelValuation.controls['model'].value?.includes(MODELS.NAV) ||
-      this.modelValuation.controls['model'].value?.includes(MODELS.SLUMP_SALE)
-    ))
-    {
-      this.calculationService.checkModel.next({status:true})
-    }
-    else if(this.modelValuation.controls['model'].value?.length === 2 && (
-      this.modelValuation.controls['model'].value?.includes(MODELS.RULE_ELEVEN_UA) &&
-      this.modelValuation.controls['model'].value?.includes(MODELS.NAV)
-    )){
-      this.calculationService.checkModel.next({status:true})
-    }
-    else if(this.modelValuation.controls['model'].value?.length  > 1 && (
-      this.modelValuation.controls['model'].value?.includes(MODELS.RULE_ELEVEN_UA) ||
-      this.modelValuation.controls['model'].value?.includes(MODELS.NAV) ||
-      this.modelValuation.controls['model'].value?.includes(MODELS.SLUMP_SALE)
-    )){
-      this.calculationService.checkModel.next({status:false})
-    }
-    else if(this.modelValuation.controls['model']?.value?.length){
+    const excludeModels = [MODELS.RULE_ELEVEN_UA, MODELS.NAV, MODELS.SLUMP_SALE, MODELS.BERKUS]
+    
+    if(this.modelValuation.controls['model'].value?.filter((model:any) => !excludeModels.includes(model)).length){
       this.calculationService.checkModel.next({status:false})
     }
     else{
       this.calculationService.checkModel.next({status:true})
+    }
+  }
+
+  hideReviewForm(){
+    const excludeStartUpModels = [MODELS.BERKUS];
+    if(!this.modelValuation.controls['model'].value?.length) return true;
+    if(this.modelValuation.controls['model'].value?.length && this.modelValuation.controls['model'].value?.filter((model:any) => !excludeStartUpModels.includes(model)).length){
+      this.calculationService.hideReviewForm.next({status:false})
+      return true;
+    }
+    else{
+      this.calculationService.hideReviewForm.next({status:true});
+      return false;
     }
   }
   isNavOrElevenUa(){

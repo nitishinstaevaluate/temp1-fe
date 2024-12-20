@@ -435,6 +435,16 @@ submitModelValuation(){
         })
         return;
     }
+    if(!this.excelSheetId){
+      this.fileUploadStatus = false;
+      this.snackBar.open('Please upload excel sheet','Ok',{
+        horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+            duration: 3000,
+            panelClass: 'app-notification-error'
+      })
+      return;
+    }
   }
   if(this.ruleElevenUaSelectedModel){
     if(!this.issuanceCheckbox.value && !this.transferCheckbox.value){
@@ -446,17 +456,6 @@ submitModelValuation(){
       })
       return;
     }
-  }
-
-  if(!this.excelSheetId){
-    this.fileUploadStatus = false;
-    this.snackBar.open('Please upload excel sheet','Ok',{
-      horizontalPosition: 'center',
-          verticalPosition: 'bottom',
-          duration: 3000,
-          panelClass: 'app-notification-error'
-    })
-    return;
   }
   
   this.models=[...this.incomeApproachmodels,...this.netAssetApproachmodels,...this.marketApproachmodels,...this.ruleElevenApproachModels, ...this.startUpApproachModels];

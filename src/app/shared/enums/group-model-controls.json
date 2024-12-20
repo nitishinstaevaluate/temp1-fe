@@ -1904,6 +1904,7 @@
                         },
                         {
                             "key":"notApproved",
+                            "defaultValue":true,
                             "percentage":[]
                         }
                     ],
@@ -1983,6 +1984,7 @@
                         },
                         {
                             "key":"notReady",
+                            "defaultValue":true,
                             "percentage":[]
                         }
                     ],
@@ -2062,6 +2064,7 @@
                         },
                         {
                             "key":"high",
+                            "defaultValue":true,
                             "percentage":[]
                         }
                     ],
@@ -2141,6 +2144,7 @@
                         },
                         {
                             "key":"high",
+                            "defaultValue":true,
                             "percentage":[]
                         }
                     ],
@@ -2220,6 +2224,7 @@
                         },
                         {
                             "key":"negative",
+                            "defaultValue":true,
                             "percentage":[]
                         }
                     ],
@@ -2301,10 +2306,10 @@
                     "question":"What is the success rate of tests during the trial phase?"
                 },
                 {
-                    "controlName": "viabilty",
+                    "controlName": "viability",
                     "controlNameDoa": "viabilityDoa",
                     "label": "Viability",
-                    "labelDoa": "Well Defined Future Plan Doa",
+                    "labelDoa": "Viability Doa",
                     "placeholder":"Select Value",
                     "tooltip":"Investors seek startups with a clear long-term vision and strategic direction, essential for attracting investment.",
                     "options": [               
@@ -2543,6 +2548,7 @@
                         },
                         {
                             "key":"notInnovative",
+                            "defaultValue":true,
                             "percentage":[]
                         }
                     ],
@@ -2862,6 +2868,7 @@
                             },
                             {
                                 "key":"none",
+                                "defaultValue":true,
                                 "percentage":[]
                             },
                             {
@@ -3052,6 +3059,7 @@
                             },
                             {
                                 "key":"noNetwork",
+                                "defaultValue":true,
                                 "percentage":[]
                             }
                         ],
@@ -3059,7 +3067,7 @@
                     },
                     {
                         "controlName": "leadershipAndTeamDynamic",
-                        "controlNameDoa": "leadershipAndTeamDyanamicDoa",
+                        "controlNameDoa": "leadershipAndTeamDynamicDoa",
                         "label": "Leadership and Team Dynamics",
                         "labelDoa": "Leadership and Team Dynamics Doa",
                         "placeholder":"Select Value",
@@ -3131,6 +3139,7 @@
                             },
                             {
                                 "key":"insufficient",
+                                "defaultValue":true,
                                 "percentage":[]
                             }
                         ],
@@ -3210,6 +3219,7 @@
                             },
                             {
                                 "key":"noKnowledge",
+                                "defaultValue":true,
                                 "percentage":[]
                             }
                         ],
@@ -3302,6 +3312,7 @@
                             },
                             {
                                 "key":"noPartnership",
+                                "defaultValue":true,
                                 "percentage":[]
                             }
                         ],
@@ -3356,6 +3367,7 @@
                             },
                             {
                                 "key":"weakCustomer",
+                                "defaultValue":true,
                                 "percentage":[]
                             },
                             {
@@ -3460,6 +3472,7 @@
                             },
                             {
                                 "key":"noSupplierAssociated",
+                                "defaultValue":true,
                                 "percentage":[]
                             }
                         ],
@@ -3482,7 +3495,7 @@
                                 "value":"fewRetailerWithModerateAvailability"
                             },
                             {
-                                "name":"No Manjor Retailer",
+                                "name":"No Major Retailer",
                                 "value":"noMajorRetailer"
                             }
                         ],
@@ -3541,6 +3554,7 @@
                             },
                             {
                                 "key":"noMajorRetailer",
+                                "defaultValue":true,
                                 "percentage":[]
                             }
                         ],
@@ -3620,6 +3634,7 @@
                             },
                             {
                                 "key":"noCollaborationOrEngagement",
+                                "defaultValue":true,
                                 "percentage":[]
                             }
                         ],
@@ -3880,6 +3895,7 @@
                             },
                             {
                                 "key":"noCompetitiveAdvantage",
+                                "defaultValue":true,
                                 "percentage":[]
                             }
                         ],
@@ -3961,6 +3977,7 @@
                             },
                             {
                                 "key":"unprepared",
+                                "defaultValue":true,
                                 "percentage":[]
                             }
                         ],

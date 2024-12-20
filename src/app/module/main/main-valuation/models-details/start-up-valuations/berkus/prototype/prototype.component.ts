@@ -4,6 +4,9 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { hasError } from 'src/app/shared/enums/errorMethods';
+import { ComponentInteractionService } from 'src/app/shared/service/component-interaction.service';
+import { COMPONENT_ENUM } from 'src/app/shared/enums/constant';
+import { StartUpValuationService } from 'src/app/shared/service/berkus.service';
 
 @Component({
   selector: 'app-prototype',
@@ -20,10 +23,14 @@ export class PrototypeComponent implements OnInit{
 
   constructor(private fb:FormBuilder,
     private processStatusManagerService:ProcessStatusManagerService,
-    private snackBar:MatSnackBar){}
+    private snackBar:MatSnackBar,
+    private componentInteractionService: ComponentInteractionService, 
+    private startupValuationService: StartUpValuationService, 
+  ){}
 
   ngOnInit(): void {
     this.loadForm();
+    this.loadData();
   }
 
   loadForm(){
@@ -32,14 +39,29 @@ export class PrototypeComponent implements OnInit{
     this.prototypeRegConfig.forEach((config:any) => {
       if (!config.type) {
         this.prototypeForm.addControl(config.controlName, new FormControl('',[Validators.required]));
-        if(config?.controlNameDoa) this.prototypeForm.addControl(config.controlNameDoa, new FormControl(0,[Validators.required]));
+        if(config?.controlNameDoa) this.prototypeForm.addControl(config.controlNameDoa, new FormControl('',[Validators.required]));
       }
     });
   }
 
-  submit(){
+  loadData(){
+    this.componentInteractionService.registerComponent(COMPONENT_ENUM.BERKUS.key).subscribe((response)=>{
+      if(response){
+        const prototypeData = response?.berkus?.prototype;
+        if(prototypeData){
+          for (const key in prototypeData) {
+            if (this.prototypeForm.controls[key]) {
+              this.prototypeForm.controls[key].setValue(prototypeData[key]);
+            }
+          }
+        }
+      }
+    })
+  }
+
+  async submit(){
+    await this.startupValuationService.upsertStartUpValuation(this.constructPayload());
     this.berkusStep.emit(3);
-    console.log(this.prototypeForm.value,"product roll out")
   }
 
   previous(){
@@ -50,7 +72,27 @@ export class PrototypeComponent implements OnInit{
     this.prototypeForm.controls[controlName].setValue('');
   }
 
-  onSelectorChange(controlDoa:any){
-    this.prototypeForm.controls[controlDoa].setValue(0);
+  onSelectorChange(control:any, controlDoa:any, degreeOfAchievement:any){
+    const dgreOfAchvmnt = degreeOfAchievement || [];
+    let defaultExist = false;
+    if(dgreOfAchvmnt.length){
+      for(const doa of dgreOfAchvmnt){
+        defaultExist = doa?.key === this.prototypeForm.controls[control]?.value && doa?.defaultValue;
+        if(defaultExist) break;
+      }
+    }
+    if(defaultExist) return this.prototypeForm.controls[controlDoa].setValue(0);
+
+    this.prototypeForm.controls[controlDoa].reset();
+    return this.prototypeForm.get(controlDoa).markAsTouched();
+  }
+
+  constructPayload(){
+    return {
+      berkus: {
+        prototype: this.prototypeForm.value
+      }, 
+      processStateId: localStorage.getItem('processStateId'),
+    }
   }
 }

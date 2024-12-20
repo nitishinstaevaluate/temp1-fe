@@ -243,16 +243,16 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
 
   isRelativeValuation(value:string){
     if(!this.transferStepperTwo){
-      return this.fourthStageInput?.formOneData?.model.includes(value)
+      return this.fourthStageInput?.formOneData?.model?.includes(value)
     }
-    return this.transferStepperTwo?.model.includes(value) ? true :false;
+    return this.transferStepperTwo?.model?.includes(value) ? true :false;
   }
   isFcff(value:string){
-    return this.transferStepperTwo?.model.includes(value) ? true :false;
+    return this.transferStepperTwo?.model?.includes(value) ? true :false;
   }
   hasSingleModel(modelName:string){
     if(!this.transferStepperTwo){
-      if(this.fourthStageInput?.formOneData?.model.includes(modelName)){
+      if(this.fourthStageInput?.formOneData?.model?.includes(modelName)){
         return true;
       }
       else{
@@ -260,7 +260,7 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
       }
     }
     else if(this.transferStepperTwo){
-      if(this.transferStepperTwo.model.includes(modelName)){
+      if(this.transferStepperTwo?.model?.includes(modelName)){
         return true;
       }
       else{

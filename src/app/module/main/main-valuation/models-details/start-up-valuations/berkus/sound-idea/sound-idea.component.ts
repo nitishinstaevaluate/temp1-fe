@@ -4,6 +4,9 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { hasError } from 'src/app/shared/enums/errorMethods';
+import { ComponentInteractionService } from 'src/app/shared/service/component-interaction.service';
+import { COMPONENT_ENUM } from 'src/app/shared/enums/constant';
+import { StartUpValuationService } from 'src/app/shared/service/berkus.service';
 
 @Component({
   selector: 'app-sound-idea',
@@ -16,16 +19,17 @@ export class SoundIdeaComponent implements OnInit {
 hasError= hasError;
 controls=groupModelControl;
 soundIdeaForm:any;
-editedValues:any=[];
-modelValue:any = [];
 soundIdeaRegConfig:any=groupModelControl.BERKUS.options.soundIdea.controlsConfig;
 
 constructor(private fb:FormBuilder,
   private processStatusManagerService:ProcessStatusManagerService,
-  private snackBar:MatSnackBar){}
+  private snackBar:MatSnackBar,
+  private componentInteractionService: ComponentInteractionService,
+  private startupValuationService: StartUpValuationService){}
 
   ngOnInit(): void {
     this.loadForm();
+    this.loadData()
   }
 
   loadForm(){
@@ -34,18 +38,44 @@ constructor(private fb:FormBuilder,
     this.soundIdeaRegConfig.forEach((config:any) => {
       if (!config.type) {
         this.soundIdeaForm.addControl(config.controlName, new FormControl('',[Validators.required]));
-        if(config?.controlNameDoa) this.soundIdeaForm.addControl(config.controlNameDoa, new FormControl(0,[Validators.required]));
+        if(config?.controlNameDoa) this.soundIdeaForm.addControl(config.controlNameDoa, new FormControl('',[Validators.required]));
       }
     });
   }
 
-  onSelectorChange(controlDoa:any){
-    this.soundIdeaForm.controls[controlDoa].setValue(0);
+  loadData(){
+    this.componentInteractionService.registerComponent(COMPONENT_ENUM.BERKUS.key).subscribe((response)=>{
+      if(response){
+        const soundIdeaData = response?.berkus?.soundIdea;
+          if(soundIdeaData){
+            for (const key in soundIdeaData) {
+              if (this.soundIdeaForm.controls[key]) {
+                this.soundIdeaForm.controls[key].setValue(soundIdeaData[key]);
+              }
+          }
+        }
+      }
+    })
   }
 
-  submit(){
+  onSelectorChange(control:any, controlDoa:any, degreeOfAchievement:any){
+    const dgreOfAchvmnt = degreeOfAchievement || [];
+    let defaultExist = false;
+    if(dgreOfAchvmnt.length){
+      for(const doa of dgreOfAchvmnt){
+        defaultExist = doa?.key === this.soundIdeaForm.controls[control]?.value && doa?.defaultValue;
+        if(defaultExist) break;
+      }
+    }
+    if(defaultExist) return this.soundIdeaForm.controls[controlDoa].setValue(0);
+
+    this.soundIdeaForm.controls[controlDoa].reset();
+    return this.soundIdeaForm.get(controlDoa).markAsTouched();
+  }
+
+  async submit(){
+    await this.startupValuationService.upsertStartUpValuation(this.constructPayload());
     this.berkusStep.emit(2)
-    console.log(this.soundIdeaForm.value, "values");
   }
 
   previous(){
@@ -54,5 +84,14 @@ constructor(private fb:FormBuilder,
 
   clearInput(controlName:string){
     this.soundIdeaForm.controls[controlName].setValue('');
+  }
+
+  constructPayload(){
+    return {
+      berkus: {
+        soundIdea: this.soundIdeaForm.value
+      }, 
+      processStateId: localStorage.getItem('processStateId'),
+    }
   }
 }

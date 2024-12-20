@@ -55,7 +55,7 @@
                                 <mat-icon class="company-list-rmve-icon" (click)="clearInput(config.controlName)">close</mat-icon>
                                 </span>
                                 
-                                <mat-select [formControlName]="config.controlName" class="new-inp company-list-inp nature-of-instrument" [placeholder]="config.placeholder" (selectionChange)="onSelectorChange(config.controlNameDoa)">
+                                <mat-select [formControlName]="config.controlName" class="new-inp company-list-inp nature-of-instrument" [placeholder]="config.placeholder" (selectionChange)="onSelectorChange(config.controlName, config.controlNameDoa, config.degreeOfAchievement)">
                                 <mat-option *ngFor="let data of config.options" class="auto-class" [value]="data.value">
                                     {{ data.name }}
                                 </mat-option>

@@ -84,6 +84,43 @@ export const MODELS = {
 
 export const BERKUS_METHOD = {
   key:'Berkus',
+  componentConfig:[
+    { 
+      label: 'Sound Idea', 
+      step: 1, 
+      stateKey: 'soundIdea', 
+      completed: false,
+      dbKey:'soundIdeaValuation'
+    },
+    { 
+      label: 'Prototype', 
+      step: 2, 
+      stateKey: 'prototype', 
+      completed: true,
+      dbKey:'prototypeValuation'
+    },
+    { 
+      label: 'Management', 
+      step: 3, 
+      stateKey: 'management', 
+      completed: false,
+      dbKey:'managementValuation'
+    },
+    { 
+      label: 'Strategic Frontend', 
+      step: 4, 
+      stateKey: 'strategicRelationship', 
+      completed: true,
+      dbKey:'strategicRelationshipValuation'
+    },
+    { 
+      label: 'Product Rollout', 
+      step: 5, 
+      stateKey: 'productRollOut', 
+      completed: false,
+      dbKey: 'productRollOutValuation'
+    }
+  ],
   subMethods:{
     soundIdea:{
       key:'soundIdea'
@@ -573,3 +610,9 @@ export const ADD_SPACE_BEFORE_LINE_ITEM_ASSESSMENT_OF_WC = [
 export const DATE_REGEX = /^([0-2]?\d|30|31)-(0?[1-9]|1[0-2])-\d{4}$/;
 
 export const XL_SHEET_ENUM = [ 'dcfApproach', 'ruleElevenUaApproach', 'marketPriceApproach', 'navApproach', 'slumpSaleApproach', 'startUpApproach' ];
+
+export const COMPONENT_ENUM = {
+  BERKUS:{
+    key:'berkus'
+  }
+}

@@ -4,6 +4,9 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { hasError } from 'src/app/shared/enums/errorMethods';
+import { ComponentInteractionService } from 'src/app/shared/service/component-interaction.service';
+import { COMPONENT_ENUM } from 'src/app/shared/enums/constant';
+import { StartUpValuationService } from 'src/app/shared/service/berkus.service';
 
 
 @Component({
@@ -21,26 +24,45 @@ export class StrategicRelationshipComponent implements OnInit{
 
   constructor(private fb:FormBuilder,
     private processStatusManagerService:ProcessStatusManagerService,
-    private snackBar:MatSnackBar){}
+    private snackBar:MatSnackBar,
+    private componentInteractionService: ComponentInteractionService,
+    private startupValuationService: StartUpValuationService,
+  ){}
 
-    ngOnInit(): void {
-      this.loadForm();
-    }
+  ngOnInit(): void {
+    this.loadForm();
+    this.loadData();
+  }
+
+  loadForm(){
+    this.strategicRelationshipForm=this.fb.group({});
   
-    loadForm(){
-      this.strategicRelationshipForm=this.fb.group({});
-    
-      this.strategicRelationshipRegConfig.forEach((config:any) => {
-        if (!config.type) {
-          this.strategicRelationshipForm.addControl(config.controlName, new FormControl('',[Validators.required]));
-          if(config?.controlNameDoa) this.strategicRelationshipForm.addControl(config.controlNameDoa, new FormControl(0,[Validators.required]));
+    this.strategicRelationshipRegConfig.forEach((config:any) => {
+      if (!config.type) {
+        this.strategicRelationshipForm.addControl(config.controlName, new FormControl('',[Validators.required]));
+        if(config?.controlNameDoa) this.strategicRelationshipForm.addControl(config.controlNameDoa, new FormControl('',[Validators.required]));
+      }
+    });
+  }
+
+  loadData(){
+    this.componentInteractionService.registerComponent(COMPONENT_ENUM.BERKUS.key).subscribe((response)=>{
+      if(response){
+        const strategicRelationshipData = response?.berkus?.strategicRelationship;
+        if(strategicRelationshipData){
+          for (const key in strategicRelationshipData) {
+            if (this.strategicRelationshipForm.controls[key]) {
+              this.strategicRelationshipForm.controls[key].setValue(strategicRelationshipData[key]);
+            }
+          }
         }
-      });
-    }
+      }
+    })
+  }
     
-  submit(){
+  async submit(){
+    await this.startupValuationService.upsertStartUpValuation(this.constructPayload());
     this.berkusStep.emit(5);
-    console.log(this.strategicRelationshipForm.value,"strategic relationship out")
   }
   previous(){
     this.berkusStep.emit(3)
@@ -50,7 +72,27 @@ export class StrategicRelationshipComponent implements OnInit{
     this.strategicRelationshipForm.controls[controlName].setValue('');
   }
 
-  onSelectorChange(controlName:string){
-    this.strategicRelationshipForm.controls[controlName].setValue(0);
+  onSelectorChange(control:any, controlDoa:any, degreeOfAchievement:any){
+    const dgreOfAchvmnt = degreeOfAchievement || [];
+    let defaultExist = false;
+    if(dgreOfAchvmnt.length){
+      for(const doa of dgreOfAchvmnt){
+        defaultExist = doa?.key === this.strategicRelationshipForm.controls[control]?.value && doa?.defaultValue;
+        if(defaultExist) break;
+      }
+    }
+    if(defaultExist) return this.strategicRelationshipForm.controls[controlDoa].setValue(0);
+    
+    this.strategicRelationshipForm.controls[controlDoa].reset();
+    return this.strategicRelationshipForm.get(controlDoa).markAsTouched();
+  }
+
+  constructPayload(){
+    return {
+      berkus: {
+        strategicRelationship: this.strategicRelationshipForm.value
+      }, 
+      processStateId: localStorage.getItem('processStateId'),
+    }
   }
 }

@@ -133,19 +133,10 @@ export class MainValuationComponent implements OnInit{
   });
 
   loadCurrentTab(tabNum: any, type?:any){
-    if(type === MODELS.BERKUS){
-      this.berkusStep = tabNum;
-      this.next = 9;
-    }
-    else{
-      this.berkusStep = 0;
-      this.next = tabNum;
-    }
+    this.next = tabNum;
   }
 
   berkusstep(bStep:any){
-  this.berkusStep = bStep;
-  console.log(bStep,"berkus step")
   if(bStep === 0) {this.previousModelSelection(MODELS.BERKUS)}
   else if(bStep === 6) {this.nextModelSelection(MODELS.BERKUS)}
   else {this.berkusStep = bStep};
@@ -187,12 +178,12 @@ export class MainValuationComponent implements OnInit{
   }
 
   async previous(event:any){
-    // this.stepper.previous();
     const currentStep:any = localStorage.getItem('step')
-    // const currentStep:any = await this.fetchProcessActiveStage(localStorage.getItem('processStateId'));
     this.step = parseInt(currentStep) - 1;
+    if(!this.modelArray?.filter((model: string) => !['berkus'].includes(model)).length && this.step === 4) {
+      this.step = this.step - 1;
+    }
     localStorage.setItem('step',`${this.step}`);
-    // await this.updateProcessActiveStage(localStorage.getItem('processStateId'),this.step);
     this.calculationService.checkStepStatus.next({stepStatus:false,step:this.step,prev:true})
     if(this.step === 3){
       this.previousModelSelection(this.formOneData,true)
@@ -321,6 +312,12 @@ export class MainValuationComponent implements OnInit{
           const currentStep:any = localStorage.getItem('step')
           // const currentStep:any = await this.fetchProcessActiveStage(localStorage.getItem('processStateId'));
           this.step = parseInt(currentStep) + 1;
+          const excludeModels = [ MODELS.BERKUS];
+          if(!storeModelArray.filter((model:any) => !excludeModels.includes(model)).length){
+            this.step = this.step + 1;
+            this.onStepChange()
+            this.transferStepperthree= {formOneAndThreeData:this.formOneAndThreeData ? this.formOneAndThreeData :  this.formFiveData?.formOneAndThreeData,formFourData:data,formTwoData:this.formTwoData};
+          }
           localStorage.setItem('step',`${this.step}`)
           // await this.updateProcessActiveStage(localStorage.getItem('processStateId'),this.step);
           this.calculationService.checkStepStatus.next({stepStatus:false,step:this.step})
@@ -378,7 +375,8 @@ export class MainValuationComponent implements OnInit{
         const currentStep:any = localStorage.getItem('step')
         // const currentStep:any = await this.fetchProcessActiveStage(localStorage.getItem('processStateId'));
         this.step = parseInt(currentStep) - 1;
-        if(storeModelArray.length && this.formOneData?.issuanceOfShares && storeModelArray.includes(MODELS.RULE_ELEVEN_UA)){
+        const excludeModels = [ MODELS.BERKUS];
+        if(((storeModelArray.length && this.formOneData?.issuanceOfShares && storeModelArray.includes(MODELS.RULE_ELEVEN_UA)) || (!storeModelArray.filter((model:any) => !excludeModels.includes(model)).length))){
           this.step = this.step - 1;
         }
         localStorage.setItem('step',`${this.step}`)
