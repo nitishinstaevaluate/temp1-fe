@@ -56,6 +56,13 @@ async checkProcessState(){
           if(modelsSelected.length){
             const modelInputStages = processStateDetails?.thirdStageInput;
             let formTwoFillingStatus = false;
+            const excludedModels = [MODELS.BERKUS, MODELS.RISK_FACTOR, MODELS.SCORE_CARD, MODELS.VENTURE_CAPITAL];
+
+            const validModelArray = modelsSelected.filter((model: string) => !excludedModels.includes(model));
+            if(modelsSelected && !validModelArray?.length){
+              localStorage.setItem('stepThreeStats','true')
+              localStorage.setItem('stepFourStats','true')
+            }
             if(modelInputStages.length){
 
                formTwoFillingStatus = modelInputStages.every((stateThreeDetails:any)=>{return stateThreeDetails.formFillingStatus});

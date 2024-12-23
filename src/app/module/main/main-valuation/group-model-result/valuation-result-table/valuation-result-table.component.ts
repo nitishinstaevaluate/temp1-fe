@@ -41,6 +41,8 @@ nav=false;
 ruleElevenUa=false;
 marketPrice = false;
 berkus = false;
+riskFactor = false;
+scoreCard = false;
 tableData:any;
 multiples:any;
 valuationDataReport:any=[];
@@ -419,6 +421,8 @@ this.dataSourceNav && this.transferStepperthree?.formOneAndThreeData?.model.incl
 this.transferStepperthree?.formFourData?.appData && this.transferStepperthree?.formOneAndThreeData?.model.includes(MODELS.RULE_ELEVEN_UA) ? this.ruleElevenUa = true : this.ruleElevenUa = false;
 this.transferStepperthree?.formFourData?.appData && this.transferStepperthree?.formOneAndThreeData?.model.includes(MODELS.MARKET_PRICE) ? this.marketPrice = true : this.marketPrice = false;
 this.transferStepperthree?.formOneAndThreeData?.model.includes(MODELS.BERKUS) ? this.berkus = true : this.berkus = false;
+this.transferStepperthree?.formOneAndThreeData?.model.includes(MODELS.RISK_FACTOR) ? this.riskFactor = true : this.riskFactor = false;
+this.transferStepperthree?.formOneAndThreeData?.model.includes(MODELS.SCORE_CARD) ? this.scoreCard = true : this.scoreCard = false;
 }
 
 checkIndustryOrCompany(){
@@ -485,7 +489,7 @@ formatDate(epochTimestamp:any) {
 }
 
 onTabSelectionChange(event:any) {
- if(event?.tab?.textLabel === 'Berkus' && event?.tab?.isActive) this.calculationService.hideModelWeightage.next(true);
+ if((event?.tab?.textLabel === 'Berkus' || event?.tab?.textLabel === 'Risk Factor') && event?.tab?.isActive) this.calculationService.hideModelWeightage.next(true);
  else this.calculationService.hideModelWeightage.next(false);
 }
 

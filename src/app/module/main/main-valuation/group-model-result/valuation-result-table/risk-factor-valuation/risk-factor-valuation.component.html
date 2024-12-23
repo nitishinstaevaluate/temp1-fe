@@ -1,0 +1,24 @@
+<div class="modern-table-container" *ngIf="riskFactorValuation?.length">
+    <!-- <div class="modern-table-title">Risk Factors Overview</div> -->
+    <table class="modern-table">
+      <thead>
+        <tr>
+          <th>Risk Factors</th>
+          <th>Coefficient</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of riskFactorValuation">
+            <ng-container *ngIf="!data.header">
+                <td>{{ data.label }}</td>
+                <td style="padding-left: 4%;">{{ data.riskFactorCoeff }}</td>
+            </ng-container>
+            <ng-container *ngIf="data.label === 'Total'">
+                <td>{{ data.label }}</td>
+                <td style="padding-left: 4%;">{{ data.total }}</td>
+            </ng-container>
+          </tr>
+      </tbody>
+    </table>
+  </div>
+  

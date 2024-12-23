@@ -24,9 +24,9 @@ export class BerkusComponent implements OnChanges, OnInit {
   }
 
   async loadData(){
-    this.componentInteractionService.registerComponent(COMPONENT_ENUM.BERKUS.key).toPromise();
+    this.componentInteractionService.registerComponent(COMPONENT_ENUM.STARTUP_VALUATION.key).toPromise();
     await this.startUpValuationService.upsertStartUpValuation({processStateId: localStorage.getItem('processStateId')});
-    this.componentInteractionService.registerComponent(COMPONENT_ENUM.BERKUS.key).subscribe((response)=>{
+    this.componentInteractionService.registerComponent(COMPONENT_ENUM.STARTUP_VALUATION.key).subscribe((response)=>{
       if(response?.berkus) this.berkusData = response.berkus;        
       if(this.berkusData && Object.entries(this.berkusData)?.length === 5) {
         localStorage.setItem('stepThreeStats',`true`)

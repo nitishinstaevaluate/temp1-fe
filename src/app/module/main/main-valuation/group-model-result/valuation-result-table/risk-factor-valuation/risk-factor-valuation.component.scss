@@ -1,0 +1,88 @@
+.modern-table-container {
+    padding: 30px;
+    background: linear-gradient(135deg, #ffffff, #f9f9f9);
+    border-radius: 15px;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    animation: fadeIn 0.6s ease-in-out;
+  }
+  
+  .modern-table-title {
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    color: #4a4a4a;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #ececec;
+    margin-bottom: 20px;
+  }
+  
+  .modern-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Roboto', sans-serif;
+    color: #4a4a4a;
+  }
+  
+  .modern-table thead th {
+    padding: 12px;
+    background-color: #e7faf4;
+    color: #0f8a76;
+    font-family: 'AR One Sans', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 14px;
+    border-bottom: 2px solid #dcdcdc;
+  }
+  
+  .modern-table tbody tr {
+    background-color: #ffffff;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .modern-table tbody tr:nth-child(even) {
+    background-color: #f7f7f7;
+  }
+  
+  .modern-table tbody tr:hover {
+    background-color: #e3f2fd;
+    transform: scale(1.02);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .modern-table td {
+    padding: 10px 15px;
+    border-bottom: 1px solid #ececec;
+    font-size: 15px;
+    font-family: 'AR One Sans', sans-serif;
+  }
+  
+  .modern-table tbody tr:last-child td {
+    font-weight: bold;
+    color: #0277bd;
+  }
+  
+  @media (max-width: 600px) {
+    .modern-table-title {
+      font-size: 18px;
+    }
+  
+    .modern-table th,
+    .modern-table td {
+      font-size: 13px;
+      padding: 8px;
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  

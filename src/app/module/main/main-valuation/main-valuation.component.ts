@@ -141,6 +141,11 @@ export class MainValuationComponent implements OnInit{
   else if(bStep === 6) {this.nextModelSelection(MODELS.BERKUS)}
   else {this.berkusStep = bStep};
   }
+
+  riskFactor(stateType:any){
+    if(stateType === 'previous') {this.previousModelSelection(MODELS.RISK_FACTOR)}
+    else {this.nextModelSelection(MODELS.RISK_FACTOR)}
+  }
   onStepChange() {  
       this.formOneAndThreeData = {
         ...this.formOneData,
@@ -180,7 +185,7 @@ export class MainValuationComponent implements OnInit{
   async previous(event:any){
     const currentStep:any = localStorage.getItem('step')
     this.step = parseInt(currentStep) - 1;
-    if(!this.modelArray?.filter((model: string) => !['berkus'].includes(model)).length && this.step === 4) {
+    if(!this.modelArray?.filter((model: string) => !['berkus', 'riskFactor'].includes(model)).length && this.step === 4) {
       this.step = this.step - 1;
     }
     localStorage.setItem('step',`${this.step}`);
@@ -307,12 +312,15 @@ export class MainValuationComponent implements OnInit{
           this.next = 9;
           this.berkusStep = 1;
           break;
+        case 'riskFactor':
+          this.next = 10;
+          break;
         default:
           // this.stepper.next(); 
           const currentStep:any = localStorage.getItem('step')
           // const currentStep:any = await this.fetchProcessActiveStage(localStorage.getItem('processStateId'));
           this.step = parseInt(currentStep) + 1;
-          const excludeModels = [ MODELS.BERKUS];
+          const excludeModels = [ MODELS.BERKUS, MODELS.RISK_FACTOR];
           if(!storeModelArray.filter((model:any) => !excludeModels.includes(model)).length){
             this.step = this.step + 1;
             this.onStepChange()
@@ -370,12 +378,15 @@ export class MainValuationComponent implements OnInit{
          this.next = 9;
          this.berkusStep = 5;
          break;
+       case 'riskFactor':
+         this.next = 10;
+         break;
        default:
         // this.stepper.previous(); 
         const currentStep:any = localStorage.getItem('step')
         // const currentStep:any = await this.fetchProcessActiveStage(localStorage.getItem('processStateId'));
         this.step = parseInt(currentStep) - 1;
-        const excludeModels = [ MODELS.BERKUS];
+        const excludeModels = [ MODELS.BERKUS, MODELS.RISK_FACTOR];
         if(((storeModelArray.length && this.formOneData?.issuanceOfShares && storeModelArray.includes(MODELS.RULE_ELEVEN_UA)) || (!storeModelArray.filter((model:any) => !excludeModels.includes(model)).length))){
           this.step = this.step - 1;
         }
@@ -485,6 +496,12 @@ export class MainValuationComponent implements OnInit{
           this.onStepChange();
           this.formOneAndThreeData = {...updatedPayload};
           this.formFiveData = {formOneAndThreeData : updatedPayload,formFourData:processStateDetails.fourthStageInput,formFiveData:processStateDetails?.fifthStageInput?.totalWeightageModel};
+          
+          const excludedModels = [MODELS.BERKUS, MODELS.RISK_FACTOR, MODELS.SCORE_CARD, MODELS.VENTURE_CAPITAL];
+          const modelArray = processStateDetails?.firstStageInput?.model?.filter((model: string) => !excludedModels.includes(model));
+          if(!modelArray.length && processStateDetails?.firstStageInput?.model?.length){
+            this.formFiveData = {formOneAndThreeData : processStateDetails.firstStageInput,formFourData:processStateDetails.fourthStageInput,formFiveData:processStateDetails?.fifthStageInput?.totalWeightageModel};
+          }
         }
         if(processStateDetails?.fifthStageInput || processStateDetails?.sixthStageInput){
           this.formSixData = {...this.formFiveData,formFiveData : processStateDetails.fifthStageInput?.totalWeightageModel,formSixData:processStateDetails?.sixthStageInput}

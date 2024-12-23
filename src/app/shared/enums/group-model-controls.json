@@ -3981,7 +3981,7 @@
                                 "percentage":[]
                             }
                         ],
-                        "question":"How well does the product rollout plan address potential risks associated with execution, such as resource constraints and regulatory hurdles?"
+                        "question":"How effectively does the product rollout plan mitigate execution risks like resource constraints and regulatory hurdles?"
                     },
                     {
                         "controlName": "feedbackAndIterationProcess",
@@ -4070,7 +4070,450 @@
                 ]
             }
     }
-},
+    },
+    "RISK_FACTOR":{
+        "type":"riskFactor",
+        "name":"Risk Factor",
+        "config":[
+            {
+                "type": "header",
+                "label": "Risk Factor Method",
+                "class":"c-decorated-header"
+            },
+            {
+                "controlName": "managementRisk",
+                "controlNameRFCoeff": "managementRiskRFCoeff",
+                "subHead":"Managment Risk",
+                "label": "Select Experience",
+                "placeholder":"Select Value",
+                "tooltip":"The idea should be protectable via patents/copyrights and capable of generating significant returns.",
+                "options": [               
+                        {
+                            "name":"Highly experienced, strong track record",
+                            "value":"highExperienceStrongTrackRecord",
+                            "rfCoeff":2
+                        },
+                        {
+                            "name":"Effective, moderate experience",
+                            "value":"effectiveModerateExperience",
+                            "rfCoeff":1
+                        },
+                        {
+                            "name":"Cohesive team, lacking experience",
+                            "value":"cohesiveTeamLackingExperience",
+                            "rfCoeff":0
+                        },
+                        {
+                            "name":"Lacking essential skills or experience",
+                            "value":"lackingEssentialSkillOrExp",
+                            "rfCoeff":-1
+                        },
+                        {
+                            "name":"Uncertain leadership capabilities",
+                            "value":"uncrtinLeadershipCapablities",
+                            "rfCoeff":-2
+                        }
+                    ],
+                "question":"How experienced is the management team in the industry?"
+            },
+            {
+                "controlName": "stateOfBusiness",
+                "controlNameRFCoeff": "stateOfBusinessRFCoeff",
+                "subHead":"Stage of the Business",
+                "label": "Select level",
+                "placeholder":"Select Value",
+                "tooltip":"The idea should be protectable via patents/copyrights and capable of generating significant returns.",
+                "options": [               
+                        {
+                            "name":"Strong market validation, consistent traction",
+                            "value":"strngMrktValdtionCnsistntTrction",
+                            "rfCoeff":2
+                        },
+                        {
+                            "name":"Increasing traction, positive signs",
+                            "value":"incrsingTrctionPstveSgns",
+                            "rfCoeff":1
+                        },
+                        {
+                            "name":"Initial traction, moderate progress",
+                            "value":"intialTrctionMdrtePrgrss",
+                            "rfCoeff":0
+                        },
+                        {
+                            "name":"Limited or inconsistent traction",
+                            "value":"lmtdOrIncsistntTrction",
+                            "rfCoeff":-1
+                        },
+                        {
+                            "name":"No market validation or traction",
+                            "value":"noMrktVldtionOrTrction",
+                            "rfCoeff":-2
+                        }
+                    ],
+                "question":"What level of traction has the startup achieved in the market?"
+            },
+            {
+                "controlName": "politicalRisk",
+                "controlNameRFCoeff": "politicalRiskRFCoeff",
+                "subHead":"Political Risk",
+                "label": "Select hurdle",
+                "placeholder":"Select Value",
+                "tooltip":"The idea should be protectable via patents/copyrights and capable of generating significant returns.",
+                "options": [               
+                        {
+                            "name":"Favorable regulatory environment",
+                            "value":"fvrbleRgultryEnv",
+                            "rfCoeff":2
+                        },
+                        {
+                            "name":"Favorable, minimal risk",
+                            "value":"fvrbleMinmalRsk",
+                            "rfCoeff":1
+                        },
+                        {
+                            "name":"Stable, predictable changes",
+                            "value":"stblePrdctbleChnges",
+                            "rfCoeff":0
+                        },
+                        {
+                            "name":"Instability, anticipated changes",
+                            "value":"instbltyAntcptedChnges",
+                            "rfCoeff":-1
+                        },
+                        {
+                            "name":"High uncertainty, potential impact",
+                            "value":"hghUncrtntyPtntialImpct",
+                            "rfCoeff":-2
+                        }
+                    ],
+                "question":"Are there regulatory hurdles that might affect the business?"
+            },
+            {
+                "controlName": "supplyChainOrManufacturingRisk",
+                "controlNameRFCoeff": "supplyChainOrManufacturingRiskRFCoeff",
+                "subHead":"Supply Chain or Manufacturing Risk",
+                "label": "Select supplier type",
+                "placeholder":"Select Value",
+                "tooltip":"The idea should be protectable via patents/copyrights and capable of generating significant returns.",
+                "options": [               
+                        {
+                            "name":"Strong supplier partnerships, low risk",
+                            "value":"strngSpplierPrtnrshpLwRsk",
+                            "rfCoeff":2
+                        },
+                        {
+                            "name":"Reliable suppliers with minimal risk",
+                            "value":"rlbleSpplierMinmlRsk",
+                            "rfCoeff":1
+                        },
+                        {
+                            "name":"Some reliable suppliers, no strong partnerships",
+                            "value":"rlbleSupplierStrngPrtnrshp",
+                            "rfCoeff":0
+                        },
+                        {
+                            "name":"Dependent on unreliable suppliers",
+                            "value":"dpndntOnUnrlbleSpplier",
+                            "rfCoeff":-1
+                        },
+                        {
+                            "name":"No suppliers, high risk",
+                            "value":"noSpplierHghRsk",
+                            "rfCoeff":-2
+                        }
+                    ],
+                "question":"Does the startup have established, reliable suppliers?"
+            },
+            {
+                "controlName": "salesAndMarketingRisk",
+                "controlNameRFCoeff": "salesAndMarketingRiskRFCoeff",
+                "subHead":"Sales and Marketing Risk",
+                "label": "Select cost type",
+                "placeholder":"Select Value",
+                "tooltip":"The idea should be protectable via patents/copyrights and capable of generating significant returns.",
+                "options": [               
+                        {
+                            "name":"Very efficient, low acquisition cost",
+                            "value":"vryEffcntLwAcqstionCst",
+                            "rfCoeff":2
+                        },
+                        {
+                            "name":"Efficient, manageable acquisition cost",
+                            "value":"effcntMngbleAcqstionCst",
+                            "rfCoeff":1
+                        },
+                        {
+                            "name":"Moderate cost, sustainable",
+                            "value":"mdrteCstSustnble",
+                            "rfCoeff":0
+                        },
+                        {
+                            "name":"Costly acquisition, manageable",
+                            "value":"cstlyAcqstionMngble",
+                            "rfCoeff":-1
+                        },
+                        {
+                            "name":"High acquisition cost, inefficient",
+                            "value":"hghAcqstionCstIneffcnt",
+                            "rfCoeff":-2
+                        }
+                    ],
+                "question":"What are the costs of acquiring new customers?"
+            },
+            {
+                "controlName": "capitalRaisingRisk",
+                "controlNameRFCoeff": "capitalRaisingRiskRFCoeff",
+                "subHead":"Capital Raising Risk",
+                "label": "Select interest type",
+                "placeholder":"Select Value",
+                "tooltip":"The idea should be protectable via patents/copyrights and capable of generating significant returns.",
+                "options": [               
+                        {
+                            "name":"Strong interest, easy access",
+                            "value":"strngInrstEsyAccss",
+                            "rfCoeff":2
+                        },
+                        {
+                            "name":"Moderate access, reliable sources",
+                            "value":"mdrteAccssRlbleSources",
+                            "rfCoeff":1
+                        },
+                        {
+                            "name":"Moderate difficulty, some sources",
+                            "value":"mdrteDffcltySmeSources",
+                            "rfCoeff":0
+                        },
+                        {
+                            "name":"Difficulty raising capital",
+                            "value":"dffcltyRsingCptl",
+                            "rfCoeff":-1
+                        },
+                        {
+                            "name":"No access, high difficulty",
+                            "value":"noAccssHghDffclty",
+                            "rfCoeff":-2
+                        }
+                    ],
+                "question":"Is the startup able to attract interest from investors?"
+            },
+            {
+                "controlName": "competitionRisk",
+                "controlNameRFCoeff": "competitionRiskRFCoeff",
+                "subHead":"Competition Risk",
+                "label": "Select level of competitors",
+                "placeholder":"Select Value",
+                "tooltip":"The idea should be protectable via patents/copyrights and capable of generating significant returns.",
+                "options": [               
+                        {
+                            "name":"Minimal competition, unique advantage",
+                            "value":"minmlCmptionUnqueAdvntge",
+                            "rfCoeff":2
+                        },
+                        {
+                            "name":"Competitive advantage, moderate competition",
+                            "value":"cmptveAdvntgeMdrteCmption",
+                            "rfCoeff":1
+                        },
+                        {
+                            "name":"Niche, some competition",
+                            "value":"ncheSmeCmption",
+                            "rfCoeff":0
+                        },
+                        {
+                            "name":"Established competitors, moderate risk",
+                            "value":"estblshedCmptorsMdrteRsk",
+                            "rfCoeff":-1
+                        },
+                        {
+                            "name":"Highly competitive, major players",
+                            "value":"hghCmptiveMjrPlyrs",
+                            "rfCoeff":-2
+                        }
+                    ],
+                "question":"How crowded is the market, and who are the main competitors?"
+            },
+            {
+                "controlName": "riskOfTechnology",
+                "controlNameRFCoeff": "riskOfTechnologyRFCoeff",
+                "subHead":"Risk of Technology",
+                "label": "Select development stage",
+                "placeholder":"Select Value",
+                "tooltip":"The idea should be protectable via patents/copyrights and capable of generating significant returns.",
+                "options": [               
+                        {
+                            "name":"Advanced, fully developed technology",
+                            "value":"advncedFllyDvlpedTechnlgy",
+                            "rfCoeff":2
+                        },
+                        {
+                            "name":"Established, some development potential",
+                            "value":"estblshedSmeDvlpmntPtntial",
+                            "rfCoeff":1
+                        },
+                        {
+                            "name":"Developing, partial functionality",
+                            "value":"dvlpmntPrtialFnctnlty",
+                            "rfCoeff":0
+                        },
+                        {
+                            "name":"Early-stage, minimal development",
+                            "value":"erlyStgeMinmlDvlpmnt",
+                            "rfCoeff":-1
+                        },
+                        {
+                            "name":"Underdeveloped, high technology risk",
+                            "value":"undrdvlpedHghTdnlgyRsk",
+                            "rfCoeff":-2
+                        }
+                    ],
+                "question":"What is the current development stage of the technology?"
+            },
+            {
+                "controlName": "riskOfLitigation",
+                "controlNameRFCoeff": "riskOfLitigationRFCoeff",
+                "subHead":"Risk of Litigation",
+                "label": "Select risk type",
+                "placeholder":"Select Value",
+                "tooltip":"The idea should be protectable via patents/copyrights and capable of generating significant returns.",
+                "options": [               
+                        {
+                            "name":"Negligible legal risk, good compliance",
+                            "value":"nglbleLglRskGdCmpliance",
+                            "rfCoeff":2
+                        },
+                        {
+                            "name":"Low risk, proactive compliance",
+                            "value":"lwRskPrctveCmpliance",
+                            "rfCoeff":1
+                        },
+                        {
+                            "name":"Moderate legal exposure",
+                            "value":"mdrteLglExpsure",
+                            "rfCoeff":0
+                        },
+                        {
+                            "name":"Some legal risks, operational impact",
+                            "value":"lglRskOprtionlImpct",
+                            "rfCoeff":-1
+                        },
+                        {
+                            "name":"High exposure, significant threats",
+                            "value":"hghExpsureSgnfcntThrt",
+                            "rfCoeff":-2
+                        }
+                    ],
+                "question":"Are there potential legal risks that could impact the startup?"
+            },
+            {
+                "controlName": "internationalRisk",
+                "controlNameRFCoeff": "internationalRiskRFCoeff",
+                "subHead":"International Risk",
+                "label": "Select viability",
+                "placeholder":"Select Value",
+                "tooltip":"The idea should be protectable via patents/copyrights and capable of generating significant returns.",
+                "options": [               
+                        {
+                            "name":"Stable, favorable international conditions",
+                            "value":"stbleFvrbleIntrntnlCndtions",
+                            "rfCoeff":2
+                        },
+                        {
+                            "name":"Favorable, minimal barriers",
+                            "value":"fvrbleMinmlBrriers",
+                            "rfCoeff":1
+                        },
+                        {
+                            "name":"Manageable risks, established plans",
+                            "value":"mngbleRskEstblshedPlns",
+                            "rfCoeff":0
+                        },
+                        {
+                            "name":"Some difficulties, uncertainties",
+                            "value":"smeDffcltiesUncrtnties",
+                            "rfCoeff":-1
+                        },
+                        {
+                            "name":"High risk, uncertain conditions",
+                            "value":"hghRskUncrtnCndtions",
+                            "rfCoeff":-2
+                        }
+                    ],
+                "question":"How viable is the startup’s plan to enter international markets?"
+            },
+            {
+                "controlName": "riskOfReputation",
+                "controlNameRFCoeff": "riskOfReputationRFCoeff",
+                "subHead":"Risk of Reputation",
+                "label": "Select type",
+                "placeholder":"Select Value",
+                "tooltip":"The idea should be protectable via patents/copyrights and capable of generating significant returns.",
+                "options": [               
+                        {
+                            "name":"Strong brand, minimal risk",
+                            "value":"strngBrndMinmlRsk",
+                            "rfCoeff":2
+                        },
+                        {
+                            "name":"Established brand, good following",
+                            "value":"estblshdBrndGdFllwing",
+                            "rfCoeff":1
+                        },
+                        {
+                            "name":"Developing brand, no major risks",
+                            "value":"dvlpngBrndNoMjrRsk",
+                            "rfCoeff":0
+                        },
+                        {
+                            "name":"Weak brand, potential risks",
+                            "value":"weakBrndPtntlRsk",
+                            "rfCoeff":-1
+                        },
+                        {
+                            "name":"Negative perception, significant risk",
+                            "value":"ngtvePrcptionSgnfntRsk",
+                            "rfCoeff":-2
+                        }
+                    ],
+                "question":"How established is the startup’s brand in the market?"
+            },
+            {
+                "controlName": "exitValueRisk",
+                "controlNameRFCoeff": "exitValueRiskRFCoeff",
+                "subHead":"Exit Value Risk",
+                "label": "Select strategy type",
+                "placeholder":"Select Value",
+                "tooltip":"The idea should be protectable via patents/copyrights and capable of generating significant returns.",
+                "options": [               
+                        {
+                            "name":"Lucrative strategy, strong potential",
+                            "value":"lcrtveStrtgyStrnPtntl",
+                            "rfCoeff":2
+                        },
+                        {
+                            "name":"Clear strategy, good options",
+                            "value":"clrStrtgyGdOption",
+                            "rfCoeff":1
+                        },
+                        {
+                            "name":"Some viable options available",
+                            "value":"smeViableOptionAvlble",
+                            "rfCoeff":0
+                        },
+                        {
+                            "name":"Limited exit options available",
+                            "value":"lmtdExtOptionAvlble",
+                            "rfCoeff":-1
+                        },
+                        {
+                            "name":"Uncertain, unattractive strategy",
+                            "value":"uncrtnUnattrctveStrtgy",
+                            "rfCoeff":-2
+                        }
+                    ],
+                "question":"Does the startup have a clear, viable exit strategy?"
+            }
+        ]
+    },
     "reportDetails":{
         "type":"reportDetails",
         "header":"Details Of Valuation Report",

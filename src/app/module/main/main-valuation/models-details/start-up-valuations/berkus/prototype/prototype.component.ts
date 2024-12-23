@@ -45,7 +45,7 @@ export class PrototypeComponent implements OnInit{
   }
 
   loadData(){
-    this.componentInteractionService.registerComponent(COMPONENT_ENUM.BERKUS.key).subscribe((response)=>{
+    this.componentInteractionService.registerComponent(COMPONENT_ENUM.STARTUP_VALUATION.key).subscribe((response)=>{
       if(response){
         const prototypeData = response?.berkus?.prototype;
         if(prototypeData){

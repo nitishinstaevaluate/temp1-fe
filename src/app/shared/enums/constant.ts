@@ -107,7 +107,7 @@ export const BERKUS_METHOD = {
       dbKey:'managementValuation'
     },
     { 
-      label: 'Strategic Frontend', 
+      label: 'Strategy', 
       step: 4, 
       stateKey: 'strategicRelationship', 
       completed: true,
@@ -612,7 +612,7 @@ export const DATE_REGEX = /^([0-2]?\d|30|31)-(0?[1-9]|1[0-2])-\d{4}$/;
 export const XL_SHEET_ENUM = [ 'dcfApproach', 'ruleElevenUaApproach', 'marketPriceApproach', 'navApproach', 'slumpSaleApproach', 'startUpApproach' ];
 
 export const COMPONENT_ENUM = {
-  BERKUS:{
-    key:'berkus'
+  STARTUP_VALUATION:{
+    key:'startUpValuation'
   }
 }
