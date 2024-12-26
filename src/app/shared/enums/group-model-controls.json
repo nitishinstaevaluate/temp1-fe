@@ -4514,6 +4514,1361 @@
             }
         ]
     },
+    "SCORE_CARD":{
+        "type":"scoreCard",
+        "name":"Score Card",
+        "config":[
+            {
+                "type": "header",
+                "label": "Score Card Method",
+                "class":"c-decorated-header"
+            },
+            {
+                "mainHeader":"Management Team",
+                "serialNo":"A",
+                "configPresets":[
+                    {
+                        "controlName": "experience",
+                        "controlNameDoa": "experienceDoa",
+                        "labelHeader":"Experience",
+                        "label": "Select Experience",
+                        "labelDoa": "Select Experience Doa",
+                        "inputLabelDoa":"Add Doa",
+                        "placeholder":"Select Value",
+                        "inputPlaceholder":"Enter Value",
+                        "errorDoa":"Please select or add experience DOA",
+                        "tooltip":"Thorough experimentation and validation with a large audience minimize implementation risks and increase investor confidence.",
+                        "options": [               
+                            {
+                                "name":"No Business Experience",
+                                "value":"noBusinessExperience"
+                            },
+                            {
+                                "name":"Many Years Of Business Experience",
+                                "value":"manyYearsOfBusinessExperience"
+                            },
+                            {
+                                "name":"Experience In This Business Sector",
+                                "value":"experienceInThisBusinessSector"
+                            }
+                        ],
+                        "degreeOfAchievement":[
+                            {
+                                "key":"manyYearsOfBusinessExperience",
+                                "percentage":[
+                                    {
+                                        "percent":"10%",
+                                        "value":10
+                                    },
+                                    {
+                                        "percent":"20%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":30
+                                    },
+                                    {
+                                        "percent":"40%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":50
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"experienceInThisBusinessSector",
+                                "percentage":[
+                                    {
+                                        "percent":"60%",
+                                        "value":60
+                                    },
+                                    {
+                                        "percent":"70%",
+                                        "value":70
+                                    },
+                                    {
+                                        "percent":"80%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":100
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"noBusinessExperience",
+                                "defaultValue":true,
+                                "percentage":[]
+                            }
+                        ],
+                        "question":"What is the experience of the management team?"
+                    },
+                    {
+                        "controlName": "adaptability",
+                        "controlNameDoa": "adaptabilityDoa",
+                        "label": "Select type",
+                        "labelHeader":"Adaptibility",
+                        "labelDoa": "Select type Doa",
+                        "inputLabelDoa":"Add Doa",
+                        "placeholder":"Select Value",
+                        "inputPlaceholder":"Enter Value",
+                        "errorDoa":"Please select or add adaptability DOA",
+                        "tooltip":"Thorough experimentation and validation with a large audience minimize implementation risks and increase investor confidence.",
+                        "options": [               
+                            {
+                                "name":"Highly Coachable",
+                                "value":"highlyCoachable"
+                            },
+                            {
+                                "name":"Moderately Coachable",
+                                "value":"moderatelyCoachable"
+                            },
+                            {
+                                "name":"Not Coachable",
+                                "value":"notCoachable"
+                            }
+                        ],
+                        "degreeOfAchievement":[
+                            {
+                                "key":"moderatelyCoachable",
+                                "percentage":[
+                                    {
+                                        "percent":"10%",
+                                        "value":10
+                                    },
+                                    {
+                                        "percent":"20%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":30
+                                    },
+                                    {
+                                        "percent":"40%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":50
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"highlyCoachable",
+                                "percentage":[
+                                    {
+                                        "percent":"60%",
+                                        "value":60
+                                    },
+                                    {
+                                        "percent":"70%",
+                                        "value":70
+                                    },
+                                    {
+                                        "percent":"80%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":100
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"notCoachable",
+                                "defaultValue":true,
+                                "percentage":[]
+                            }
+                        ],
+                        "question":"How does the founder handle constructive criticism and feedback from advisors or team members?"
+                    },
+                    {
+                        "controlName": "teamCompleteness",
+                        "controlNameDoa": "teamCompletenessDoa",
+                        "label": "Select completeness",
+                        "labelHeader":"Team Completeness",
+                        "labelDoa": "Select Doa",
+                        "inputLabelDoa":"Add Doa",
+                        "placeholder":"Select Value",
+                        "inputPlaceholder":"Enter Value",
+                        "errorDoa":"Please select or add team completeness DOA",
+                        "tooltip":"Thorough experimentation and validation with a large audience minimize implementation risks and increase investor confidence.",
+                        "options": [               
+                            {
+                                "name":"Competent Individual, No Team",
+                                "value":"competentIndividualNoTeam"
+                            },
+                            {
+                                "name":"Team Ready But Not Active",
+                                "value":"teamReadyButNotActive"
+                            },
+                            {
+                                "name":"Strong Competent Team Onboard",
+                                "value":"StrongCompetentTeamOnBoard"
+                            }
+                        ],
+                        "degreeOfAchievement":[
+                            {
+                                "key":"teamReadyButNotActive",
+                                "percentage":[
+                                    {
+                                        "percent":"10%",
+                                        "value":10
+                                    },
+                                    {
+                                        "percent":"20%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":30
+                                    },
+                                    {
+                                        "percent":"40%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":50
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"StrongCompetentTeamOnBoard",
+                                "percentage":[
+                                    {
+                                        "percent":"60%",
+                                        "value":60
+                                    },
+                                    {
+                                        "percent":"70%",
+                                        "value":70
+                                    },
+                                    {
+                                        "percent":"80%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":100
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"competentIndividualNoTeam",
+                                "defaultValue":true,
+                                "percentage":[]
+                            }
+                        ],
+                        "question":"How complete is the management team?"
+                    }
+                ]
+            },
+            {
+                "mainHeader":"Size of the Opportunity",
+                "serialNo":"B",
+                "configPresets":[
+                    {
+                        "controlName": "marketSize",
+                        "controlNameDoa": "marketSizeDoa",
+                        "labelHeader":"Market Size",
+                        "label": "Select size",
+                        "labelDoa": "Select associated Doa",
+                        "inputLabelDoa":"Add Doa",
+                        "placeholder":"Select Value",
+                        "inputPlaceholder":"Enter Value",
+                        "errorDoa":"Please select or add market size DOA",
+                        "tooltip":"Thorough experimentation and validation with a large audience minimize implementation risks and increase investor confidence.",
+                        "options": [               
+                            {
+                                "name":"Niche, Limited Market",
+                                "value":"nicheLimitedMarket"
+                            },
+                            {
+                                "name":"Mid-size Growing Market",
+                                "value":"midSizedGrowingMarket"
+                            },
+                            {
+                                "name":"Large Market with Significant Growth Opportunities",
+                                "value":"largeMarketwithSignificantGrowthOpportunities"
+                            }
+                        ],
+                        "degreeOfAchievement":[
+                            {
+                                "key":"midSizedGrowingMarket",
+                                "percentage":[
+                                    {
+                                        "percent":"10%",
+                                        "value":10
+                                    },
+                                    {
+                                        "percent":"20%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":30
+                                    },
+                                    {
+                                        "percent":"40%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":50
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"largeMarketwithSignificantGrowthOpportunities",
+                                "percentage":[
+                                    {
+                                        "percent":"60%",
+                                        "value":60
+                                    },
+                                    {
+                                        "percent":"70%",
+                                        "value":70
+                                    },
+                                    {
+                                        "percent":"80%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":100
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"nicheLimitedMarket",
+                                "defaultValue":true,
+                                "percentage":[]
+                            }
+                        ],
+                        "question":"What is the size of the target market?"
+                    },
+                    {
+                        "controlName": "revenuePotential",
+                        "controlNameDoa": "revenuePotentialDoa",
+                        "label": "Select projections",
+                        "labelHeader":"Revenue Potential",
+                        "labelDoa": "Select associated Doa",
+                        "inputLabelDoa":"Add Doa",
+                        "placeholder":"Select Value",
+                        "inputPlaceholder":"Enter Value",
+                        "errorDoa":"Please select or add revenue potential DOA",
+                        "tooltip":"Thorough experimentation and validation with a large audience minimize implementation risks and increase investor confidence.",
+                        "options": [               
+                            {
+                                "name":"High",
+                                "value":"high"
+                            },
+                            {
+                                "name":"Moderate",
+                                "value":"moderate"
+                            },
+                            {
+                                "name":"Low",
+                                "value":"low"
+                            }
+                        ],
+                        "degreeOfAchievement":[
+                            {
+                                "key":"moderate",
+                                "percentage":[
+                                    {
+                                        "percent":"40%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":50
+                                    },
+                                    {
+                                        "percent":"60%",
+                                        "value":60
+                                    },
+                                    {
+                                        "percent":"70%",
+                                        "value":70
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"high",
+                                "percentage":[
+                                    {
+                                        "percent":"80%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":100
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"low",
+                                "percentage":[
+                                    {
+                                        "percent":"0%",
+                                        "value":0
+                                    },
+                                    {
+                                        "percent":"10%",
+                                        "value":10
+                                    },
+                                    {
+                                        "percent":"20%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":30
+                                    }
+                                ]
+                            }
+                        ],
+                        "question":"What is the projected revenue potential of the company in five years?"
+                    },
+                    {
+                        "controlName": "stage",
+                        "controlNameDoa": "stageDoa",
+                        "label": "Select product development stage",
+                        "labelHeader":"Stage",
+                        "labelDoa": "Select associated Doa",
+                        "inputLabelDoa":"Add Doa",
+                        "placeholder":"Select Value",
+                        "inputPlaceholder":"Enter Value",
+                        "errorDoa":"Please select or add stage DOA",
+                        "tooltip":"Thorough experimentation and validation with a large audience minimize implementation risks and increase investor confidence.",
+                        "options": [               
+                            {
+                                "name":"Well Defined",
+                                "value":"wellDefined"
+                            },
+                            {
+                                "name":"Product Ready",
+                                "value":"productReady"
+                            },
+                            {
+                                "name":"Not Well Defined",
+                                "value":"notWellDefined"
+                            }
+                        ],
+                        "degreeOfAchievement":[
+                            {
+                                "key":"wellDefined",
+                                "percentage":[
+                                    {
+                                        "percent":"10%",
+                                        "value":10
+                                    },
+                                    {
+                                        "percent":"20%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":30
+                                    },
+                                    {
+                                        "percent":"40%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":50
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"productReady",
+                                "percentage":[
+                                    {
+                                        "percent":"60%",
+                                        "value":60
+                                    },
+                                    {
+                                        "percent":"70%",
+                                        "value":70
+                                    },
+                                    {
+                                        "percent":"80%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":100
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"notWellDefined",
+                                "defaultValue":true,
+                                "percentage":[]
+                            }
+                        ],
+                        "question":"Is the product defined and developed?"
+                    }
+                ]
+            },
+            {
+                "mainHeader":"Product/Technology",
+                "serialNo":"C",
+                "configPresets":[
+                    {
+                        "controlName": "compelling",
+                        "controlNameDoa": "compellingDoa",
+                        "labelHeader":"Compelling",
+                        "label": "Select type",
+                        "labelDoa": "Select associated Doa",
+                        "inputLabelDoa":"Add Doa",
+                        "placeholder":"Select Value",
+                        "inputPlaceholder":"Enter Value",
+                        "errorDoa":"Please select or add compelling DOA",
+                        "tooltip":"Thorough experimentation and validation with a large audience minimize implementation risks and increase investor confidence.",
+                        "options": [               
+                            {
+                                "name":"Low Compelling Value",
+                                "value":"lowCompellingValue"
+                            },
+                            {
+                                "name":"Moderate Compelling Value",
+                                "value":"moderateCompellingValue"
+                            },
+                            {
+                                "name":"Highly Compelling And Unique Offering",
+                                "value":"highlyCompellingAndUniqueOffering"
+                            }
+                        ],
+                        "degreeOfAchievement":[
+                            {
+                                "key":"moderateCompellingValue",
+                                "percentage":[
+                                    {
+                                        "percent":"10%",
+                                        "value":10
+                                    },
+                                    {
+                                        "percent":"20%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":30
+                                    },
+                                    {
+                                        "percent":"40%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":50
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"highlyCompellingAndUniqueOffering",
+                                "percentage":[
+                                    {
+                                        "percent":"60%",
+                                        "value":60
+                                    },
+                                    {
+                                        "percent":"70%",
+                                        "value":70
+                                    },
+                                    {
+                                        "percent":"80%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":100
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"lowCompellingValue",
+                                "defaultValue":true,
+                                "percentage":[]
+                            }
+                        ],
+                        "question":"Is the product compelling to customers?"
+                    },
+                    {
+                        "controlName": "uniqueness",
+                        "controlNameDoa": "uniquenessDoa",
+                        "label": "Select type",
+                        "labelHeader":"Uniqueness",
+                        "labelDoa": "Select associated Doa",
+                        "inputLabelDoa":"Add Doa",
+                        "placeholder":"Select Value",
+                        "inputPlaceholder":"Enter Value",
+                        "errorDoa":"Please select or add uniqueness DOA",
+                        "tooltip":"Thorough experimentation and validation with a large audience minimize implementation risks and increase investor confidence.",
+                        "options": [               
+                            {
+                                "name":"Easily Copied",
+                                "value":"easilyCopied"
+                            },
+                            {
+                                "name":"Barriers to Replication with Competitive Potential",
+                                "value":"barrierstoReplicationwithCompetitivePotential"
+                            },
+                            {
+                                "name":"Hard to Replicate Due to IP And Patent",
+                                "value":"hardtoReplicateDuetoIPAndPatent"
+                            }
+                        ],
+                        "degreeOfAchievement":[
+                            {
+                                "key":"barrierstoReplicationwithCompetitivePotential",
+                                "percentage":[
+                                    {
+                                        "percent":"40%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":50
+                                    },
+                                    {
+                                        "percent":"60%",
+                                        "value":60
+                                    },
+                                    {
+                                        "percent":"70%",
+                                        "value":70
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"hardtoReplicateDuetoIPAndPatent",
+                                "percentage":[
+                                    {
+                                        "percent":"80%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":100
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"easilyCopied",
+                                "percentage":[
+                                    {
+                                        "percent":"0%",
+                                        "value":0
+                                    },
+                                    {
+                                        "percent":"10%",
+                                        "value":10
+                                    },
+                                    {
+                                        "percent":"20%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":30
+                                    }
+                                ]
+                            }
+                        ],
+                        "question":"Can the product be easily duplicated by others?"
+                    },
+                    {
+                        "controlName": "executionRisk",
+                        "controlNameDoa": "executionRiskDoa",
+                        "label": "Select risk",
+                        "labelHeader":"Execution Risk:",
+                        "labelDoa": "Select associated Doa",
+                        "inputLabelDoa":"Add Doa",
+                        "placeholder":"Select Value",
+                        "inputPlaceholder":"Enter Value",
+                        "errorDoa":"Please select or add execution risk DOA",
+                        "tooltip":"Thorough experimentation and validation with a large audience minimize implementation risks and increase investor confidence.",
+                        "options": [               
+                            {
+                                "name":"Moderate Risk Early Signs Of Validation",
+                                "value":"moderateRiskEarlySignsOfValidation"
+                            },
+                            {
+                                "name":"Low Risk Strong Product Market Fit With Feedback",
+                                "value":"LowRiskStrongProductMarketFitWithFeedback"
+                            },
+                            {
+                                "name":"High Execution Risk",
+                                "value":"highExecutionRisk"
+                            }
+                        ],
+                        "degreeOfAchievement":[
+                            {
+                                "key":"moderateRiskEarlySignsOfValidation",
+                                "percentage":[
+                                    {
+                                        "percent":"40%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":50
+                                    },
+                                    {
+                                        "percent":"60%",
+                                        "value":60
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"LowRiskStrongProductMarketFitWithFeedback",
+                                "percentage":[
+                                    
+                                    {
+                                        "percent":"70%",
+                                        "value":70
+                                    },
+                                    {
+                                        "percent":"80%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":100
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"highExecutionRisk",
+                                "percentage":[
+                                    {
+                                        "percent":"0%",
+                                        "value":0
+                                    },
+                                    {
+                                        "percent":"10%",
+                                        "value":10
+                                    },
+                                    {
+                                        "percent":"20%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":30
+                                    }
+                                ]
+                            }
+                        ],
+                        "question":"How risky is the product’s execution?"
+                    }
+                ]
+            },
+            {
+                "mainHeader":"Competitive Environment",
+                "serialNo":"D",
+                "configPresets":[
+                    {
+                        "controlName": "competition",
+                        "controlNameDoa": "competitionDoa",
+                        "labelHeader":"Competition",
+                        "label": "Select strength",
+                        "labelDoa": "Select associated Doa",
+                        "inputLabelDoa":"Add Doa",
+                        "placeholder":"Select Value",
+                        "inputPlaceholder":"Enter Value",
+                        "errorDoa":"Please select or add competition DOA",
+                        "tooltip":"Thorough experimentation and validation with a large audience minimize implementation risks and increase investor confidence.",
+                        "options": [               
+                            {
+                                "name":"Dominated By a Single Large Player",
+                                "value":"dominatedBySingleLargePlayer"
+                            },
+                            {
+                                "name":"Dominated By Several Players",
+                                "value":"dominatedBySeveralPlayers"
+                            },
+                            {
+                                "name":"Many Small Players With Little Differentiation",
+                                "value":"manySmallPlayersWithLittleDifferentiation"
+                            }
+                        ],
+                        "degreeOfAchievement":[
+                            {
+                                "key":"dominatedBySeveralPlayers",
+                                "percentage":[
+                                    {
+                                        "percent":"40%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":50
+                                    },
+                                    {
+                                        "percent":"60%",
+                                        "value":60
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"manySmallPlayersWithLittleDifferentiation",
+                                "percentage":[
+                                    {
+                                        "percent":"70%",
+                                        "value":70
+                                    },
+                                    {
+                                        "percent":"80%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":100
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"dominatedBySingleLargePlayer",
+                                "percentage":[
+                                    {
+                                        "percent":"0%",
+                                        "value":0
+                                    },
+                                    {
+                                        "percent":"10%",
+                                        "value":10
+                                    },
+                                    {
+                                        "percent":"20%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":30
+                                    }
+                                ]
+                            }
+                        ],
+                        "question":"Strength of competitors in the marketplace?"
+                    },
+                    {
+                        "controlName": "strengthofCompetitiveProduct",
+                        "controlNameDoa": "strengthofCompetitiveProductDoa",
+                        "label": "Select product strongness",
+                        "labelHeader":"Strength of Competitive Products",
+                        "labelDoa": "Select associated Doa",
+                        "inputLabelDoa":"Add Doa",
+                        "placeholder":"Select Value",
+                        "inputPlaceholder":"Enter Value",
+                        "errorDoa":"Please select or add strength of competitive product DOA",
+                        "tooltip":"Thorough experimentation and validation with a large audience minimize implementation risks and increase investor confidence.",
+                        "options": [               
+                            {
+                                "name":"Competitive Products Are Superior",
+                                "value":"competitiveProductsAreSuperior"
+                            },
+                            {
+                                "name":"Competitive Products Are Equal Or Similar",
+                                "value":"competitiveProductsAreEqualOrSimilar"
+                            },
+                            {
+                                "name":"Competitive Products Are Weak Or Non-existent",
+                                "value":"competitiveProductsAreWeakOrNonexistent"
+                            }
+                        ],
+                        "degreeOfAchievement":[
+                            {
+                                "key":"competitiveProductsAreEqualOrSimilar",
+                                "percentage":[
+                                    {
+                                        "percent":"40%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":50
+                                    },
+                                    {
+                                        "percent":"60%",
+                                        "value":60
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"competitiveProductsAreWeakOrNonexistent",
+                                "percentage":[
+                                    {
+                                        "percent":"70%",
+                                        "value":70
+                                    },
+                                    {
+                                        "percent":"80%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":100
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"competitiveProductsAreSuperior",
+                                "percentage":[
+                                    {
+                                        "percent":"0%",
+                                        "value":0
+                                    },
+                                    {
+                                        "percent":"10%",
+                                        "value":10
+                                    },
+                                    {
+                                        "percent":"20%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":30
+                                    }
+                                ]
+                            }
+                        ],
+                        "question":"How strong are the competitive products in the market?"
+                    },
+                    {
+                        "controlName": "barrierToEntry",
+                        "controlNameDoa": "barrierToEntryDoa",
+                        "label": "Select difficulty",
+                        "labelHeader":"Barriers to Entry",
+                        "labelDoa": "Select associated Doa",
+                        "inputLabelDoa":"Add Doa",
+                        "placeholder":"Select Value",
+                        "inputPlaceholder":"Enter Value",
+                        "errorDoa":"Please select or add barrier to entry DOA",
+                        "tooltip":"Thorough experimentation and validation with a large audience minimize implementation risks and increase investor confidence.",
+                        "options": [               
+                            {
+                                "name":"Low Barriers Easy To Enter",
+                                "value":"lowBarriersEasyToEnter"
+                            },
+                            {
+                                "name":"Moderate Barriers with Capital or Expertise Required",
+                                "value":"moderateBarriersWithCapitalOrExpertiseRequired"
+                            },
+                            {
+                                "name":"High Barriers Strong IP Or Market Saturation",
+                                "value":"highBarriersStrongIPOrMarketSaturation"
+                            }
+                        ],
+                        "degreeOfAchievement":[
+                            {
+                                "key":"moderateBarriersWithCapitalOrExpertiseRequired",
+                                "percentage":[
+                                    {
+                                        "percent":"40%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":50
+                                    },
+                                    {
+                                        "percent":"60%",
+                                        "value":60
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"highBarriersStrongIPOrMarketSaturation",
+                                "percentage":[
+                                    {
+                                        "percent":"70%",
+                                        "value":70
+                                    },
+                                    {
+                                        "percent":"80%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":100
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"lowBarriersEasyToEnter",
+                                "percentage":[
+                                    {
+                                        "percent":"0%",
+                                        "value":0
+                                    },
+                                    {
+                                        "percent":"10%",
+                                        "value":10
+                                    },
+                                    {
+                                        "percent":"20%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":30
+                                    }
+                                ]
+                            }
+                        ],
+                        "question":"How difficult is it for new competitors to enter the market?"
+                    }
+                ]
+            },
+            {
+                "mainHeader":"Sales & Marketing",
+                "serialNo":"E",
+                "configPresets":[
+                    {
+                        "controlName": "salesChannel",
+                        "controlNameDoa": "salesChannelDoa",
+                        "labelHeader":"Sales Channels",
+                        "label": "Select sales type",
+                        "labelDoa": "Select associated Doa",
+                        "inputLabelDoa":"Add Doa",
+                        "placeholder":"Select Value",
+                        "inputPlaceholder":"Enter Value",
+                        "errorDoa":"Please select or add sales channel DOA",
+                        "tooltip":"Thorough experimentation and validation with a large audience minimize implementation risks and increase investor confidence.",
+                        "options": [               
+                            {
+                                "name":"No Sales Channels",
+                                "value":"noSalesChannels"
+                            },
+                            {
+                                "name":"Early Stage Sales Channels",
+                                "value":"earlyStageSalesChannels"
+                            },
+                            {
+                                "name":"Established Sales Channels With Key Partners",
+                                "value":"establishedSalesChannelsWithKeyPartners"
+                            }
+                        ],
+                        "degreeOfAchievement":[
+                            {
+                                "key":"earlyStageSalesChannels",
+                                "percentage":[
+                                    {
+                                        "percent":"10%",
+                                        "value":10
+                                    },
+                                    {
+                                        "percent":"20%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":30
+                                    },
+                                    {
+                                        "percent":"40%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":50
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"establishedSalesChannelsWithKeyPartners",
+                                "percentage":[
+                                    {
+                                        "percent":"60%",
+                                        "value":60
+                                    },
+                                    {
+                                        "percent":"70%",
+                                        "value":70
+                                    },
+                                    {
+                                        "percent":"80%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":100
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"noSalesChannels",
+                                "defaultValue":true,
+                                "percentage":[]
+                            }
+                        ],
+                        "question":"What are the sales channels available for the product?"
+                    },
+                    {
+                        "controlName": "salesPartner",
+                        "controlNameDoa": "salesPartnerDoa",
+                        "label": "Select sales/partner type",
+                        "labelHeader":"Sales Partners",
+                        "labelDoa": "Select associated Doa",
+                        "inputLabelDoa":"Add Doa",
+                        "placeholder":"Select Value",
+                        "inputPlaceholder":"Enter Value",
+                        "errorDoa":"Please select or add sales partner DOA",
+                        "tooltip":"Thorough experimentation and validation with a large audience minimize implementation risks and increase investor confidence.",
+                        "options": [               
+                            {
+                                "name":"No Partners",
+                                "value":"noPartners"
+                            },
+                            {
+                                "name":"Potential Or Informal Partnerships",
+                                "value":"potentialOrInformalPartnerships"
+                            },
+                            {
+                                "name":"Strong Established Partnerships With Large Players",
+                                "value":"strongEstablishedPartnershipsWithLargePlayers"
+                            }
+                        ],
+                        "degreeOfAchievement":[
+                            {
+                                "key":"potentialOrInformalPartnerships",
+                                "percentage":[
+                                    {
+                                        "percent":"10%",
+                                        "value":10
+                                    },
+                                    {
+                                        "percent":"20%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":30
+                                    },
+                                    {
+                                        "percent":"40%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":50
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"strongEstablishedPartnershipsWithLargePlayers",
+                                "percentage":[
+                                    {
+                                        "percent":"60%",
+                                        "value":60
+                                    },
+                                    {
+                                        "percent":"70%",
+                                        "value":70
+                                    },
+                                    {
+                                        "percent":"80%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":100
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"noPartners",
+                                "defaultValue":true,
+                                "percentage":[]
+                            }
+                        ],
+                        "question":"Are there any key sales or marketing partners?"
+                    },
+                    {
+                        "controlName": "customerAcquisition",
+                        "controlNameDoa": "customerAcquisitionDoa",
+                        "label": "Select type",
+                        "labelHeader":"Customer Acquisition",
+                        "labelDoa": "Select associated Doa",
+                        "inputLabelDoa":"Add Doa",
+                        "placeholder":"Select Value",
+                        "inputPlaceholder":"Enter Value",
+                        "errorDoa":"Please select or add customer acquisition DOA",
+                        "tooltip":"Thorough experimentation and validation with a large audience minimize implementation risks and increase investor confidence.",
+                        "options": [               
+                            {
+                                "name":"Difficult High Customer Acquisition Cost",
+                                "value":"difficultHighCustomerAcquisitionCost"
+                            },
+                            {
+                                "name":"Moderate Some Success With Early Adopters",
+                                "value":"moderateSomeSuccessWithEarlyAdopters"
+                            },
+                            {
+                                "name":"Easy High Demand And Low Cost Of Acquisition",
+                                "value":"easyHighDemandAndLowCostOfAcquisition"
+                            }
+                        ],
+                        "degreeOfAchievement":[
+                            {
+                                "key":"moderateSomeSuccessWithEarlyAdopters",
+                                "percentage":[
+                                    {
+                                        "percent":"10%",
+                                        "value":10
+                                    },
+                                    {
+                                        "percent":"20%",
+                                        "value":20
+                                    },
+                                    {
+                                        "percent":"30%",
+                                        "value":30
+                                    },
+                                    {
+                                        "percent":"40%",
+                                        "value":40
+                                    },
+                                    {
+                                        "percent":"50%",
+                                        "value":50
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"easyHighDemandAndLowCostOfAcquisition",
+                                "percentage":[
+                                    {
+                                        "percent":"60%",
+                                        "value":60
+                                    },
+                                    {
+                                        "percent":"70%",
+                                        "value":70
+                                    },
+                                    {
+                                        "percent":"80%",
+                                        "value":80
+                                    },
+                                    {
+                                        "percent":"90%",
+                                        "value":90
+                                    },
+                                    {
+                                        "percent":"100%",
+                                        "value":100
+                                    }
+                                ]
+                            },
+                            {
+                                "key":"difficultHighCustomerAcquisitionCost",
+                                "defaultValue":true,
+                                "percentage":[]
+                            }
+                        ],
+                        "question":"How easy is it to acquire customers for this product?"
+                    }
+                ]
+            },
+            {
+                "mainHeader":"Need for Additional Funding",
+                "serialNo":"F",
+                "configPresets":[
+                    {
+                        "controlName": "funding",
+                        "controlNameDoa": "fundingDoa",
+                        "labelHeader":"Funding",
+                        "label": "Select funding type",
+                        "labelDoa": "Select associated Doa",
+                        "inputLabelDoa":"Add Doa",
+                        "placeholder":"Select Value",
+                        "inputPlaceholder":"Enter Value",
+                        "errorDoa":"Please select or add funding DOA",
+                        "tooltip":"Thorough experimentation and validation with a large audience minimize implementation risks and increase investor confidence.",
+                        "options": [               
+                            {
+                                "name":"Yes",
+                                "value":"yes"
+                            },
+                            {
+                                "name":"No",
+                                "value":"no"
+                            }
+                        ],
+                        "question":"Does the startup require additional rounds of funding?"
+                    }
+                ]
+            }
+        ]
+    },
     "reportDetails":{
         "type":"reportDetails",
         "header":"Details Of Valuation Report",

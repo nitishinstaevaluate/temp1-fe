@@ -80,6 +80,7 @@
                   <div class="tab-element" [ngClass]="{ 'active': next === 8 }" *ngIf="ifModelExist('slumpSale',formOneData?.model)" (click)="loadCurrentTab(8)">Slump Sale</div>
                   <div class="tab-element" [ngClass]="{ 'active': next === 9 }" *ngIf="ifModelExist('berkus',formOneData?.model)" (click)="loadCurrentTab(9)">Berkus</div>
                   <div class="tab-element" [ngClass]="{ 'active': next === 10 }" *ngIf="ifModelExist('riskFactor',formOneData?.model)" (click)="loadCurrentTab(10)">Risk Factor</div>
+                  <div class="tab-element" [ngClass]="{ 'active': next === 11 }" *ngIf="ifModelExist('scoreCard',formOneData?.model)" (click)="loadCurrentTab(11)">Score Card</div>
                 </div>
                 <!-- tab trial ends -->
                 
@@ -93,6 +94,7 @@
                 <app-slump-sale (slumpSaleDetailsPrev)="slumpSaleDetailsPrev($event)" (slumpSaleDetails)="slumpSaleDetails($event)" [hidden]="next !== 8" [formOneData]="formOneData" [thirdStageInput]="formThreeData"></app-slump-sale>
                 <app-berkus [hidden]="next !== 9" [berkusStep]="berkusStep" (berkusstep)="berkusstep($event)"></app-berkus>
                 <app-risk-factor [hidden]="next !== 10" (riskFactor)="riskFactor($event)"></app-risk-factor>
+                <app-score-card [hidden]="next !== 11" (scoreCard)="scoreCard($event)"></app-score-card>
               </div>
 
               <app-group-model-review (groupReviewControls)="groupReviewControls($event)" [step]="step" (previousPage)="previous($event)" [transferStepperTwo]="formOneAndThreeData" [hidden]="step !== 4" [fourthStageInput]="formFourData"></app-group-model-review>

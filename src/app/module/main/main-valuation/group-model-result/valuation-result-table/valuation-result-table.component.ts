@@ -43,6 +43,7 @@ marketPrice = false;
 berkus = false;
 riskFactor = false;
 scoreCard = false;
+ventureCapital = false;
 tableData:any;
 multiples:any;
 valuationDataReport:any=[];
@@ -423,6 +424,7 @@ this.transferStepperthree?.formFourData?.appData && this.transferStepperthree?.f
 this.transferStepperthree?.formOneAndThreeData?.model.includes(MODELS.BERKUS) ? this.berkus = true : this.berkus = false;
 this.transferStepperthree?.formOneAndThreeData?.model.includes(MODELS.RISK_FACTOR) ? this.riskFactor = true : this.riskFactor = false;
 this.transferStepperthree?.formOneAndThreeData?.model.includes(MODELS.SCORE_CARD) ? this.scoreCard = true : this.scoreCard = false;
+this.transferStepperthree?.formOneAndThreeData?.model.includes(MODELS.VENTURE_CAPITAL) ? this.ventureCapital = true : this.ventureCapital = false;
 }
 
 checkIndustryOrCompany(){
@@ -489,7 +491,7 @@ formatDate(epochTimestamp:any) {
 }
 
 onTabSelectionChange(event:any) {
- if((event?.tab?.textLabel === 'Berkus' || event?.tab?.textLabel === 'Risk Factor') && event?.tab?.isActive) this.calculationService.hideModelWeightage.next(true);
+ if((event?.tab?.textLabel === 'Berkus' || event?.tab?.textLabel === 'Risk Factor' || event?.tab?.textLabel === 'Score Card') && event?.tab?.isActive) this.calculationService.hideModelWeightage.next(true);
  else this.calculationService.hideModelWeightage.next(false);
 }
 

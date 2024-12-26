@@ -1,0 +1,32 @@
+
+<div class="modern-table-container" *ngIf="scoreCardValuation?.length">
+    <table class="professional-table">
+  <thead>
+    <tr>
+      <ng-container>
+        <th>Questions</th>
+        <th>Degree of Achievement</th>
+        <th>Weight Assigned</th>
+        <th>Weighted Value</th>
+      </ng-container>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of scoreCardValuation">
+      <ng-container *ngIf="!data.tableHeader && !data.tableFooter && !data.header">
+        <td>{{ data.label }}</td>
+        <td>{{ formatNumber(data.doa) }}</td>
+        <td>{{ formatNumber(data.weightAssign) }}</td>
+        <td>{{ formatNumber(data.weightedValue) }}</td>
+      </ng-container>
+      <ng-container *ngIf="data.header && !data.tableHeader && !data.tableFooter">
+        <td colspan="4" style="font-size: 20px;color: #2793c2;">{{ data.serialNo }}. {{ data.label }}</td>
+      </ng-container>
+      <ng-container *ngIf="data.label === 'Total'">
+        <td colspan="3">{{ data.label }}</td>
+        <td>{{ formatNumber(data.total) }}</td>
+      </ng-container>
+    </tr>
+  </tbody>
+</table>
+</div>

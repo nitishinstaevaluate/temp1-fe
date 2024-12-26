@@ -533,6 +533,11 @@
       <app-risk-factor-valuation></app-risk-factor-valuation>
     </div>
   </mat-tab>
+  <mat-tab label="Score Card" *ngIf="scoreCard">
+    <div class="table-container" style="display: block;">
+      <app-score-card-valuation></app-score-card-valuation>
+    </div>
+  </mat-tab>
   <mat-tab label="Rule 11 UA" *ngIf="ruleElevenUa">
     <!-- <div class="btn" style="text-align: right;width: 100%;">
       <button mat-stroked-button class="exp">

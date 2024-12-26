@@ -249,7 +249,7 @@ export class GroupModelControlsComponent implements OnInit {
       delete control.projectionYearSelect;
     }
 
-    const excludeModels = [MODELS.BERKUS, MODELS.RISK_FACTOR, MODELS.SCORE_CARD]
+    const excludeModels = [MODELS.BERKUS, MODELS.RISK_FACTOR, MODELS.SCORE_CARD, MODELS.VENTURE_CAPITAL]
     if(!this.modelValuation.controls['model'].value?.filter((model:any) => !excludeModels.includes(model)).length){
       delete control.projectionYears;
       delete control.location;
@@ -467,7 +467,7 @@ export class GroupModelControlsComponent implements OnInit {
   }
 
   isNotRuleElevenUaAndNav(){
-    const excludeModels = [MODELS.RULE_ELEVEN_UA, MODELS.NAV, MODELS.SLUMP_SALE, MODELS.BERKUS, MODELS.RISK_FACTOR, MODELS.SCORE_CARD]
+    const excludeModels = [MODELS.RULE_ELEVEN_UA, MODELS.NAV, MODELS.SLUMP_SALE, MODELS.BERKUS, MODELS.RISK_FACTOR, MODELS.SCORE_CARD, MODELS.VENTURE_CAPITAL]
 
     if(this.modelValuation.controls['model'].value?.length && this.modelValuation.controls['model'].value?.filter((model:any) => !excludeModels.includes(model)).length){
       return true;
@@ -478,7 +478,7 @@ export class GroupModelControlsComponent implements OnInit {
   }
 
   evaluateNumberOfSteps(){
-    const excludeModels = [MODELS.RULE_ELEVEN_UA, MODELS.NAV, MODELS.SLUMP_SALE, MODELS.BERKUS, MODELS.RISK_FACTOR, MODELS.SCORE_CARD]
+    const excludeModels = [MODELS.RULE_ELEVEN_UA, MODELS.NAV, MODELS.SLUMP_SALE, MODELS.BERKUS, MODELS.RISK_FACTOR, MODELS.SCORE_CARD, MODELS.VENTURE_CAPITAL]
     
     if(this.modelValuation.controls['model'].value?.filter((model:any) => !excludeModels.includes(model)).length){
       this.calculationService.checkModel.next({status:false})
@@ -489,7 +489,7 @@ export class GroupModelControlsComponent implements OnInit {
   }
 
   hideReviewForm(){
-    const excludeStartUpModels = [MODELS.BERKUS, MODELS.RISK_FACTOR, MODELS.SCORE_CARD];
+    const excludeStartUpModels = [MODELS.BERKUS, MODELS.RISK_FACTOR, MODELS.SCORE_CARD, MODELS.VENTURE_CAPITAL];
     if(!this.modelValuation.controls['model'].value?.length) return true;
     if(this.modelValuation.controls['model'].value?.length && this.modelValuation.controls['model'].value?.filter((model:any) => !excludeStartUpModels.includes(model)).length){
       this.calculationService.hideReviewForm.next({status:false})
