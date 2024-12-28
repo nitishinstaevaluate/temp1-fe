@@ -134,8 +134,12 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
     // if (this.isPAndLExcelModified || this.isBSExcelModified || this.isAssessmentSheetModified || this.isRuleELevenUaSheetModified) {
         try {
             const excelResponse: any = await this.processStatusManagerService.getExcelStatus(localStorage.getItem('processStateId')).toPromise();
+            const firstStageResponse: any = await this.processStatusManagerService.getStageWiseDetails(localStorage.getItem('processStateId'), 'firstStageInput').toPromise();
             payload.isExcelModified = excelResponse.isExcelModifiedStatus;
             payload.modifiedExcelSheetId = excelResponse.excelSheetId;
+
+            payload['validateFieldOptions'] = payload['validateFieldOptions'] || {};
+            payload['validateFieldOptions']['isCmpnyNmeOrVltionDteReset'] = firstStageResponse?.data?.firstStageInput?.validateFieldOptions?.isCmpnyNmeOrVltionDteReset;
         } catch (error) {
           this.snackBar.open('Payload creation for valuation failed','ok',{
             horizontalPosition: 'center',
