@@ -349,7 +349,16 @@ export class GroupModelControlsComponent implements OnInit {
       delete control.discountRateType;
       // delete control.discountRateValue;
     }
-    if(this.firstStageInput.company && this.modelValuation.controls['company'].value && this.firstStageInput?.company !== this.modelValuation.controls['company'].value){
+    if(
+      (
+        this.firstStageInput.company && this.modelValuation.controls['company'].value && 
+        this.firstStageInput?.company !== this.modelValuation.controls['company'].value
+      ) || 
+      (
+        this.firstStageInput.valuationDate && payload['valuationDate'] && 
+        this.firstStageInput?.valuationDate !== payload['valuationDate']
+      )
+    ){
       payload['validateFieldOptions'] = payload['validateFieldOptions'] || {};
       payload['validateFieldOptions']['isCmpnyNmeOrVltionDteReset'] = true;
     }
