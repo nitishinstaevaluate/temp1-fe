@@ -266,6 +266,23 @@ export class GroupModelControlsComponent implements OnInit {
       delete control.reportingUnit;
     }
     
+    if(
+      (
+        this.firstStageInput.company && this.modelValuation.controls['company'].value && 
+        this.firstStageInput?.company !== this.modelValuation.controls['company'].value
+      ) || 
+      (
+        this.firstStageInput.valuationDate && payload['valuationDate'] && 
+        this.firstStageInput?.valuationDate !== payload['valuationDate']
+      )
+    ){
+      payload['validateFieldOptions'] = payload['validateFieldOptions'] || {};
+      payload['validateFieldOptions']['isCmpnyNmeOrVltionDteReset'] = true;
+    }
+    else{
+      payload['validateFieldOptions'] = payload['validateFieldOptions'] || {};
+      payload['validateFieldOptions']['isCmpnyNmeOrVltionDteReset'] = false;
+    }
     
     this.validateControls(control,payload);
   }
