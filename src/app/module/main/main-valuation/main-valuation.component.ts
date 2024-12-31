@@ -152,6 +152,11 @@ export class MainValuationComponent implements OnInit{
     else {this.nextModelSelection(MODELS.SCORE_CARD)}
   }
 
+  ventureCapital(stateType:any){
+    if(stateType === 'previous') {this.previousModelSelection(MODELS.VENTURE_CAPITAL)}
+    else {this.nextModelSelection(MODELS.VENTURE_CAPITAL)}
+  }
+
   onStepChange() {  
       this.formOneAndThreeData = {
         ...this.formOneData,

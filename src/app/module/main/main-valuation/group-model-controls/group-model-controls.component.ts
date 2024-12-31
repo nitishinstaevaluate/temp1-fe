@@ -505,7 +505,8 @@ export class GroupModelControlsComponent implements OnInit {
     }
   }
 
-  hideReviewForm(){
+  hideReviewForm(exceptionalControl?:any){
+    if(exceptionalControl && this.modelValuation.controls['model']?.value &&  this.modelValuation.controls['model']?.value.includes(MODELS.VENTURE_CAPITAL)) return true;
     const excludeStartUpModels = [MODELS.BERKUS, MODELS.RISK_FACTOR, MODELS.SCORE_CARD, MODELS.VENTURE_CAPITAL];
     if(!this.modelValuation.controls['model'].value?.length) return true;
     if(this.modelValuation.controls['model'].value?.length && this.modelValuation.controls['model'].value?.filter((model:any) => !excludeStartUpModels.includes(model)).length){

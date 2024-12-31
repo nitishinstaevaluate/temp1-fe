@@ -5869,6 +5869,253 @@
             }
         ]
     },
+    "VENTURE_CAPITAL":{
+        "type":"ventureCapital",
+        "name":"Venture Capital",
+        "config":[
+            {
+                "tagType": "header",
+                "label": "Venture Capital Method",
+                "class":"c-decorated-header"
+            },
+            {
+                "controlName": "startupName",
+                "tagType": "input",
+                "type":"text",
+                "inputPlaceholder": "Enter Value",
+                "label":"Start-up Name",
+                "error": "Please add startup name",
+                "tooltip": "Startup name tooltip"
+            },
+            {
+                "controlName": "industryType",
+                "tagType": "input",
+                "type":"text",
+                "label":"Industry Type",
+                "inputPlaceholder": "Enter Value",
+                "error": "Please add industry type",
+                "tooltip": "Industry type tooltip"
+            },
+            {
+                "controlName": "investmentAmount",
+                "tagType": "input",
+                "type":"number",
+                "label":"Investment Amount",
+                "inputPlaceholder": "Enter Value",
+                "error": "Please add investment amount",
+                "tooltip": "investment amount tooltip"
+            },
+            {
+                "controlName": "financialPerformanceMetrics",
+                "label":"Financial Performance Metrics",
+                "tagType": "select",
+                "type":"dropdown",
+                "inputPlaceholder": "Select value",
+                "error": "Please select multiple type",
+                "tooltip": "Multiples tooltip",
+                "options": [
+                    { 
+                        "name": "Target Sales", 
+                        "value": "targetSales" 
+                    },
+                    { 
+                        "name": "Net Margin %", 
+                        "value": "netMargin" 
+                    },
+                    { 
+                        "name": "Target Ebitda", 
+                        "value": "targetEbitda" 
+                    }
+                ]
+            },
+            {
+                "controlName": "financialPerformanceMetricsSubType",
+                "tagType": "select",
+                "type":"dropdown",
+                "label":"Net Margin",
+                "parentControlName": "financialPerformanceMetrics",
+                "key": "netMargin",
+                "error": "Please select net margin type",
+                "inputPlaceholder": "Select Net Margin SubType",
+                "options": [
+                    { 
+                        "name": "Industry Benchmark", 
+                        "value": "industryBenchmark" 
+                    },
+                    { 
+                        "name": "Target Margin % Company Level", 
+                        "value": "targetMarginPercentageCompanyLevel" 
+                    }
+                ]
+            },
+            {
+                "controlName": "financialPerformanceMetricsSubType",
+                "label":"Target Sales",
+                "type":"number",
+                "tagType": "input",
+                "parentControlName": "financialPerformanceMetrics",
+                "error": "Please add target sales",
+                "key": "targetSales",
+                "inputPlaceholder": "Enter Target Sales SubType"
+            },
+            {
+                "controlName": "financialPerformanceMetricsSubType",
+                "label":"Target Ebitda",
+                "type":"dropdown",
+                "error": "Please add target ebitda",
+                "tagType": "select",
+                "parentControlName": "financialPerformanceMetrics",
+                "key": "targetEbitda",
+                "inputPlaceholder": "Enter Target EBITDA SubType",
+                "options": [
+                    { 
+                        "name": "Industry Benchmark", 
+                        "value": "industryBenchmark" 
+                    },
+                    { 
+                        "name": "Target Margin % Company Level", 
+                        "value": "targetMarginPercentageCompanyLevel" 
+                    }
+                ]
+            },
+            {
+                "controlName": "targetMarginAndBenchmarking",
+                "label":"Industry Benchmark",
+                "type":"number",
+                "tagType": "input",
+                "parentControlName": "financialPerformanceMetricsSubType",
+                "error": "Please add industry benchmark",
+                "key": "industryBenchmark",
+                "inputPlaceholder": "Enter industry Benchmark"
+            },
+            {
+                "controlName": "targetMarginAndBenchmarking",
+                "label":"Target Margin % Company Level",
+                "type":"number",
+                "tagType": "input",
+                "parentControlName": "financialPerformanceMetricsSubType",
+                "error": "Please add target margin percentage company level value",
+                "key": "targetMarginPercentageCompanyLevel",
+                "inputPlaceholder": "Enter value"
+            },
+            {
+                "controlName": "exitYear",
+                "tagType":"input",
+                "type":"number",
+                "label":"Exit Year",
+                "inputPlaceholder":"Enter Value",
+                "error":"Please add exit year",
+                "tooltip":"Thorough experimentation and validation with a large audience minimize implementation risks and increase investor confidence."
+            },
+            {
+                "controlName": "exitMultipleExpected",
+                "tagType":"select",
+                "type":"dropdown",
+                "label":"Exit Multiple Expected",
+                "inputPlaceholder":"Select value",
+                "error":"Please select type",
+                "tooltip":"Thorough experimentation and validation with a large audience minimize implementation risks and increase investor confidence.",
+                "options": [               
+                    {
+                        "name":"Investor Expected Multiple",
+                        "value":"investorExpectedMultiple"
+                    },
+                    {
+                        "name":"Industry Benchmark",
+                        "value":"industryBenchmark"
+                    }
+                ]
+            },
+            {
+                "controlName": "exitInvestorMultipleAndBenchmarking",
+                "label":"Exit Related Industry Benchmark",
+                "type":"number",
+                "tagType": "input",
+                "parentControlName": "exitMultipleExpected",
+                "error": "Please add industry benchmark",
+                "key": "industryBenchmark",
+                "inputPlaceholder": "Enter industry Benchmark"
+            },
+            {
+                "controlName": "exitInvestorMultipleAndBenchmarking",
+                "label":"Investor Expected Multiple",
+                "type":"number",
+                "tagType": "input",
+                "parentControlName": "exitMultipleExpected",
+                "error": "Please add Investor Expected Multiple value",
+                "key": "investorExpectedMultiple",
+                "inputPlaceholder": "Enter value"
+            },
+            {
+                "controlName": "probabilityOfFailure",
+                "tagType":"select",
+                "type":"dropdown",
+                "label":"Probability Of Failure",
+                "inputPlaceholder":"Select value",
+                "error":"Please select failure type",
+                "tooltip":"Thorough experimentation and validation with a large audience minimize implementation risks and increase investor confidence.",
+                "options": [           
+                    {
+                        "name":"0%",
+                        "value":0
+                    },
+                    {
+                        "name":"10%",
+                        "value":10
+                    },
+                    {
+                        "name":"20%",
+                        "value":20
+                    },
+                    {
+                        "name":"30%",
+                        "value":30
+                    },
+                    {
+                        "name":"40%",
+                        "value":40
+                    },
+                    {
+                        "name":"50%",
+                        "value":50
+                    },
+                    {
+                        "name":"50%",
+                        "value":50
+                    },
+                    {
+                        "name":"60%",
+                        "value":60
+                    },
+                    {
+                        "name":"70%",
+                        "value":70
+                    },
+                    {
+                        "name":"80%",
+                        "value":80
+                    },
+                    {
+                        "name":"90%",
+                        "value":90
+                    },
+                    {
+                        "name":"100%",
+                        "value":100
+                    }
+                ]
+            },
+            {
+                "controlName": "requiredReturn",
+                "tagType":"input",
+                "type":"text",
+                "label":"Required Return",
+                "inputPlaceholder":"Add value",
+                "error":"Please add required return",
+                "tooltip":"Thorough experimentation and validation with a large audience minimize implementation risks and increase investor confidence."
+            }
+        ]
+    },
     "reportDetails":{
         "type":"reportDetails",
         "header":"Details Of Valuation Report",

@@ -538,6 +538,11 @@
       <app-score-card-valuation></app-score-card-valuation>
     </div>
   </mat-tab>
+  <mat-tab label="Venture Capital" *ngIf="ventureCapital">
+    <div class="table-container" style="display: block;">
+      <app-venture-capital-valuation></app-venture-capital-valuation>
+    </div>
+  </mat-tab>
   <mat-tab label="Rule 11 UA" *ngIf="ruleElevenUa">
     <!-- <div class="btn" style="text-align: right;width: 100%;">
       <button mat-stroked-button class="exp">

@@ -4,13 +4,12 @@ import { formatNumber } from 'src/app/shared/enums/functions';
 import { ComponentInteractionService } from 'src/app/shared/service/component-interaction.service';
 
 @Component({
-  selector: 'app-score-card-valuation',
-  templateUrl: './score-card-valuation.component.html',
-  styleUrls: ['./score-card-valuation.component.scss']
+  selector: 'app-venture-capital-valuation',
+  templateUrl: './venture-capital-valuation.component.html',
+  styleUrls: ['./venture-capital-valuation.component.scss']
 })
-export class ScoreCardValuationComponent implements OnInit{
-
-  scoreCardValuation:any;
+export class VentureCapitalValuationComponent implements OnInit {
+  ventureCapitalValuation:any;
   formatNumber = formatNumber
   
   ngOnInit() {
@@ -21,7 +20,11 @@ export class ScoreCardValuationComponent implements OnInit{
 
   loadData(){
     this.componentInteractionService.registerComponent(COMPONENT_ENUM.STARTUP_VALUATION.key).subscribe((response)=>{
-      if(response?.scoreCardValuation) this.scoreCardValuation = response.scoreCardValuation;
+      if(response?.ventureCapitalValuation) this.ventureCapitalValuation = response.ventureCapitalValuation;
     })
+  }
+
+  isValuationValid(){
+    return this.ventureCapitalValuation && Object.keys(this.ventureCapitalValuation)?.length
   }
 }

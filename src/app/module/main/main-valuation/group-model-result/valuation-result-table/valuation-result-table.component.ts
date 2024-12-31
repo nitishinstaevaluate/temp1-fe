@@ -491,7 +491,8 @@ formatDate(epochTimestamp:any) {
 }
 
 onTabSelectionChange(event:any) {
- if((event?.tab?.textLabel === 'Berkus' || event?.tab?.textLabel === 'Risk Factor' || event?.tab?.textLabel === 'Score Card') && event?.tab?.isActive) this.calculationService.hideModelWeightage.next(true);
+  const labelTypeBool = event?.tab?.textLabel === 'Berkus' || event?.tab?.textLabel === 'Risk Factor' || event?.tab?.textLabel === 'Score Card' || event?.tab?.textLabel === 'Venture Capital';
+ if(labelTypeBool && event?.tab?.isActive) this.calculationService.hideModelWeightage.next(true);
  else this.calculationService.hideModelWeightage.next(false);
 }
 
