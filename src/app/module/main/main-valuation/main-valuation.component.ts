@@ -362,7 +362,7 @@ export class MainValuationComponent implements OnInit{
 
     if(isProcessState){
       currentModel = storeModelArray[this.formOneData.model.length-1]
-      if(this.formOneData.model?.length && this.formOneData?.issuanceOfShares && storeModelArray.includes(MODELS.RULE_ELEVEN_UA)){
+      if(this.formOneData.model?.length && this.formOneData?.issuanceOfShares && storeModelArray.includes(MODELS.RULE_ELEVEN_UA) || (storeModelArray.includes(MODELS.COST_TO_DUPLICATE) && storeModelArray.length === 1)){
         currentModel = '';
       }
     }
@@ -410,7 +410,7 @@ export class MainValuationComponent implements OnInit{
         // const currentStep:any = await this.fetchProcessActiveStage(localStorage.getItem('processStateId'));
         this.step = parseInt(currentStep) - 1;
         const excludeModels = [ MODELS.BERKUS, MODELS.RISK_FACTOR,MODELS.SCORE_CARD, MODELS.VENTURE_CAPITAL ];
-        if(((storeModelArray.length && this.formOneData?.issuanceOfShares && storeModelArray.includes(MODELS.RULE_ELEVEN_UA)) || (!storeModelArray.filter((model:any) => !excludeModels.includes(model)).length))){
+        if(((storeModelArray.length && this.formOneData?.issuanceOfShares && storeModelArray.includes(MODELS.RULE_ELEVEN_UA) || (storeModelArray.includes(MODELS.COST_TO_DUPLICATE) && storeModelArray.length === 1)) || (!storeModelArray.filter((model:any) => !excludeModels.includes(model)).length))){
           this.step = this.step - 1;
         }
         localStorage.setItem('step',`${this.step}`)

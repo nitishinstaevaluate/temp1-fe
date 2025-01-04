@@ -4,17 +4,17 @@
     <div>
         <div class="mat-tab-g">
             <mat-tab-group mat-stretch-tabs="false" class="tab-group" mat-align-tabs="start" style="background-color: #ffffff;border-radius: 20px;" (selectedTabChange)="onTabChange($event)">
-                <mat-tab label="Profit & Loss" *ngIf="!hasSingleModel('ruleElevenUa') && !hasSingleModel('slumpSale') && !isOnlyModel('NAV')">
+                <mat-tab label="Profit & Loss" *ngIf="!hasSingleModel('ruleElevenUa') && !hasSingleModel('slumpSale') && !isOnlyModel('NAV') && !hasSingleModel('costToDuplicate')">
                     <ng-template matTabContent>
                         <app-profit-loss-data *ngIf="selectedTab === 'Profit & Loss'" [transferStepperTwo]="transferStepperTwo" (profitLossData)="profitLossData($event)" [currentStepIndex]="step" [fourthStageInput]="fourthStageInput"></app-profit-loss-data>
                     </ng-template>
                 </mat-tab>
-                <mat-tab label="Balance Sheet" *ngIf="!hasSingleModel('ruleElevenUa') && !hasSingleModel('slumpSale')">
+                <mat-tab label="Balance Sheet" *ngIf="!hasSingleModel('ruleElevenUa') && !hasSingleModel('slumpSale') && !hasSingleModel('costToDuplicate')">
                     <ng-template matTabContent>
                         <app-balance-sheet-details *ngIf="selectedTab === 'Balance Sheet'" [transferStepperTwo]="transferStepperTwo" (balanceSheetData)="balanceSheetData($event)" [fourthStageInput]="fourthStageInput"></app-balance-sheet-details>
                     </ng-template>
                 </mat-tab>
-                <mat-tab label="Assessment of Working Capital" *ngIf="hasSingleModel('FCFE') || hasSingleModel('FCFF') || hasSingleModel('Excess_Earnings') " (selectedTabChange)="onTabChange($event)">
+                <mat-tab label="Assessment of Working Capital" *ngIf="hasSingleModel('FCFE') || hasSingleModel('FCFF') || hasSingleModel('Excess_Earnings')" (selectedTabChange)="onTabChange($event)">
                     <ng-template matTabContent>
                         <app-assessment-details *ngIf="selectedTab === 'Assessment of Working Capital'" [transferStepperTwo]="transferStepperTwo" (assessmentSheetData)="assessmentSheetData($event)" [fourthStageInput]="fourthStageInput"></app-assessment-details>
                     </ng-template>
@@ -32,6 +32,11 @@
                 <mat-tab label="Slump Sale" *ngIf="hasSingleModel('slumpSale')">
                     <ng-template matTabContent>
                         <app-slump-sale-details *ngIf="selectedTab === 'Slump Sale'" [transferStepperTwo]="transferStepperTwo" (slumpSaleSheetData)="slumpSaleSheetData($event)" [fourthStageInput]="fourthStageInput"></app-slump-sale-details>
+                    </ng-template>
+                </mat-tab>
+                <mat-tab label="Cost To Duplicate" *ngIf="hasSingleModel('costToDuplicate')">
+                    <ng-template matTabContent>
+                        <app-cost-to-duplicate-details *ngIf="selectedTab === 'Cost To Duplicate'" [transferStepperTwo]="transferStepperTwo" (slumpSaleSheetData)="slumpSaleSheetData($event)" [fourthStageInput]="fourthStageInput"></app-cost-to-duplicate-details>
                     </ng-template>
                 </mat-tab>
             </mat-tab-group>

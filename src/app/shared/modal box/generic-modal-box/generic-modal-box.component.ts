@@ -555,14 +555,17 @@ get downloadTemplate() {
                   XL_SHEET_ENUM[4];
     } else if (this.incomeApproachmodels.length) {
       modelName = XL_SHEET_ENUM[0];
-    } else if (this.netAssetApproachmodels.length && !this.incomeApproachmodels.length && !this.marketApproachmodels.length) {
+    } 
+    else if (this.marketApproachmodels.length) {
+      modelName = XL_SHEET_ENUM[2];
+      this.yearOfProjection.setValue(0);
+    }
+    else if (this.netAssetApproachmodels.length) {
       this.yearOfProjection.setValue(0);
       modelName = XL_SHEET_ENUM[3];
-    } else if (
-      (this.marketApproachmodels.length && !this.netAssetApproachmodels.length && !this.incomeApproachmodels.length) || 
-      (this.marketApproachmodels.length && this.netAssetApproachmodels.length && !this.incomeApproachmodels.length)
-    ) {
-      modelName = XL_SHEET_ENUM[2];
+    } 
+    else if(this.startUpApproachModels.length){
+      modelName = XL_SHEET_ENUM[5];
       this.yearOfProjection.setValue(0);
     }
   return GET_TEMPLATE(this.yearOfProjection.value,modelName,`${this.valuationDate ? new Date(this.valuationDate).getTime() : ''}`);
@@ -1032,15 +1035,17 @@ get downloadTemplate() {
     if(this.incomeApproachmodels?.length){
       return XL_SHEET_ENUM[0];
     }
-    else if(this.netAssetApproachmodels.length && !this.incomeApproachmodels.length && !this.marketApproachmodels.length){
-      return XL_SHEET_ENUM[3];
-    }
-    else if((this.marketApproachmodels.length && !this.netAssetApproachmodels.length && !this.incomeApproachmodels.length) || 
-    (this.marketApproachmodels.length && this.netAssetApproachmodels.length && !this.incomeApproachmodels.length)){
+    else if(this.marketApproachmodels.length){
       return XL_SHEET_ENUM[2];
+    }
+    else if(this.netAssetApproachmodels.length){
+      return XL_SHEET_ENUM[3];
     }
     else if(this.ruleElevenApproachModels?.length){
       return XL_SHEET_ENUM[1]
+    }
+    else if(this.startUpApproachModels.length){
+      return XL_SHEET_ENUM[5];
     }
     this.modSelLoader = false;
     this.fileName = ''
@@ -1061,7 +1066,6 @@ get downloadTemplate() {
   disableTemplateButton(){
     if(
       (
-        this.startUpApproachModels.length == 1 &&
         this.startUpApproachModels.includes(MODELS.COST_TO_DUPLICATE)
       ) ||
       (

@@ -79,6 +79,9 @@ export class GroupModelReviewComponent implements OnChanges,OnInit {
       case modelValue?.length && modelValue.includes(MODELS.SLUMP_SALE):
         this.selectedTab = 'Slump Sale';
         break;
+      case modelValue?.length && modelValue.includes(MODELS.COST_TO_DUPLICATE):
+        this.selectedTab = 'Cost To Duplicate';
+        break;
       case this.isOnlyModel(MODELS.NAV) :
         this.selectedTab = 'Balance Sheet';
         break;

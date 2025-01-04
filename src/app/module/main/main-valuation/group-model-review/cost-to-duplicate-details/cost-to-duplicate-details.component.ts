@@ -1,26 +1,25 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { isSelected } from 'src/app/shared/enums/functions';
-import { CalculationsService } from 'src/app/shared/service/calculations.service';
 import { ExcelAndReportService } from 'src/app/shared/service/excel-and-report.service';
 import { ProcessStatusManagerService } from 'src/app/shared/service/process-status-manager.service';
 import { ValuationService } from 'src/app/shared/service/valuation.service';
 
 @Component({
-  selector: 'app-eleven-ua-details',
-  templateUrl: './eleven-ua-details.component.html',
-  styleUrls: ['./eleven-ua-details.component.scss']
+  selector: 'app-cost-to-duplicate-details',
+  templateUrl: './cost-to-duplicate-details.component.html',
+  styleUrls: ['./cost-to-duplicate-details.component.scss']
 })
-export class ElevenUaDetailsComponent implements OnChanges{
+export class CostToDuplicateDetailsComponent implements OnChanges {
 
   @Input() transferStepperTwo :any;
   @Input() currentStepIndex :any;
   @Input() fourthStageInput :any;
-  @Output() ruleElevenData :any = new EventEmitter();
-  @Output() ruleElevenSheetData=new EventEmitter<any>();
+  @Output() costToDuplicate :any = new EventEmitter();
+  @Output() costToDuplicateSheetData=new EventEmitter<any>();
 
   displayColumns:any;
-  ruleElevenUaDataSource:any;
+  costToDuplicateDataSource:any;
   floatLabelType:any='never';
   appearance:any='fill';
   dataSource:any;
@@ -32,31 +31,15 @@ export class ElevenUaDetailsComponent implements OnChanges{
   loadExcelTable = false;
   excelErrorMsg = false;
 
+  ngOnChanges(){
+    this.fetchExcelData();
+  }
+
   constructor(private valuationService:ValuationService,
     private snackBar: MatSnackBar,
     private excelAndReportService:ExcelAndReportService,
     private processStateManagerService:ProcessStatusManagerService){
 
-  }
-  ngOnChanges(){
-    this.fetchExcelData();
-  }
-  ngOnInit(): void {
-
-    // this.checkProcessState()
-  }
-  // checkProcessState(){
-  //   if(this.fourthStageInput){
-  //     const excelSheetId = this.fourthStageInput?.formFourData?.isExcelModified ?this.fourthStageInput?.formFourData.modifiedExcelSheetId :  this.fourthStageInput.formOneData.excelSheetId;
-  //     this.excelSheetId = excelSheetId;
-  //     this.fetchExcelData(excelSheetId)
-  //   }
-  // }
-  isRelativeValuation(modelName:string){
-    if(!this.transferStepperTwo){
-      return (isSelected(modelName,this.fourthStageInput?.formOneData.model) && this.fourthStageInput?.formOneData.model.length <= 1)
-    }
-    return (isSelected(modelName,this.transferStepperTwo?.model) && this.transferStepperTwo.model.length <= 1)
   }
 
   fetchExcelData(){
@@ -87,12 +70,12 @@ export class ElevenUaDetailsComponent implements OnChanges{
 
   loadExcel(){
     this.loadExcelTable = true;
-    this.valuationService.getProfitLossSheet(this.excelSheetId,'Rule 11 UA', localStorage.getItem('processStateId')).subscribe((response:any)=>{
+    this.valuationService.getProfitLossSheet(this.excelSheetId,'Cost To Duplicate', localStorage.getItem('processStateId')).subscribe((response:any)=>{
       this.loadExcelTable = false;
       if(response.status){
         this.excelErrorMsg = false;
-        this.createruleElevenUaDataSource(response)
-        this.ruleElevenSheetData.emit({status:true,result:response,isExcelModified:this.isExcelModified});
+        this.createCostToDuplicateDataSource(response)
+        this.costToDuplicateSheetData.emit({status:true,result:response,isExcelModified:this.isExcelModified});
       }
       else{
         this.excelErrorMsg = true;
@@ -101,8 +84,8 @@ export class ElevenUaDetailsComponent implements OnChanges{
     ,(error)=>{
       this.excelErrorMsg = true;
      this.loadExcelTable = false;
-     this.ruleElevenSheetData.emit({status:true, error:error})
-       this.ruleElevenData.emit({status:false,error:error});
+     this.costToDuplicateSheetData.emit({status:true, error:error})
+       this.costToDuplicate.emit({status:false,error:error});
      })
   }
 
@@ -191,7 +174,7 @@ export class ElevenUaDetailsComponent implements OnChanges{
       this.editedValues.push(cellStructure);
       
       const payload = {
-        excelSheet:'Rule 11 UA',
+        excelSheet:'Cost To Duplicate',
         excelSheetId:this.excelSheetId,
         ...this.editedValues[0] 
       }
@@ -200,7 +183,7 @@ export class ElevenUaDetailsComponent implements OnChanges{
           async (response:any)=>{
           if(response?.status){
             this.isExcelModified = true;
-            this.createruleElevenUaDataSource(response);
+            this.createCostToDuplicateDataSource(response);
             const excelResponse: any = await this.processStateManagerService.updateEditedExcelStatus(localStorage.getItem('processStateId')).toPromise();
             if(excelResponse?.modifiedExcelSheetId){
               this.excelSheetId = excelResponse.modifiedExcelSheetId;
@@ -246,15 +229,13 @@ export class ElevenUaDetailsComponent implements OnChanges{
     return cellAddresses;
   }
 
-  createruleElevenUaDataSource(response:any){
+  createCostToDuplicateDataSource(response:any){
     this.dataSource = response?.data;
     this.displayColumns = Object.keys(this.dataSource[0]);
     
     this.displayColumns.splice(this.displayColumns.indexOf('lineEntry'),1,'Particulars')
-    if(this.isRelativeValuation('Relative_Valuation') || this.isRelativeValuation('NAV') || this.isRelativeValuation('CTM')){
-      this.displayColumns = this.displayColumns.splice(0,2)
-    }
-    this.ruleElevenUaDataSource = this.dataSource.map((result:any)=>{
+
+    this.costToDuplicateDataSource = this.dataSource.map((result:any)=>{
       const transformedItem: any = {};
       transformedItem['Particulars'] = result.lineEntry.particulars;
       for (let i = 1; i < this.displayColumns.length; i++) {
@@ -263,15 +244,13 @@ export class ElevenUaDetailsComponent implements OnChanges{
       }
       return transformedItem;
     });
-    this.ruleElevenUaDataSource.splice(this.ruleElevenUaDataSource.findIndex((item:any) => item.Particulars.includes('Current Assets')),0,{Particulars:"  "}) //push empty object for line break      
-    this.ruleElevenUaDataSource.splice(this.ruleElevenUaDataSource.findIndex((item:any) => item.Particulars === 'Current Liabilities'),0,{Particulars:"  "}) //push empty object for line break      
-    this.ruleElevenUaDataSource.splice(this.ruleElevenUaDataSource.findIndex((item:any) => item.Particulars.includes('Equity & Liabilities')),0,{Particulars:"  "}) //push empty object for line break      
-    this.ruleElevenUaDataSource.splice(this.ruleElevenUaDataSource.findIndex((item:any) => item.Particulars.includes('Non-Current Liabilities')),0,{Particulars:"  "}) //push empty object for line break      
-    // this.ruleElevenUaDataSource.splice(this.ruleElevenUaDataSource.findIndex((item:any) => item.Particulars.includes('Total Equity & Liabilities')),0,{Particulars:"  "}) //push empty object for line break      
-
-    // if(response?.modifiedFileName){
-    //   this.ruleElevenSheetData.emit({status:true,result:response,isExcelModified:this.isExcelModified});
-    // }
+    this.costToDuplicateDataSource.splice(this.costToDuplicateDataSource.findIndex((item:any) => item.Particulars.includes('Assets')),0,{Particulars:"  "}) //push empty object for line break      
+    this.costToDuplicateDataSource.splice(this.costToDuplicateDataSource.findIndex((item:any) => item.Particulars === 'Development Cost'),0,{Particulars:"  "}) //push empty object for line break      
+    this.costToDuplicateDataSource.splice(this.costToDuplicateDataSource.findIndex((item:any) => item.Particulars === 'Operational Exp'),0,{Particulars:"  "}) //push empty object for line break      
+    this.costToDuplicateDataSource.splice(this.costToDuplicateDataSource.findIndex((item:any) => item.Particulars === 'Legal Cost'),0,{Particulars:"  "}) //push empty object for line break      
+    this.costToDuplicateDataSource.splice(this.costToDuplicateDataSource.findIndex((item:any) => item.Particulars === 'Other Cost'),0,{Particulars:"  "}) //push empty object for line break      
+    this.costToDuplicateDataSource.splice(this.costToDuplicateDataSource.findIndex((item:any) => item.Particulars === 'Total Cost'),0,{Particulars:"  "}) //push empty object for line break      
+    this.costToDuplicateDataSource.splice(this.costToDuplicateDataSource.findIndex((item:any) => item.Particulars === 'Total Cost of Duplicate Value'),0,{Particulars:"  "}) //push empty object for line break
   }
 
   formatNegativeAndPositiveValues(value:any){
@@ -300,8 +279,9 @@ export class ElevenUaDetailsComponent implements OnChanges{
   }
 
   addDivider(element:string){
-    if(element === 'Total Assets' || element === 'Assets' || element === 'Total Equity & Liabilities')
+    if(element === 'Assets')
       return true;
     return false;
   }
+
 }

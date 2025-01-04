@@ -249,7 +249,7 @@ export class GroupModelControlsComponent implements OnInit {
       delete control.projectionYearSelect;
     }
 
-    const excludeModels = [MODELS.BERKUS, MODELS.RISK_FACTOR, MODELS.SCORE_CARD, MODELS.VENTURE_CAPITAL]
+    const excludeModels = [MODELS.BERKUS, MODELS.RISK_FACTOR, MODELS.SCORE_CARD, MODELS.VENTURE_CAPITAL, MODELS.COST_TO_DUPLICATE]
     if(!this.modelValuation.controls['model'].value?.filter((model:any) => !excludeModels.includes(model)).length){
       delete control.projectionYears;
       delete control.location;
@@ -327,7 +327,7 @@ export class GroupModelControlsComponent implements OnInit {
         processStep = 2
       }
       const isRuleElevenUa = this.isElevenUa();
-      if(isRuleElevenUa && this.modelValuation.controls['issuanceOfShares']?.value){
+      if((isRuleElevenUa && this.modelValuation.controls['issuanceOfShares']?.value) || this.onlyCostToDuplicate()){
         localStorage.setItem('step', '3');
         processStep = 3;
       }
@@ -507,7 +507,7 @@ export class GroupModelControlsComponent implements OnInit {
 
   hideReviewForm(exceptionalControl?:any){
     if(exceptionalControl && this.modelValuation.controls['model']?.value &&  this.modelValuation.controls['model']?.value.includes(MODELS.VENTURE_CAPITAL)) return true;
-    const excludeStartUpModels = [MODELS.BERKUS, MODELS.RISK_FACTOR, MODELS.SCORE_CARD, MODELS.VENTURE_CAPITAL];
+    const excludeStartUpModels = [MODELS.BERKUS, MODELS.RISK_FACTOR, MODELS.SCORE_CARD, MODELS.VENTURE_CAPITAL, MODELS.COST_TO_DUPLICATE];
     if(!this.modelValuation.controls['model'].value?.length) return true;
     if(this.modelValuation.controls['model'].value?.length && this.modelValuation.controls['model'].value?.filter((model:any) => !excludeStartUpModels.includes(model)).length){
       this.calculationService.hideReviewForm.next({status:false})
@@ -526,6 +526,12 @@ export class GroupModelControlsComponent implements OnInit {
   }
   isElevenUa(){
     if(this.modelValuation.controls['model'].value?.length && this.modelValuation.controls['model'].value?.includes(MODELS.RULE_ELEVEN_UA)){
+      return true;
+    }
+    return false;
+  }
+  onlyCostToDuplicate(){
+    if(this.modelValuation.controls['model'].value?.length === 1 && this.modelValuation.controls['model'].value?.includes(MODELS.COST_TO_DUPLICATE)){
       return true;
     }
     return false;
@@ -595,7 +601,8 @@ export class GroupModelControlsComponent implements OnInit {
   }
 
   issuanceOfShares(){
-    if(this.modelValuation.controls['model']?.value.length && this.modelValuation.controls['issuanceOfShares']?.value && this.modelValuation.controls['model']?.value.includes(MODELS.RULE_ELEVEN_UA)){
+    if(this.modelValuation.controls['model']?.value.length && this.modelValuation.controls['issuanceOfShares']?.value && this.modelValuation.controls['model']?.value.includes(MODELS.RULE_ELEVEN_UA) || 
+    (this.modelValuation.controls['model']?.value.includes(MODELS.COST_TO_DUPLICATE) && this.modelValuation.controls['model']?.value?.length === 1)){
       this.calculationService.issuanceOfSharesDetector.next({status:true})
     }
     else{
