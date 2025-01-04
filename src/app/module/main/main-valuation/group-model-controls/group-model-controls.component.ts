@@ -268,11 +268,11 @@ export class GroupModelControlsComponent implements OnInit {
     
     if(
       (
-        this.firstStageInput.company && this.modelValuation.controls['company'].value && 
-        this.firstStageInput?.company !== this.modelValuation.controls['company'].value
+        this.firstStageInput?.company && this.modelValuation.controls['company']?.value && 
+        this.firstStageInput?.company !== this.modelValuation.controls['company']?.value
       ) || 
       (
-        this.firstStageInput.valuationDate && payload['valuationDate'] && 
+        this.firstStageInput?.valuationDate && payload['valuationDate'] && 
         this.firstStageInput?.valuationDate !== payload['valuationDate']
       )
     ){
