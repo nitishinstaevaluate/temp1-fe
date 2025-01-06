@@ -410,6 +410,19 @@ submitModelValuation(){
     })
     return;
   }
+  const excelValidation = () => {
+    if(!this.excelSheetId){
+      this.fileUploadStatus = false;
+      this.snackBar.open('Please upload excel sheet','Ok',{
+        horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+            duration: 3000,
+            panelClass: 'app-notification-error'
+      })
+      return;
+    }
+  }
+
   if(this.fcfeSelectedModel || this.fcffSelectedModel || this.excessEarningSelectedModel){
     if(this.projectionYearSelect === 'Going_Concern'){
 
@@ -435,17 +448,9 @@ submitModelValuation(){
         })
         return;
     }
-    if(!this.excelSheetId){
-      this.fileUploadStatus = false;
-      this.snackBar.open('Please upload excel sheet','Ok',{
-        horizontalPosition: 'center',
-            verticalPosition: 'bottom',
-            duration: 3000,
-            panelClass: 'app-notification-error'
-      })
-      return;
-    }
+    excelValidation();
   }
+   
   if(this.ruleElevenUaSelectedModel){
     if(!this.issuanceCheckbox.value && !this.transferCheckbox.value){
       this.snackBar.open('Please select the rule eleven UA options','Ok',{
@@ -456,6 +461,7 @@ submitModelValuation(){
       })
       return;
     }
+    excelValidation();
   }
   
   this.models=[...this.incomeApproachmodels,...this.netAssetApproachmodels,...this.marketApproachmodels,...this.ruleElevenApproachModels, ...this.startUpApproachModels];
@@ -1067,7 +1073,8 @@ get downloadTemplate() {
       (
         this.incomeApproachmodels.length || 
         this.marketApproachmodels.length || 
-        this.netAssetApproachmodels.length
+        this.netAssetApproachmodels.length ||
+        this.ruleElevenApproachModels.length
       )
     )
     {
