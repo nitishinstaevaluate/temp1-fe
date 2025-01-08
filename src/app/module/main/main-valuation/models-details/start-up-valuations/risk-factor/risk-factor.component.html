@@ -17,6 +17,11 @@
                     <div class="header-container">
                         <div class="question-index">{{ i }}</div>
                         <div class="header-title">{{ config.subHead }}</div>
+                        <div class="value-content" *ngIf="riskFactorForm.controls[config.controlNameRFCoeff]?.value !== null && riskFactorForm.controls[config.controlNameRFCoeff]?.value !== ''">
+                            <div class="risk-factor-coefficient-container">
+                                <div class="risk-factor-coefficient-label">Risk Factor Coefficient</div>
+                            </div>
+                        </div>
                       </div>
                     <div class="question">
                         <div class="question-text" >- {{config.question}} </div>
@@ -65,11 +70,17 @@
                                 <mat-icon class="risk-factor-icon">analytics</mat-icon>
                               </div>
                               <div class="value-content">
-                                <div class="label">Risk Factor Coefficient</div>
+                                <!-- <div class="label">Risk Factor Coefficient</div> -->
                                 <div class="value">
                                   {{ riskFactorForm.controls[config.controlNameRFCoeff]?.value }}
                                 </div>
                               </div>
+                              <!-- <div class="value-content">
+                                <div class="label">Risk Factor Coefficient</div>
+                                <div class="value">
+                                  {{ riskFactorForm.controls[config.controlNameRFCoeff]?.value }}
+                                </div>
+                              </div> -->
                             </div>
                           </div>
                       </div>

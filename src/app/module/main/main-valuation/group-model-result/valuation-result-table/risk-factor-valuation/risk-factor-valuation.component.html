@@ -4,18 +4,21 @@
       <thead>
         <tr>
           <th>Risk Factors</th>
-          <th>Coefficient</th>
+          <th>Risk Factor Coefficient</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let data of riskFactorValuation">
             <ng-container *ngIf="!data.header">
-                <td>{{ data.label }}</td>
-                <td style="padding-left: 4%;">{{ data.riskFactorCoeff }}</td>
+                <td style="width: 60%;">{{ data.label }}</td>
+                <td style="text-align: right;width: 20%;padding-right: 10%;">{{ data.riskFactorCoeff }}</td>
+                <td></td>
             </ng-container>
             <ng-container *ngIf="data.label === 'Total'">
-                <td>{{ data.label }}</td>
-                <td style="padding-left: 4%;">{{ data.total }}</td>
+                <td style="width: 60%;">{{ data.label }}</td>
+                <td style="text-align: right;width: 20%;padding-right: 10%;">{{ data.total }}</td>
+                <td style=""></td>
             </ng-container>
           </tr>
       </tbody>

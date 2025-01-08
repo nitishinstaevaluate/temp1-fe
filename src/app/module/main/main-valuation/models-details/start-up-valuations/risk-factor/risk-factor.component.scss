@@ -365,8 +365,8 @@
   }
   .value-display-wrapper {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: left;
+    // align-items: center;
     margin-top: 22px;
     animation: fadeIn 0.6s ease-in-out;
   }
@@ -392,7 +392,7 @@
   
   .small-card {
     max-width: 400px;
-    width: 100%;
+    width: 20%;
   }
   
   .value-icon {
@@ -428,6 +428,7 @@
     font-size: 16px;
     font-weight: bold;
     color: #424242;
+    margin-left: 32%;
   }
   
   @keyframes fadeIn {
@@ -483,6 +484,7 @@
     text-transform: capitalize;
     letter-spacing: 0.4px;
     transition: color 0.3s ease-in-out;
+    width: 35%;
   }
   
   
@@ -498,3 +500,29 @@
   .header-title:hover {
     color: #3498db;
   }  
+
+  .risk-factor-coefficient-container {
+    background: #fff;
+    border-radius: 8px;
+    padding: 5px 25px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.risk-factor-coefficient-container:hover {
+    background: #ffeb3b;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+.risk-factor-coefficient-label {
+    font-size: 16px;
+    font-weight: 500;
+    color: #616161;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.value-content:hover .risk-factor-coefficient-label {
+    color: #2c3e50;
+    transform: translateX(5px);
+}
