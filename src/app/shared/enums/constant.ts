@@ -616,3 +616,45 @@ export const COMPONENT_ENUM = {
     key:'startUpValuation'
   }
 }
+
+export const BERKUS_RESULT:any = {
+  soundIdeaValuation:{
+    label:"Sound Idea",
+    total:0,
+    status:''
+  },
+  prototypeValuation:{
+    label:"Prototype",
+    total:0,
+    status:''
+  },
+  managementValuation:{
+    label:"Management",
+    total:0,
+    status:''
+  },
+  strategicRelationshipValuation:{
+    label:"Strategic Relationship",
+    total:0,
+    status:''
+  },
+  productRollOutValuation:{
+    label:"Product Rollout",
+    total:0,
+    status:''
+  },
+  total:{
+    label:'Total',
+    avg:0,
+    status:''
+  }
+};
+
+export const INTERPRETATION_INFO:any = {
+  'Moderate':'Substandard investment option; requires improvement to become a viable candidate for meaningful investment.',
+  'Strong':'Positive for investment; requires monitoring but has a strong foundation to build upon.',
+  'Very Strong':'Highly favorable for investment; represents a meaningful and attractive opportunity.',
+  'Weak':'High risk; requires substantial improvements before becoming a worthwhile investment candidate.',
+  'Very Weak':'Unfavorable investment; avoid until drastic changes are made to address critical weaknesses.',
+  '':"NULL"
+}

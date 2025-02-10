@@ -1,4 +1,4 @@
-<div class="berkus-tab-result-container">
+<!-- <div class="berkus-tab-result-container">
     <div *ngFor="let tab of componentConfig" class="berkus-tab-result"
       [ngClass]="{
         'active': bstep === tab.step
@@ -35,6 +35,45 @@
         </tr>
       </tbody>
     </table>
+  </div> -->
+  
+  <div class="berkus-result-tab-content">
+    <table class="professional-table-berkus-v">
+      <thead>
+        <tr>
+          <ng-container>
+            <th>Factor</th>
+            <th>Weighted Value</th>
+            <th>Max Value</th>
+            <th>Interpretation</th>
+          </ng-container>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of berkusStateArray()">
+          <ng-container *ngIf="data.label !== 'Total'">
+            <td style="font-weight: 400;">{{ data.label }}</td>
+            <td>{{ formatNumber(data.total) }}</td>
+            <td>{{ 100 }}</td>
+            <td>{{ data.status }}</td>
+          </ng-container>
+          <ng-container *ngIf="data.label === 'Total'">
+            <td colspan="1">Average</td>
+            <td colspan="1" style="font-weight: bold;">{{ formatNumber(data.avg) }}</td>
+            <td colspan="1"></td>
+            <td colspan="1" [ngClass]="statusColourScheme(data.status)">{{ data.status }}</td>
+          </ng-container>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div class="final-status-container">
+      <div class="status-summary">
+      </div>
+      <p class="status-message">
+          <strong style="text-transform: capitalize;">{{this.interpretationStatus}}:-</strong> {{this.interpretationInfo}}
+      </p>
+  </div>
   </div>
   
   
