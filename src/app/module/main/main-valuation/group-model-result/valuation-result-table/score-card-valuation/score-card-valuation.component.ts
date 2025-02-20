@@ -24,4 +24,18 @@ export class ScoreCardValuationComponent implements OnInit{
       if(response?.scoreCardValuation) this.scoreCardValuation = response.scoreCardValuation;
     })
   }
+  statusColourScheme(status:any){
+    switch(status){
+      case 'Very Weak':
+      case 'Weak':
+        return 'red';
+      case 'Moderate':
+        return 'blue';
+      case 'Strong':
+      case 'Very Strong':
+        return 'light-green';
+      default:
+        return 'black';
+    }
+  }
 }

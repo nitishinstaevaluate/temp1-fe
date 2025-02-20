@@ -81,6 +81,8 @@
   .professional-table tbody tr {
     background-color: #f8f9fa;
     transition: background-color 0.3s ease;
+    animation: fadeInUp 0.5s forwards;
+    opacity: 0;
   }
   
   .professional-table tbody tr:nth-child(even) {
@@ -106,15 +108,9 @@
     color: #333;
   }
   
-  .professional-table td:last-child {
-    font-weight: bold;
-    color: #4caf50;
-  }
-  
   .professional-table .total-row {
     background: linear-gradient(135deg, #ffc107, #ffecb3);
     color: #333;
-    font-weight: bold;
   }
   
   .professional-table .total-row td {
@@ -127,16 +123,36 @@
     padding-left: 16px;
   }
   
-  /* Add subtle hover effect for entire table */
   .professional-table {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
   
   .professional-table:hover {
-    // transform: translateY(-4px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   }
   
+
+  .professional-table tbody tr:nth-child(1) {
+    animation-delay: 0s;
+  }
+
+  .professional-table tbody tr:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+
+  .professional-table tbody tr:nth-child(3) {
+    animation-delay: 0.2s;
+  }
+
+  .professional-table tbody tr:nth-child(4) {
+    animation-delay: 0.3s;
+  }
+  .professional-table tbody tr:nth-child(5) {
+    animation-delay: 0.4s;
+  }
+  .professional-table tbody tr:nth-child(6) {
+    animation-delay: 0.5s;
+  }
       
   
   
@@ -159,5 +175,35 @@
       transform: translateY(0);
       opacity: 1;
     }
+  }
+
+  @keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px); /* Row comes from below */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0); /* Row settles at its place */
+    }
+  }
+
+  .red{
+    color: red !important;
+  }
+  .orange{
+    color: red !important;
+  }
+  .light-green{
+    color: #069f06 !important;
+  }
+  .dark-green{
+    color: #069f06 !important;
+  }
+  .blue{
+    color: blue !important;
+  }
+  .black{
+    color: black !important;
   }
   
