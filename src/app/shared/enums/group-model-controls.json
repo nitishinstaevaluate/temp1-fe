@@ -3345,23 +3345,23 @@
                                 "percentage":[
                                     {
                                         "percent":"60%",
-                                        "value":10
+                                        "value":60
                                     },
                                     {
                                         "percent":"70%",
-                                        "value":20
+                                        "value":70
                                     },
                                     {
                                         "percent":"80%",
-                                        "value":30
+                                        "value":80
                                     },
                                     {
                                         "percent":"90%",
-                                        "value":40
+                                        "value":90
                                     },
                                     {
                                         "percent":"100%",
-                                        "value":50
+                                        "value":100
                                     }
                                 ]
                             },
@@ -3375,23 +3375,23 @@
                                 "percentage":[
                                     {
                                         "percent":"10%",
-                                        "value":60
+                                        "value":10
                                     },
                                     {
                                         "percent":"20%",
-                                        "value":70
+                                        "value":20
                                     },
                                     {
                                         "percent":"30%",
-                                        "value":80
+                                        "value":30
                                     },
                                     {
                                         "percent":"40%",
-                                        "value":90
+                                        "value":40
                                     },
                                     {
                                         "percent":"50%",
-                                        "value":100
+                                        "value":50
                                     }
                                 ]
                             }
